@@ -38,7 +38,7 @@ import (
 type ServiceattachmentConsumerAcceptLists struct {
 	/* The value of the limit to set. */
 	// +optional
-	ConnectionLimit *int `json:"connectionLimit,omitempty"`
+	ConnectionLimit *int64 `json:"connectionLimit,omitempty"`
 
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
@@ -85,7 +85,7 @@ type ServiceattachmentConnectedEndpointsStatus struct {
 
 	/* The PSC connection id of the connected endpoint. */
 	// +optional
-	PscConnectionId *int `json:"pscConnectionId,omitempty"`
+	PscConnectionId *int64 `json:"pscConnectionId,omitempty"`
 
 	/* The status of a connected endpoint to this service attachment. Possible values: PENDING, RUNNING, DONE */
 	// +optional
@@ -94,10 +94,10 @@ type ServiceattachmentConnectedEndpointsStatus struct {
 
 type ServiceattachmentPscServiceAttachmentIdStatus struct {
 	// +optional
-	High *int `json:"high,omitempty"`
+	High *int64 `json:"high,omitempty"`
 
 	// +optional
-	Low *int `json:"low,omitempty"`
+	Low *int64 `json:"low,omitempty"`
 }
 
 type ComputeServiceAttachmentStatus struct {
@@ -114,11 +114,11 @@ type ComputeServiceAttachmentStatus struct {
 
 	/* The unique identifier for the resource type. The server generates this identifier. */
 	// +optional
-	Id *int `json:"id,omitempty"`
+	Id *int64 `json:"id,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* An 128-bit global unique ID of the PSC service attachment. */
 	// +optional
@@ -137,6 +137,11 @@ type ComputeServiceAttachmentStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeserviceattachment;gcpcomputeserviceattachments
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeServiceAttachment is the Schema for the compute API
 // +k8s:openapi-gen=true

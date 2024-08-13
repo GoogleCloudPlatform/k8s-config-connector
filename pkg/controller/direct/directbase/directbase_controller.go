@@ -22,8 +22,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	operatorlivestate "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/livestate"
-	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -53,11 +52,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-// Add creates a new controller for reconciling objects of the specified GVK, delegating actual resource reconciliation to the provided Model.
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, model Model, opts Deps) error {
+func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model, deps Deps) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, opts.JitterGenerator)
+
+	if model == nil {
+		return fmt.Errorf("model is nil for gvk %s", gvk)
+	}
+
+	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps.JitterGenerator)
 	if err != nil {
 		return err
 	}
@@ -67,7 +70,6 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, model Model, opts Dep
 // NewReconciler returns a new reconcile.Reconciler.
 func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
 	gvk schema.GroupVersionKind, model Model, jg jitter.Generator) (*DirectReconciler, error) {
-
 	controllerName := strings.ToLower(gvk.Kind) + "-controller"
 	if jg == nil {
 		return nil, fmt.Errorf("jitter generator is not initialized")
@@ -171,6 +173,16 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
 	}
+
+	skip, err := resourceactuation.ShouldSkip(obj)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	if skip {
+		logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
+	}
+
 	requeue, err := runCtx.doReconcile(ctx, obj)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -189,7 +201,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
 
-	cc, ccc, err := operatorlivestate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
+	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
 		return true, err
 	}
@@ -211,8 +223,24 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, fmt.Errorf("unknown actuation mode %v", am)
 	}
 
-	adapter, err := r.Reconciler.model.AdapterForObject(ctx, u)
+	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
 	if err != nil {
+		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+		}
+		return false, r.handleUpdateFailed(ctx, u, err)
+	}
+
+	// To create, update or delete the GCP object, we need to get the GCP object first.
+	// Because the object contains the cloud service information like `selfLink` `ID` required to validate
+	// the resource uniqueness before updating/deleting.
+	existsAlready, err := adapter.Find(ctx)
+	if err != nil {
+		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+		}
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
@@ -223,13 +251,13 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			return false, nil
 		}
 		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
-			// deletion defender has not yet been finalized; requeuing
-			logger.Info("deletion defender has not yet been finalized; requeuing", "resource", k8s.GetNamespacedName(u))
+			// deletion defender has not yet finalized; requeuing
+			logger.Info("deletion defender has not yet finalized; requeuing", "resource", k8s.GetNamespacedName(u))
 			return true, nil
 		}
 		if !k8s.HasAbandonAnnotation(u) {
 			if _, err := adapter.Delete(ctx); err != nil {
-				if !errors.Is(err, kcciamclient.ErrNotFound) && !k8s.IsReferenceNotFoundError(err) {
+				if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 						resource, err := toK8sResource(u)
@@ -246,14 +274,6 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleDeleted(ctx, u)
 	}
 
-	existsAlready, err := adapter.Find(ctx)
-	if err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
-		}
-		return false, r.handleUpdateFailed(ctx, u, err)
-	}
 	k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless

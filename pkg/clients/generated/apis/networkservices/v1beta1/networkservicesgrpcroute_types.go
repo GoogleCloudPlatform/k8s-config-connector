@@ -38,11 +38,11 @@ import (
 type GrpcrouteAbort struct {
 	/* The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive. */
 	// +optional
-	HttpStatus *int `json:"httpStatus,omitempty"`
+	HttpStatus *int64 `json:"httpStatus,omitempty"`
 
 	/* The percentage of traffic which will be aborted. The value must be between [0, 100] */
 	// +optional
-	Percentage *int `json:"percentage,omitempty"`
+	Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type GrpcrouteAction struct {
@@ -70,7 +70,7 @@ type GrpcrouteDelay struct {
 
 	/* The percentage of traffic on which delay will be injected. The value must be between [0, 100] */
 	// +optional
-	Percentage *int `json:"percentage,omitempty"`
+	Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type GrpcrouteDestinations struct {
@@ -78,7 +78,7 @@ type GrpcrouteDestinations struct {
 
 	/* Optional. Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type GrpcrouteFaultInjectionPolicy struct {
@@ -132,7 +132,7 @@ type GrpcrouteMethod struct {
 type GrpcrouteRetryPolicy struct {
 	/* Specifies the allowed number of retries. This number must be > 0. If not specpfied, default to 1. */
 	// +optional
-	NumRetries *int `json:"numRetries,omitempty"`
+	NumRetries *int64 `json:"numRetries,omitempty"`
 
 	/* - connect-failure: Router will retry on failures connecting to Backend Services, for example due to connection timeouts. - refused-stream: Router will retry if the backend service resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry. - cancelled: Router will retry if the gRPC status code in the response header is set to cancelled - deadline-exceeded: Router will retry if the gRPC status code in the response header is set to deadline-exceeded - resource-exhausted: Router will retry if the gRPC status code in the response header is set to resource-exhausted - unavailable: Router will retry if the gRPC status code in the response header is set to unavailable */
 	// +optional
@@ -186,7 +186,7 @@ type NetworkServicesGRPCRouteStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Server-defined URL of this resource */
 	// +optional
@@ -201,6 +201,11 @@ type NetworkServicesGRPCRouteStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkservicesgrpcroute;gcpnetworkservicesgrpcroutes
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // NetworkServicesGRPCRoute is the Schema for the networkservices API
 // +k8s:openapi-gen=true

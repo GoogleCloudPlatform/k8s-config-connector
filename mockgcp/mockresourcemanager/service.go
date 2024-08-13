@@ -58,8 +58,8 @@ func (s *MockService) GetProjectStore() projects.ProjectStore {
 	return s.projectsInternal
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "cloudresourcemanager.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"cloudresourcemanager.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
@@ -75,6 +75,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb_v3.RegisterProjectsHandler,
 		pb_v3.RegisterTagKeysHandler,
 		pb_v3.RegisterTagValuesHandler,
+		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v3/operations/{name}"))
 	if err != nil {
 		return nil, err

@@ -59,20 +59,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -370,7 +356,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbuser-dep-database
 spec:
-  location: us-central1
+  location: me-central1
   networkConfig:
     networkRef: 
       name: alloydbuser-dep-database
@@ -454,7 +440,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbuser-dep-iam
 spec:
-  location: us-central1
+  location: me-west1
   networkConfig:
     networkRef: 
       name: alloydbuser-dep-iam

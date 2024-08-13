@@ -41,14 +41,14 @@ data:
   key1: value1
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: ClusterRole
 metadata:
-  name: proj-a
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
   name: foobar-foocorp
-subjects:
-- kind: ServiceAccount
-  name: foobar
-  namespace: foobar-system
+rules:
+- apiGroups:
+  - facade.foocorp.com
+  resources:
+  - "*/status"
+  verbs:
+  - get
+  - update

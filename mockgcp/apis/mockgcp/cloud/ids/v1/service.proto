@@ -1,0 +1,202 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package google.cloud.ids.v1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/ids/apiv1/idspb;idspb";
+service ProjectsServer {
+}
+service ProjectsLocationsServer {
+  rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*}"
+  };
+}
+;
+  rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*}/locations"
+  };
+}
+;
+}
+service ProjectsLocationsEndpointsServer {
+  rpc CreateProjectsLocationsEndpoint(CreateProjectsLocationsEndpointRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/*}/endpoints"
+    body:  "projects_locations_endpoint"
+  };
+}
+;
+  rpc DeleteProjectsLocationsEndpoint(DeleteProjectsLocationsEndpointRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/endpoints/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsEndpoint(GetProjectsLocationsEndpointRequest) returns (Endpoint){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/endpoints/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsEndpoints(ListProjectsLocationsEndpointsRequest) returns (ListEndpointsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/endpoints"
+  };
+}
+;
+  rpc PatchProjectsLocationsEndpoint(PatchProjectsLocationsEndpointRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/*/endpoints/*}"
+    body:  "projects_locations_endpoint"
+  };
+}
+;
+}
+message AuditConfig {
+  repeated AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
+  optional string service = 2 [json_name="service"];
+}
+message AuditLogConfig {
+  repeated string exempted_members = 1 [json_name="exemptedMembers"];
+  optional string log_type = 2 [json_name="logType"];
+}
+message Binding {
+  optional Expr condition = 1 [json_name="condition"];
+  repeated string members = 2 [json_name="members"];
+  optional string role = 3 [json_name="role"];
+}
+message CancelOperationRequest {
+}
+message Empty {
+}
+message Endpoint {
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  optional string description = 2 [json_name="description"];
+  optional string endpoint_forwarding_rule = 3 [json_name="endpointForwardingRule"];
+  optional string endpoint_ip = 4 [json_name="endpointIp"];
+  map<string, string> labels = 5 [json_name="labels"];
+  optional string name = 6 [json_name="name"];
+  optional string network = 7 [json_name="network"];
+  optional bool satisfies_pzi = 8 [json_name="satisfiesPzi"];
+  optional bool satisfies_pzs = 9 [json_name="satisfiesPzs"];
+  optional string severity = 10 [json_name="severity"];
+  optional string state = 11 [json_name="state"];
+  repeated string threat_exceptions = 12 [json_name="threatExceptions"];
+  optional bool traffic_logs = 13 [json_name="trafficLogs"];
+  optional .google.protobuf.Timestamp update_time = 14 [json_name="updateTime"];
+}
+message Expr {
+  optional string description = 1 [json_name="description"];
+  optional string expression = 2 [json_name="expression"];
+  optional string location = 3 [json_name="location"];
+  optional string title = 4 [json_name="title"];
+}
+message ListEndpointsResponse {
+  repeated Endpoint endpoints = 1 [json_name="endpoints"];
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListLocationsResponse {
+  repeated Location locations = 1 [json_name="locations"];
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+message ListOperationsResponse {
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+}
+message Location {
+  optional string display_name = 1 [json_name="displayName"];
+  map<string, string> labels = 2 [json_name="labels"];
+  optional string location_id = 3 [json_name="locationId"];
+  map<string, .google.protobuf.Any> metadata = 4 [json_name="metadata"];
+  optional string name = 5 [json_name="name"];
+}
+message Operation {
+  optional bool done = 1 [json_name="done"];
+  optional Status error = 2 [json_name="error"];
+  map<string, .google.protobuf.Any> metadata = 3 [json_name="metadata"];
+  optional string name = 4 [json_name="name"];
+  map<string, .google.protobuf.Any> response = 5 [json_name="response"];
+}
+message OperationMetadata {
+  optional string api_version = 1 [json_name="apiVersion"];
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  optional .google.protobuf.Timestamp end_time = 3 [json_name="endTime"];
+  optional bool requested_cancellation = 4 [json_name="requestedCancellation"];
+  optional string status_message = 5 [json_name="statusMessage"];
+  optional string target = 6 [json_name="target"];
+  optional string verb = 7 [json_name="verb"];
+}
+message Policy {
+  repeated AuditConfig audit_configs = 1 [json_name="auditConfigs"];
+  repeated Binding bindings = 2 [json_name="bindings"];
+  optional bytes etag = 3 [json_name="etag"];
+  optional int32 version = 4 [json_name="version"];
+}
+message SetIamPolicyRequest {
+  optional Policy policy = 1 [json_name="policy"];
+  optional string update_mask = 2 [json_name="updateMask"];
+}
+message Status {
+  optional int32 code = 1 [json_name="code"];
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  optional string message = 3 [json_name="message"];
+}
+message TestIamPermissionsRequest {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message TestIamPermissionsResponse {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message GetProjectsLocationRequest {
+  optional string name = 1;
+}
+message ListProjectsLocationsRequest {
+  optional string filter = 1;
+  optional string name = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+}
+message CreateProjectsLocationsEndpointRequest {
+  optional string endpoint_id = 1;
+  optional string parent = 2;
+  optional string request_id = 3;
+  optional Endpoint projects_locations_endpoint = 4;
+}
+message DeleteProjectsLocationsEndpointRequest {
+  optional string name = 1;
+  optional string request_id = 2;
+}
+message GetProjectsLocationsEndpointRequest {
+  optional string name = 1;
+}
+message ListProjectsLocationsEndpointsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+}
+message PatchProjectsLocationsEndpointRequest {
+  optional string name = 1;
+  optional string request_id = 2;
+  optional string update_mask = 3;
+  optional Endpoint projects_locations_endpoint = 4;
+}

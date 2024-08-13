@@ -70,9 +70,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -142,7 +139,7 @@ recreated to modify this field.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign
+            <p>{% verbatim %}Enable ULA internal ipv6 on this network. Enabling this feature will assign
 a /48 from google defined ULA prefix fd20::/20.{% endverbatim %}</p>
         </td>
     </tr>

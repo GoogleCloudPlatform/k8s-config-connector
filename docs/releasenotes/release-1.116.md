@@ -1,26 +1,25 @@
 # v1.116.0
 
-** This version is not yet released; this document is gathering release notes for the future release **
-
-* ...
-
-* Special shout-outs to ... for their
-  contributions to this release.
-TODO: list contributors with `git log v1.114.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
-
-## Resources promoted from alpha to beta:
-
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState`.*
-
-* `PlaceholderKind`
-
-## New Resources:
-
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* This release includes enhanced support for DNSRecordSet,
+  enabling advanced configurations such as geo-routing, primary/backup,
+  and weighted round-robin load-balancing.
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* ContainerCluster
+  * Added `spec.nodeConfig.linuxNodeConfig.cgroupMode` field.
 
+* ContainerNodePool
+  * Added `spec.nodeConfig.linuxNodeConfig.cgroupMode` field.
+
+* DNSRecordSet
+  * Added `spec.routingPolicy.geo.healthCheckedTargets` field.
+  * Added `spec.routingPolicy.primaryBackup` field.
+  * Added `spec.routingPolicy.wrr` field.
+
+* EventArcTrigger
+  * Added `spec.destination.httpEndpoint` field.
+  * Added `spec.destination.networkConfig` field.
+
+* LoggingLogBucket
+  * Added `spec.enableAnalytics` field.

@@ -28,6 +28,9 @@ tmp/_test
 bin/
 operator/bin
 
+# record_gcp output
+artifactz/
+
 # Created by https://www.gitignore.io/api/go,vim,emacs,visualstudiocode
 
 ### Emacs ###

@@ -123,7 +123,7 @@ func (r *HTTPRecorder) record(entry *LogEntry, req *http.Request, resp *http.Res
 		} else if resp.Body != nil {
 			requestBody, err := io.ReadAll(resp.Body)
 			if err != nil {
-				panic(fmt.Sprintf("failed to read response body for request %q: %v", req.URL, err))
+				return fmt.Errorf("failed to read response body for request %q: %w", req.URL, err)
 			}
 			entry.Response.Body = string(requestBody)
 			resp.Body = io.NopCloser(bytes.NewReader(requestBody))
@@ -238,12 +238,46 @@ func prettifyJSON(s string, mutators ...JSONMutator) string {
 	return string(b)
 }
 
+func (r *Request) ReplaceHeader(key, value string) {
+	if http.CanonicalHeaderKey(key) == key {
+		r.Header.Set(key, value)
+	} else {
+		r.Header[key] = []string{value}
+	}
+}
+
+func (r *Response) ReplaceHeader(key, value string) {
+	if http.CanonicalHeaderKey(key) == key {
+		r.Header.Set(key, value)
+	} else {
+		r.Header[key] = []string{value}
+	}
+}
+
+func (r *Request) AddHeader(key, value string) {
+	r.Header.Add(key, value)
+}
+
+func (r *Response) AddHeader(key, value string) {
+	r.Header.Add(key, value)
+}
+
 func (r *Response) RemoveHeader(key string) {
+	// The http.header `Del` converts the `key` to `CanonicalHeaderKey`, which means
+	// it expects the passed-in parameter `key` to be case insensitive, but `Header` itself should
+	// use canonical keys.
 	r.Header.Del(key)
+	// Delete non canonical header keys like `x-goog-api-client`.
+	delete(r.Header, strings.ToLower(key))
 }
 
 func (r *Request) RemoveHeader(key string) {
+	// The http.header `Del` converts the `key` to `CanonicalHeaderKey`, which means
+	// it expects the passed-in parameter `key` to be case insensitive, but `Header` itself should
+	// use canonical keys.
 	r.Header.Del(key)
+	// Delete non canonical header keys like `x-goog-api-client`.
+	delete(r.Header, strings.ToLower(key))
 }
 
 func (r *Response) ParseBody() map[string]any {

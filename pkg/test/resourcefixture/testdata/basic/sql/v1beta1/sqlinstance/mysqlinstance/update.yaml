@@ -17,11 +17,12 @@ kind: SQLInstance
 metadata:
   labels:
     label-one: "value-one"
-    newkey: "newval"
   name: sqlinstance-sample-${uniqueId}
 spec:
   region: us-central1
   databaseVersion: MYSQL_5_7
   instanceType: CLOUD_SQL_INSTANCE
   settings:
-    tier: db-n1-standard-4
+    diskAutoresize: false
+    diskSize: 20
+    tier: db-n1-standard-1

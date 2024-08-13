@@ -44,3 +44,13 @@ spec:
             kind: Project
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
+        - tfField: network
+          key: networkRef
+          description: |-
+            Immutable. Name of the VPC network that is connected
+            to the IDS endpoint. This can either contain the VPC network name
+            itself (like "src-net") or the full URL to the network (like "projects/{project_id}/global/networks/src-net").
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com

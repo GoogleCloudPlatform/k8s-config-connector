@@ -24,7 +24,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1beta1/projects.locations.datasets</td>
+<td>v1beta1.projects.locations.datasets</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
@@ -58,20 +58,6 @@
 
 ## Custom Resource Definition Properties
 
-
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
 
 
 ### Spec
@@ -407,7 +393,9 @@ kind: IAMPolicyMember
 metadata:
   name: vertexaidataset-dep-encryptionkey
 spec:
-  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-aiplatform.iam.gserviceaccount.com
+  memberFrom:
+    serviceIdentityRef:
+      name: vertexaidataset-dep-encryptionkey
   role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by vertex AI service agent to access KMS keys
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
@@ -429,6 +417,18 @@ metadata:
   name: vertexaidataset-dep-encryptionkey
 spec:
   location: us-central1
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: vertexaidataset-dep-encryptionkey
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  resourceID: aiplatform.googleapis.com
 ```
 
 

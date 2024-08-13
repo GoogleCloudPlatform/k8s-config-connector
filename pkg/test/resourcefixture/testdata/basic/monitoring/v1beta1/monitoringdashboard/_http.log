@@ -57,8 +57,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
               ],
               "timeshiftDuration": "0s",
               "yAxis": {
-                "label": "y1Axis",
-                "scale": "LINEAR"
+                "label": "y1Axis"
               }
             }
           },

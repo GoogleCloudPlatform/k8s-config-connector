@@ -80,9 +80,6 @@ rules:
   verbs:
   - get
   - update
-- apiGroups: ["*"]
-  resources: ["*"]
-  verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -97,6 +94,32 @@ subjects:
   name: composition-controller-manager
   namespace: composition-system
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: system:serviceaccount:composition-system:composition-controller-manager
+  namespace: team-a
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system:serviceaccount:composition-system:composition-controller-manager
+  namespace: team-a
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: system:serviceaccount:composition-system:composition-controller-manager
+subjects:
+- kind: ServiceAccount
+  name: composition-controller-manager
+  namespace: composition-system
+---
 apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
@@ -106,6 +129,7 @@ spec:
   inputAPIGroup: pconfigs.facade.foocorp.com
   expanders:
   - type: jinja2
+    version: v0.0.1
     name: common
     template: |
       ---
@@ -116,6 +140,7 @@ spec:
       stuff: 3
       --- Make sure uncommented content results YAMLSyntaxError
   - type: jinja2
+    version: v0.0.1
     name: project
     template: |
       {% set hostProject = 'compositions-foobar' %}

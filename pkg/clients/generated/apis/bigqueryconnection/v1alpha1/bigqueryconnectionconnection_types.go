@@ -35,130 +35,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ConnectionAccessRole struct {
-	/* The user’s AWS IAM Role that trusts the Google-owned AWS IAM user Connection. */
-	IamRoleId string `json:"iamRoleId"`
-
-	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's AWS IAM Role. */
-	// +optional
-	Identity *string `json:"identity,omitempty"`
-}
-
-type ConnectionAws struct {
-	/* Authentication using Google owned service account to assume into customer's AWS IAM Role. */
-	AccessRole ConnectionAccessRole `json:"accessRole"`
-}
-
-type ConnectionAzure struct {
-	/* The name of the Azure Active Directory Application. */
-	// +optional
-	Application *string `json:"application,omitempty"`
-
-	/* The client id of the Azure Active Directory Application. */
-	// +optional
-	ClientId *string `json:"clientId,omitempty"`
-
-	/* The id of customer's directory that host the data. */
-	CustomerTenantId string `json:"customerTenantId"`
-
-	/* The Azure Application (client) ID where the federated credentials will be hosted. */
-	// +optional
-	FederatedApplicationClientId *string `json:"federatedApplicationClientId,omitempty"`
-
-	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's Azure Active Directory Application. */
-	// +optional
-	Identity *string `json:"identity,omitempty"`
-
-	/* The object id of the Azure Active Directory Application. */
-	// +optional
-	ObjectId *string `json:"objectId,omitempty"`
-
-	/* The URL user will be redirected to after granting consent during connection setup. */
-	// +optional
-	RedirectUri *string `json:"redirectUri,omitempty"`
-}
-
 type ConnectionCloudResource struct {
 	/* The account ID of the service created for the purpose of this connection. */
 	// +optional
 	ServiceAccountId *string `json:"serviceAccountId,omitempty"`
 }
 
-type ConnectionCloudSpanner struct {
-	/* Cloud Spanner database in the form 'project/instance/database'. */
-	Database string `json:"database"`
-
-	/* If parallelism should be used when reading from Cloud Spanner. */
-	// +optional
-	UseParallelism *bool `json:"useParallelism,omitempty"`
-
-	/* If the serverless analytics service should be used to read data from Cloud Spanner. useParallelism must be set when using serverless analytics. */
-	// +optional
-	UseServerlessAnalytics *bool `json:"useServerlessAnalytics,omitempty"`
-}
-
-type ConnectionCloudSql struct {
-	/* Cloud SQL properties. */
-	Credential ConnectionCredential `json:"credential"`
-
-	/* Database name. */
-	Database string `json:"database"`
-
-	/* Cloud SQL instance ID in the form project:location:instance. */
-	InstanceId string `json:"instanceId"`
-
-	/* When the connection is used in the context of an operation in BigQuery, this service account will serve as the identity being used for connecting to the CloudSQL instance specified in this connection. */
-	// +optional
-	ServiceAccountId *string `json:"serviceAccountId,omitempty"`
-
-	/* Type of the Cloud SQL database. Possible values: ["DATABASE_TYPE_UNSPECIFIED", "POSTGRES", "MYSQL"]. */
-	Type string `json:"type"`
-}
-
-type ConnectionCredential struct {
-	/* Password for database. */
-	Password ConnectionPassword `json:"password"`
-
-	/* Username for database. */
-	Username string `json:"username"`
-}
-
-type ConnectionPassword struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *ConnectionValueFrom `json:"valueFrom,omitempty"`
-}
-
-type ConnectionValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
-}
-
 type BigQueryConnectionConnectionSpec struct {
-	/* Connection properties specific to Amazon Web Services. */
-	// +optional
-	Aws *ConnectionAws `json:"aws,omitempty"`
-
-	/* Container for connection properties specific to Azure. */
-	// +optional
-	Azure *ConnectionAzure `json:"azure,omitempty"`
-
 	/* Container for connection properties for delegation of access to GCP resources. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
-
-	/* Connection properties specific to Cloud Spanner. */
-	// +optional
-	CloudSpanner *ConnectionCloudSpanner `json:"cloudSpanner,omitempty"`
-
-	/* Connection properties specific to the Cloud SQL. */
-	// +optional
-	CloudSql *ConnectionCloudSql `json:"cloudSql,omitempty"`
 
 	/* A descriptive description for the connection. */
 	// +optional
@@ -185,6 +71,18 @@ type BigQueryConnectionConnectionSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type ConnectionCloudResourceStatus struct {
+	/* The account ID of the service created for the purpose of this connection. */
+	// +optional
+	ServiceAccountId *string `json:"serviceAccountId,omitempty"`
+}
+
+type ConnectionObservedStateStatus struct {
+	/* Container for connection properties for delegation of access to GCP resources. */
+	// +optional
+	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`
+}
+
 type BigQueryConnectionConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryConnectionConnection's current state. */
@@ -200,13 +98,22 @@ type BigQueryConnectionConnectionStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ConnectionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryconnectionconnection;gcpbigqueryconnectionconnections
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // BigQueryConnectionConnection is the Schema for the bigqueryconnection API
 // +k8s:openapi-gen=true

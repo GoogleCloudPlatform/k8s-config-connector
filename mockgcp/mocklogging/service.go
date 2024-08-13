@@ -44,19 +44,28 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "logging.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"logging.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterMetricsServiceV2Server(grpcServer, &metricsService{MockService: s})
+	pb.RegisterConfigServiceV2Server(grpcServer, &configService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterMetricsServiceV2Handler)
+		pb.RegisterMetricsServiceV2Handler,
+		pb.RegisterConfigServiceV2Handler)
 	if err != nil {
 		return nil, err
+	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil

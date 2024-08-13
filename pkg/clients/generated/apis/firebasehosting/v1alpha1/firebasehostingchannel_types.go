@@ -49,7 +49,7 @@ type FirebaseHostingChannelSpec struct {
 	/* The number of previous releases to retain on the channel for rollback or other
 	purposes. Must be a number between 1-100. Defaults to 10 for new channels. */
 	// +optional
-	RetainedReleaseCount *int `json:"retainedReleaseCount,omitempty"`
+	RetainedReleaseCount *int64 `json:"retainedReleaseCount,omitempty"`
 
 	/* Immutable. Required. The ID of the site in which to create this channel. */
 	SiteId string `json:"siteId"`
@@ -72,13 +72,18 @@ type FirebaseHostingChannelStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirebasehostingchannel;gcpfirebasehostingchannels
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // FirebaseHostingChannel is the Schema for the firebasehosting API
 // +k8s:openapi-gen=true

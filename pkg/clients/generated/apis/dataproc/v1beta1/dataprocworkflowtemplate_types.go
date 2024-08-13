@@ -38,7 +38,7 @@ import (
 type WorkflowtemplateAccelerators struct {
 	/* Immutable. The number of the accelerator cards of this type exposed to this instance. */
 	// +optional
-	AcceleratorCount *int `json:"acceleratorCount,omitempty"`
+	AcceleratorCount *int64 `json:"acceleratorCount,omitempty"`
 
 	/* Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
 	// +optional
@@ -117,7 +117,7 @@ type WorkflowtemplateConfig struct {
 type WorkflowtemplateDiskConfig struct {
 	/* Immutable. Optional. Size in GB of the boot disk (default is 500GB). */
 	// +optional
-	BootDiskSizeGb *int `json:"bootDiskSizeGb,omitempty"`
+	BootDiskSizeGb *int64 `json:"bootDiskSizeGb,omitempty"`
 
 	/* Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types). */
 	// +optional
@@ -125,7 +125,7 @@ type WorkflowtemplateDiskConfig struct {
 
 	/* Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
 	// +optional
-	NumLocalSsds *int `json:"numLocalSsds,omitempty"`
+	NumLocalSsds *int64 `json:"numLocalSsds,omitempty"`
 }
 
 type WorkflowtemplateEncryptionConfig struct {
@@ -360,7 +360,7 @@ type WorkflowtemplateKerberosConfig struct {
 
 	/* Immutable. Optional. The lifetime of the ticket granting ticket, in hours. If not specified, or user specifies 0, then default value 10 will be used. */
 	// +optional
-	TgtLifetimeHours *int `json:"tgtLifetimeHours,omitempty"`
+	TgtLifetimeHours *int64 `json:"tgtLifetimeHours,omitempty"`
 
 	/* Immutable. Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate. */
 	// +optional
@@ -426,7 +426,7 @@ type WorkflowtemplateMasterConfig struct {
 
 	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
-	NumInstances *int `json:"numInstances,omitempty"`
+	NumInstances *int64 `json:"numInstances,omitempty"`
 
 	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
@@ -584,11 +584,11 @@ type WorkflowtemplateReservationAffinity struct {
 type WorkflowtemplateScheduling struct {
 	/* Immutable. Optional. Maximum number of times per hour a driver may be restarted as a result of driver exiting with non-zero code before job is reported failed. A job may be reported as thrashing if driver exits with non-zero code 4 times within 10 minute window. Maximum value is 10. */
 	// +optional
-	MaxFailuresPerHour *int `json:"maxFailuresPerHour,omitempty"`
+	MaxFailuresPerHour *int64 `json:"maxFailuresPerHour,omitempty"`
 
 	/* Immutable. Optional. Maximum number of times in total a driver may be restarted as a result of driver exiting with non-zero code before job is reported failed. Maximum value is 240. */
 	// +optional
-	MaxFailuresTotal *int `json:"maxFailuresTotal,omitempty"`
+	MaxFailuresTotal *int64 `json:"maxFailuresTotal,omitempty"`
 }
 
 type WorkflowtemplateSecondaryWorkerConfig struct {
@@ -614,7 +614,7 @@ type WorkflowtemplateSecondaryWorkerConfig struct {
 
 	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
-	NumInstances *int `json:"numInstances,omitempty"`
+	NumInstances *int64 `json:"numInstances,omitempty"`
 
 	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
@@ -778,7 +778,7 @@ type WorkflowtemplateWorkerConfig struct {
 
 	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
-	NumInstances *int `json:"numInstances,omitempty"`
+	NumInstances *int64 `json:"numInstances,omitempty"`
 
 	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
@@ -913,7 +913,7 @@ type DataprocWorkflowTemplateStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	Placement *WorkflowtemplatePlacementStatus `json:"placement,omitempty"`
@@ -924,13 +924,18 @@ type DataprocWorkflowTemplateStatus struct {
 
 	/* Output only. The current version of this workflow template. */
 	// +optional
-	Version *int `json:"version,omitempty"`
+	Version *int64 `json:"version,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataprocworkflowtemplate;gcpdataprocworkflowtemplates
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DataprocWorkflowTemplate is the Schema for the dataproc API
 // +k8s:openapi-gen=true

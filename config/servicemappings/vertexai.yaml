@@ -61,3 +61,86 @@ spec:
             kind: KMSCryptoKey
             version: v1beta1
             group: kms.cnrm.cloud.google.com
+    - name: google_vertex_ai_endpoint
+      kind: VertexAIEndpoint
+      idTemplate: "projects/{{project}}/locations/{{region}}/endpoints/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      ignoredFields:
+        - update_time
+        - etag
+        - deployed_models
+        - location
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: encryption_spec.kms_key_name
+          key: kmsKeyNameRef
+          description: |-
+            Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
+            Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
+            The key needs to be in the same region as where the compute resource is created.
+          targetField: self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+        - tfField: network
+          key: networkRef
+          valueTemplate: "projects/{{project}}/global/networks/{{value}}"
+          description: |-
+            Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
+            Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network.
+            Only one of the fields, network or enablePrivateServiceConnect, can be set.
+            Format: projects/{project_id}/global/networks/{network_name}.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeNetwork
+    - name: google_vertex_ai_index
+      kind: VertexAIIndex
+      idTemplate: "projects/{{project}}/locations/{{region}}/indexes/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        labels: labels
+      serverGeneratedIDField: name
+      resourceID:
+        targetField: name
+      mutableButUnreadableFields:
+        - metadata.contents_delta_uri # b/325303123#comment15
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+      ignoredFields:
+        - update_time
+        - etag
+        - deployed_indexes
+        - metadata.is_complete_overwrite # this field is set to true in Terraform patch when metadata.contents_delta_uri is set

@@ -18,11 +18,15 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"regexp"
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	partialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
@@ -47,6 +51,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -75,14 +80,15 @@ type TestReconciler struct {
 	smLoader     *servicemappingloader.ServiceMappingLoader
 	dclConfig    *mmdcl.Config
 	dclConverter *conversion.Converter
+	httpClient   *http.Client
 }
 
 // TODO(kcc-eng): consolidate New() and NewForDCLAndTFTestReconciler() and keep the name as New() by refactoring all existing usages
 func New(t *testing.T, mgr manager.Manager, provider *tfschema.Provider) *TestReconciler {
-	return NewForDCLAndTFTestReconciler(t, mgr, provider, nil)
+	return NewTestReconciler(t, mgr, provider, nil, nil)
 }
 
-func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Provider, dclConfig *mmdcl.Config) *TestReconciler {
+func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Provider, dclConfig *mmdcl.Config, httpClient *http.Client) *TestReconciler {
 	smLoader := testservicemappingloader.New(t)
 	dclSchemaLoader, err := dclschemaloader.New()
 	if err != nil {
@@ -90,6 +96,14 @@ func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *t
 	}
 	serviceMetaLoader := metadata.New()
 	dclConverter := conversion.New(dclSchemaLoader, serviceMetaLoader)
+
+	// Initialize direct controllers
+	if err := registry.Init(context.TODO(), &config.ControllerConfig{
+		HTTPClient: httpClient,
+	}); err != nil {
+		log.Fatalf("error intializing direct registry: %v", err)
+	}
+
 	return &TestReconciler{
 		mgr:          mgr,
 		t:            t,
@@ -97,6 +111,7 @@ func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *t
 		smLoader:     smLoader,
 		dclConverter: dclConverter,
 		dclConfig:    dclConfig,
+		httpClient:   httpClient,
 	}
 }
 
@@ -232,6 +247,19 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
 			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		}
+		gk := schema.GroupKind{Group: crd.Spec.Group, Kind: crd.Spec.Names.Kind}
+		if registry.IsDirectByGK(gk) {
+			model, err := registry.GetModel(gk)
+			if err != nil {
+				return nil, err
+			}
+			gvk, found := registry.PreferredGVK(gk)
+			if !found {
+				return nil, fmt.Errorf("no preferred GVK for %v", gk)
+			}
+
+			return directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, jg)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")

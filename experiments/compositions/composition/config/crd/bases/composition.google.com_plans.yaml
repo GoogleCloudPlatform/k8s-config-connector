@@ -66,6 +66,13 @@ spec:
           status:
             description: PlanStatus defines the observed state of Plan
             properties:
+              compositionGeneration:
+                description: Composition generation last succesfully reconciled
+                format: int64
+                type: integer
+              compositionUID:
+                description: Composition UID
+                type: string
               conditions:
                 items:
                   description: "Condition contains details for one aspect of the current
@@ -135,14 +142,73 @@ spec:
                   - type
                   type: object
                 type: array
+              generation:
+                description: Plan generation we last successfully reconciled
+                format: int64
+                type: integer
+              inputGeneration:
+                description: Facade's generation last succesfully reconciled
+                format: int64
+                type: integer
+              lastPruned:
+                items:
+                  properties:
+                    group:
+                      type: string
+                    health:
+                      type: string
+                    kind:
+                      type: string
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                    status:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - health
+                  - kind
+                  type: object
+                type: array
               stages:
                 additionalProperties:
                   description: StageStatus captures the status of a stage
                   properties:
+                    appliedCount:
+                      type: integer
+                    lastApplied:
+                      items:
+                        properties:
+                          group:
+                            type: string
+                          health:
+                            type: string
+                          kind:
+                            type: string
+                          name:
+                            type: string
+                          namespace:
+                            type: string
+                          status:
+                            type: string
+                          version:
+                            type: string
+                        required:
+                        - health
+                        - kind
+                        type: object
+                      type: array
                     resourceCount:
                       type: integer
+                  required:
+                  - resourceCount
                   type: object
                 type: object
+            required:
+            - compositionGeneration
+            - inputGeneration
             type: object
         type: object
     served: true

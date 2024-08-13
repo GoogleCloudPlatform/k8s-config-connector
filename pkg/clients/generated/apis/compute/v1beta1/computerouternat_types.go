@@ -76,7 +76,7 @@ type RouternatRules struct {
 
 	/* An integer uniquely identifying a rule in the list.
 	The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT. */
-	RuleNumber int `json:"ruleNumber"`
+	RuleNumber int64 `json:"ruleNumber"`
 }
 
 type RouternatSubnetwork struct {
@@ -118,7 +118,7 @@ type ComputeRouterNATSpec struct {
 
 	/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
 	// +optional
-	IcmpIdleTimeoutSec *int `json:"icmpIdleTimeoutSec,omitempty"`
+	IcmpIdleTimeoutSec *int64 `json:"icmpIdleTimeoutSec,omitempty"`
 
 	/* Configuration for logging on NAT. */
 	// +optional
@@ -127,11 +127,11 @@ type ComputeRouterNATSpec struct {
 	/* Maximum number of ports allocated to a VM from this NAT.
 	This field can only be set when enableDynamicPortAllocation is enabled. */
 	// +optional
-	MaxPortsPerVm *int `json:"maxPortsPerVm,omitempty"`
+	MaxPortsPerVm *int64 `json:"maxPortsPerVm,omitempty"`
 
 	/* Minimum number of ports allocated to a VM from this NAT. */
 	// +optional
-	MinPortsPerVm *int `json:"minPortsPerVm,omitempty"`
+	MinPortsPerVm *int64 `json:"minPortsPerVm,omitempty"`
 
 	/* How external IPs should be allocated for this NAT. Valid values are
 	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
@@ -175,21 +175,21 @@ type ComputeRouterNATSpec struct {
 	/* Timeout (in seconds) for TCP established connections.
 	Defaults to 1200s if not set. */
 	// +optional
-	TcpEstablishedIdleTimeoutSec *int `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
+	TcpEstablishedIdleTimeoutSec *int64 `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
 
 	/* Timeout (in seconds) for TCP connections that are in TIME_WAIT state.
 	Defaults to 120s if not set. */
 	// +optional
-	TcpTimeWaitTimeoutSec *int `json:"tcpTimeWaitTimeoutSec,omitempty"`
+	TcpTimeWaitTimeoutSec *int64 `json:"tcpTimeWaitTimeoutSec,omitempty"`
 
 	/* Timeout (in seconds) for TCP transitory connections.
 	Defaults to 30s if not set. */
 	// +optional
-	TcpTransitoryIdleTimeoutSec *int `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
+	TcpTransitoryIdleTimeoutSec *int64 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
 
 	/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
 	// +optional
-	UdpIdleTimeoutSec *int `json:"udpIdleTimeoutSec,omitempty"`
+	UdpIdleTimeoutSec *int64 `json:"udpIdleTimeoutSec,omitempty"`
 }
 
 type ComputeRouterNATStatus struct {
@@ -198,13 +198,18 @@ type ComputeRouterNATStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputerouternat;gcpcomputerouternats
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeRouterNAT is the Schema for the compute API
 // +k8s:openapi-gen=true

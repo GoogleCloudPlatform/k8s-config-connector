@@ -26,25 +26,27 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
 )
 
-// AddKeyReconciler creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddKeyReconciler(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.APIKeysKeyGVK
+func init() {
+	registry.RegisterModel(krm.APIKeysKeyGVK, newAPIKeysModel)
+}
 
-	return directbase.Add(mgr, gvk, &model{config: *config}, opts)
+func newAPIKeysModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{config: *config}, nil
 }
 
 type model struct {
-	config controller.Config
+	config config.ControllerConfig
 }
 
 // model implements the Model interface.
@@ -53,7 +55,7 @@ var _ directbase.Model = &model{}
 var keyMapping = NewMapping(&pb.Key{}, &krm.APIKeysKey{},
 	Spec("displayName"),
 	Spec("restrictions"),
-	Status("uid"),
+	// Status("uid"),
 	Ignore("createTime"),
 	Ignore("updateTime"),
 	Ignore("deleteTime"),
@@ -110,7 +112,7 @@ func (m *model) client(ctx context.Context) (*api.Client, error) {
 }
 
 // AdapterForObject implements the Model interface.
-func (m *model) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	gcp, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -128,7 +130,7 @@ func (m *model) AdapterForObject(ctx context.Context, u *unstructured.Unstructur
 	}
 
 	// TODO: Use name or request resourceID to be set on create?
-	keyID := ValueOf(obj.Spec.ResourceID)
+	keyID := direct.ValueOf(obj.Spec.ResourceID)
 	if keyID == "" {
 		return nil, fmt.Errorf("unable to determine resourceID")
 	}
@@ -146,6 +148,10 @@ func (m *model) AdapterForObject(ctx context.Context, u *unstructured.Unstructur
 	}, nil
 }
 
+func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
 // Find implements the Adapter interface.
 func (a *adapter) Find(ctx context.Context) (bool, error) {
 	if a.keyID == "" {
@@ -157,7 +163,7 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 	}
 	key, err := a.gcp.GetKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			klog.Warningf("key was not found: %v", err)
 			return false, nil
 		}
@@ -181,7 +187,7 @@ func (a *adapter) Delete(ctx context.Context) (bool, error) {
 	}
 	op, err := a.gcp.DeleteKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting key: %w", err)
@@ -275,6 +281,10 @@ func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 	// TODO: update status in u
 	return nil
+}
+
+func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	return nil, nil
 }
 
 func (a *adapter) fullyQualifiedName() string {

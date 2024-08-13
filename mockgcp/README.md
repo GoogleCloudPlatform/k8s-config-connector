@@ -32,7 +32,11 @@ Broadly the steps are:
    refer to your resource's API documentation to identify the service name, for example [privateca](https://cloud.google.com/certificate-authority-service/docs/reference/rest#service:-privateca.googleapis.com).
    Once you identify the service, find the proper path to the proto files, for example:
    `cloud/security/privateca/v1/*.proto`. Then replace the prefix `googleapis/google/` to `./third_party/googleapis/mockgcp/`,
-   and add into the Makefile.  
+   and add into the Makefile.
+
+   * Note: Ensure you pick the same version the controller uses to call the GCP API during GCP resource instantiation.
+
+   * (Optional) If you determine that the proto file is not up to date, or if it doesn't exist at all, refer to the [Generating Proto](#generating-proto) section
    
 1. (Optional). If you're adding an API outside of googleapis/google/cloud,
    you may need to add commands to rename the API o mockgcp in [fixup-third-party.sh](fixup-third-party.sh). Example:
@@ -78,23 +82,47 @@ If you also use `E2E_GCP_TARGET=real` you can run against the real (non-mocked) 
 Usually however, this is not necessary; the most common failure mode is that terraform or KCC expects a field to be automatically populated,
 and it normally logs an error like "foo not set" (in this case, simply add that to your mock implementation.)
 
-## Capture HTTP golden logs
+## Capture golden object and HTTP golden logs
 
-Capture HTTP logs against real GCP:
+1. Capture golden object and HTTP golden logs against real GCP.
 
-Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/test-name`.
+   1. Run the following command to generate the golden object (`_generated_object_\[testname\].golden.yaml` file):
+      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
 
-Capture HTTP logs against mock GCP:
+   1. Run the following command to generate the golden request (`_http.log` file):
+      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
 
-We can consider getting HTTP logs against mockGCP after implementing the mockGCP service.
-For certain resources that are difficult to run against real GCP (for example, AttachedCluster requires an external cluster and EdgeContainer requires a physical machine, and etc), 
-it's acceptable to capture the golden HTTP logs from the mock service.
+   1. Ensure both `GOLDEN_OBJECT_CHECKS` and `GOLDEN_REQUEST_CHECKS` pass:
+      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
 
-Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/test-name`.
+      1. If the test doesn't pass, check the output log and identify diffs. Normalize the values if needed in
+         [tests/e2e/normalize.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/v1.120.1/tests/e2e/normalize.go#L66)
+         for GOLDEN_OBJECT_CHECKS and in
+         [tests/e2e/unified_test.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/v1.120.1/tests/e2e/unified_test.go#L523)
+         for GOLDEN_REQUEST_CHECKS.
 
-A new file named "_http.log" will be created in the test folder during the first time the command is executed, that's our golden HTTP log.
-We will compare new HTTP logs with the golden HTTP log as a part of the mockGCP test if GOLDEN_REQUEST_CHECKS is specified.
+1. Ensure the test works when `E2E_GCP_TARGET=mock`:
+   `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
 
-To prevent any problems when comparing with the golden logs, it is necessary to replace all generated values in the HTTP log with identical values.
+   1. If the test doesn't pass, update the CRUD methods in the mock to match the behavior needed by the golden files.
 
-See [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/tests/e2e/unified_test.go#L167-L329) to get some ideas.
+1. **In some edge cases**, we can consider getting HTTP logs against mockGCP after implementing the mockGCP service.
+   For certain resources that are difficult to run against real GCP (for example, AttachedCluster requires an
+   external cluster and EdgeContainer requires a physical machine, and etc), it's acceptable to capture the golden
+   HTTP logs from the mock service.
+
+   Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/test-name`.
+
+## Appendix
+
+### Generating proto
+
+If the proto file on [googleapis](https://github.com/googleapis/googleapis/commits/1e4137870560340a14700618a05e2d7162326af7/google/cloud/ids/v1/ids.proto) is out of date or non existent, you can generate a proto file from the [google generated api](https://github.com/googleapis/google-api-go-client/tree/b49e3b908a8ed562e068736f1c42e992538ba6e0) as such:
+
+```shell
+$ 	wget -O ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/b49e3b908a8ed562e068736f1c42e992538ba6e0/ids/v1/ids-api.json
+	mkdir -p apis/mockgcp/cloud/ids/v1/
+	cd tools/gapic; go run . --proto-version=2 ../../ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
+```
+
+Modify the snippet above for your own service and add it to the Makefile target [`generate-proto-from-openapi`](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/bbdd7e244a8e9c1259ab939aa233c63fb38db1c2/mockgcp/Makefile#L73-L74).

@@ -58,59 +58,6 @@ spec:
             type: object
           spec:
             properties:
-              aws:
-                description: Connection properties specific to Amazon Web Services.
-                properties:
-                  accessRole:
-                    description: Authentication using Google owned service account
-                      to assume into customer's AWS IAM Role.
-                    properties:
-                      iamRoleId:
-                        description: The user’s AWS IAM Role that trusts the Google-owned
-                          AWS IAM user Connection.
-                        type: string
-                      identity:
-                        description: A unique Google-owned and Google-generated identity
-                          for the Connection. This identity will be used to access
-                          the user's AWS IAM Role.
-                        type: string
-                    required:
-                    - iamRoleId
-                    type: object
-                required:
-                - accessRole
-                type: object
-              azure:
-                description: Container for connection properties specific to Azure.
-                properties:
-                  application:
-                    description: The name of the Azure Active Directory Application.
-                    type: string
-                  clientId:
-                    description: The client id of the Azure Active Directory Application.
-                    type: string
-                  customerTenantId:
-                    description: The id of customer's directory that host the data.
-                    type: string
-                  federatedApplicationClientId:
-                    description: The Azure Application (client) ID where the federated
-                      credentials will be hosted.
-                    type: string
-                  identity:
-                    description: A unique Google-owned and Google-generated identity
-                      for the Connection. This identity will be used to access the
-                      user's Azure Active Directory Application.
-                    type: string
-                  objectId:
-                    description: The object id of the Azure Active Directory Application.
-                    type: string
-                  redirectUri:
-                    description: The URL user will be redirected to after granting
-                      consent during connection setup.
-                    type: string
-                required:
-                - customerTenantId
-                type: object
               cloudResource:
                 description: Container for connection properties for delegation of
                   access to GCP resources.
@@ -119,99 +66,6 @@ spec:
                     description: The account ID of the service created for the purpose
                       of this connection.
                     type: string
-                type: object
-              cloudSpanner:
-                description: Connection properties specific to Cloud Spanner.
-                properties:
-                  database:
-                    description: Cloud Spanner database in the form 'project/instance/database'.
-                    type: string
-                  useParallelism:
-                    description: If parallelism should be used when reading from Cloud
-                      Spanner.
-                    type: boolean
-                  useServerlessAnalytics:
-                    description: If the serverless analytics service should be used
-                      to read data from Cloud Spanner. useParallelism must be set
-                      when using serverless analytics.
-                    type: boolean
-                required:
-                - database
-                type: object
-              cloudSql:
-                description: Connection properties specific to the Cloud SQL.
-                properties:
-                  credential:
-                    description: Cloud SQL properties.
-                    properties:
-                      password:
-                        description: Password for database.
-                        oneOf:
-                        - not:
-                            required:
-                            - valueFrom
-                          required:
-                          - value
-                        - not:
-                            required:
-                            - value
-                          required:
-                          - valueFrom
-                        properties:
-                          value:
-                            description: Value of the field. Cannot be used if 'valueFrom'
-                              is specified.
-                            type: string
-                          valueFrom:
-                            description: Source for the field's value. Cannot be used
-                              if 'value' is specified.
-                            properties:
-                              secretKeyRef:
-                                description: Reference to a value with the given key
-                                  in the given Secret in the resource's namespace.
-                                properties:
-                                  key:
-                                    description: Key that identifies the value to
-                                      be extracted.
-                                    type: string
-                                  name:
-                                    description: Name of the Secret to extract a value
-                                      from.
-                                    type: string
-                                required:
-                                - name
-                                - key
-                                type: object
-                            type: object
-                        type: object
-                      username:
-                        description: Username for database.
-                        type: string
-                    required:
-                    - password
-                    - username
-                    type: object
-                  database:
-                    description: Database name.
-                    type: string
-                  instanceId:
-                    description: Cloud SQL instance ID in the form project:location:instance.
-                    type: string
-                  serviceAccountId:
-                    description: When the connection is used in the context of an
-                      operation in BigQuery, this service account will serve as the
-                      identity being used for connecting to the CloudSQL instance
-                      specified in this connection.
-                    type: string
-                  type:
-                    description: 'Type of the Cloud SQL database. Possible values:
-                      ["DATABASE_TYPE_UNSPECIFIED", "POSTGRES", "MYSQL"].'
-                    type: string
-                required:
-                - credential
-                - database
-                - instanceId
-                - type
                 type: object
               description:
                 description: A descriptive description for the connection.
@@ -308,6 +162,19 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  cloudResource:
+                    description: Container for connection properties for delegation
+                      of access to GCP resources.
+                    properties:
+                      serviceAccountId:
+                        description: The account ID of the service created for the
+                          purpose of this connection.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec

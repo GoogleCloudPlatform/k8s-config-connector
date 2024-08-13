@@ -37,17 +37,26 @@ import (
 
 type RepositoryGitRemoteSettings struct {
 	/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
-	AuthenticationTokenSecretVersion string `json:"authenticationTokenSecretVersion"`
+	// +optional
+	AuthenticationTokenSecretVersionRef *v1alpha1.ResourceRef `json:"authenticationTokenSecretVersionRef,omitempty"`
 
 	/* The Git remote's default branch name. */
 	DefaultBranch string `json:"defaultBranch"`
 
-	/* Indicates the status of the Git access token. https://cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories#TokenStatus. */
+	/* Authentication fields for remote uris using SSH protocol. */
 	// +optional
-	TokenStatus *string `json:"tokenStatus,omitempty"`
+	SshAuthenticationConfig *RepositorySshAuthenticationConfig `json:"sshAuthenticationConfig,omitempty"`
 
 	/* The Git remote's URL. */
 	Url string `json:"url"`
+}
+
+type RepositorySshAuthenticationConfig struct {
+	/* Content of a public SSH key to verify an identity of a remote Git host. */
+	HostPublicKey string `json:"hostPublicKey"`
+
+	/* The name of the Secret Manager secret version to use as a ssh private key for Git operations. Must be in the format projects/* /secrets/* /versions/* . */
+	UserPrivateKeySecretVersionRef v1alpha1.ResourceRef `json:"userPrivateKeySecretVersionRef"`
 }
 
 type RepositoryWorkspaceCompilationOverrides struct {
@@ -65,9 +74,17 @@ type RepositoryWorkspaceCompilationOverrides struct {
 }
 
 type DataformRepositorySpec struct {
+	/* Optional. The repository's user-friendly name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
 	/* Optional. If set, configures this repository to be linked to a Git remote. */
 	// +optional
 	GitRemoteSettings *RepositoryGitRemoteSettings `json:"gitRemoteSettings,omitempty"`
+
+	/* Optional. The name of the Secret Manager secret version to be used to interpolate variables into the .npmrc file for package installation operations. */
+	// +optional
+	NpmrcEnvironmentVariablesSecretVersionRef *v1alpha1.ResourceRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -79,24 +96,48 @@ type DataformRepositorySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* Optional. The service account reference to run workflow invocations under. */
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
+	/* Optional. Input only. If set to true, the authenticated user will be granted the roles/dataform.admin role on the created repository. */
+	// +optional
+	SetAuthenticatedUserAdmin *bool `json:"setAuthenticatedUserAdmin,omitempty"`
+
 	/* Optional. If set, fields of workspaceCompilationOverrides override the default compilation settings that are specified in dataform.json when creating workspace-scoped compilation results. */
 	// +optional
 	WorkspaceCompilationOverrides *RepositoryWorkspaceCompilationOverrides `json:"workspaceCompilationOverrides,omitempty"`
+}
+
+type RepositoryObservedStateStatus struct {
 }
 
 type DataformRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataformRepository's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataformReposity resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *RepositoryObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataformrepository;gcpdataformrepositories
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DataformRepository is the Schema for the dataform API
 // +k8s:openapi-gen=true

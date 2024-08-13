@@ -1,8 +1,4 @@
-# CloudSQL 
-
-## [Platform Admin] Create a Team using AppTeam
-
-First go through the AppTeam recipe and setup the `clearing` Team.
+# CloudSQL
 
 ## [Platform Admin] Create the composition
 
@@ -10,34 +6,40 @@ First go through the AppTeam recipe and setup the `clearing` Team.
 kubectl create -f composition/hasql.yaml
 ```
 
-## [clearing Team Admin] Create a CloudSQL `collateral`
+## [Team Admin] Create CloudSQL instance
+
+Please note we are creating this in `config-control` namespace for this sample.
+If KCC is setup in a tenant namespace (say using the `AppTeam` sample
+composition), then we can use the tenant namespace instead.
 
 ```
-kubectl create -f facades/cloudsql-collateral.yaml
+NAMESPACE=config-control
+#NAMESPACE=<app-team's namespace>
+
+kubectl apply -f - <<EOF
+apiVersion: facade.compositions.google.com/v1
+kind: CloudSQL
+metadata:
+  name: myteam
+  namespace: ${NAMESPACE}
+spec:
+  regions:
+  - us-east1
+  - us-central1
+  name: myteam-db
+EOF
 ```
 
-Verify the relevant resources are created succesfully
+Verify the relevant resources are created succesfully by running:
 
 ```
-./get_cloudsql.sh clearing-service
+./get_cloudsql.sh ${NAMESPACE}
 ```
 
-## [margin Team Admin] Create a CloudSQL `risk`
-```
-kubectl create -f facades/cloudsql-risk.yaml
-```
+## [Team Admin] Cleaning up
 
-Verify the relevant resources are created succesfully
+When done with testing, clean up the resources by deleting the `CloudSQL` CRs:
 
 ```
-./get_appteam.sh margin-service
-```
-
-## [Platform Admin] Cleaning up
-
-When done with testing, cleanup the resources by deleting the `CloudSQL` CRs.
-
-```
-kubectl delete cloudsql clearing
-kubectl delete cloudsql risk
+kubectl delete cloudsql myteam -n ${NAMESPACE}
 ```

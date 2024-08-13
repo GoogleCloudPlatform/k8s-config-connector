@@ -16,22 +16,23 @@ package e2e
 
 import (
 	"testing"
+	"time"
 
-	"google.com/composition/tests/scenario"
-	"google.com/composition/tests/utils"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/scenario"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/utils"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 func TestSimpleCompositionCreate(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 }
 
-func TestSimpleCompositionExpansion(t *testing.T) {
+func TestSimpleExpansionJob(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -39,9 +40,40 @@ func TestSimpleCompositionExpansion(t *testing.T) {
 	s.VerifyOutputSpecMatches()
 }
 
-func TestSimpleCompositionDeleteFacade(t *testing.T) {
+func TestSimpleExpansionGrpc(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+}
+
+func TestSimpleCompositionUpdate(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Make sure the pre-update CRs have been created to ensure the coming update triggers a new reconcile.
+	cmNames := []string{"p-proj-a", "p-proj-b", "s-proj-a", "s-proj-b"}
+	cms := make([]*unstructured.Unstructured, 0)
+	for _, cmName := range cmNames {
+		cms = append(cms, utils.GetConfigMapObj("team-a", cmName))
+	}
+	s.C.MustExist(cms, scenario.ExistTimeout)
+
+	// Apply the modified Composition
+	s.ApplyManifests("modified composition", "modified_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+}
+
+func TestSimpleDeleteFacade(t *testing.T) {
+	//t.Parallel()
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -61,9 +93,9 @@ func TestSimpleCompositionDeleteFacade(t *testing.T) {
 }
 
 // Test adding config that results in additional expanded resources
-func TestSimpleCompositionAddFacadeField(t *testing.T) {
+func TestSimpleAddFacadeField(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -81,13 +113,13 @@ func TestSimpleCompositionAddFacadeField(t *testing.T) {
 
 	// Check if additional ConfigMap is created
 	cm := utils.GetConfigMapObj("team-a", "proj-b")
-	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.CompositionReconcileTimeout)
 }
 
 // Test removing config that results in removal of some expanded resource
-func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
+func TestSimpleDeleteFacadeField(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -109,62 +141,82 @@ func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
 
 func TestSimpleCompositionStatusValidation(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
 	// Verify there is a Validation failure status condition in compositions
 	composition := utils.GetCompositionObj("default", "projectconfigmap")
 	condition := utils.GetValidationFailedCondition("ExpanderValidationFailed", "")
-	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply the fixed Composition
-	s.ApplyManifests("fixed_composition.yaml")
+	s.ApplyManifests("composition without validation error", "fixed_composition.yaml")
 
 	// Check if Validation failure condition is cleared
 	composition = utils.GetCompositionObj("default", "projectconfigmap")
 	condition = utils.GetValidationFailedCondition("ExpanderValidationFailed", "")
-	s.C.MustNotHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustNotHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+}
+
+func TestSimpleCompositionJinjaValidationFailure(t *testing.T) {
+	//t.Parallel()
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is an Error capturing the expander config Validation
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("ValidationFailed", "")
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+
+	// Apply the fixed Composition
+	s.ApplyManifests("composition without validation error", "fixed_composition.yaml")
+
+	// Check if Validation failure condition is cleared
+	composition = utils.GetCompositionObj("default", "projectconfigmap")
+	condition = utils.GetErrorCondition("ValidationFailed", "")
+	s.C.MustNotHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
 	// Verify there is a Error status condition in compositions
 	composition := utils.GetCompositionObj("default", "projectconfigmap")
 	condition := utils.GetErrorCondition("MissingFacadeCRD", "")
-	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply the fixed Composition
-	s.ApplyManifests("facade_crd.yaml")
+	s.ApplyManifests("Facade CRD", "facade_crd.yaml")
 
 	// Check if Validation failure condition is cleared
 	composition = utils.GetCompositionObj("default", "projectconfigmap")
 	condition = utils.GetErrorCondition("MissingFacadeCRD", "")
-	s.C.MustNotHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustNotHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
 	// Verify there is a Waiting failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition := utils.GetWaitingCondition("FetchValuesFromFailed", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	condition := utils.GetWaitingCondition("EvaluateStatusWait", "")
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("configmap_with_data.yaml")
+	s.ApplyManifests("Fixed Configmap", "configmap_with_data.yaml")
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition = utils.GetWaitingCondition("FetchValuesFromFailed", "")
-	s.C.MustNotHaveCondition(plan, condition, 3*scenario.CompositionReconcile)
+	condition = utils.GetWaitingCondition("EvaluateStatusWait", "")
+	s.C.MustNotHaveCondition(plan, condition, 3*scenario.CompositionReconcileTimeout)
 
 	// Verify the composition progresses after being unblocked
 	s.VerifyOutputExists()
@@ -172,22 +224,37 @@ func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 
 func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
-	// Verify there is a Waiting failure status condition in plan
+	// Verify there is a Error failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition := utils.GetErrorCondition("ExpansionFailed", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	condition := utils.GetErrorCondition("EvaluateStatusFailed", "")
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("composition_fixed.yaml")
+	s.ApplyManifests("Composition without jinja error", "composition_fixed.yaml")
 
-	// Check if Waiting failure condition is cleared
+	// Check if Error failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition = utils.GetErrorCondition("ExpansionFailed", "")
-	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+	condition = utils.GetErrorCondition("EvaluateStatusFailed", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}
+
+func TestSimpleExpanderJinjaWithQuotes(t *testing.T) {
+	//t.Parallel()
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Error failure status condition in plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("EvaluateStatusFailed", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
 
 	// Verify the composition progresses after being unblocked
 	s.VerifyOutputExists()
@@ -195,22 +262,22 @@ func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 
 func TestSimplePlanStatusErrorFailedLoadingManifestsFromPlan(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
 	// Verify there is a Waiting failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("FailedLoadingManifestsFromPlan", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("composition_fixed.yaml")
+	s.ApplyManifests("Composition without yaml error", "composition_fixed.yaml")
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition = utils.GetErrorCondition("FailedLoadingManifestsFromPlan", "")
-	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
 
 	// Verify the composition progresses after being unblocked
 	s.VerifyOutputExists()
@@ -218,22 +285,22 @@ func TestSimplePlanStatusErrorFailedLoadingManifestsFromPlan(t *testing.T) {
 
 func TestSimplePlanStatusErrorFailedApplyingManifests(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
-	// Verify there is a Waiting failure status condition in plan
+	// Verify there is a failed apply failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("composition_fixed.yaml")
+	s.ApplyManifests("Composition with correct object", "composition_fixed.yaml")
 
-	// Check if Waiting failure condition is cleared
+	// Check if failed apply failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition = utils.GetErrorCondition("FailedApplyingManifests", "")
-	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
 
 	// Verify the composition progresses after being unblocked
 	s.VerifyOutputExists()
@@ -241,7 +308,7 @@ func TestSimplePlanStatusErrorFailedApplyingManifests(t *testing.T) {
 
 func TestSimpleNamespaceInherit(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -251,12 +318,12 @@ func TestSimpleNamespaceInherit(t *testing.T) {
 	// Verify presence of an error because one of the manifests is cluster scoped
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimpleNamespaceExplicit(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -266,5 +333,125 @@ func TestSimpleNamespaceExplicit(t *testing.T) {
 	// Verify absence of an error because explicit allows cluster scoped
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
-	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
+}
+
+// Test Bring Your OWN Schema
+func TestSimpleFacadeByoSchema(t *testing.T) {
+	//t.Parallel()
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// TODO Add Ready condition which we should wait for
+	time.Sleep(time.Second * 10)
+
+	facade := utils.GetFacadeObj("default", "projectconfigmap")
+	// Ensure no Error condition in Composition
+	condition := utils.GetErrorCondition("", "")
+	s.C.MustNotHaveCondition(facade, condition, 2*scenario.CompositionReconcileTimeout)
+
+	// Verify CRD has been created and defn matches
+	s.VerifyManifests("facade pconfig crd", true, "out_crd_pconfigs.yaml")
+
+	// Create a facade from the new CRD
+	s.ApplyManifests("facade cr", "in_pconfig.yaml")
+
+	// Ensure no Error condition in Plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}
+
+func TestSimpleExpanderInvalid(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("ValidationFailed", "")
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("MissingExpanderCR", "")
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
+}
+
+func TestSimpleExpanderVersionInvalid(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("ValidationFailed", "")
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("VersionNotFound", "")
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
+}
+
+func TestSimpleCompositionExpanderLoggingEnabled(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetWaitingCondition("EvaluateStatusWait", "")
+	s.C.MustNotHaveCondition(plan, condition, 3*scenario.CompositionReconcileTimeout)
+	s.VerifyOutputExists()
+}
+
+func TestUpdateCompositionCRAddStage(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Make sure the pre-update CRs have been created to ensure the coming update triggers a new reconcile.
+	cm := utils.GetConfigMapObj("team-a", "common-config")
+	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+
+	// Apply the modified Composition
+	s.ApplyManifests("updated composition", "updated_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+}
+
+func TestUpdateCompositionCRRemoveStage(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify that all resources objects are created
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Apply the modified Composition
+	s.ApplyManifests("updated composition", "updated_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	cm := utils.GetConfigMapObj("team-a", "proj-a")
+	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+}
+
+func TestUpdateCompositionModifyStage(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify that all resources objects are created
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Apply the modified Composition
+	s.ApplyManifests("updated composition", "updated_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	cm := utils.GetConfigMapObj("team-a", "common-config-2")
+	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
 }

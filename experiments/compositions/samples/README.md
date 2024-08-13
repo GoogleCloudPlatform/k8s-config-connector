@@ -1,8 +1,8 @@
-# Using Samples 
+# Using Samples
 
 ## Prerequisites
 
-A Config Controller cluster with Composition installed.
+A Config Controller cluster with Compositions installed.
 
 ## Personas/Roles
 
@@ -17,9 +17,11 @@ Team/App Owner/Admin:
 
 ## AppTeam: Setting up New Teams
 
-This recipe creates a GCP project for the team as well as sets up KCC in namespace mode to manage the team project.
+This recipe creates a GCP project for the team as well as sets up KCC in
+namespace mode to manage the team project.
 
 ## SQLHA: Create CloudSQL in HA Mode
 
-Use AppTeam recipe to create a team first.
-Then use this recipe to setup CloudSQL in your project in HA mode.
+This recipe sets up a CloudSQL instance in your project in HA mode. If you'd
+like to create the instance in a tenant namespace, do the AppTeam sample first
+to create one.

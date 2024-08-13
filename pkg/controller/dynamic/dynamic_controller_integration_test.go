@@ -47,15 +47,20 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/contexts"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
 	testservicemapping "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemapping"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 
 	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 type httpRoundTripperKeyType int
@@ -238,9 +243,9 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, systemContext.HttpClient)
 	if err != nil {
-		t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
+		t.Fatalf("[validateCreate] unexpected error when GET-ing '%v': %v", initialUnstruct.GetName(), err)
 	}
 	t.Logf("created resource is %v\r", gcpUnstruct)
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {
@@ -249,7 +254,10 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
-	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
+	// TODO(acpana): figure out if we want to expose Updating event for direct resources
+	if !resourceContext.IsDirectResource() {
+		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
+	}
 
 	// Check that condition is ready and "UpToDate" event was recorded
 	// TODO: (eventually) check default fields are propagated correctly
@@ -266,16 +274,41 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 
 	// Check observedGeneration matches with the pre-reconcile generation
 	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
+
+	// Check 'state-into-spec: absent' is set.
+	if testContext.ResourceFixture.Type == resourcefixture.StateAbsentInSpec {
+		annotationValue, ok := k8s.GetAnnotation(k8s.StateIntoSpecAnnotation, reconciledUnstruct)
+		if !ok || annotationValue != k8s.StateAbsentInSpec {
+			t.Errorf("annotation %v should be %v but got %v", k8s.StateIntoSpecAnnotation, k8s.StateAbsentInSpec, annotationValue)
+		}
+	}
+}
+
+func testNoChangeAfterCreate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	testNoChange(ctx, t, testContext, systemContext, resourceContext, false)
+}
+
+// testNoChangeAfterUpdate is enabled only on resources allowlisted inside the function.
+func testNoChangeAfterUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	switch testContext.ResourceFixture.GVK.GroupKind() {
+	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}: // test coverage for https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/1802
+	default:
+		return
+	}
+	testNoChange(ctx, t, testContext, systemContext, resourceContext, true)
 }
 
 // testNoChange verifies that reconciling a resource which has not changed does not result in
 // any meaningful changes.
-func testNoChange(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testNoChange(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext, useUpdateFixture bool) {
 	if resourceContext.SkipNoChange {
 		return
 	}
 	kubeClient := systemContext.Manager.GetClient()
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+	if useUpdateFixture {
+		initialUnstruct = testContext.UpdateUnstruct.DeepCopy()
+	}
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, initialUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
@@ -319,7 +352,18 @@ func testNoChange(ctx context.Context, t *testing.T, testContext testrunner.Test
 func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
 	// Tests with `SkipUpdate` explicitly set to 'true' or tests for
 	// auto-generated resources don't support update test.
-	if resourceContext.SkipUpdate || resourceContext.IsAutoGenerated(systemContext.SMLoader) {
+	if resourceContext.SkipUpdate || resourceContext.IsAutoGenerated(systemContext.SMLoader) &&
+		// TODO: Remove the condition for BigQueryConnectionConnection after it becomes v1beta1.
+		// BigQueryConnectionConnection is a v1alpha1 resource supported via the
+		// autogen channel. Usually an update test is skipped for an autogen
+		// resource, but we do have thorough testing for
+		// BigQueryConnectionConnection so we make it an exception here.
+		// This exception shouldn't be applied to other autogen resources.
+		resourceContext.ResourceKind != "BigQueryConnectionConnection" {
+		return
+	}
+	if testContext.UpdateUnstruct == nil {
+		t.Logf("UpdateUnstruct not set; skipping update")
 		return
 	}
 	kubeClient := systemContext.Manager.GetClient()
@@ -334,9 +378,6 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 
 	// Update resource from test data
 	updateUnstruct := testContext.UpdateUnstruct.DeepCopy()
-	if updateUnstruct == nil {
-		t.Fatalf("updateUnstruct is nil for '%v'. should SkipUpdate be set to true in resourcefixture/contexts?", testContext.ResourceFixture.Name)
-	}
 	updateUnstruct.SetResourceVersion(initialUnstruct.GetResourceVersion())
 	// For resources with server-generated IDs, ensure the relevant fields are in the status
 	status := initialUnstruct.Object["status"]
@@ -368,9 +409,9 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	}
 
 	// Check labels match on update
-	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)
 	if err != nil {
-		t.Fatalf("unexpected error when GETting '%v': %v", updateUnstruct.GetName(), err)
+		t.Fatalf("[testUpdate] unexpected error when GET-ing '%v': %v", updateUnstruct.GetName(), err)
 	}
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {
 		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), testContext.UpdateUnstruct.GetLabels())
@@ -388,8 +429,10 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
-	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
-
+	// TODO(acpana): figure out if we want to expose Updating event for direct resources
+	if !resourceContext.IsDirectResource() {
+		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
+	}
 	// Check if condition is ready and update event was recorded
 	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
@@ -419,7 +462,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, testUnstruct)
 
 	t.Logf("testDriftCorrection: deleting kube object %v", testUnstruct)
-	if err := resourceContext.Delete(ctx, t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+	if err := resourceContext.Delete(ctx, t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, systemContext.HttpClient); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
 	// Underlying APIs may not have strongly-consistent reads due to caching. Sleep before attempting a re-reconcile, to
@@ -483,7 +526,7 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	if _, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+	if _, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil); err != nil {
 		t.Errorf("expected resource %s to not be deleted with deletion defender finalizer, but got error: %s",
 			initialUnstruct.GetName(), err)
 	}
@@ -493,14 +536,14 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, reconciledUnstruct), nil)
 
 	if !testgcp.ResourceSupportsDeletion(testContext.ResourceFixture.GVK.Kind) {
-		_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+		_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)
 		if err != nil {
 			t.Errorf("expected resource %s to exist after deletion, but got error: %s", initialUnstruct.GetName(), err)
 		}
 	} else {
 		getFunc := func() error {
 			// for some resources, Get after Delete is eventually consistent, for that reason we retry until an error is returned
-			_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+			_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)
 			if err == nil {
 				return fmt.Errorf("expected error, instead got 'nil'")
 			}
@@ -529,8 +572,9 @@ func testReconcileCreateNoChangeUpdateDelete(ctx context.Context, t *testing.T, 
 	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(ctx, testContext.CreateUnstruct, getResourceCleanupPolicy())
 	defer resourceCleanup()
 	testCreate(ctx, t, testContext, systemContext, resourceContext)
-	testNoChange(ctx, t, testContext, systemContext, resourceContext)
+	testNoChangeAfterCreate(ctx, t, testContext, systemContext, resourceContext)
 	testUpdate(ctx, t, testContext, systemContext, resourceContext)
+	testNoChangeAfterUpdate(ctx, t, testContext, systemContext, resourceContext)
 	testDriftCorrection(ctx, t, testContext, systemContext, resourceContext)
 	testDelete(ctx, t, testContext, systemContext, resourceContext)
 }
@@ -584,10 +628,10 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 	}
 	var gcpUnstruct *unstructured.Unstructured
 	var err error
-	gcpUnstruct, err = resourceContext.Get(ctx, t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	gcpUnstruct, err = resourceContext.Get(ctx, t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)
 	if err != nil {
 		if !strings.Contains(err.Error(), "not found") {
-			t.Fatalf("unexpected error when GETting '%v': %v", unstructToCreate.GetName(), err)
+			t.Fatalf("[testReconcileAcquire] unexpected error when GET-ing '%v': %v", unstructToCreate.GetName(), err)
 		}
 		if gcpUnstruct, err = resourceContext.Create(ctx, t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 			t.Fatalf("unexpected error when creating GCP resource '%v': %v", unstructToCreate.GetName(), err)
@@ -627,9 +671,9 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 
 	// Check labels match
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {
-		gcpUnstruct, err := resourceContext.Get(ctx, t, initialUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+		gcpUnstruct, err := resourceContext.Get(ctx, t, initialUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)
 		if err != nil {
-			t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
+			t.Fatalf("[testReconcileAcquire 2] unexpected error when GET-ing '%v': %v", initialUnstruct.GetName(), err)
 		}
 		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), initialUnstruct.GetLabels())
 	}
@@ -720,8 +764,12 @@ func assertObjectContains(t *testing.T, obj, changedFields map[string]interface{
 			}
 			assertObjectContains(t, objVal.(map[string]interface{}), changedVal.(map[string]interface{}))
 		default:
-			if !reflect.DeepEqual(objVal, changedVal) {
-				t.Fatalf("unexpected value for %v: got %v, want %v", changedKey, objVal, changedVal)
+			if diff := cmp.Diff(objVal, changedVal, cmpopts.SortSlices(
+				func(a, b interface{}) bool {
+					return fmt.Sprintf("%v", a) < fmt.Sprintf("%v", b)
+				}),
+			); diff != "" {
+				t.Fatalf("unexpected diff: %v", diff)
 			}
 		}
 	}

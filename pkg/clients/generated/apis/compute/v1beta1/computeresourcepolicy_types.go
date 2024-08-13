@@ -37,7 +37,7 @@ import (
 
 type ResourcepolicyDailySchedule struct {
 	/* Immutable. Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle. Days in cycle for snapshot schedule policy must be 1. */
-	DaysInCycle int `json:"daysInCycle"`
+	DaysInCycle int64 `json:"daysInCycle"`
 
 	/* Immutable. This must be in UTC format that resolves to one of
 	00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example,
@@ -63,7 +63,7 @@ type ResourcepolicyGroupPlacementPolicy struct {
 	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different
 	availability domain, they will not be put in the same low latency network. */
 	// +optional
-	AvailabilityDomainCount *int `json:"availabilityDomainCount,omitempty"`
+	AvailabilityDomainCount *int64 `json:"availabilityDomainCount,omitempty"`
 
 	/* Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
 	Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
@@ -74,18 +74,18 @@ type ResourcepolicyGroupPlacementPolicy struct {
 
 	/* Immutable. Specifies the number of max logical switches. */
 	// +optional
-	MaxDistance *int `json:"maxDistance,omitempty"`
+	MaxDistance *int64 `json:"maxDistance,omitempty"`
 
 	/* Immutable. Number of VMs in this placement group. Google does not recommend that you use this field
 	unless you use a compact policy and you want your policy to work only if it contains this
 	exact number of VMs. */
 	// +optional
-	VmCount *int `json:"vmCount,omitempty"`
+	VmCount *int64 `json:"vmCount,omitempty"`
 }
 
 type ResourcepolicyHourlySchedule struct {
 	/* Immutable. The number of hours between snapshots. */
-	HoursInCycle int `json:"hoursInCycle"`
+	HoursInCycle int64 `json:"hoursInCycle"`
 
 	/* Immutable. Time within the window to start the operations.
 	It must be in an hourly format "HH:MM",
@@ -118,7 +118,7 @@ type ResourcepolicyInstanceSchedulePolicy struct {
 
 type ResourcepolicyRetentionPolicy struct {
 	/* Immutable. Maximum age of the snapshot that is allowed to be kept. */
-	MaxRetentionDays int `json:"maxRetentionDays"`
+	MaxRetentionDays int64 `json:"maxRetentionDays"`
 
 	/* Immutable. Specifies the behavior to apply to scheduled snapshots when
 	the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]. */
@@ -224,7 +224,7 @@ type ComputeResourcePolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -234,6 +234,11 @@ type ComputeResourcePolicyStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeresourcepolicy;gcpcomputeresourcepolicies
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeResourcePolicy is the Schema for the compute API
 // +k8s:openapi-gen=true

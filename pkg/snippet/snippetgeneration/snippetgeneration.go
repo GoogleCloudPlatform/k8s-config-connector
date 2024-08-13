@@ -42,6 +42,7 @@ var preferredSampleForResource = map[string]string{
 	"binaryauthorizationpolicy":         "cluster-policy",
 	"certificatemanagercertificate":     "self-managed-certificate",
 	"cloudbuildtrigger":                 "build-trigger-for-cloud-source-repo",
+	"cloudbuildworkerpool":              "workerpool-with-peered-network",
 	"cloudfunctionsfunction":            "httpstrigger",
 	"cloudidentitymembership":           "membership-with-manager-role",
 	"cloudschedulerjob":                 "scheduler-job-pubsub",
@@ -109,6 +110,7 @@ var preferredSampleForResource = map[string]string{
 	"sqlinstance":                       "mysql-sql-instance",
 	"vpcaccessconnector":                "cidr-connector",
 	"vertexaidataset":                   "vertexai-dataset-encryptionkey",
+	"vertexaiendpoint":                  "vertexai-endpoint-network",
 }
 
 type Snippet struct {

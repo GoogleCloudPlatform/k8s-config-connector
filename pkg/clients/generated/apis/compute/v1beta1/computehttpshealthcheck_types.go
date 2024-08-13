@@ -39,7 +39,7 @@ type ComputeHTTPSHealthCheckSpec struct {
 	/* How often (in seconds) to send a health check. The default value is 5
 	seconds. */
 	// +optional
-	CheckIntervalSec *int `json:"checkIntervalSec,omitempty"`
+	CheckIntervalSec *int64 `json:"checkIntervalSec,omitempty"`
 
 	/* An optional description of this resource. Provide this property when
 	you create the resource. */
@@ -49,7 +49,7 @@ type ComputeHTTPSHealthCheckSpec struct {
 	/* A so-far unhealthy instance will be marked healthy after this many
 	consecutive successes. The default value is 2. */
 	// +optional
-	HealthyThreshold *int `json:"healthyThreshold,omitempty"`
+	HealthyThreshold *int64 `json:"healthyThreshold,omitempty"`
 
 	/* The value of the host header in the HTTPS health check request. If
 	left empty (default value), the public IP on behalf of which this
@@ -60,7 +60,7 @@ type ComputeHTTPSHealthCheckSpec struct {
 	/* The TCP port number for the HTTPS health check request.
 	The default value is 443. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* The request path of the HTTPS health check request.
 	The default value is /. */
@@ -75,12 +75,12 @@ type ComputeHTTPSHealthCheckSpec struct {
 	The default value is 5 seconds.  It is invalid for timeoutSec to have
 	greater value than checkIntervalSec. */
 	// +optional
-	TimeoutSec *int `json:"timeoutSec,omitempty"`
+	TimeoutSec *int64 `json:"timeoutSec,omitempty"`
 
 	/* A so-far healthy instance will be marked unhealthy after this many
 	consecutive failures. The default value is 2. */
 	// +optional
-	UnhealthyThreshold *int `json:"unhealthyThreshold,omitempty"`
+	UnhealthyThreshold *int64 `json:"unhealthyThreshold,omitempty"`
 }
 
 type ComputeHTTPSHealthCheckStatus struct {
@@ -93,7 +93,7 @@ type ComputeHTTPSHealthCheckStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -103,6 +103,11 @@ type ComputeHTTPSHealthCheckStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputehttpshealthcheck;gcpcomputehttpshealthchecks
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeHTTPSHealthCheck is the Schema for the compute API
 // +k8s:openapi-gen=true

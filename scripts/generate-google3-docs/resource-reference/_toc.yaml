@@ -85,6 +85,8 @@ toc:
   section:
   - title: "CloudBuildTrigger"
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md
+  - title: "CloudBuildWorkerPool"
+    path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md
 - title: "Cloud Functions"
   section:
   - title: "CloudFunctionsFunction"
@@ -95,6 +97,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitygroup.md
   - title: "CloudIdentityMembership"
     path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership.md
+- title: "Cloud Intrusion Detection System"
+  section:
+  - title: "CloudIDSEndpoint"
+    path: /config-connector/docs/reference/resource-docs/cloudids/cloudsidsendpoint.md
 - title: "Cloud Scheduler"
   section:
   - title: "CloudSchedulerJob"
@@ -283,6 +289,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/compute/computeinstancetemplate.md
   - title: "ComputeInterconnectAttachment"
     path: /config-connector/docs/reference/resource-docs/compute/computeinterconnectattachment.md
+  - title: "ComputeManagedSSLCertificate"
+    path: /config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate.md
   - title: "ComputeNetwork"
     path: /config-connector/docs/reference/resource-docs/compute/computenetwork.md
   - title: "ComputeNetworkEndpointGroup"
@@ -525,6 +533,10 @@ toc:
   section:
   - title: "VertexAIDataset"
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaidataset.md
+  - title: "VertexAIEndpoint"
+    path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiendpoint.md
+  - title: "VertexAIIndex"
+    path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md
 - title: "VPC Access"
   section:
   - title: "VPCAccessConnector"

@@ -65,6 +65,8 @@ spec:
   inputAPIGroup: pconfigs.facade.foocorp.com
   expanders:
   - type: jinja2
+    version: v0.0.1
+    # Error missing 'name: something'. Would result in validation failure
     template: |
       {% set hostProject = 'compositions-foobar' %}
       {% set managedProject = pconfigs.spec.project %}

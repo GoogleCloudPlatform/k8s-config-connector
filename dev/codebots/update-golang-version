@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+set -x
+
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+
+GO_TOOLCHAIN=$(curl https://go.dev/dl/?mode=json | jq -r '[.[] | select(.stable == true)] | .[0].version')
+echo "GO_TOOLCHAIN=$GO_TOOLCHAIN"
+
+git switch --force-create codebot-update-golang-version-${GO_TOOLCHAIN}
+
+# GO_VERSION is the GO_TOOLCHAIN without the go prefix
+GO_VERSION=${GO_TOOLCHAIN#go}
+echo "GO_VERSION=$GO_VERSION"
+
+# Update go.mod files
+cd ${REPO_ROOT}
+for f in $(git ls-files 'go.mod' '**/go.mod'); do
+  cd ${REPO_ROOT}
+  cd $(dirname $f)
+  echo "Updating $f to toolchain $GO_TOOLCHAIN"
+  go mod edit -toolchain=${GO_TOOLCHAIN}
+done
+
+# Update Docker images
+cd ${REPO_ROOT}
+for f in $(git ls-files 'Dockerfile*' '**/Dockerfile*'); do
+  echo "Updating Dockerfile $f to go image $GO_VERSION"
+  sed -i -e "s/FROM golang:[0-9.]*/FROM golang:$GO_VERSION/g" $f
+done
+
+# Ignore third_party changes
+cd ${REPO_ROOT}
+git checkout -- third_party/
+
+if $(git diff --quiet); then
+  echo "No changes"
+else
+  git add .
+  git commit -m "codebot: update go to ${GO_VERSION}"
+fi

@@ -37,12 +37,44 @@ type OpenAPIConverter struct {
 	imports map[string]bool
 
 	fileDescriptor *descriptorpb.FileDescriptorProto
+
+	// Comments holds field and message level comments
+	Comments
+
+	// protoPackageName is the name of the proto package we are generating.
+	protoPackageName string
 }
 
-func NewOpenAPIConverter(doc *openapi.Document) *OpenAPIConverter {
+// Comments holds all the comments for our messages / fields
+type Comments struct {
+	comments map[string]*Comment
+}
+
+func (c *Comments) SetComment(key string, comment string) {
+	c.comments[key] = &Comment{Text: comment}
+
+}
+func (c *Comments) GetComment(key string) string {
+	o, found := c.comments[key]
+	if !found {
+		return ""
+	}
+	return o.Text
+}
+
+// Comment is a comment on a message/field
+type Comment struct {
+	Text string
+}
+
+func NewOpenAPIConverter(protoPackageName string, doc *openapi.Document) *OpenAPIConverter {
 	return &OpenAPIConverter{
-		doc:     doc,
-		imports: make(map[string]bool),
+		doc:              doc,
+		protoPackageName: protoPackageName,
+		imports:          make(map[string]bool),
+		Comments: Comments{
+			comments: make(map[string]*Comment),
+		},
 	}
 }
 
@@ -54,6 +86,7 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 	nextTag := int32(1)
 	desc := &descriptorpb.DescriptorProto{}
 	desc.Name = PtrTo(message.ID)
+	c.SetComment(c.protoPackageName+"."+desc.GetName(), message.Description)
 	for _, entry := range message.Properties.Entries() {
 		propertyID := entry.Key
 		property := entry.Value
@@ -212,6 +245,7 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 			klog.Fatalf("unsupported property.Type %q %+v", property.Type, property)
 		}
 
+		c.SetComment(c.protoPackageName+"."+desc.GetName()+"."+field.GetName(), property.Description)
 		desc.Field = append(desc.Field, field)
 	}
 
@@ -260,7 +294,13 @@ func ToProtoFieldName(s string) string {
 			}
 			c = unicode.ToLower(c)
 		}
-		b = append(b, byte(c))
+		switch c {
+		case '.':
+			b = append(b, '_')
+
+		default:
+			b = append(b, byte(c))
+		}
 	}
 	return string(b)
 }
@@ -351,7 +391,18 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 				match = strings.TrimPrefix(match, "{+")
 				match = strings.TrimSuffix(match, "}")
 
-				return "{" + match + "=**}"
+				expansion := "*"
+				if parameter := method.Parameters.Get(match); parameter != nil {
+					if parameter.Pattern != "" {
+						pattern := parameter.Pattern
+						pattern = strings.TrimPrefix(pattern, "^")
+						pattern = strings.TrimSuffix(pattern, "$")
+						pattern = strings.ReplaceAll(pattern, "[^/]+", "*")
+						expansion = pattern
+					}
+				}
+
+				return "{" + match + "=" + expansion + "}"
 			})
 		}
 
@@ -524,9 +575,11 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 
 		proto.SetExtension(serviceMethod.Options, annotations.E_Http, httpRule)
 
+		c.SetComment(c.protoPackageName+"."+service.GetName()+"."+serviceMethod.GetName(), method.Description)
+
 		service.Method = append(service.Method, serviceMethod)
 
-		klog.Infof("%s/%s => %v", singularName, methodName, prototext.Format(serviceMethod))
+		klog.V(4).Infof("%s/%s => %v", singularName, methodName, prototext.Format(serviceMethod))
 	}
 
 	c.fileDescriptor.Service = append(c.fileDescriptor.Service, service)
@@ -536,12 +589,14 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 func (c *OpenAPIConverter) Convert(ctx context.Context) (*descriptorpb.FileDescriptorProto, error) {
 
 	{
-		version := c.doc.Version
-		serviceID := c.doc.Name
-		prefix := []string{"google", "cloud"}
-
-		name := path.Join(path.Join(prefix...), serviceID, version, serviceID+"pb.proto")
-		packageName := strings.Join(prefix, ".") + "." + serviceID + "." + version
+		tokens := strings.Split(c.protoPackageName, ".")
+		if len(tokens) < 2 {
+			return nil, fmt.Errorf("unexpected proto package name %q (expected more tokens)", c.protoPackageName)
+		}
+		name := path.Join(tokens...) + ".pb.proto"
+		packageName := c.protoPackageName
+		serviceID := tokens[len(tokens)-2]
+		version := tokens[len(tokens)-1]
 		goPackageName := path.Join("cloud.google.com/go", serviceID, "api"+version, serviceID+"pb") + ";" + serviceID + "pb"
 		c.fileDescriptor = &descriptorpb.FileDescriptorProto{
 			Name:    PtrTo(name),
@@ -556,13 +611,17 @@ func (c *OpenAPIConverter) Convert(ctx context.Context) (*descriptorpb.FileDescr
 		message := c.doc.Schemas[schemaName]
 
 		if message.Type == "object" {
-			desc, err := c.buildMessageFromOpenAPI(message)
-			if err != nil {
-				return nil, fmt.Errorf("buildMessageFromOpenAPI failed: %w", err)
-			}
-			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
+			if !c.isWellKnown(message.ID) {
+				desc, err := c.buildMessageFromOpenAPI(message)
+				if err != nil {
+					return nil, fmt.Errorf("buildMessageFromOpenAPI failed: %w", err)
+				}
+				c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
 
-			klog.Infof("%s => %+v\n", schemaName, prototext.Format(desc))
+				klog.V(4).Infof("%s => %+v\n", schemaName, prototext.Format(desc))
+			} else {
+				klog.Infof("skipping well known message %q", schemaName)
+			}
 		} else if message.Type == "any" {
 			klog.Warningf("skipping schema with type any: %q", message.ID)
 		} else {
@@ -616,13 +675,26 @@ func (c *OpenAPIConverter) resolveMessageType(ref string) string {
 	}
 
 	switch ref {
-	case "Operation":
+	case "Operation", "GoogleLongrunningOperation":
 		c.addImport("google/longrunning/operations.proto")
 		return "google.longrunning.Operation"
 
 	default:
 		return ref
 	}
+}
+
+func (c *OpenAPIConverter) isWellKnown(ref string) bool {
+	if ref == "" {
+		return false
+	}
+	resolved := c.resolveMessageType(ref)
+	switch resolved {
+	case "google.longrunning.Operation":
+		return true
+	}
+
+	return false
 }
 
 func (c *OpenAPIConverter) setPrimitiveType(property *openapi.Property, field *descriptorpb.FieldDescriptorProto) {

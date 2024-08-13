@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -42,6 +43,9 @@ func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Ne
 
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -59,10 +63,10 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetNetworkResource()).(*pb.Network)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://compute.googleapis.com/compute/v1/projects/%s/global/networks/%d", name.Project.ID, id))
+	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%d", name.Project.ID, id))
 	obj.Kind = PtrTo("compute#network")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -71,8 +75,9 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 
 	op := &pb.Operation{
 		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLinkWithId,
+		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
@@ -108,8 +113,9 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 
 	op := &pb.Operation{
 		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLinkWithId,
+		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("compute.networks.patch"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
@@ -130,10 +136,54 @@ func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (
 	}
 
 	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
 		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return deleted, nil
+	})
+}
+
+func (s *NetworksV1) RemovePeering(ctx context.Context, req *pb.RemovePeeringNetworkRequest) (*pb.Operation, error) {
+	log := klog.FromContext(ctx)
+	log.Info("RemovePeering", "request", req)
+
+	name, err := s.newNetworkName(req.GetProject(), req.GetNetwork())
+	if err != nil {
+		return nil, err
+	}
+
+	peeringName := req.GetNetworksRemovePeeringRequestResource().GetName()
+
+	fqn := name.String()
+	obj := &pb.Network{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	var keepPeerings []*pb.NetworkPeering
+	removed := false
+	for _, peering := range obj.Peerings {
+		if peering.GetName() != peeringName {
+			keepPeerings = append(keepPeerings, peering)
+		} else {
+			removed = true
+		}
+	}
+	obj.Peerings = keepPeerings
+	if !removed {
+		log.Info("peering not found", "peeringName", peeringName)
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating network: %v", err)
+	}
+
+	op := &pb.Operation{}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
 	})
 }
 
@@ -153,14 +203,13 @@ func (s *MockService) parseNetworkName(name string) (*networkName, error) {
 
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
 		return s.newNetworkName(tokens[1], tokens[4])
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
 // newNetworkName builds a normalized networkName from the constituent parts.
 func (s *MockService) newNetworkName(project string, name string) (*networkName, error) {
-	projectObj, err := s.Projects.GetProjectByID(project)
+	projectObj, err := s.Projects.GetProjectByIDOrNumber(project)
 	if err != nil {
 		return nil, err
 	}

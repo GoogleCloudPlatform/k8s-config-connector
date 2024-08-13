@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -404,36 +405,50 @@ func (r *Reconciler) verifyCNRMSystemNamespaceIsActive(ctx context.Context) erro
 // applyNamespacedCustomizations fetches and applies all namespace-scoped customization CRDs.
 func (r *Reconciler) applyNamespacedCustomizations() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
-		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
-		if !ok {
-			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
+		if err := r.fetchAndApplyAllNamespacedControllerResources(ctx, o, m); err != nil {
+			r.log.Error(err, "error applying all namespaced controller resource customization CRs")
+			// Don't fail entire reconciliation if we cannot apply customization CRs.
+			// return err
 		}
-		// List all the customization CRs in the same namespace as ConfigConnectorContext object.
-		crs, err := controllers.ListNamespacedControllerResources(ctx, r.client, ccc.Namespace)
-		if err != nil {
-			return err
-		}
-		// Apply all the customization CRs in the same namespace as ConfigConnectorContext object.
-		for _, cr := range crs {
-			if cr.Namespace != ccc.Namespace {
-				// this shouldn't happen!
-				r.log.Error(fmt.Errorf("unexpected namespace for NamespacedControllerResource object"), "expected namespace", ccc.Namespace, "got namespace", cr.Namespace)
-			}
-			r.log.Info("applying namespace-scoped controller resource customization", "Namespace", cr.Namespace, "Name", cr.Name)
-			if err := r.applyNamespacedControllerResourceCustomization(ctx, &cr, m); err != nil {
-				return err
-			}
+		if err := r.fetchAndApplyAllNamespacedControllerReconcilers(ctx, o, m); err != nil {
+			r.log.Error(err, "error applying all namespaced controller reconciler customization CRs")
+			// Don't fail entire reconciliation if we cannot apply customization CRs.
+			// return err
 		}
 		return nil
 	}
 }
 
-// applyNamespacedControllerResourceCustomization applies customizations specified in NamespacedControllerResource CR.
-func (r *Reconciler) applyNamespacedControllerResourceCustomization(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource, m *manifest.Objects) error {
+func (r *Reconciler) fetchAndApplyAllNamespacedControllerResources(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+	ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
+	if !ok {
+		return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
+	}
+	// List all the NamespacedControllerResource CRs in the same namespace as ConfigConnectorContext object.
+	crs, err := controllers.ListNamespacedControllerResources(ctx, r.client, ccc.Namespace)
+	if err != nil {
+		return err
+	}
+	// Apply all the NamespacedControllerResource CRs in the same namespace as ConfigConnectorContext object.
+	for _, cr := range crs {
+		if cr.Namespace != ccc.Namespace {
+			// this shouldn't happen!
+			r.log.Error(fmt.Errorf("unexpected namespace for NamespacedControllerResource object"), "expected namespace", ccc.Namespace, "got namespace", cr.Namespace)
+		}
+		r.log.Info("applying namespace-scoped controller resource customization", "Namespace", cr.Namespace, "Name", cr.Name)
+		if err := r.applyNamespacedControllerResource(ctx, &cr, m); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// applyNamespacedControllerResource applies customizations specified in NamespacedControllerResource CR.
+func (r *Reconciler) applyNamespacedControllerResource(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource, m *manifest.Objects) error {
 	if cr.Name != "cnrm-controller-manager" {
 		msg := fmt.Sprintf("resource customization for controller %s is not supported", cr.Name)
 		r.log.Info(msg)
-		return r.handleApplyCustomizationFailed(ctx, cr.Namespace, cr.Name, msg)
+		return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, msg)
 	}
 	controllerGVK := schema.GroupVersionKind{
 		Group:   appsv1.SchemeGroupVersion.Group,
@@ -442,12 +457,12 @@ func (r *Reconciler) applyNamespacedControllerResourceCustomization(ctx context.
 	}
 	if err := controllers.ApplyContainerResourceCustomization(true, m, cr.Name, controllerGVK, cr.Spec.Containers, nil); err != nil {
 		r.log.Error(err, "failed to apply customization", "Namespace", cr.Namespace, "Name", cr.Name)
-		return r.handleApplyCustomizationFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
+		return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
 	}
-	return r.handleApplyCustomizationSucceeded(ctx, cr.Namespace, cr.Name)
+	return r.handleApplyNamespacedControllerResourceSucceeded(ctx, cr.Namespace, cr.Name)
 }
 
-func (r *Reconciler) handleApplyCustomizationFailed(ctx context.Context, namespace, name string, msg string) error {
+func (r *Reconciler) handleApplyNamespacedControllerResourceFailed(ctx context.Context, namespace, name string, msg string) error {
 	cr, err := controllers.GetNamespacedControllerResource(ctx, r.client, namespace, name)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
@@ -466,7 +481,7 @@ func (r *Reconciler) handleApplyCustomizationFailed(ctx context.Context, namespa
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
 
-func (r *Reconciler) handleApplyCustomizationSucceeded(ctx context.Context, namespace, name string) error {
+func (r *Reconciler) handleApplyNamespacedControllerResourceSucceeded(ctx context.Context, namespace, name string) error {
 	cr, err := controllers.GetNamespacedControllerResource(ctx, r.client, namespace, name)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
@@ -490,6 +505,81 @@ func (r *Reconciler) updateNamespacedControllerResourceStatus(ctx context.Contex
 		r.log.Error(err, "failed to update NamespacedControllerResource", "Namespace", cr.Namespace, "Name", cr.Name, "Object", cr)
 		// Don't fail entire reconciliation if we cannot update NamespacedControllerResource status.
 		// return fmt.Errorf("failed to update NamespacedControllerResource %v/%v: %v", cr.Namespace, cr.Name, err)
+	}
+	return nil
+}
+
+func (r *Reconciler) fetchAndApplyAllNamespacedControllerReconcilers(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+	ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
+	if !ok {
+		return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
+	}
+	// List all the NamespacedControllerReconciler CRs in the same namespace as ConfigConnectorContext object.
+	crs, err := controllers.ListNamespacedControllerReconcilers(ctx, r.client, ccc.Namespace)
+	if err != nil {
+		return err
+	}
+	// Apply all the NamespacedControllerReconciler CRs in the same namespace as ConfigConnectorContext object.
+	for _, cr := range crs {
+		if cr.Namespace != ccc.Namespace {
+			// this shouldn't happen!
+			r.log.Error(fmt.Errorf("unexpected namespace for NamespacedControllerReconciler object"), "expected namespace", ccc.Namespace, "got namespace", cr.Namespace)
+		}
+		r.log.Info("applying namespace-scoped controller reconciler customization", "Namespace", cr.Namespace, "Name", cr.Name)
+		if err := r.applyNamespacedControllerReconciler(ctx, &cr, m); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// applyNamespacedControllerReconciler applies customizations specified in NamespacedControllerReconciler CR.
+func (r *Reconciler) applyNamespacedControllerReconciler(ctx context.Context, cr *customizev1alpha1.NamespacedControllerReconciler, m *manifest.Objects) error {
+	if err := controllers.ApplyContainerRateLimit(m, cr.Name, cr.Spec.RateLimit); err != nil {
+		msg := fmt.Sprintf("failed to apply rate limit customization %s: %v", cr.Name, err)
+		return r.handleApplyNamespacedControllerReconcilerFailed(ctx, cr.Namespace, cr.Name, msg)
+	}
+	return r.handleApplyNamespacedControllerReconcilerSucceeded(ctx, cr.Namespace, cr.Name)
+}
+
+func (r *Reconciler) handleApplyNamespacedControllerReconcilerFailed(ctx context.Context, namespace, name string, msg string) error {
+	cr, err := controllers.GetNamespacedControllerReconciler(ctx, r.client, namespace, name)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("NamespacedControllerReconciler object not found; skipping the handling of failed customization apply", "namespace", namespace, "name", name)
+			return nil
+		}
+		r.log.Info("error getting NamespacedControllerReconciler object", "namespace", namespace, "name", name, "error", err, "reconciler error", msg)
+		return err
+	}
+	cr.Status.CommonStatus = v1alpha1.CommonStatus{
+		Healthy: false,
+		Errors:  []string{msg},
+	}
+	return r.updateNamespacedControllerReconcilerStatus(ctx, cr)
+}
+
+func (r *Reconciler) handleApplyNamespacedControllerReconcilerSucceeded(ctx context.Context, namespace, name string) error {
+	cr, err := controllers.GetNamespacedControllerReconciler(ctx, r.client, namespace, name)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("NamespacedControllerReconciler object not found; skipping the handling of failed customization apply", "namespace", namespace, "name", name)
+			return nil
+		}
+		r.log.Info("error getting NamespacedControllerReconciler object", "namespace", namespace, "name", name)
+		return err
+	}
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: true,
+		Errors:  []string{},
+	})
+	return r.updateNamespacedControllerReconcilerStatus(ctx, cr)
+}
+
+func (r *Reconciler) updateNamespacedControllerReconcilerStatus(ctx context.Context, cr *customizev1alpha1.NamespacedControllerReconciler) error {
+	if err := r.client.Status().Update(ctx, cr); err != nil {
+		r.log.Error(err, "failed to update NamespacedControllerReconciler", "namespace", cr.Namespace, "name", cr.Name)
+		return fmt.Errorf("failed to update NamespacedControllerReconciler %v/%v: %w", cr.Namespace, cr.Name, err)
 	}
 	return nil
 }

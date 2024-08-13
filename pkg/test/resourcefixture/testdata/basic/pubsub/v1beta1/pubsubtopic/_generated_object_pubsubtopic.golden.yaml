@@ -1,0 +1,55 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: merge
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+    newkey: newval
+  name: pubsubtopic-sample-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+    - asia-east1
+    - asia-northeast1
+    - asia-southeast1
+    - australia-southeast1
+    - europe-north1
+    - europe-west1
+    - europe-west2
+    - europe-west3
+    - europe-west4
+    - southamerica-west1
+    - us-central1
+    - us-central2
+    - us-east1
+    - us-east4
+    - us-east5
+    - us-east7
+    - us-south1
+    - us-west1
+    - us-west2
+    - us-west3
+    - us-west4
+    - us-west8
+  resourceID: pubsubtopic-sample-${uniqueId}
+  schemaSettings:
+    encoding: JSON
+    schemaRef:
+      name: pubsubschema-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2

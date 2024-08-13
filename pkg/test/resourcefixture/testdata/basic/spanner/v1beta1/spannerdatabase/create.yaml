@@ -16,7 +16,7 @@ apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerDatabase
 metadata:
   # Database names can be only 30 characters max
-  name: spannerdatabase-test
+  name: spannerdatabase-${uniqueId}
 spec:
   instanceRef:
     name: spannerinstance-${uniqueId}

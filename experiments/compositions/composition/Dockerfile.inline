@@ -2,8 +2,7 @@
 
 # ----------------- Build Container ---------------------------
 # Build the go app.
-# Explicitly set to latest vs golang:1.22
-FROM golang:1.22 AS build-stage
+FROM golang:1.22.6 AS build-stage
 
 # Set destination for COPY
 WORKDIR /go/src/app

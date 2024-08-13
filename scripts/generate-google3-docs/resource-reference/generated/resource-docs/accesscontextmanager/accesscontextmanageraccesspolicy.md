@@ -86,9 +86,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/organization-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 

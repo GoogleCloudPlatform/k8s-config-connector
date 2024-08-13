@@ -118,6 +118,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md">CloudBuildTrigger</a></td>
 </tr>
 <tr>
+  <td><a href="/cloud-build/docs/">{{builder_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md">CloudBuildWorkerPool</a></td>
+</tr>
+<tr>
   <td><a href="/functions/docs/">{{function_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudfunctions/cloudfunctionsfunction.md">CloudFunctionsFunction</a></td>
 </tr>
@@ -128,6 +132,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/identity/docs/">{{cloudid_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership.md">CloudIdentityMembership</a></td>
+</tr>
+<tr>
+  <td><a href="/cloudids/docs/">{{ids_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/cloudids/cloudidsendpoint.md">CloudIDSEndpoint</a></td>
 </tr>
 <tr>
   <td><a href="/scheduler/docs/">{{scheduler_name}}</a></td>
@@ -184,10 +192,6 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/compute/computefirewallpolicyrule.md">ComputeFirewallPolicyRule</a></td>
-</tr>
-<tr>
-  <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computeforwardingrule.md">ComputeForwardingRule</a></td>
 </tr>
 <tr>
@@ -228,6 +232,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate.md">ComputeManagedSSLCertificate</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetwork.md">ComputeNetwork</a></td>
 </tr>
 <tr>
@@ -241,6 +249,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyassociation.md">ComputeNetworkFirewallPolicyAssociation</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{compute_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyrule.md">ComputeNetworkFirewallPolicyRule</a></td>
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
@@ -829,6 +841,14 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaidataset.md">VertexAIDataset</a></td>
+</tr>
+<tr>
+  <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaiendpoint.md">VertexAIEndpoint</a></td>
+</tr>
+<tr>
+  <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md">VertexAIIndex</a></td>
 </tr>
 <tr>
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>

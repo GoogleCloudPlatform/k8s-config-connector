@@ -76,9 +76,6 @@ documentation</a>.
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -182,6 +179,7 @@ settings:
       - string
       pscEnabled: boolean
     requireSsl: boolean
+    sslMode: string
   locationPreference:
     followGaeApplication: string
     secondaryZone: string
@@ -244,7 +242,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %} If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -254,7 +252,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -264,7 +262,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -304,7 +302,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The SQLInstance selfLink, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -314,7 +312,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `SQLInstance` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -324,7 +322,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `SQLInstance` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -644,8 +642,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -665,12 +662,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The availability type of the Cloud SQL instance, high availability
-(REGIONAL) or single zone (ZONAL). For all instances, ensure that
-settings.backup_configuration.enabled is set to true.
-For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
-For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
-is set to true. Defaults to ZONAL.{% endverbatim %}</p>
+            <p>{% verbatim %}The availability type of the Cloud SQL instance, high availability (REGIONAL) or single zone (ZONAL). For all instances, ensure that settings.backup_configuration.enabled is set to true. For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true. For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled is set to true. Defaults to ZONAL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -800,8 +792,7 @@ is set to true. Defaults to ZONAL.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1131,7 +1122,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1141,7 +1132,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1151,7 +1142,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1212,6 +1203,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.sslMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to requireSsl. To change this field, also set the correspoding value in requireSsl if it has been set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1381,8 +1382,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1412,7 +1412,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `url` field of a `StorageBucket` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The StorageBucket selfLink, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1422,7 +1422,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `StorageBucket` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1432,7 +1432,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `StorageBucket` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1540,7 +1540,7 @@ serviceAccountEmailAddress: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the SQLInstance's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1847,7 +1847,7 @@ spec:
     ipConfiguration:
       requireSsl: true
     locationPreference:
-        zone: us-central1-c
+        zone: us-central1-a
 ```
 
 ### Postgres SQL Instance High Availability

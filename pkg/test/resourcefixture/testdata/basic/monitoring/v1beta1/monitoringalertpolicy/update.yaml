@@ -19,6 +19,7 @@ metadata:
 spec:
   displayName: Updated Test Alert Policy
   enabled: false
+  severity: ERROR
   notificationChannels:
     - name: monitoringnotificationchannel3-${uniqueId}
     - name: monitoringnotificationchannel1-${uniqueId}

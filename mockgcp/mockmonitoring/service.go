@@ -24,7 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	dashboardpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	monitoringpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 )
 
 // MockService represents a mocked apikeys service.
@@ -32,11 +33,6 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
-}
-
-type DashboardsService struct {
-	*MockService
-	pb.UnimplementedDashboardsServiceServer
 }
 
 // New creates a MockService.
@@ -49,17 +45,24 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "monitoring.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"monitoring.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
+	monitoringpb.RegisterAlertPolicyServiceServer(grpcServer, &AlertPolicyService{MockService: s})
+	monitoringpb.RegisterNotificationChannelServiceServer(grpcServer, &NotificationChannelService{MockService: s})
+	monitoringpb.RegisterUptimeCheckServiceServer(grpcServer, &UptimeCheckService{MockService: s})
+
+	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterDashboardsServiceHandler)
+		monitoringpb.RegisterAlertPolicyServiceHandler,
+		monitoringpb.RegisterNotificationChannelServiceHandler,
+		monitoringpb.RegisterUptimeCheckServiceHandler,
+		dashboardpb.RegisterDashboardsServiceHandler)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +70,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == 404 {
-			error.Message = "Requested entity was not found."
 			error.Errors = nil
 		}
 	}

@@ -21,10 +21,13 @@ var allServices = []string{
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",
 	"gkehub.googleapis.com",
+	"anthos.googleapis.com",
 	"anthosconfigmanagement.googleapis.com",
 	"multiclusteringress.googleapis.com",
 	"multiclusterservicediscovery.googleapis.com",
 	"mesh.googleapis.com",
+	"servicenetworking.googleapis.com",
+	"container.googleapis.com",
 }
 
 func isKnownService(serviceName string) bool {

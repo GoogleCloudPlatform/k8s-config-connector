@@ -131,7 +131,7 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 	}
 
 	t.Logf("creating testreconciler")
-	testhelper := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, tfProvider, dclConfig)
+	testhelper := testreconciler.NewTestReconciler(t, mgr, tfProvider, dclConfig, nil)
 
 	for _, object := range objects {
 		gvk := object.GetObjectKind().GroupVersionKind()

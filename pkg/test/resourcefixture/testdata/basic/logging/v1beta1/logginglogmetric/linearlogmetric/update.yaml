@@ -51,3 +51,4 @@ spec:
       offset: 0.5
   projectRef:
     external: "projects/${projectId}"
+  resourceID: linearlogmetric-${uniqueId}

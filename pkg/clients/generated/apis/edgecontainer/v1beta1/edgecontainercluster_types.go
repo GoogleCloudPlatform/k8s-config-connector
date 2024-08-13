@@ -103,7 +103,7 @@ type ClusterIngress struct {
 type ClusterKmsStatus struct {
 	/* The status code, which should be an enum value of google.rpc.Code. */
 	// +optional
-	Code *int `json:"code,omitempty"`
+	Code *int64 `json:"code,omitempty"`
 
 	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client. */
 	// +optional
@@ -120,7 +120,7 @@ type ClusterLocal struct {
 	/* The number of nodes to serve as replicas of the Control Plane.
 	Only 1 and 3 are supported. */
 	// +optional
-	NodeCount *int `json:"nodeCount,omitempty"`
+	NodeCount *int64 `json:"nodeCount,omitempty"`
 
 	/* Immutable. Name of the Google Distributed Cloud Edge zones where this node pool
 	will be created. For example: 'us-central1-edge-customer-a'. */
@@ -222,7 +222,7 @@ type EdgeContainerClusterSpec struct {
 	specified explicitly for a node pool in this cluster. If unspecified, the
 	Kubernetes default value will be used. */
 	// +optional
-	DefaultMaxPodsPerNode *int `json:"defaultMaxPodsPerNode,omitempty"`
+	DefaultMaxPodsPerNode *int64 `json:"defaultMaxPodsPerNode,omitempty"`
 
 	/* Address pools for cluster data plane external load balancing. */
 	// +optional
@@ -346,11 +346,11 @@ type EdgeContainerClusterStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The port number of the Kubernetes API server. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* Indicates the status of the cluster. */
 	// +optional
@@ -365,6 +365,11 @@ type EdgeContainerClusterStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpedgecontainercluster;gcpedgecontainerclusters
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // EdgeContainerCluster is the Schema for the edgecontainer API
 // +k8s:openapi-gen=true

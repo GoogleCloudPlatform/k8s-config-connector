@@ -59,11 +59,11 @@ type ProjectdefaultconfigHashConfig struct {
 
 	/* Memory cost for hash calculation. Used by scrypt and other similar password derivation algorithms. See https://tools.ietf.org/html/rfc7914 for explanation of field. */
 	// +optional
-	MemoryCost *int `json:"memoryCost,omitempty"`
+	MemoryCost *int64 `json:"memoryCost,omitempty"`
 
 	/* How many rounds for hash calculation. Used by scrypt and other similar password derivation algorithms. */
 	// +optional
-	Rounds *int `json:"rounds,omitempty"`
+	Rounds *int64 `json:"rounds,omitempty"`
 
 	/* Non-printable character to be inserted between the salt and plain text password in base64. */
 	// +optional
@@ -129,13 +129,18 @@ type IdentityPlatformProjectDefaultConfigStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpidentityplatformprojectdefaultconfig;gcpidentityplatformprojectdefaultconfigs
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // IdentityPlatformProjectDefaultConfig is the Schema for the identityplatform API
 // +k8s:openapi-gen=true

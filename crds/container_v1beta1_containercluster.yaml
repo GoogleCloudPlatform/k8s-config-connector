@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.116.0
+    cnrm.cloud.google.com/version: 1.121.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1838,6 +1838,23 @@ spec:
                       clientCertificate:
                         description: Base64 encoded public certificate used by clients
                           to authenticate to the cluster endpoint.
+                        type: string
+                      clusterCaCertificate:
+                        description: Base64 encoded public certificate that is the
+                          root of trust for the cluster.
+                        type: string
+                    type: object
+                  privateClusterConfig:
+                    description: Configuration for private clusters, clusters with
+                      private nodes.
+                    properties:
+                      privateEndpoint:
+                        description: The internal IP address of this cluster's master
+                          endpoint.
+                        type: string
+                      publicEndpoint:
+                        description: The external IP address of this cluster's master
+                          endpoint.
                         type: string
                     type: object
                 type: object

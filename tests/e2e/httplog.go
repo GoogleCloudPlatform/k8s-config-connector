@@ -28,17 +28,14 @@ type Normalizer struct {
 	uniqueID string
 	project  testgcp.GCPProject
 
-	pathIDs      map[string]string
-	operationIDs map[string]bool
+	*Replacements
 }
 
 func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
 	return &Normalizer{
-		uniqueID: uniqueID,
-		project:  project,
-
-		operationIDs: map[string]bool{},
-		pathIDs:      map[string]string{},
+		uniqueID:     uniqueID,
+		project:      project,
+		Replacements: NewReplacements(),
 	}
 }
 
@@ -47,7 +44,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// Replace any dynamic IDs that appear in URLs
 	for _, event := range events {
 		url := event.Request.URL
-		for k, v := range x.pathIDs {
+		for k, v := range x.PathIDs {
 			url = strings.ReplaceAll(url, "/"+k, "/"+v)
 		}
 		event.Request.URL = url
@@ -55,7 +52,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 
 	// Remove operation polling requests (ones where the operation is not ready)
 	events = events.KeepIf(func(e *test.LogEntry) bool {
-		if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
+		if !isGetOperation(e) {
 			return true
 		}
 		responseBody := e.Response.ParseBody()
@@ -82,6 +79,14 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 		})
 	}
 
+	addSetStringReplacement := func(path string, newValue string) {
+		jsonMutators = append(jsonMutators, func(obj map[string]any) {
+			if err := setStringAtPath(obj, path, newValue); err != nil {
+				klog.Fatalf("error from setStringAtPath(%+v): %v", obj, err)
+			}
+		})
+	}
+
 	addReplacement("id", "000000000000000000000")
 	addReplacement("uniqueId", "111111111111111111111")
 	addReplacement("oauth2ClientId", "888888888888888888888")
@@ -101,9 +106,23 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to cloudbuild
+	addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
+
+	// Specific to spanner
+	addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("metadata.instance.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("metadata.instance.updateTime", "2024-04-01T12:34:56.123456Z")
+
 	// Specific to vertexai
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+
+	// Specific to BigTable
+	addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
 	// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 	//
@@ -127,18 +146,22 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	events.PrettifyJSON(jsonMutators...)
 
 	// Remove headers that just aren't very relevant to testing
+	// Remove headers in request.
+	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	// Remove headers in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server-Timing")
 
 	got := events.FormatHTTP()
 	normalizers := []func(string) string{}
 	normalizers = append(normalizers, ReplaceString(x.uniqueID, "${uniqueId}"))
 	normalizers = append(normalizers, ReplaceString(x.project.ProjectID, "${projectId}"))
 	normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", x.project.ProjectNumber), "${projectNumber}"))
-	for k, v := range x.pathIDs {
+	for k, v := range x.PathIDs {
 		normalizers = append(normalizers, ReplaceString(k, v))
 	}
-	for k := range x.operationIDs {
+	for k := range x.OperationIDs {
 		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
 	}
 
@@ -156,19 +179,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		if index := strings.Index(u, "?"); index != -1 {
 			u = u[:index]
 		}
-		tokens := strings.Split(u, "/")
-		n := len(tokens)
-		if n >= 2 {
-			kind := tokens[n-2]
-			id := tokens[n-1]
-			switch kind {
-			case "tensorboards":
-				x.pathIDs[id] = "${tensorboardID}"
-			case "operations":
-				x.operationIDs[id] = true
-				x.pathIDs[id] = "${operationID}"
-			}
-		}
+		x.ExtractIDsFromLinks(u)
 	}
 
 	for _, event := range events {
@@ -177,26 +188,30 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
+			x.ExtractIDsFromLinks(s)
+
+			// Also check for operations
+			tokens := strings.Split(s, "/")
 			// operation name format: operations/{operationId}
-			if strings.HasPrefix(s, "operations/") {
+			if len(tokens) == 2 && tokens[0] == "operations" {
 				id = strings.TrimPrefix(s, "operations/")
 			}
 			// operation name format: {prefix}/operations/{operationId}
-			if ix := strings.Index(s, "/operations/"); ix != -1 {
-				id = strings.TrimPrefix(s[ix:], "/operations/")
+			if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
+				id = tokens[len(tokens)-1]
 			}
 			// operation name format: operation-{operationId}
-			if strings.HasPrefix(s, "operation") {
+			if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation") {
 				id = s
 			}
 		}
 		if id != "" {
-			x.operationIDs[id] = true
+			x.OperationIDs[id] = true
 		}
 	}
 
 	for _, event := range events {
-		if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
+		if !isGetOperation(event) {
 			continue
 		}
 		responseBody := event.Response.ParseBody()
@@ -205,7 +220,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 		name, _, _ := unstructured.NestedString(responseBody, "response", "name")
 		if strings.HasPrefix(name, "tagKeys/") {
-			x.pathIDs[name] = "tagKeys/${tagKeyID}"
+			x.PathIDs[name] = "tagKeys/${tagKeyID}"
 		}
 	}
 
@@ -228,4 +243,28 @@ func IgnoreComments(s string) string {
 	}
 	s = strings.Join(lines, "\n")
 	return strings.TrimSpace(s)
+}
+
+func IgnoreAnnotations(annotations map[string]struct{}) func(string) string {
+	return func(s string) string {
+		lines := strings.Split(s, "\n")
+		sb := strings.Builder{}
+		for _, line := range lines {
+			ignore := false
+			// todo(acpana): only operate on annotations and actually look up in map
+			for anon := range annotations {
+				if strings.Contains(line, anon) {
+					ignore = true
+					break
+				}
+			}
+
+			if !ignore {
+				sb.WriteString(line)
+				sb.WriteString("\n")
+			}
+		}
+
+		return sb.String()
+	}
 }

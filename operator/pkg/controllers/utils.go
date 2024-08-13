@@ -19,10 +19,12 @@ import (
 	"fmt"
 	"strings"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
+	appsv1 "k8s.io/api/apps/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -153,6 +155,23 @@ func ListControllerResources(ctx context.Context, c client.Client) ([]customizev
 // ListNamespacedControllerResources lists all NamespacedControllerResource CRs in the given namespace.
 func ListNamespacedControllerResources(ctx context.Context, c client.Client, namespace string) ([]customizev1beta1.NamespacedControllerResource, error) {
 	list := &customizev1beta1.NamespacedControllerResourceList{}
+	if err := c.List(ctx, list, &client.ListOptions{Namespace: namespace}); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
+
+func GetNamespacedControllerReconciler(ctx context.Context, c client.Client, namespace, name string) (*customizev1alpha1.NamespacedControllerReconciler, error) {
+	obj := &customizev1alpha1.NamespacedControllerReconciler{}
+	if err := c.Get(ctx, types.NamespacedName{Namespace: namespace, Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+// ListNamespacedControllerReconcilers lists all NamespacedControllerReconcilers CRs in the given namespace.
+func ListNamespacedControllerReconcilers(ctx context.Context, c client.Client, namespace string) ([]customizev1alpha1.NamespacedControllerReconciler, error) {
+	list := &customizev1alpha1.NamespacedControllerReconcilerList{}
 	if err := c.List(ctx, list, &client.ListOptions{Namespace: namespace}); err != nil {
 		return nil, err
 	}
@@ -468,6 +487,86 @@ func validateContainerResourceCustomizationValues(r customizev1beta1.ResourceReq
 				return fmt.Errorf("memory limit %s is less than the default memory request %s in the manifest", r.Limits.Memory().String(), defaultMemoryRequestString)
 			}
 		}
+	}
+	return nil
+}
+
+func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, ratelimit *customizev1alpha1.RateLimit) error {
+	if ratelimit == nil {
+		return nil
+	}
+
+	var (
+		targetContainerName string
+		targetControllerGVK schema.GroupVersionKind
+	)
+	switch targetControllerName {
+	case "cnrm-controller-manager":
+		targetContainerName = "manager"
+		targetControllerGVK = schema.GroupVersionKind{
+			Group:   appsv1.SchemeGroupVersion.Group,
+			Version: appsv1.SchemeGroupVersion.Version,
+			Kind:    "StatefulSet",
+		}
+	default:
+		return fmt.Errorf("rate limit customization for %s is not supported. "+
+			"Supported controllers: %s",
+			targetControllerName, strings.Join(customizev1alpha1.SupportedNamespacedControllers, ", "))
+	}
+
+	for _, item := range m.Items {
+		if item.GroupVersionKind() != targetControllerGVK {
+			continue
+		}
+		if !strings.HasPrefix(item.GetName(), targetControllerName) {
+			continue
+		}
+		if err := item.MutateContainers(customizeRateLimitFn(targetContainerName, ratelimit)); err != nil {
+			return err
+		}
+		break // we already found the matching controller, no need to keep looking.
+	}
+	return nil
+}
+
+func customizeRateLimitFn(target string, rateLimit *customizev1alpha1.RateLimit) func(container map[string]interface{}) error {
+	return func(container map[string]interface{}) error {
+		name, _, err := unstructured.NestedString(container, "name")
+		if err != nil {
+			return fmt.Errorf("error reading container name: %w", err)
+		}
+		if name != target {
+			return nil
+		}
+		return applyRateLimitToContainerArg(container, rateLimit)
+	}
+}
+
+func applyRateLimitToContainerArg(container map[string]interface{}, rateLimit *customizev1alpha1.RateLimit) error {
+	if rateLimit == nil {
+		return nil
+	}
+	origArgs, found, err := unstructured.NestedStringSlice(container, "args")
+	if err != nil {
+		return fmt.Errorf("error getting args in container: %w", err)
+	}
+	wantArgs := []string{}
+	if rateLimit.QPS > 0 {
+		wantArgs = append(wantArgs, fmt.Sprintf("--qps=%d", rateLimit.QPS))
+	}
+	if rateLimit.Burst > 0 {
+		wantArgs = append(wantArgs, fmt.Sprintf("--burst=%d", rateLimit.Burst))
+	}
+	if found {
+		for _, arg := range origArgs {
+			if strings.Contains(arg, "--qps") || strings.Contains(arg, "--burst") {
+				continue
+			}
+			wantArgs = append(wantArgs, arg)
+		}
+	}
+	if err := unstructured.SetNestedStringSlice(container, wantArgs, "args"); err != nil {
+		return fmt.Errorf("error setting args in container: %w", err)
 	}
 	return nil
 }

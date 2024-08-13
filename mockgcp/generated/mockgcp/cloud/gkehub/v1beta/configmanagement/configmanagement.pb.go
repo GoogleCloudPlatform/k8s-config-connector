@@ -1,4 +1,4 @@
-// Copyright 2021 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -284,7 +284,7 @@ type MembershipSpec struct {
 
 	// Config Sync configuration for the cluster.
 	ConfigSync *ConfigSync `protobuf:"bytes,1,opt,name=config_sync,json=configSync,proto3" json:"config_sync,omitempty"`
-	// Policy Controller configuration for the cluster.
+	// **DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead.
 	PolicyController *PolicyController `protobuf:"bytes,2,opt,name=policy_controller,json=policyController,proto3" json:"policy_controller,omitempty"`
 	// Binauthz conifguration for the cluster.
 	Binauthz *BinauthzConfig `protobuf:"bytes,3,opt,name=binauthz,proto3" json:"binauthz,omitempty"`

@@ -81,6 +81,8 @@ func isGCPManagedField(kind, field string) bool {
 		default:
 			return false
 		}
+	case "BigQueryConnectionConnection":
+		return field == "cloud_resource.service_account_id"
 	}
 	return false
 }

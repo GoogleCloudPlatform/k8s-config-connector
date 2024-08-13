@@ -1,6 +1,10 @@
-
 # test logs
 test-logs/*
+
+bin/*
+expanders/bin/*
+
+release/test/*
 
 # Binaries for programs and plugins
 *.exe
@@ -8,7 +12,6 @@ test-logs/*
 *.dll
 *.so
 *.dylib
-bin/*
 Dockerfile.cross
 
 # Test binary, build with `go test -c`

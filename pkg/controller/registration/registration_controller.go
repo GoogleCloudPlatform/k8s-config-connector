@@ -20,12 +20,12 @@ import (
 	"sync"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -176,13 +176,13 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func RegisterDefaultController(config *controller.Config) registrationFunc { //nolint:revive
+func RegisterDefaultController(config *config.ControllerConfig) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 		return registerDefaultController(r, config, crd, gvk)
 	}
 }
 
-func registerDefaultController(r *ReconcileRegistration, config *controller.Config, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
@@ -194,25 +194,19 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 	}
-
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
-		switch gvk.GroupKind() {
-		case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
-			if err := apikeys.AddKeyReconciler(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
-				return nil, err
-			}
-			return schemaUpdater, nil
+		groupKind := gvk.GroupKind()
 
-		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
-			if err := resourcemanager.AddTagKeyController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
-				return nil, err
-			}
-			return schemaUpdater, nil
-
-		default:
-			return nil, fmt.Errorf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
+		model, err := registry.GetModel(groupKind)
+		if err != nil {
+			return nil, err
 		}
+
+		if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+		}
+		return schemaUpdater, nil
 	}
 
 	// Depending on which resource it is, we need to register a different controller.
@@ -235,6 +229,14 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		}
 
 	default:
+		// register the controller to automatically create secrets for GSA keys
+		if isServiceAccountKeyCRD(crd) {
+			logger.Info("registering the GSA-Key-to-Secret generation controller")
+			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
+				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+		}
+
 		// register controllers for dcl-based CRDs
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
 			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator)
@@ -244,22 +246,26 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			return su, nil
 		}
 		// register controllers for tf-based CRDs
-		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; !ok || val != "true" {
-			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-			return nil, nil
-		}
-		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
-		if err != nil {
-			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-		}
-		schemaUpdater = su
-		// register the controller to automatically create secrets for GSA keys
-		if isServiceAccountKeyCRD(crd) {
-			logger.Info("registering the GSA-Key-to-Secret generation controller")
-			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
-				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
+		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; ok && val == "true" {
+			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
+			if err != nil {
+				return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
+			return su, nil
 		}
+		// register controllers for direct CRDs
+		if registry.IsDirectByGK(gvk.GroupKind()) {
+			model, err := registry.GetModel(gvk.GroupKind())
+			if err != nil {
+				return nil, err
+			}
+			if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+			return schemaUpdater, nil
+		}
+		logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+		return nil, nil
 	}
 	return schemaUpdater, nil
 }

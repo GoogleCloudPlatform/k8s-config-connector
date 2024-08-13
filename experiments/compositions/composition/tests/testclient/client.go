@@ -27,8 +27,8 @@ import (
 	"testing"
 	"time"
 
+	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
 	"github.com/google/go-cmp/cmp"
-	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -234,7 +234,7 @@ func (c *Client) MustExist(objs []*unstructured.Unstructured, timeout time.Durat
 		return err
 	})
 	if err != nil {
-		c.T.Errorf("objects absent on %q", c)
+		c.T.Errorf("objects absent on %q: %q", c, err)
 		c.T.FailNow()
 	}
 }
@@ -461,7 +461,7 @@ func (c *Client) MustNotExist(objs []*unstructured.Unstructured, timeout time.Du
 		return err
 	})
 	if err != nil {
-		c.T.Errorf("objects should not exist on %q", c)
+		c.T.Errorf("objects should not exist on %q, err: %q", c, err)
 		c.T.FailNow()
 	}
 }

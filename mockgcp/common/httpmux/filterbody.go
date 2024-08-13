@@ -31,9 +31,6 @@ func FilterBodyOn204(inner http.Handler) (http.Handler, error) {
 		if brw.statusCode == 204 && brw.body.String() == "{}" {
 			brw.statusCode = 204
 			brw.body.Reset()
-
-			// May not belong here, TBD what other services do...
-			brw.Header().Set("Content-Type", "application/json")
 		}
 		brw.WriteTo(w)
 	}

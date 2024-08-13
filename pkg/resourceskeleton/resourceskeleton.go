@@ -63,7 +63,8 @@ func NewFromURI(uri string, smLoader *servicemappingloader.ServiceMappingLoader,
 	if err != nil {
 		return nil, fmt.Errorf("error parsing '%v' as url: %w", uri, err)
 	}
-	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, parsedURL.Host, parsedURL.Path)
+	canonicalHost := trimRegionPrefix(parsedURL.Host) // e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
+	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, canonicalHost, parsedURL.Path)
 	if err != nil {
 		return nil, fmt.Errorf("error getting service mapping and resource config for url '%v': %w", uri, err)
 	}
@@ -229,4 +230,10 @@ func parseIAMCustomRoleID(id string) (*iamCustomRoleID, error) {
 		return nil, fmt.Errorf("expected 'projects' or 'organizations' for first partition, got '%v'", partitions[0])
 	}
 	return &value, nil
+}
+
+func trimRegionPrefix(host string) string {
+	// e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
+	parts := strings.Split(host, "-")
+	return parts[len(parts)-1]
 }

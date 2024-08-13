@@ -216,16 +216,16 @@ type FunctionServiceConfig struct {
 	/* The limit on the maximum number of function instances that may coexist at a
 	given time. */
 	// +optional
-	MaxInstanceCount *int `json:"maxInstanceCount,omitempty"`
+	MaxInstanceCount *int64 `json:"maxInstanceCount,omitempty"`
 
 	/* Sets the maximum number of concurrent requests that each instance can receive. Defaults to 1. */
 	// +optional
-	MaxInstanceRequestConcurrency *int `json:"maxInstanceRequestConcurrency,omitempty"`
+	MaxInstanceRequestConcurrency *int64 `json:"maxInstanceRequestConcurrency,omitempty"`
 
 	/* The limit on the minimum number of function instances that may coexist at a
 	given time. */
 	// +optional
-	MinInstanceCount *int `json:"minInstanceCount,omitempty"`
+	MinInstanceCount *int64 `json:"minInstanceCount,omitempty"`
 
 	/* Secret environment variables configuration. */
 	// +optional
@@ -247,7 +247,7 @@ type FunctionServiceConfig struct {
 	can be terminated if the function is not completed at the end of the
 	timeout period. Defaults to 60 seconds. */
 	// +optional
-	TimeoutSeconds *int `json:"timeoutSeconds,omitempty"`
+	TimeoutSeconds *int64 `json:"timeoutSeconds,omitempty"`
 
 	/* URI of the Service deployed. */
 	// +optional
@@ -280,7 +280,7 @@ type FunctionStorageSource struct {
 	/* Google Cloud Storage generation for the object. If the generation
 	is omitted, the latest generation will be used. */
 	// +optional
-	Generation *int `json:"generation,omitempty"`
+	Generation *int64 `json:"generation,omitempty"`
 
 	/* Google Cloud Storage object containing the source. */
 	// +optional
@@ -340,7 +340,7 @@ type CloudFunctions2FunctionStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Describes the current state of the function. */
 	// +optional
@@ -359,6 +359,11 @@ type CloudFunctions2FunctionStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudfunctions2function;gcpcloudfunctions2functions
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // CloudFunctions2Function is the Schema for the cloudfunctions2 API
 // +k8s:openapi-gen=true

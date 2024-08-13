@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+dev/tasks/update-dependency \
+  golang.org/x/crypto \
+  golang.org/x/exp \
+  golang.org/x/mod \
+  golang.org/x/net \
+  golang.org/x/oauth2 \
+  golang.org/x/sync \
+  golang.org/x/sys \
+  golang.org/x/term \
+  golang.org/x/text \
+  golang.org/x/time \
+  golang.org/x/tools \
+  golang.org/x/xerrors
+  

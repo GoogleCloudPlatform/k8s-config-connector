@@ -17,7 +17,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-dep-secondary
 spec:
-  location: us-east1
+  location: australia-southeast1
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-secondary
@@ -36,7 +36,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-sample-secondary
 spec:
-  location: us-west1
+  location: australia-southeast2
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-secondary

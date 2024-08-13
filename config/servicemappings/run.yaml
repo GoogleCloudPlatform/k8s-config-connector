@@ -30,7 +30,6 @@ spec:
       - observed_generation
       - labels
       - template.labels
-      - template.template.volumes.cloud_sql_instance
     iamConfig:
       policyName: google_cloud_run_v2_job_iam_policy
       policyMemberName: google_cloud_run_v2_job_iam_member
@@ -84,6 +83,15 @@ spec:
         kind: IAMServiceAccount
         version: v1beta1
         group: iam.cnrm.cloud.google.com
+    - tfField: template.template.volumes.cloud_sql_instance.instances
+      description: |-
+        The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}
+      key: instanceRefs
+      targetField: connection_name
+      gvk:
+        kind: SQLInstance
+        version: v1beta1
+        group: sql.cnrm.cloud.google.com
     - tfField: template.template.volumes.secret.secret
       description: |-
         The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.

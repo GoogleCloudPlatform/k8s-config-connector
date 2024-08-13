@@ -17,4 +17,7 @@ resources:
 - composition_v1alpha1_composition.yaml
 - composition_v1alpha1_context.yaml
 - composition_v1alpha1_plan.yaml
+- composition_v1alpha1_facade.yaml
+- composition_v1alpha1_expanderversion.yaml
+- composition_v1alpha1_getterconfigurations.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

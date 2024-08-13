@@ -86,9 +86,6 @@ could lead to a permanent diff, please refer to the
     <tr>
         <td><code>cnrm.cloud.google.com/remove-default-node-pool</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -3844,6 +3841,10 @@ observedGeneration: integer
 observedState:
   masterAuth:
     clientCertificate: string
+    clusterCaCertificate: string
+  privateClusterConfig:
+    privateEndpoint: string
+    publicEndpoint: string
 operation: string
 selfLink: string
 servicesIpv4Cidr: string
@@ -3953,6 +3954,34 @@ tpuIpv4CidrBlock: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Base64 encoded public certificate used by clients to authenticate to the cluster endpoint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.masterAuth.clusterCaCertificate</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Base64 encoded public certificate that is the root of trust for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.privateClusterConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for private clusters, clusters with private nodes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.privateClusterConfig.privateEndpoint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The internal IP address of this cluster's master endpoint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.privateClusterConfig.publicEndpoint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The external IP address of this cluster's master endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

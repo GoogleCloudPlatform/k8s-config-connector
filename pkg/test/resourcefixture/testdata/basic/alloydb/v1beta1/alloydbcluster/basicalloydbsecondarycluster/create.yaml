@@ -17,7 +17,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-2-${uniqueId}
 spec:
-  location: us-central1
+  location: europe-west8
   networkConfig:
     networkRef: 
       name: computenetwork-${uniqueId}

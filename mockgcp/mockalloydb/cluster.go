@@ -48,7 +48,29 @@ func (s *AlloyDBAdminV1) GetCluster(ctx context.Context, req *pb.GetClusterReque
 }
 
 func (s *AlloyDBAdminV1) CreateCluster(ctx context.Context, req *pb.CreateClusterRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/cluster/" + req.ClusterId
+	reqName := req.Parent + "/clusters/" + req.ClusterId
+	name, err := s.parseClusterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj.Name = fqn
+
+	now := timestamppb.Now()
+	obj.CreateTime = now
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.CreateSecondaryClusterRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/clusters/" + req.ClusterId
 	name, err := s.parseClusterName(reqName)
 	if err != nil {
 		return nil, err
@@ -93,8 +115,12 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 			obj.DisplayName = req.Cluster.GetDisplayName()
 		case "automatedBackupPolicy":
 			obj.AutomatedBackupPolicy = req.Cluster.GetAutomatedBackupPolicy()
+		case "continuousBackupConfig":
+			obj.ContinuousBackupConfig = req.Cluster.GetContinuousBackupConfig()
+		case "maintenanceUpdatePolicy":
+			obj.MaintenanceUpdatePolicy = req.Cluster.GetMaintenanceUpdatePolicy()
 		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
 

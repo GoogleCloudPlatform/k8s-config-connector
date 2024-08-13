@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+set -x
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+# Run controller-gen to generate CRDs
+cd ${REPO_ROOT}/apis
+# TODO: Pin to a release once kubernetes-sigs/controller-tools#944 lands in a release
+go run sigs.k8s.io/controller-tools/cmd/controller-gen@master object crd:crdVersions=v1,allowDangerousTypes=true output:crd:artifacts:config=config/crd/ paths="./..."
+go run k8s.io/code-generator/cmd/deepcopy-gen@v0.29.0 -O zz_generated.deepcopy -h ../hack/boilerplate.go.txt -i  github.com/GoogleCloudPlatform/k8s-config-connector/apis/... -o ${REPO_ROOT}/temp
+
+gen_deepcopy="$(find ${REPO_ROOT}/temp/github.com/GoogleCloudPlatform/k8s-config-connector/apis/ -name 'zz_generated.deepcopy.go')"
+for file in ${gen_deepcopy}; do
+    prefix="${REPO_ROOT}/temp/github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
+    target_deepcopy=${file#"$prefix"}
+    cp "$file" "${REPO_ROOT}/apis/${target_deepcopy}"
+done
+
+cd ${REPO_ROOT}
+rm -rf temp
+
+# Add OpenAPI validation to refs
+cd ${REPO_ROOT}
+go run ./scripts/add-validation-to-crds --dir apis/config/crd/
+
+# Apply a few small tweaks to the CRDs
+cd ${REPO_ROOT}
+go run ./scripts/crd-tools set-field spec.preserveUnknownFields=false --dir apis/config/crd/
+go run ./scripts/crd-tools delete-field status --dir apis/config/crd/
+go run ./scripts/crd-tools set-annotation cnrm.cloud.google.com/version=0.0.0-dev --dir apis/config/crd/
+go run ./scripts/crd-tools delete-annotation controller-gen.kubebuilder.io/version --dir apis/config/crd/
+go run ./scripts/crd-tools reflow-descriptions --dir apis/config/crd/
+
+# Copy generated CRDs to apis/config/crd/
+# The crds directory is generated only as part of the release (currently)
+
+# excluded_resources are resources that are under development for a direct conversion
+# we don't modify the CRD just yet for those but will in the future
+excluded_resources=("computeforwardingrule")
+
+cd ${REPO_ROOT}
+cd apis/config/crd/
+for file in *.yaml; do
+    excluded=false
+
+    for substring in "${excluded_resources[@]}"; do
+        if [[ "$file" == *"$substring"* ]]; then
+            excluded=true
+            break
+        fi
+    done
+    
+    if [ "$excluded" = true ]; then
+        echo "Skipping $file as its CRD conversion is excluded for now"
+        continue
+    fi
+
+    base_name=$(echo "$file" | sed 's/.yaml$//g')
+    domain=$(echo "$base_name" | cut -d'_' -f1)
+    resource=$(echo "$base_name" | cut -d'_' -f2)
+    new_name="apiextensions.k8s.io_v1_customresourcedefinition_${resource}.${domain}.yaml";
+    cp "$file" "${REPO_ROOT}/config/crds/resources/$new_name";
+    echo "Renamed $file to $new_name"
+done
+
+# clean up apis/config/crd for now
+cd ${REPO_ROOT}
+rm -rf apis/config/crd

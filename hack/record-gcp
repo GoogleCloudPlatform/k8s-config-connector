@@ -9,6 +9,23 @@ rm -rf $(pwd)/artifactz/realgcp
 
 RUN_TESTS=TestAllInSeries/$1
 
+if [[ -z "${GCP_PROJECT_ID:-}" ]]; then
+  GCP_PROJECT_ID=$(gcloud config get-value project)
+fi
+echo "Using project: ${GCP_PROJECT_ID}"
+
+TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+export TEST_FOLDER_ID
+
+TEST_ORG_ID=$(gcloud projects get-ancestors ${GCP_PROJECT_ID} | grep organization | cut -f1 -d ' ')
+export TEST_ORG_ID
+
+if [[ -z "${TEST_BILLING_ACCOUNT_ID:-}" ]]; then
+  TEST_BILLING_ACCOUNT_ID=$(gcloud billing projects describe ${GCP_PROJECT_ID} --format='value(billingAccountName)' | cut -f2 -d/)
+fi
+echo "TEST_BILLING_ACCOUNT_ID=${TEST_BILLING_ACCOUNT_ID}"
+export TEST_BILLING_ACCOUNT_ID
+
 # Run e2e tests against real gcp, capturing output
 ARTIFACTS=$(pwd)/artifactz/realgcp \
 E2E_KUBE_TARGET=envtest \
@@ -16,5 +33,6 @@ E2E_GCP_TARGET=real \
 GOLDEN_REQUEST_CHECKS=1 \
 GOLDEN_OBJECT_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \
+KCC_USE_DIRECT_RECONCILERS="SQLInstance" \
 RUN_E2E=1 \
  go test ./tests/e2e -timeout 3600s -v -run $RUN_TESTS

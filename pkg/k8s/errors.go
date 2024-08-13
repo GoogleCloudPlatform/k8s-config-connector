@@ -87,6 +87,8 @@ func IsReferenceNotFoundError(err error) bool {
 	return ok
 }
 
+var ErrIAMNotFound = fmt.Errorf("IAM resource does not exist")
+
 type SecretNotFoundError struct {
 	Secret types.NamespacedName
 }

@@ -180,6 +180,18 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 			),
 			SideEffects: admissionregistration.SideEffectClassNone,
 		},
+		{
+			Name:          "state-into-spec-validation.cnrm.cloud.google.com",
+			Path:          "/state-into-spec-validation",
+			Type:          Validating,
+			HandlerFunc:   NewRequestLoggingHandler(NewStateIntoSpecAnnotationValidatorHandler(), "state-into-spec validation"),
+			FailurePolicy: admissionregistration.Fail,
+			Rules: getRulesForOperationTypes(allResourcesRules,
+				admissionregistration.Create,
+				admissionregistration.Update,
+			),
+			SideEffects: admissionregistration.SideEffectClassNone,
+		},
 	}
 	return whCfgs, nil
 }

@@ -58,69 +58,48 @@ spec:
               expanders:
                 items:
                   properties:
+                    configref:
+                      description: ConfigReference - For BYO Expanders, we can extend
+                        it
+                      properties:
+                        name:
+                          type: string
+                        namespace:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    jinja2:
+                      description: Built in expanders
+                      properties:
+                        template:
+                          type: string
+                      required:
+                      - template
+                      type: object
                     name:
                       type: string
                     template:
+                      description: For BYO Expanders use generic template or ref for
+                        external config
                       type: string
                     type:
                       default: jinja2
                       description: |-
                         Type indicates what expander to use
                           jinja - jinja2 expander
-                          none - No expander
-                      enum:
-                      - jinja2
-                      - none
+                          ...
                       type: string
-                    valuesFrom:
-                      items:
-                        properties:
-                          fieldRef:
-                            items:
-                              properties:
-                                as:
-                                  type: string
-                                path:
-                                  type: string
-                              required:
-                              - as
-                              - path
-                              type: object
-                            type: array
-                          name:
-                            type: string
-                          resourceRef:
-                            properties:
-                              group:
-                                description: OPTION 2
-                                type: string
-                              kind:
-                                type: string
-                              name:
-                                type: string
-                              nameSuffix:
-                                type: string
-                              version:
-                                type: string
-                            required:
-                            - kind
-                            type: object
-                        required:
-                        - fieldRef
-                        - name
-                        - resourceRef
-                        type: object
-                      type: array
                     version:
                       default: latest
                       type: string
                   required:
-                  - template
                   - type
                   type: object
                 minItems: 1
                 type: array
               inputAPIGroup:
+                description: Use existing KRM API
                 type: string
               namespaceMode:
                 description: |-
@@ -206,6 +185,21 @@ spec:
                   - type
                   type: object
                 type: array
+              generation:
+                format: int64
+                type: integer
+              stages:
+                additionalProperties:
+                  description: StageStatus captures the status of a stage
+                  properties:
+                    message:
+                      type: string
+                    reason:
+                      type: string
+                    validationStatus:
+                      type: string
+                  type: object
+                type: object
             type: object
         type: object
     served: true

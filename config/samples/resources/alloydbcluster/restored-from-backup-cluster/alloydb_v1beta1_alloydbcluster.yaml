@@ -17,7 +17,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-dep-restoredfrombackup
 spec:
-  location: us-east1
+  location: asia-south1
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-restoredfrombackup
@@ -29,7 +29,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-sample-restoredfrombackup
 spec:
-  location: us-east1
+  location: asia-south1
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-restoredfrombackup

@@ -60,10 +60,11 @@ func (s *RegionalAddressesV1) Insert(ctx context.Context, req *pb.InsertAddressR
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetAddressResource()).(*pb.Address)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")
+	obj.Address = PtrTo("8.8.8.8")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating address: %v", err)

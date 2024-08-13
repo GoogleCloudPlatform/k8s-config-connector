@@ -70,9 +70,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -1967,7 +1964,7 @@ spec:
       - "https://www.googleapis.com/auth/logging.write"
       - "https://www.googleapis.com/auth/monitoring"
     guestAccelerator:
-      - type: "nvidia-tesla-k80"
+      - type: "nvidia-tesla-t4"
         count: 1
     metadata:
       disable-legacy-endpoints: "true"

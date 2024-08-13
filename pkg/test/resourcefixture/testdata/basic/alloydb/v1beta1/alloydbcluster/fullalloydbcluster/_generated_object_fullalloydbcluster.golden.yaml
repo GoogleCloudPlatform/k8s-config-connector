@@ -1,0 +1,76 @@
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"DEFAULT","initialUser":{"password":{"value":"Postgres123"},"user":"postgres"}}}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/state-into-spec: merge
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: alloydbcluster-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  automatedBackupPolicy:
+    backupWindow: 3600s
+    enabled: true
+    encryptionConfig:
+      kmsKeyNameRef:
+        name: kmscryptokey-${uniqueId}
+    labels:
+      source: kcc-test
+    location: us-central1
+    timeBasedRetention:
+      retentionPeriod: 43200s
+    weeklySchedule:
+      daysOfWeek:
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      startTimes:
+      - hours: 10
+        minutes: 0
+        nanos: 0
+        seconds: 0
+  clusterType: PRIMARY
+  continuousBackupConfig:
+    enabled: false
+  deletionPolicy: DEFAULT
+  encryptionConfig:
+    kmsKeyNameRef:
+      name: kmscryptokey-${uniqueId}
+  initialUser:
+    password:
+      value: Postgres123
+    user: postgres
+  location: us-central1
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+    - day: THURSDAY
+      startTime:
+        hours: 10
+        minutes: 0
+        nanos: 0
+        seconds: 0
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  resourceID: alloydbcluster-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  databaseVersion: DATABASE_VERSION_UNSPECIFIED
+  name: projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}
+  observedGeneration: 3

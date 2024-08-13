@@ -17,20 +17,29 @@ package e2e
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"regexp"
 	"sort"
 	"strings"
+	"testing"
+	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
 		// Includes resource versions, very volatile
 		annotations["cnrm.cloud.google.com/observed-secret-versions"] = "(removed)"
+	}
+	if annotations["test.cnrm.cloud.google.com/reconcile-cookie"] != "" {
+		// Deliberately volatile, ignore
+		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
 	}
 	u.SetAnnotations(annotations)
 
@@ -47,22 +56,117 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
+	visitor.replacePaths[".status.uid"] = "12345678"
 	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.creationTimestamp"] = "1970-01-01T00:00:00Z"
+
+	// Specific to AlloyDB
+	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
+
+	// Specific to BigQuery
+	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
+
+	// Specific to Sql
+	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
+	visitor.replacePaths[".status.firstIpAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.publicIpAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.serverCaCert.cert"] = "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+	visitor.replacePaths[".status.serverCaCert.commonName"] = "common-name"
+	visitor.replacePaths[".status.serverCaCert.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.serverCaCert.expirationTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
+	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+
+	// Specific to VertexAI
+	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
+
+	// Specific to Monitoring
+	visitor.replacePaths[".status.creationRecord[].mutateTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.creationRecord[].mutatedBy"] = "user@google.com"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if path == ".spec.conditions[].name" {
+			tokens := strings.Split(s, "/")
+			if len(tokens) == 6 && tokens[4] == "conditions" {
+				tokens[5] = "${conditionId}"
+			}
+			s = strings.Join(tokens, "/")
+		}
+		return s
+	})
+
+	// Specific to GCS
+	visitor.replacePaths[".softDeletePolicy.effectiveTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".timeCreated"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".updated"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".acl[].etag"] = "abcdef0123A"
+	visitor.replacePaths[".defaultObjectAcl[].etag"] = "abcdef0123A="
+	visitor.replacePaths[".spec.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
+
+	// Specific to Compute
+	visitor.replacePaths[".status.observedState.certificateID"] = 1111111111111111
+	visitor.replacePaths[".status.instanceId"] = "1111111111111111"
+	visitor.replacePaths[".status.gatewayId"] = 1111111111111111
+	visitor.replacePaths[".status.proxyId"] = 1111111111111111
+	visitor.replacePaths[".status.mapId"] = 1111111111111111
+
+	// Specific to MonitoringDashboard
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "alertPolicies":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".policyRefs[].external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "alertPolicies":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+
+	// Specific to BigQueryConnectionConnection.
+	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountId"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
+	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
+
+	if u.GetKind() == "Project" {
+		// For some tests that talk to the Mock Resource Manager, the Project object's ProjectID and ProjectNumber are dynamcially generated.
+		// We do not want to overrride this with the default mocked Project "mock-project".
+		visitor.replacePaths[".status.number"] = "${projectNumber}"
+	}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
 	})
@@ -72,6 +176,64 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 		r := regexp.MustCompile(regexp.QuoteMeta(`deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=`) + `.*`)
 		return r.ReplaceAllLiteralString(s, "deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=12345678")
 	})
+
+	// Try to extract resource IDs from links and replace them
+	{
+		name, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "name")
+		if name == "" {
+			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
+		}
+		tokens := strings.Split(name, "/")
+		if len(tokens) == 1 {
+			switch u.GetKind() {
+			case "TagsTagKey", "TagsTagValue":
+				// TODO: The mock TagKey server returns the correct format `tagKeys/{number}`, but the golden object `status.name`
+				// only has {number}. Need to triage the tf/dcl controller.
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, name, "${uniqueId}")
+				})
+			}
+		}
+		if len(tokens) > 2 {
+			typeName := tokens[len(tokens)-2]
+			id := tokens[len(tokens)-1]
+			if typeName == "datasets" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${datasetId}")
+				})
+			}
+			if typeName == "alertPolicies" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${alertPolicyId}")
+				})
+			}
+			if typeName == "tensorboards" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${tensorboardId}")
+				})
+			}
+			if typeName == "notificationChannels" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${notificationChannelID}")
+				})
+			}
+		}
+
+		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+		if resourceID != "" {
+			switch u.GroupVersionKind() {
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
+				})
+
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringGroup"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
+				})
+			}
+		}
+	}
 
 	return visitor.VisitUnstructued(u)
 }
@@ -139,35 +301,33 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 		}
 		m[k] = v2
 		v = v2
-
-		// Note: do sorting "last" so we sort normalized values
-		if o.sortSlices.Has(childPath) {
-			s, ok := v.([]any)
-			if !ok {
-				return fmt.Errorf("expected slice at %q, got %T", childPath, v)
-			}
-			if err := sortSlice(s); err != nil {
-				return err
-			}
-		}
 	}
 
 	return nil
 }
 
 func sortSlice(s []any) error {
-	var jsons []string
+	type entry struct {
+		o       any
+		sortKey string
+	}
+
+	var entries []entry
 	for i := range s {
 		j, err := json.Marshal(s[i])
 		if err != nil {
 			return fmt.Errorf("error converting to json: %w", err)
 		}
-		jsons = append(jsons, string(j))
+		entries = append(entries, entry{o: s[i], sortKey: string(j)})
 	}
 
-	sort.Slice(s, func(i, j int) bool {
-		return jsons[i] < jsons[j]
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].sortKey < entries[j].sortKey
 	})
+
+	for i := range s {
+		s[i] = entries[i].o
+	}
 
 	return nil
 }
@@ -179,6 +339,13 @@ func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
 			return nil, err
 		}
 		s[i] = v2
+	}
+
+	// Note: do sorting "last" so we sort normalized values
+	if o.sortSlices.Has(path) {
+		if err := sortSlice(s); err != nil {
+			return s, err
+		}
 	}
 
 	return s, nil
@@ -200,4 +367,117 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 		return err
 	}
 	return nil
+}
+
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+	// Remove headers that just aren't very relevant to testing
+	// Remove headers in request.
+	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	// Remove header in response.
+	events.RemoveHTTPResponseHeader("Date")
+	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
+	events.RemoveHTTPResponseHeader("Etag")
+	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+
+	// Replace any expires headers with (rounded) relative offsets
+	for _, event := range events {
+		expires := event.Response.Header.Get("Expires")
+		if expires == "" {
+			continue
+		}
+
+		if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
+			// Magic value meaning no-cache; don't change
+			continue
+		}
+
+		expiresTime, err := time.Parse(http.TimeFormat, expires)
+		if err != nil {
+			t.Fatalf("parsing Expires header %q: %v", expires, err)
+		}
+		now := time.Now()
+		delta := expiresTime.Sub(now)
+		if delta > (55 * time.Minute) {
+			delta = delta.Round(time.Hour)
+			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
+		} else {
+			delta = delta.Round(time.Minute)
+			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
+		}
+	}
+
+	normalizeHTTPResponses(t, events)
+
+	// Normalize using the KRM normalization function
+	events.PrettifyJSON(func(obj map[string]any) {
+		u := &unstructured.Unstructured{}
+		u.Object = obj
+		if err := normalizeKRMObject(u, project, uniqueID); err != nil {
+			t.Fatalf("error from normalizeObject: %v", err)
+		}
+	})
+}
+
+func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
+	visitor := objectWalker{}
+
+	visitor.removePaths = sets.New[string]()
+	visitor.replacePaths = make(map[string]any)
+
+	// If we get detailed info, don't record it - it's not part of the API contract
+	visitor.removePaths.Insert(".error.errors[].debugInfo")
+
+	// Common variables
+	visitor.replacePaths[".etag"] = "abcdef0123A="
+	visitor.replacePaths[".response.etag"] = "abcdef0123A="
+	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
+
+	// Compute operations
+	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Compute URLs: Replace any compute beta URLs with v1 URLs
+	// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+	// This special handling to avoid diffs in http logs.
+	// This can be removed once all Compute resources are migrated to direct controller.
+	for _, event := range events {
+		event.Request.URL = rewriteComputeURL(event.Request.URL)
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		switch path {
+		case ".selfLink", ".targetLink", ".selfLinkWithId", ".subnetworks[]":
+			return rewriteComputeURL(s)
+		}
+		return s
+	})
+
+	events.PrettifyJSON(func(obj map[string]any) {
+		if err := visitor.visitMap(obj, ""); err != nil {
+			t.Fatalf("error normalizing response: %v", err)
+		}
+	})
+}
+
+// Compute URLs: Replace any compute beta URLs with v1 URLs
+func rewriteComputeURL(u string) string {
+	for _, basePath := range []string{"https://compute.googleapis.com/compute", "https://www.googleapis.com/compute"} {
+		if strings.HasPrefix(u, basePath+"/beta/") {
+			u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
+		}
+	}
+	return u
+}
+
+// isGetOperation returns true if this is an operation poll request
+func isGetOperation(e *test.LogEntry) bool {
+	if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+		return true
+	}
+	if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+		return true
+	}
+	return false
 }

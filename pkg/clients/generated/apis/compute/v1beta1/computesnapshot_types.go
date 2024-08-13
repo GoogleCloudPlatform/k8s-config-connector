@@ -146,7 +146,7 @@ type ComputeSnapshotStatus struct {
 
 	/* Size of the snapshot, specified in GB. */
 	// +optional
-	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
 	/* The fingerprint used for optimistic locking of this resource. Used
 	internally during updates. */
@@ -162,26 +162,31 @@ type ComputeSnapshotStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	/* The unique identifier for the resource. */
 	// +optional
-	SnapshotId *int `json:"snapshotId,omitempty"`
+	SnapshotId *int64 `json:"snapshotId,omitempty"`
 
 	/* A size of the storage used by the snapshot. As snapshots share
 	storage, this number is expected to change with snapshot
 	creation/deletion. */
 	// +optional
-	StorageBytes *int `json:"storageBytes,omitempty"`
+	StorageBytes *int64 `json:"storageBytes,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputesnapshot;gcpcomputesnapshots
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeSnapshot is the Schema for the compute API
 // +k8s:openapi-gen=true

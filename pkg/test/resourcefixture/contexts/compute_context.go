@@ -34,7 +34,11 @@ func init() {
 		ResourceKind: "ComputeExternalVPNGateway",
 		SkipUpdate:   true,
 	}
-
+	resourceContextMap["computemanagedsslcertificate"] = ResourceContext{
+		ResourceKind: "ComputeManagedSSLCertificate",
+		// This resource doesn't support update.
+		SkipUpdate: true,
+	}
 	resourceContextMap["cloudfunctioncomputeregionnetworkendpointgroup"] = ResourceContext{
 		ResourceKind: "ComputeRegionNetworkEndpointGroup",
 		// The GCP resource for ComputeRegionNetworkEndpointGroup doesn't

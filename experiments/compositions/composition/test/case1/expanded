@@ -1,8 +1,0 @@
-# some sample expanded values here
-apiVersion: foo.bar.cnrm.cloud.google.com/v1
-kind: CloudSQL
-metadata:
-  name: cloudsql-sample
-spec:
-  foo: "Example Alice field"
-  region: us-central1

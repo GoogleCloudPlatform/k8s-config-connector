@@ -247,7 +247,7 @@ type TriggerOptions struct {
 	the build may run with a larger disk than requested. At present, the maximum disk size
 	is 1000GB; builds that request more than the maximum are rejected with an error. */
 	// +optional
-	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
 	/* Option to specify whether or not to apply bash style string operations to the substitutions.
 
@@ -496,7 +496,7 @@ type TriggerStep struct {
 
 	If 'allowFailure' is also specified, this field will take precedence. */
 	// +optional
-	AllowExitCodes []int `json:"allowExitCodes,omitempty"`
+	AllowExitCodes []int64 `json:"allowExitCodes,omitempty"`
 
 	/* Allow this build step to fail without failing the entire build.
 	If false, the entire build will fail if this step fails. Otherwise, the
@@ -846,7 +846,7 @@ type CloudBuildTriggerStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The unique identifier for the trigger. */
 	// +optional
@@ -857,6 +857,11 @@ type CloudBuildTriggerStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudbuildtrigger;gcpcloudbuildtriggers
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // CloudBuildTrigger is the Schema for the cloudbuild API
 // +k8s:openapi-gen=true

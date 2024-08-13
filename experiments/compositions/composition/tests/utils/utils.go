@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"time"
 
-	compositionv1alpha1 "google.com/composition/api/v1alpha1"
-	"google.com/composition/internal/controller"
+	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/internal/controller"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -39,7 +39,7 @@ func init() {
 	utilruntime.Must(compositionv1alpha1.AddToScheme(scheme))
 }
 
-func StartLocalController(config *rest.Config, imageRegistry string) error {
+func StartLocalController(config *rest.Config) error {
 	mgr, err := ctrl.NewManager(config, ctrl.Options{
 		Scheme:         scheme,
 		LeaderElection: false,
@@ -50,9 +50,8 @@ func StartLocalController(config *rest.Config, imageRegistry string) error {
 	}
 
 	if err = (&controller.CompositionReconciler{
-		Client:        mgr.GetClient(),
-		Scheme:        mgr.GetScheme(),
-		ImageRegistry: imageRegistry,
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create Composition controller: %w", err)
 	}
@@ -85,8 +84,16 @@ func GetUnstructuredObj(g, v, k, ns, n string) *unstructured.Unstructured {
 	return &cr
 }
 
+func GetFacadeBindingObj(ns, n string) *unstructured.Unstructured {
+	return GetUnstructuredObj("composition.google.com", "v1alpha1", "FacadeBinding", ns, n)
+}
+
 func GetCompositionObj(ns, n string) *unstructured.Unstructured {
 	return GetUnstructuredObj("composition.google.com", "v1alpha1", "Composition", ns, n)
+}
+
+func GetFacadeObj(ns, n string) *unstructured.Unstructured {
+	return GetUnstructuredObj("composition.google.com", "v1alpha1", "Facade", ns, n)
 }
 
 func GetPlanObj(ns, n string) *unstructured.Unstructured {
@@ -105,6 +112,14 @@ func GetValidationFailedCondition(reason, message string) *metav1.Condition {
 	}
 }
 
+func GetReadyCondition(reason, message string) *metav1.Condition {
+	return &metav1.Condition{
+		Message: message,
+		Reason:  reason,
+		Type:    string(compositionv1alpha1.Ready),
+	}
+}
+
 func GetErrorCondition(reason, message string) *metav1.Condition {
 	return &metav1.Condition{
 		Message: message,
@@ -118,5 +133,21 @@ func GetWaitingCondition(reason, message string) *metav1.Condition {
 		Message: message,
 		Reason:  reason,
 		Type:    string(compositionv1alpha1.Waiting),
+	}
+}
+
+func GetContextObj(context map[string]string) *unstructured.Unstructured {
+	return &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "composition.google.com/v1alpha1",
+			"kind":       "Context",
+			"metadata": map[string]interface{}{
+				"name":      "context",
+				"namespace": "default",
+			},
+			"spec": map[string]interface{}{
+				"project": context["gcpProject"],
+			},
+		},
 	}
 }

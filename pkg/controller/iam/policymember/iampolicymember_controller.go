@@ -21,7 +21,7 @@ import (
 	"time"
 
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	operatorlivestate "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/livestate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -164,6 +164,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 		return reconcile.Result{}, err
 	}
+	// r.Get() overrides the TypeMeta to empty value, so need to configure it
+	// after r.Get().
+	memberPolicy.SetGroupVersionKind(iamv1beta1.IAMPolicyMemberGVK)
 	if err := r.handleDefaults(ctx, &memberPolicy); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy member '%v': %w", k8s.GetNamespacedName(&memberPolicy), err)
 	}
@@ -202,7 +205,7 @@ func (r *Reconciler) handleDefaults(ctx context.Context, policyMember *iamv1beta
 func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember) (requeue bool, err error) {
 	defer execution.RecoverWithInternalError(&err)
 
-	cc, ccc, err := operatorlivestate.FetchLiveKCCState(r.Ctx, r.Reconciler.Client, r.NamespacedName)
+	cc, ccc, err := kccstate.FetchLiveKCCState(r.Ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
 		return true, err
 	}

@@ -7,7 +7,8 @@
 
 
 
-Note: Secondary instances should only be created once the associated primary instance is ready and up to date
+Note: Secondary instances should only be created once the associated primary
+instance is ready and up to date.
 
 <table>
 <thead>
@@ -62,20 +63,6 @@ Note: Secondary instances should only be created once the associated primary ins
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -98,6 +85,10 @@ instanceTypeRef:
   namespace: string
 machineConfig:
   cpuCount: integer
+networkConfig:
+  authorizedExternalNetworks:
+  - cidrRange: string
+  enablePublicIp: boolean
 readPoolConfig:
   nodeCount: integer
 resourceID: string
@@ -291,6 +282,56 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
+            <p><code>networkConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Instance level network configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}A list of external networks authorized to access this instance. This field is only allowed to be set when 'enable_public_ip' is set to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks[].cidrRange</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CIDR range for one authorized network of the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.enablePublicIp</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>readPoolConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -337,6 +378,7 @@ createTime: string
 ipAddress: string
 name: string
 observedGeneration: integer
+publicIpAddress: string
 reconciling: boolean
 state: string
 uid: string
@@ -428,6 +470,13 @@ updateTime: string
         </td>
     </tr>
     <tr>
+        <td><code>publicIpAddress</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public IP addresses for the Instance. This is available ONLY when networkConfig.enablePublicIp is set to true. This is the connection endpoint for an end-user application.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>reconciling</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
@@ -487,15 +536,21 @@ spec:
     name: alloydbinstance-dep-primary
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
+    password.enforce_complexity: "on"
   machineConfig:
     cpuCount: 2
+  networkConfig:
+    enablePublicIp: true
+    authorizedExternalNetworks:
+    - cidrRange: 8.8.8.8/30
+    - cidrRange: 8.8.4.4/30
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-primary
 spec:
-  location: us-central1
+  location: asia-east1
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-primary
@@ -579,7 +634,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-read
 spec:
-  location: us-central1
+  location: asia-east2
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-read
@@ -656,7 +711,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep1-secondary
 spec:
-  location: us-central1
+  location: asia-northeast1
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-secondary
@@ -672,7 +727,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep2-secondary
 spec:
-  location: us-east1
+  location: asia-northeast2
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-secondary
@@ -747,7 +802,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-zonal
 spec:
-  location: us-central1
+  location: asia-northeast3
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-zonal

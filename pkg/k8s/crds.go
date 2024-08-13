@@ -20,22 +20,46 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
+var scoreForVersion = map[string]int{
+	"v1alpha1": 111,
+	"v1beta1":  121,
+	"v1":       131,
+}
+
+func PreferredVersion(crd *apiextensions.CustomResourceDefinition) *apiextensions.CustomResourceDefinitionVersion {
+	bestScore := -1
+	var preferredVersion *apiextensions.CustomResourceDefinitionVersion
+	for _, version := range crd.Spec.Versions {
+		score, found := scoreForVersion[version.Name]
+		if !found {
+			panic(fmt.Sprintf("version %q is not known in getLatestVersion", version.Name))
+		}
+
+		if score > bestScore {
+			preferredVersion = &version
+			bestScore = score
+		}
+
+	}
+	return preferredVersion
+}
+
 func GetAPIVersionFromCRD(crd *apiextensions.CustomResourceDefinition) string {
 	panicIfNoVersionPresent(crd)
 	// Currently KCC CRDs only support one version.
-	return fmt.Sprintf("%v/%v", crd.Spec.Group, crd.Spec.Versions[0].Name)
+	return fmt.Sprintf("%v/%v", crd.Spec.Group, PreferredVersion(crd).Name)
 }
 
 func GetVersionFromCRD(crd *apiextensions.CustomResourceDefinition) string {
 	panicIfNoVersionPresent(crd)
 	// Currently KCC CRDs only support one version.
-	return crd.Spec.Versions[0].Name
+	return PreferredVersion(crd).Name
 }
 
 func GetOpenAPIV3SchemaFromCRD(crd *apiextensions.CustomResourceDefinition) *apiextensions.JSONSchemaProps {
 	panicIfNoVersionPresent(crd)
 	// Currently KCC CRDs only support one version.
-	return crd.Spec.Versions[0].Schema.OpenAPIV3Schema
+	return PreferredVersion(crd).Schema.OpenAPIV3Schema
 }
 
 func panicIfNoVersionPresent(crd *apiextensions.CustomResourceDefinition) {

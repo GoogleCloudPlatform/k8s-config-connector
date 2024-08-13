@@ -48,7 +48,7 @@ type NodepoolAdditionalNodeNetworkConfigs struct {
 type NodepoolAdditionalPodNetworkConfigs struct {
 	/* Immutable. The maximum number of pods per node which use this pod network. */
 	// +optional
-	MaxPodsPerNode *int `json:"maxPodsPerNode,omitempty"`
+	MaxPodsPerNode *int64 `json:"maxPodsPerNode,omitempty"`
 
 	/* Immutable. The name of the secondary range on the subnet which provides IP address for this pod range. */
 	// +optional
@@ -61,7 +61,7 @@ type NodepoolAdditionalPodNetworkConfigs struct {
 
 type NodepoolAdvancedMachineFeatures struct {
 	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
-	ThreadsPerCore int `json:"threadsPerCore"`
+	ThreadsPerCore int64 `json:"threadsPerCore"`
 }
 
 type NodepoolAutoscaling struct {
@@ -71,19 +71,19 @@ type NodepoolAutoscaling struct {
 
 	/* Maximum number of nodes per zone in the node pool. Must be >= min_node_count. Cannot be used with total limits. */
 	// +optional
-	MaxNodeCount *int `json:"maxNodeCount,omitempty"`
+	MaxNodeCount *int64 `json:"maxNodeCount,omitempty"`
 
 	/* Minimum number of nodes per zone in the node pool. Must be >=0 and <= max_node_count. Cannot be used with total limits. */
 	// +optional
-	MinNodeCount *int `json:"minNodeCount,omitempty"`
+	MinNodeCount *int64 `json:"minNodeCount,omitempty"`
 
 	/* Maximum number of all nodes in the node pool. Must be >= total_min_node_count. Cannot be used with per zone limits. */
 	// +optional
-	TotalMaxNodeCount *int `json:"totalMaxNodeCount,omitempty"`
+	TotalMaxNodeCount *int64 `json:"totalMaxNodeCount,omitempty"`
 
 	/* Minimum number of all nodes in the node pool. Must be >=0 and <= total_max_node_count. Cannot be used with per zone limits. */
 	// +optional
-	TotalMinNodeCount *int `json:"totalMinNodeCount,omitempty"`
+	TotalMinNodeCount *int64 `json:"totalMinNodeCount,omitempty"`
 }
 
 type NodepoolBlueGreenSettings struct {
@@ -102,12 +102,12 @@ type NodepoolConfidentialNodes struct {
 
 type NodepoolEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
-	LocalSsdCount int `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type NodepoolEphemeralStorageLocalSsdConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
-	LocalSsdCount int `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type NodepoolFastSocket struct {
@@ -130,12 +130,12 @@ type NodepoolGpuSharingConfig struct {
 	GpuSharingStrategy string `json:"gpuSharingStrategy"`
 
 	/* Immutable. The maximum number of containers that can share a GPU. */
-	MaxSharedClientsPerGpu int `json:"maxSharedClientsPerGpu"`
+	MaxSharedClientsPerGpu int64 `json:"maxSharedClientsPerGpu"`
 }
 
 type NodepoolGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 
 	/* Immutable. Configuration for auto installation of GPU driver. */
 	// +optional
@@ -177,7 +177,7 @@ type NodepoolKubeletConfig struct {
 
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +optional
-	PodPidsLimit *int `json:"podPidsLimit,omitempty"`
+	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`
 }
 
 type NodepoolLinuxNodeConfig struct {
@@ -192,7 +192,7 @@ type NodepoolLinuxNodeConfig struct {
 
 type NodepoolLocalNvmeSsdBlockConfig struct {
 	/* Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. */
-	LocalSsdCount int `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type NodepoolManagement struct {
@@ -260,7 +260,7 @@ type NodepoolNodeConfig struct {
 
 	/* Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
-	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
 	/* Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd. */
 	// +optional
@@ -316,7 +316,7 @@ type NodepoolNodeConfig struct {
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +optional
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int64 `json:"localSsdCount,omitempty"`
 
 	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
 	// +optional
@@ -441,7 +441,7 @@ type NodepoolSoleTenantConfig struct {
 type NodepoolStandardRolloutPolicy struct {
 	/* Number of blue nodes to drain in a batch. */
 	// +optional
-	BatchNodeCount *int `json:"batchNodeCount,omitempty"`
+	BatchNodeCount *int64 `json:"batchNodeCount,omitempty"`
 
 	/* Percentage of the blue pool nodes to drain in a batch. */
 	// +optional
@@ -470,11 +470,11 @@ type NodepoolUpgradeSettings struct {
 
 	/* The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. */
 	// +optional
-	MaxSurge *int `json:"maxSurge,omitempty"`
+	MaxSurge *int64 `json:"maxSurge,omitempty"`
 
 	/* The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. */
 	// +optional
-	MaxUnavailable *int `json:"maxUnavailable,omitempty"`
+	MaxUnavailable *int64 `json:"maxUnavailable,omitempty"`
 
 	/* Update strategy for the given nodepool. */
 	// +optional
@@ -500,7 +500,7 @@ type ContainerNodePoolSpec struct {
 
 	/* Immutable. The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. */
 	// +optional
-	InitialNodeCount *int `json:"initialNodeCount,omitempty"`
+	InitialNodeCount *int64 `json:"initialNodeCount,omitempty"`
 
 	/* Immutable. The location (region or zone) of the cluster. */
 	Location string `json:"location"`
@@ -511,7 +511,7 @@ type ContainerNodePoolSpec struct {
 
 	/* Immutable. The maximum number of pods per node in this node pool. Note that this does not work on node pools which are "route-based" - that is, node pools belonging to clusters that do not have IP Aliasing enabled. */
 	// +optional
-	MaxPodsPerNode *int `json:"maxPodsPerNode,omitempty"`
+	MaxPodsPerNode *int64 `json:"maxPodsPerNode,omitempty"`
 
 	/* Immutable. Creates a unique name for the node pool beginning with the specified prefix. Conflicts with name. */
 	// +optional
@@ -527,7 +527,7 @@ type ContainerNodePoolSpec struct {
 
 	/* The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling. */
 	// +optional
-	NodeCount *int `json:"nodeCount,omitempty"`
+	NodeCount *int64 `json:"nodeCount,omitempty"`
 
 	/* The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used. */
 	// +optional
@@ -568,7 +568,7 @@ type ContainerNodePoolStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The observed state of the underlying GCP resource. */
 	// +optional
@@ -582,6 +582,11 @@ type ContainerNodePoolStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcontainernodepool;gcpcontainernodepools
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ContainerNodePool is the Schema for the container API
 // +k8s:openapi-gen=true

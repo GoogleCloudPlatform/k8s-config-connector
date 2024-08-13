@@ -60,7 +60,7 @@ type ComputeVPNTunnelSpec struct {
 	peer VPN gateway.
 	Acceptable IKE versions are 1 or 2. Default version is 2. */
 	// +optional
-	IkeVersion *int `json:"ikeVersion,omitempty"`
+	IkeVersion *int64 `json:"ikeVersion,omitempty"`
 
 	/* Immutable. Local traffic selector to use when establishing the VPN tunnel with
 	peer VPN gateway. The value should be a CIDR formatted string,
@@ -71,7 +71,7 @@ type ComputeVPNTunnelSpec struct {
 
 	/* Immutable. The interface ID of the external VPN gateway to which this VPN tunnel is connected. */
 	// +optional
-	PeerExternalGatewayInterface *int `json:"peerExternalGatewayInterface,omitempty"`
+	PeerExternalGatewayInterface *int64 `json:"peerExternalGatewayInterface,omitempty"`
 
 	/* The peer side external VPN gateway to which this VPN tunnel
 	is connected. */
@@ -117,7 +117,7 @@ type ComputeVPNTunnelSpec struct {
 
 	/* Immutable. The interface ID of the VPN gateway with which this VPN tunnel is associated. */
 	// +optional
-	VpnGatewayInterface *int `json:"vpnGatewayInterface,omitempty"`
+	VpnGatewayInterface *int64 `json:"vpnGatewayInterface,omitempty"`
 
 	/* The ComputeVPNGateway with which this VPN tunnel is associated.
 	This must be used if a High Availability VPN gateway resource is
@@ -145,7 +145,7 @@ type ComputeVPNTunnelStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -163,6 +163,11 @@ type ComputeVPNTunnelStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputevpntunnel;gcpcomputevpntunnels
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeVPNTunnel is the Schema for the compute API
 // +k8s:openapi-gen=true

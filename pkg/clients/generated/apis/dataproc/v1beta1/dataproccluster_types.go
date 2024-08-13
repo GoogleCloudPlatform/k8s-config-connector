@@ -38,7 +38,7 @@ import (
 type ClusterAccelerators struct {
 	/* Immutable. The number of accelerator cards exposed to an instance. */
 	// +optional
-	AcceleratorCount *int `json:"acceleratorCount,omitempty"`
+	AcceleratorCount *int64 `json:"acceleratorCount,omitempty"`
 
 	/* Immutable. The accelerator type resource namename (see GPUs on Compute Engine). */
 	// +optional
@@ -52,11 +52,11 @@ type ClusterAccelerators struct {
 type ClusterAutoscaling struct {
 	/* Immutable. The maximum number of nodes in the node pool. Must be >= min_node_count, and must be > 0. **Note:** Quota must be sufficient to scale up the cluster. */
 	// +optional
-	MaxNodeCount *int `json:"maxNodeCount,omitempty"`
+	MaxNodeCount *int64 `json:"maxNodeCount,omitempty"`
 
 	/* Immutable. The minimum number of nodes in the node pool. Must be >= 0 and <= max_node_count. */
 	// +optional
-	MinNodeCount *int `json:"minNodeCount,omitempty"`
+	MinNodeCount *int64 `json:"minNodeCount,omitempty"`
 }
 
 type ClusterAutoscalingConfig struct {
@@ -96,7 +96,7 @@ type ClusterConfig struct {
 
 	/* Immutable. Optional. The number of local SSD disks to attach to the node, which is limited by the maximum number of disks allowable per zone (see [Adding Local SSDs](https://cloud.google.com/compute/docs/disks/local-ssd)). */
 	// +optional
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int64 `json:"localSsdCount,omitempty"`
 
 	/* Immutable. Optional. The name of a Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types). */
 	// +optional
@@ -123,7 +123,7 @@ type ClusterDataprocMetricConfig struct {
 type ClusterDiskConfig struct {
 	/* Immutable. Optional. Size in GB of the boot disk (default is 500GB). */
 	// +optional
-	BootDiskSizeGb *int `json:"bootDiskSizeGb,omitempty"`
+	BootDiskSizeGb *int64 `json:"bootDiskSizeGb,omitempty"`
 
 	/* Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types). */
 	// +optional
@@ -135,7 +135,7 @@ type ClusterDiskConfig struct {
 
 	/* Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
 	// +optional
-	NumLocalSsds *int `json:"numLocalSsds,omitempty"`
+	NumLocalSsds *int64 `json:"numLocalSsds,omitempty"`
 }
 
 type ClusterEncryptionConfig struct {
@@ -153,7 +153,7 @@ type ClusterEndpointConfig struct {
 type ClusterEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. If zero, it means to disable using local SSDs as ephemeral storage. */
 	// +optional
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int64 `json:"localSsdCount,omitempty"`
 }
 
 type ClusterGceClusterConfig struct {
@@ -285,7 +285,7 @@ type ClusterKerberosConfig struct {
 
 	/* Immutable. Optional. The lifetime of the ticket granting ticket, in hours. If not specified, or user specifies 0, then default value 10 will be used. */
 	// +optional
-	TgtLifetimeHours *int `json:"tgtLifetimeHours,omitempty"`
+	TgtLifetimeHours *int64 `json:"tgtLifetimeHours,omitempty"`
 
 	/* Immutable. Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate. */
 	// +optional
@@ -356,7 +356,7 @@ type ClusterMasterConfig struct {
 
 	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
-	NumInstances *int `json:"numInstances,omitempty"`
+	NumInstances *int64 `json:"numInstances,omitempty"`
 
 	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
@@ -445,7 +445,7 @@ type ClusterSecondaryWorkerConfig struct {
 
 	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
-	NumInstances *int `json:"numInstances,omitempty"`
+	NumInstances *int64 `json:"numInstances,omitempty"`
 
 	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
@@ -532,7 +532,7 @@ type ClusterWorkerConfig struct {
 
 	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
-	NumInstances *int `json:"numInstances,omitempty"`
+	NumInstances *int64 `json:"numInstances,omitempty"`
 
 	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
@@ -734,7 +734,7 @@ type DataprocClusterStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Cluster status. */
 	// +optional
@@ -749,6 +749,11 @@ type DataprocClusterStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataproccluster;gcpdataprocclusters
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DataprocCluster is the Schema for the dataproc API
 // +k8s:openapi-gen=true

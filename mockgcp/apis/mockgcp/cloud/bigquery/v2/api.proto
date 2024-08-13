@@ -1,0 +1,2018 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package google.cloud.bigquery.v2;
+import "google/api/annotations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/bigquery/apiv2/bigquerypb;bigquerypb";
+service DatasetsServer {
+  rpc DeleteDataset(DeleteDatasetRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+  };
+}
+;
+  rpc GetDataset(GetDatasetRequest) returns (Dataset){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+  };
+}
+;
+  rpc InsertDataset(InsertDatasetRequest) returns (Dataset){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/datasets"
+    body: "dataset"
+  };
+}
+;
+  rpc ListDatasets(ListDatasetsRequest) returns (DatasetList){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets"
+  };
+}
+;
+  rpc PatchDataset(PatchDatasetRequest) returns (Dataset){
+  option (google.api.http) = {
+    patch: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+    body: "dataset"
+  };
+}
+;
+  rpc UndeleteDataset(UndeleteDatasetServiceRequest) returns (Dataset){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}:undelete"
+    body: "dataset"
+  };
+}
+;
+  rpc UpdateDataset(UpdateDatasetRequest) returns (Dataset){
+  option (google.api.http) = {
+    put: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+    body: "dataset"
+  };
+}
+;
+}
+service JobsServer {
+  rpc CancelJob(CancelJobRequest) returns (JobCancelResponse){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}/cancel"
+  };
+}
+;
+  rpc DeleteJob(DeleteJobRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}/delete"
+  };
+}
+;
+  rpc GetJob(GetJobRequest) returns (Job){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}"
+  };
+}
+;
+  rpc GetQueryResultsJob(GetQueryResultsJobRequest) returns (GetQueryResultsResponse){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/queries/{job_id=*}"
+  };
+}
+;
+  rpc InsertJob(InsertJobRequest) returns (Job){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/jobs"
+    body: "job"
+  };
+}
+;
+  rpc ListJobs(ListJobsRequest) returns (JobList){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/jobs"
+  };
+}
+;
+  rpc QueryJob(QueryJobRequest) returns (QueryResponse){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/queries"
+    body: "job"
+  };
+}
+;
+}
+service ModelsServer {
+  rpc DeleteModel(DeleteModelRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
+  };
+}
+;
+  rpc GetModel(GetModelRequest) returns (Model){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
+  };
+}
+;
+  rpc ListModels(ListModelsRequest) returns (ListModelsResponse){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models"
+  };
+}
+;
+  rpc PatchModel(PatchModelRequest) returns (Model){
+  option (google.api.http) = {
+    patch: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
+    body: "model"
+  };
+}
+;
+}
+service ProjectsServer {
+  rpc GetServiceAccountProject(GetServiceAccountProjectRequest) returns (GetServiceAccountResponse){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/serviceAccount"
+  };
+}
+;
+  rpc ListProjects(ListProjectsRequest) returns (ProjectList){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects"
+  };
+}
+;
+}
+service RoutinesServer {
+  rpc DeleteRoutine(DeleteRoutineRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
+  };
+}
+;
+  rpc GetRoutine(GetRoutineRequest) returns (Routine){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
+  };
+}
+;
+  rpc InsertRoutine(InsertRoutineRequest) returns (Routine){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines"
+    body: "routine"
+  };
+}
+;
+  rpc ListRoutines(ListRoutinesRequest) returns (ListRoutinesResponse){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines"
+  };
+}
+;
+  rpc UpdateRoutine(UpdateRoutineRequest) returns (Routine){
+  option (google.api.http) = {
+    put: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
+    body: "routine"
+  };
+}
+;
+}
+service RowAccessPoliciesServer {
+  rpc ListRowAccessPolicies(ListRowAccessPoliciesRequest) returns (ListRowAccessPoliciesResponse){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/rowAccessPolicies"
+  };
+}
+;
+}
+service TabledataServer {
+  rpc InsertAllTabledata(InsertAllTabledataRequest) returns (TableDataInsertAllResponse){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/insertAll"
+    body: "tabledata"
+  };
+}
+;
+  rpc ListTabledata(ListTabledataRequest) returns (TableDataList){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/data"
+  };
+}
+;
+}
+service TablesServer {
+  rpc DeleteTable(DeleteTableRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+  };
+}
+;
+  rpc GetTable(GetTableRequest) returns (Table){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+  };
+}
+;
+  rpc InsertTable(InsertTableRequest) returns (Table){
+  option (google.api.http) = {
+    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables"
+    body: "table"
+  };
+}
+;
+  rpc ListTables(ListTablesRequest) returns (TableList){
+  option (google.api.http) = {
+    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables"
+  };
+}
+;
+  rpc PatchTable(PatchTableRequest) returns (Table){
+  option (google.api.http) = {
+    patch: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+    body: "table"
+  };
+}
+;
+  rpc UpdateTable(UpdateTableRequest) returns (Table){
+  option (google.api.http) = {
+    put: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+    body: "table"
+  };
+}
+;
+}
+message AggregateClassificationMetrics {
+  optional double accuracy = 1 [json_name="accuracy"];
+  optional double f1_score = 2 [json_name="f1Score"];
+  optional double log_loss = 3 [json_name="logLoss"];
+  optional double precision = 4 [json_name="precision"];
+  optional double recall = 5 [json_name="recall"];
+  optional double roc_auc = 6 [json_name="rocAuc"];
+  optional double threshold = 7 [json_name="threshold"];
+}
+message AggregationThresholdPolicy {
+  repeated string privacy_unit_columns = 1 [json_name="privacyUnitColumns"];
+  optional int64 threshold = 2 [json_name="threshold"];
+}
+message Argument {
+  optional string argument_kind = 1 [json_name="argumentKind"];
+  optional StandardSqlDataType data_type = 2 [json_name="dataType"];
+  optional bool is_aggregate = 3 [json_name="isAggregate"];
+  optional string mode = 4 [json_name="mode"];
+  optional string name = 5 [json_name="name"];
+}
+message ArimaCoefficients {
+  repeated double auto_regressive_coefficients = 1 [json_name="autoRegressiveCoefficients"];
+  optional double intercept_coefficient = 2 [json_name="interceptCoefficient"];
+  repeated double moving_average_coefficients = 3 [json_name="movingAverageCoefficients"];
+}
+message ArimaFittingMetrics {
+  optional double aic = 1 [json_name="aic"];
+  optional double log_likelihood = 2 [json_name="logLikelihood"];
+  optional double variance = 3 [json_name="variance"];
+}
+message ArimaForecastingMetrics {
+  repeated ArimaFittingMetrics arima_fitting_metrics = 1 [json_name="arimaFittingMetrics"];
+  repeated ArimaSingleModelForecastingMetrics arima_single_model_forecasting_metrics = 2 [json_name="arimaSingleModelForecastingMetrics"];
+  repeated bool has_drift = 3 [json_name="hasDrift"];
+  repeated ArimaOrder non_seasonal_order = 4 [json_name="nonSeasonalOrder"];
+  repeated string seasonal_periods = 5 [json_name="seasonalPeriods"];
+  repeated string time_series_id = 6 [json_name="timeSeriesId"];
+}
+message ArimaModelInfo {
+  optional ArimaCoefficients arima_coefficients = 1 [json_name="arimaCoefficients"];
+  optional ArimaFittingMetrics arima_fitting_metrics = 2 [json_name="arimaFittingMetrics"];
+  optional bool has_drift = 3 [json_name="hasDrift"];
+  optional bool has_holiday_effect = 4 [json_name="hasHolidayEffect"];
+  optional bool has_spikes_and_dips = 5 [json_name="hasSpikesAndDips"];
+  optional bool has_step_changes = 6 [json_name="hasStepChanges"];
+  optional ArimaOrder non_seasonal_order = 7 [json_name="nonSeasonalOrder"];
+  repeated string seasonal_periods = 8 [json_name="seasonalPeriods"];
+  optional string time_series_id = 9 [json_name="timeSeriesId"];
+  repeated string time_series_ids = 10 [json_name="timeSeriesIds"];
+}
+message ArimaOrder {
+  optional int64 d = 1 [json_name="d"];
+  optional int64 p = 2 [json_name="p"];
+  optional int64 q = 3 [json_name="q"];
+}
+message ArimaResult {
+  repeated ArimaModelInfo arima_model_info = 1 [json_name="arimaModelInfo"];
+  repeated string seasonal_periods = 2 [json_name="seasonalPeriods"];
+}
+message ArimaSingleModelForecastingMetrics {
+  optional ArimaFittingMetrics arima_fitting_metrics = 1 [json_name="arimaFittingMetrics"];
+  optional bool has_drift = 2 [json_name="hasDrift"];
+  optional bool has_holiday_effect = 3 [json_name="hasHolidayEffect"];
+  optional bool has_spikes_and_dips = 4 [json_name="hasSpikesAndDips"];
+  optional bool has_step_changes = 5 [json_name="hasStepChanges"];
+  optional ArimaOrder non_seasonal_order = 6 [json_name="nonSeasonalOrder"];
+  repeated string seasonal_periods = 7 [json_name="seasonalPeriods"];
+  optional string time_series_id = 8 [json_name="timeSeriesId"];
+  repeated string time_series_ids = 9 [json_name="timeSeriesIds"];
+}
+message AuditConfig {
+  repeated AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
+  optional string service = 2 [json_name="service"];
+}
+message AuditLogConfig {
+  repeated string exempted_members = 1 [json_name="exemptedMembers"];
+  optional string log_type = 2 [json_name="logType"];
+}
+message AvroOptions {
+  optional bool use_avro_logical_types = 1 [json_name="useAvroLogicalTypes"];
+}
+message BiEngineReason {
+  optional string code = 1 [json_name="code"];
+  optional string message = 2 [json_name="message"];
+}
+message BiEngineStatistics {
+  optional string acceleration_mode = 1 [json_name="accelerationMode"];
+  optional string bi_engine_mode = 2 [json_name="biEngineMode"];
+  repeated BiEngineReason bi_engine_reasons = 3 [json_name="biEngineReasons"];
+}
+message BigLakeConfiguration {
+  optional string connection_id = 1 [json_name="connectionId"];
+  optional string file_format = 2 [json_name="fileFormat"];
+  optional string storage_uri = 3 [json_name="storageUri"];
+  optional string table_format = 4 [json_name="tableFormat"];
+}
+message BigQueryModelTraining {
+  optional int32 current_iteration = 1 [json_name="currentIteration"];
+  optional int64 expected_total_iterations = 2 [json_name="expectedTotalIterations"];
+}
+message BigtableColumn {
+  optional string encoding = 1 [json_name="encoding"];
+  optional string field_name = 2 [json_name="fieldName"];
+  optional bool only_read_latest = 3 [json_name="onlyReadLatest"];
+  optional bytes qualifier_encoded = 4 [json_name="qualifierEncoded"];
+  optional string qualifier_string = 5 [json_name="qualifierString"];
+  optional string type = 6 [json_name="type"];
+}
+message BigtableColumnFamily {
+  repeated BigtableColumn columns = 1 [json_name="columns"];
+  optional string encoding = 2 [json_name="encoding"];
+  optional string family_id = 3 [json_name="familyId"];
+  optional bool only_read_latest = 4 [json_name="onlyReadLatest"];
+  optional string type = 5 [json_name="type"];
+}
+message BigtableOptions {
+  repeated BigtableColumnFamily column_families = 1 [json_name="columnFamilies"];
+  optional bool ignore_unspecified_column_families = 2 [json_name="ignoreUnspecifiedColumnFamilies"];
+  optional bool output_column_families_as_json = 3 [json_name="outputColumnFamiliesAsJson"];
+  optional bool read_rowkey_as_string = 4 [json_name="readRowkeyAsString"];
+}
+message BinaryClassificationMetrics {
+  optional AggregateClassificationMetrics aggregate_classification_metrics = 1 [json_name="aggregateClassificationMetrics"];
+  repeated BinaryConfusionMatrix binary_confusion_matrix_list = 2 [json_name="binaryConfusionMatrixList"];
+  optional string negative_label = 3 [json_name="negativeLabel"];
+  optional string positive_label = 4 [json_name="positiveLabel"];
+}
+message BinaryConfusionMatrix {
+  optional double accuracy = 1 [json_name="accuracy"];
+  optional double f1_score = 2 [json_name="f1Score"];
+  optional int64 false_negatives = 3 [json_name="falseNegatives"];
+  optional int64 false_positives = 4 [json_name="falsePositives"];
+  optional double positive_class_threshold = 5 [json_name="positiveClassThreshold"];
+  optional double precision = 6 [json_name="precision"];
+  optional double recall = 7 [json_name="recall"];
+  optional int64 true_negatives = 8 [json_name="trueNegatives"];
+  optional int64 true_positives = 9 [json_name="truePositives"];
+}
+message Binding {
+  optional Expr condition = 1 [json_name="condition"];
+  repeated string members = 2 [json_name="members"];
+  optional string role = 3 [json_name="role"];
+}
+message BqmlIterationResult {
+  optional int64 duration_ms = 1 [json_name="durationMs"];
+  optional double eval_loss = 2 [json_name="evalLoss"];
+  optional int32 index = 3 [json_name="index"];
+  optional double learn_rate = 4 [json_name="learnRate"];
+  optional double training_loss = 5 [json_name="trainingLoss"];
+}
+message BqmlTrainingRunTrainingOptions {
+  optional bool early_stop = 1 [json_name="earlyStop"];
+  optional double l1_reg = 2 [json_name="l1Reg"];
+  optional double l2_reg = 3 [json_name="l2Reg"];
+  optional double learn_rate = 4 [json_name="learnRate"];
+  optional string learn_rate_strategy = 5 [json_name="learnRateStrategy"];
+  optional double line_search_init_learn_rate = 6 [json_name="lineSearchInitLearnRate"];
+  optional int64 max_iteration = 7 [json_name="maxIteration"];
+  optional double min_rel_progress = 8 [json_name="minRelProgress"];
+  optional bool warm_start = 9 [json_name="warmStart"];
+}
+message BqmlTrainingRun {
+  repeated BqmlIterationResult iteration_results = 1 [json_name="iterationResults"];
+  optional .google.protobuf.Timestamp start_time = 2 [json_name="startTime"];
+  optional string state = 3 [json_name="state"];
+  optional BqmlTrainingRunTrainingOptions training_options = 4 [json_name="trainingOptions"];
+}
+message CategoricalValue {
+  repeated CategoryCount category_counts = 1 [json_name="categoryCounts"];
+}
+message CategoryCount {
+  optional string category = 1 [json_name="category"];
+  optional int64 count = 2 [json_name="count"];
+}
+message CloneDefinition {
+  optional TableReference base_table_reference = 1 [json_name="baseTableReference"];
+  optional .google.protobuf.Timestamp clone_time = 2 [json_name="cloneTime"];
+}
+message Cluster {
+  optional int64 centroid_id = 1 [json_name="centroidId"];
+  optional int64 count = 2 [json_name="count"];
+  repeated FeatureValue feature_values = 3 [json_name="featureValues"];
+}
+message ClusterInfo {
+  optional int64 centroid_id = 1 [json_name="centroidId"];
+  optional double cluster_radius = 2 [json_name="clusterRadius"];
+  optional int64 cluster_size = 3 [json_name="clusterSize"];
+}
+message Clustering {
+  repeated string fields = 1 [json_name="fields"];
+}
+message ClusteringMetrics {
+  repeated Cluster clusters = 1 [json_name="clusters"];
+  optional double davies_bouldin_index = 2 [json_name="daviesBouldinIndex"];
+  optional double mean_squared_distance = 3 [json_name="meanSquaredDistance"];
+}
+message ConfusionMatrix {
+  optional double confidence_threshold = 1 [json_name="confidenceThreshold"];
+  repeated Row rows = 2 [json_name="rows"];
+}
+message ConnectionProperty {
+  optional string key = 1 [json_name="key"];
+  optional string value = 2 [json_name="value"];
+}
+message CsvOptions {
+  optional bool allow_jagged_rows = 1 [json_name="allowJaggedRows"];
+  optional bool allow_quoted_newlines = 2 [json_name="allowQuotedNewlines"];
+  optional string encoding = 3 [json_name="encoding"];
+  optional string field_delimiter = 4 [json_name="fieldDelimiter"];
+  optional string null_marker = 5 [json_name="nullMarker"];
+  optional bool preserve_ascii_control_characters = 6 [json_name="preserveAsciiControlCharacters"];
+  optional string quote = 7 [json_name="quote"];
+  optional int64 skip_leading_rows = 8 [json_name="skipLeadingRows"];
+}
+message DataFormatOptions {
+  optional bool use_int64_timestamp = 1 [json_name="useInt64Timestamp"];
+}
+message DataMaskingStatistics {
+  optional bool data_masking_applied = 1 [json_name="dataMaskingApplied"];
+}
+message DataSplitResult {
+  optional TableReference evaluation_table = 1 [json_name="evaluationTable"];
+  optional TableReference test_table = 2 [json_name="testTable"];
+  optional TableReference training_table = 3 [json_name="trainingTable"];
+}
+message DatasetAccess {
+  optional DatasetAccessEntry dataset = 1 [json_name="dataset"];
+  optional string domain = 2 [json_name="domain"];
+  optional string group_by_email = 3 [json_name="groupByEmail"];
+  optional string iam_member = 4 [json_name="iamMember"];
+  optional string role = 5 [json_name="role"];
+  optional RoutineReference routine = 6 [json_name="routine"];
+  optional string special_group = 7 [json_name="specialGroup"];
+  optional string user_by_email = 8 [json_name="userByEmail"];
+  optional TableReference view = 9 [json_name="view"];
+}
+message DatasetTags {
+  optional string tag_key = 1 [json_name="tagKey"];
+  optional string tag_value = 2 [json_name="tagValue"];
+}
+message Dataset {
+  repeated DatasetAccess access = 1 [json_name="access"];
+  optional int64 creation_time = 2 [json_name="creationTime"];
+  optional DatasetReference dataset_reference = 3 [json_name="datasetReference"];
+  optional string default_collation = 4 [json_name="defaultCollation"];
+  optional EncryptionConfiguration default_encryption_configuration = 5 [json_name="defaultEncryptionConfiguration"];
+  optional int64 default_partition_expiration_ms = 6 [json_name="defaultPartitionExpirationMs"];
+  optional string default_rounding_mode = 7 [json_name="defaultRoundingMode"];
+  optional int64 default_table_expiration_ms = 8 [json_name="defaultTableExpirationMs"];
+  optional string description = 9 [json_name="description"];
+  optional string etag = 10 [json_name="etag"];
+  optional ExternalCatalogDatasetOptions external_catalog_dataset_options = 11 [json_name="externalCatalogDatasetOptions"];
+  optional ExternalDatasetReference external_dataset_reference = 12 [json_name="externalDatasetReference"];
+  optional string friendly_name = 13 [json_name="friendlyName"];
+  optional string id = 14 [json_name="id"];
+  optional bool is_case_insensitive = 15 [json_name="isCaseInsensitive"];
+  optional string kind = 16 [json_name="kind"];
+  map<string, string> labels = 17 [json_name="labels"];
+  optional int64 last_modified_time = 18 [json_name="lastModifiedTime"];
+  optional LinkedDatasetMetadata linked_dataset_metadata = 19 [json_name="linkedDatasetMetadata"];
+  optional LinkedDatasetSource linked_dataset_source = 20 [json_name="linkedDatasetSource"];
+  optional string location = 21 [json_name="location"];
+  optional int64 max_time_travel_hours = 22 [json_name="maxTimeTravelHours"];
+  optional RestrictionConfig restrictions = 23 [json_name="restrictions"];
+  optional bool satisfies_pzi = 24 [json_name="satisfiesPzi"];
+  optional bool satisfies_pzs = 25 [json_name="satisfiesPzs"];
+  optional string self_link = 26 [json_name="selfLink"];
+  optional string storage_billing_model = 27 [json_name="storageBillingModel"];
+  repeated DatasetTags tags = 28 [json_name="tags"];
+  optional string type = 29 [json_name="type"];
+}
+message DatasetAccessEntry {
+  optional DatasetReference dataset = 1 [json_name="dataset"];
+  repeated string target_types = 2 [json_name="targetTypes"];
+}
+message DatasetListDatasets {
+  optional DatasetReference dataset_reference = 1 [json_name="datasetReference"];
+  optional string friendly_name = 2 [json_name="friendlyName"];
+  optional string id = 3 [json_name="id"];
+  optional string kind = 4 [json_name="kind"];
+  map<string, string> labels = 5 [json_name="labels"];
+  optional string location = 6 [json_name="location"];
+}
+message DatasetList {
+  repeated DatasetListDatasets datasets = 1 [json_name="datasets"];
+  optional string etag = 2 [json_name="etag"];
+  optional string kind = 3 [json_name="kind"];
+  optional string next_page_token = 4 [json_name="nextPageToken"];
+  repeated string unreachable = 5 [json_name="unreachable"];
+}
+message DatasetReference {
+  optional string dataset_id = 1 [json_name="datasetId"];
+  optional string project_id = 2 [json_name="projectId"];
+}
+message DestinationTableProperties {
+  optional string description = 1 [json_name="description"];
+  optional .google.protobuf.Timestamp expiration_time = 2 [json_name="expirationTime"];
+  optional string friendly_name = 3 [json_name="friendlyName"];
+  map<string, string> labels = 4 [json_name="labels"];
+}
+message DifferentialPrivacyPolicy {
+  optional double delta_budget = 1 [json_name="deltaBudget"];
+  optional double delta_budget_remaining = 2 [json_name="deltaBudgetRemaining"];
+  optional double delta_per_query = 3 [json_name="deltaPerQuery"];
+  optional double epsilon_budget = 4 [json_name="epsilonBudget"];
+  optional double epsilon_budget_remaining = 5 [json_name="epsilonBudgetRemaining"];
+  optional double max_epsilon_per_query = 6 [json_name="maxEpsilonPerQuery"];
+  optional int64 max_groups_contributed = 7 [json_name="maxGroupsContributed"];
+  optional string privacy_unit_column = 8 [json_name="privacyUnitColumn"];
+}
+message DimensionalityReductionMetrics {
+  optional double total_explained_variance_ratio = 1 [json_name="totalExplainedVarianceRatio"];
+}
+message DmlStatistics {
+  optional int64 deleted_row_count = 1 [json_name="deletedRowCount"];
+  optional int64 inserted_row_count = 2 [json_name="insertedRowCount"];
+  optional int64 updated_row_count = 3 [json_name="updatedRowCount"];
+}
+message DoubleCandidates {
+  repeated double candidates = 1 [json_name="candidates"];
+}
+message DoubleHparamSearchSpace {
+  optional DoubleCandidates candidates = 1 [json_name="candidates"];
+  optional DoubleRange range = 2 [json_name="range"];
+}
+message DoubleRange {
+  optional double max = 1 [json_name="max"];
+  optional double min = 2 [json_name="min"];
+}
+message EncryptionConfiguration {
+  optional string kms_key_name = 1 [json_name="kmsKeyName"];
+}
+message Entry {
+  optional int64 item_count = 1 [json_name="itemCount"];
+  optional string predicted_label = 2 [json_name="predictedLabel"];
+}
+message ErrorProto {
+  optional string debug_info = 1 [json_name="debugInfo"];
+  optional string location = 2 [json_name="location"];
+  optional string message = 3 [json_name="message"];
+  optional string reason = 4 [json_name="reason"];
+}
+message EvaluationMetrics {
+  optional ArimaForecastingMetrics arima_forecasting_metrics = 1 [json_name="arimaForecastingMetrics"];
+  optional BinaryClassificationMetrics binary_classification_metrics = 2 [json_name="binaryClassificationMetrics"];
+  optional ClusteringMetrics clustering_metrics = 3 [json_name="clusteringMetrics"];
+  optional DimensionalityReductionMetrics dimensionality_reduction_metrics = 4 [json_name="dimensionalityReductionMetrics"];
+  optional MultiClassClassificationMetrics multi_class_classification_metrics = 5 [json_name="multiClassClassificationMetrics"];
+  optional RankingMetrics ranking_metrics = 6 [json_name="rankingMetrics"];
+  optional RegressionMetrics regression_metrics = 7 [json_name="regressionMetrics"];
+}
+message ExplainQueryStage {
+  optional int64 completed_parallel_inputs = 1 [json_name="completedParallelInputs"];
+  optional string compute_mode = 2 [json_name="computeMode"];
+  optional int64 compute_ms_avg = 3 [json_name="computeMsAvg"];
+  optional int64 compute_ms_max = 4 [json_name="computeMsMax"];
+  optional double compute_ratio_avg = 5 [json_name="computeRatioAvg"];
+  optional double compute_ratio_max = 6 [json_name="computeRatioMax"];
+  optional int64 end_ms = 7 [json_name="endMs"];
+  optional int64 id = 8 [json_name="id"];
+  repeated int64 input_stages = 9 [json_name="inputStages"];
+  optional string name = 10 [json_name="name"];
+  optional int64 parallel_inputs = 11 [json_name="parallelInputs"];
+  optional int64 read_ms_avg = 12 [json_name="readMsAvg"];
+  optional int64 read_ms_max = 13 [json_name="readMsMax"];
+  optional double read_ratio_avg = 14 [json_name="readRatioAvg"];
+  optional double read_ratio_max = 15 [json_name="readRatioMax"];
+  optional int64 records_read = 16 [json_name="recordsRead"];
+  optional int64 records_written = 17 [json_name="recordsWritten"];
+  optional int64 shuffle_output_bytes = 18 [json_name="shuffleOutputBytes"];
+  optional int64 shuffle_output_bytes_spilled = 19 [json_name="shuffleOutputBytesSpilled"];
+  optional int64 slot_ms = 20 [json_name="slotMs"];
+  optional int64 start_ms = 21 [json_name="startMs"];
+  optional string status = 22 [json_name="status"];
+  repeated ExplainQueryStep steps = 23 [json_name="steps"];
+  optional int64 wait_ms_avg = 24 [json_name="waitMsAvg"];
+  optional int64 wait_ms_max = 25 [json_name="waitMsMax"];
+  optional double wait_ratio_avg = 26 [json_name="waitRatioAvg"];
+  optional double wait_ratio_max = 27 [json_name="waitRatioMax"];
+  optional int64 write_ms_avg = 28 [json_name="writeMsAvg"];
+  optional int64 write_ms_max = 29 [json_name="writeMsMax"];
+  optional double write_ratio_avg = 30 [json_name="writeRatioAvg"];
+  optional double write_ratio_max = 31 [json_name="writeRatioMax"];
+}
+message ExplainQueryStep {
+  optional string kind = 1 [json_name="kind"];
+  repeated string substeps = 2 [json_name="substeps"];
+}
+message Explanation {
+  optional double attribution = 1 [json_name="attribution"];
+  optional string feature_name = 2 [json_name="featureName"];
+}
+message ExportDataStatistics {
+  optional int64 file_count = 1 [json_name="fileCount"];
+  optional int64 row_count = 2 [json_name="rowCount"];
+}
+message Expr {
+  optional string description = 1 [json_name="description"];
+  optional string expression = 2 [json_name="expression"];
+  optional string location = 3 [json_name="location"];
+  optional string title = 4 [json_name="title"];
+}
+message ExternalCatalogDatasetOptions {
+  optional string default_storage_location_uri = 1 [json_name="defaultStorageLocationUri"];
+  map<string, string> parameters = 2 [json_name="parameters"];
+}
+message ExternalCatalogTableOptions {
+  optional string connection_id = 1 [json_name="connectionId"];
+  map<string, string> parameters = 2 [json_name="parameters"];
+  optional StorageDescriptor storage_descriptor = 3 [json_name="storageDescriptor"];
+}
+message ExternalDataConfiguration {
+  optional bool autodetect = 1 [json_name="autodetect"];
+  optional AvroOptions avro_options = 2 [json_name="avroOptions"];
+  optional BigtableOptions bigtable_options = 3 [json_name="bigtableOptions"];
+  optional string compression = 4 [json_name="compression"];
+  optional string connection_id = 5 [json_name="connectionId"];
+  optional CsvOptions csv_options = 6 [json_name="csvOptions"];
+  repeated string decimal_target_types = 7 [json_name="decimalTargetTypes"];
+  optional string file_set_spec_type = 8 [json_name="fileSetSpecType"];
+  optional GoogleSheetsOptions google_sheets_options = 9 [json_name="googleSheetsOptions"];
+  optional HivePartitioningOptions hive_partitioning_options = 10 [json_name="hivePartitioningOptions"];
+  optional bool ignore_unknown_values = 11 [json_name="ignoreUnknownValues"];
+  optional string json_extension = 12 [json_name="jsonExtension"];
+  optional JsonOptions json_options = 13 [json_name="jsonOptions"];
+  optional int32 max_bad_records = 14 [json_name="maxBadRecords"];
+  optional string metadata_cache_mode = 15 [json_name="metadataCacheMode"];
+  optional string object_metadata = 16 [json_name="objectMetadata"];
+  optional ParquetOptions parquet_options = 17 [json_name="parquetOptions"];
+  optional string reference_file_schema_uri = 18 [json_name="referenceFileSchemaUri"];
+  optional TableSchema schema = 19 [json_name="schema"];
+  optional string source_format = 20 [json_name="sourceFormat"];
+  repeated string source_uris = 21 [json_name="sourceUris"];
+}
+message ExternalDatasetReference {
+  optional string connection = 1 [json_name="connection"];
+  optional string external_source = 2 [json_name="externalSource"];
+}
+message ExternalServiceCost {
+  optional int64 bytes_billed = 1 [json_name="bytesBilled"];
+  optional int64 bytes_processed = 2 [json_name="bytesProcessed"];
+  optional string external_service = 3 [json_name="externalService"];
+  optional int64 reserved_slot_count = 4 [json_name="reservedSlotCount"];
+  optional int64 slot_ms = 5 [json_name="slotMs"];
+}
+message FeatureValue {
+  optional CategoricalValue categorical_value = 1 [json_name="categoricalValue"];
+  optional string feature_column = 2 [json_name="featureColumn"];
+  optional double numerical_value = 3 [json_name="numericalValue"];
+}
+message ForeignTypeInfo {
+  optional string type_system = 1 [json_name="typeSystem"];
+}
+message GetIamPolicyRequest {
+  optional GetPolicyOptions options = 1 [json_name="options"];
+}
+message GetPolicyOptions {
+  optional int32 requested_policy_version = 1 [json_name="requestedPolicyVersion"];
+}
+message GetQueryResultsResponse {
+  optional bool cache_hit = 1 [json_name="cacheHit"];
+  repeated ErrorProto errors = 2 [json_name="errors"];
+  optional string etag = 3 [json_name="etag"];
+  optional bool job_complete = 4 [json_name="jobComplete"];
+  optional JobReference job_reference = 5 [json_name="jobReference"];
+  optional string kind = 6 [json_name="kind"];
+  optional int64 num_dml_affected_rows = 7 [json_name="numDmlAffectedRows"];
+  optional string page_token = 8 [json_name="pageToken"];
+  repeated TableRow rows = 9 [json_name="rows"];
+  optional TableSchema schema = 10 [json_name="schema"];
+  optional int64 total_bytes_processed = 11 [json_name="totalBytesProcessed"];
+  optional uint64 total_rows = 12 [json_name="totalRows"];
+}
+message GetServiceAccountResponse {
+  optional string email = 1 [json_name="email"];
+  optional string kind = 2 [json_name="kind"];
+}
+message GlobalExplanation {
+  optional string class_label = 1 [json_name="classLabel"];
+  repeated Explanation explanations = 2 [json_name="explanations"];
+}
+message GoogleSheetsOptions {
+  optional string range = 1 [json_name="range"];
+  optional int64 skip_leading_rows = 2 [json_name="skipLeadingRows"];
+}
+message HighCardinalityJoin {
+  optional int64 left_rows = 1 [json_name="leftRows"];
+  optional int64 output_rows = 2 [json_name="outputRows"];
+  optional int64 right_rows = 3 [json_name="rightRows"];
+  optional int32 step_index = 4 [json_name="stepIndex"];
+}
+message HivePartitioningOptions {
+  repeated string fields = 1 [json_name="fields"];
+  optional string mode = 2 [json_name="mode"];
+  optional bool require_partition_filter = 3 [json_name="requirePartitionFilter"];
+  optional string source_uri_prefix = 4 [json_name="sourceUriPrefix"];
+}
+message HparamSearchSpaces {
+  optional StringHparamSearchSpace activation_fn = 1 [json_name="activationFn"];
+  optional IntHparamSearchSpace batch_size = 2 [json_name="batchSize"];
+  optional StringHparamSearchSpace booster_type = 3 [json_name="boosterType"];
+  optional DoubleHparamSearchSpace colsample_bylevel = 4 [json_name="colsampleBylevel"];
+  optional DoubleHparamSearchSpace colsample_bynode = 5 [json_name="colsampleBynode"];
+  optional DoubleHparamSearchSpace colsample_bytree = 6 [json_name="colsampleBytree"];
+  optional StringHparamSearchSpace dart_normalize_type = 7 [json_name="dartNormalizeType"];
+  optional DoubleHparamSearchSpace dropout = 8 [json_name="dropout"];
+  optional IntArrayHparamSearchSpace hidden_units = 9 [json_name="hiddenUnits"];
+  optional DoubleHparamSearchSpace l1_reg = 10 [json_name="l1Reg"];
+  optional DoubleHparamSearchSpace l2_reg = 11 [json_name="l2Reg"];
+  optional DoubleHparamSearchSpace learn_rate = 12 [json_name="learnRate"];
+  optional IntHparamSearchSpace max_tree_depth = 13 [json_name="maxTreeDepth"];
+  optional DoubleHparamSearchSpace min_split_loss = 14 [json_name="minSplitLoss"];
+  optional IntHparamSearchSpace min_tree_child_weight = 15 [json_name="minTreeChildWeight"];
+  optional IntHparamSearchSpace num_clusters = 16 [json_name="numClusters"];
+  optional IntHparamSearchSpace num_factors = 17 [json_name="numFactors"];
+  optional IntHparamSearchSpace num_parallel_tree = 18 [json_name="numParallelTree"];
+  optional StringHparamSearchSpace optimizer = 19 [json_name="optimizer"];
+  optional DoubleHparamSearchSpace subsample = 20 [json_name="subsample"];
+  optional StringHparamSearchSpace tree_method = 21 [json_name="treeMethod"];
+  optional DoubleHparamSearchSpace wals_alpha = 22 [json_name="walsAlpha"];
+}
+message HparamTuningTrial {
+  optional int64 end_time_ms = 1 [json_name="endTimeMs"];
+  optional string error_message = 2 [json_name="errorMessage"];
+  optional double eval_loss = 3 [json_name="evalLoss"];
+  optional EvaluationMetrics evaluation_metrics = 4 [json_name="evaluationMetrics"];
+  optional EvaluationMetrics hparam_tuning_evaluation_metrics = 5 [json_name="hparamTuningEvaluationMetrics"];
+  optional TrainingOptions hparams = 6 [json_name="hparams"];
+  optional int64 start_time_ms = 7 [json_name="startTimeMs"];
+  optional string status = 8 [json_name="status"];
+  optional double training_loss = 9 [json_name="trainingLoss"];
+  optional int64 trial_id = 10 [json_name="trialId"];
+}
+message IndexUnusedReason {
+  optional TableReference base_table = 1 [json_name="baseTable"];
+  optional string code = 2 [json_name="code"];
+  optional string index_name = 3 [json_name="indexName"];
+  optional string message = 4 [json_name="message"];
+}
+message InputDataChange {
+  optional float records_read_diff_percentage = 1 [json_name="recordsReadDiffPercentage"];
+}
+message IntArray {
+  repeated int64 elements = 1 [json_name="elements"];
+}
+message IntArrayHparamSearchSpace {
+  repeated IntArray candidates = 1 [json_name="candidates"];
+}
+message IntCandidates {
+  repeated int64 candidates = 1 [json_name="candidates"];
+}
+message IntHparamSearchSpace {
+  optional IntCandidates candidates = 1 [json_name="candidates"];
+  optional IntRange range = 2 [json_name="range"];
+}
+message IntRange {
+  optional int64 max = 1 [json_name="max"];
+  optional int64 min = 2 [json_name="min"];
+}
+message IterationResult {
+  optional ArimaResult arima_result = 1 [json_name="arimaResult"];
+  repeated ClusterInfo cluster_infos = 2 [json_name="clusterInfos"];
+  optional int64 duration_ms = 3 [json_name="durationMs"];
+  optional double eval_loss = 4 [json_name="evalLoss"];
+  optional int32 index = 5 [json_name="index"];
+  optional double learn_rate = 6 [json_name="learnRate"];
+  repeated PrincipalComponentInfo principal_component_infos = 7 [json_name="principalComponentInfos"];
+  optional double training_loss = 8 [json_name="trainingLoss"];
+}
+message Job {
+  optional JobConfiguration configuration = 1 [json_name="configuration"];
+  optional string etag = 2 [json_name="etag"];
+  optional string id = 3 [json_name="id"];
+  optional JobCreationReason job_creation_reason = 4 [json_name="jobCreationReason"];
+  optional JobReference job_reference = 5 [json_name="jobReference"];
+  optional string kind = 6 [json_name="kind"];
+  optional string principal_subject = 7 [json_name="principal_subject"];
+  optional string self_link = 8 [json_name="selfLink"];
+  optional JobStatistics statistics = 9 [json_name="statistics"];
+  optional JobStatus status = 10 [json_name="status"];
+  optional string user_email = 11 [json_name="user_email"];
+}
+message JobCancelResponse {
+  optional Job job = 1 [json_name="job"];
+  optional string kind = 2 [json_name="kind"];
+}
+message JobConfiguration {
+  optional JobConfigurationTableCopy copy = 1 [json_name="copy"];
+  optional bool dry_run = 2 [json_name="dryRun"];
+  optional JobConfigurationExtract extract = 3 [json_name="extract"];
+  optional int64 job_timeout_ms = 4 [json_name="jobTimeoutMs"];
+  optional string job_type = 5 [json_name="jobType"];
+  map<string, string> labels = 6 [json_name="labels"];
+  optional JobConfigurationLoad load = 7 [json_name="load"];
+  optional JobConfigurationQuery query = 8 [json_name="query"];
+}
+message JobConfigurationExtract {
+  optional string compression = 1 [json_name="compression"];
+  optional string destination_format = 2 [json_name="destinationFormat"];
+  optional string destination_uri = 3 [json_name="destinationUri"];
+  repeated string destination_uris = 4 [json_name="destinationUris"];
+  optional string field_delimiter = 5 [json_name="fieldDelimiter"];
+  optional ModelExtractOptions model_extract_options = 6 [json_name="modelExtractOptions"];
+  optional bool print_header = 7 [json_name="printHeader"];
+  optional ModelReference source_model = 8 [json_name="sourceModel"];
+  optional TableReference source_table = 9 [json_name="sourceTable"];
+  optional bool use_avro_logical_types = 10 [json_name="useAvroLogicalTypes"];
+}
+message JobConfigurationLoad {
+  optional bool allow_jagged_rows = 1 [json_name="allowJaggedRows"];
+  optional bool allow_quoted_newlines = 2 [json_name="allowQuotedNewlines"];
+  optional bool autodetect = 3 [json_name="autodetect"];
+  optional Clustering clustering = 4 [json_name="clustering"];
+  repeated ConnectionProperty connection_properties = 5 [json_name="connectionProperties"];
+  optional bool copy_files_only = 6 [json_name="copyFilesOnly"];
+  optional string create_disposition = 7 [json_name="createDisposition"];
+  optional bool create_session = 8 [json_name="createSession"];
+  repeated string decimal_target_types = 9 [json_name="decimalTargetTypes"];
+  optional EncryptionConfiguration destination_encryption_configuration = 10 [json_name="destinationEncryptionConfiguration"];
+  optional TableReference destination_table = 11 [json_name="destinationTable"];
+  optional DestinationTableProperties destination_table_properties = 12 [json_name="destinationTableProperties"];
+  optional string encoding = 13 [json_name="encoding"];
+  optional string field_delimiter = 14 [json_name="fieldDelimiter"];
+  optional string file_set_spec_type = 15 [json_name="fileSetSpecType"];
+  optional HivePartitioningOptions hive_partitioning_options = 16 [json_name="hivePartitioningOptions"];
+  optional bool ignore_unknown_values = 17 [json_name="ignoreUnknownValues"];
+  optional string json_extension = 18 [json_name="jsonExtension"];
+  optional int32 max_bad_records = 19 [json_name="maxBadRecords"];
+  optional string null_marker = 20 [json_name="nullMarker"];
+  optional ParquetOptions parquet_options = 21 [json_name="parquetOptions"];
+  optional bool preserve_ascii_control_characters = 22 [json_name="preserveAsciiControlCharacters"];
+  repeated string projection_fields = 23 [json_name="projectionFields"];
+  optional string quote = 24 [json_name="quote"];
+  optional RangePartitioning range_partitioning = 25 [json_name="rangePartitioning"];
+  optional string reference_file_schema_uri = 26 [json_name="referenceFileSchemaUri"];
+  optional TableSchema schema = 27 [json_name="schema"];
+  optional string schema_inline = 28 [json_name="schemaInline"];
+  optional string schema_inline_format = 29 [json_name="schemaInlineFormat"];
+  repeated string schema_update_options = 30 [json_name="schemaUpdateOptions"];
+  optional int32 skip_leading_rows = 31 [json_name="skipLeadingRows"];
+  optional string source_format = 32 [json_name="sourceFormat"];
+  repeated string source_uris = 33 [json_name="sourceUris"];
+  optional TimePartitioning time_partitioning = 34 [json_name="timePartitioning"];
+  optional bool use_avro_logical_types = 35 [json_name="useAvroLogicalTypes"];
+  optional string write_disposition = 36 [json_name="writeDisposition"];
+}
+message JobConfigurationQuery {
+  optional bool allow_large_results = 1 [json_name="allowLargeResults"];
+  optional Clustering clustering = 2 [json_name="clustering"];
+  repeated ConnectionProperty connection_properties = 3 [json_name="connectionProperties"];
+  optional bool continuous = 4 [json_name="continuous"];
+  optional string create_disposition = 5 [json_name="createDisposition"];
+  optional bool create_session = 6 [json_name="createSession"];
+  optional DatasetReference default_dataset = 7 [json_name="defaultDataset"];
+  optional EncryptionConfiguration destination_encryption_configuration = 8 [json_name="destinationEncryptionConfiguration"];
+  optional TableReference destination_table = 9 [json_name="destinationTable"];
+  optional bool flatten_results = 10 [json_name="flattenResults"];
+  optional int32 maximum_billing_tier = 11 [json_name="maximumBillingTier"];
+  optional int64 maximum_bytes_billed = 12 [json_name="maximumBytesBilled"];
+  optional string parameter_mode = 13 [json_name="parameterMode"];
+  optional bool preserve_nulls = 14 [json_name="preserveNulls"];
+  optional string priority = 15 [json_name="priority"];
+  optional string query = 16 [json_name="query"];
+  repeated QueryParameter query_parameters = 17 [json_name="queryParameters"];
+  optional RangePartitioning range_partitioning = 18 [json_name="rangePartitioning"];
+  repeated string schema_update_options = 19 [json_name="schemaUpdateOptions"];
+  optional ScriptOptions script_options = 20 [json_name="scriptOptions"];
+  optional SystemVariables system_variables = 21 [json_name="systemVariables"];
+  map<string, ExternalDataConfiguration> table_definitions = 22 [json_name="tableDefinitions"];
+  optional TimePartitioning time_partitioning = 23 [json_name="timePartitioning"];
+  optional bool use_legacy_sql = 24 [json_name="useLegacySql"];
+  optional bool use_query_cache = 25 [json_name="useQueryCache"];
+  repeated UserDefinedFunctionResource user_defined_function_resources = 26 [json_name="userDefinedFunctionResources"];
+  optional string write_disposition = 27 [json_name="writeDisposition"];
+}
+message JobConfigurationTableCopy {
+  optional string create_disposition = 1 [json_name="createDisposition"];
+  optional EncryptionConfiguration destination_encryption_configuration = 2 [json_name="destinationEncryptionConfiguration"];
+  optional .google.protobuf.Timestamp destination_expiration_time = 3 [json_name="destinationExpirationTime"];
+  optional TableReference destination_table = 4 [json_name="destinationTable"];
+  optional string operation_type = 5 [json_name="operationType"];
+  optional TableReference source_table = 6 [json_name="sourceTable"];
+  repeated TableReference source_tables = 7 [json_name="sourceTables"];
+  optional string write_disposition = 8 [json_name="writeDisposition"];
+}
+message JobCreationReason {
+  optional string code = 1 [json_name="code"];
+}
+message JobListJobs {
+  optional JobConfiguration configuration = 1 [json_name="configuration"];
+  optional ErrorProto error_result = 2 [json_name="errorResult"];
+  optional string id = 3 [json_name="id"];
+  optional JobReference job_reference = 4 [json_name="jobReference"];
+  optional string kind = 5 [json_name="kind"];
+  optional string principal_subject = 6 [json_name="principal_subject"];
+  optional string state = 7 [json_name="state"];
+  optional JobStatistics statistics = 8 [json_name="statistics"];
+  optional JobStatus status = 9 [json_name="status"];
+  optional string user_email = 10 [json_name="user_email"];
+}
+message JobList {
+  optional string etag = 1 [json_name="etag"];
+  repeated JobListJobs jobs = 2 [json_name="jobs"];
+  optional string kind = 3 [json_name="kind"];
+  optional string next_page_token = 4 [json_name="nextPageToken"];
+  repeated string unreachable = 5 [json_name="unreachable"];
+}
+message JobReference {
+  optional string job_id = 1 [json_name="jobId"];
+  optional string location = 2 [json_name="location"];
+  optional string project_id = 3 [json_name="projectId"];
+}
+message JobStatisticsReservationUsage {
+  optional string name = 1 [json_name="name"];
+  optional int64 slot_ms = 2 [json_name="slotMs"];
+}
+message JobStatistics {
+  optional double completion_ratio = 1 [json_name="completionRatio"];
+  optional JobStatistics5 copy = 2 [json_name="copy"];
+  optional int64 creation_time = 3 [json_name="creationTime"];
+  optional DataMaskingStatistics data_masking_statistics = 4 [json_name="dataMaskingStatistics"];
+  optional int64 end_time = 5 [json_name="endTime"];
+  optional JobStatistics4 extract = 6 [json_name="extract"];
+  optional int64 final_execution_duration_ms = 7 [json_name="finalExecutionDurationMs"];
+  optional JobStatistics3 load = 8 [json_name="load"];
+  optional int64 num_child_jobs = 9 [json_name="numChildJobs"];
+  optional string parent_job_id = 10 [json_name="parentJobId"];
+  optional JobStatistics2 query = 11 [json_name="query"];
+  repeated string quota_deferments = 12 [json_name="quotaDeferments"];
+  repeated JobStatisticsReservationUsage reservation_usage = 13 [json_name="reservationUsage"];
+  optional string reservation_id = 14 [json_name="reservation_id"];
+  optional RowLevelSecurityStatistics row_level_security_statistics = 15 [json_name="rowLevelSecurityStatistics"];
+  optional ScriptStatistics script_statistics = 16 [json_name="scriptStatistics"];
+  optional SessionInfo session_info = 17 [json_name="sessionInfo"];
+  optional int64 start_time = 18 [json_name="startTime"];
+  optional int64 total_bytes_processed = 19 [json_name="totalBytesProcessed"];
+  optional int64 total_slot_ms = 20 [json_name="totalSlotMs"];
+  optional TransactionInfo transaction_info = 21 [json_name="transactionInfo"];
+}
+message JobStatistics2ReservationUsage {
+  optional string name = 1 [json_name="name"];
+  optional int64 slot_ms = 2 [json_name="slotMs"];
+}
+message JobStatistics2 {
+  optional BiEngineStatistics bi_engine_statistics = 1 [json_name="biEngineStatistics"];
+  optional int32 billing_tier = 2 [json_name="billingTier"];
+  optional bool cache_hit = 3 [json_name="cacheHit"];
+  optional DatasetReference dcl_target_dataset = 4 [json_name="dclTargetDataset"];
+  optional TableReference dcl_target_table = 5 [json_name="dclTargetTable"];
+  optional TableReference dcl_target_view = 6 [json_name="dclTargetView"];
+  optional int64 ddl_affected_row_access_policy_count = 7 [json_name="ddlAffectedRowAccessPolicyCount"];
+  optional TableReference ddl_destination_table = 8 [json_name="ddlDestinationTable"];
+  optional string ddl_operation_performed = 9 [json_name="ddlOperationPerformed"];
+  optional DatasetReference ddl_target_dataset = 10 [json_name="ddlTargetDataset"];
+  optional RoutineReference ddl_target_routine = 11 [json_name="ddlTargetRoutine"];
+  optional RowAccessPolicyReference ddl_target_row_access_policy = 12 [json_name="ddlTargetRowAccessPolicy"];
+  optional TableReference ddl_target_table = 13 [json_name="ddlTargetTable"];
+  optional DmlStatistics dml_stats = 14 [json_name="dmlStats"];
+  optional int64 estimated_bytes_processed = 15 [json_name="estimatedBytesProcessed"];
+  optional ExportDataStatistics export_data_statistics = 16 [json_name="exportDataStatistics"];
+  repeated ExternalServiceCost external_service_costs = 17 [json_name="externalServiceCosts"];
+  optional LoadQueryStatistics load_query_statistics = 18 [json_name="loadQueryStatistics"];
+  optional MaterializedViewStatistics materialized_view_statistics = 19 [json_name="materializedViewStatistics"];
+  optional MetadataCacheStatistics metadata_cache_statistics = 20 [json_name="metadataCacheStatistics"];
+  optional MlStatistics ml_statistics = 21 [json_name="mlStatistics"];
+  optional BigQueryModelTraining model_training = 22 [json_name="modelTraining"];
+  optional int32 model_training_current_iteration = 23 [json_name="modelTrainingCurrentIteration"];
+  optional int64 model_training_expected_total_iteration = 24 [json_name="modelTrainingExpectedTotalIteration"];
+  optional int64 num_dml_affected_rows = 25 [json_name="numDmlAffectedRows"];
+  optional PerformanceInsights performance_insights = 26 [json_name="performanceInsights"];
+  optional QueryInfo query_info = 27 [json_name="queryInfo"];
+  repeated ExplainQueryStage query_plan = 28 [json_name="queryPlan"];
+  repeated RoutineReference referenced_routines = 29 [json_name="referencedRoutines"];
+  repeated TableReference referenced_tables = 30 [json_name="referencedTables"];
+  repeated JobStatistics2ReservationUsage reservation_usage = 31 [json_name="reservationUsage"];
+  optional TableSchema schema = 32 [json_name="schema"];
+  optional SearchStatistics search_statistics = 33 [json_name="searchStatistics"];
+  optional SparkStatistics spark_statistics = 34 [json_name="sparkStatistics"];
+  optional string statement_type = 35 [json_name="statementType"];
+  repeated QueryTimelineSample timeline = 36 [json_name="timeline"];
+  optional int64 total_bytes_billed = 37 [json_name="totalBytesBilled"];
+  optional int64 total_bytes_processed = 38 [json_name="totalBytesProcessed"];
+  optional string total_bytes_processed_accuracy = 39 [json_name="totalBytesProcessedAccuracy"];
+  optional int64 total_partitions_processed = 40 [json_name="totalPartitionsProcessed"];
+  optional int64 total_slot_ms = 41 [json_name="totalSlotMs"];
+  optional int64 transferred_bytes = 42 [json_name="transferredBytes"];
+  repeated QueryParameter undeclared_query_parameters = 43 [json_name="undeclaredQueryParameters"];
+  optional VectorSearchStatistics vector_search_statistics = 44 [json_name="vectorSearchStatistics"];
+}
+message JobStatistics3 {
+  optional int64 bad_records = 1 [json_name="badRecords"];
+  optional int64 input_file_bytes = 2 [json_name="inputFileBytes"];
+  optional int64 input_files = 3 [json_name="inputFiles"];
+  optional int64 output_bytes = 4 [json_name="outputBytes"];
+  optional int64 output_rows = 5 [json_name="outputRows"];
+  repeated QueryTimelineSample timeline = 6 [json_name="timeline"];
+}
+message JobStatistics4 {
+  repeated int64 destination_uri_file_counts = 1 [json_name="destinationUriFileCounts"];
+  optional int64 input_bytes = 2 [json_name="inputBytes"];
+  repeated QueryTimelineSample timeline = 3 [json_name="timeline"];
+}
+message JobStatistics5 {
+  optional int64 copied_logical_bytes = 1 [json_name="copiedLogicalBytes"];
+  optional int64 copied_rows = 2 [json_name="copiedRows"];
+}
+message JobStatus {
+  optional ErrorProto error_result = 1 [json_name="errorResult"];
+  repeated ErrorProto errors = 2 [json_name="errors"];
+  optional string state = 3 [json_name="state"];
+}
+message JoinRestrictionPolicy {
+  repeated string join_allowed_columns = 1 [json_name="joinAllowedColumns"];
+  optional string join_condition = 2 [json_name="joinCondition"];
+}
+message JsonObject {
+}
+message JsonOptions {
+  optional string encoding = 1 [json_name="encoding"];
+}
+message LinkedDatasetMetadata {
+  optional string link_state = 1 [json_name="linkState"];
+}
+message LinkedDatasetSource {
+  optional DatasetReference source_dataset = 1 [json_name="sourceDataset"];
+}
+message ListModelsResponse {
+  repeated Model models = 1 [json_name="models"];
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+message ListRoutinesResponse {
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  repeated Routine routines = 2 [json_name="routines"];
+}
+message ListRowAccessPoliciesResponse {
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  repeated RowAccessPolicy row_access_policies = 2 [json_name="rowAccessPolicies"];
+}
+message LoadQueryStatistics {
+  optional int64 bad_records = 1 [json_name="badRecords"];
+  optional int64 bytes_transferred = 2 [json_name="bytesTransferred"];
+  optional int64 input_file_bytes = 3 [json_name="inputFileBytes"];
+  optional int64 input_files = 4 [json_name="inputFiles"];
+  optional int64 output_bytes = 5 [json_name="outputBytes"];
+  optional int64 output_rows = 6 [json_name="outputRows"];
+}
+message LocationMetadata {
+  optional string legacy_location_id = 1 [json_name="legacyLocationId"];
+}
+message MaterializedView {
+  optional bool chosen = 1 [json_name="chosen"];
+  optional int64 estimated_bytes_saved = 2 [json_name="estimatedBytesSaved"];
+  optional string rejected_reason = 3 [json_name="rejectedReason"];
+  optional TableReference table_reference = 4 [json_name="tableReference"];
+}
+message MaterializedViewDefinition {
+  optional bool allow_non_incremental_definition = 1 [json_name="allowNonIncrementalDefinition"];
+  optional bool enable_refresh = 2 [json_name="enableRefresh"];
+  optional int64 last_refresh_time = 3 [json_name="lastRefreshTime"];
+  optional bytes max_staleness = 4 [json_name="maxStaleness"];
+  optional string query = 5 [json_name="query"];
+  optional int64 refresh_interval_ms = 6 [json_name="refreshIntervalMs"];
+}
+message MaterializedViewStatistics {
+  repeated MaterializedView materialized_view = 1 [json_name="materializedView"];
+}
+message MaterializedViewStatus {
+  optional ErrorProto last_refresh_status = 1 [json_name="lastRefreshStatus"];
+  optional .google.protobuf.Timestamp refresh_watermark = 2 [json_name="refreshWatermark"];
+}
+message MetadataCacheStatistics {
+  repeated TableMetadataCacheUsage table_metadata_cache_usage = 1 [json_name="tableMetadataCacheUsage"];
+}
+message MlStatistics {
+  repeated HparamTuningTrial hparam_trials = 1 [json_name="hparamTrials"];
+  repeated IterationResult iteration_results = 2 [json_name="iterationResults"];
+  optional int64 max_iterations = 3 [json_name="maxIterations"];
+  optional string model_type = 4 [json_name="modelType"];
+  optional string training_type = 5 [json_name="trainingType"];
+}
+message Model {
+  optional int64 best_trial_id = 1 [json_name="bestTrialId"];
+  optional int64 creation_time = 2 [json_name="creationTime"];
+  optional int64 default_trial_id = 3 [json_name="defaultTrialId"];
+  optional string description = 4 [json_name="description"];
+  optional EncryptionConfiguration encryption_configuration = 5 [json_name="encryptionConfiguration"];
+  optional string etag = 6 [json_name="etag"];
+  optional int64 expiration_time = 7 [json_name="expirationTime"];
+  repeated StandardSqlField feature_columns = 8 [json_name="featureColumns"];
+  optional string friendly_name = 9 [json_name="friendlyName"];
+  optional HparamSearchSpaces hparam_search_spaces = 10 [json_name="hparamSearchSpaces"];
+  repeated HparamTuningTrial hparam_trials = 11 [json_name="hparamTrials"];
+  repeated StandardSqlField label_columns = 12 [json_name="labelColumns"];
+  map<string, string> labels = 13 [json_name="labels"];
+  optional int64 last_modified_time = 14 [json_name="lastModifiedTime"];
+  optional string location = 15 [json_name="location"];
+  optional ModelReference model_reference = 16 [json_name="modelReference"];
+  optional string model_type = 17 [json_name="modelType"];
+  repeated int64 optimal_trial_ids = 18 [json_name="optimalTrialIds"];
+  optional RemoteModelInfo remote_model_info = 19 [json_name="remoteModelInfo"];
+  repeated TrainingRun training_runs = 20 [json_name="trainingRuns"];
+  repeated TransformColumn transform_columns = 21 [json_name="transformColumns"];
+}
+message ModelDefinitionModelOptions {
+  repeated string labels = 1 [json_name="labels"];
+  optional string loss_type = 2 [json_name="lossType"];
+  optional string model_type = 3 [json_name="modelType"];
+}
+message ModelDefinition {
+  optional ModelDefinitionModelOptions model_options = 1 [json_name="modelOptions"];
+  repeated BqmlTrainingRun training_runs = 2 [json_name="trainingRuns"];
+}
+message ModelExtractOptions {
+  optional int64 trial_id = 1 [json_name="trialId"];
+}
+message ModelReference {
+  optional string dataset_id = 1 [json_name="datasetId"];
+  optional string model_id = 2 [json_name="modelId"];
+  optional string project_id = 3 [json_name="projectId"];
+}
+message MultiClassClassificationMetrics {
+  optional AggregateClassificationMetrics aggregate_classification_metrics = 1 [json_name="aggregateClassificationMetrics"];
+  repeated ConfusionMatrix confusion_matrix_list = 2 [json_name="confusionMatrixList"];
+}
+message ParquetOptions {
+  optional bool enable_list_inference = 1 [json_name="enableListInference"];
+  optional bool enum_as_string = 2 [json_name="enumAsString"];
+  optional string map_target_type = 3 [json_name="mapTargetType"];
+}
+message PartitionSkew {
+  repeated SkewSource skew_sources = 1 [json_name="skewSources"];
+}
+message PartitionedColumn {
+  optional string field = 1 [json_name="field"];
+}
+message PartitioningDefinition {
+  repeated PartitionedColumn partitioned_column = 1 [json_name="partitionedColumn"];
+}
+message PerformanceInsights {
+  optional int64 avg_previous_execution_ms = 1 [json_name="avgPreviousExecutionMs"];
+  repeated StagePerformanceChangeInsight stage_performance_change_insights = 2 [json_name="stagePerformanceChangeInsights"];
+  repeated StagePerformanceStandaloneInsight stage_performance_standalone_insights = 3 [json_name="stagePerformanceStandaloneInsights"];
+}
+message Policy {
+  repeated AuditConfig audit_configs = 1 [json_name="auditConfigs"];
+  repeated Binding bindings = 2 [json_name="bindings"];
+  optional bytes etag = 3 [json_name="etag"];
+  optional int32 version = 4 [json_name="version"];
+}
+message PrincipalComponentInfo {
+  optional double cumulative_explained_variance_ratio = 1 [json_name="cumulativeExplainedVarianceRatio"];
+  optional double explained_variance = 2 [json_name="explainedVariance"];
+  optional double explained_variance_ratio = 3 [json_name="explainedVarianceRatio"];
+  optional int64 principal_component_id = 4 [json_name="principalComponentId"];
+}
+message PrivacyPolicy {
+  optional AggregationThresholdPolicy aggregation_threshold_policy = 1 [json_name="aggregationThresholdPolicy"];
+  optional DifferentialPrivacyPolicy differential_privacy_policy = 2 [json_name="differentialPrivacyPolicy"];
+  optional JoinRestrictionPolicy join_restriction_policy = 3 [json_name="joinRestrictionPolicy"];
+}
+message ProjectListProjects {
+  optional string friendly_name = 1 [json_name="friendlyName"];
+  optional string id = 2 [json_name="id"];
+  optional string kind = 3 [json_name="kind"];
+  optional uint64 numeric_id = 4 [json_name="numericId"];
+  optional ProjectReference project_reference = 5 [json_name="projectReference"];
+}
+message ProjectList {
+  optional string etag = 1 [json_name="etag"];
+  optional string kind = 2 [json_name="kind"];
+  optional string next_page_token = 3 [json_name="nextPageToken"];
+  repeated ProjectListProjects projects = 4 [json_name="projects"];
+  optional int32 total_items = 5 [json_name="totalItems"];
+}
+message ProjectReference {
+  optional string project_id = 1 [json_name="projectId"];
+}
+message QueryInfo {
+  map<string, .google.protobuf.Any> optimization_details = 1 [json_name="optimizationDetails"];
+}
+message QueryParameter {
+  optional string name = 1 [json_name="name"];
+  optional QueryParameterType parameter_type = 2 [json_name="parameterType"];
+  optional QueryParameterValue parameter_value = 3 [json_name="parameterValue"];
+}
+message QueryParameterTypeStructTypes {
+  optional string description = 1 [json_name="description"];
+  optional string name = 2 [json_name="name"];
+  optional QueryParameterType type = 3 [json_name="type"];
+}
+message QueryParameterType {
+  optional QueryParameterType array_type = 1 [json_name="arrayType"];
+  optional QueryParameterType range_element_type = 2 [json_name="rangeElementType"];
+  repeated QueryParameterTypeStructTypes struct_types = 3 [json_name="structTypes"];
+  optional string type = 4 [json_name="type"];
+}
+message QueryParameterValue {
+  repeated QueryParameterValue array_values = 1 [json_name="arrayValues"];
+  optional RangeValue range_value = 2 [json_name="rangeValue"];
+  map<string, QueryParameterValue> struct_values = 3 [json_name="structValues"];
+  optional string value = 4 [json_name="value"];
+}
+message QueryRequest {
+  repeated ConnectionProperty connection_properties = 1 [json_name="connectionProperties"];
+  optional bool continuous = 2 [json_name="continuous"];
+  optional bool create_session = 3 [json_name="createSession"];
+  optional DatasetReference default_dataset = 4 [json_name="defaultDataset"];
+  optional bool dry_run = 5 [json_name="dryRun"];
+  optional DataFormatOptions format_options = 6 [json_name="formatOptions"];
+  optional string job_creation_mode = 7 [json_name="jobCreationMode"];
+  optional string kind = 8 [json_name="kind"];
+  map<string, string> labels = 9 [json_name="labels"];
+  optional string location = 10 [json_name="location"];
+  optional uint32 max_results = 11 [json_name="maxResults"];
+  optional int64 maximum_bytes_billed = 12 [json_name="maximumBytesBilled"];
+  optional string parameter_mode = 13 [json_name="parameterMode"];
+  optional bool preserve_nulls = 14 [json_name="preserveNulls"];
+  optional string query = 15 [json_name="query"];
+  repeated QueryParameter query_parameters = 16 [json_name="queryParameters"];
+  optional string request_id = 17 [json_name="requestId"];
+  optional uint32 timeout_ms = 18 [json_name="timeoutMs"];
+  optional bool use_legacy_sql = 19 [json_name="useLegacySql"];
+  optional bool use_query_cache = 20 [json_name="useQueryCache"];
+}
+message QueryResponse {
+  optional bool cache_hit = 1 [json_name="cacheHit"];
+  optional DmlStatistics dml_stats = 2 [json_name="dmlStats"];
+  repeated ErrorProto errors = 3 [json_name="errors"];
+  optional bool job_complete = 4 [json_name="jobComplete"];
+  optional JobCreationReason job_creation_reason = 5 [json_name="jobCreationReason"];
+  optional JobReference job_reference = 6 [json_name="jobReference"];
+  optional string kind = 7 [json_name="kind"];
+  optional int64 num_dml_affected_rows = 8 [json_name="numDmlAffectedRows"];
+  optional string page_token = 9 [json_name="pageToken"];
+  optional string query_id = 10 [json_name="queryId"];
+  repeated TableRow rows = 11 [json_name="rows"];
+  optional TableSchema schema = 12 [json_name="schema"];
+  optional SessionInfo session_info = 13 [json_name="sessionInfo"];
+  optional int64 total_bytes_processed = 14 [json_name="totalBytesProcessed"];
+  optional uint64 total_rows = 15 [json_name="totalRows"];
+}
+message QueryTimelineSample {
+  optional int64 active_units = 1 [json_name="activeUnits"];
+  optional int64 completed_units = 2 [json_name="completedUnits"];
+  optional int64 elapsed_ms = 3 [json_name="elapsedMs"];
+  optional int64 estimated_runnable_units = 4 [json_name="estimatedRunnableUnits"];
+  optional int64 pending_units = 5 [json_name="pendingUnits"];
+  optional int64 total_slot_ms = 6 [json_name="totalSlotMs"];
+}
+message RangePartitioningRange {
+  optional int64 end = 1 [json_name="end"];
+  optional int64 interval = 2 [json_name="interval"];
+  optional int64 start = 3 [json_name="start"];
+}
+message RangePartitioning {
+  optional string field = 1 [json_name="field"];
+  optional RangePartitioningRange range = 2 [json_name="range"];
+}
+message RangeValue {
+  optional QueryParameterValue end = 1 [json_name="end"];
+  optional QueryParameterValue start = 2 [json_name="start"];
+}
+message RankingMetrics {
+  optional double average_rank = 1 [json_name="averageRank"];
+  optional double mean_average_precision = 2 [json_name="meanAveragePrecision"];
+  optional double mean_squared_error = 3 [json_name="meanSquaredError"];
+  optional double normalized_discounted_cumulative_gain = 4 [json_name="normalizedDiscountedCumulativeGain"];
+}
+message RegressionMetrics {
+  optional double mean_absolute_error = 1 [json_name="meanAbsoluteError"];
+  optional double mean_squared_error = 2 [json_name="meanSquaredError"];
+  optional double mean_squared_log_error = 3 [json_name="meanSquaredLogError"];
+  optional double median_absolute_error = 4 [json_name="medianAbsoluteError"];
+  optional double r_squared = 5 [json_name="rSquared"];
+}
+message RemoteFunctionOptions {
+  optional string connection = 1 [json_name="connection"];
+  optional string endpoint = 2 [json_name="endpoint"];
+  optional int64 max_batching_rows = 3 [json_name="maxBatchingRows"];
+  map<string, string> user_defined_context = 4 [json_name="userDefinedContext"];
+}
+message RemoteModelInfo {
+  optional string connection = 1 [json_name="connection"];
+  optional string endpoint = 2 [json_name="endpoint"];
+  optional int64 max_batching_rows = 3 [json_name="maxBatchingRows"];
+  optional string remote_model_version = 4 [json_name="remoteModelVersion"];
+  optional string remote_service_type = 5 [json_name="remoteServiceType"];
+  optional string speech_recognizer = 6 [json_name="speechRecognizer"];
+}
+message RestrictionConfig {
+  optional string type = 1 [json_name="type"];
+}
+message Routine {
+  repeated Argument arguments = 1 [json_name="arguments"];
+  optional int64 creation_time = 2 [json_name="creationTime"];
+  optional string data_governance_type = 3 [json_name="dataGovernanceType"];
+  optional string definition_body = 4 [json_name="definitionBody"];
+  optional string description = 5 [json_name="description"];
+  optional string determinism_level = 6 [json_name="determinismLevel"];
+  optional string etag = 7 [json_name="etag"];
+  repeated string imported_libraries = 8 [json_name="importedLibraries"];
+  optional string language = 9 [json_name="language"];
+  optional int64 last_modified_time = 10 [json_name="lastModifiedTime"];
+  optional RemoteFunctionOptions remote_function_options = 11 [json_name="remoteFunctionOptions"];
+  optional StandardSqlTableType return_table_type = 12 [json_name="returnTableType"];
+  optional StandardSqlDataType return_type = 13 [json_name="returnType"];
+  optional RoutineReference routine_reference = 14 [json_name="routineReference"];
+  optional string routine_type = 15 [json_name="routineType"];
+  optional string security_mode = 16 [json_name="securityMode"];
+  optional SparkOptions spark_options = 17 [json_name="sparkOptions"];
+  optional bool strict_mode = 18 [json_name="strictMode"];
+}
+message RoutineReference {
+  optional string dataset_id = 1 [json_name="datasetId"];
+  optional string project_id = 2 [json_name="projectId"];
+  optional string routine_id = 3 [json_name="routineId"];
+}
+message Row {
+  optional string actual_label = 1 [json_name="actualLabel"];
+  repeated Entry entries = 2 [json_name="entries"];
+}
+message RowAccessPolicy {
+  optional .google.protobuf.Timestamp creation_time = 1 [json_name="creationTime"];
+  optional string etag = 2 [json_name="etag"];
+  optional string filter_predicate = 3 [json_name="filterPredicate"];
+  optional .google.protobuf.Timestamp last_modified_time = 4 [json_name="lastModifiedTime"];
+  optional RowAccessPolicyReference row_access_policy_reference = 5 [json_name="rowAccessPolicyReference"];
+}
+message RowAccessPolicyReference {
+  optional string dataset_id = 1 [json_name="datasetId"];
+  optional string policy_id = 2 [json_name="policyId"];
+  optional string project_id = 3 [json_name="projectId"];
+  optional string table_id = 4 [json_name="tableId"];
+}
+message RowLevelSecurityStatistics {
+  optional bool row_level_security_applied = 1 [json_name="rowLevelSecurityApplied"];
+}
+message ScriptOptions {
+  optional string key_result_statement = 1 [json_name="keyResultStatement"];
+  optional int64 statement_byte_budget = 2 [json_name="statementByteBudget"];
+  optional int64 statement_timeout_ms = 3 [json_name="statementTimeoutMs"];
+}
+message ScriptStackFrame {
+  optional int32 end_column = 1 [json_name="endColumn"];
+  optional int32 end_line = 2 [json_name="endLine"];
+  optional string procedure_id = 3 [json_name="procedureId"];
+  optional int32 start_column = 4 [json_name="startColumn"];
+  optional int32 start_line = 5 [json_name="startLine"];
+  optional string text = 6 [json_name="text"];
+}
+message ScriptStatistics {
+  optional string evaluation_kind = 1 [json_name="evaluationKind"];
+  repeated ScriptStackFrame stack_frames = 2 [json_name="stackFrames"];
+}
+message SearchStatistics {
+  repeated IndexUnusedReason index_unused_reasons = 1 [json_name="indexUnusedReasons"];
+  optional string index_usage_mode = 2 [json_name="indexUsageMode"];
+}
+message SerDeInfo {
+  optional string name = 1 [json_name="name"];
+  map<string, string> parameters = 2 [json_name="parameters"];
+  optional string serialization_library = 3 [json_name="serializationLibrary"];
+}
+message SessionInfo {
+  optional string session_id = 1 [json_name="sessionId"];
+}
+message SetIamPolicyRequest {
+  optional Policy policy = 1 [json_name="policy"];
+  optional string update_mask = 2 [json_name="updateMask"];
+}
+message SkewSource {
+  optional int64 stage_id = 1 [json_name="stageId"];
+}
+message SnapshotDefinition {
+  optional TableReference base_table_reference = 1 [json_name="baseTableReference"];
+  optional .google.protobuf.Timestamp snapshot_time = 2 [json_name="snapshotTime"];
+}
+message SparkLoggingInfo {
+  optional string project_id = 1 [json_name="projectId"];
+  optional string resource_type = 2 [json_name="resourceType"];
+}
+message SparkOptions {
+  repeated string archive_uris = 1 [json_name="archiveUris"];
+  optional string connection = 2 [json_name="connection"];
+  optional string container_image = 3 [json_name="containerImage"];
+  repeated string file_uris = 4 [json_name="fileUris"];
+  repeated string jar_uris = 5 [json_name="jarUris"];
+  optional string main_class = 6 [json_name="mainClass"];
+  optional string main_file_uri = 7 [json_name="mainFileUri"];
+  map<string, string> properties = 8 [json_name="properties"];
+  repeated string py_file_uris = 9 [json_name="pyFileUris"];
+  optional string runtime_version = 10 [json_name="runtimeVersion"];
+}
+message SparkStatistics {
+  map<string, string> endpoints = 1 [json_name="endpoints"];
+  optional string gcs_staging_bucket = 2 [json_name="gcsStagingBucket"];
+  optional string kms_key_name = 3 [json_name="kmsKeyName"];
+  optional SparkLoggingInfo logging_info = 4 [json_name="loggingInfo"];
+  optional string spark_job_id = 5 [json_name="sparkJobId"];
+  optional string spark_job_location = 6 [json_name="sparkJobLocation"];
+}
+message StagePerformanceChangeInsight {
+  optional InputDataChange input_data_change = 1 [json_name="inputDataChange"];
+  optional int64 stage_id = 2 [json_name="stageId"];
+}
+message StagePerformanceStandaloneInsight {
+  repeated BiEngineReason bi_engine_reasons = 1 [json_name="biEngineReasons"];
+  repeated HighCardinalityJoin high_cardinality_joins = 2 [json_name="highCardinalityJoins"];
+  optional bool insufficient_shuffle_quota = 3 [json_name="insufficientShuffleQuota"];
+  optional PartitionSkew partition_skew = 4 [json_name="partitionSkew"];
+  optional bool slot_contention = 5 [json_name="slotContention"];
+  optional int64 stage_id = 6 [json_name="stageId"];
+}
+message StandardSqlDataType {
+  optional StandardSqlDataType array_element_type = 1 [json_name="arrayElementType"];
+  optional StandardSqlDataType range_element_type = 2 [json_name="rangeElementType"];
+  optional StandardSqlStructType struct_type = 3 [json_name="structType"];
+  optional string type_kind = 4 [json_name="typeKind"];
+}
+message StandardSqlField {
+  optional string name = 1 [json_name="name"];
+  optional StandardSqlDataType type = 2 [json_name="type"];
+}
+message StandardSqlStructType {
+  repeated StandardSqlField fields = 1 [json_name="fields"];
+}
+message StandardSqlTableType {
+  repeated StandardSqlField columns = 1 [json_name="columns"];
+}
+message StorageDescriptor {
+  optional string input_format = 1 [json_name="inputFormat"];
+  optional string location_uri = 2 [json_name="locationUri"];
+  optional string output_format = 3 [json_name="outputFormat"];
+  optional SerDeInfo serde_info = 4 [json_name="serdeInfo"];
+}
+message Streamingbuffer {
+  optional uint64 estimated_bytes = 1 [json_name="estimatedBytes"];
+  optional uint64 estimated_rows = 2 [json_name="estimatedRows"];
+  optional uint64 oldest_entry_time = 3 [json_name="oldestEntryTime"];
+}
+message StringHparamSearchSpace {
+  repeated string candidates = 1 [json_name="candidates"];
+}
+message SystemVariables {
+  map<string, StandardSqlDataType> types = 1 [json_name="types"];
+  map<string, .google.protobuf.Any> values = 2 [json_name="values"];
+}
+message Table {
+  optional BigLakeConfiguration biglake_configuration = 1 [json_name="biglakeConfiguration"];
+  optional CloneDefinition clone_definition = 2 [json_name="cloneDefinition"];
+  optional Clustering clustering = 3 [json_name="clustering"];
+  optional int64 creation_time = 4 [json_name="creationTime"];
+  optional string default_collation = 5 [json_name="defaultCollation"];
+  optional string default_rounding_mode = 6 [json_name="defaultRoundingMode"];
+  optional string description = 7 [json_name="description"];
+  optional EncryptionConfiguration encryption_configuration = 8 [json_name="encryptionConfiguration"];
+  optional string etag = 9 [json_name="etag"];
+  optional int64 expiration_time = 10 [json_name="expirationTime"];
+  optional ExternalCatalogTableOptions external_catalog_table_options = 11 [json_name="externalCatalogTableOptions"];
+  optional ExternalDataConfiguration external_data_configuration = 12 [json_name="externalDataConfiguration"];
+  optional string friendly_name = 13 [json_name="friendlyName"];
+  optional string id = 14 [json_name="id"];
+  optional string kind = 15 [json_name="kind"];
+  map<string, string> labels = 16 [json_name="labels"];
+  optional uint64 last_modified_time = 17 [json_name="lastModifiedTime"];
+  optional string location = 18 [json_name="location"];
+  optional MaterializedViewDefinition materialized_view = 19 [json_name="materializedView"];
+  optional MaterializedViewStatus materialized_view_status = 20 [json_name="materializedViewStatus"];
+  optional string max_staleness = 21 [json_name="maxStaleness"];
+  optional ModelDefinition model = 22 [json_name="model"];
+  optional int64 num_active_logical_bytes = 23 [json_name="numActiveLogicalBytes"];
+  optional int64 num_active_physical_bytes = 24 [json_name="numActivePhysicalBytes"];
+  optional int64 num_bytes = 25 [json_name="numBytes"];
+  optional int64 num_long_term_bytes = 26 [json_name="numLongTermBytes"];
+  optional int64 num_long_term_logical_bytes = 27 [json_name="numLongTermLogicalBytes"];
+  optional int64 num_long_term_physical_bytes = 28 [json_name="numLongTermPhysicalBytes"];
+  optional int64 num_partitions = 29 [json_name="numPartitions"];
+  optional int64 num_physical_bytes = 30 [json_name="numPhysicalBytes"];
+  optional uint64 num_rows = 31 [json_name="numRows"];
+  optional int64 num_time_travel_physical_bytes = 32 [json_name="numTimeTravelPhysicalBytes"];
+  optional int64 num_total_logical_bytes = 33 [json_name="numTotalLogicalBytes"];
+  optional int64 num_total_physical_bytes = 34 [json_name="numTotalPhysicalBytes"];
+  optional PartitioningDefinition partition_definition = 35 [json_name="partitionDefinition"];
+  optional RangePartitioning range_partitioning = 36 [json_name="rangePartitioning"];
+  repeated TableReference replicas = 37 [json_name="replicas"];
+  optional bool require_partition_filter = 38 [json_name="requirePartitionFilter"];
+  map<string, string> resource_tags = 39 [json_name="resourceTags"];
+  optional RestrictionConfig restrictions = 40 [json_name="restrictions"];
+  optional TableSchema schema = 41 [json_name="schema"];
+  optional string self_link = 42 [json_name="selfLink"];
+  optional SnapshotDefinition snapshot_definition = 43 [json_name="snapshotDefinition"];
+  optional Streamingbuffer streaming_buffer = 44 [json_name="streamingBuffer"];
+  optional TableConstraints table_constraints = 45 [json_name="tableConstraints"];
+  optional TableReference table_reference = 46 [json_name="tableReference"];
+  optional TableReplicationInfo table_replication_info = 47 [json_name="tableReplicationInfo"];
+  optional TimePartitioning time_partitioning = 48 [json_name="timePartitioning"];
+  optional string type = 49 [json_name="type"];
+  optional ViewDefinition view = 50 [json_name="view"];
+}
+message TableCell {
+  optional .google.protobuf.Any v = 1 [json_name="v"];
+}
+message ColumnReferences {
+  optional string referenced_column = 1 [json_name="referencedColumn"];
+  optional string referencing_column = 2 [json_name="referencingColumn"];
+}
+message ReferencedTable {
+  optional string dataset_id = 1 [json_name="datasetId"];
+  optional string project_id = 2 [json_name="projectId"];
+  optional string table_id = 3 [json_name="tableId"];
+}
+message TableConstraintsForeignKeys {
+  repeated ColumnReferences column_references = 1 [json_name="columnReferences"];
+  optional string name = 2 [json_name="name"];
+  optional ReferencedTable referenced_table = 3 [json_name="referencedTable"];
+}
+message TableConstraintsPrimaryKey {
+  repeated string columns = 1 [json_name="columns"];
+}
+message TableConstraints {
+  repeated TableConstraintsForeignKeys foreign_keys = 1 [json_name="foreignKeys"];
+  optional TableConstraintsPrimaryKey primary_key = 2 [json_name="primaryKey"];
+}
+message TableDataInsertAllRequestRows {
+  optional string insert_id = 1 [json_name="insertId"];
+  optional JsonObject json = 2 [json_name="json"];
+}
+message TableDataInsertAllRequest {
+  optional bool ignore_unknown_values = 1 [json_name="ignoreUnknownValues"];
+  optional string kind = 2 [json_name="kind"];
+  repeated TableDataInsertAllRequestRows rows = 3 [json_name="rows"];
+  optional bool skip_invalid_rows = 4 [json_name="skipInvalidRows"];
+  optional string template_suffix = 5 [json_name="templateSuffix"];
+  optional string trace_id = 6 [json_name="traceId"];
+}
+message TableDataInsertAllResponseInsertErrors {
+  repeated ErrorProto errors = 1 [json_name="errors"];
+  optional uint32 index = 2 [json_name="index"];
+}
+message TableDataInsertAllResponse {
+  repeated TableDataInsertAllResponseInsertErrors insert_errors = 1 [json_name="insertErrors"];
+  optional string kind = 2 [json_name="kind"];
+}
+message TableDataList {
+  optional string etag = 1 [json_name="etag"];
+  optional string kind = 2 [json_name="kind"];
+  optional string page_token = 3 [json_name="pageToken"];
+  repeated TableRow rows = 4 [json_name="rows"];
+  optional int64 total_rows = 5 [json_name="totalRows"];
+}
+message TableFieldSchemaCategories {
+  repeated string names = 1 [json_name="names"];
+}
+message TableFieldSchemaPolicyTags {
+  repeated string names = 1 [json_name="names"];
+}
+message TableFieldSchemaRangeElementType {
+  optional string type = 1 [json_name="type"];
+}
+message TableFieldSchema {
+  optional TableFieldSchemaCategories categories = 1 [json_name="categories"];
+  optional string collation = 2 [json_name="collation"];
+  optional string default_value_expression = 3 [json_name="defaultValueExpression"];
+  optional string description = 4 [json_name="description"];
+  repeated TableFieldSchema fields = 5 [json_name="fields"];
+  optional string foreign_type_definition = 6 [json_name="foreignTypeDefinition"];
+  optional int64 max_length = 7 [json_name="maxLength"];
+  optional string mode = 8 [json_name="mode"];
+  optional string name = 9 [json_name="name"];
+  optional TableFieldSchemaPolicyTags policy_tags = 10 [json_name="policyTags"];
+  optional int64 precision = 11 [json_name="precision"];
+  optional TableFieldSchemaRangeElementType range_element_type = 12 [json_name="rangeElementType"];
+  optional string rounding_mode = 13 [json_name="roundingMode"];
+  optional int64 scale = 14 [json_name="scale"];
+  optional string type = 15 [json_name="type"];
+}
+message View {
+  optional PrivacyPolicy privacy_policy = 1 [json_name="privacyPolicy"];
+  optional bool use_legacy_sql = 2 [json_name="useLegacySql"];
+}
+message TableListTables {
+  optional Clustering clustering = 1 [json_name="clustering"];
+  optional int64 creation_time = 2 [json_name="creationTime"];
+  optional int64 expiration_time = 3 [json_name="expirationTime"];
+  optional string friendly_name = 4 [json_name="friendlyName"];
+  optional string id = 5 [json_name="id"];
+  optional string kind = 6 [json_name="kind"];
+  map<string, string> labels = 7 [json_name="labels"];
+  optional RangePartitioning range_partitioning = 8 [json_name="rangePartitioning"];
+  optional bool require_partition_filter = 9 [json_name="requirePartitionFilter"];
+  optional TableReference table_reference = 10 [json_name="tableReference"];
+  optional TimePartitioning time_partitioning = 11 [json_name="timePartitioning"];
+  optional string type = 12 [json_name="type"];
+  optional View view = 13 [json_name="view"];
+}
+message TableList {
+  optional string etag = 1 [json_name="etag"];
+  optional string kind = 2 [json_name="kind"];
+  optional string next_page_token = 3 [json_name="nextPageToken"];
+  repeated TableListTables tables = 4 [json_name="tables"];
+  optional int32 total_items = 5 [json_name="totalItems"];
+}
+message TableMetadataCacheUsage {
+  optional string explanation = 1 [json_name="explanation"];
+  optional TableReference table_reference = 2 [json_name="tableReference"];
+  optional string table_type = 3 [json_name="tableType"];
+  optional string unused_reason = 4 [json_name="unusedReason"];
+}
+message TableReference {
+  optional string dataset_id = 1 [json_name="datasetId"];
+  optional string project_id = 2 [json_name="projectId"];
+  optional string table_id = 3 [json_name="tableId"];
+}
+message TableReplicationInfo {
+  optional int64 replicated_source_last_refresh_time = 1 [json_name="replicatedSourceLastRefreshTime"];
+  optional ErrorProto replication_error = 2 [json_name="replicationError"];
+  optional int64 replication_interval_ms = 3 [json_name="replicationIntervalMs"];
+  optional string replication_status = 4 [json_name="replicationStatus"];
+  optional TableReference source_table = 5 [json_name="sourceTable"];
+}
+message TableRow {
+  repeated TableCell f = 1 [json_name="f"];
+}
+message TableSchema {
+  repeated TableFieldSchema fields = 1 [json_name="fields"];
+  optional ForeignTypeInfo foreign_type_info = 2 [json_name="foreignTypeInfo"];
+}
+message TestIamPermissionsRequest {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message TestIamPermissionsResponse {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message TimePartitioning {
+  optional int64 expiration_ms = 1 [json_name="expirationMs"];
+  optional string field = 2 [json_name="field"];
+  optional bool require_partition_filter = 3 [json_name="requirePartitionFilter"];
+  optional string type = 4 [json_name="type"];
+}
+message TrainingOptions {
+  optional string activation_fn = 1 [json_name="activationFn"];
+  optional bool adjust_step_changes = 2 [json_name="adjustStepChanges"];
+  optional bool approx_global_feature_contrib = 3 [json_name="approxGlobalFeatureContrib"];
+  optional bool auto_arima = 4 [json_name="autoArima"];
+  optional int64 auto_arima_max_order = 5 [json_name="autoArimaMaxOrder"];
+  optional int64 auto_arima_min_order = 6 [json_name="autoArimaMinOrder"];
+  optional bool auto_class_weights = 7 [json_name="autoClassWeights"];
+  optional int64 batch_size = 8 [json_name="batchSize"];
+  optional string booster_type = 9 [json_name="boosterType"];
+  optional double budget_hours = 10 [json_name="budgetHours"];
+  optional bool calculate_p_values = 11 [json_name="calculatePValues"];
+  optional string category_encoding_method = 12 [json_name="categoryEncodingMethod"];
+  optional bool clean_spikes_and_dips = 13 [json_name="cleanSpikesAndDips"];
+  optional string color_space = 14 [json_name="colorSpace"];
+  optional double colsample_bylevel = 15 [json_name="colsampleBylevel"];
+  optional double colsample_bynode = 16 [json_name="colsampleBynode"];
+  optional double colsample_bytree = 17 [json_name="colsampleBytree"];
+  optional string dart_normalize_type = 18 [json_name="dartNormalizeType"];
+  optional string data_frequency = 19 [json_name="dataFrequency"];
+  optional string data_split_column = 20 [json_name="dataSplitColumn"];
+  optional double data_split_eval_fraction = 21 [json_name="dataSplitEvalFraction"];
+  optional string data_split_method = 22 [json_name="dataSplitMethod"];
+  optional bool decompose_time_series = 23 [json_name="decomposeTimeSeries"];
+  optional string distance_type = 24 [json_name="distanceType"];
+  optional double dropout = 25 [json_name="dropout"];
+  optional bool early_stop = 26 [json_name="earlyStop"];
+  optional bool enable_global_explain = 27 [json_name="enableGlobalExplain"];
+  optional string feedback_type = 28 [json_name="feedbackType"];
+  optional bool fit_intercept = 29 [json_name="fitIntercept"];
+  repeated int64 hidden_units = 30 [json_name="hiddenUnits"];
+  optional string holiday_region = 31 [json_name="holidayRegion"];
+  repeated string holiday_regions = 32 [json_name="holidayRegions"];
+  optional int64 horizon = 33 [json_name="horizon"];
+  repeated string hparam_tuning_objectives = 34 [json_name="hparamTuningObjectives"];
+  optional bool include_drift = 35 [json_name="includeDrift"];
+  optional double initial_learn_rate = 36 [json_name="initialLearnRate"];
+  repeated string input_label_columns = 37 [json_name="inputLabelColumns"];
+  optional string instance_weight_column = 38 [json_name="instanceWeightColumn"];
+  optional int64 integrated_gradients_num_steps = 39 [json_name="integratedGradientsNumSteps"];
+  optional string item_column = 40 [json_name="itemColumn"];
+  optional string kmeans_initialization_column = 41 [json_name="kmeansInitializationColumn"];
+  optional string kmeans_initialization_method = 42 [json_name="kmeansInitializationMethod"];
+  optional double l1_reg_activation = 43 [json_name="l1RegActivation"];
+  optional double l1_regularization = 44 [json_name="l1Regularization"];
+  optional double l2_regularization = 45 [json_name="l2Regularization"];
+  map<string, double> label_class_weights = 46 [json_name="labelClassWeights"];
+  optional double learn_rate = 47 [json_name="learnRate"];
+  optional string learn_rate_strategy = 48 [json_name="learnRateStrategy"];
+  optional string loss_type = 49 [json_name="lossType"];
+  optional int64 max_iterations = 50 [json_name="maxIterations"];
+  optional int64 max_parallel_trials = 51 [json_name="maxParallelTrials"];
+  optional int64 max_time_series_length = 52 [json_name="maxTimeSeriesLength"];
+  optional int64 max_tree_depth = 53 [json_name="maxTreeDepth"];
+  optional double min_relative_progress = 54 [json_name="minRelativeProgress"];
+  optional double min_split_loss = 55 [json_name="minSplitLoss"];
+  optional int64 min_time_series_length = 56 [json_name="minTimeSeriesLength"];
+  optional int64 min_tree_child_weight = 57 [json_name="minTreeChildWeight"];
+  optional string model_registry = 58 [json_name="modelRegistry"];
+  optional string model_uri = 59 [json_name="modelUri"];
+  optional ArimaOrder non_seasonal_order = 60 [json_name="nonSeasonalOrder"];
+  optional int64 num_clusters = 61 [json_name="numClusters"];
+  optional int64 num_factors = 62 [json_name="numFactors"];
+  optional int64 num_parallel_tree = 63 [json_name="numParallelTree"];
+  optional int64 num_principal_components = 64 [json_name="numPrincipalComponents"];
+  optional int64 num_trials = 65 [json_name="numTrials"];
+  optional string optimization_strategy = 66 [json_name="optimizationStrategy"];
+  optional string optimizer = 67 [json_name="optimizer"];
+  optional double pca_explained_variance_ratio = 68 [json_name="pcaExplainedVarianceRatio"];
+  optional string pca_solver = 69 [json_name="pcaSolver"];
+  optional int64 sampled_shapley_num_paths = 70 [json_name="sampledShapleyNumPaths"];
+  optional bool scale_features = 71 [json_name="scaleFeatures"];
+  optional bool standardize_features = 72 [json_name="standardizeFeatures"];
+  optional double subsample = 73 [json_name="subsample"];
+  optional string tf_version = 74 [json_name="tfVersion"];
+  optional string time_series_data_column = 75 [json_name="timeSeriesDataColumn"];
+  optional string time_series_id_column = 76 [json_name="timeSeriesIdColumn"];
+  repeated string time_series_id_columns = 77 [json_name="timeSeriesIdColumns"];
+  optional double time_series_length_fraction = 78 [json_name="timeSeriesLengthFraction"];
+  optional string time_series_timestamp_column = 79 [json_name="timeSeriesTimestampColumn"];
+  optional string tree_method = 80 [json_name="treeMethod"];
+  optional int64 trend_smoothing_window_size = 81 [json_name="trendSmoothingWindowSize"];
+  optional string user_column = 82 [json_name="userColumn"];
+  repeated string vertex_ai_model_version_aliases = 83 [json_name="vertexAiModelVersionAliases"];
+  optional double wals_alpha = 84 [json_name="walsAlpha"];
+  optional bool warm_start = 85 [json_name="warmStart"];
+  optional string xgboost_version = 86 [json_name="xgboostVersion"];
+}
+message TrainingRun {
+  repeated GlobalExplanation class_level_global_explanations = 1 [json_name="classLevelGlobalExplanations"];
+  optional DataSplitResult data_split_result = 2 [json_name="dataSplitResult"];
+  optional EvaluationMetrics evaluation_metrics = 3 [json_name="evaluationMetrics"];
+  optional GlobalExplanation model_level_global_explanation = 4 [json_name="modelLevelGlobalExplanation"];
+  repeated IterationResult results = 5 [json_name="results"];
+  optional .google.protobuf.Timestamp start_time = 6 [json_name="startTime"];
+  optional TrainingOptions training_options = 7 [json_name="trainingOptions"];
+  optional int64 training_start_time = 8 [json_name="trainingStartTime"];
+  optional string vertex_ai_model_id = 9 [json_name="vertexAiModelId"];
+  optional string vertex_ai_model_version = 10 [json_name="vertexAiModelVersion"];
+}
+message TransactionInfo {
+  optional string transaction_id = 1 [json_name="transactionId"];
+}
+message TransformColumn {
+  optional string name = 1 [json_name="name"];
+  optional string transform_sql = 2 [json_name="transformSql"];
+  optional StandardSqlDataType type = 3 [json_name="type"];
+}
+message UndeleteDatasetRequest {
+  optional .google.protobuf.Timestamp deletion_time = 1 [json_name="deletionTime"];
+}
+message UserDefinedFunctionResource {
+  optional string inline_code = 1 [json_name="inlineCode"];
+  optional string resource_uri = 2 [json_name="resourceUri"];
+}
+message VectorSearchStatistics {
+  repeated IndexUnusedReason index_unused_reasons = 1 [json_name="indexUnusedReasons"];
+  optional string index_usage_mode = 2 [json_name="indexUsageMode"];
+}
+message ViewDefinition {
+  optional PrivacyPolicy privacy_policy = 1 [json_name="privacyPolicy"];
+  optional string query = 2 [json_name="query"];
+  optional bool use_explicit_column_names = 3 [json_name="useExplicitColumnNames"];
+  optional bool use_legacy_sql = 4 [json_name="useLegacySql"];
+  repeated UserDefinedFunctionResource user_defined_function_resources = 5 [json_name="userDefinedFunctionResources"];
+}
+message DeleteDatasetRequest {
+  optional string dataset_id = 1;
+  optional bool delete_contents = 2;
+  optional string project_id = 3;
+}
+message GetDatasetRequest {
+  optional string dataset_id = 1;
+  optional string dataset_view = 2;
+  optional string project_id = 3;
+}
+message InsertDatasetRequest {
+  optional string project_id = 1;
+  optional Dataset dataset = 2;
+}
+message ListDatasetsRequest {
+  optional bool all = 1;
+  optional string filter = 2;
+  optional int32 max_results = 3;
+  optional string page_token = 4;
+  optional string project_id = 5;
+}
+message PatchDatasetRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional Dataset dataset = 3;
+}
+message UndeleteDatasetServiceRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional UndeleteDatasetRequest dataset = 3;
+}
+message UpdateDatasetRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional Dataset dataset = 3;
+}
+message CancelJobRequest {
+  optional string job_id = 1;
+  optional string location = 2;
+  optional string project_id = 3;
+}
+message DeleteJobRequest {
+  optional string job_id = 1;
+  optional string location = 2;
+  optional string project_id = 3;
+}
+message GetJobRequest {
+  optional string job_id = 1;
+  optional string location = 2;
+  optional string project_id = 3;
+}
+message GetQueryResultsJobRequest {
+  optional bool format_options_use_int64_timestamp = 1;
+  optional string job_id = 2;
+  optional string location = 3;
+  optional int32 max_results = 4;
+  optional string page_token = 5;
+  optional string project_id = 6;
+  optional string start_index = 7;
+  optional int32 timeout_ms = 8;
+}
+message InsertJobRequest {
+  optional string project_id = 1;
+  optional Job job = 2;
+}
+message ListJobsRequest {
+  optional bool all_users = 1;
+  optional string max_creation_time = 2;
+  optional int32 max_results = 3;
+  optional string min_creation_time = 4;
+  optional string page_token = 5;
+  optional string parent_job_id = 6;
+  optional string project_id = 7;
+  optional string projection = 8;
+  optional string state_filter = 9;
+}
+message QueryJobRequest {
+  optional string project_id = 1;
+  optional QueryRequest job = 2;
+}
+message DeleteModelRequest {
+  optional string dataset_id = 1;
+  optional string model_id = 2;
+  optional string project_id = 3;
+}
+message GetModelRequest {
+  optional string dataset_id = 1;
+  optional string model_id = 2;
+  optional string project_id = 3;
+}
+message ListModelsRequest {
+  optional string dataset_id = 1;
+  optional int32 max_results = 2;
+  optional string page_token = 3;
+  optional string project_id = 4;
+}
+message PatchModelRequest {
+  optional string dataset_id = 1;
+  optional string model_id = 2;
+  optional string project_id = 3;
+  optional Model model = 4;
+}
+message GetServiceAccountProjectRequest {
+  optional string project_id = 1;
+}
+message ListProjectsRequest {
+  optional int32 max_results = 1;
+  optional string page_token = 2;
+}
+message DeleteRoutineRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional string routine_id = 3;
+}
+message GetRoutineRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional string read_mask = 3;
+  optional string routine_id = 4;
+}
+message InsertRoutineRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional Routine routine = 3;
+}
+message ListRoutinesRequest {
+  optional string dataset_id = 1;
+  optional string filter = 2;
+  optional int32 max_results = 3;
+  optional string page_token = 4;
+  optional string project_id = 5;
+  optional string read_mask = 6;
+}
+message UpdateRoutineRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional string routine_id = 3;
+  optional Routine routine = 4;
+}
+message ListRowAccessPoliciesRequest {
+  optional string dataset_id = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string project_id = 4;
+  optional string table_id = 5;
+}
+message InsertAllTabledataRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional string table_id = 3;
+  optional TableDataInsertAllRequest tabledata = 4;
+}
+message ListTabledataRequest {
+  optional string dataset_id = 1;
+  optional bool format_options_use_int64_timestamp = 2;
+  optional int32 max_results = 3;
+  optional string page_token = 4;
+  optional string project_id = 5;
+  optional string selected_fields = 6;
+  optional string start_index = 7;
+  optional string table_id = 8;
+}
+message DeleteTableRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional string table_id = 3;
+}
+message GetTableRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional string selected_fields = 3;
+  optional string table_id = 4;
+  optional string view = 5;
+}
+message InsertTableRequest {
+  optional string dataset_id = 1;
+  optional string project_id = 2;
+  optional Table table = 3;
+}
+message ListTablesRequest {
+  optional string dataset_id = 1;
+  optional int32 max_results = 2;
+  optional string page_token = 3;
+  optional string project_id = 4;
+}
+message PatchTableRequest {
+  optional bool autodetect_schema = 1;
+  optional string dataset_id = 2;
+  optional string project_id = 3;
+  optional string table_id = 4;
+  optional Table table = 5;
+}
+message UpdateTableRequest {
+  optional bool autodetect_schema = 1;
+  optional string dataset_id = 2;
+  optional string project_id = 3;
+  optional string table_id = 4;
+  optional Table table = 5;
+}

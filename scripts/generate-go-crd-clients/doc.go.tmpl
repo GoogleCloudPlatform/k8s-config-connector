@@ -28,13 +28,11 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package {{.Version}} contains API Schema definitions for the {{.Service}} {{.Version}} API group.
+// Package {{.Version.Name}} contains API Schema definitions for the {{.Service}} {{.Version.Name}} API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/{{.Service}}
 // +k8s:defaulter-gen=TypeMeta
 // +groupName={{.Service}}.cnrm.cloud.google.com
 
-// Generate deepcopy object for {{.Service}}/{{.Version}} API group
-//go:generate go run ../../../../../../scripts/deepcopy-gen/main.go -O zz_generated.deepcopy -i . -h ../../../../../../hack/boilerplate_client_alpha.go.txt
-package {{.Version}}
+package {{.Version.Name}}

@@ -18,12 +18,17 @@ import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // Model is the entry-point for our per-object reconcilers
 type Model interface {
-	// AdapterForObject builds an operation object for reconciling the object u
-	AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (Adapter, error)
+	// AdapterForObject builds an operation object for reconciling the object u.
+	// If there are references, AdapterForObject should dereference them before returning (using reader)
+	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (Adapter, error)
+
+	// AdapterForURL builds an operation object for exporting the object u.
+	AdapterForURL(ctx context.Context, url string) (Adapter, error)
 }
 
 // Adapter performs a single reconciliation on a single object.
@@ -49,4 +54,9 @@ type Adapter interface {
 	// This should only be called when Find has previously returned true.
 	// The implementation should write the updated status into `u`.
 	Update(ctx context.Context, u *unstructured.Unstructured) error
+
+	// Export fetches the cloud provider's representation of the object
+	// as an unstructured.Unstructured.
+	// Assumes Find has previously returned true.
+	Export(ctx context.Context) (*unstructured.Unstructured, error)
 }

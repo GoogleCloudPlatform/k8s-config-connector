@@ -32,8 +32,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
-
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/klog/v2"
 )
 
 var handwrittenIAMTypes = []string{
@@ -55,7 +55,6 @@ type fieldProperties struct {
 
 type resourceDefinition struct {
 	Name                string
-	Version             string
 	Service             string
 	Kind                string
 	SpecFields          []*fieldProperties
@@ -63,7 +62,8 @@ type resourceDefinition struct {
 	SpecNestedStructs   map[string][]*fieldProperties
 	StatusNestedStructs map[string][]*fieldProperties
 
-	CRD *apiextensions.CustomResourceDefinition
+	CRD     *apiextensions.CustomResourceDefinition
+	Version *apiextensions.CustomResourceDefinitionVersion
 }
 
 type svkMap struct {
@@ -93,14 +93,14 @@ func main() {
 
 	for _, rd := range resources {
 		// organize resources by service/version, create folder if not present
-		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version)
+		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version.Name)
 		if v, ok := registerKinds[serviceVersionString]; ok {
 			v.Kinds = append(v.Kinds, rd.Name)
 			v.Defs = append(v.Defs, *rd)
 		} else {
 			registerKinds[serviceVersionString] = &svkMap{
 				Service: rd.Service,
-				Version: rd.Version,
+				Version: rd.Version.Name,
 				Kinds:   []string{rd.Name},
 				Defs:    []resourceDefinition{*rd},
 			}
@@ -123,9 +123,9 @@ func main() {
 	for _, rd := range resources {
 		serviceDir := path.Join(typesDir, rd.Service)
 		checkAndCreateFolder(serviceDir)
-		serviceVersionDir := path.Join(serviceDir, rd.Version)
+		serviceVersionDir := path.Join(serviceDir, rd.Version.Name)
 		checkAndCreateFolder(serviceVersionDir)
-		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version)
+		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version.Name)
 
 		// create new file for generated types file
 		typesFileName := fmt.Sprintf("%s_types.go", rd.Kind)
@@ -279,7 +279,9 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 	}
 	r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.APIDomainSuffix)
 	r.Kind = strings.ToLower(crd.Spec.Names.Kind)
-	r.Version = k8s.GetVersionFromCRD(crd)
+
+	// TODO: Should we handle multiple versions?
+	r.Version = k8s.PreferredVersion(crd)
 	return r
 }
 
@@ -472,7 +474,18 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		switch desc.Format {
+		case "int64":
+			return "int64"
+		case "int32":
+			return "int32"
+		case "":
+			// The default is int64 (and not int, we don't want the schema to vary across architectures)
+			return "int64"
+		default:
+			klog.Fatalf("unhandled case in formatType: %+v", desc)
+			return ""
+		}
 	case "float", "number":
 		return "float64"
 	case "object":
@@ -524,7 +537,7 @@ func formatToGoLiteral(t string) string {
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		return "int64"
 	case "float", "number":
 		return "float64"
 	default:
@@ -557,6 +570,9 @@ func flattenChildrenDescription(result []fielddesc.FieldDescription, fd fielddes
 	}
 	result = append(result, fd)
 	for _, child := range fd.Children {
+		result = flattenChildrenDescription(result, child)
+	}
+	for _, child := range fd.AdditionalProperties {
 		result = flattenChildrenDescription(result, child)
 	}
 	return result

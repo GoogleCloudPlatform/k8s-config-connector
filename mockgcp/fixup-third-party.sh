@@ -27,11 +27,18 @@ mv google/cloud/ mockgcp/
 mv google/container/ mockgcp/
 mv google/iam/ mockgcp/
 mv google/logging/ mockgcp/
+mv google/pubsub/ mockgcp/
+mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
+
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
 mv google/devtools/artifactregistry mockgcp/devtools
+mv google/devtools/cloudbuild mockgcp/devtools
+
+rm -rf mockgrafeas/
+mv grafeas mockgrafeas
 
 cd mockgcp
 
@@ -48,11 +55,17 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.iam@mockgcp.iam@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google/logging/@mockgcp/logging/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.logging@mockgcp.logging@g"
 
+find . -type f -print0 | xargs -0 sed -i -e "s@google/pubsub/@mockgcp/pubsub/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.pubsub@mockgcp.pubsub@g"
+
 find . -type f -print0 | xargs -0 sed -i -e "s@google/monitoring/@mockgcp/monitoring/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.monitoring@mockgcp.monitoring@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/storage/@mockgcp/storage/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.storage@mockgcp.storage@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/spanner/@mockgcp/spanner/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.spanner@mockgcp.spanner@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/api/apikeys/@mockgcp/api/apikeys/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.apikeys@mockgcp.api.apikeys@g"
@@ -62,3 +75,12 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.serviceusage@mockgcp
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/artifactregistry/@mockgcp/devtools/artifactregistry/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.artifactregistry@mockgcp.devtools.artifactregistry@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g"
+
+cd ..
+cd mockgrafeas
+
+find . -type f -print0 | xargs -0 sed -i -e "s@grafeas/@mockgrafeas/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@grafeas\.@mockgrafeas.@g"

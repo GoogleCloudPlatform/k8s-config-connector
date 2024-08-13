@@ -108,7 +108,7 @@ type ApigeeOrganizationStatus struct {
 
 	/* Output only. Time that the Apigee organization was created in milliseconds since epoch. */
 	// +optional
-	CreatedAt *int `json:"createdAt,omitempty"`
+	CreatedAt *int64 `json:"createdAt,omitempty"`
 
 	/* Output only. List of environments in the Apigee organization. */
 	// +optional
@@ -116,15 +116,15 @@ type ApigeeOrganizationStatus struct {
 
 	/* Output only. Time that the Apigee organization is scheduled for deletion. */
 	// +optional
-	ExpiresAt *int `json:"expiresAt,omitempty"`
+	ExpiresAt *int64 `json:"expiresAt,omitempty"`
 
 	/* Output only. Time that the Apigee organization was last modified in milliseconds since epoch. */
 	// +optional
-	LastModifiedAt *int `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *int64 `json:"lastModifiedAt,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Project ID associated with the Apigee organization. */
 	// +optional
@@ -143,6 +143,11 @@ type ApigeeOrganizationStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeorganization;gcpapigeeorganizations
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ApigeeOrganization is the Schema for the apigee API
 // +k8s:openapi-gen=true

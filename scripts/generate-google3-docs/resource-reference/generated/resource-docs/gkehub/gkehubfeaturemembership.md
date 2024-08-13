@@ -62,20 +62,6 @@ Note: GKE Hub REST documentation is under construction.
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -238,9 +224,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The GCP Service Account Email used for auth when secretType is gcpServiceAccount.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The GCP Service Account Email used for auth when secretType is gcpServiceAccount. Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -350,9 +334,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA. Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -402,9 +384,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The GCP Service Account Email used for auth when secret_type is gcpserviceaccount. 
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The GCP Service Account Email used for auth when secretType is gcpServiceAccount. Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -534,7 +514,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Policy Controller configuration for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}**DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -604,7 +584,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %} Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -674,9 +654,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the feature
-
-Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the feature. Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -736,9 +714,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the membership
-
-Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the membership. Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -888,7 +864,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %} Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -978,9 +954,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project of the feature
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The project of the feature. Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1033,7 +1007,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the GKEHubFeatureMembership's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

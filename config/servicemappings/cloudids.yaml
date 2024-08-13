@@ -1,0 +1,57 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: cloudids.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: CloudIDS
+  version: v1beta1
+  serviceHostName: cloudids.googleapis.com
+  resources:
+    - name: google_cloud_ids_endpoint
+      kind: CloudIDSEndpoint
+      idTemplate: "projects/{{project}}/locations/{{location}}/endpoints/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: network
+          key: networkRef
+          description: |-
+            Immutable. Name of the VPC network that is connected
+            to the IDS endpoint. This can either contain the VPC network name
+            itself (like "src-net") or the full URL to the network (like "projects/{project_id}/global/networks/src-net").
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com

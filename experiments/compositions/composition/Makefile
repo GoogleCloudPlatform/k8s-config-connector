@@ -3,15 +3,17 @@ GCP_PROJECT_ID ?= $(shell gcloud config get-value project)
 
 # Image URLs to use for building/pushing image targets
 GIT_IMG_VERSION ?= $(shell git rev-parse --short HEAD)
-IMG_VERSION ?= v0.0.1.alpha
+IMG_VERSION ?= v0.0.1
 IMG_REGISTRY ?= gcr.io/$(GCP_PROJECT_ID)
 IMG ?= $(IMG_REGISTRY)/composition:$(IMG_VERSION)
-INLINE_IMG ?= $(IMG_REGISTRY)/manifests-inline:$(IMG_VERSION)
 JINJA_IMG ?= $(IMG_REGISTRY)/expander-jinja2:$(IMG_VERSION)
+GETTER_IMG ?= $(IMG_REGISTRY)/expander-getter:$(IMG_VERSION)
+GOPREFIX ?= GOWORK=off
 
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.28.0
 KIND_CLUSTER ?= kind
+
 
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
@@ -56,54 +58,26 @@ help: ## Display this help.
 
 .PHONY: manifests
 manifests: ## Generate WebhookConfiguration, ClusterRole and CustomResourceDefinition objects.
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION) rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+	$(GOPREFIX) go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION) rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 
 .PHONY: generate
 generate: ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION) object:headerFile="hack/boilerplate.go.txt" paths="./..."
-	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
+	$(GOPREFIX) go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION) object:headerFile="hack/boilerplate.go.txt" paths="./..."
+	$(GOPREFIX) go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
-	go fmt ./...
-	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ./
-	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
+	$(GOPREFIX) go fmt ./...
+	GOFLAGS= $(GOPREFIX) go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ./
+	$(GOPREFIX) go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
 
 .PHONY: vet
 vet: ## Run go vet against code.
-	go vet ./...
+	$(GOPREFIX) go vet ./...
 
 .PHONY: test
 test: manifests generate fmt vet envtest ## Run tests.
-	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) --bin-dir $(LOCALBIN) -p path)" go test ./... -coverprofile cover.out
-
-.PHONY: test-local-unittest
-test-local-unittest: manifests generate build
-	../e2e/scripts/cleanup.sh --kcc                           # cleanup
-	../e2e/scripts/setup.sh  --kcc                            # create namespace, CRDs, composition & facade CRs
-	sleep 60                                                  # wait for controller
-	# Inject status in serviceidentity cr
-	kubectl patch serviceidentity -n facade sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
-	sleep 60                                                  # wait for controller
-	echo "Status after wait:"                                 # verify facade CR status after expansion
-	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample facade ../e2e/manifests/test1/cloudsql2.expanded
-	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
-	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
-
-.PHONY: test-cc-unittest
-test-cc-unittest: manifests generate build
-	../e2e/scripts/cleanup.sh                                 # cleanup
-	../e2e/scripts/setup.sh                                   # create namespace, CRDs, composition & facade CRs
-	../e2e/scripts/clean_kcc_objects.sh teamusa config-control
-	sleep 60                                                  # wait for controller
-	# Inject status in serviceidentity cr
-	kubectl patch serviceidentity -n facade sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
-	sleep 60                                                  # wait for controller
-	echo "Status after wait:"                                 # verify facade CR status after expansion
-	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample facade ../e2e/manifests/test1/cloudsql2.expanded
-	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
-	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
-
+	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) --bin-dir $(LOCALBIN) -p path)" $(GOPREFIX) go test ./... -coverprofile cover.out
 
 GOLANGCI_LINT = $(shell pwd)/bin/golangci-lint
 GOLANGCI_LINT_VERSION ?= v1.54.2
@@ -125,11 +99,11 @@ lint-fix: golangci-lint ## Run golangci-lint linter and perform fixes
 
 .PHONY: build
 build: manifests generate fmt vet ## Build manager binary.
-	go build -o bin/manager cmd/main.go
+	$(GOPREFIX) go build -o bin/manager cmd/main.go
 
 .PHONY: run
 run: manifests generate fmt vet ## Run a controller from your host.
-	go run ./cmd/main.go --image-registry gcr.io/$(GCP_PROJECT_ID)
+	$(GOPREFIX) go run ./cmd/main.go
 
 .PHONY: debug
 debug: generate fmt vet manifests
@@ -165,32 +139,66 @@ docker-buildx: ## Build and push docker image for the manager for cross-platform
 
 ##@ Testing
 
-.PHONY: release-kind-manifests
-release-kind-manifests: manifests kustomize ## Install CRDs into the K8s cluster specified in ~/.kube/config.
-	cd ../facade && $(KUSTOMIZE) build config/crd -o ../composition/release/kind/facade_crds.yaml
-	$(KUSTOMIZE) build config/crd -o release/kind/crds.yaml
+.PHONY: common-test-manifests
+common-test-manifests: manifests kustomize
+	mkdir -p release/test
+	cd ../facade && $(KUSTOMIZE) build config/crd -o ../composition/release/test/facade_crds.yaml
+	$(KUSTOMIZE) build config/crd -o release/test/crds.yaml
+
+.PHONY: release-manifests
+release-manifests: manifests kustomize
+	$(KUSTOMIZE) build config/crd -o release/crds.yaml
+	$(KUSTOMIZE) build config/release -o release/manifest.yaml
+
+.PHONY: release-test-cc-manifests
+release-test-cc-manifests: common-test-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
-	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
-	$(KUSTOMIZE) build config/default -o release/kind/operator.yaml
+	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=${JINJA_IMG}
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=${GETTER_IMG}
+	$(KUSTOMIZE) build config/default -o release/test/cc-operator.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
-	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
+	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=expander-jinja2:latest
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=expander-getter:latest
+
+.PHONY: release-kind-manifests
+release-test-kind-manifests: common-test-manifests
+	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=${JINJA_IMG}
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=${GETTER_IMG}
+	$(KUSTOMIZE) build config/default -o release/test/kind-operator.yaml
+	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=expander-jinja2:latest
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=expander-getter:latest
 
 .PHONY: deploy-kind
-deploy-kind: release-kind-manifests docker-build docker-build-inline
+deploy-kind: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2 docker-build-expander-getter 
 	kind delete clusters ${KIND_CLUSTER} || true
 	kind create cluster --name ${KIND_CLUSTER}
 	kind load docker-image ${IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${INLINE_IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${JINJA_IMG} --name ${KIND_CLUSTER}
-	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/crds.yaml
-	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/facade_crds.yaml
-	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/operator.yaml
+	kind load docker-image ${GETTER_IMG} --name ${KIND_CLUSTER}
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/crds.yaml
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/facade_crds.yaml
+	sleep 5 # for CRDs to be registered
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/kind-operator.yaml
 	sleep 5
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
+
+.PHONY: run-test
+run-test: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2 docker-build-expander-getter fmt #docker-push docker-push-inline docker-push-expander-jinja2 docker-push-expander-getter
+	cd tests/testcases/ && $(GOPREFIX) go test -v -timeout 3600s -run "^${TESTCASE}" --images=${IMG},${INLINE_IMG},${JINJA_IMG},${GETTER_IMG}
+
 .PHONY: e2e-test
-e2e-test: release-kind-manifests docker-build docker-build-inline fmt
-	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
+e2e-test: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2 docker-build-expander-getter fmt #docker-push docker-push-inline docker-push-expander-jinja2 docker-push-expander-getter
+	cd tests/testcases/ && $(GOPREFIX) go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG},${GETTER_IMG}
+
+.PHONY: kcc-test
+kcc-test: release-test-cc-manifests docker-build docker-build-inline docker-build-expander-jinja2 docker-build-expander-getter fmt docker-push docker-push-inline docker-push-expander-jinja2 docker-push-expander-getter
+	cd tests/testcases/ && $(GOPREFIX) go test -v -timeout 3600s -run "^TestKCCSampleCloudSQL" --use-cc=true --images=${IMG},${INLINE_IMG},${JINJA_IMG},${GETTER_IMG}
 
 ##@ Deployment
 
@@ -240,56 +248,14 @@ $(KUSTOMIZE): $(LOCALBIN)
 		echo "$(LOCALBIN)/kustomize version is not expected $(KUSTOMIZE_VERSION). Removing it before installing."; \
 		rm -rf $(LOCALBIN)/kustomize; \
 	fi
-	test -s $(LOCALBIN)/kustomize || GOBIN=$(LOCALBIN) GO111MODULE=on go install sigs.k8s.io/kustomize/kustomize/v5@$(KUSTOMIZE_VERSION)
+	test -s $(LOCALBIN)/kustomize || GOBIN=$(LOCALBIN) GO111MODULE=on $(GOPREFIX) go install sigs.k8s.io/kustomize/kustomize/v5@$(KUSTOMIZE_VERSION)
 
 .PHONY: envtest
 envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
-	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
-
-###### ----------- Inline manifest tool section ----------------------------
-
-.PHONY: test-inline
-test-inline: build-inline ## Run tests.
-	../e2e/scripts/cleanup.sh --kcc                           # cleanup
-	../e2e/scripts/setup.sh                                   # create facade namespace & CRDs
-	# Inject status in facade cr
-	kubectl apply -f ../e2e/manifests/test1/plan1.yaml    # create plan CR
-	# Verify inline pulls in template and values from the CRs
-	rm -fr test/case1/template
-	rm -fr test/case1/values
-	./bin/inline --template composition-sample --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage beforeExpansion
-	echo "template"; cat test/case1/template
-	echo "values"; cat test/case1/values
-	echo
-	rm -fr test/case1/template
-	rm -fr test/case1/values
-	# Verify inline pushes the expanded to the facade cr status
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
-	echo "after expansion"
-	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block2 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
-	echo "after expansion"
-	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
-	../e2e/scripts/cleanup.sh                                 # cleanup
+	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) $(GOPREFIX) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
 
 
-.PHONY: build-inline
-build-inline: fmt vet ## Build binary.
-	go build -v -o bin/inline ./cmd/inline
-
-
-clean: ## clean binary.
-	rm -fr bin/inline
-	docker rmi ${IMG} .
-
-# If you wish to build the manager image targeting other platforms you can use the --platform flag.
-# (i.e. docker build --platform linux/arm64). However, you must enable docker buildKit for it.
-# More info: https://docs.docker.com/develop/develop-images/build_enhancements/
-.PHONY: docker-build-inline
-docker-build-inline: ## Build docker image with the manager.
-	docker build -t ${INLINE_IMG} -f Dockerfile.inline .
-
-.PHONY: docker-push-inline
-docker-push-inline: ## Push docker image with the manager.
-	docker push ${INLINE_IMG}
+###### ----------- include other make targets
+include inline.mk
+include expanders.mk

@@ -1,0 +1,147 @@
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found"
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes?alt=json&meshId=networkservicesmesh-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "description": "Original description",
+  "interceptionPort": 80,
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "Original description",
+  "interceptionPort": 80,
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "selfLink": "",
+  "updateTime": null
+}
+
+---
+
+PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json&updateMask=description%2CinterceptionPort%2Clabels
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "description": "Updated description",
+  "interceptionPort": 81,
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "foo1": "bar1",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "Updated description",
+  "interceptionPort": 81,
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "foo1": "bar1",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "selfLink": "",
+  "updateTime": null
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found"
+}

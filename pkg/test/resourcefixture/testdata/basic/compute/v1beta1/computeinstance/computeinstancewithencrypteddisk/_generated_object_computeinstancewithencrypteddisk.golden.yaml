@@ -1,0 +1,68 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: merge
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    env: prod
+  name: computeinstance-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  bootDisk:
+    autoDelete: false
+    diskEncryptionKeyRaw:
+      value: SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=
+    initializeParams:
+      labels:
+        cnrm-test: "true"
+        managed-by-cnrm: "true"
+      sourceImageRef:
+        external: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010
+      type: pd-standard
+    mode: READ_WRITE
+    sourceDiskRef:
+      name: computedisk-${uniqueId}
+  description: an basic instance example
+  machineType: n1-standard-1
+  networkInterface:
+  - networkRef:
+      name: default
+  resourceID: computeinstance-${uniqueId}
+  scheduling:
+    automaticRestart: false
+    onHostMaintenance: TERMINATE
+    preemptible: true
+  zone: us-west1-a
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  currentStatus: RUNNING
+  instanceId: "1111111111111111"
+  observedGeneration: 2
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}

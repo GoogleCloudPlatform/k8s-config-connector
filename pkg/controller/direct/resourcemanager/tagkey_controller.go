@@ -27,30 +27,25 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
-// AddTagKeyController creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddTagKeyController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.TagsTagKeyGVK
+func init() {
+	registry.RegisterModel(krm.TagsTagKeyGVK, newTagKeyModel)
+}
 
-	// TODO: Share gcp client (any value in doing so)?
-	ctx := context.TODO()
-	gcpClient, err := newGCPClient(ctx, config)
-	if err != nil {
-		return err
-	}
-	m := &tagKeyModel{gcpClient: gcpClient}
-	return directbase.Add(mgr, gvk, m, opts)
+func newTagKeyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &tagKeyModel{config: config}, nil
 }
 
 type tagKeyModel struct {
-	*gcpClient
+	config *config.ControllerConfig
 }
 
 // model implements the Model interface.
@@ -70,8 +65,13 @@ type tagKeyAdapter struct {
 var _ directbase.Adapter = &tagKeyAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *tagKeyModel) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	tagKeysClient, err := m.newTagKeysClient(ctx)
+func (m *tagKeyModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+
+	tagKeysClient, err := gcpClient.newTagKeysClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (m *tagKeyModel) AdapterForObject(ctx context.Context, u *unstructured.Unst
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	// resourceID is server-generated, no fallback
 	// TODO: How do we do resource acquisition - maybe by shortname?
 	resourceID = strings.TrimPrefix(resourceID, "tagKeys/")
@@ -90,9 +90,13 @@ func (m *tagKeyModel) AdapterForObject(ctx context.Context, u *unstructured.Unst
 	return &tagKeyAdapter{
 		resourceID:    resourceID,
 		desired:       obj,
-		gcpClient:     m.gcpClient,
+		gcpClient:     gcpClient,
 		tagKeysClient: tagKeysClient,
 	}, nil
+}
+
+func (m *tagKeyModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
 }
 
 // Find implements the Adapter interface.
@@ -106,7 +110,7 @@ func (a *tagKeyAdapter) Find(ctx context.Context) (bool, error) {
 	}
 	tagKey, err := a.tagKeysClient.GetTagKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, err
@@ -131,7 +135,7 @@ func (a *tagKeyAdapter) Delete(ctx context.Context) (bool, error) {
 
 	op, err := a.tagKeysClient.DeleteTagKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting tagKey %s: %w", a.fullyQualifiedName(), err)
@@ -155,11 +159,11 @@ func (a *tagKeyAdapter) Create(ctx context.Context, u *unstructured.Unstructured
 	tagKey := &pb.TagKey{
 		Parent:      parent,
 		ShortName:   a.desired.Spec.ShortName,
-		Description: ValueOf(a.desired.Spec.Description),
+		Description: direct.ValueOf(a.desired.Spec.Description),
 		PurposeData: a.desired.Spec.PurposeData,
 	}
 
-	if s := ValueOf(a.desired.Spec.Purpose); s != "" {
+	if s := direct.ValueOf(a.desired.Spec.Purpose); s != "" {
 		purpose, ok := pb.Purpose_value[s]
 		if !ok {
 			return fmt.Errorf("unknown purpose %q", s)
@@ -219,9 +223,9 @@ func (a *tagKeyAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	update.Name = a.fullyQualifiedName()
 
 	// description is the only field that can be updated
-	if ValueOf(a.desired.Spec.Description) != a.actual.GetDescription() {
+	if direct.ValueOf(a.desired.Spec.Description) != a.actual.GetDescription() {
 		updateMask.Paths = append(updateMask.Paths, "description")
-		update.Description = ValueOf(a.desired.Spec.Description)
+		update.Description = direct.ValueOf(a.desired.Spec.Description)
 	}
 
 	// TODO: Where/how do we want to enforce immutability?
@@ -247,6 +251,22 @@ func (a *tagKeyAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	return nil
 }
 
+func (a *tagKeyAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	return nil, nil
+}
+
 func (a *tagKeyAdapter) fullyQualifiedName() string {
 	return fmt.Sprintf("tagKeys/%s", a.resourceID)
+}
+
+func setStatus(u *unstructured.Unstructured, typedStatus any) error {
+	// TODO: Just fetch this object?
+	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+	if err != nil {
+		return fmt.Errorf("error converting status to unstructured: %w", err)
+	}
+	// TODO: Merge to avoid overwriting conditions?
+	u.Object["status"] = status
+
+	return nil
 }

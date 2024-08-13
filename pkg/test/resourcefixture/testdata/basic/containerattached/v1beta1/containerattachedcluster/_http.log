@@ -1,6 +1,5 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -23,12 +22,18 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -40,8 +45,7 @@ Grpc-Metadata-Content-Type: application/grpc
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -65,8 +69,7 @@ X-Xss-Protection: 0
 
 PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -99,8 +102,7 @@ X-Xss-Protection: 0
 
 PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -137,8 +139,7 @@ X-Xss-Protection: 0
 
 PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -178,8 +179,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -207,12 +207,18 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -223,9 +229,24 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
+GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "attachedCluster \"projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127\" not found"
+}
+
+---
+
 POST https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters?alt=json&attached_cluster_id=kcc-attached-cluster-127
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "description": "Test attached cluster",
@@ -248,14 +269,14 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "operations/${operationId}"
+  "name": "operations/${operationID}"
 }
 
 ---
 
 GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -289,50 +310,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "proxyConfig": null,
   "reconciling": false,
   "state": "STATE_UNSPECIFIED",
-  "uid": "",
-  "updateTime": null,
-  "workloadIdentityConfig": null
-}
-
----
-
-GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "annotations": {},
-  "authorization": null,
-  "binaryAuthorization": null,
-  "clusterRegion": "",
-  "createTime": null,
-  "description": "Test attached cluster",
-  "distribution": "eks",
-  "errors": [],
-  "etag": "abcdef0123A=",
-  "fleet": {
-    "membership": "",
-    "project": "projects/${projectNumber}"
-  },
-  "kubernetesVersion": "",
-  "loggingConfig": {
-    "componentConfig": null
-  },
-  "monitoringConfig": null,
-  "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
-  "oidcConfig": {
-    "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F",
-    "jwks": ""
-  },
-  "platformVersion": "1.27.0-gke.2",
-  "proxyConfig": null,
-  "reconciling": false,
-  "state": "STATE_UNSPECIFIED",
-  "uid": "",
+  "uid": "111111111111111111111",
   "updateTime": null,
   "workloadIdentityConfig": null
 }
@@ -341,7 +319,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 PATCH https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127?alt=json&updateMask=description
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "description": "Test attached cluster update",
@@ -364,14 +342,14 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "operations/${operationId}"
+  "name": "operations/${operationID}"
 }
 
 ---
 
 GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -405,50 +383,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "proxyConfig": null,
   "reconciling": false,
   "state": "STATE_UNSPECIFIED",
-  "uid": "",
-  "updateTime": null,
-  "workloadIdentityConfig": null
-}
-
----
-
-GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "annotations": {},
-  "authorization": null,
-  "binaryAuthorization": null,
-  "clusterRegion": "",
-  "createTime": null,
-  "description": "Test attached cluster update",
-  "distribution": "eks",
-  "errors": [],
-  "etag": "abcdef0123A=",
-  "fleet": {
-    "membership": "",
-    "project": "projects/${projectNumber}"
-  },
-  "kubernetesVersion": "",
-  "loggingConfig": {
-    "componentConfig": null
-  },
-  "monitoringConfig": null,
-  "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
-  "oidcConfig": {
-    "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F",
-    "jwks": ""
-  },
-  "platformVersion": "1.27.0-gke.2",
-  "proxyConfig": null,
-  "reconciling": false,
-  "state": "STATE_UNSPECIFIED",
-  "uid": "",
+  "uid": "111111111111111111111",
   "updateTime": null,
   "workloadIdentityConfig": null
 }
@@ -457,7 +392,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127?alt=json&ignore_errors=true
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -466,5 +401,5 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "operations/${operationId}"
+  "name": "operations/${operationID}"
 }

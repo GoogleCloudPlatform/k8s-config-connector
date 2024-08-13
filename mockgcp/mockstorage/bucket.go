@@ -44,7 +44,6 @@ func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	ret := proto.Clone(obj).(*pb.Bucket)
 
 	projection := req.GetProjection()
@@ -96,6 +95,9 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	obj.Metageneration = PtrTo(int64(1))
 
 	obj.Etag = PtrTo(computeEtag(obj))
+	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
+		obj.Lifecycle = nil
+	}
 
 	iamConfiguration := obj.IamConfiguration
 	if iamConfiguration == nil {
@@ -128,12 +130,12 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		defaultRetention := time.Hour * 7 * 24
 		softDeletePolicy.RetentionDurationSeconds = PtrTo(int64(defaultRetention.Seconds()))
 	}
-	softDeletePolicy.EffectiveTime = now
+	// TODO: Should be now
+	softDeletePolicy.EffectiveTime = timestamppb.New(time.Date(2024, time.April, 1, 0, 0, 0, 0, time.UTC))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	return obj, nil
 }
 
@@ -211,6 +213,20 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		}
 		if patch.Versioning != nil {
 			obj.Versioning = patch.Versioning
+		}
+
+		if patch.SoftDeletePolicy != nil {
+			if patch.SoftDeletePolicy.RetentionDurationSeconds != nil {
+				if obj.SoftDeletePolicy == nil {
+					obj.SoftDeletePolicy = &pb.BucketSoftDeletePolicy{}
+				}
+				obj.SoftDeletePolicy.RetentionDurationSeconds = patch.SoftDeletePolicy.RetentionDurationSeconds
+
+				// If the value is zero, we clear the effectiveTime (apparently)
+				if obj.GetSoftDeletePolicy().GetRetentionDurationSeconds() == 0 {
+					obj.SoftDeletePolicy.EffectiveTime = nil
+				}
+			}
 		}
 	}
 

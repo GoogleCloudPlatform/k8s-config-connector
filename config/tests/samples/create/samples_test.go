@@ -221,9 +221,6 @@ var testDisabledList = map[string]bool{
 	// b/309167136
 	"alloydbbackup":                true,
 	"restored-from-backup-cluster": true,
-	// Similarly want to temporarily disable secondary-instance test
-	// until we can delay second creation until primary is ready
-	"secondary-instance": true,
 	// This sample test need physical rack which is not suitable for e2e testing due to
 	// limited budget.
 	"edgecontainercluster-local-control-plane":  true,

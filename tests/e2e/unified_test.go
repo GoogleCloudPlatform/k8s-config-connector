@@ -43,10 +43,13 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -62,7 +65,9 @@ func TestAllInSeries(t *testing.T) {
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = time.Minute
+		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
+		subtestTimeout = 3 * time.Minute
 	}
 
 	t.Run("samples", func(t *testing.T) {
@@ -79,6 +84,9 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
+					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
+						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUP=%s", s)
+					}
 				}
 
 				h := create.NewHarness(ctx, t)
@@ -123,7 +131,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = time.Minute
+		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
+		subtestTimeout = 3 * time.Minute
 	}
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
@@ -141,13 +151,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 			t.Run(fixture.Name, func(t *testing.T) {
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
-				uniqueID := testvariable.NewUniqueID()
-
-				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
-					opt.Create = append(opt.Create, primaryResource)
 
 					if fixture.Dependencies != nil {
 						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
@@ -157,6 +164,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					}
 
+					opt.Create = append(opt.Create, primaryResource)
+
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
 						opt.Updates = append(opt.Updates, u)
@@ -164,10 +173,39 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					return primaryResource, opt
 				}
 
+				runScenario(ctx, t, testPause, fixture, loadFixture)
+			})
+		}
+	})
+
+	// Do a cleanup while we can still handle the error.
+	t.Logf("shutting down manager")
+	cancel()
+}
+
+func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
+	// Extra indentation to avoid merge conflicts
+	{
+		{
+			{
+				uniqueID := testvariable.NewUniqueID()
+
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
-					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					primaryObject, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
 					create.MaybeSkip(t, fixture.Name, opt.Create)
+					if testPause && containsCCOrCCC(opt.Create) {
+						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
+							"pause test should not run against test cases already contain ConfigConnector "+
+							"or ConfigConnectorContext objects", fixture.Name)
+					}
+
+					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
+						group := primaryObject.GroupVersionKind().Group
+						if group != s {
+							t.Skipf("skipping test because group %q did not match ONLY_TEST_APIGROUP=%s", group, s)
+						}
+					}
 				}
 
 				// Create test harness
@@ -206,7 +244,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					createPausedCC(ctx, t, h.GetClient())
 				}
 
-				primaryResource, opt := loadFixture(project)
+				primaryResource, opt := loadFixture(project, uniqueID)
 
 				exportResources := []*unstructured.Unstructured{primaryResource}
 
@@ -215,6 +253,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				opt.CleanupResources = false // We delete explicitly below
 				if testPause {
 					opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
+				}
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+					// If we're doing golden request checks, create synchronously so that it is reproducible.
+					// Note that this does introduce a dependency that objects are ordered correctly for creation.
+					opt.CreateInOrder = true
 				}
 				create.RunCreateDeleteTest(h, opt)
 
@@ -231,10 +274,22 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							t.Errorf("failed to get test name")
 						}
 						// Golden test exported GCP object
-						got := exportResource(h, obj)
-						if got != "" {
+						exportedYAML := exportResource(h, obj)
+						if exportedYAML != "" {
+							exportedObj := &unstructured.Unstructured{}
+							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
+								t.Fatalf("error from yaml.Unmarshal: %v", err)
+							}
+							if err := normalizeKRMObject(exportedObj, project, uniqueID); err != nil {
+								t.Fatalf("error from normalizeObject: %v", err)
+							}
+							got, err := yaml.Marshal(exportedObj)
+							if err != nil {
+								t.Errorf("failed to convert KRM object to yaml: %v", err)
+							}
+
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
-							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
+							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
 						}
 						// Golden test created KRM object
 						u := &unstructured.Unstructured{}
@@ -243,7 +298,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeObject(u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
@@ -275,8 +330,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
-					operationIDs := map[string]bool{}
-					pathIDs := map[string]string{}
+					networkIDs := map[string]bool{}
+
+					r := NewReplacements()
 
 					// Find "easy" operations and resources by looking for fully-qualified methods
 					for _, event := range events {
@@ -284,23 +340,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						if index := strings.Index(u, "?"); index != -1 {
 							u = u[:index]
 						}
-						tokens := strings.Split(u, "/")
-						n := len(tokens)
-						if n >= 2 {
-							kind := tokens[n-2]
-							id := tokens[n-1]
-							switch kind {
-							case "tensorboards":
-								pathIDs[id] = "${tensorboardID}"
-							case "tagKeys":
-								pathIDs[id] = "${tagKeyID}"
-							case "tagValues":
-								pathIDs[id] = "${tagValueID}"
-							case "operations":
-								operationIDs[id] = true
-								pathIDs[id] = "${operationID}"
-							}
-						}
+						r.ExtractIDsFromLinks(u)
 					}
 
 					for _, event := range events {
@@ -309,53 +349,113 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						val, ok := body["name"]
 						if ok {
 							s := val.(string)
+							tokens := strings.Split(s, "/")
 							// operation name format: operations/{operationId}
-							if strings.HasPrefix(s, "operations/") {
+							if len(tokens) == 2 && tokens[0] == "operations" {
 								id = strings.TrimPrefix(s, "operations/")
 							}
 							// operation name format: {prefix}/operations/{operationId}
-							if ix := strings.Index(s, "/operations/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/operations/")
+							if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
+								id = tokens[len(tokens)-1]
 							}
 							// operation name format: operation-{operationId}
-							if strings.HasPrefix(s, "operation") {
+							if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation") {
+								id = s
+							}
+							// SQL operations require a special case.
+							if kind, ok := body["kind"]; ok && kind == "sql#operation" {
 								id = s
 							}
 						}
 						if id != "" {
-							operationIDs[id] = true
+							r.OperationIDs[id] = true
 						}
 					}
 
 					for _, event := range events {
-						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
+						body := event.Response.ParseBody()
+						if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
+							r.ExtractIDsFromLinks(selfLinkWithId)
+						}
+						// if targetId, _, _ := unstructured.NestedString(body, "targetId"); targetId != "" {
+						// 	extractIDsFromLinks(selfLinkWithId)
+						// }
+
+						if conditions, _, _ := unstructured.NestedSlice(body, "conditions"); conditions != nil {
+							for _, conditionAny := range conditions {
+								condition := conditionAny.(map[string]any)
+								name, _, _ := unstructured.NestedString(condition, "name")
+								if name != "" {
+									r.ExtractIDsFromLinks(name)
+								}
+							}
+						}
+
+						if val, ok := body["projectNumber"]; ok {
+							s := val.(string)
+							r.PathIDs[s] = "${projectNumber}"
+						}
+					}
+
+					// Extract resource numbers from compute operations
+					for _, event := range events {
+						body := event.Response.ParseBody()
+
+						targetLink, _, _ := unstructured.NestedString(body, "targetLink")
+						targetId, _, _ := unstructured.NestedString(body, "targetId")
+
+						if targetLink != "" && targetId != "" {
+							tokens := strings.Split(targetLink, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								switch kind {
+								case "subnetworks":
+									r.PathIDs[targetId] = "${subnetworkNumber}"
+								case "sslCertificates":
+									r.PathIDs[targetId] = "${sslCertificatesId}"
+								}
+							}
+						}
+					}
+
+					// Replace any operation IDs that appear in URLs
+					for _, event := range events {
+						u := event.Request.URL
+						for operationID := range r.OperationIDs {
+							u = strings.ReplaceAll(u, operationID, "${operationID}")
+						}
+						event.Request.URL = u
+					}
+
+					for _, event := range events {
+						if !isGetOperation(event) {
 							continue
 						}
 						responseBody := event.Response.ParseBody()
 						if responseBody == nil {
 							continue
 						}
-						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
-						if strings.HasPrefix(name, "tagKeys/") {
-							pathIDs[name] = "tagKeys/${tagKeyID}"
+						if name, _, _ := unstructured.NestedString(responseBody, "response", "name"); name != "" {
+							r.ExtractIDsFromLinks(name)
 						}
-						if strings.HasPrefix(name, "tagValues/") {
-							pathIDs[name] = "tagValues/${tagValueId}"
+						if targetLink, _, _ := unstructured.NestedString(responseBody, "targetLink"); targetLink != "" {
+							r.ExtractIDsFromLinks(targetLink)
 						}
 					}
 
 					// Replace any dynamic IDs that appear in URLs
 					for _, event := range events {
-						url := event.Request.URL
-						for k, v := range pathIDs {
-							url = strings.ReplaceAll(url, "/"+k, "/"+v)
+						u := event.Request.URL
+						for k, v := range r.PathIDs {
+							u = strings.ReplaceAll(u, "/"+k, "/"+v)
 						}
-						event.Request.URL = url
+						event.Request.URL = u
 					}
 
 					// Remove operation polling requests (ones where the operation is not ready)
 					events = events.KeepIf(func(e *test.LogEntry) bool {
-						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
+						if !isGetOperation(e) {
 							return true
 						}
 						responseBody := e.Response.ParseBody()
@@ -363,6 +463,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							return true
 						}
 						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+							return true
+						}
+						if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" {
 							return true
 						}
 						// remove if not done - and done can be omitted when false
@@ -394,11 +497,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("uniqueId", "111111111111111111111")
 					addReplacement("oauth2ClientId", "888888888888888888888")
 
-					addReplacement("etag", "abcdef0123A=")
-					addReplacement("serviceAccount.etag", "abcdef0123A=")
-					addReplacement("response.etag", "abcdef0123A=")
-
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -407,6 +507,22 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to cloudbuild
+					addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to spanner
+					addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.updateTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to spanner database
+					addReplacement("earliestVersionTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.earliestVersionTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.progress[].startTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.progress[].endTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.commitTimestamps[]", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to redis
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -417,22 +533,159 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("reservedIpRange", "10.1.2.0/24")
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 
+					// For compute operations
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("user", "user@example.com")
+					addReplacement("natIP", "192.0.0.10")
+
+					// Specific to IAM/policy
+					addReplacement("policy.etag", "abcdef0123A=")
+
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
-
-					// Specific to GCS
-					addReplacement("timeCreated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("updated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".acl[].etag", "abcdef0123A=")
-					addSetStringReplacement(".defaultObjectAcl[].etag", "abcdef0123A=")
+					for _, event := range events {
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						metadataArtifact, _, _ := unstructured.NestedString(responseBody, "metadataArtifact")
+						if metadataArtifact != "" {
+							tokens := strings.Split(metadataArtifact, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								id := tokens[n-1]
+								switch kind {
+								case "artifacts":
+									r.PathIDs[id] = "${artifactId}"
+								}
+							}
+						}
+						gcsBucket, _, _ := unstructured.NestedString(responseBody, "metadata", "gcsBucket")
+						if gcsBucket != "" && strings.HasPrefix(gcsBucket, "cloud-ai-platform-") {
+							r.PathIDs[gcsBucket] = "cloud-ai-platform-${bucketId}"
+						}
+					}
 
 					// Specific to AlloyDB
 					addReplacement("uid", "111111111111111111111")
 					addReplacement("response.uid", "111111111111111111111")
+					addReplacement("endTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("ipAddress", "10.1.2.3")
+					addReplacement("response.ipAddress", "10.1.2.3")
+					addReplacement("primary.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("primary.generateTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to BigQuery
+					addSetStringReplacement(".access[].userByEmail", "user@google.com")
+
+					// Specific to BigTable
+					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to pubsub
+					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("revisionId", "revision-id-placeholder")
+
+					// Specific to monitoring
+					addSetStringReplacement(".creationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".creationRecord.mutatedBy", "user@example.com")
+					addSetStringReplacement(".mutationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".mutationRecord.mutatedBy", "user@example.com")
+					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
+
+					// Specific to Sql
+					addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
+					addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
+					addReplacement("serverCaCert.commonName", "common-name")
+					addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("serverCaCert.sha1Fingerprint", "12345678")
+					addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
+					addReplacement("settings.backupConfiguration.startTime", "12:00")
+					addReplacement("settings.settingsVersion", "123")
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
+							// Only run this mutator for sql instance objects.
+							return
+						}
+						if _, found, _ := unstructured.NestedString(obj, "state"); !found {
+							// Only run this mutator for response objects. This is a hack to identify response objects
+							// for database instances, because they include the state field (as opposed to requests,
+							// which do not).
+							return
+						}
+						if _, found, _ := unstructured.NestedMap(obj, "settings"); found {
+							if _, found, _ := unstructured.NestedStringSlice(obj, "settings", "authorizedGaeApplications"); !found {
+								// Include settings.authorizedGaeApplications in response, even if it's empty.
+								var val []string
+								if err := unstructured.SetNestedStringSlice(obj, val, "settings", "authorizedGaeApplications"); err != nil {
+									t.Fatal(err)
+								}
+							}
+						}
+						if _, found, _ := unstructured.NestedMap(obj, "settings", "ipConfiguration"); found {
+							if _, found, _ := unstructured.NestedStringSlice(obj, "settings", "ipConfiguration", "authorizedNetworks"); !found {
+								// Include settings.ipConfiguration.authorizedNetworks in response, even if it's empty.
+								var val []string
+								if err := unstructured.SetNestedStringSlice(obj, val, "settings", "ipConfiguration", "authorizedNetworks"); err != nil {
+									t.Fatal(err)
+								}
+							}
+						}
+						if _, found, _ := unstructured.NestedString(obj, "gceZone"); found {
+							// Hardcode the zone. GCP chooses this zone within the
+							// region, and it varies based on availability.
+							if err := unstructured.SetNestedField(obj, "us-central1-a", "gceZone"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						if ipConfig, found, _ := unstructured.NestedMap(obj, "settings", "ipConfiguration"); found {
+							// Hack fix: remove unpublished field that's suddenly showing up in real gcp proto responses.
+							delete(ipConfig, "serverCaMode")
+							if err := unstructured.SetNestedMap(obj, ipConfig, "settings", "ipConfiguration"); err != nil {
+								t.Fatal(err)
+							}
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#usersList" {
+							// Only run this mutator for sql users list objects.
+							return
+						}
+						if items, found, _ := unstructured.NestedSlice(obj, "items"); found {
+							// Include items[].host in response, even if it's empty.
+							newItems := []interface{}{}
+							for _, item := range items {
+								if itemMap, ok := item.(map[string]interface{}); ok {
+									if _, found, _ := unstructured.NestedStringSlice(itemMap, "host"); !found {
+										if err := unstructured.SetNestedField(itemMap, "", "host"); err != nil {
+											t.Fatal(err)
+										}
+									}
+									newItems = append(newItems, itemMap)
+								}
+							}
+							if err := unstructured.SetNestedSlice(obj, newItems, "items"); err != nil {
+								t.Fatal(err)
+							}
+						}
+					})
+
+					// Specific to KMS
+					addReplacement("policy.etag", "abcdef0123A=")
+					addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".cryptoKeyVersions[].generateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to BigQueryConnectionConnection.
+					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -460,42 +713,30 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							delete(responseMap, "details")
 						}
 					})
+					addReplacement("creationTime", "123456789")
+					addReplacement("lastModifiedTime", "123456789")
 
 					events.PrettifyJSON(jsonMutators...)
 
-					// Remove headers that just aren't very relevant to testing
-					events.RemoveHTTPResponseHeader("Date")
-					events.RemoveHTTPResponseHeader("Alt-Svc")
-					events.RemoveHTTPResponseHeader("Server-Timing")
-					events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
-					events.RemoveHTTPResponseHeader("Etag")
-					events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+					NormalizeHTTPLog(t, events, project, uniqueID)
 
-					// Replace any expires headers with (rounded) relative offsets
-					for _, event := range events {
-						expires := event.Response.Header.Get("Expires")
-						if expires == "" {
-							continue
-						}
-
-						if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
-							// Magic value meaning no-cache; don't change
-							continue
-						}
-
-						expiresTime, err := time.Parse(http.TimeFormat, expires)
-						if err != nil {
-							t.Fatalf("parsing Expires header %q: %v", expires, err)
-						}
-						now := time.Now()
-						delta := expiresTime.Sub(now)
-						if delta > (55 * time.Minute) {
-							delta = delta.Round(time.Hour)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
-						} else {
-							delta = delta.Round(time.Minute)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
-						}
+					// Remove repeated GET requests (after normalization)
+					{
+						var previous *test.LogEntry
+						events = events.KeepIf(func(e *test.LogEntry) bool {
+							keep := true
+							if e.Request.Method == "GET" && previous != nil {
+								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
+									if previous.Response.Status == e.Response.Status {
+										if previous.Response.Body == e.Response.Body {
+											keep = false
+										}
+									}
+								}
+							}
+							previous = e
+							return keep
+						})
 					}
 
 					got := events.FormatHTTP()
@@ -505,11 +746,21 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
-					for k, v := range pathIDs {
+					if testgcp.TestFolderID.Get() != "" {
+						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
+					}
+					if testgcp.TestOrgID.Get() != "" {
+						normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
+						normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
+					}
+					for k, v := range r.PathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
 					}
-					for k := range operationIDs {
+					for k := range r.OperationIDs {
 						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+					}
+					for k := range networkIDs {
+						normalizers = append(normalizers, ReplaceString(k, "${networkID}"))
 					}
 
 					if testPause {
@@ -518,13 +769,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
 				}
-			})
+			}
 		}
-	})
-
-	// Do a cleanup while we can still handle the error.
-	t.Logf("shutting down manager")
-	cancel()
+	}
 }
 
 // assertNoRequest checks that no POSTs or GETs are made against the cloud provider (GCP). This
@@ -648,6 +895,15 @@ func sortJSON(s string) (string, error) {
 	return string(sortedJSON), nil
 }
 
+func isOperationDone(s string) bool {
+	var data map[string]interface{}
+	err := json.Unmarshal([]byte(s), &data)
+	if err != nil {
+		return false
+	}
+	return data["status"] == "DONE" || data["done"] == true
+}
+
 // addTestTimeout will ensure the test fails if not completed before timeout
 func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) context.Context {
 	ctx, cancel := context.WithTimeout(ctx, timeout)
@@ -678,6 +934,9 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		// Replace project id and number
 		result := strings.Replace(s, project.ProjectID, "example-project", -1)
 		result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
+		if os.Getenv("TEST_ORG_ID") != "" {
+			result = strings.Replace(result, os.Getenv("TEST_ORG_ID"), "123450001", -1)
+		}
 
 		// Replace user info
 		obj := make(map[string]any)
@@ -706,6 +965,9 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		resBody := i.Response.Body
 
 		if strings.Contains(reqURL, "operations") {
+			if !isOperationDone(resBody) {
+				i.DiscardOnSave = true
+			}
 			sorted, _ := sortJSON(resBody)
 			if _, exists := unique[sorted]; !exists {
 				unique[sorted] = true // Mark as seen
@@ -785,4 +1047,16 @@ func configureVCR(t *testing.T, h *create.Harness) {
 	h.VCRRecorderDCL.SetMatcher(matcher)
 	h.VCRRecorderTF.SetMatcher(matcher)
 	h.VCRRecorderOauth.SetMatcher(matcher)
+}
+
+func containsCCOrCCC(resources []*unstructured.Unstructured) bool {
+	for _, resource := range resources {
+		gvk := resource.GroupVersionKind()
+		switch gvk.GroupKind() {
+		case schema.GroupKind{Group: "core.cnrm.cloud.google.com", Kind: "ConfigConnector"},
+			schema.GroupKind{Group: "core.cnrm.cloud.google.com", Kind: "ConfigConnectorContext"}:
+			return true
+		}
+	}
+	return false
 }

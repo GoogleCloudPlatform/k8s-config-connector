@@ -6,7 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: cloudidsendpoints.cloudids.cnrm.cloud.google.com
@@ -40,7 +40,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         properties:
@@ -64,11 +64,37 @@ spec:
               location:
                 description: Immutable. The location for the endpoint.
                 type: string
-              network:
-                description: Immutable. Name of the VPC network that is connected
+              networkRef:
+                description: |-
+                  Immutable. Name of the VPC network that is connected
                   to the IDS endpoint. This can either contain the VPC network name
                   itself (like "src-net") or the full URL to the network (like "projects/{project_id}/global/networks/src-net").
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `ComputeNetwork`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -114,7 +140,7 @@ spec:
                 type: array
             required:
             - location
-            - network
+            - networkRef
             - projectRef
             - severity
             type: object
@@ -146,16 +172,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Creation timestamp in RFC 3339 text format.
-                type: string
-              endpointForwardingRule:
-                description: URL of the endpoint's network address to which traffic
-                  is to be sent by Packet Mirroring.
-                type: string
-              endpointIp:
-                description: Internal IP address of the endpoint's network entry point.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -163,9 +179,205 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              updateTime:
-                description: Last update timestamp in RFC 3339 text format.
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  createTime:
+                    description: Creation timestamp in RFC 3339 text format.
+                    type: string
+                  endpointForwardingRule:
+                    description: URL of the endpoint's network address to which traffic
+                      is to be sent by Packet Mirroring.
+                    type: string
+                  endpointIP:
+                    description: Internal IP address of the endpoint's network entry
+                      point.
+                    type: string
+                  updateTime:
+                    description: Last update timestamp in RFC 3339 text format.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              description:
+                description: Immutable. An optional description of the endpoint.
                 type: string
+              location:
+                description: Immutable. The location for the endpoint.
+                type: string
+              networkRef:
+                description: |-
+                  Immutable. Name of the VPC network that is connected
+                  to the IDS endpoint. This can either contain the VPC network name
+                  itself (like "src-net") or the full URL to the network (like "projects/{project_id}/global/networks/src-net").
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `ComputeNetwork`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              severity:
+                description: 'Immutable. The minimum alert severity level that is
+                  reported by the endpoint. Possible values: ["INFORMATIONAL", "LOW",
+                  "MEDIUM", "HIGH", "CRITICAL"].'
+                type: string
+              threatExceptions:
+                description: 'Configuration for threat IDs excluded from generating
+                  alerts. Limit: 99 IDs.'
+                items:
+                  type: string
+                type: array
+            required:
+            - location
+            - networkRef
+            - projectRef
+            - severity
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  createTime:
+                    description: Creation timestamp in RFC 3339 text format.
+                    type: string
+                  endpointForwardingRule:
+                    description: URL of the endpoint's network address to which traffic
+                      is to be sent by Packet Mirroring.
+                    type: string
+                  endpointIP:
+                    description: Internal IP address of the endpoint's network entry
+                      point.
+                    type: string
+                  updateTime:
+                    description: Last update timestamp in RFC 3339 text format.
+                    type: string
+                type: object
             type: object
         required:
         - spec

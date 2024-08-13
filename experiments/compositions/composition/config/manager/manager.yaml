@@ -17,9 +17,9 @@ kind: Namespace
 metadata:
   labels:
     control-plane: controller-manager
-    app.kubernetes.io/name: namespace
-    app.kubernetes.io/instance: system
-    app.kubernetes.io/component: manager
+    app.kubernetes.io/name: composition-controller-manager-namespace
+    app.kubernetes.io/instance: composition-controller-manager-system
+    app.kubernetes.io/component: composition-controller-manager
     app.kubernetes.io/created-by: composition
     app.kubernetes.io/part-of: composition
     app.kubernetes.io/managed-by: kustomize
@@ -32,9 +32,9 @@ metadata:
   namespace: system
   labels:
     control-plane: controller-manager
-    app.kubernetes.io/name: deployment
-    app.kubernetes.io/instance: controller-manager
-    app.kubernetes.io/component: manager
+    app.kubernetes.io/name: composition-controller-manager
+    app.kubernetes.io/instance: composition-controller-manager
+    app.kubernetes.io/component: composition-controller-manager
     app.kubernetes.io/created-by: composition
     app.kubernetes.io/part-of: composition
     app.kubernetes.io/managed-by: kustomize

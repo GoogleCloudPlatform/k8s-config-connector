@@ -79,6 +79,9 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 			// Expected when creating output for the first time;
 			// treat as empty
 			wantBytes = []byte{} // Not strictly needed, but clearer
+		} else if got == "" && os.IsNotExist(err) {
+			// Golden file won't be generated if the result is empty.
+			return
 		} else {
 			t.Fatalf("failed to read golden file %q: %v", p, err)
 		}
@@ -92,16 +95,16 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 		return
 	}
 
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("unexpected diff in %s: %s", p, diff)
+	}
+
 	if writeGoldenOutput {
 		// Write the output to the golden file
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
 			t.Fatalf("failed to write golden output %s: %v", p, err)
 		}
-		t.Errorf("wrote updated golden output to %s", p)
-	} else {
-		if diff := cmp.Diff(want, got); diff != "" {
-			t.Errorf("unexpected diff in %s: %s", p, diff)
-		}
+		t.Logf("wrote updated golden output to %s", p)
 	}
 }
 
@@ -111,11 +114,11 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 func IgnoreLeadingComments(s string) string {
 	var out []string
 	lines := strings.Split(s, "\n")
-	removing := true
+	removingLeadingLines := true
 	commentBlock := 0
 	for i := 0; i < len(lines); i++ {
 		line := lines[i]
-		if !removing {
+		if !removingLeadingLines {
 			out = append(out, line)
 			continue
 		}
@@ -124,15 +127,21 @@ func IgnoreLeadingComments(s string) string {
 			commentBlock++
 		}
 
+		ignore := false
 		if commentBlock != 0 {
 			// Ignore multi-line c-style comment blocks
+			ignore = true
 		} else if strings.HasPrefix(s, "//") {
 			// ignore single-line c-style comments
+			ignore = true
 		} else if strings.HasPrefix(s, "#") {
 			// ignore comments in yaml
-		} else {
+			ignore = true
+		}
+
+		if !ignore {
 			out = append(out, line)
-			removing = false
+			removingLeadingLines = false
 		}
 
 		if strings.HasSuffix(s, "*/") {
@@ -142,18 +151,18 @@ func IgnoreLeadingComments(s string) string {
 	return strings.TrimSpace(strings.Join(out, "\n")) + "\n"
 }
 
-func CompareGoldenObject(t *testing.T, path string, got []byte) {
+func CompareGoldenObject(t *testing.T, p string, got []byte) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
-	want, err := os.ReadFile(path)
+	want, err := os.ReadFile(p)
 	if err != nil {
 		if writeGoldenOutput && os.IsNotExist(err) {
 			// Expected when creating output for the first time
-			if err := os.WriteFile(path, got, 0644); err != nil {
-				t.Errorf("failed to write golden output %s: %v", path, err)
+			if err := os.WriteFile(p, got, 0644); err != nil {
+				t.Errorf("failed to write golden output %s: %v", p, err)
 			}
-			t.Logf("wrote updated golden output to %s", path)
+			t.Logf("wrote updated golden output to %s", p)
 		} else {
-			t.Errorf("failed to read golden file %q: %v", path, err)
+			t.Errorf("failed to read golden file %q: %v", p, err)
 		}
 	}
 	var wantMap, gotMap map[string]interface{}
@@ -165,7 +174,19 @@ func CompareGoldenObject(t *testing.T, path string, got []byte) {
 	if err != nil {
 		t.Errorf("Failed parsing file: %s", err)
 	}
-	if diff := cmp.Diff(wantMap, gotMap); diff != "" {
-		t.Errorf("unexpected diff in %s: %s", path, diff)
+
+	diff := cmp.Diff(wantMap, gotMap)
+	if diff == "" {
+		return
+	}
+
+	t.Errorf("unexpected diff in %s: %s", p, diff)
+
+	if writeGoldenOutput {
+		// Write the output to the golden file
+		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
+			t.Fatalf("failed to write golden output %s: %v", p, err)
+		}
+		t.Logf("wrote updated golden output to %s", p)
 	}
 }

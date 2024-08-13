@@ -88,9 +88,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -116,8 +113,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location for the KeyRing.
-A full list of valid locations can be found by running 'gcloud kms locations list'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The location for the KeyRing. A full list of valid locations can be found by running 'gcloud kms locations list'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -159,7 +155,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the KMSKeyRing's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

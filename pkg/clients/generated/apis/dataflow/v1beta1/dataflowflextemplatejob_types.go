@@ -74,14 +74,14 @@ type DataflowFlexTemplateJobSpec struct {
 
 	/* Immutable. The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000. */
 	// +optional
-	MaxWorkers *int `json:"maxWorkers,omitempty"`
+	MaxWorkers *int64 `json:"maxWorkers,omitempty"`
 
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The initial number of Google Compute Engine instances for the job. */
 	// +optional
-	NumWorkers *int `json:"numWorkers,omitempty"`
+	NumWorkers *int64 `json:"numWorkers,omitempty"`
 
 	// +optional
 	Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
@@ -122,7 +122,7 @@ type DataflowFlexTemplateJobStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	State *string `json:"state,omitempty"`
@@ -136,6 +136,11 @@ type DataflowFlexTemplateJobStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataflowflextemplatejob;gcpdataflowflextemplatejobs
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DataflowFlexTemplateJob is the Schema for the dataflow API
 // +k8s:openapi-gen=true

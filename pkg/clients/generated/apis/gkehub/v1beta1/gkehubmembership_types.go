@@ -141,11 +141,11 @@ type MembershipKubernetesMetadataStatus struct {
 
 	/* Output only. The total memory capacity as reported by the sum of all Kubernetes nodes resources, defined in MB. */
 	// +optional
-	MemoryMb *int `json:"memoryMb,omitempty"`
+	MemoryMb *int64 `json:"memoryMb,omitempty"`
 
 	/* Output only. Node count as reported by Kubernetes nodes resources. */
 	// +optional
-	NodeCount *int `json:"nodeCount,omitempty"`
+	NodeCount *int64 `json:"nodeCount,omitempty"`
 
 	/* Output only. Node providerID as reported by the first node in the list of nodes on the Kubernetes endpoint. On Kubernetes platforms that support zero-node clusters (like GKE-on-GCP), the node_count will be zero and the node_provider_id will be empty. */
 	// +optional
@@ -157,7 +157,7 @@ type MembershipKubernetesMetadataStatus struct {
 
 	/* Output only. vCPU count as reported by Kubernetes nodes resources. */
 	// +optional
-	VcpuCount *int `json:"vcpuCount,omitempty"`
+	VcpuCount *int64 `json:"vcpuCount,omitempty"`
 }
 
 type MembershipKubernetesResourceStatus struct {
@@ -210,7 +210,7 @@ type GKEHubMembershipStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. State of the Membership resource. */
 	// +optional
@@ -229,6 +229,11 @@ type GKEHubMembershipStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkehubmembership;gcpgkehubmemberships
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // GKEHubMembership is the Schema for the gkehub API
 // +k8s:openapi-gen=true

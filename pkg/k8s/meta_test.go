@@ -888,6 +888,31 @@ func newManagementConflictAnnotations(policy string) map[string]string {
 	return annotations
 }
 
+func TestIsManagedByKCC(t *testing.T) {
+	tests := []struct {
+		gvk            runtimeschema.GroupVersionKind
+		expectedResult bool
+	}{
+		{
+			gvk:            runtimeschema.GroupVersionKind{Group: "core.cnrm.cloud.google.com"},
+			expectedResult: false,
+		},
+		{
+			gvk:            runtimeschema.GroupVersionKind{Group: "storage.cnrm.cloud.google.com"},
+			expectedResult: true,
+		},
+		{
+			gvk:            runtimeschema.GroupVersionKind{Group: "test.cloud.google.com"},
+			expectedResult: false,
+		},
+	}
+	for _, tc := range tests {
+		if got, want := k8s.IsManagedByKCC(tc.gvk), tc.expectedResult; got != want {
+			t.Errorf("result mismatch: got '%v', want '%v'", got, want)
+		}
+	}
+}
+
 func TestMain(m *testing.M) {
 	testmain.ForUnitTests(m, &mgr)
 }

@@ -79,7 +79,7 @@ spec:
                 type: string
               enableUlaInternalIpv6:
                 description: |-
-                  Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign
+                  Enable ULA internal ipv6 on this network. Enabling this feature will assign
                   a /48 from google defined ULA prefix fd20::/20.
                 type: boolean
               internalIpv6Range:

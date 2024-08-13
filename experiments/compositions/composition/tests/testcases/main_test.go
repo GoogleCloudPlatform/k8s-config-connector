@@ -16,29 +16,21 @@ package e2e
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"math/rand"
 	"os"
-	"strings"
-	"sync"
 	"testing"
 	"time"
 
-	"google.com/composition/tests/kind"
-	"k8s.io/apimachinery/pkg/types"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster/kind"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
-const (
-	CRDManifests       = "../../release/kind/crds.yaml"
-	FacadeCRDManifests = "../../release/kind/facade_crds.yaml"
-	OperatorManifests  = "../../release/kind/operator.yaml"
-)
-
 var (
 	images *string = flag.String("images", "", "images")
+	useCC  *bool   = flag.Bool("use-cc", false, "use config controller cluster")
 )
 
 // TestMain - umbrella test that runs all test cases
@@ -55,35 +47,15 @@ func TestMain(m *testing.M) {
 	}
 
 	clusterCount := 1
-	var wg sync.WaitGroup
-	wg.Add(clusterCount)
-	// Start with 1 e2e cluster
-	for i := 0; i < clusterCount; i++ {
-		go func() {
-			name := fmt.Sprintf("composition-e2e-%d", i)
-			// kind cluster
-			kc := kind.NewKindCluster(name,
-				// that adds these images
-				strings.Split(*images, ","),
-				// and installs these manifests
-				[]string{CRDManifests, OperatorManifests},
-				// and waits for these deployments to be ready
-				[]types.NamespacedName{
-					{Namespace: "composition-system", Name: "composition-controller-manager"},
-				},
-			)
-
-			// Bringup the cluster and install the operator
-			err = kc.ClusterUp()
-			if err != nil {
-				log.Fatalf("Error creating kind cluster: %s, %v", name, err)
-			}
-			wg.Done()
-		}()
+	if *useCC {
+		cluster.CreateCCClusters(clusterCount, *images)
+	} else {
+		cluster.CreateKindClusters(clusterCount, *images)
 	}
-	wg.Wait()
-
 	exitCode := m.Run()
-	//kc.Delete()
+
+	// TODO:
+	//cluster.RemoveKindClusters()
+	//cluster.RemoveCCClusters()
 	os.Exit(exitCode)
 }

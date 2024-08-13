@@ -15,1760 +15,1190 @@
 ---
 version: 2
 interactions:
-    - id: 0
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 300.600727ms
-    - id: 1
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 259.001545ms
-    - id: 2
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 88.390859ms
-    - id: 3
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 229
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: '{"description":"A sample workload identity pool using a newly created project","disabled":false,"displayName":"sample-pool","name":"projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn"}'
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools?alt=json&workloadIdentityPoolId=iamwip-2okpok4nq8kgn
-        method: POST
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bigarnps4gyamefqt25kuai000000000"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 442.78073ms
-    - id: 4
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bigarnps4gyamefqt25kuai000000000?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bigarnps4gyamefqt25kuai000000000"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 60.926558ms
-    - id: 5
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bigarnps4gyamefqt25kuai000000000?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bigarnps4gyamefqt25kuai000000000",
-              "done": true
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 74.56415ms
-    - id: 6
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
-              "displayName": "sample-pool",
-              "description": "A sample workload identity pool using a newly created project",
-              "state": "ACTIVE"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 87.975492ms
-    - id: 7
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
-              "displayName": "sample-pool",
-              "description": "A sample workload identity pool using a newly created project",
-              "state": "ACTIVE"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 90.151122ms
-    - id: 8
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
-              "displayName": "sample-pool",
-              "description": "A sample workload identity pool using a newly created project",
-              "state": "ACTIVE"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 87.635641ms
-    - id: 9
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 112.379669ms
-    - id: 10
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
-              "displayName": "sample-pool",
-              "description": "A sample workload identity pool using a newly created project",
-              "state": "ACTIVE"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 89.135307ms
-    - id: 11
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 106.74913ms
-    - id: 12
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
-              "displayName": "sample-pool",
-              "description": "A sample workload identity pool using a newly created project",
-              "state": "ACTIVE"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 114.120711ms
-    - id: 13
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 89.214018ms
-    - id: 14
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 266
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: '{"attributeMapping":{"google.subject":"true"},"name":"projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn","oidc":{"allowedAudiences":["sample-audience"],"issuerUri":"https://example.com/"}}'
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers?alt=json&workloadIdentityPoolProviderId=iamwipp-2okpok4nq8kgn
-        method: POST
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigaroxs4gyamegau6eoyai000000000"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 261.760925ms
-    - id: 15
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigaroxs4gyamegau6eoyai000000000?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigaroxs4gyamegau6eoyai000000000"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 55.971367ms
-    - id: 16
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigaroxs4gyamegau6eoyai000000000?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigaroxs4gyamegau6eoyai000000000",
-              "done": true
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 53.914479ms
-    - id: 17
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 91.10055ms
-    - id: 18
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 92.409801ms
-    - id: 19
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 66.62475ms
-    - id: 20
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 81.595004ms
-    - id: 21
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 92.498449ms
-    - id: 22
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 76.652924ms
-    - id: 23
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 64.286858ms
-    - id: 24
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 91.2103ms
-    - id: 25
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://example.com/",
-                "allowedAudiences": [
-                  "sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 75.713922ms
-    - id: 26
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 155
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: '{"attributeMapping":{"google.subject":"true"},"oidc":{"allowedAudiences":["sample-audience","new-sample-audience"],"issuerUri":"https://new-example.com/"}}'
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json&updateMask=oidc.allowedAudiences%2Coidc.issuerUri
-        method: PATCH
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqrqhs4gyamefazo2sc00000000000"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 224.54759ms
-    - id: 27
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqrqhs4gyamefazo2sc00000000000?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqrqhs4gyamefazo2sc00000000000"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 65.242536ms
-    - id: 28
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqrqhs4gyamefazo2sc00000000000?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqrqhs4gyamefazo2sc00000000000",
-              "done": true
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 55.742621ms
-    - id: 29
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
-              "state": "ACTIVE",
-              "attributeMapping": {
-                "google.subject": "true"
-              },
-              "oidc": {
-                "issuerUri": "https://new-example.com/",
-                "allowedAudiences": [
-                  "sample-audience",
-                  "new-sample-audience"
-                ]
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 61.435365ms
-    - id: 30
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 41.067443ms
-    - id: 31
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
-              "displayName": "sample-pool",
-              "description": "A sample workload identity pool using a newly created project",
-              "state": "ACTIVE"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 89.740865ms
-    - id: 32
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
-              "displayName": "sample-pool",
-              "description": "A sample workload identity pool using a newly created project",
-              "state": "ACTIVE"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 55.641106ms
-    - id: 33
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/916595846568/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bifqrr7s4gyamegi7okgm00000000000"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 667.379538ms
-    - id: 34
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 41.697051ms
-    - id: 35
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 34.852381ms
-    - id: 36
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 42.85484ms
-    - id: 37
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 58.602488ms
-    - id: 38
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 58.128365ms
-    - id: 39
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 251.33393ms
-    - id: 40
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 251.150684ms
-    - id: 41
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 307.1858ms
-    - id: 42
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 249.858742ms
-    - id: 43
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 242.894139ms
-    - id: 44
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 248.377377ms
-    - id: 45
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 90.157536ms
-    - id: 46
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: iam.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools//providers/iamwipp-2okpok4nq8kgn?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 400 Bad Request
-        code: 400
-        duration: 241.157406ms
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 303.529049ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 100.51696ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 93.546394ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 229
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"description":"A sample workload identity pool using a newly created project","disabled":false,"displayName":"sample-pool","name":"projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools?alt=json&workloadIdentityPoolId=iamwip-2okpok4nq8kgn
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bifqrvxju2yqmeeystoho00000000000"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 589.842456ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bifqrvxju2yqmeeystoho00000000000?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bifqrvxju2yqmeeystoho00000000000",
+          "done": true
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 74.493656ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
+          "displayName": "sample-pool",
+          "description": "A sample workload identity pool using a newly created project",
+          "state": "ACTIVE"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 51.829148ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
+          "displayName": "sample-pool",
+          "description": "A sample workload identity pool using a newly created project",
+          "state": "ACTIVE"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 102.162648ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 86.317405ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
+          "displayName": "sample-pool",
+          "description": "A sample workload identity pool using a newly created project",
+          "state": "ACTIVE"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 90.281127ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
+          "displayName": "sample-pool",
+          "description": "A sample workload identity pool using a newly created project",
+          "state": "ACTIVE"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 58.385758ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 81.346552ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
+          "displayName": "sample-pool",
+          "description": "A sample workload identity pool using a newly created project",
+          "state": "ACTIVE"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 74.971159ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 95.036597ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 266
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"attributeMapping":{"google.subject":"true"},"name":"projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn","oidc":{"allowedAudiences":["sample-audience"],"issuerUri":"https://example.com/"}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers?alt=json&workloadIdentityPoolProviderId=iamwipp-2okpok4nq8kgn
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigarwxju2yqmehy63nieaq000000000"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 153.122979ms
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigarwxju2yqmehy63nieaq000000000?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bigarwxju2yqmehy63nieaq000000000",
+          "done": true
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 49.057262ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 66.980721ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 109.077419ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 81.434588ms
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 56.881074ms
+  - id: 19
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 102.681666ms
+  - id: 20
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 89.832053ms
+  - id: 21
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 67.595232ms
+  - id: 22
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 67.358605ms
+  - id: 23
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://example.com/",
+            "allowedAudiences": [
+              "sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 76.837978ms
+  - id: 24
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 155
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"attributeMapping":{"google.subject":"true"},"oidc":{"allowedAudiences":["sample-audience","new-sample-audience"],"issuerUri":"https://new-example.com/"}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json&updateMask=oidc.allowedAudiences%2Coidc.issuerUri
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqryhju2yqmefi3crry00000000000"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 214.760469ms
+  - id: 25
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqryhju2yqmefi3crry00000000000?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn/operations/bifqryhju2yqmefi3crry00000000000",
+          "done": true
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 47.246233ms
+  - id: 26
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/providers/iamwipp-2okpok4nq8kgn",
+          "state": "ACTIVE",
+          "attributeMapping": {
+            "google.subject": "true"
+          },
+          "oidc": {
+            "issuerUri": "https://new-example.com/",
+            "allowedAudiences": [
+              "sample-audience",
+              "new-sample-audience"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 76.584121ms
+  - id: 27
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
+          "displayName": "sample-pool",
+          "description": "A sample workload identity pool using a newly created project",
+          "state": "ACTIVE"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 64.373834ms
+  - id: 28
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn",
+          "displayName": "sample-pool",
+          "description": "A sample workload identity pool using a newly created project",
+          "state": "ACTIVE"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 69.948714ms
+  - id: 29
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://iam.googleapis.com/v1/projects/example-project/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/global/workloadIdentityPools/iamwip-2okpok4nq8kgn/operations/bifqrzpju2yqmegqz7acs00000000000"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 622.5528ms

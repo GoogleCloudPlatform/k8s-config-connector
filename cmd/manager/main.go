@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
@@ -39,6 +40,8 @@ import (
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var logger = klog.Log.WithName("setup")
@@ -55,6 +58,8 @@ func main() {
 		billingProject           string
 		enablePprof              bool
 		pprofPort                int
+		rateLimitQps             float32
+		rateLimitBurst           int
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
@@ -63,6 +68,8 @@ func main() {
 	flag.StringVar(&scopedNamespace, "scoped-namespace", "", "scope controllers to only watch resources in the specified namespace; if unspecified, controllers will run in cluster scope")
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
+	flag.Float32Var(&rateLimitQps, "qps", 20.0, "The client-side token bucket rate limit qps.")
+	flag.IntVar(&rateLimitBurst, "burst", 30, "The client-side token bucket rate limit burst.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -94,6 +101,8 @@ func main() {
 		logging.Fatal(err, "fatal getting configuration from APIServer.")
 	}
 
+	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
+	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
 	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject)
 	if err != nil {

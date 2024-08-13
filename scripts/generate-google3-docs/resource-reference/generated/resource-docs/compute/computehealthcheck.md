@@ -79,9 +79,6 @@ the `spec.location` field. To manage a regional ComputeHealthCheck, use a region
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 

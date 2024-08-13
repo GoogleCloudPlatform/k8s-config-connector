@@ -110,7 +110,7 @@ type RepositoryMavenRepository struct {
 type RepositoryMostRecentVersions struct {
 	/* Minimum number of versions to keep. */
 	// +optional
-	KeepCount *int `json:"keepCount,omitempty"`
+	KeepCount *int64 `json:"keepCount,omitempty"`
 
 	/* Match versions by package prefix. Applied on any prefix match. */
 	// +optional
@@ -158,7 +158,7 @@ type RepositoryUpstreamPolicies struct {
 
 	/* Entries with a greater priority value take precedence in the pull order. */
 	// +optional
-	Priority *int `json:"priority,omitempty"`
+	Priority *int64 `json:"priority,omitempty"`
 
 	/* A reference to the repository resource, for example:
 	"projects/p1/locations/us-central1/repositories/repo1". */
@@ -246,7 +246,7 @@ type ArtifactRegistryRepositoryStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The time when the repository was last updated. */
 	// +optional
@@ -257,6 +257,11 @@ type ArtifactRegistryRepositoryStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpartifactregistryrepository;gcpartifactregistryrepositories
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ArtifactRegistryRepository is the Schema for the artifactregistry API
 // +k8s:openapi-gen=true

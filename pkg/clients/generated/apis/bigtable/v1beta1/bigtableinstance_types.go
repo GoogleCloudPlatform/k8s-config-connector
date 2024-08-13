@@ -37,17 +37,17 @@ import (
 
 type InstanceAutoscalingConfig struct {
 	/* The target CPU utilization for autoscaling. Value must be between 10 and 80. */
-	CpuTarget int `json:"cpuTarget"`
+	CpuTarget int64 `json:"cpuTarget"`
 
 	/* The maximum number of nodes for autoscaling. */
-	MaxNodes int `json:"maxNodes"`
+	MaxNodes int64 `json:"maxNodes"`
 
 	/* The minimum number of nodes for autoscaling. */
-	MinNodes int `json:"minNodes"`
+	MinNodes int64 `json:"minNodes"`
 
 	/* The target storage utilization for autoscaling, in GB, for each node in a cluster. This number is limited between 2560 (2.5TiB) and 5120 (5TiB) for a SSD cluster and between 8192 (8TiB) and 16384 (16 TiB) for an HDD cluster. If not set, whatever is already set for the cluster will not change, or if the cluster is just being created, it will use the default value of 2560 for SSD clusters and 8192 for HDD clusters. */
 	// +optional
-	StorageTarget *int `json:"storageTarget,omitempty"`
+	StorageTarget *int64 `json:"storageTarget,omitempty"`
 }
 
 type InstanceCluster struct {
@@ -59,7 +59,9 @@ type InstanceCluster struct {
 	ClusterId string `json:"clusterId"`
 
 	/* Describes the Cloud KMS encryption key that will be used to protect the destination Bigtable
-	cluster. The requirements for this key are: 1) The Cloud Bigtable service account associated with the project that contains
+	cluster. The requirements for this key are:
+
+	1) The Cloud Bigtable service account associated with the project that contains
 	this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on the CMEK key.
 	2) Only regional keys can be used and the region of the CMEK key must match the region of the cluster.
 	3) All clusters within an instance must use the same CMEK key access to this encryption key. */
@@ -68,7 +70,7 @@ type InstanceCluster struct {
 
 	/* The number of nodes in the cluster. If no value is set, Cloud Bigtable automatically allocates nodes based on your data footprint and optimized for 50% storage utilization. */
 	// +optional
-	NumNodes *int `json:"numNodes,omitempty"`
+	NumNodes *int64 `json:"numNodes,omitempty"`
 
 	/* The storage type to use. One of "SSD" or "HDD". Defaults to "SSD". */
 	// +optional
@@ -87,7 +89,7 @@ type BigtableInstanceSpec struct {
 	// +optional
 	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 
-	/* The human-readable display name of the Bigtable instance. Defaults to the instance name. */
+	/* Required. The descriptive name for this instance as it appears in UIs. Can be changed at any time, but should be kept globally unique to avoid confusion. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
@@ -95,7 +97,7 @@ type BigtableInstanceSpec struct {
 	// +optional
 	InstanceType *string `json:"instanceType,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The Instance name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -106,13 +108,18 @@ type BigtableInstanceStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableinstance;gcpbigtableinstances
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // BigtableInstance is the Schema for the bigtable API
 // +k8s:openapi-gen=true

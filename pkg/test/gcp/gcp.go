@@ -56,6 +56,8 @@ var (
 	TestFolder2ID                           = EnvVar{Key: "TEST_FOLDER_2_ID"}
 	TestOrgID                               = EnvVar{Key: "TEST_ORG_ID"}
 	TestDependentOrgProjectID               = EnvVar{Key: "TEST_DEPENDENT_ORG_PROJECT_ID"}
+	TestDependentFolderProjectID            = EnvVar{Key: "TEST_DEPENDENT_FOLDER_PROJECT_ID"}
+	TestDependentNoNetworkProjectID         = EnvVar{Key: "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID"} // A dependent project with default network disabled
 	TestBillingAccountID                    = EnvVar{Key: "TEST_BILLING_ACCOUNT_ID"}
 	IAMIntegrationTestsOrganizationID       = EnvVar{Key: "IAM_INTEGRATION_TESTS_ORGANIZATION_ID"}
 	IAMIntegrationTestsBillingAccountID     = EnvVar{Key: "IAM_INTEGRATION_TESTS_BILLING_ACCOUNT_ID"}
@@ -65,23 +67,22 @@ var (
 	FirestoreTestProject                    = EnvVar{Key: "FIRESTORE_TEST_PROJECT"}
 	IdentityPlatformTestProject             = EnvVar{Key: "IDENTITY_PLATFORM_TEST_PROJECT"}
 	RecaptchaEnterpriseTestProject          = EnvVar{Key: "RECAPTCHA_ENTERPRISE_TEST_PROJECT"}
-	TestDependentNoNetworkProjectID         = EnvVar{Key: "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID"} // A dependent project with default network disabled
-
+	TestKCCVertexAIIndexBucket              = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_BUCKET"}
+	TestKCCVertexAIIndexDataURI             = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_DATA_URI"}
 )
 
 const (
-	TestDependentFolder2ProjectID = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
-	TestDependentFolderProjectID  = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
-	IsolatedTestOrgName           = "ISOLATED_TEST_ORG_NAME"
-	CloudFunctionsTestProject     = "CLOUD_FUNCTIONS_TEST_PROJECT"
-	InterconnectTestProject       = "INTERCONNECT_TEST_PROJECT"
-	HighCPUQuotaTestProject       = "HIGH_CPU_QUOTA_TEST_PROJECT"
-	DLPTestBucket                 = "DLP_TEST_BUCKET"
+	TestDependentFolder2ProjectID             = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
+	IsolatedTestOrgName                       = "ISOLATED_TEST_ORG_NAME"
+	CloudFunctionsTestProject                 = "CLOUD_FUNCTIONS_TEST_PROJECT"
+	InterconnectTestProject                   = "INTERCONNECT_TEST_PROJECT"
+	HighCPUQuotaTestProject                   = "HIGH_CPU_QUOTA_TEST_PROJECT"
+	DLPTestBucket                             = "DLP_TEST_BUCKET"
+	TestDependentOrgProjectIDWithoutQuotation = "TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION"
 )
 
 var (
 	testDependentFolder2ProjectID = os.Getenv(TestDependentFolder2ProjectID)
-	testDependentFolderProjectID  = os.Getenv(TestDependentFolderProjectID)
 	isolatedTestOrgName           = os.Getenv(IsolatedTestOrgName)
 	cloudFunctionsTestProject     = os.Getenv(CloudFunctionsTestProject)
 	interconnectTestProject       = os.Getenv(InterconnectTestProject)
@@ -92,10 +93,16 @@ var (
 // GetDefaultProjectID returns the ID of user's configured default GCP project.
 func GetDefaultProjectID(t *testing.T) string {
 	t.Helper()
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		t.Fatalf("error retrieving gcloud sdk credentials: %v", err)
+
+	projectID := os.Getenv("GCP_PROJECT_ID")
+	if projectID == "" {
+		s, err := gcp.GetDefaultProjectID()
+		if err != nil {
+			t.Fatalf("error getting default project: %v", err)
+		}
+		projectID = s
 	}
+
 	return projectID
 }
 
@@ -109,10 +116,8 @@ func GetDefaultProject(t *testing.T) GCPProject {
 	t.Helper()
 	ctx := context.TODO()
 
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		t.Fatalf("error getting default project: %v", err)
-	}
+	projectID := GetDefaultProjectID(t)
+
 	projectNumber, err := GetProjectNumber(ctx, projectID)
 	if err != nil {
 		t.Fatalf("error getting project number for %q: %v", projectID, err)
@@ -154,10 +159,6 @@ func FindDefaultServiceAccount() (string, error) {
 	}
 
 	return rawCreds["client_email"], nil
-}
-
-func GetDependentFolderProjectID(_ *testing.T) string {
-	return testDependentFolderProjectID
 }
 
 func GetDependentFolder2ProjectID(_ *testing.T) string {

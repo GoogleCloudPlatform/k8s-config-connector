@@ -1,0 +1,205 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority
+type CertificateAuthority struct {
+	ManagedServerCa *CertificateAuthority_ManagedCertificateAuthority `json:"managedServerCa,omitempty"`
+
+	// Identifier. Unique name of the resource in this scope including project,
+	//  location and cluster using the form:
+	//      `projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority`
+	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority
+type CertificateAuthority_ManagedCertificateAuthority struct {
+	// The PEM encoded CA certificate chains for redis managed
+	//  server authentication
+	CaCerts []CertificateAuthority_ManagedCertificateAuthority_CertChain `json:"caCerts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority.CertChain
+type CertificateAuthority_ManagedCertificateAuthority_CertChain struct {
+	// The certificates that form the CA chain, from leaf to root order.
+	Certificates []string `json:"certificates,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.Cluster
+type Cluster struct {
+	// Required. Unique name of the resource in this scope including project and
+	//  location using the form:
+	//      `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The timestamp associated with the cluster creation request.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The current state of this cluster.
+	//  Can be CREATING, READY, UPDATING, DELETING and SUSPENDED
+	State *string `json:"state,omitempty"`
+
+	// Output only. System assigned, unique identifier for the cluster.
+	Uid *string `json:"uid,omitempty"`
+
+	// Optional. The number of replica nodes per shard.
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+
+	// Optional. The authorization mode of the Redis cluster.
+	//  If not provided, auth feature is disabled for the cluster.
+	AuthorizationMode *string `json:"authorizationMode,omitempty"`
+
+	// Optional. The in-transit encryption for the Redis cluster.
+	//  If not provided, encryption  is disabled for the cluster.
+	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
+
+	// Output only. Redis memory size in GB for the entire cluster rounded up to
+	//  the next integer.
+	SizeGb *int32 `json:"sizeGb,omitempty"`
+
+	// Required. Number of shards for the Redis cluster.
+	ShardCount *int32 `json:"shardCount,omitempty"`
+
+	// Required. Each PscConfig configures the consumer network where IPs will
+	//  be designated to the cluster for client access through Private Service
+	//  Connect Automation. Currently, only one PscConfig is supported.
+	PscConfigs []PscConfig `json:"pscConfigs,omitempty"`
+
+	// Output only. Endpoints created on each given network, for Redis clients to
+	//  connect to the cluster. Currently only one discovery endpoint is supported.
+	DiscoveryEndpoints []DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
+
+	// Output only. PSC connections for discovery of the cluster topology and
+	//  accessing the cluster.
+	PscConnections []PscConnection `json:"pscConnections,omitempty"`
+
+	// Output only. Additional information about the current state of the cluster.
+	StateInfo *Cluster_StateInfo `json:"stateInfo,omitempty"`
+
+	// Optional. The type of a redis node in the cluster. NodeType determines the
+	//  underlying machine-type of a redis node.
+	NodeType *string `json:"nodeType,omitempty"`
+
+	// Optional. Persistence config (RDB, AOF) for the cluster.
+	PersistenceConfig *ClusterPersistenceConfig `json:"persistenceConfig,omitempty"`
+
+	// Optional. Key/Value pairs of customer overrides for mutable Redis Configs
+	RedisConfigs map[string]string `json:"redisConfigs,omitempty"`
+
+	// Output only. Precise value of redis memory size in GB for the entire
+	//  cluster.
+	PreciseSizeGb *float64 `json:"preciseSizeGb,omitempty"`
+
+	// Optional. This config will be used to determine how the customer wants us
+	//  to distribute cluster resources within the region.
+	ZoneDistributionConfig *ZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
+
+	// Optional. The delete operation will fail when the value is set to true.
+	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo
+type Cluster_StateInfo struct {
+	// Describes ongoing update on the cluster when cluster state is UPDATING.
+	UpdateInfo *Cluster_StateInfo_UpdateInfo `json:"updateInfo,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo.UpdateInfo
+type Cluster_StateInfo_UpdateInfo struct {
+	// Target number of shards for redis cluster
+	TargetShardCount *int32 `json:"targetShardCount,omitempty"`
+
+	// Target number of replica nodes per shard.
+	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig
+type ClusterPersistenceConfig struct {
+	// Optional. The mode of persistence.
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. RDB configuration. This field will be ignored if mode is not RDB.
+	RdbConfig *ClusterPersistenceConfig_RDBConfig `json:"rdbConfig,omitempty"`
+
+	// Optional. AOF configuration. This field will be ignored if mode is not AOF.
+	AofConfig *ClusterPersistenceConfig_AOFConfig `json:"aofConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig.AOFConfig
+type ClusterPersistenceConfig_AOFConfig struct {
+	// Optional. fsync configuration.
+	AppendFsync *string `json:"appendFsync,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig.RDBConfig
+type ClusterPersistenceConfig_RDBConfig struct {
+	// Optional. Period between RDB snapshots.
+	RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
+
+	// Optional. The time that the first snapshot was/will be attempted, and to
+	//  which future snapshots will be aligned. If not provided, the current time
+	//  will be used.
+	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.DiscoveryEndpoint
+type DiscoveryEndpoint struct {
+	// Output only. Address of the exposed Redis endpoint used by clients to
+	//  connect to the service. The address could be either IP or hostname.
+	Address *string `json:"address,omitempty"`
+
+	// Output only. The port number of the exposed Redis endpoint.
+	Port *int32 `json:"port,omitempty"`
+
+	// Output only. Customer configuration for where the endpoint is created and
+	//  accessed from.
+	PscConfig *PscConfig `json:"pscConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
+type PscConnection struct {
+	// Output only. The PSC connection id of the forwarding rule connected to the
+	//  service attachment.
+	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Output only. The IP allocated on the consumer network for the PSC
+	//  forwarding rule.
+	Address *string `json:"address,omitempty"`
+
+	// Output only. The URI of the consumer side forwarding rule.
+	//  Example:
+	//  projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	// Output only. The consumer project_id where the forwarding rule is created
+	//  from.
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// The consumer network where the IP address resides, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	Network *string `json:"network,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.ZoneDistributionConfig
+type ZoneDistributionConfig struct {
+	// Optional. The mode of zone distribution. Defaults to MULTI_ZONE, when not
+	//  specified.
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. When SINGLE ZONE distribution is selected, zone field would be
+	//  used to allocate all resources in that zone. This is not applicable to
+	//  MULTI_ZONE, and would be ignored for MULTI_ZONE clusters.
+	Zone *string `json:"zone,omitempty"`
+}

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROJECT_ID := $(shell gcloud config get-value project)
+PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
 CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/controller:${SHORT_SHA}
@@ -24,11 +24,17 @@ UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/unmanageddetector:${SHORT_SHA}
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
-GOLANGCI_LINT_VERSION := v1.56.2
+GOLANGCI_LINT_VERSION := v1.59.1
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
+
+CRD_OUTPUT_TMP := config/crds/tmp
+CRD_OUTPUT_STAGING := config/crds/tmp/staging
+CRD_OUTPUT_FINAL := config/crds/resources
+PLATFORM ?= linux/amd64
+OUTPUT_TYPE ?= type=docker
 
 ifneq ($(origin KUBECONTEXT), undefined)
 CONTEXT_FLAG := --context ${KUBECONTEXT}
@@ -73,12 +79,15 @@ manifests: generate
 	rm -rf config/crds/tmp_resources
 	rm kustomization.yaml
 
+	# for direct controllers
+	dev/tasks/generate-crds
+
 # Format code
 .PHONY: fmt
 fmt:
 	mockgcp/dev/fix-gofmt
 	make -C operator fmt
-	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg cmd scripts tests config/tests experiments
+	dev/tasks/fix-gofmt
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
 	-ignore ".build/**" -ignore "vendor/**" -ignore "third_party/**" \
@@ -91,6 +100,8 @@ fmt:
 	-ignore "operator/config/gke-addon/image_configmap.yaml" \
 	-ignore "operator/config/rbac/cnrm_viewer_role.yaml" \
 	-ignore "operator/vendor/**" \
+	-ignore "**/testdata/**/_*" \
+	-ignore "experiments/**/testdata/**" \
 	./
 
 .PHONY: lint
@@ -111,9 +122,10 @@ vet:
 generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
-	go mod vendor -o temp-vendor # So we can load DCL resources
-	go generate $$(go list ./pkg/... ./cmd/... ./scripts/resource-autogen/... | grep -v ./pkg/clients/generated)
+	go work vendor -o temp-vendor # So we can load DCL resources
+	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
+	go generate ./pkg/apis/...
 	make fmt
 
 # Build the docker images
@@ -171,6 +183,15 @@ docker-push:
 	docker push ${WEBHOOK_IMG}
 	docker push ${DELETION_DEFENDER_IMG}
 	docker push ${UNMANAGED_DETECTOR_IMG}
+
+__tooling-image:
+	docker buildx build build/tooling \
+		--platform="$(PLATFORM)" \
+		--output=$(OUTPUT_TYPE) \
+		-t kcc-tooling
+
+__controller-gen: __tooling-image
+CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy

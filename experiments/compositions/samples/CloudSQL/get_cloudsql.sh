@@ -17,6 +17,12 @@
 scriptpath=$(realpath $0)
 base=$(dirname $scriptpath)
 
+if [[ $# -ne 1 ]];
+then
+  echo "usage: ./get_cloudsql.sh <namespace>"
+  exit 1
+fi
+
 namespace=$1
 
 echo "ServiceIdentity ----------------------------------------"

@@ -1,0 +1,953 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package google.cloud.servicenetworking.v1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+option go_package = "cloud.google.com/go/servicenetworking/apiv1/servicenetworkingpb;servicenetworkingpb";
+service ServicesServer {
+  rpc AddSubnetworkService(AddSubnetworkServiceRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*/*/*}:addSubnetwork"
+    body: "service"
+  };
+}
+;
+  rpc DisableVpcServiceControlsService(DisableVpcServiceControlsServiceRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch: "/v1/{parent=services/*}:disableVpcServiceControls"
+    body: "service"
+  };
+}
+;
+  rpc EnableVpcServiceControlsService(EnableVpcServiceControlsServiceRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch: "/v1/{parent=services/*}:enableVpcServiceControls"
+    body: "service"
+  };
+}
+;
+  rpc SearchRangeService(SearchRangeServiceRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}:searchRange"
+    body: "service"
+  };
+}
+;
+  rpc ValidateService(ValidateServiceRequest) returns (ValidateConsumerConfigResponse){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}:validate"
+    body: "service"
+  };
+}
+;
+}
+service ServicesConnectionsServer {
+  rpc CreateServicesConnection(CreateServicesConnectionRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}/connections"
+    body: "services_connection"
+  };
+}
+;
+  rpc DeleteConnectionServicesConnection(DeleteConnectionServicesConnectionRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{name=services/*/connections/*}"
+    body: "services_connection"
+  };
+}
+;
+  rpc ListServicesConnections(ListServicesConnectionsRequest) returns (ListConnectionsResponse){
+  option (google.api.http) = {
+    get: "/v1/{parent=services/*}/connections"
+  };
+}
+;
+  rpc PatchServicesConnection(PatchServicesConnectionRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch: "/v1/{name=services/*/connections/*}"
+    body: "services_connection"
+  };
+}
+;
+}
+service ServicesDnsRecordSetsServer {
+  rpc AddServicesDnsRecordSet(AddServicesDnsRecordSetRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}/dnsRecordSets:add"
+    body: "services_dns_record_set"
+  };
+}
+;
+  rpc GetServicesDnsRecordSet(GetServicesDnsRecordSetRequest) returns (DnsRecordSet){
+  option (google.api.http) = {
+    get: "/v1/{parent=services/*}/dnsRecordSets:get"
+  };
+}
+;
+  rpc ListServicesDnsRecordSets(ListServicesDnsRecordSetsRequest) returns (ListDnsRecordSetsResponse){
+  option (google.api.http) = {
+    get: "/v1/{parent=services/*}/dnsRecordSets:list"
+  };
+}
+;
+  rpc DeleteServicesDnsRecordSet(DeleteServicesDnsRecordSetRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}/dnsRecordSets:remove"
+    body: "services_dns_record_set"
+  };
+}
+;
+  rpc UpdateServicesDnsRecordSet(UpdateServicesDnsRecordSetRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}/dnsRecordSets:update"
+    body: "services_dns_record_set"
+  };
+}
+;
+}
+service ServicesDnsZonesServer {
+  rpc AddServicesDnsZone(AddServicesDnsZoneRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}/dnsZones:add"
+    body: "services_dns_zone"
+  };
+}
+;
+  rpc DeleteServicesDnsZone(DeleteServicesDnsZoneRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}/dnsZones:remove"
+    body: "services_dns_zone"
+  };
+}
+;
+}
+service ServicesProjectsServer {
+}
+service ServicesProjectsGlobalServer {
+}
+service ServicesProjectsGlobalNetworksServer {
+  rpc GetServicesProjectsGlobalNetwork(GetServicesProjectsGlobalNetworkRequest) returns (ConsumerConfig){
+  option (google.api.http) = {
+    get: "/v1/{name=services/*/projects/*/global/networks/*}"
+  };
+}
+;
+  rpc GetVpcServiceControlsServicesProjectsGlobalNetwork(GetVpcServiceControlsServicesProjectsGlobalNetworkRequest) returns (VpcServiceControls){
+  option (google.api.http) = {
+    get: "/v1/{name=services/*/projects/*/global/networks/*}/vpcServiceControls"
+  };
+}
+;
+  rpc UpdateConsumerConfigServicesProjectsGlobalNetwork(UpdateConsumerConfigServicesProjectsGlobalNetworkRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch: "/v1/{parent=services/*/projects/*/global/networks/*}:updateConsumerConfig"
+    body: "services_projects_global_network"
+  };
+}
+;
+}
+service ServicesProjectsGlobalNetworksDnsZonesServer {
+  rpc GetServicesProjectsGlobalNetworksDnsZone(GetServicesProjectsGlobalNetworksDnsZoneRequest) returns (GetDnsZoneResponse){
+  option (google.api.http) = {
+    get: "/v1/{name=services/*/projects/*/global/networks/*/dnsZones/*}"
+  };
+}
+;
+  rpc ListServicesProjectsGlobalNetworksDnsZones(ListServicesProjectsGlobalNetworksDnsZonesRequest) returns (ListDnsZonesResponse){
+  option (google.api.http) = {
+    get: "/v1/{parent=services/*/projects/*/global/networks/*}/dnsZones:list"
+  };
+}
+;
+}
+service ServicesProjectsGlobalNetworksPeeredDnsDomainsServer {
+  rpc CreateServicesProjectsGlobalNetworksPeeredDnsDomain(CreateServicesProjectsGlobalNetworksPeeredDnsDomainRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"
+    body: "services_projects_global_networks_peered_dns_domain"
+  };
+}
+;
+  rpc DeleteServicesProjectsGlobalNetworksPeeredDnsDomain(DeleteServicesProjectsGlobalNetworksPeeredDnsDomainRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete: "/v1/{name=services/*/projects/*/global/networks/*/peeredDnsDomains/*}"
+  };
+}
+;
+  rpc ListServicesProjectsGlobalNetworksPeeredDnsDomains(ListServicesProjectsGlobalNetworksPeeredDnsDomainsRequest) returns (ListPeeredDnsDomainsResponse){
+  option (google.api.http) = {
+    get: "/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"
+  };
+}
+;
+}
+service ServicesRolesServer {
+  rpc AddServicesRole(AddServicesRoleRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post: "/v1/{parent=services/*}/roles:add"
+    body: "services_role"
+  };
+}
+;
+}
+message AddDnsRecordSetMetadata {
+}
+message AddDnsRecordSetRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  DnsRecordSet dns_record_set = 2 [json_name="dnsRecordSet"];
+  string zone = 3 [json_name="zone"];
+}
+message AddDnsZoneMetadata {
+}
+message AddDnsZoneRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  string dns_suffix = 2 [json_name="dnsSuffix"];
+  string name = 3 [json_name="name"];
+}
+message AddDnsZoneResponse {
+  DnsZone consumer_peering_zone = 1 [json_name="consumerPeeringZone"];
+  DnsZone producer_private_zone = 2 [json_name="producerPrivateZone"];
+}
+message AddRolesMetadata {
+}
+message AddRolesRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  repeated PolicyBinding policy_binding = 2 [json_name="policyBinding"];
+}
+message AddRolesResponse {
+  repeated PolicyBinding policy_binding = 1 [json_name="policyBinding"];
+}
+message AddSubnetworkRequest {
+  bool allow_subnet_cidr_routes_overlap = 1 [json_name="allowSubnetCidrRoutesOverlap"];
+  bool check_service_networking_use_permission = 2 [json_name="checkServiceNetworkingUsePermission"];
+  .google.protobuf.Duration compute_idempotency_window = 3 [json_name="computeIdempotencyWindow"];
+  string consumer = 4 [json_name="consumer"];
+  string consumer_network = 5 [json_name="consumerNetwork"];
+  string description = 6 [json_name="description"];
+  string internal_range = 7 [json_name="internalRange"];
+  int32 ip_prefix_length = 8 [json_name="ipPrefixLength"];
+  string outside_allocation_public_ip_range = 9 [json_name="outsideAllocationPublicIpRange"];
+  string private_ipv6_google_access = 10 [json_name="privateIpv6GoogleAccess"];
+  string purpose = 11 [json_name="purpose"];
+  string region = 12 [json_name="region"];
+  string requested_address = 13 [json_name="requestedAddress"];
+  repeated string requested_ranges = 14 [json_name="requestedRanges"];
+  string role = 15 [json_name="role"];
+  repeated SecondaryIpRangeSpec secondary_ip_range_specs = 16 [json_name="secondaryIpRangeSpecs"];
+  string subnetwork = 17 [json_name="subnetwork"];
+  repeated string subnetwork_users = 18 [json_name="subnetworkUsers"];
+  bool use_custom_compute_idempotency_window = 19 [json_name="useCustomComputeIdempotencyWindow"];
+}
+message Api {
+  repeated Method methods = 1 [json_name="methods"];
+  repeated Mixin mixins = 2 [json_name="mixins"];
+  string name = 3 [json_name="name"];
+  repeated Option options = 4 [json_name="options"];
+  SourceContext source_context = 5 [json_name="sourceContext"];
+  string syntax = 6 [json_name="syntax"];
+  string version = 7 [json_name="version"];
+}
+message AuthProvider {
+  string audiences = 1 [json_name="audiences"];
+  string authorization_url = 2 [json_name="authorizationUrl"];
+  string id = 3 [json_name="id"];
+  string issuer = 4 [json_name="issuer"];
+  string jwks_uri = 5 [json_name="jwksUri"];
+  repeated JwtLocation jwt_locations = 6 [json_name="jwtLocations"];
+}
+message AuthRequirement {
+  string audiences = 1 [json_name="audiences"];
+  string provider_id = 2 [json_name="providerId"];
+}
+message Authentication {
+  repeated AuthProvider providers = 1 [json_name="providers"];
+  repeated AuthenticationRule rules = 2 [json_name="rules"];
+}
+message AuthenticationRule {
+  bool allow_without_credential = 1 [json_name="allowWithoutCredential"];
+  OAuthRequirements oauth = 2 [json_name="oauth"];
+  repeated AuthRequirement requirements = 3 [json_name="requirements"];
+  string selector = 4 [json_name="selector"];
+}
+message Backend {
+  repeated BackendRule rules = 1 [json_name="rules"];
+}
+message BackendRule {
+  string address = 1 [json_name="address"];
+  double deadline = 2 [json_name="deadline"];
+  bool disable_auth = 3 [json_name="disableAuth"];
+  string jwt_audience = 4 [json_name="jwtAudience"];
+  double min_deadline = 5 [json_name="minDeadline"];
+  double operation_deadline = 6 [json_name="operationDeadline"];
+  map<string, BackendRule> overrides_by_request_protocol = 7 [json_name="overridesByRequestProtocol"];
+  string path_translation = 8 [json_name="pathTranslation"];
+  string protocol = 9 [json_name="protocol"];
+  string selector = 10 [json_name="selector"];
+}
+message Billing {
+  repeated BillingDestination consumer_destinations = 1 [json_name="consumerDestinations"];
+}
+message BillingDestination {
+  repeated string metrics = 1 [json_name="metrics"];
+  string monitored_resource = 2 [json_name="monitoredResource"];
+}
+message CancelOperationRequest {
+}
+message ClientLibrarySettings {
+  CppSettings cpp_settings = 1 [json_name="cppSettings"];
+  DotnetSettings dotnet_settings = 2 [json_name="dotnetSettings"];
+  GoSettings go_settings = 3 [json_name="goSettings"];
+  JavaSettings java_settings = 4 [json_name="javaSettings"];
+  string launch_stage = 5 [json_name="launchStage"];
+  NodeSettings node_settings = 6 [json_name="nodeSettings"];
+  PhpSettings php_settings = 7 [json_name="phpSettings"];
+  PythonSettings python_settings = 8 [json_name="pythonSettings"];
+  bool rest_numeric_enums = 9 [json_name="restNumericEnums"];
+  RubySettings ruby_settings = 10 [json_name="rubySettings"];
+  string version = 11 [json_name="version"];
+}
+message CloudSQLConfig {
+  string service = 1 [json_name="service"];
+  string umbrella_network = 2 [json_name="umbrellaNetwork"];
+  int64 umbrella_project = 3 [json_name="umbrellaProject"];
+}
+message CommonLanguageSettings {
+  repeated string destinations = 1 [json_name="destinations"];
+  string reference_docs_uri = 2 [json_name="referenceDocsUri"];
+}
+message Connection {
+  string network = 1 [json_name="network"];
+  string peering = 2 [json_name="peering"];
+  repeated string reserved_peering_ranges = 3 [json_name="reservedPeeringRanges"];
+  string service = 4 [json_name="service"];
+}
+message ConsumerConfig {
+  repeated CloudSQLConfig cloudsql_configs = 1 [json_name="cloudsqlConfigs"];
+  bool consumer_export_custom_routes = 2 [json_name="consumerExportCustomRoutes"];
+  bool consumer_export_subnet_routes_with_public_ip = 3 [json_name="consumerExportSubnetRoutesWithPublicIp"];
+  bool consumer_import_custom_routes = 4 [json_name="consumerImportCustomRoutes"];
+  bool consumer_import_subnet_routes_with_public_ip = 5 [json_name="consumerImportSubnetRoutesWithPublicIp"];
+  bool producer_export_custom_routes = 6 [json_name="producerExportCustomRoutes"];
+  bool producer_export_subnet_routes_with_public_ip = 7 [json_name="producerExportSubnetRoutesWithPublicIp"];
+  bool producer_import_custom_routes = 8 [json_name="producerImportCustomRoutes"];
+  bool producer_import_subnet_routes_with_public_ip = 9 [json_name="producerImportSubnetRoutesWithPublicIp"];
+  string producer_network = 10 [json_name="producerNetwork"];
+  repeated GoogleCloudServicenetworkingV1ConsumerConfigReservedRange reserved_ranges = 11 [json_name="reservedRanges"];
+  repeated string used_ip_ranges = 12 [json_name="usedIpRanges"];
+  bool vpc_sc_reference_architecture_enabled = 13 [json_name="vpcScReferenceArchitectureEnabled"];
+}
+message ConsumerConfigMetadata {
+}
+message ConsumerProject {
+  int64 project_num = 1 [json_name="projectNum"];
+}
+message Context {
+  repeated ContextRule rules = 1 [json_name="rules"];
+}
+message ContextRule {
+  repeated string allowed_request_extensions = 1 [json_name="allowedRequestExtensions"];
+  repeated string allowed_response_extensions = 2 [json_name="allowedResponseExtensions"];
+  repeated string provided = 3 [json_name="provided"];
+  repeated string requested = 4 [json_name="requested"];
+  string selector = 5 [json_name="selector"];
+}
+message Control {
+  string environment = 1 [json_name="environment"];
+  repeated MethodPolicy method_policies = 2 [json_name="methodPolicies"];
+}
+message CppSettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+}
+message CustomError {
+  repeated CustomErrorRule rules = 1 [json_name="rules"];
+  repeated string types = 2 [json_name="types"];
+}
+message CustomErrorRule {
+  bool is_error_type = 1 [json_name="isErrorType"];
+  string selector = 2 [json_name="selector"];
+}
+message CustomHttpPattern {
+  string kind = 1 [json_name="kind"];
+  string path = 2 [json_name="path"];
+}
+message DeleteConnectionMetadata {
+}
+message DeleteConnectionRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+}
+message DeletePeeredDnsDomainMetadata {
+}
+message DisableVpcServiceControlsRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+}
+message DnsRecordSet {
+  repeated string data = 1 [json_name="data"];
+  string domain = 2 [json_name="domain"];
+  .google.protobuf.Duration ttl = 3 [json_name="ttl"];
+  string type = 4 [json_name="type"];
+}
+message DnsZone {
+  string dns_suffix = 1 [json_name="dnsSuffix"];
+  string name = 2 [json_name="name"];
+}
+message DnsZonePair {
+  DnsZone consumer_peering_zone = 1 [json_name="consumerPeeringZone"];
+  DnsZone producer_private_zone = 2 [json_name="producerPrivateZone"];
+}
+message Documentation {
+  string documentation_root_url = 1 [json_name="documentationRootUrl"];
+  string overview = 2 [json_name="overview"];
+  repeated Page pages = 3 [json_name="pages"];
+  repeated DocumentationRule rules = 4 [json_name="rules"];
+  repeated Page section_overrides = 5 [json_name="sectionOverrides"];
+  string service_root_url = 6 [json_name="serviceRootUrl"];
+  string summary = 7 [json_name="summary"];
+}
+message DocumentationRule {
+  string deprecation_description = 1 [json_name="deprecationDescription"];
+  string description = 2 [json_name="description"];
+  string disable_replacement_words = 3 [json_name="disableReplacementWords"];
+  string selector = 4 [json_name="selector"];
+}
+message DotnetSettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+  repeated string forced_namespace_aliases = 2 [json_name="forcedNamespaceAliases"];
+  repeated string handwritten_signatures = 3 [json_name="handwrittenSignatures"];
+  repeated string ignored_resources = 4 [json_name="ignoredResources"];
+  map<string, string> renamed_resources = 5 [json_name="renamedResources"];
+  map<string, string> renamed_services = 6 [json_name="renamedServices"];
+}
+message Empty {
+}
+message EnableVpcServiceControlsRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+}
+message Endpoint {
+  repeated string aliases = 1 [json_name="aliases"];
+  bool allow_cors = 2 [json_name="allowCors"];
+  string name = 3 [json_name="name"];
+  string target = 4 [json_name="target"];
+}
+message Enum {
+  string edition = 1 [json_name="edition"];
+  repeated EnumValue enumvalue = 2 [json_name="enumvalue"];
+  string name = 3 [json_name="name"];
+  repeated Option options = 4 [json_name="options"];
+  SourceContext source_context = 5 [json_name="sourceContext"];
+  string syntax = 6 [json_name="syntax"];
+}
+message EnumValue {
+  string name = 1 [json_name="name"];
+  int32 number = 2 [json_name="number"];
+  repeated Option options = 3 [json_name="options"];
+}
+message Field {
+  string cardinality = 1 [json_name="cardinality"];
+  string default_value = 2 [json_name="defaultValue"];
+  string json_name = 3 [json_name="jsonName"];
+  string kind = 4 [json_name="kind"];
+  string name = 5 [json_name="name"];
+  int32 number = 6 [json_name="number"];
+  int32 oneof_index = 7 [json_name="oneofIndex"];
+  repeated Option options = 8 [json_name="options"];
+  bool packed = 9 [json_name="packed"];
+  string type_url = 10 [json_name="typeUrl"];
+}
+message FieldPolicy {
+  string resource_permission = 1 [json_name="resourcePermission"];
+  string resource_type = 2 [json_name="resourceType"];
+  string selector = 3 [json_name="selector"];
+}
+message GetDnsZoneResponse {
+  DnsZone consumer_peering_zone = 1 [json_name="consumerPeeringZone"];
+  DnsZone producer_private_zone = 2 [json_name="producerPrivateZone"];
+}
+message GoSettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+}
+message GoogleCloudServicenetworkingV1ConsumerConfigReservedRange {
+  string address = 1 [json_name="address"];
+  int32 ip_prefix_length = 2 [json_name="ipPrefixLength"];
+  string name = 3 [json_name="name"];
+}
+message GoogleCloudServicenetworkingV1betaConnection {
+  string network = 1 [json_name="network"];
+  string peering = 2 [json_name="peering"];
+  repeated string reserved_peering_ranges = 3 [json_name="reservedPeeringRanges"];
+  string service = 4 [json_name="service"];
+}
+message GoogleCloudServicenetworkingV1betaSubnetwork {
+  string ip_cidr_range = 1 [json_name="ipCidrRange"];
+  string name = 2 [json_name="name"];
+  string network = 3 [json_name="network"];
+  bool outside_allocation = 4 [json_name="outsideAllocation"];
+}
+message Http {
+  bool fully_decode_reserved_expansion = 1 [json_name="fullyDecodeReservedExpansion"];
+  repeated HttpRule rules = 2 [json_name="rules"];
+}
+message HttpRule {
+  repeated HttpRule additional_bindings = 1 [json_name="additionalBindings"];
+  string body = 2 [json_name="body"];
+  CustomHttpPattern custom = 3 [json_name="custom"];
+  string delete = 4 [json_name="delete"];
+  string get = 5 [json_name="get"];
+  string patch = 6 [json_name="patch"];
+  string post = 7 [json_name="post"];
+  string put = 8 [json_name="put"];
+  string response_body = 9 [json_name="responseBody"];
+  string selector = 10 [json_name="selector"];
+}
+message JavaSettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+  string library_package = 2 [json_name="libraryPackage"];
+  map<string, string> service_class_names = 3 [json_name="serviceClassNames"];
+}
+message JwtLocation {
+  string cookie = 1 [json_name="cookie"];
+  string header = 2 [json_name="header"];
+  string query = 3 [json_name="query"];
+  string value_prefix = 4 [json_name="valuePrefix"];
+}
+message LabelDescriptor {
+  string description = 1 [json_name="description"];
+  string key = 2 [json_name="key"];
+  string value_type = 3 [json_name="valueType"];
+}
+message ListConnectionsResponse {
+  repeated Connection connections = 1 [json_name="connections"];
+}
+message ListDnsRecordSetsResponse {
+  repeated DnsRecordSet dns_record_sets = 1 [json_name="dnsRecordSets"];
+}
+message ListDnsZonesResponse {
+  repeated DnsZonePair dns_zone_pairs = 1 [json_name="dnsZonePairs"];
+}
+message ListOperationsResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+}
+message ListPeeredDnsDomainsResponse {
+  repeated PeeredDnsDomain peered_dns_domains = 1 [json_name="peeredDnsDomains"];
+}
+message LogDescriptor {
+  string description = 1 [json_name="description"];
+  string display_name = 2 [json_name="displayName"];
+  repeated LabelDescriptor labels = 3 [json_name="labels"];
+  string name = 4 [json_name="name"];
+}
+message Logging {
+  repeated LoggingDestination consumer_destinations = 1 [json_name="consumerDestinations"];
+  repeated LoggingDestination producer_destinations = 2 [json_name="producerDestinations"];
+}
+message LoggingDestination {
+  repeated string logs = 1 [json_name="logs"];
+  string monitored_resource = 2 [json_name="monitoredResource"];
+}
+message LongRunning {
+  .google.protobuf.Duration initial_poll_delay = 1 [json_name="initialPollDelay"];
+  .google.protobuf.Duration max_poll_delay = 2 [json_name="maxPollDelay"];
+  float poll_delay_multiplier = 3 [json_name="pollDelayMultiplier"];
+  .google.protobuf.Duration total_poll_timeout = 4 [json_name="totalPollTimeout"];
+}
+message Method {
+  string name = 1 [json_name="name"];
+  repeated Option options = 2 [json_name="options"];
+  bool request_streaming = 3 [json_name="requestStreaming"];
+  string request_type_url = 4 [json_name="requestTypeUrl"];
+  bool response_streaming = 5 [json_name="responseStreaming"];
+  string response_type_url = 6 [json_name="responseTypeUrl"];
+  string syntax = 7 [json_name="syntax"];
+}
+message MethodPolicy {
+  repeated FieldPolicy request_policies = 1 [json_name="requestPolicies"];
+  string selector = 2 [json_name="selector"];
+}
+message MethodSettings {
+  repeated string auto_populated_fields = 1 [json_name="autoPopulatedFields"];
+  LongRunning long_running = 2 [json_name="longRunning"];
+  string selector = 3 [json_name="selector"];
+}
+message MetricDescriptor {
+  string description = 1 [json_name="description"];
+  string display_name = 2 [json_name="displayName"];
+  repeated LabelDescriptor labels = 3 [json_name="labels"];
+  string launch_stage = 4 [json_name="launchStage"];
+  MetricDescriptorMetadata metadata = 5 [json_name="metadata"];
+  string metric_kind = 6 [json_name="metricKind"];
+  repeated string monitored_resource_types = 7 [json_name="monitoredResourceTypes"];
+  string name = 8 [json_name="name"];
+  string type = 9 [json_name="type"];
+  string unit = 10 [json_name="unit"];
+  string value_type = 11 [json_name="valueType"];
+}
+message MetricDescriptorMetadata {
+  .google.protobuf.Duration ingest_delay = 1 [json_name="ingestDelay"];
+  string launch_stage = 2 [json_name="launchStage"];
+  .google.protobuf.Duration sample_period = 3 [json_name="samplePeriod"];
+}
+message MetricRule {
+  map<string, int64> metric_costs = 1 [json_name="metricCosts"];
+  string selector = 2 [json_name="selector"];
+}
+message Mixin {
+  string name = 1 [json_name="name"];
+  string root = 2 [json_name="root"];
+}
+message MonitoredResourceDescriptor {
+  string description = 1 [json_name="description"];
+  string display_name = 2 [json_name="displayName"];
+  repeated LabelDescriptor labels = 3 [json_name="labels"];
+  string launch_stage = 4 [json_name="launchStage"];
+  string name = 5 [json_name="name"];
+  string type = 6 [json_name="type"];
+}
+message Monitoring {
+  repeated MonitoringDestination consumer_destinations = 1 [json_name="consumerDestinations"];
+  repeated MonitoringDestination producer_destinations = 2 [json_name="producerDestinations"];
+}
+message MonitoringDestination {
+  repeated string metrics = 1 [json_name="metrics"];
+  string monitored_resource = 2 [json_name="monitoredResource"];
+}
+message NodeSettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+}
+message OAuthRequirements {
+  string canonical_scopes = 1 [json_name="canonicalScopes"];
+}
+message Operation {
+  bool done = 1 [json_name="done"];
+  Status error = 2 [json_name="error"];
+  map<string, .google.protobuf.Any> metadata = 3 [json_name="metadata"];
+  string name = 4 [json_name="name"];
+  map<string, .google.protobuf.Any> response = 5 [json_name="response"];
+}
+message Option {
+  string name = 1 [json_name="name"];
+  map<string, .google.protobuf.Any> value = 2 [json_name="value"];
+}
+message Page {
+  string content = 1 [json_name="content"];
+  string name = 2 [json_name="name"];
+  repeated Page subpages = 3 [json_name="subpages"];
+}
+message PartialDeleteConnectionMetadata {
+}
+message PeeredDnsDomain {
+  string dns_suffix = 1 [json_name="dnsSuffix"];
+  string name = 2 [json_name="name"];
+}
+message PeeredDnsDomainMetadata {
+}
+message PhpSettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+}
+message PolicyBinding {
+  string member = 1 [json_name="member"];
+  string role = 2 [json_name="role"];
+}
+message Publishing {
+  string api_short_name = 1 [json_name="apiShortName"];
+  repeated string codeowner_github_teams = 2 [json_name="codeownerGithubTeams"];
+  string doc_tag_prefix = 3 [json_name="docTagPrefix"];
+  string documentation_uri = 4 [json_name="documentationUri"];
+  string github_label = 5 [json_name="githubLabel"];
+  repeated ClientLibrarySettings library_settings = 6 [json_name="librarySettings"];
+  repeated MethodSettings method_settings = 7 [json_name="methodSettings"];
+  string new_issue_uri = 8 [json_name="newIssueUri"];
+  string organization = 9 [json_name="organization"];
+  string proto_reference_documentation_uri = 10 [json_name="protoReferenceDocumentationUri"];
+  string rest_reference_documentation_uri = 11 [json_name="restReferenceDocumentationUri"];
+}
+message PythonSettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+}
+message Quota {
+  repeated QuotaLimit limits = 1 [json_name="limits"];
+  repeated MetricRule metric_rules = 2 [json_name="metricRules"];
+}
+message QuotaLimit {
+  int64 default_limit = 1 [json_name="defaultLimit"];
+  string description = 2 [json_name="description"];
+  string display_name = 3 [json_name="displayName"];
+  string duration = 4 [json_name="duration"];
+  int64 free_tier = 5 [json_name="freeTier"];
+  int64 max_limit = 6 [json_name="maxLimit"];
+  string metric = 7 [json_name="metric"];
+  string name = 8 [json_name="name"];
+  string unit = 9 [json_name="unit"];
+  map<string, int64> values = 10 [json_name="values"];
+}
+message Range {
+  string ip_cidr_range = 1 [json_name="ipCidrRange"];
+  string network = 2 [json_name="network"];
+}
+message RangeReservation {
+  int32 ip_prefix_length = 1 [json_name="ipPrefixLength"];
+  repeated string requested_ranges = 2 [json_name="requestedRanges"];
+  repeated int32 secondary_range_ip_prefix_lengths = 3 [json_name="secondaryRangeIpPrefixLengths"];
+  repeated Subnetwork subnetwork_candidates = 4 [json_name="subnetworkCandidates"];
+}
+message RemoveDnsRecordSetMetadata {
+}
+message RemoveDnsRecordSetRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  DnsRecordSet dns_record_set = 2 [json_name="dnsRecordSet"];
+  string zone = 3 [json_name="zone"];
+}
+message RemoveDnsRecordSetResponse {
+}
+message RemoveDnsZoneMetadata {
+}
+message RemoveDnsZoneRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  string name = 2 [json_name="name"];
+}
+message RemoveDnsZoneResponse {
+}
+message Route {
+  string dest_range = 1 [json_name="destRange"];
+  string name = 2 [json_name="name"];
+  string network = 3 [json_name="network"];
+  string next_hop_gateway = 4 [json_name="nextHopGateway"];
+}
+message RubySettings {
+  CommonLanguageSettings common = 1 [json_name="common"];
+}
+message SearchRangeRequest {
+  int32 ip_prefix_length = 1 [json_name="ipPrefixLength"];
+  string network = 2 [json_name="network"];
+}
+message SecondaryIpRange {
+  string ip_cidr_range = 1 [json_name="ipCidrRange"];
+  string range_name = 2 [json_name="rangeName"];
+}
+message SecondaryIpRangeSpec {
+  int32 ip_prefix_length = 1 [json_name="ipPrefixLength"];
+  string outside_allocation_public_ip_range = 2 [json_name="outsideAllocationPublicIpRange"];
+  string range_name = 3 [json_name="rangeName"];
+  string requested_address = 4 [json_name="requestedAddress"];
+}
+message Service {
+  repeated Api apis = 1 [json_name="apis"];
+  Authentication authentication = 2 [json_name="authentication"];
+  Backend backend = 3 [json_name="backend"];
+  Billing billing = 4 [json_name="billing"];
+  uint32 config_version = 5 [json_name="configVersion"];
+  Context context = 6 [json_name="context"];
+  Control control = 7 [json_name="control"];
+  CustomError custom_error = 8 [json_name="customError"];
+  Documentation documentation = 9 [json_name="documentation"];
+  repeated Endpoint endpoints = 10 [json_name="endpoints"];
+  repeated Enum enums = 11 [json_name="enums"];
+  Http http = 12 [json_name="http"];
+  string id = 13 [json_name="id"];
+  Logging logging = 14 [json_name="logging"];
+  repeated LogDescriptor logs = 15 [json_name="logs"];
+  repeated MetricDescriptor metrics = 16 [json_name="metrics"];
+  repeated MonitoredResourceDescriptor monitored_resources = 17 [json_name="monitoredResources"];
+  Monitoring monitoring = 18 [json_name="monitoring"];
+  string name = 19 [json_name="name"];
+  string producer_project_id = 20 [json_name="producerProjectId"];
+  Publishing publishing = 21 [json_name="publishing"];
+  Quota quota = 22 [json_name="quota"];
+  SourceInfo source_info = 23 [json_name="sourceInfo"];
+  SystemParameters system_parameters = 24 [json_name="systemParameters"];
+  repeated Type system_types = 25 [json_name="systemTypes"];
+  string title = 26 [json_name="title"];
+  repeated Type types = 27 [json_name="types"];
+  Usage usage = 28 [json_name="usage"];
+}
+message SourceContext {
+  string file_name = 1 [json_name="fileName"];
+}
+message SourceInfo {
+  repeated .google.protobuf.Any source_files = 1 [json_name="sourceFiles"];
+}
+message Status {
+  int32 code = 1 [json_name="code"];
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  string message = 3 [json_name="message"];
+}
+message Subnetwork {
+  string ip_cidr_range = 1 [json_name="ipCidrRange"];
+  string name = 2 [json_name="name"];
+  string network = 3 [json_name="network"];
+  bool outside_allocation = 4 [json_name="outsideAllocation"];
+  string region = 5 [json_name="region"];
+  repeated SecondaryIpRange secondary_ip_ranges = 6 [json_name="secondaryIpRanges"];
+}
+message SystemParameter {
+  string http_header = 1 [json_name="httpHeader"];
+  string name = 2 [json_name="name"];
+  string url_query_parameter = 3 [json_name="urlQueryParameter"];
+}
+message SystemParameterRule {
+  repeated SystemParameter parameters = 1 [json_name="parameters"];
+  string selector = 2 [json_name="selector"];
+}
+message SystemParameters {
+  repeated SystemParameterRule rules = 1 [json_name="rules"];
+}
+message Type {
+  string edition = 1 [json_name="edition"];
+  repeated Field fields = 2 [json_name="fields"];
+  string name = 3 [json_name="name"];
+  repeated string oneofs = 4 [json_name="oneofs"];
+  repeated Option options = 5 [json_name="options"];
+  SourceContext source_context = 6 [json_name="sourceContext"];
+  string syntax = 7 [json_name="syntax"];
+}
+message UpdateConsumerConfigRequest {
+  ConsumerConfig consumer_config = 1 [json_name="consumerConfig"];
+}
+message UpdateDnsRecordSetMetadata {
+}
+message UpdateDnsRecordSetRequest {
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  DnsRecordSet existing_dns_record_set = 2 [json_name="existingDnsRecordSet"];
+  DnsRecordSet new_dns_record_set = 3 [json_name="newDnsRecordSet"];
+  string zone = 4 [json_name="zone"];
+}
+message Usage {
+  string producer_notification_channel = 1 [json_name="producerNotificationChannel"];
+  repeated string requirements = 2 [json_name="requirements"];
+  repeated UsageRule rules = 3 [json_name="rules"];
+}
+message UsageRule {
+  bool allow_unregistered_calls = 1 [json_name="allowUnregisteredCalls"];
+  string selector = 2 [json_name="selector"];
+  bool skip_service_control = 3 [json_name="skipServiceControl"];
+}
+message ValidateConsumerConfigRequest {
+  bool check_service_networking_use_permission = 1 [json_name="checkServiceNetworkingUsePermission"];
+  string consumer_network = 2 [json_name="consumerNetwork"];
+  ConsumerProject consumer_project = 3 [json_name="consumerProject"];
+  RangeReservation range_reservation = 4 [json_name="rangeReservation"];
+  bool validate_network = 5 [json_name="validateNetwork"];
+}
+message ValidateConsumerConfigResponse {
+  repeated Subnetwork existing_subnetwork_candidates = 1 [json_name="existingSubnetworkCandidates"];
+  bool is_valid = 2 [json_name="isValid"];
+  string validation_error = 3 [json_name="validationError"];
+}
+message VpcServiceControls {
+  bool enabled = 1 [json_name="enabled"];
+}
+message AddSubnetworkServiceRequest {
+  string parent = 1;
+  AddSubnetworkRequest service = 2;
+}
+message DisableVpcServiceControlsServiceRequest {
+  string parent = 1;
+  DisableVpcServiceControlsRequest service = 2;
+}
+message EnableVpcServiceControlsServiceRequest {
+  string parent = 1;
+  EnableVpcServiceControlsRequest service = 2;
+}
+message SearchRangeServiceRequest {
+  string parent = 1;
+  SearchRangeRequest service = 2;
+}
+message ValidateServiceRequest {
+  string parent = 1;
+  ValidateConsumerConfigRequest service = 2;
+}
+message CreateServicesConnectionRequest {
+  string parent = 1;
+  Connection services_connection = 2;
+}
+message DeleteConnectionServicesConnectionRequest {
+  string name = 1;
+  DeleteConnectionRequest services_connection = 2;
+}
+message ListServicesConnectionsRequest {
+  string network = 1;
+  string parent = 2;
+}
+message PatchServicesConnectionRequest {
+  bool force = 1;
+  string name = 2;
+  string update_mask = 3;
+  Connection services_connection = 4;
+}
+message AddServicesDnsRecordSetRequest {
+  string parent = 1;
+  AddDnsRecordSetRequest services_dns_record_set = 2;
+}
+message GetServicesDnsRecordSetRequest {
+  string consumer_network = 1;
+  string domain = 2;
+  string parent = 3;
+  string type = 4;
+  string zone = 5;
+}
+message ListServicesDnsRecordSetsRequest {
+  string consumer_network = 1;
+  string parent = 2;
+  string zone = 3;
+}
+message DeleteServicesDnsRecordSetRequest {
+  string parent = 1;
+  RemoveDnsRecordSetRequest services_dns_record_set = 2;
+}
+message UpdateServicesDnsRecordSetRequest {
+  string parent = 1;
+  UpdateDnsRecordSetRequest services_dns_record_set = 2;
+}
+message AddServicesDnsZoneRequest {
+  string parent = 1;
+  AddDnsZoneRequest services_dns_zone = 2;
+}
+message DeleteServicesDnsZoneRequest {
+  string parent = 1;
+  RemoveDnsZoneRequest services_dns_zone = 2;
+}
+message GetServicesProjectsGlobalNetworkRequest {
+  bool include_used_ip_ranges = 1;
+  string name = 2;
+}
+message GetVpcServiceControlsServicesProjectsGlobalNetworkRequest {
+  string name = 1;
+}
+message UpdateConsumerConfigServicesProjectsGlobalNetworkRequest {
+  string parent = 1;
+  UpdateConsumerConfigRequest services_projects_global_network = 2;
+}
+message GetServicesProjectsGlobalNetworksDnsZoneRequest {
+  string name = 1;
+}
+message ListServicesProjectsGlobalNetworksDnsZonesRequest {
+  string parent = 1;
+}
+message CreateServicesProjectsGlobalNetworksPeeredDnsDomainRequest {
+  string parent = 1;
+  PeeredDnsDomain services_projects_global_networks_peered_dns_domain = 2;
+}
+message DeleteServicesProjectsGlobalNetworksPeeredDnsDomainRequest {
+  string name = 1;
+}
+message ListServicesProjectsGlobalNetworksPeeredDnsDomainsRequest {
+  string parent = 1;
+}
+message AddServicesRoleRequest {
+  string parent = 1;
+  AddRolesRequest services_role = 2;
+}

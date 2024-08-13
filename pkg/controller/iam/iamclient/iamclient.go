@@ -20,11 +20,14 @@ import (
 	"regexp"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	dcliam "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/iam"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -54,7 +57,7 @@ const (
 )
 
 var (
-	ErrNotFound = fmt.Errorf("IAM resource does not exist")
+	ErrNotFound = k8s.ErrIAMNotFound
 	logger      = klog.Log.WithName("iamclient")
 
 	ProjectGVK = schema.GroupVersionKind{
@@ -91,6 +94,7 @@ var idTemplateVarsRegex = regexp.MustCompile(`{{[a-z]([a-zA-Z0-9\-_.]*[a-zA-Z0-9
 type IAMClient struct {
 	TFIAMClient  *TFIAMClient
 	DCLIAMClient *DCLIAMClient
+	kubeClient   client.Client
 }
 
 func New(tfProvider *tfschema.Provider,
@@ -114,11 +118,21 @@ func New(tfProvider *tfschema.Provider,
 	iamClient := IAMClient{
 		TFIAMClient:  &tfIAMClient,
 		DCLIAMClient: &dclIAMClient,
+		kubeClient:   kubeClient,
 	}
 	return &iamClient
 }
 
 func (c *IAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1.IAMPolicyMember) (*v1beta1.IAMPolicyMember, error) {
+	if registry.IsIAMDirect(policyMember.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		id, err := ResolveMemberIdentity(ctx, policyMember.Spec.Member, policyMember.Spec.MemberFrom, policyMember.GetNamespace(), c.TFIAMClient)
+		if err != nil {
+			return nil, err
+		}
+
+		return direct.SetIAMPolicyMember(ctx, c.kubeClient, policyMember, v1beta1.Member(id))
+	}
+
 	if c.isDCLBasedIAMResource(policyMember) {
 		return c.DCLIAMClient.SetPolicyMember(ctx, c.TFIAMClient, policyMember)
 	}
@@ -126,6 +140,14 @@ func (c *IAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1.I
 }
 
 func (c *IAMClient) GetPolicyMember(ctx context.Context, policyMember *v1beta1.IAMPolicyMember) (*v1beta1.IAMPolicyMember, error) {
+	if registry.IsIAMDirect(policyMember.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		id, err := ResolveMemberIdentity(ctx, policyMember.Spec.Member, policyMember.Spec.MemberFrom, policyMember.GetNamespace(), c.TFIAMClient)
+		if err != nil {
+			return nil, err
+		}
+
+		return direct.GetIAMPolicyMember(ctx, c.kubeClient, policyMember, v1beta1.Member(id))
+	}
 	if c.isDCLBasedIAMResource(policyMember) {
 		return c.DCLIAMClient.GetPolicyMember(ctx, c.TFIAMClient, policyMember)
 	}
@@ -133,6 +155,15 @@ func (c *IAMClient) GetPolicyMember(ctx context.Context, policyMember *v1beta1.I
 }
 
 func (c *IAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1beta1.IAMPolicyMember) error {
+	if registry.IsIAMDirect(policyMember.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		id, err := ResolveMemberIdentity(ctx, policyMember.Spec.Member, policyMember.Spec.MemberFrom, policyMember.GetNamespace(), c.TFIAMClient)
+		if err != nil {
+			return err
+		}
+
+		return direct.DeleteIAMPolicyMember(ctx, c.kubeClient, policyMember, v1beta1.Member(id))
+	}
+
 	if c.isDCLBasedIAMResource(policyMember) {
 		return c.DCLIAMClient.DeletePolicyMember(ctx, c.TFIAMClient, policyMember)
 
