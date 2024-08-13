@@ -96,7 +96,19 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 	}
 
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("unexpected diff in %s: %s", p, diff)
+		onlyWarn := false
+		for _, f := range strings.Split(os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"), ",") {
+			if f == filepath.Base(p) {
+				onlyWarn = true
+			}
+		}
+
+		if onlyWarn {
+			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
+			t.Logf("unexpected diff in %s: %s", p, diff)
+		} else {
+			t.Errorf("unexpected diff in %s: %s", p, diff)
+		}
 	}
 
 	if writeGoldenOutput {
