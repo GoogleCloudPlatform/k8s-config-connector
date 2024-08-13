@@ -12,13 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: redis.cnrm.cloud.google.com/v1
+apiVersion: redis.cnrm.cloud.google.com/v1alpha1
 kind: RedisCluster
 metadata:
  name: redisclusters-${uniqueId}
 spec:
- shardCount: 10
+ shardCount: 6
  pscConfig:
-   networkDef:
-     name: default
+   networkRef:
+     name: computenetwork-{uniqueId}
  region: us-central1
+ replicaCount: 1
+ nodeType: REDIS_STANDARD_SMALL
+ transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION
+ authorizationMode: AUTH_MODE_IAM_AUTH
+ redisConfigs:
+ - name: maxmemory-policy
+   value: volatile-ttl
+ zoneDistributionConfig:
+ - mode: SINGLE_ZONE
+ - zone: us-central1-b
+persistenceConfig:
+ - mode: AOF
+ - aofconfig:
+	- appendFsync: EVERYSEC
+deletionProtectionEnabled: false
