@@ -341,6 +341,12 @@ type ClusterMigrationSourceStatus struct {
 	SourceType *string `json:"sourceType,omitempty"`
 }
 
+type ClusterObservedStateStatus struct {
+	/* The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"]. */
+	// +optional
+	ClusterType *string `json:"clusterType,omitempty"`
+}
+
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AlloyDBCluster's current state. */
@@ -372,6 +378,10 @@ type AlloyDBClusterStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The system-generated UID of the resource. */
 	// +optional
