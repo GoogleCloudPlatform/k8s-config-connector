@@ -20,7 +20,7 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -87,7 +87,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := apirefs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -102,6 +102,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
+	if err := resolveOptionalRefs(ctx, reader, obj); err != nil {
+		return nil, fmt.Errorf("failed to resolve resource references %w", err)
+	}
+
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -113,6 +117,38 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		location:   location,
 		desired:    obj,
 	}, nil
+}
+
+func resolveOptionalRefs(ctx context.Context, reader client.Reader, obj *krm.DataformRepository) error {
+	if ref := obj.Spec.NpmrcEnvironmentVariablesSecretVersionRef; ref != nil {
+		if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+			return err
+		}
+	}
+
+	if ref := obj.Spec.ServiceAccountRef; ref != nil {
+		if err := ref.Resolve(ctx, reader, obj); err != nil {
+			return err
+		}
+	}
+
+	if obj.Spec.GitRemoteSettings != nil {
+		if ref := obj.Spec.GitRemoteSettings.AuthenticationTokenSecretVersionRef; ref != nil {
+			if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+				return err
+			}
+		}
+
+		if obj.Spec.GitRemoteSettings.SSHAuthenticationConfig != nil {
+			if ref := obj.Spec.GitRemoteSettings.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef; ref != nil {
+				if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+					return err
+				}
+			}
+		}
+	}
+
+	return nil
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -179,10 +215,9 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	status := &krm.DataformRepositoryStatus{}
+	status.ExternalRef = direct.LazyPtr(a.fullyQualifiedName())
 
 	// TODO(acpana): add observed state
-	// status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
-	// status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
 	return setStatus(u, status)
 }
 
@@ -191,14 +226,37 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	if a.desired.Spec.GitRemoteSettings != nil {
-		if !reflect.DeepEqual(a.desired.Spec.GitRemoteSettings, a.actual.GitRemoteSettings) {
+		mapCtx := &direct.MapContext{}
+		protoDesired := RepositoryGitRemoteSettings_ToProto(mapCtx, a.desired.Spec.GitRemoteSettings)
+		if mapCtx.Err() != nil {
+			return fmt.Errorf("converting GitRemoteSettings to api: %w", mapCtx.Err())
+		}
+
+		if !reflect.DeepEqual(protoDesired, a.actual.GitRemoteSettings) {
 			updateMask.Paths = append(updateMask.Paths, "git_remote_settings")
 		}
 	}
+
 	if a.desired.Spec.WorkspaceCompilationOverrides != nil {
-		if !reflect.DeepEqual(a.desired.Spec.WorkspaceCompilationOverrides, a.actual.WorkspaceCompilationOverrides) {
+		mapCtx := &direct.MapContext{}
+		protoDesired := RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx, a.desired.Spec.WorkspaceCompilationOverrides)
+		if mapCtx.Err() != nil {
+			return fmt.Errorf("converting WorkspaceCompilaitonOverrides to api: %w", mapCtx.Err())
+		}
+
+		if !reflect.DeepEqual(protoDesired, a.actual.WorkspaceCompilationOverrides) {
 			updateMask.Paths = append(updateMask.Paths, "workspace_compilation_overrides")
 		}
+	}
+
+	if a.desired.Spec.NpmrcEnvironmentVariablesSecretVersionRef != nil {
+		if !reflect.DeepEqual(a.desired.Spec.NpmrcEnvironmentVariablesSecretVersionRef.External, a.actual.NpmrcEnvironmentVariablesSecretVersion) {
+			updateMask.Paths = append(updateMask.Paths, "npmrc_environment_variables_secret_version")
+		}
+	}
+
+	if a.desired.Spec.SetAuthenticatedUserAdmin != a.actual.SetAuthenticatedUserAdmin {
+		updateMask.Paths = append(updateMask.Paths, "set_authenticated_user_admin")
 	}
 
 	desired := a.desired.DeepCopy()
@@ -216,10 +274,9 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	status := &krm.DataformRepositoryStatus{}
+	status.ExternalRef = direct.LazyPtr(a.fullyQualifiedName())
 
 	// TODO(acpana): add observed state
-	// status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
-	// status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
 	return setStatus(u, status)
 }
 

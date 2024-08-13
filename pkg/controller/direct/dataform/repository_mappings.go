@@ -17,6 +17,7 @@ package dataform
 import (
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -28,19 +29,48 @@ func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Reposito
 	out := &krm.DataformRepositorySpec{}
 	out.GitRemoteSettings = RepositoryGitRemoteSettings_FromProto(mapCtx, in.GetGitRemoteSettings())
 	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.GitRemoteSettings = RepositoryGitRemoteSettings_FromProto(mapCtx, in.GetGitRemoteSettings())
+
+	if in.GetNpmrcEnvironmentVariablesSecretVersion() != "" {
+		out.NpmrcEnvironmentVariablesSecretVersionRef = &refs.SecretManagerSecretVersionRef{
+			External: in.GetNpmrcEnvironmentVariablesSecretVersion(),
+		}
+	}
+
+	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
+	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
+	out.SetAuthenticatedUserAdmin = in.GetSetAuthenticatedUserAdmin()
+
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refs.IAMServiceAccountRef{
+			External: in.GetServiceAccount(),
+		}
+	}
 
 	return out
 }
+
 func DataformRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformRepositorySpec) *pb.Repository {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Repository{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.GitRemoteSettings = RepositoryGitRemoteSettings_ToProto(mapCtx, in.GitRemoteSettings)
 	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx, in.WorkspaceCompilationOverrides)
 
+	if in.NpmrcEnvironmentVariablesSecretVersionRef != nil {
+		out.NpmrcEnvironmentVariablesSecretVersion = in.NpmrcEnvironmentVariablesSecretVersionRef.External
+	}
+
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+
 	return out
 }
+
 func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Repository_GitRemoteSettings) *krm.RepositoryGitRemoteSettings {
 	if in == nil {
 		return nil
@@ -48,11 +78,24 @@ func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Rep
 	out := &krm.RepositoryGitRemoteSettings{}
 	out.Url = in.GetUrl()
 	out.DefaultBranch = in.GetDefaultBranch()
-	out.AuthenticationTokenSecretVersion = in.GetAuthenticationTokenSecretVersion()
-	out.TokenStatus = direct.Enum_FromProto(mapCtx, in.TokenStatus)
+	if in.GetAuthenticationTokenSecretVersion() != "" {
+		out.AuthenticationTokenSecretVersionRef = &refs.SecretManagerSecretVersionRef{
+			External: in.GetAuthenticationTokenSecretVersion(),
+		}
+	}
+
+	if inSshConfig := in.GetSshAuthenticationConfig(); inSshConfig != nil {
+		out.SSHAuthenticationConfig = &krm.SSHAuthenticationConfig{}
+		if inSshConfig.GetUserPrivateKeySecretVersion() != "" {
+			out.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef.External = inSshConfig.GetUserPrivateKeySecretVersion()
+		}
+
+		out.SSHAuthenticationConfig.HostPublicKey = inSshConfig.HostPublicKey
+	}
 
 	return out
 }
+
 func RepositoryGitRemoteSettings_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryGitRemoteSettings) *pb.Repository_GitRemoteSettings {
 	if in == nil {
 		return nil
@@ -60,11 +103,24 @@ func RepositoryGitRemoteSettings_ToProto(mapCtx *direct.MapContext, in *krm.Repo
 	out := &pb.Repository_GitRemoteSettings{}
 	out.Url = in.Url
 	out.DefaultBranch = in.DefaultBranch
-	out.AuthenticationTokenSecretVersion = in.AuthenticationTokenSecretVersion
 
-	out.TokenStatus = direct.Enum_ToProto[pb.Repository_GitRemoteSettings_TokenStatus](mapCtx, in.TokenStatus)
+	if in.AuthenticationTokenSecretVersionRef != nil {
+		out.AuthenticationTokenSecretVersion = in.AuthenticationTokenSecretVersionRef.External
+	}
+
+	if in.SSHAuthenticationConfig != nil {
+		out.SshAuthenticationConfig = &pb.Repository_GitRemoteSettings_SshAuthenticationConfig{}
+
+		if in.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef != nil {
+			out.SshAuthenticationConfig.UserPrivateKeySecretVersion = in.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef.External
+		}
+
+		out.SshAuthenticationConfig.HostPublicKey = in.SSHAuthenticationConfig.HostPublicKey
+	}
+
 	return out
 }
+
 func RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx *direct.MapContext, in *pb.Repository_WorkspaceCompilationOverrides) *krm.RepositoryWorkspaceCompilationOverrides {
 	if in == nil {
 		return nil
@@ -75,6 +131,7 @@ func RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx *direct.MapContext
 	out.TablePrefix = direct.LazyPtr(in.GetTablePrefix())
 	return out
 }
+
 func RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryWorkspaceCompilationOverrides) *pb.Repository_WorkspaceCompilationOverrides {
 	if in == nil {
 		return nil
