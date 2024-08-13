@@ -15,271 +15,238 @@
 ---
 version: 2
 interactions:
-  - id: 0
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 157.485759ms
-  - id: 1
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 57
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
-      method: PUT
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 5.984866171s
-  - id: 2
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 68.214415ms
-  - id: 3
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 55.504297ms
-  - id: 4
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 48.131549ms
-  - id: 5
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 47.940557ms
-  - id: 6
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {}
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 421.605187ms
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+              "labels": {
+                "config-connector-resource-type": "pubsubtopic",
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 176.413089ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+              "labels": {
+                "config-connector-resource-type": "pubsubtopic",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 27.95829ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "pubsubtopic"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 79.381ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2228w5hqy9utr?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 455.652706ms

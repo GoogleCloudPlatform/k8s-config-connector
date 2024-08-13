@@ -32,7 +32,7 @@ func TestNewGcpFromK8sLabelsBasicMap(t *testing.T) {
 		"key1":                           "val1",
 		"key2":                           "val2",
 		"managed-by-cnrm":                "true",
-		"config-connector-resource-type": "IAMPolicy",
+		"config-connector-resource-type": "iampolicy",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
@@ -43,7 +43,7 @@ func TestNilMap(t *testing.T) {
 	result := label.NewGcpFromK8sLabels(nil, "IAMPolicy")
 	expectedResult := map[string]string{
 		"managed-by-cnrm":                "true",
-		"config-connector-resource-type": "IAMPolicy",
+		"config-connector-resource-type": "iampolicy",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
@@ -75,7 +75,7 @@ func TestNewGCPLabelsFromK8sLabelsBasicMap(t *testing.T) {
 		"key1":                           "val1",
 		"key2":                           "val2",
 		"managed-by-cnrm":                "true",
-		"config-connector-resource-type": "IAMPolicy",
+		"config-connector-resource-type": "iampolicy",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)

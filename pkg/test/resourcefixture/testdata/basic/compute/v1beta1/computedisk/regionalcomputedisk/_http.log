@@ -37,7 +37,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "a sample regional disk",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeDisk",
+    "config-connector-resource-type": "computedisk",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -96,7 +96,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeDisk",
+    "config-connector-resource-type": "computedisk",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },

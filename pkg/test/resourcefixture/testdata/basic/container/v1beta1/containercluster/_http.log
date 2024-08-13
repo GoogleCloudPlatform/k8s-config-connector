@@ -310,7 +310,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "PubSubTopic",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -329,8 +329,34 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "PubSubTopic",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
+  },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "asia-east1",
+      "asia-northeast1",
+      "asia-southeast1",
+      "australia-southeast1",
+      "europe-north1",
+      "europe-west1",
+      "europe-west2",
+      "europe-west3",
+      "europe-west4",
+      "southamerica-west1",
+      "us-central1",
+      "us-central2",
+      "us-east1",
+      "us-east4",
+      "us-east5",
+      "us-east7",
+      "us-south1",
+      "us-west1",
+      "us-west2",
+      "us-west3",
+      "us-west4",
+      "us-west8"
+    ]
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
@@ -355,8 +381,34 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "PubSubTopic",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
+  },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "asia-east1",
+      "asia-northeast1",
+      "asia-southeast1",
+      "australia-southeast1",
+      "europe-north1",
+      "europe-west1",
+      "europe-west2",
+      "europe-west3",
+      "europe-west4",
+      "southamerica-west1",
+      "us-central1",
+      "us-central2",
+      "us-east1",
+      "us-east4",
+      "us-east5",
+      "us-east7",
+      "us-south1",
+      "us-west1",
+      "us-west2",
+      "us-west3",
+      "us-west4",
+      "us-west8"
+    ]
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
@@ -464,7 +516,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -490,7 +542,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -523,7 +575,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -661,7 +713,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     },
     "resourceLabels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "ContainerCluster",
+      "config-connector-resource-type": "containercluster",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -896,7 +948,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ContainerCluster",
+    "config-connector-resource-type": "containercluster",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -982,7 +1034,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {
   "resourceLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ContainerCluster",
+    "config-connector-resource-type": "containercluster",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
@@ -1214,7 +1266,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ContainerCluster",
+    "config-connector-resource-type": "containercluster",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -1304,7 +1356,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1376,8 +1428,34 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
+  },
+  "messageStoragePolicy": {
+    "allowedPersistenceRegions": [
+      "asia-east1",
+      "asia-northeast1",
+      "asia-southeast1",
+      "australia-southeast1",
+      "europe-north1",
+      "europe-west1",
+      "europe-west2",
+      "europe-west3",
+      "europe-west4",
+      "southamerica-west1",
+      "us-central1",
+      "us-central2",
+      "us-east1",
+      "us-east4",
+      "us-east5",
+      "us-east7",
+      "us-south1",
+      "us-west1",
+      "us-west2",
+      "us-west3",
+      "us-west4",
+      "us-west8"
+    ]
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }

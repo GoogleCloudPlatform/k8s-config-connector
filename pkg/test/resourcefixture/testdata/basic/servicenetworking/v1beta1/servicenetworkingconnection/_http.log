@@ -166,7 +166,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "addressType": "INTERNAL",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress1-${uniqueId}",
@@ -223,7 +223,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress1-${uniqueId}",
@@ -243,7 +243,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   }
 }
@@ -296,7 +296,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress1-${uniqueId}",
@@ -347,7 +347,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "addressType": "INTERNAL",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress2-${uniqueId}",
@@ -404,7 +404,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress2-${uniqueId}",
@@ -424,7 +424,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   }
 }
@@ -477,7 +477,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress2-${uniqueId}",
@@ -1011,7 +1011,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress2-${uniqueId}",
@@ -1075,7 +1075,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress1-${uniqueId}",

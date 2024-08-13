@@ -73,6 +73,7 @@ type PrivatePoolV1Config_WorkerConfig struct {
 
 // +kcc:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.NetworkConfig
 type PrivatePoolV1Config_NetworkConfigSpec struct {
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. The network definition that the workers are peered
 	//  to. If this section is left empty, the workers will be peered to
 	//  `WorkerPool.project_id` on the service producer network.
@@ -81,6 +82,7 @@ type PrivatePoolV1Config_NetworkConfigSpec struct {
 	// Option to configure network egress for the workers.
 	EgressOption *string `json:"egressOption,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. Subnet IP range within the peered network. This is specified
 	//  in CIDR notation with a slash and the subnet prefix size. You can
 	//  optionally specify an IP address before the subnet prefix value. e.g.

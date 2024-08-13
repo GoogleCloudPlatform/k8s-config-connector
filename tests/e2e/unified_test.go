@@ -330,43 +330,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
-					operationIDs := map[string]bool{}
 					networkIDs := map[string]bool{}
-					pathIDs := map[string]string{}
 
-					extractIDsFromLinks := func(link string) {
-						tokens := strings.Split(link, "/")
-						n := len(tokens)
-						if n >= 2 {
-							kind := tokens[n-2]
-							id := tokens[n-1]
-							switch kind {
-							case "tensorboards":
-								pathIDs[id] = "${tensorboardID}"
-							case "tagKeys":
-								pathIDs[id] = "${tagKeyID}"
-							case "tagValues":
-								pathIDs[id] = "${tagValueID}"
-							case "datasets":
-								pathIDs[id] = "${datasetID}"
-							case "networks":
-								pathIDs[id] = "${networkID}"
-							case "subnetworks":
-								pathIDs[id] = "${subnetworkID}"
-							case "notificationChannels":
-								pathIDs[id] = "${notificationChannelID}"
-							case "alertPolicies":
-								pathIDs[id] = "${alertPolicyID}"
-							case "conditions":
-								pathIDs[id] = "${conditionID}"
-							case "uptimeCheckConfigs":
-								pathIDs[id] = "${uptimeCheckConfigId}"
-							case "operations":
-								operationIDs[id] = true
-								pathIDs[id] = "${operationID}"
-							}
-						}
-					}
+					r := NewReplacements()
 
 					// Find "easy" operations and resources by looking for fully-qualified methods
 					for _, event := range events {
@@ -374,7 +340,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if index := strings.Index(u, "?"); index != -1 {
 							u = u[:index]
 						}
-						extractIDsFromLinks(u)
+						r.ExtractIDsFromLinks(u)
 					}
 
 					for _, event := range events {
@@ -402,14 +368,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							}
 						}
 						if id != "" {
-							operationIDs[id] = true
+							r.OperationIDs[id] = true
 						}
 					}
 
 					for _, event := range events {
 						body := event.Response.ParseBody()
 						if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
-							extractIDsFromLinks(selfLinkWithId)
+							r.ExtractIDsFromLinks(selfLinkWithId)
 						}
 						// if targetId, _, _ := unstructured.NestedString(body, "targetId"); targetId != "" {
 						// 	extractIDsFromLinks(selfLinkWithId)
@@ -420,14 +386,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								condition := conditionAny.(map[string]any)
 								name, _, _ := unstructured.NestedString(condition, "name")
 								if name != "" {
-									extractIDsFromLinks(name)
+									r.ExtractIDsFromLinks(name)
 								}
 							}
 						}
 
 						if val, ok := body["projectNumber"]; ok {
 							s := val.(string)
-							pathIDs[s] = "${projectNumber}"
+							r.PathIDs[s] = "${projectNumber}"
 						}
 					}
 
@@ -445,9 +411,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								kind := tokens[n-2]
 								switch kind {
 								case "subnetworks":
-									pathIDs[targetId] = "${subnetworkNumber}"
+									r.PathIDs[targetId] = "${subnetworkNumber}"
 								case "sslCertificates":
-									pathIDs[targetId] = "${sslCertificatesId}"
+									r.PathIDs[targetId] = "${sslCertificatesId}"
 								}
 							}
 						}
@@ -456,7 +422,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Replace any operation IDs that appear in URLs
 					for _, event := range events {
 						u := event.Request.URL
-						for operationID := range operationIDs {
+						for operationID := range r.OperationIDs {
 							u = strings.ReplaceAll(u, operationID, "${operationID}")
 						}
 						event.Request.URL = u
@@ -470,33 +436,19 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if responseBody == nil {
 							continue
 						}
-						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
-						if strings.HasPrefix(name, "tagKeys/") {
-							pathIDs[name] = "tagKeys/${tagKeyID}"
+						if name, _, _ := unstructured.NestedString(responseBody, "response", "name"); name != "" {
+							r.ExtractIDsFromLinks(name)
 						}
-						if strings.HasPrefix(name, "tagValues/") {
-							pathIDs[name] = "tagValues/${tagValueID}"
-						}
-
 						if targetLink, _, _ := unstructured.NestedString(responseBody, "targetLink"); targetLink != "" {
-							extractIDsFromLinks(targetLink)
+							r.ExtractIDsFromLinks(targetLink)
 						}
 					}
 
 					// Replace any dynamic IDs that appear in URLs
 					for _, event := range events {
 						u := event.Request.URL
-						for k, v := range pathIDs {
+						for k, v := range r.PathIDs {
 							u = strings.ReplaceAll(u, "/"+k, "/"+v)
-						}
-
-						// Specific to Compute
-						// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
-						// This special handling to avoid diffs in http logs.
-						// This can be removed once all Compute resources are migrated to direct controller.
-						basePath := "https://compute.googleapis.com/compute"
-						if strings.HasPrefix(u, basePath+"/beta/") {
-							u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
 						}
 						event.Request.URL = u
 					}
@@ -606,13 +558,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								id := tokens[n-1]
 								switch kind {
 								case "artifacts":
-									pathIDs[id] = "${artifactId}"
+									r.PathIDs[id] = "${artifactId}"
 								}
 							}
 						}
 						gcsBucket, _, _ := unstructured.NestedString(responseBody, "metadata", "gcsBucket")
 						if gcsBucket != "" && strings.HasPrefix(gcsBucket, "cloud-ai-platform-") {
-							pathIDs[gcsBucket] = "cloud-ai-platform-${bucketId}"
+							r.PathIDs[gcsBucket] = "cloud-ai-platform-${bucketId}"
 						}
 					}
 
@@ -800,10 +752,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
 						normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
 					}
-					for k, v := range pathIDs {
+					for k, v := range r.PathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
 					}
-					for k := range operationIDs {
+					for k := range r.OperationIDs {
 						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
 					}
 					for k := range networkIDs {

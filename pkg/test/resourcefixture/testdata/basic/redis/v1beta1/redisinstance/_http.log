@@ -39,7 +39,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "displayName": "Sample Redis Instance",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "RedisInstance",
+    "config-connector-resource-type": "redisinstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -109,7 +109,7 @@ X-Xss-Protection: 0
     "host": "10.1.2.3",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "RedisInstance",
+      "config-connector-resource-type": "redisinstance",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -162,7 +162,7 @@ X-Xss-Protection: 0
   "host": "10.1.2.3",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "RedisInstance",
+    "config-connector-resource-type": "redisinstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -198,7 +198,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "displayName": "newDisplayName",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "RedisInstance",
+    "config-connector-resource-type": "redisinstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true",
     "newkey": "newval"
@@ -270,7 +270,7 @@ X-Xss-Protection: 0
     "host": "10.1.2.3",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "RedisInstance",
+      "config-connector-resource-type": "redisinstance",
       "label-one": "value-one",
       "managed-by-cnrm": "true",
       "newkey": "newval"
@@ -324,7 +324,7 @@ X-Xss-Protection: 0
   "host": "10.1.2.3",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "RedisInstance",
+    "config-connector-resource-type": "redisinstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true",
     "newkey": "newval"

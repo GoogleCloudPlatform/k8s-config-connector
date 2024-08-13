@@ -40,7 +40,7 @@ spec:
     initializeParams:
       labels:
         cnrm-test: "true"
-        config-connector-resource-type: "ComputeDisk"
+        config-connector-resource-type: "computedisk"
         managed-by-cnrm: "true"
       sourceImageRef:
         external: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010

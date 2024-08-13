@@ -28,17 +28,14 @@ type Normalizer struct {
 	uniqueID string
 	project  testgcp.GCPProject
 
-	pathIDs      map[string]string
-	operationIDs map[string]bool
+	*Replacements
 }
 
 func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
 	return &Normalizer{
-		uniqueID: uniqueID,
-		project:  project,
-
-		operationIDs: map[string]bool{},
-		pathIDs:      map[string]string{},
+		uniqueID:     uniqueID,
+		project:      project,
+		Replacements: NewReplacements(),
 	}
 }
 
@@ -47,7 +44,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// Replace any dynamic IDs that appear in URLs
 	for _, event := range events {
 		url := event.Request.URL
-		for k, v := range x.pathIDs {
+		for k, v := range x.PathIDs {
 			url = strings.ReplaceAll(url, "/"+k, "/"+v)
 		}
 		event.Request.URL = url
@@ -161,10 +158,10 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	normalizers = append(normalizers, ReplaceString(x.uniqueID, "${uniqueId}"))
 	normalizers = append(normalizers, ReplaceString(x.project.ProjectID, "${projectId}"))
 	normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", x.project.ProjectNumber), "${projectNumber}"))
-	for k, v := range x.pathIDs {
+	for k, v := range x.PathIDs {
 		normalizers = append(normalizers, ReplaceString(k, v))
 	}
-	for k := range x.operationIDs {
+	for k := range x.OperationIDs {
 		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
 	}
 
@@ -182,19 +179,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		if index := strings.Index(u, "?"); index != -1 {
 			u = u[:index]
 		}
-		tokens := strings.Split(u, "/")
-		n := len(tokens)
-		if n >= 2 {
-			kind := tokens[n-2]
-			id := tokens[n-1]
-			switch kind {
-			case "tensorboards":
-				x.pathIDs[id] = "${tensorboardID}"
-			case "operations":
-				x.operationIDs[id] = true
-				x.pathIDs[id] = "${operationID}"
-			}
-		}
+		x.ExtractIDsFromLinks(u)
 	}
 
 	for _, event := range events {
@@ -203,6 +188,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
+			x.ExtractIDsFromLinks(s)
+
+			// Also check for operations
 			tokens := strings.Split(s, "/")
 			// operation name format: operations/{operationId}
 			if len(tokens) == 2 && tokens[0] == "operations" {
@@ -218,7 +206,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			}
 		}
 		if id != "" {
-			x.operationIDs[id] = true
+			x.OperationIDs[id] = true
 		}
 	}
 
@@ -232,7 +220,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 		name, _, _ := unstructured.NestedString(responseBody, "response", "name")
 		if strings.HasPrefix(name, "tagKeys/") {
-			x.pathIDs[name] = "tagKeys/${tagKeyID}"
+			x.PathIDs[name] = "tagKeys/${tagKeyID}"
 		}
 	}
 

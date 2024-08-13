@@ -15,291 +15,593 @@
 ---
 version: 2
 interactions:
-  - id: 0
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: servicedirectory.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 282.349388ms
-  - id: 1
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 81
-      transfer_encoding: []
-      trailer: {}
-      host: servicedirectory.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces?alt=json&namespaceId=servicedirectory-namespace-39nczegclghzv
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "label-one": "value-one",
-            "cnrm-test": "true"
-          },
-          "createTime": "2024-04-25T02:00:10.590448Z",
-          "updateTime": "2024-04-25T02:00:10.590448Z",
-          "uid": "03073ccbe2224dc7971b78c567395da6"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 104.337973ms
-  - id: 2
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: servicedirectory.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
-          "labels": {
-            "label-one": "value-one",
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true"
-          },
-          "createTime": "2024-04-25T02:00:10.590448Z",
-          "updateTime": "2024-04-25T02:00:10.590448Z",
-          "uid": "03073ccbe2224dc7971b78c567395da6"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 73.117392ms
-  - id: 3
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: servicedirectory.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
-          "labels": {
-            "label-one": "value-one",
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T02:00:10.590448Z",
-          "updateTime": "2024-04-25T02:00:10.590448Z",
-          "uid": "03073ccbe2224dc7971b78c567395da6"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 77.88168ms
-  - id: 4
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: servicedirectory.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
-          "labels": {
-            "label-one": "value-one",
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T02:00:10.590448Z",
-          "updateTime": "2024-04-25T02:00:10.590448Z",
-          "uid": "03073ccbe2224dc7971b78c567395da6"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 77.469619ms
-  - id: 5
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: servicedirectory.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
-          "labels": {
-            "label-one": "value-one",
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T02:00:10.590448Z",
-          "updateTime": "2024-04-25T02:00:10.590448Z",
-          "uid": "03073ccbe2224dc7971b78c567395da6"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 73.899008ms
-  - id: 6
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: servicedirectory.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {}
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 130.542319ms
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 126.278696ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 39.878748ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 32.825179ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 44.829618ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 46.296789ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 64.819898ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 142
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"labels":{"cnrm-test":"true","config-connector-resource-type":"servicedirectorynamespace","label-one":"value-one","managed-by-cnrm":"true"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces?alt=json&namespaceId=servicedirectory-namespace-39nczegclghzv
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "label-one": "value-one",
+                "config-connector-resource-type": "servicedirectorynamespace",
+                "cnrm-test": "true"
+              },
+              "createTime": "2024-08-15T19:29:53.198302Z",
+              "updateTime": "2024-08-15T19:29:53.198302Z",
+              "uid": "4656fdc459774476b32f861585114517"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 101.434916ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 5.65407ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "label-one": "value-one",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "servicedirectorynamespace"
+              },
+              "createTime": "2024-08-15T19:29:53.198302Z",
+              "updateTime": "2024-08-15T19:29:53.198302Z",
+              "uid": "4656fdc459774476b32f861585114517"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 37.008949ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 23.218949ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 22.62068ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 28.885508ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
+              "labels": {
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "servicedirectorynamespace"
+              },
+              "createTime": "2024-08-15T19:29:53.198302Z",
+              "updateTime": "2024-08-15T19:29:53.198302Z",
+              "uid": "4656fdc459774476b32f861585114517"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 49.091758ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "label-one": "value-one",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "servicedirectorynamespace"
+              },
+              "createTime": "2024-08-15T19:29:53.198302Z",
+              "updateTime": "2024-08-15T19:29:53.198302Z",
+              "uid": "4656fdc459774476b32f861585114517"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 10.4536ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv",
+              "labels": {
+                "label-one": "value-one",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "servicedirectorynamespace",
+                "managed-by-cnrm": "true"
+              },
+              "createTime": "2024-08-15T19:29:53.198302Z",
+              "updateTime": "2024-08-15T19:29:53.198302Z",
+              "uid": "4656fdc459774476b32f861585114517"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 17.579708ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: servicedirectory.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://servicedirectory.googleapis.com/v1beta1/projects/example-project/locations/us-central1/namespaces/servicedirectory-namespace-39nczegclghzv?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 186.024773ms

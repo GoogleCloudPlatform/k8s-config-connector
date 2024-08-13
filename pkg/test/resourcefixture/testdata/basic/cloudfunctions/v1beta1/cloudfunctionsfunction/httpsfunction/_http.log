@@ -24,7 +24,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   },
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CloudFunctionsFunction",
+    "config-connector-resource-type": "cloudfunctionsfunction",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
@@ -71,7 +71,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "kmsKeyName": "",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CloudFunctionsFunction",
+    "config-connector-resource-type": "cloudfunctionsfunction",
     "managed-by-cnrm": "true"
   },
   "maxInstances": 0,
@@ -102,7 +102,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   "ingressSettings": "INGRESS_SETTINGS_UNSPECIFIED",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CloudFunctionsFunction",
+    "config-connector-resource-type": "cloudfunctionsfunction",
     "managed-by-cnrm": "true"
   },
   "runtime": "nodejs10",
@@ -149,7 +149,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "kmsKeyName": "",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CloudFunctionsFunction",
+    "config-connector-resource-type": "cloudfunctionsfunction",
     "managed-by-cnrm": "true"
   },
   "maxInstances": 0,

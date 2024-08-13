@@ -38,7 +38,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
@@ -72,10 +72,9 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
@@ -120,10 +119,9 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
@@ -785,10 +783,9 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",

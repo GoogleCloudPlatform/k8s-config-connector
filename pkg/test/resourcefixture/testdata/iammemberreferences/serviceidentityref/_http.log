@@ -52,7 +52,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ArtifactRegistryRepository",
+    "config-connector-resource-type": "artifactregistryrepository",
     "managed-by-cnrm": "true"
   },
   "mode": "STANDARD_REPOSITORY"
@@ -104,7 +104,7 @@ X-Xss-Protection: 0
     "format": "DOCKER",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "ArtifactRegistryRepository",
+      "config-connector-resource-type": "artifactregistryrepository",
       "managed-by-cnrm": "true"
     },
     "mode": "STANDARD_REPOSITORY",
@@ -134,7 +134,7 @@ X-Xss-Protection: 0
   "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ArtifactRegistryRepository",
+    "config-connector-resource-type": "artifactregistryrepository",
     "managed-by-cnrm": "true"
   },
   "mode": "STANDARD_REPOSITORY",
@@ -311,7 +311,7 @@ X-Xss-Protection: 0
   "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ArtifactRegistryRepository",
+    "config-connector-resource-type": "artifactregistryrepository",
     "managed-by-cnrm": "true"
   },
   "mode": "STANDARD_REPOSITORY",

@@ -163,10 +163,10 @@ spec:
                         description: 'Output only. API hostname. This is the hostname
                           to use for **Host: Data Plane** endpoints.'
                         type: string
-                      gitHttp:
+                      gitHTTP:
                         description: Output only. Git HTTP hostname.
                         type: string
-                      gitSsh:
+                      gitSSH:
                         description: Output only. Git SSH hostname.
                         type: string
                       html:

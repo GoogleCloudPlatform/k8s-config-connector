@@ -21,7 +21,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "Basic Network",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "EdgeNetworkNetwork",
+    "config-connector-resource-type": "edgenetworknetwork",
     "managed-by-cnrm": "true"
   },
   "mtu": 9000
@@ -52,7 +52,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "description": "Basic Network",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "EdgeNetworkNetwork",
+    "config-connector-resource-type": "edgenetworknetwork",
     "managed-by-cnrm": "true"
   },
   "mtu": 9000,
@@ -89,7 +89,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   ],
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "EdgeNetworkNetwork",
+    "config-connector-resource-type": "edgenetworksubnet",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -126,7 +126,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "ipv6Cidr": [],
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "EdgeNetworkNetwork",
+    "config-connector-resource-type": "edgenetworksubnet",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -168,7 +168,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "description": "Basic Network",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "EdgeNetworkNetwork",
+    "config-connector-resource-type": "edgenetworknetwork",
     "managed-by-cnrm": "true"
   },
   "mtu": 9000,

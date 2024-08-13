@@ -15,1237 +15,1620 @@
 ---
 version: 2
 interactions:
-  - id: 0
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 222.258749ms
-  - id: 1
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 98.575635ms
-  - id: 2
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 107.067307ms
-  - id: 3
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 354
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: '{"entryPoint":"helloGET","httpsTrigger":{"securityLevel":"SECURE_OPTIONAL"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f","runtime":"nodejs10","sourceArchiveUrl":"gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"}'
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions?alt=json
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL0Q2SkNWMHJhNmQ4",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-            "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "type": "CREATE_FUNCTION",
-            "request": {
-              "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
-              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-              "httpsTrigger": {
-                "securityLevel": "SECURE_OPTIONAL"
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 137.262784ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 165.047055ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 114.037052ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 91.604323ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 402
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"entryPoint":"helloGET","httpsTrigger":{"securityLevel":"SECURE_OPTIONAL"},"labels":{"cnrm-test":"true","config-connector-resource-type":"cloudfunctionsfunction","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f","runtime":"nodejs10","sourceArchiveUrl":"gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvX3dPN1lmc005dFk",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
+                "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                "type": "CREATE_FUNCTION",
+                "request": {
+                  "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
+                  "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                  "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+                  "httpsTrigger": {
+                    "securityLevel": "SECURE_OPTIONAL"
+                  },
+                  "entryPoint": "helloGET",
+                  "labels": {
+                    "cnrm-test": "true",
+                    "config-connector-resource-type": "cloudfunctionsfunction",
+                    "managed-by-cnrm": "true"
+                  },
+                  "runtime": "nodejs10"
+                },
+                "versionId": "1",
+                "updateTime": "2024-08-15T18:27:39Z"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 621.840195ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvX3dPN1lmc005dFk?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvX3dPN1lmc005dFk",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
+                "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                "type": "CREATE_FUNCTION",
+                "request": {
+                  "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
+                  "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                  "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+                  "httpsTrigger": {
+                    "securityLevel": "SECURE_OPTIONAL"
+                  },
+                  "entryPoint": "helloGET",
+                  "labels": {
+                    "cnrm-test": "true",
+                    "config-connector-resource-type": "cloudfunctionsfunction",
+                    "managed-by-cnrm": "true"
+                  },
+                  "runtime": "nodejs10"
+                },
+                "versionId": "1",
+                "updateTime": "2024-08-15T18:28:14Z",
+                "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+                "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920"
               },
-              "entryPoint": "helloGET",
-              "labels": {
-                "cnrm-test": "true",
-                "managed-by-cnrm": "true"
-              },
-              "runtime": "nodejs10"
-            },
-            "versionId": "1",
-            "updateTime": "2024-04-25T01:20:32Z"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 519.599478ms
-  - id: 4
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL0Q2SkNWMHJhNmQ4?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL0Q2SkNWMHJhNmQ4",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-            "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "type": "CREATE_FUNCTION",
-            "request": {
-              "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
-              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-              "httpsTrigger": {
-                "securityLevel": "SECURE_OPTIONAL"
-              },
-              "entryPoint": "helloGET",
-              "labels": {
-                "cnrm-test": "true",
-                "managed-by-cnrm": "true"
-              },
-              "runtime": "nodejs10"
-            },
-            "versionId": "1",
-            "updateTime": "2024-04-25T01:21:42Z",
-            "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-            "sourceToken": "c3346b94-5b40-48f1-a024-0e2733bc4910",
-            "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
-            "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-            "httpsTrigger": {
-              "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-              "securityLevel": "SECURE_OPTIONAL"
-            },
-            "status": "ACTIVE",
-            "entryPoint": "helloGET",
-            "timeout": "60s",
-            "availableMemoryMb": 256,
-            "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-            "updateTime": "2024-04-25T01:21:42.203Z",
-            "versionId": "1",
-            "labels": {
-              "cnrm-test": "true",
-              "managed-by-cnrm": "true"
-            },
-            "runtime": "nodejs10",
-            "ingressSettings": "ALLOW_ALL",
-            "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-            "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-            "dockerRegistry": "ARTIFACT_REGISTRY",
-            "automaticUpdatePolicy": {}
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 164.436425ms
-  - id: 5
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 121.189824ms
-  - id: 6
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 129.129518ms
-  - id: 7
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 125.348219ms
-  - id: 8
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 111.427179ms
-  - id: 9
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 140.195676ms
-  - id: 10
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 123.913563ms
-  - id: 11
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 98.301644ms
-  - id: 12
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 113.456776ms
-  - id: 13
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "60s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:21:42.203Z",
-          "versionId": "1",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 128.259189ms
-  - id: 14
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 148
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: '{"availableMemoryMb":256,"ingressSettings":"ALLOW_ALL","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"runtime":"nodejs10","timeout":"120s"}'
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json&updateMask=timeout
-      method: PATCH
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL255QzRYb1EzS0Vj",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-            "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "type": "UPDATE_FUNCTION",
-            "request": {
-              "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
+              "done": true,
+              "error": {
+                "code": 3,
+                "message": "Build failed: failed to Fetch: failed to download archive gs://gcf-sources-123456789-us-west2/cloudfunctionsfunction-1xnjudyudz13f-b363cd6a-2ff6-4c01-9fe8-e6b84f331ee9/version-1/function-source.zip: Access to bucket gcf-sources-123456789-us-west2 denied. You must grant Storage Object Viewer permission to 123456789-compute@developer.gserviceaccount.com. If you are using VPC Service Controls, you must also grant it access to your service perimeter.\n"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 147.579503ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
               "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
               "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
               "httpsTrigger": {
                 "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
                 "securityLevel": "SECURE_OPTIONAL"
               },
-              "status": "ACTIVE",
+              "status": "OFFLINE",
               "entryPoint": "helloGET",
-              "timeout": "120s",
+              "timeout": "60s",
               "availableMemoryMb": 256,
               "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-              "updateTime": "2024-04-25T01:21:42.203Z",
+              "updateTime": "2024-08-15T18:28:13.981Z",
               "versionId": "1",
               "labels": {
                 "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
                 "managed-by-cnrm": "true"
               },
               "runtime": "nodejs10",
               "ingressSettings": "ALLOW_ALL",
-              "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-              "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
               "dockerRegistry": "ARTIFACT_REGISTRY",
-              "automaticUpdatePolicy": {}
-            },
-            "versionId": "2",
-            "updateTime": "2024-04-25T01:21:50Z"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 853.769695ms
-  - id: 15
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL255QzRYb1EzS0Vj?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL255QzRYb1EzS0Vj",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-            "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "type": "UPDATE_FUNCTION",
-            "request": {
-              "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 127.045312ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 6.94346ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
               "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
               "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
               "httpsTrigger": {
                 "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
                 "securityLevel": "SECURE_OPTIONAL"
               },
-              "status": "ACTIVE",
+              "status": "OFFLINE",
               "entryPoint": "helloGET",
-              "timeout": "120s",
+              "timeout": "60s",
               "availableMemoryMb": 256,
               "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-              "updateTime": "2024-04-25T01:21:42.203Z",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 130.931202ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 28.36592ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 142.512572ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
               "versionId": "1",
               "labels": {
                 "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
                 "managed-by-cnrm": "true"
               },
               "runtime": "nodejs10",
               "ingressSettings": "ALLOW_ALL",
-              "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
-              "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
               "dockerRegistry": "ARTIFACT_REGISTRY",
-              "automaticUpdatePolicy": {}
-            },
-            "versionId": "2",
-            "updateTime": "2024-04-25T01:22:27Z",
-            "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-            "sourceToken": "9b26058b-3e29-430e-8b59-f51efe70051d",
-            "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
-            "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-            "httpsTrigger": {
-              "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-              "securityLevel": "SECURE_OPTIONAL"
-            },
-            "status": "ACTIVE",
-            "entryPoint": "helloGET",
-            "timeout": "120s",
-            "availableMemoryMb": 256,
-            "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-            "updateTime": "2024-04-25T01:22:27.346Z",
-            "versionId": "2",
-            "labels": {
-              "cnrm-test": "true",
-              "managed-by-cnrm": "true"
-            },
-            "runtime": "nodejs10",
-            "ingressSettings": "ALLOW_ALL",
-            "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-            "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-            "dockerRegistry": "ARTIFACT_REGISTRY",
-            "automaticUpdatePolicy": {}
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 119.750829ms
-  - id: 16
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "120s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:22:27.346Z",
-          "versionId": "2",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-          "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 114.180776ms
-  - id: 17
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "120s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:22:27.346Z",
-          "versionId": "2",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-          "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 109.249949ms
-  - id: 18
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-          "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-          "httpsTrigger": {
-            "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
-            "securityLevel": "SECURE_OPTIONAL"
-          },
-          "status": "ACTIVE",
-          "entryPoint": "helloGET",
-          "timeout": "120s",
-          "availableMemoryMb": 256,
-          "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
-          "updateTime": "2024-04-25T01:22:27.346Z",
-          "versionId": "2",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "runtime": "nodejs10",
-          "ingressSettings": "ALLOW_ALL",
-          "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-          "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
-          "dockerRegistry": "ARTIFACT_REGISTRY",
-          "automaticUpdatePolicy": {}
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 110.156777ms
-  - id: 19
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL3k1VWdadWFYemh3",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-            "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "type": "DELETE_FUNCTION",
-            "request": {
-              "@type": "type.googleapis.com/google.protobuf.Empty"
-            },
-            "updateTime": "2024-04-25T01:22:32Z"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 166.011759ms
-  - id: 20
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL3k1VWdadWFYemh3?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "operations/Y25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvdXMtd2VzdDIvY2xvdWRmdW5jdGlvbnNmdW5jdGlvbi0xeG5qdWR5dWR6MTNmL3k1VWdadWFYemh3",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-            "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
-            "type": "DELETE_FUNCTION",
-            "request": {
-              "@type": "type.googleapis.com/google.protobuf.Empty"
-            },
-            "updateTime": "2024-04-25T01:22:35Z"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.protobuf.Empty"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 103.701675ms
-  - id: 21
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: cloudfunctions.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 108.651809ms
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 114.606601ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 85.858981ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 122.865091ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 106.691481ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 89.134311ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 85.006081ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 84.568941ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 92.778211ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "60s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "1",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+              "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 88.988311ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 206
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"availableMemoryMb":256,"ingressSettings":"ALLOW_ALL","labels":{"cnrm-test":"true","config-connector-resource-type":"cloudfunctionsfunction","managed-by-cnrm":"true"},"runtime":"nodejs10","timeout":"120s"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json&updateMask=timeout
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvQWctd2d0VnlJaUE",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
+                "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                "type": "UPDATE_FUNCTION",
+                "request": {
+                  "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
+                  "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                  "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+                  "httpsTrigger": {
+                    "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                    "securityLevel": "SECURE_OPTIONAL"
+                  },
+                  "status": "OFFLINE",
+                  "entryPoint": "helloGET",
+                  "timeout": "120s",
+                  "availableMemoryMb": 256,
+                  "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+                  "updateTime": "2024-08-15T18:28:13.981Z",
+                  "versionId": "1",
+                  "labels": {
+                    "cnrm-test": "true",
+                    "config-connector-resource-type": "cloudfunctionsfunction",
+                    "managed-by-cnrm": "true"
+                  },
+                  "runtime": "nodejs10",
+                  "ingressSettings": "ALLOW_ALL",
+                  "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+                  "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+                  "dockerRegistry": "ARTIFACT_REGISTRY",
+                  "automaticUpdatePolicy": {},
+                  "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+                },
+                "versionId": "2",
+                "updateTime": "2024-08-15T18:28:56Z"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 476.851074ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvQWctd2d0VnlJaUE?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvQWctd2d0VnlJaUE",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
+                "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                "type": "UPDATE_FUNCTION",
+                "request": {
+                  "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
+                  "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                  "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+                  "httpsTrigger": {
+                    "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                    "securityLevel": "SECURE_OPTIONAL"
+                  },
+                  "status": "OFFLINE",
+                  "entryPoint": "helloGET",
+                  "timeout": "120s",
+                  "availableMemoryMb": 256,
+                  "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+                  "updateTime": "2024-08-15T18:28:13.981Z",
+                  "versionId": "1",
+                  "labels": {
+                    "cnrm-test": "true",
+                    "config-connector-resource-type": "cloudfunctionsfunction",
+                    "managed-by-cnrm": "true"
+                  },
+                  "runtime": "nodejs10",
+                  "ingressSettings": "ALLOW_ALL",
+                  "buildId": "60a49088-6d27-4dbe-baf6-7568fc992920",
+                  "buildName": "projects/123456789/locations/us-west2/builds/60a49088-6d27-4dbe-baf6-7568fc992920",
+                  "dockerRegistry": "ARTIFACT_REGISTRY",
+                  "automaticUpdatePolicy": {},
+                  "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+                },
+                "versionId": "2",
+                "updateTime": "2024-08-15T18:29:11Z",
+                "buildId": "4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+                "buildName": "projects/123456789/locations/us-west2/builds/4c295c1c-198d-4b7c-9517-40ee9aaf112d"
+              },
+              "done": true,
+              "error": {
+                "code": 3,
+                "message": "Build failed: failed to Fetch: failed to download archive gs://gcf-sources-123456789-us-west2/cloudfunctionsfunction-1xnjudyudz13f-b363cd6a-2ff6-4c01-9fe8-e6b84f331ee9/version-2/function-source.zip: Access to bucket gcf-sources-123456789-us-west2 denied. You must grant Storage Object Viewer permission to 123456789-compute@developer.gserviceaccount.com. If you are using VPC Service Controls, you must also grant it access to your service perimeter.\n"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 94.847601ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "120s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "2",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "buildName": "projects/123456789/locations/us-west2/builds/4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 108.148301ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "120s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "2",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "buildName": "projects/123456789/locations/us-west2/builds/4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 103.63835ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "120s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "2",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "buildName": "projects/123456789/locations/us-west2/builds/4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 100.54438ms
+    - id: 25
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "120s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "2",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction",
+                "managed-by-cnrm": "true"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "buildName": "projects/123456789/locations/us-west2/builds/4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 88.925271ms
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+              "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
+              "httpsTrigger": {
+                "url": "https://us-west2-example-project.cloudfunctions.net/cloudfunctionsfunction-1xnjudyudz13f",
+                "securityLevel": "SECURE_OPTIONAL"
+              },
+              "status": "OFFLINE",
+              "entryPoint": "helloGET",
+              "timeout": "120s",
+              "availableMemoryMb": 256,
+              "serviceAccountEmail": "example-project@appspot.gserviceaccount.com",
+              "updateTime": "2024-08-15T18:28:13.981Z",
+              "versionId": "2",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "cloudfunctionsfunction"
+              },
+              "runtime": "nodejs10",
+              "ingressSettings": "ALLOW_ALL",
+              "buildId": "4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "buildName": "projects/123456789/locations/us-west2/builds/4c295c1c-198d-4b7c-9517-40ee9aaf112d",
+              "dockerRegistry": "ARTIFACT_REGISTRY",
+              "automaticUpdatePolicy": {},
+              "buildServiceAccount": "123456789-compute@developer.gserviceaccount.com"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 91.240181ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvY2g1NkpMOFFuMlk",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
+                "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                "type": "DELETE_FUNCTION",
+                "request": {
+                  "@type": "type.googleapis.com/google.protobuf.Empty"
+                },
+                "updateTime": "2024-08-15T18:29:20Z"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 125.482001ms
+    - id: 28
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvY2g1NkpMOFFuMlk?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/eGlhb3dlaW0tZ2tlLWRldi91cy13ZXN0Mi9jbG91ZGZ1bmN0aW9uc2Z1bmN0aW9uLTF4bmp1ZHl1ZHoxM2YvY2g1NkpMOFFuMlk",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
+                "target": "projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f",
+                "type": "DELETE_FUNCTION",
+                "request": {
+                  "@type": "type.googleapis.com/google.protobuf.Empty"
+                },
+                "updateTime": "2024-08-15T18:29:21Z"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 80.66647ms
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudfunctions.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudfunctions.googleapis.com/v1/projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 71.43396ms

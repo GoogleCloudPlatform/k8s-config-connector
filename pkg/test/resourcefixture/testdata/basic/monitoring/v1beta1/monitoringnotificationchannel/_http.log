@@ -14,7 +14,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "MonitoringNotificationChannel",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "key-one": "value-one",
     "key-two": "value-two",
     "managed-by-cnrm": "true"
@@ -53,7 +53,7 @@ X-Xss-Protection: 0
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "MonitoringNotificationChannel",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "key-one": "value-one",
     "key-two": "value-two",
     "managed-by-cnrm": "true"
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "MonitoringNotificationChannel",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "key-one": "value-one",
     "key-two": "value-two",
     "managed-by-cnrm": "true"
@@ -123,7 +123,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "MonitoringNotificationChannel",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "key-one": "value-one",
     "key-three": "value-three",
     "key-two": "value-three",
@@ -163,7 +163,7 @@ X-Xss-Protection: 0
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "MonitoringNotificationChannel",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "key-one": "value-one",
     "key-three": "value-three",
     "key-two": "value-three",
@@ -209,7 +209,7 @@ X-Xss-Protection: 0
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "MonitoringNotificationChannel",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "key-one": "value-one",
     "key-three": "value-three",
     "key-two": "value-three",

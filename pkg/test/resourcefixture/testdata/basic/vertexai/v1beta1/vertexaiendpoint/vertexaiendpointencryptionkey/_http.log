@@ -391,7 +391,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "purpose": "ENCRYPT_DECRYPT"
@@ -412,7 +412,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
@@ -440,7 +440,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
@@ -493,7 +493,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "VertexAIEndpoint",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -557,7 +557,7 @@ X-Xss-Protection: 0
     },
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "VertexAIEndpoint",
+      "config-connector-resource-type": "vertexaiendpoint",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -592,7 +592,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "VertexAIEndpoint",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -611,7 +611,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "displayName": "vertexai-endpoint-encryptionkey-updated",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "VertexAIEndpoint",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -638,7 +638,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "VertexAIEndpoint",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -673,7 +673,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "VertexAIEndpoint",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -734,7 +734,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",

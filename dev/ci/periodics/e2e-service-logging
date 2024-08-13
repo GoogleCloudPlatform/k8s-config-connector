@@ -24,4 +24,7 @@ export RUN_TESTS=TestAllInSeries/fixtures
 export ONLY_TEST_APIGROUP=logging.cnrm.cloud.google.com
 export E2E_GCP_TARGET=real
 
+dev/tasks/create-test-project
+trap dev/tasks/cleanup-test-resources EXIT
+
 dev/tasks/run-e2e

@@ -75,7 +75,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     },
     "resourceLabels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "ContainerCluster",
+      "config-connector-resource-type": "containercluster",
       "managed-by-cnrm": "true"
     },
     "shieldedNodes": {
@@ -281,7 +281,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ContainerCluster",
+    "config-connector-resource-type": "containercluster",
     "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
@@ -341,7 +341,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   },
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "GKEHubMembership",
+    "config-connector-resource-type": "gkehubmembership",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}"
@@ -412,7 +412,7 @@ X-Xss-Protection: 0
     "infrastructureType": "MULTI_CLOUD",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "GKEHubMembership",
+      "config-connector-resource-type": "gkehubmembership",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
@@ -458,7 +458,7 @@ X-Xss-Protection: 0
   "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "GKEHubMembership",
+    "config-connector-resource-type": "gkehubmembership",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
@@ -488,7 +488,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "GKEHubMembership",
+    "config-connector-resource-type": "gkehubmembership",
     "managed-by-cnrm": "true"
   }
 }
@@ -558,7 +558,7 @@ X-Xss-Protection: 0
     "infrastructureType": "MULTI_CLOUD",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "GKEHubMembership",
+      "config-connector-resource-type": "gkehubmembership",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
@@ -604,7 +604,7 @@ X-Xss-Protection: 0
   "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "GKEHubMembership",
+    "config-connector-resource-type": "gkehubmembership",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
@@ -817,7 +817,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ContainerCluster",
+    "config-connector-resource-type": "containercluster",
     "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {

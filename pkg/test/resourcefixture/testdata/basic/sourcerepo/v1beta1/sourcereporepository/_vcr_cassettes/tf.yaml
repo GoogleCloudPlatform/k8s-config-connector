@@ -15,953 +15,1088 @@
 ---
 version: 2
 interactions:
-  - id: 0
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 144.871216ms
-  - id: 1
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 403.515593ms
-  - id: 2
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 54
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"accountId":"gsa-3a92e2gc7nt5n","serviceAccount":{}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts?alt=json&prettyPrint=false
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"105528364782646947942","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"105528364782646947942"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 677.231434ms
-  - id: 3
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"105528364782646947942","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"105528364782646947942"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 103.313239ms
-  - id: 4
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"105528364782646947942","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"105528364782646947942"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 67.005466ms
-  - id: 5
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"105528364782646947942","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"105528364782646947942"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 151.690966ms
-  - id: 6
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"105528364782646947942","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"105528364782646947942"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 81.536752ms
-  - id: 7
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 57
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
-      method: PUT
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 2.950503404s
-  - id: 8
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 54.129647ms
-  - id: 9
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 45.586513ms
-  - id: 10
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 57.983977ms
-  - id: 11
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 509.945872ms
-  - id: 12
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 299
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"name":"projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n","pubsubConfigs":{"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n":{"messageFormat":"PROTOBUF","serviceAccountEmail":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"}}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos?alt=json
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 3.245161789s
-  - id: 13
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 301
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"repo":{"pubsubConfigs":{"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n":{"messageFormat":"PROTOBUF","serviceAccountEmail":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","topic":"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n"}}}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json&updateMask=pubsubConfigs
-      method: PATCH
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
-          "pubsubConfigs": {
-            "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
-              "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-              "messageFormat": "PROTOBUF",
-              "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 163.984385ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 271.020901ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 54
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"accountId":"gsa-3a92e2gc7nt5n","serviceAccount":{}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"106487326354348330479","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"106487326354348330479"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 680.880529ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"106487326354348330479","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"106487326354348330479"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 68.414078ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"106487326354348330479","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"106487326354348330479"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 62.161318ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"106487326354348330479","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"106487326354348330479"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 59.412738ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"106487326354348330479","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"106487326354348330479"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 55.747089ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 104
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"labels":{"cnrm-test":"true","config-connector-resource-type":"pubsubtopic","managed-by-cnrm":"true"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
+        method: PUT
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "config-connector-resource-type": "pubsubtopic",
+                "cnrm-test": "true"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 2.702032566s
-  - id: 14
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
-          "pubsubConfigs": {
-            "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
-              "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-              "messageFormat": "PROTOBUF",
-              "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 2.55032871s
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+              "labels": {
+                "config-connector-resource-type": "pubsubtopic",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 303.704761ms
-  - id: 15
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
-          "pubsubConfigs": {
-            "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
-              "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-              "messageFormat": "PROTOBUF",
-              "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 36.183059ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "config-connector-resource-type": "pubsubtopic",
+                "cnrm-test": "true"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 296.440052ms
-  - id: 16
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
-          "pubsubConfigs": {
-            "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
-              "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-              "messageFormat": "PROTOBUF",
-              "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 28.04677ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+              "labels": {
+                "config-connector-resource-type": "pubsubtopic",
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 345.475344ms
-  - id: 17
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 297
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"repo":{"pubsubConfigs":{"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n":{"messageFormat":"JSON","serviceAccountEmail":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","topic":"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n"}}}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json&updateMask=pubsubConfigs
-      method: PATCH
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
-          "pubsubConfigs": {
-            "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
-              "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-              "messageFormat": "JSON",
-              "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 32.333509ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 239.642012ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 269
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"name":"projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n","pubsubConfigs":{"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n":{"messageFormat":"PROTOBUF","serviceAccountEmail":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"}}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n"
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 1.59552078s
-  - id: 18
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
-          "pubsubConfigs": {
-            "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
-              "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-              "messageFormat": "JSON",
-              "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 1.993295536s
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 271
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"repo":{"pubsubConfigs":{"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n":{"messageFormat":"PROTOBUF","serviceAccountEmail":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","topic":"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n"}}}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json&updateMask=pubsubConfigs
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
+              "pubsubConfigs": {
+                "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
+                  "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+                  "messageFormat": "PROTOBUF",
+                  "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+                }
+              }
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 570.192443ms
-  - id: 19
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 46.227954ms
-  - id: 20
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"105528364782646947942","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"105528364782646947942"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 73.084558ms
-  - id: 21
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
-          "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
-          "pubsubConfigs": {
-            "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
-              "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
-              "messageFormat": "JSON",
-              "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 2.367693694s
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
+              "pubsubConfigs": {
+                "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
+                  "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+                  "messageFormat": "PROTOBUF",
+                  "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+                }
+              }
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 297.162183ms
-  - id: 22
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: iam.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 224.072463ms
-  - id: 23
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: pubsub.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {}
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 454.857937ms
-  - id: 24
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: sourcerepo.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {}
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 1.581908574s
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 611.51759ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
+              "pubsubConfigs": {
+                "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
+                  "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+                  "messageFormat": "PROTOBUF",
+                  "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 163.574944ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
+              "pubsubConfigs": {
+                "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
+                  "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+                  "messageFormat": "PROTOBUF",
+                  "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 171.015434ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 267
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"repo":{"pubsubConfigs":{"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n":{"messageFormat":"JSON","serviceAccountEmail":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","topic":"projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n"}}}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json&updateMask=pubsubConfigs
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
+              "pubsubConfigs": {
+                "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
+                  "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+                  "messageFormat": "JSON",
+                  "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 1.336461077s
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
+              "pubsubConfigs": {
+                "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
+                  "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+                  "messageFormat": "JSON",
+                  "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 743.659396ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"106487326354348330479","email":"gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com","etag":"MDEwMjE5MjA=","oauth2ClientId":"106487326354348330479"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 38.582899ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "pubsubtopic"
+              },
+              "messageStoragePolicy": {
+                "allowedPersistenceRegions": [
+                  "asia-east1",
+                  "asia-northeast1",
+                  "asia-southeast1",
+                  "australia-southeast1",
+                  "europe-north1",
+                  "europe-west1",
+                  "europe-west2",
+                  "europe-west3",
+                  "europe-west4",
+                  "southamerica-west1",
+                  "us-central1",
+                  "us-central2",
+                  "us-east1",
+                  "us-east4",
+                  "us-east5",
+                  "us-east7",
+                  "us-south1",
+                  "us-west1",
+                  "us-west2",
+                  "us-west3",
+                  "us-west4",
+                  "us-west8"
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 76.122148ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n",
+              "url": "https://source.developers.google.com/p/example-project/r/sourcereporepository-3a92e2gc7nt5n",
+              "pubsubConfigs": {
+                "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n": {
+                  "topic": "projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n",
+                  "messageFormat": "JSON",
+                  "serviceAccountEmail": "gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com"
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 285.889401ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: iam.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-3a92e2gc7nt5n@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 224.136263ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sourcerepo.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://sourcerepo.googleapis.com/v1/projects/example-project/repos/sourcereporepository-3a92e2gc7nt5n?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 1.479867342s
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: pubsub.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-3a92e2gc7nt5n?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 2.222694399s

@@ -39,7 +39,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "name": "computenodetemplate-${uniqueId}",
   "nodeAffinityLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeNodeTemplate",
+    "config-connector-resource-type": "computenodetemplate",
     "managed-by-cnrm": "true",
     "memory_guarantee": "false"
   },
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
   "name": "computenodetemplate-${uniqueId}",
   "nodeAffinityLabels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeNodeTemplate",
+    "config-connector-resource-type": "computenodetemplate",
     "managed-by-cnrm": "true",
     "memory_guarantee": "false"
   },

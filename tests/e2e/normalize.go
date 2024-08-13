@@ -183,7 +183,6 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		if name == "" {
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
-		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		tokens := strings.Split(name, "/")
 		if len(tokens) == 1 {
 			switch u.GetKind() {
@@ -220,11 +219,19 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 			}
 		}
 
-		switch u.GroupVersionKind() {
-		case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
-			visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-				return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
-			})
+		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+		if resourceID != "" {
+			switch u.GroupVersionKind() {
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
+				})
+
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringGroup"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
+				})
+			}
 		}
 	}
 
@@ -431,11 +438,37 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
+	// Compute URLs: Replace any compute beta URLs with v1 URLs
+	// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+	// This special handling to avoid diffs in http logs.
+	// This can be removed once all Compute resources are migrated to direct controller.
+	for _, event := range events {
+		event.Request.URL = rewriteComputeURL(event.Request.URL)
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		switch path {
+		case ".selfLink", ".targetLink", ".selfLinkWithId", ".subnetworks[]":
+			return rewriteComputeURL(s)
+		}
+		return s
+	})
+
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
 		}
 	})
+}
+
+// Compute URLs: Replace any compute beta URLs with v1 URLs
+func rewriteComputeURL(u string) string {
+	for _, basePath := range []string{"https://compute.googleapis.com/compute", "https://www.googleapis.com/compute"} {
+		if strings.HasPrefix(u, basePath+"/beta/") {
+			u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
+		}
+	}
+	return u
 }
 
 // isGetOperation returns true if this is an operation poll request

@@ -170,7 +170,7 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
 	jsonName := getJSONForKRM(field)
-	goFieldName := strings.Title(jsonName)
+	goFieldName := goFieldName(field)
 	goType := ""
 
 	if field.IsMap() {
@@ -300,9 +300,46 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 // getJSONForKRM returns the KRM JSON name for the field,
 // honoring KRM conventions
 func getJSONForKRM(protoField protoreflect.FieldDescriptor) string {
-	jsonName := protoField.JSONName()
-	if strings.HasSuffix(jsonName, "Id") {
-		jsonName = strings.TrimSuffix(jsonName, "Id") + "ID"
+	tokens := strings.Split(string(protoField.Name()), "_")
+	for i, token := range tokens {
+		if i == 0 {
+			// Do not capitalize first token
+			continue
+		}
+		if isAcronym(token) {
+			token = strings.ToUpper(token)
+		} else {
+			token = strings.Title(token)
+		}
+		tokens[i] = token
 	}
-	return jsonName
+	return strings.Join(tokens, "")
+}
+
+// goFieldName returns the KRM go name for the field,
+// honoring KRM conventions
+func goFieldName(protoField protoreflect.FieldDescriptor) string {
+	tokens := strings.Split(string(protoField.Name()), "_")
+	for i, token := range tokens {
+		if isAcronym(token) {
+			token = strings.ToUpper(token)
+		} else {
+			token = strings.Title(token)
+		}
+		tokens[i] = token
+	}
+	return strings.Join(tokens, "")
+}
+
+func isAcronym(s string) bool {
+	switch s {
+	case "id":
+		return true
+	case "html", "url":
+		return true
+	case "http", "https", "ssh":
+		return true
+	default:
+		return false
+	}
 }

@@ -38,7 +38,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
@@ -72,7 +72,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",
@@ -119,7 +119,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",
@@ -172,7 +172,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "PubSubTopic",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -191,7 +191,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "PubSubTopic",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "messageStoragePolicy": {
@@ -243,7 +243,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "PubSubTopic",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "messageStoragePolicy": {
@@ -405,9 +405,10 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/notifi
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -515,7 +516,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "PubSubTopic",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "messageStoragePolicy": {
@@ -594,12 +595,12 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "StorageBucket",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",
   "locationType": "multi-region",
-  "metageneration": "3",
+  "metageneration": "1",
   "name": "storagebucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",

@@ -33,7 +33,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "displayName": "Spanner Database Dependency",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "SpannerInstance",
+      "config-connector-resource-type": "spannerinstance",
       "managed-by-cnrm": "true"
     },
     "nodeCount": 1
@@ -64,7 +64,7 @@ X-Xss-Protection: 0
       "displayName": "Spanner Database Dependency",
       "labels": {
         "cnrm-test": "true",
-        "config-connector-resource-type": "SpannerInstance",
+        "config-connector-resource-type": "spannerinstance",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
@@ -83,7 +83,7 @@ X-Xss-Protection: 0
     "displayName": "Spanner Database Dependency",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "SpannerInstance",
+      "config-connector-resource-type": "spannerinstance",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
@@ -117,7 +117,7 @@ X-Xss-Protection: 0
   "displayName": "Spanner Database Dependency",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "SpannerInstance",
+    "config-connector-resource-type": "spannerinstance",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
@@ -353,7 +353,7 @@ X-Xss-Protection: 0
   "displayName": "Spanner Database Dependency",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "SpannerInstance",
+    "config-connector-resource-type": "spannerinstance",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",

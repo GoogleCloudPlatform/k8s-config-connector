@@ -3,12 +3,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -22,19 +32,74 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
+    "config-connector-resource-type": "certificatemanagerdnsauthorization",
     "managed-by-cnrm": "true"
   }
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.DnsAuthorization",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "first sample dns for testing creating a certificate with dns-auth",
+    "dnsResourceRecord": {
+      "data": "authorize.certificatemanager.goog.",
+      "name": "_acme-challenge.${uniqueId}1.hashicorptest.com.",
+      "type": "CNAME"
+    },
+    "domain": "${uniqueId}1.hashicorptest.com",
+    "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+    "type": "FIXED_RECORD",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -44,22 +109,33 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "first sample dns for testing creating a certificate with dns-auth",
-  "dnsResourceRecord": null,
+  "dnsResourceRecord": {
+    "data": "authorize.certificatemanager.goog.",
+    "name": "_acme-challenge.${uniqueId}1.hashicorptest.com.",
+    "type": "CNAME"
+  },
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
+    "config-connector-resource-type": "certificatemanagerdnsauthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
-  "type": "TYPE_UNSPECIFIED",
-  "updateTime": null
+  "type": "FIXED_RECORD",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -69,12 +145,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -88,19 +174,74 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
+    "config-connector-resource-type": "certificatemanagerdnsauthorization",
     "managed-by-cnrm": "true"
   }
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.DnsAuthorization",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "second sample dns for testing creating a certificate with dns-auth",
+    "dnsResourceRecord": {
+      "data": "authorize.certificatemanager.goog.",
+      "name": "_acme-challenge.${uniqueId}2.hashicorptest.com.",
+      "type": "CNAME"
+    },
+    "domain": "${uniqueId}2.hashicorptest.com",
+    "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
+    "type": "FIXED_RECORD",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -110,22 +251,33 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "second sample dns for testing creating a certificate with dns-auth",
-  "dnsResourceRecord": null,
+  "dnsResourceRecord": {
+    "data": "authorize.certificatemanager.goog.",
+    "name": "_acme-challenge.${uniqueId}2.hashicorptest.com.",
+    "type": "CNAME"
+  },
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
+    "config-connector-resource-type": "certificatemanagerdnsauthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
-  "type": "TYPE_UNSPECIFIED",
-  "updateTime": null
+  "type": "FIXED_RECORD",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -135,12 +287,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "certificate \"projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -153,7 +315,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "sample managed cert for kcc",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerCertificate",
+    "config-connector-resource-type": "certificatemanagercertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -171,13 +333,70 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
+    "description": "sample managed cert for kcc",
+    "managed": {
+      "dnsAuthorizations": [
+        "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+        "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
+      ],
+      "domains": [
+        "${uniqueId}1.hashicorptest.com",
+        "${uniqueId}2.hashicorptest.com"
+      ]
+    },
+    "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "scope": "EDGE_CACHE"
+  }
 }
 
 ---
@@ -187,21 +406,25 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
   "description": "sample managed cert for kcc",
-  "expireTime": null,
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerCertificate",
+    "config-connector-resource-type": "certificatemanagercertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "managed": {
-    "authorizationAttemptInfo": [],
     "dnsAuthorizations": [
       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
@@ -209,16 +432,10 @@ Grpc-Metadata-Content-Type: application/grpc
     "domains": [
       "${uniqueId}1.hashicorptest.com",
       "${uniqueId}2.hashicorptest.com"
-    ],
-    "issuanceConfig": "",
-    "provisioningIssue": null,
-    "state": "STATE_UNSPECIFIED"
+    ]
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-  "pemCertificate": "",
-  "sanDnsnames": [],
-  "scope": "EDGE_CACHE",
-  "updateTime": null
+  "scope": "EDGE_CACHE"
 }
 
 ---
@@ -231,20 +448,78 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "updated description of a managed cert for kcc",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerCertificate",
+    "config-connector-resource-type": "certificatemanagercertificate",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "updated description of a managed cert for kcc",
+    "managed": {
+      "dnsAuthorizations": [
+        "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+        "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
+      ],
+      "domains": [
+        "${uniqueId}1.hashicorptest.com",
+        "${uniqueId}2.hashicorptest.com"
+      ]
+    },
+    "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "scope": "EDGE_CACHE"
+  }
 }
 
 ---
@@ -254,21 +529,25 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
   "description": "updated description of a managed cert for kcc",
-  "expireTime": null,
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerCertificate",
+    "config-connector-resource-type": "certificatemanagercertificate",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
   "managed": {
-    "authorizationAttemptInfo": [],
     "dnsAuthorizations": [
       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
@@ -276,16 +555,10 @@ Grpc-Metadata-Content-Type: application/grpc
     "domains": [
       "${uniqueId}1.hashicorptest.com",
       "${uniqueId}2.hashicorptest.com"
-    ],
-    "issuanceConfig": "",
-    "provisioningIssue": null,
-    "state": "STATE_UNSPECIFIED"
+    ]
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-  "pemCertificate": "",
-  "sanDnsnames": [],
-  "scope": "EDGE_CACHE",
-  "updateTime": null
+  "scope": "EDGE_CACHE"
 }
 
 ---
@@ -295,13 +568,57 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
@@ -311,22 +628,33 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "second sample dns for testing creating a certificate with dns-auth",
-  "dnsResourceRecord": null,
+  "dnsResourceRecord": {
+    "data": "authorize.certificatemanager.goog.",
+    "name": "_acme-challenge.${uniqueId}2.hashicorptest.com.",
+    "type": "CNAME"
+  },
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
+    "config-connector-resource-type": "certificatemanagerdnsauthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
-  "type": "TYPE_UNSPECIFIED",
-  "updateTime": null
+  "type": "FIXED_RECORD",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -336,13 +664,57 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
@@ -352,22 +724,33 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "first sample dns for testing creating a certificate with dns-auth",
-  "dnsResourceRecord": null,
+  "dnsResourceRecord": {
+    "data": "authorize.certificatemanager.goog.",
+    "name": "_acme-challenge.${uniqueId}1.hashicorptest.com.",
+    "type": "CNAME"
+  },
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
+    "config-connector-resource-type": "certificatemanagerdnsauthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
-  "type": "TYPE_UNSPECIFIED",
-  "updateTime": null
+  "type": "FIXED_RECORD",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -377,11 +760,55 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }

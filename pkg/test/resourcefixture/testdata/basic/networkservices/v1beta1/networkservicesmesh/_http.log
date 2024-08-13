@@ -22,7 +22,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   "interceptionPort": 80,
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "NetworkServicesMesh",
+    "config-connector-resource-type": "networkservicesmesh",
     "foo": "bar",
     "managed-by-cnrm": "true"
   },
@@ -55,7 +55,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "interceptionPort": 80,
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "NetworkServicesMesh",
+    "config-connector-resource-type": "networkservicesmesh",
     "foo": "bar",
     "managed-by-cnrm": "true"
   },
@@ -75,7 +75,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   "interceptionPort": 81,
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "NetworkServicesMesh",
+    "config-connector-resource-type": "networkservicesmesh",
     "foo": "bar",
     "foo1": "bar1",
     "managed-by-cnrm": "true"
@@ -109,7 +109,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "interceptionPort": 81,
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "NetworkServicesMesh",
+    "config-connector-resource-type": "networkservicesmesh",
     "foo": "bar",
     "foo1": "bar1",
     "managed-by-cnrm": "true"

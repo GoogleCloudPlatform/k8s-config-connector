@@ -391,7 +391,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "purpose": "ENCRYPT_DECRYPT"
@@ -412,7 +412,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
@@ -440,7 +440,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
@@ -619,7 +619,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "addressType": "INTERNAL",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -676,7 +676,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -696,7 +696,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   }
 }
@@ -749,7 +749,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -1846,7 +1846,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "ComputeAddress",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -1998,7 +1998,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "KMSCryptoKey",
+    "config-connector-resource-type": "kmscryptokey",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",

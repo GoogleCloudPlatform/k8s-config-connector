@@ -5,7 +5,7 @@ metadata:
     cnrm.cloud.google.com/delete-contents-on-destroy: "false"
   labels:
     cnrm-test: "true"
-    config-connector-resource-type: BigQueryDataset
+    config-connector-resource-type: bigquerydataset
     managed-by-cnrm: "true"
   name: bigquerydataset-${uniqueId}
 spec:

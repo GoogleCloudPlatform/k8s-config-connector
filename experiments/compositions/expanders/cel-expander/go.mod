@@ -2,6 +2,8 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositi
 
 go 1.22.4
 
+toolchain go1.22.6
+
 require (
 	github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20240701212443-eb03df209286
 	github.com/google/cel-go v0.18.2

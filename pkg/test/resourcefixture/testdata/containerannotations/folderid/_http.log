@@ -29,7 +29,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "name": "KCC ${uniqueId}",
@@ -85,7 +85,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
-      "config-connector-resource-type": "Project",
+      "config-connector-resource-type": "project",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectNumber}",
@@ -115,7 +115,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -171,7 +171,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -227,7 +227,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -283,7 +283,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -306,7 +306,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -334,7 +334,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -367,7 +367,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -423,7 +423,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "config-connector-resource-type": "Project",
+    "config-connector-resource-type": "project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
