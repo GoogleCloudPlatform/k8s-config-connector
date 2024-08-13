@@ -114,10 +114,11 @@ type WorkstationsWorkstationClusterStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Whether this resource is in degraded mode, in which case it may require user action to restore full functionality.
-	Details can be found in the conditions field. */
-	// +optional
-	Degraded *bool `json:"degraded,omitempty"`
+	// NOTYET: This may be better surfaced as status.conditions?
+	// /* Whether this resource is in degraded mode, in which case it may require user action to restore full functionality.
+	// Details can be found in the conditions field. */
+	// // +optional
+	// Degraded *bool `json:"degraded,omitempty"`
 
 	/* Checksum computed by the server.
 	May be sent on update and delete requests to ensure that the client has an up-to-date value before proceeding. */

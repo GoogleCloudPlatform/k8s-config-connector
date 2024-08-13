@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: WorkstationsWorkstationCluster
+    listKind: WorkstationsWorkstationClusterList
     plural: workstationsworkstationclusters
     shortNames:
     - gcpworkstationsworkstationcluster
@@ -43,68 +44,57 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: WorkstationsWorkstationCluster is the Schema for the Workstations
+          WorkstationCluster API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: Defines the desired state of WorkstationsWorkstationCluster
             properties:
               annotations:
                 additionalProperties:
                   type: string
-                description: Client-specified annotations. This is distinct from labels.
+                description: Optional. Client-specified annotations.
                 type: object
               displayName:
-                description: Human-readable name for this resource.
+                description: Optional. Human-readable name for this workstation cluster.
                 type: string
               location:
                 description: Immutable. The location where the workstation cluster
                   should reside.
                 type: string
               network:
-                description: |-
-                  Immutable. The relative resource name of the VPC network on which the instance can be accessed.
-                  It is specified in the following form: "projects/{projectNumber}/global/networks/{network_id}".
+                description: Immutable. Name of the Compute Engine network in which
+                  instances associated with this workstation cluster will be created.
                 type: string
               privateClusterConfig:
-                description: Configuration for private cluster.
+                description: Optional. Configuration for private workstation cluster.
                 properties:
                   allowedProjects:
-                    description: |-
-                      Additional project IDs that are allowed to attach to the workstation cluster's service attachment.
-                      By default, the workstation cluster's project and the VPC host project (if different) are allowed.
+                    description: Optional. Additional projects that are allowed to
+                      attach to the workstation cluster's service attachment. By default,
+                      the workstation cluster's project and the VPC host project (if
+                      different) are allowed.
                     items:
                       type: string
                     type: array
-                  clusterHostname:
-                    description: |-
-                      Hostname for the workstation cluster.
-                      This field will be populated only when private endpoint is enabled.
-                      To access workstations in the cluster, create a new DNS zone mapping this domain name to an internal IP address and a forwarding rule mapping that address to the service attachment.
-                    type: string
                   enablePrivateEndpoint:
                     description: Immutable. Whether Workstations endpoint is private.
                     type: boolean
-                  serviceAttachmentUri:
-                    description: |-
-                      Service attachment URI for the workstation cluster.
-                      The service attachment is created when private endpoint is enabled.
-                      To access workstations in the cluster, configure access to the managed service using (Private Service Connect)[https://cloud.google.com/vpc/docs/configure-private-service-connect-services].
-                    type: string
-                required:
-                - enablePrivateEndpoint
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -121,24 +111,28 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by KCC.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The workstationClusterId of the
-                  resource. Used for creation and acquisition. When unset, the value
-                  of `metadata.name` is used as the default.
+                description: The WorkstationCluster name. If not given, the metadata.name
+                  will be used.
                 type: string
               subnetwork:
-                description: |-
-                  Immutable. Name of the Compute Engine subnetwork in which instances associated with this cluster will be created.
-                  Must be part of the subnetwork specified for this cluster.
+                description: Immutable. Name of the Compute Engine subnetwork in which
+                  instances associated with this workstation cluster will be created.
+                  Must be part of the subnetwork specified for this workstation cluster.
                 type: string
             required:
             - location
@@ -149,8 +143,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -174,21 +168,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Time when this resource was created.
-                type: string
-              degraded:
-                description: |-
-                  Whether this resource is in degraded mode, in which case it may require user action to restore full functionality.
-                  Details can be found in the conditions field.
-                type: boolean
-              etag:
-                description: |-
-                  Checksum computed by the server.
-                  May be sent on update and delete requests to ensure that the client has an up-to-date value before proceeding.
-                type: string
-              name:
-                description: The name of the cluster resource.
+              externalRef:
+                description: A unique specifier for the WorkstationCluster resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -196,30 +178,41 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              resourceConditions:
-                description: Status conditions describing the current resource state.
-                items:
-                  properties:
-                    code:
-                      description: The status code, which should be an enum value
-                        of google.rpc.Code.
-                      type: integer
-                    details:
-                      description: A list of messages that carry the error details.
-                      items:
-                        type: object
-                        x-kubernetes-preserve-unknown-fields: true
-                      type: array
-                    message:
-                      description: Human readable message indicating details about
-                        the current status.
-                      type: string
-                  type: object
-                type: array
-              uid:
-                description: The system-generated UID of the resource.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  controlPlaneIP:
+                    description: Output only. The private IP address of the control
+                      plane for this workstation cluster. Workstation VMs need access
+                      to this IP address to work with the service, so make sure that
+                      your firewall rules allow egress from the workstation VMs to
+                      this address.
+                    type: string
+                  createTime:
+                    description: Output only. Time when this workstation cluster was
+                      created.
+                    type: string
+                  deleteTime:
+                    description: Output only. Time when this workstation cluster was
+                      soft-deleted.
+                    type: string
+                  etag:
+                    description: Optional. Checksum computed by the server. May be
+                      sent on update and delete requests to make sure that the client
+                      has an up-to-date value before proceeding.
+                    type: string
+                  uid:
+                    description: Output only. A system-assigned unique identifier
+                      for this workstation cluster.
+                    type: string
+                  updateTime:
+                    description: Output only. Time when this workstation cluster was
+                      most recently updated.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -228,9 +221,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

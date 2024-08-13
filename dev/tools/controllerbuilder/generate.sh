@@ -24,6 +24,39 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
+# Workstations API
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind WorkstationsWorkstation \
+    --proto-resource Workstation
+
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind WorkstationsWorkstationCluster \
+    --proto-resource WorkstationCluster
+
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind WorkstationsWorkstationConfig \
+    --proto-resource WorkstationConfig
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # SecureSourceManagerInstance
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
