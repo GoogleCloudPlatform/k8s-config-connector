@@ -48,3 +48,4 @@ spec:
  pscConfig:
   subnetworkRefs:
    name: computesubnetwork-{uniqueId}
+   

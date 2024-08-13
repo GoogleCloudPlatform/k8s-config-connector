@@ -18,7 +18,8 @@ metadata:
  name: rediscluster-${uniqueId}
 spec:
  shardCount: 10
- pscConfig:
-   networkRef:
-     name: computenetwork-{uniqueId}
+ pscConfigs:
+   - networkRef:
+       name: computenetwork-${uniqueId}
  region: us-central1
+ 
