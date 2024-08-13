@@ -29,9 +29,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
 )
 
@@ -75,22 +75,31 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 		return nil, err
 	}
 
+	if !req.SkipInitialVersionCreation {
+		createVersionReq := &pb.CreateCryptoKeyVersionRequest{
+			Parent: fqn,
+		}
+		if _, err := r.CreateCryptoKeyVersion(ctx, createVersionReq); err != nil {
+			return nil, err
+		}
+	}
+
 	return obj, nil
 }
 
 func (r *kmsServer) populateDefaultsForCryptoKey(name *CryptoKeyName, obj *pb.CryptoKey) {
-
+	if obj.DestroyScheduledDuration == nil {
+		obj.DestroyScheduledDuration = durationpb.New(time.Hour * 24 * 30)
+	}
 }
 
 type CryptoKeyName struct {
-	Project  *projects.ProjectData
-	Location string
-	KeyRing  string
-	Name     string
+	KeyRingName
+	CryptoKeyID string
 }
 
 func (n *CryptoKeyName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/keyRings/" + n.KeyRing + "/cryptoKeys/" + n.Name
+	return n.KeyRingName.String() + "/cryptoKeys/" + n.CryptoKeyID
 }
 
 // parseCryptoKeyName parses a string into an CryptoKeyName.
@@ -98,17 +107,15 @@ func (n *CryptoKeyName) String() string {
 func (r *kmsServer) parseCryptoKeyName(name string) (*CryptoKeyName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
-		project, err := r.Projects.GetProjectByID(tokens[1])
+	if len(tokens) == 8 && tokens[6] == "cryptoKeys" {
+		keyRingName, err := r.parseKeyRingName(strings.Join(tokens[0:6], "/"))
 		if err != nil {
 			return nil, err
 		}
 
 		name := &CryptoKeyName{
-			Project:  project,
-			Location: tokens[3],
-			KeyRing:  tokens[5],
-			Name:     tokens[7],
+			KeyRingName: *keyRingName,
+			CryptoKeyID: tokens[7],
 		}
 
 		return name, nil

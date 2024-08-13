@@ -268,6 +268,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-one",
@@ -296,6 +297,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-one",
@@ -855,6 +857,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-one",
@@ -880,7 +883,48 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "EC_SIGN_P384_SHA384",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
 {}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "EC_SIGN_P384_SHA384",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
 
 ---
 

@@ -30,6 +30,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -60,51 +61,79 @@ func (r *kmsServer) ListCryptoKeyVersions(ctx context.Context, req *pb.ListCrypt
 		return nil, err
 	}
 
-	findPrefix := parentName.String()
+	parentFQN := parentName.String()
 
-	var matchingObjects []*pb.CryptoKeyVersion
-	endpointKind := (&pb.CryptoKeyVersion{}).ProtoReflect().Descriptor()
-	if err := r.storage.List(ctx, endpointKind, storage.ListOptions{}, func(obj proto.Message) error {
-		cryptoKeyVersion := obj.(*pb.CryptoKeyVersion)
-		if strings.HasPrefix(cryptoKeyVersion.Name, findPrefix) {
-			matchingObjects = append(matchingObjects, cryptoKeyVersion)
-		}
-
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return &pb.ListCryptoKeyVersionsResponse{
-		CryptoKeyVersions: matchingObjects,
-		NextPageToken:     "",
-	}, nil
-}
-
-func (r *kmsServer) CreateCryptoKeyVersion(ctx context.Context, req *pb.CreateCryptoKeyVersionRequest) (*pb.CryptoKeyVersion, error) {
-	parentName, err := r.parseCryptoKeyName(req.GetParent())
+	response, err := r.listCryptoKeyVersions(ctx, parentFQN)
 	if err != nil {
 		return nil, err
 	}
 
-	id := strconv.FormatInt(time.Now().UnixNano(), 10)
+	return response, nil
+}
 
-	// The server-generated crypto key version name is the concatenation of the parent crypto key's
-	// resource name and '/cryptoKeyVersions/' followed by a unique, server-assigned identifier.
-	// For example, if the parent crypto key's resource name is
-	// 'projects/1/locations/us-central1/keyRings/my-key-ring/cryptoKeys/my-crypto-key',
-	// then the server-generated crypto key version name might be
-	// 'projects/1/locations/us-central1/keyRings/my-key-ring/cryptoKeys/my-crypto-key/cryptoKeyVersions/123'
-	name := &CryptoKeyVersionName{
-		CryptoKeyName: parentName,
-		Name:          id,
+func (r *kmsServer) listCryptoKeyVersions(ctx context.Context, parentFQN string) (*pb.ListCryptoKeyVersionsResponse, error) {
+	namePrefix := parentFQN + "/cryptoKeyVersions/"
+
+	response := &pb.ListCryptoKeyVersionsResponse{}
+
+	// Network must not have any subnets depending on it
+	cryptoKeyVersionKind := (&pb.CryptoKeyVersion{}).ProtoReflect().Descriptor()
+	if err := r.storage.List(ctx, cryptoKeyVersionKind, storage.ListOptions{}, func(obj proto.Message) error {
+		cryptoKeyVersion := obj.(*pb.CryptoKeyVersion)
+		if strings.HasPrefix(cryptoKeyVersion.GetName(), namePrefix) {
+			response.CryptoKeyVersions = append(response.CryptoKeyVersions, cryptoKeyVersion)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	response.TotalSize = int32(len(response.CryptoKeyVersions))
+
+	return response, nil
+}
+
+func (r *kmsServer) CreateCryptoKeyVersion(ctx context.Context, req *pb.CreateCryptoKeyVersionRequest) (*pb.CryptoKeyVersion, error) {
+
+	versions, err := r.listCryptoKeyVersions(ctx, req.GetParent())
+	if err != nil {
+		return nil, err
+	}
+
+	var maxVersion int64
+	for _, version := range versions.CryptoKeyVersions {
+		last := lastComponent(version.GetName())
+		n, err := strconv.ParseInt(last, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("invalid key version name %q", version.GetName())
+		}
+		if maxVersion < n {
+			maxVersion = n
+		}
+	}
+
+	nextVersion := maxVersion + 1
+
+	reqName := fmt.Sprintf("%s/cryptoKeyVersions/%d", req.GetParent(), nextVersion)
+	name, err := r.parseCryptoKeyVersionName(reqName)
+	if err != nil {
+		return nil, err
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetCryptoKeyVersion()).(*pb.CryptoKeyVersion)
-	obj.Name = fqn
+	now := time.Now()
 
-	r.populateDefaultsForCryptoKeyVersion(name, obj)
+	var obj *pb.CryptoKeyVersion
+	if req.GetCryptoKeyVersion() == nil {
+		obj = &pb.CryptoKeyVersion{}
+	} else {
+		obj = proto.Clone(req.GetCryptoKeyVersion()).(*pb.CryptoKeyVersion)
+	}
+	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.GenerateTime = timestamppb.New(now)
+	obj.ProtectionLevel = pb.ProtectionLevel_SOFTWARE
+	obj.State = pb.CryptoKeyVersion_ENABLED
+	obj.Algorithm = pb.CryptoKeyVersion_EC_SIGN_P384_SHA384
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -136,14 +165,35 @@ func (r *kmsServer) DestroyCryptoKeyVersion(ctx context.Context, req *pb.Destroy
 		return nil, err
 	}
 	fqn := name.String()
+
+	now := time.Now()
+
 	obj := &pb.CryptoKeyVersion{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	// TODO:  set appropriate state and fields
+
+	var parent *pb.CryptoKey
+	{
+		get := &pb.GetCryptoKeyRequest{
+			Name: name.CryptoKeyName.String(),
+		}
+		cryptoKey, err := r.GetCryptoKey(ctx, get)
+		if err != nil {
+			return nil, err
+		}
+		parent = cryptoKey
+	}
+
+	destroyScheuledDuration := parent.GetDestroyScheduledDuration().AsDuration()
+
+	obj.State = pb.CryptoKeyVersion_DESTROY_SCHEDULED
+	obj.DestroyTime = timestamppb.New(now.Add(destroyScheuledDuration))
+
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	return obj, nil
 }
 
@@ -164,37 +214,35 @@ func (r *kmsServer) RestoreCryptoKeyVersion(ctx context.Context, req *pb.Restore
 	return obj, nil
 }
 
-func (r *kmsServer) populateDefaultsForCryptoKeyVersion(name *CryptoKeyVersionName, obj *pb.CryptoKeyVersion) {
-
-}
-
 type CryptoKeyVersionName struct {
-	*CryptoKeyName
-	Name string
+	CryptoKeyName
+	CryptoKeyVersionID string
 }
 
 func (n *CryptoKeyVersionName) String() string {
-	return fmt.Sprintf("%s/cryptoKeyVersions/%d", n.CryptoKeyName.String(), n.Name)
+	return n.CryptoKeyName.String() + "/cryptoKeyVersions/" + n.CryptoKeyVersionID
 }
 
 // parseCryptoKeyVersionName parses a string into a CryptoKeyVersionName.
 // The expected form is `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`.
 func (r *kmsServer) parseCryptoKeyVersionName(name string) (*CryptoKeyVersionName, error) {
-	parts := strings.Split(name, "/")
-	if len(parts) != 8 {
-		return nil, status.Errorf(codes.InvalidArgument, "CryptoKeyVersion name must be in the form of projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*, got %v", name)
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 10 && tokens[8] == "cryptoKeyVersions" {
+		cryptoKeyName, err := r.parseCryptoKeyName(strings.Join(tokens[0:8], "/"))
+		if err != nil {
+			return nil, err
+		}
+
+		// TODO:  validate id is numeric
+		id := tokens[9]
+		name := &CryptoKeyVersionName{
+			CryptoKeyName:      *cryptoKeyName,
+			CryptoKeyVersionID: id,
+		}
+
+		return name, nil
 	}
 
-	cryptoKeyName, err := r.parseCryptoKeyName(strings.Join(parts[0:6], "/"))
-	if err != nil {
-		return nil, err
-	}
-
-	id := parts[7]
-	// TODO:  validate id is numeric
-
-	return &CryptoKeyVersionName{
-		CryptoKeyName: cryptoKeyName,
-		Name:          id,
-	}, nil
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
