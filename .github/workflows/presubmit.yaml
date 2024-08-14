@@ -73,7 +73,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
-      - name: "Run mock tests"
+      - name: "Run mock samples tests"
         run: |
           ./scripts/github-actions/tests-e2e-samples
         env:
@@ -91,9 +91,45 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
-      - name: "Run mock tests"
+      - name: "Run mock fixtures tests"
         run: |
           ./scripts/github-actions/tests-e2e-fixtures
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: /tmp/artifacts/
+  tests-e2e-fixtures-compute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run mock fixtures tests for compute service"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures-compute
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: /tmp/artifacts/
+  tests-e2e-fixtures-gkehub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run mock fixtures tests for gkehub service"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures-gkehub
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"

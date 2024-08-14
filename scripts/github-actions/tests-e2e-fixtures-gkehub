@@ -23,18 +23,13 @@ cd ${REPO_ROOT}/
 
 echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
-# Transient controller can only choose one controller type (Direct vs TF/DCL) to check the golden log,
-# so as we are moving resources to direct actuation, we add them here.
-# e.g. export KCC_USE_DIRECT_RECONCILERS=MonitoringDashboard
 
-echo "Running fixtures in tests/e2e..."
-
-export SKIP_TEST_APIGROUP="compute.cnrm.cloud.google.com,gkehub.cnrm.cloud.google.com"
+echo "Running gkehub fixtures in tests/e2e for gkehub..."
 
 RUN_E2E=1 \
 GOLDEN_OBJECT_CHECKS=1 \
 GOLDEN_REQUEST_CHECKS=1 \
 E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=mock \
-KCC_USE_DIRECT_RECONCILERS="SQLInstance" \
-  go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run TestAllInSeries/fixtures
+ONLY_TEST_APIGROUP="gkehub.cnrm.cloud.google.com" \
+  go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures
