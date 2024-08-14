@@ -24,11 +24,11 @@ spec:
     zone: us-central1-a
     autoscalingConfig:
       cpuTarget: 70
-      maxNodes: 20
+      maxNodes: 5
       minNodes: 2
   - clusterId: cluster-3-${uniqueId}
-    zone: us-east1-d
+    zone: us-central1-c
     autoscalingConfig:
       cpuTarget: 70
-      maxNodes: 20
+      maxNodes: 5
       minNodes: 2

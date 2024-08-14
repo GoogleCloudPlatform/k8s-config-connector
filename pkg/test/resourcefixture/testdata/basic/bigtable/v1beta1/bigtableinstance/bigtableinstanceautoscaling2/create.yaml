@@ -20,36 +20,36 @@ spec:
   cluster:
   - autoscalingConfig:
       cpuTarget: 70
-      maxNodes: 30
+      maxNodes: 5
       minNodes: 3
       storageTarget: 2560
-    clusterId: us-central1-a
+    clusterId: cluster-1-${uniqueId}
     storageType: SSD
     zone: us-central1-a
   - autoscalingConfig:
       cpuTarget: 80
-      maxNodes: 20
+      maxNodes: 4
       minNodes: 2
       storageTarget: 2560
-    clusterId: us-east1-b
+    clusterId: cluster-2-${uniqueId}
     storageType: SSD
-    zone: us-east1-b
+    zone: us-central1-b
   - autoscalingConfig:
       cpuTarget: 80
-      maxNodes: 20
+      maxNodes: 4
       minNodes: 2
       storageTarget: 2560
-    clusterId: us-west1-a
-    storageType: SSD
-    zone: us-west1-a
-  - autoscalingConfig:
-      cpuTarget: 80
-      maxNodes: 10
-      minNodes: 2
-      storageTarget: 2560
-    clusterId: us-central1-c
+    clusterId: cluster-3-${uniqueId}
     storageType: SSD
     zone: us-central1-c
+  - autoscalingConfig:
+      cpuTarget: 80
+      maxNodes: 3
+      minNodes: 2
+      storageTarget: 2560
+    clusterId: cluster-4-${uniqueId}
+    storageType: SSD
+    zone: us-central1-f
   displayName: bigtableinstance
   instanceType: PRODUCTION
   resourceID: bt-${uniqueId}
