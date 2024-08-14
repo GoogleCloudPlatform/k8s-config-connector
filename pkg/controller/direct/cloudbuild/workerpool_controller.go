@@ -106,7 +106,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if externalRef == "" {
 		id = BuildID(projectID, location, resourceID)
 	} else {
-		id, err = BuildIDFromExternal(externalRef)
+		id, err = asID(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -206,7 +206,7 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.ExternalRef()
+	status.ExternalRef = a.id.AsExternalRef()
 	return setStatus(u, status)
 }
 

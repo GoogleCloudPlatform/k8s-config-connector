@@ -123,7 +123,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if externalRef == "" {
 		id = BuildID(projectID, location, resourceID)
 	} else {
-		id, err = buildIDFromExternal(externalRef)
+		id, err = asID(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -172,20 +172,20 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting {{.Kind}}", "name", a.fullyQualifiedName())
+	log.V(2).Info("getting {{.Kind}}", "name", a.id.fullyQualifiedName())
 
 	if a.resourceID == "" {
 		return false, nil
 	}
 
 	// TODO(user): write the gcp "GET" operation.
-	req := &{{.Service}}pb.Get{{.Kind}}Request{Name: a.fullyQualifiedName()}
+	req := &{{.Service}}pb.Get{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
 	{{.KindToLower}}pb, err := a.gcpClient.Get{{.Kind}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting {{.Kind}} %q failed: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.fullyQualifiedName(), err)
 	}
 
 	a.actual = {{.KindToLower}}pb
@@ -194,7 +194,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating {{.Kind}}", "name", a.fullyQualifiedName())
+	log.V(2).Info("creating {{.Kind}}", "name", a.id.fullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
 	projectID := a.projectID
@@ -219,14 +219,14 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 	op, err := a.gcpClient.Create{{.Kind}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("creating {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
 	}
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s waiting creation failed: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("{{.Kind}} %s waiting creation: %w", a.id.fullyQualifiedName(), err)
 	}
-	log.V(2).Info("successfully created {{.Kind}}", "name", a.fullyQualifiedName())
+	log.V(2).Info("successfully created {{.Kind}}", "name", a.id.fullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
 	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
@@ -234,13 +234,13 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.ExternalRef()
+	status.ExternalRef = a.id.AsExternalRef()
 	return setStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating {{.Kind}}", "name", a.fullyQualifiedName())
+	log.V(2).Info("updating {{.Kind}}", "name", a.id.fullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
 	// TODO(user): (Optional) Add GCP mutable fields.
@@ -264,14 +264,14 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 	op, err := a.gcpClient.Update{{.Kind}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("updating {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
 	}
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s waiting update failed: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("{{.Kind}} %s waiting update: %w", a.id.fullyQualifiedName(), err)
 	}
-	log.V(2).Info("successfully updated {{.Kind}}", "name", a.fullyQualifiedName())
+	log.V(2).Info("successfully updated {{.Kind}}", "name", a.id.fullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
 	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
@@ -290,27 +290,27 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting {{.Kind}}", "name", a.fullyQualifiedName())
+	log.V(2).Info("deleting {{.Kind}}", "name", a.id.fullyQualifiedName())
 
 	if a.resourceID == "" {
 		return false, nil
 	}
-	req := &{{.Service}}pb.Delete{{.Kind}}Request{Name: a.fullyQualifiedName()}
+	req := &{{.Service}}pb.Delete{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
 	op, err := a.gcpClient.Delete{{.Kind}}(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
 	}
-	log.V(2).Info("successfully deleted {{.Kind}}", "name", a.fullyQualifiedName())
+	log.V(2).Info("successfully deleted {{.Kind}}", "name", a.id.fullyQualifiedName())
 
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting delete {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
 	}
 	return true, nil
 }
 
-func SetStatus(u *unstructured.Unstructured, typedStatus any) error {
+func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
 	if err != nil {
 		return fmt.Errorf("error converting status to unstructured: %w", err)

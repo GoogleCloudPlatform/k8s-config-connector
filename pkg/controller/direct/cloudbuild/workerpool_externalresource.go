@@ -41,14 +41,14 @@ func (c *CloudBuildWorkerPoolIdentity) FullyQualifiedName() string {
 	return fmt.Sprintf("projects/%s/locations/%s/workerPools/%s", c.project, c.location, c.workerpool)
 }
 
-// ExternalRef builds a externalRef from a CloudBuildWorkerPoolIdentity
-func (c *CloudBuildWorkerPoolIdentity) ExternalRef() *string {
+// AsExternalRef builds a externalRef from a CloudBuildWorkerPoolIdentity
+func (c *CloudBuildWorkerPoolIdentity) AsExternalRef() *string {
 	e := serviceDomain + "/" + c.FullyQualifiedName()
 	return &e
 }
 
-// BuildIDFromExternal builds a CloudBuildWorkerPoolIdentity from a externalRef
-func BuildIDFromExternal(externalRef string) (*CloudBuildWorkerPoolIdentity, error) {
+// asID builds a CloudBuildWorkerPoolIdentity from a externalRef
+func asID(externalRef string) (*CloudBuildWorkerPoolIdentity, error) {
 	if !strings.HasPrefix(externalRef, serviceDomain) {
 		return nil, fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
 	}

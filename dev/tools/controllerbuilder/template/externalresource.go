@@ -39,14 +39,14 @@ func (c *{{.Kind}}Identity) FullyQualifiedName() string {
 	// TODO(user): Define resource fully qualified name
 }
 
-// ExternalRef builds a externalRef from a {{.Kind}}
-func (c *{{.Kind}}Identity) ExternalRef() *string {
+// AsExternalRef builds a externalRef from a {{.Kind}}
+func (c *{{.Kind}}Identity) AsExternalRef() *string {
 	e := serviceDomain + "/" + c.FullyQualifiedName()
 	return &e
 }
 
-// BuildIDFromExternal builds a {{.Kind}}Identity from a external reference
-func BuildIDFromExternal(externalRef string) (*{{.Kind}}Identity, error) {
+// asID builds a {{.Kind}}Identity from a external reference
+func asID(externalRef string) (*{{.Kind}}Identity, error) {
 	// TODO(user): Build resource identity from external reference
 	if !strings.HasPrefix(externalRef, serviceDomain) {
 		return nil, fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
