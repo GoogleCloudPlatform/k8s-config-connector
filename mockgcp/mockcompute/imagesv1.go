@@ -114,6 +114,27 @@ func (s *ImagesV1) Patch(ctx context.Context, req *pb.PatchImageRequest) (*pb.Op
 	return s.newLRO(ctx, name.Project.ID)
 }
 
+func (s *ImagesV1) SetLabels(ctx context.Context, req *pb.SetLabelsImageRequest) (*pb.Operation, error) {
+	name, err := s.parseImageName(req.GetProject(), req.GetResource())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Image{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Labels = req.GetGlobalSetLabelsRequestResource().GetLabels()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
 func (s *ImagesV1) Delete(ctx context.Context, req *pb.DeleteImageRequest) (*pb.Operation, error) {
 	name, err := s.parseImageName(req.GetProject(), req.GetImage())
 	if err != nil {
