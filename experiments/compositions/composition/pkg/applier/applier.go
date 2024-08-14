@@ -176,7 +176,11 @@ func (a *Applier) Load() error {
 
 		// If namespace is passed it is namespace mode composition
 		if a.namespace != "" {
-			item.SetNamespace(a.namespace)
+			err := item.SetNamespace(a.namespace)
+			if err != nil {
+				a.logger.Error(err, "Error setting namespace")
+				return err
+			}
 		}
 		a.objects = append(a.objects, item.UnstructuredObject())
 	}

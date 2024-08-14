@@ -69,7 +69,8 @@ func (s *InlineSyncer) useConfig(config *rest.Config) error {
 	return err
 }
 
-func (s *InlineSyncer) getObject(namespace, name string, gvr schema.GroupVersionResource) (*unstructured.Unstructured, error) {
+func (s *InlineSyncer) getObject(namespace, name string,
+	gvr schema.GroupVersionResource) (*unstructured.Unstructured, error) {
 	if namespace != "" {
 		return s.dynamicClient.Resource(gvr).Namespace(namespace).Get(s.ctx, name, metav1.GetOptions{})
 	} else {
@@ -295,7 +296,8 @@ func main() {
 	}
 
 	klog.Infof("template: %s, stage: %s, plan:%s", *templateName, *stage, *planName)
-	klog.Infof("group: %s, version: %s, resource: %s, namespace: %s, name: %s", *group, *version, *resource, *namespace, *name)
+	klog.Infof("group: %s, version: %s, resource: %s, namespace: %s, name: %s",
+		*group, *version, *resource, *namespace, *name)
 	klog.Infof("path: %s", *path)
 
 	syncer := &InlineSyncer{

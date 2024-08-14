@@ -33,6 +33,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+const (
+	ConditionTypeComplete string = "Complete"
+	ConditionTypeFailed   string = "Failed"
+)
+
 var jobTemplate string = `apiVersion: batch/v1
 kind: Job
 metadata:
@@ -64,7 +69,27 @@ spec:
       containers:
       - name: copyout
         image: {{.ImageRegistry}}/manifests-inline:v0.0.1
-        args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/expanded", "--stage", "afterExpansion"]
+        args:
+        - "--template"
+        - "{{.CompositionName}}"
+        - "--plan"
+        - "{{.PlanName}}"
+        - "--expander"
+        - "{{.ExpanderName}}"
+        - "--group"
+        - "{{.InputAPIGroup}}"
+        - "--version"
+        - "{{.InputAPIVersion}}"
+        - "--resource"
+        - "{{.InputAPIResource}}"
+        - "--name"
+        - "{{.InputAPIName}}"
+        - "--namespace"
+        - "{{.InputAPINamespace}}"
+        - "--path"
+        - "/expanded"
+        - "--stage"
+        - "afterExpansion"
         volumeMounts:
         - name: expanded
           mountPath: /expanded
@@ -79,7 +104,27 @@ spec:
       initContainers:
       - name: copyin
         image: {{.ImageRegistry}}/manifests-inline:v0.0.1
-        args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/inputs", "--stage", "beforeExpansion"]
+        args:
+        - "--template"
+        - "{{.CompositionName}}"
+        - "--plan"
+        - "{{.PlanName}}"
+        - "--expander"
+        - "{{.ExpanderName}}"
+        - "--group"
+        - "{{.InputAPIGroup}}"
+        - "--version"
+        - "{{.InputAPIVersion}}"
+        - "--resource"
+        - "{{.InputAPIResource}}"
+        - "--name"
+        - "{{.InputAPIName}}"
+        - "--namespace"
+        - "{{.InputAPINamespace}}"
+        - "--path"
+        - "/inputs"
+        - "--stage"
+        - "beforeExpansion"
         volumeMounts:
         - name: inputs
           mountPath: /inputs`
@@ -356,10 +401,10 @@ func (j *JobFactory) Wait() (bool, error) {
 				time.Sleep(5 * time.Second)
 				continue
 			}
-			if health == "Complete" {
+			if health == ConditionTypeComplete {
 				return true, nil
 			}
-			if health == "Failed" {
+			if health == ConditionTypeFailed {
 				return false, nil
 			}
 			time.Sleep(5 * time.Second)
@@ -384,15 +429,15 @@ func (j *JobFactory) jobStatus(u *unstructured.Unstructured) (string, error) {
 	}
 	for _, c := range objc.Status.Conditions {
 		switch c.Type {
-		case "Complete":
+		case ConditionTypeComplete:
 			if c.Status == corev1.ConditionTrue {
 				logger.Info("Completed")
-				return "Complete", nil
+				return ConditionTypeComplete, nil
 			}
-		case "Failed":
+		case ConditionTypeFailed:
 			if c.Status == corev1.ConditionTrue {
 				logger.Info("Failed")
-				return "Failed", nil
+				return ConditionTypeFailed, nil
 			}
 		}
 	}

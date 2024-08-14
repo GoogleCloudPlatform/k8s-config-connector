@@ -42,10 +42,10 @@ func Poll(t *testing.T, op func() error, timeout time.Duration) {
 
 // getFrequency - calculates the cadence at which test checks, time boxed
 // by duration, are retried until timeout
-func getFrequency(t *testing.T, duration, timeout time.Duration) wait.Backoff {
+func getFrequency(t *testing.T, timeout time.Duration) wait.Backoff {
 	t.Helper()
 	return wait.Backoff{
-		Duration: duration,
-		Steps:    int(timeout / duration),
+		Duration: opDuration,
+		Steps:    int(timeout / opDuration),
 	}
 }

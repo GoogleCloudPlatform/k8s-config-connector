@@ -38,7 +38,7 @@ type HealthType string
 
 const (
 	HEALTHY   HealthType = "Healthy"
-	UNHEALTHY            = "Unhealthy"
+	UNHEALTHY HealthType = "Unhealthy"
 )
 
 type ResourceStatus struct {
@@ -60,9 +60,9 @@ type StageStatus struct {
 
 // PlanStatus defines the observed state of Plan
 type PlanStatus struct {
-	// Facade's generation last succesfully reconciled
+	// Facade's generation last successfully reconciled
 	InputGeneration int64 `json:"inputGeneration"`
-	// Composition generation last succesfully reconciled
+	// Composition generation last successfully reconciled
 	CompositionGeneration int64 `json:"compositionGeneration"`
 	// Composition UID
 	CompositionUID types.UID `json:"compositionUID,omitempty"`

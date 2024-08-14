@@ -109,14 +109,20 @@ func (c *Client) WriteNamespacePodLogs(namespace string) {
 
 func (c *Client) getFilePath(namespace, name, container string) string {
 	path := c.logRoot + filepath.Join("test-logs", c.testName, namespace)
-	os.MkdirAll(path, os.ModePerm)
+	err := os.MkdirAll(path, os.ModePerm)
+	if err != nil {
+		panic(fmt.Sprintf("unable to create dir: %s, %v", path, err))
+	}
 	filename := name + "." + container + ".txt"
 	return c.logRoot + filepath.Join("test-logs", c.testName, namespace, filename)
 }
 
 func (c *Client) ClearOldLogs() {
 	path := filepath.Join("test-logs", c.testName)
-	os.RemoveAll(path)
+	err := os.RemoveAll(path)
+	if err != nil {
+		panic(fmt.Sprintf("unable to remove dir: %s, %v", path, err))
+	}
 }
 
 func (c *Client) WriteContainerLogs(namespace, name, container string) {
@@ -129,10 +135,17 @@ func (c *Client) WriteContainerLogs(namespace, name, container string) {
 		c.T.Logf("Error getting log stream for pod: %s.%s %v", name, container, err)
 		// non fatal error seen once.
 		// Lets not fail the test because of this.
-		// client.go:126: Error getting log stream for pod: projectconfigmap-team-a-config-project-4x7nd.copyout container "copyout" in pod "projectconfigmap-team-a-config-project-4x7nd" is waiting to start: PodInitializing
+		// client.go:126: Error getting log stream for pod: \
+		//   projectconfigmap-team-a-config-project-4x7nd.copyout container "copyout" \
+		//   in pod "projectconfigmap-team-a-config-project-4x7nd" is waiting\
+		//   to start: PodInitializing
 		return
 	}
-	defer podLogs.Close()
+	defer func() {
+		if err := podLogs.Close(); err != nil {
+			panic(fmt.Sprintf("Error closing pod logs reader: %v", err))
+		}
+	}()
 
 	filename := c.getFilePath(namespace, name, container)
 	file, err := os.Create(filename)
@@ -140,7 +153,11 @@ func (c *Client) WriteContainerLogs(namespace, name, container string) {
 		c.T.Errorf("Error creating log file: %s %v", filename, err)
 		c.T.FailNow()
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			panic(fmt.Sprintf("Error closing file reader: %s, %v", filename, err))
+		}
+	}()
 
 	_, err = io.Copy(file, podLogs)
 	if err != nil {
@@ -222,7 +239,7 @@ func (c *Client) MustExist(objs []*unstructured.Unstructured, timeout time.Durat
 	c.T.Logf("Checking existence of objects %q on %q", ExtractGVKNNs(objs), c)
 
 	toFind := objs
-	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	retryFrequency := getFrequency(c.T, timeout)
 	err := retry.OnError(retryFrequency, func(err error) bool {
 		return apierrors.IsNotFound(err)
 	}, func() (err error) {
@@ -250,7 +267,7 @@ func (c *Client) MustHaveCondition(obj *unstructured.Unstructured, condition *me
 	errMissing := fmt.Errorf("condition missing")
 	errMismatch := fmt.Errorf("condition mismatch")
 
-	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	retryFrequency := getFrequency(c.T, timeout)
 	err := retry.OnError(retryFrequency, func(err error) bool {
 		return apierrors.IsNotFound(err) || errors.Is(err, errMissing) || errors.Is(err, errMismatch)
 	}, func() (err error) {
@@ -277,10 +294,12 @@ func (c *Client) MustHaveCondition(obj *unstructured.Unstructured, condition *me
 				}
 				found = true
 				if condition.Reason != "" && condition.Reason != cond["reason"] {
-					return fmt.Errorf(".condition.reason=%s not expected value %s: %w", condition.Reason, cond["reason"], errMismatch)
+					return fmt.Errorf(".condition.reason=%s not expected value %s: %w",
+						condition.Reason, cond["reason"], errMismatch)
 				}
 				if condition.Message != "" && condition.Message != cond["message"] {
-					return fmt.Errorf(".condition.message=%s not expected value %s: %w", condition.Message, cond["message"], errMismatch)
+					return fmt.Errorf(".condition.message=%s not expected value %s: %w",
+						condition.Message, cond["message"], errMismatch)
 				}
 				c.T.Logf("Has condition [%s, %s, %s]", cond["type"], cond["reason"], cond["message"])
 			}
@@ -299,7 +318,8 @@ func (c *Client) MustHaveCondition(obj *unstructured.Unstructured, condition *me
 }
 
 // MustNotHaveCondition - validate if the .status.conditions[] does not have the condition
-func (c *Client) MustNotHaveCondition(obj *unstructured.Unstructured, condition *metav1.Condition, timeout time.Duration) {
+func (c *Client) MustNotHaveCondition(obj *unstructured.Unstructured,
+	condition *metav1.Condition, timeout time.Duration) {
 	c.T.Helper()
 
 	toMatch := ExtractGVKNN(obj)
@@ -308,7 +328,7 @@ func (c *Client) MustNotHaveCondition(obj *unstructured.Unstructured, condition 
 	matched := []*unstructured.Unstructured{obj}
 	errMatches := fmt.Errorf("condition found")
 
-	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	retryFrequency := getFrequency(c.T, timeout)
 	err := retry.OnError(retryFrequency, func(err error) bool {
 		return apierrors.IsNotFound(err) || errors.Is(err, errMatches)
 	}, func() (err error) {
@@ -360,7 +380,7 @@ func (c *Client) MustMatchSpec(objs []*unstructured.Unstructured, timeout time.D
 
 	unmatched := objs
 	errMismatch := fmt.Errorf("unexpected spec")
-	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	retryFrequency := getFrequency(c.T, timeout)
 	err := retry.OnError(retryFrequency, func(err error) bool {
 		return apierrors.IsNotFound(err) || errors.Is(err, errMismatch)
 	}, func() (err error) {
@@ -397,7 +417,7 @@ func (c *Client) MustBeReady(objs []*unstructured.Unstructured, timeout time.Dur
 
 	notReady := objs
 	errNotReady := fmt.Errorf("object is not available")
-	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	retryFrequency := getFrequency(c.T, timeout)
 	err := retry.OnError(retryFrequency, func(err error) bool {
 		return apierrors.IsNotFound(err) || errors.Is(err, errNotReady)
 	}, func() (err error) {
@@ -450,7 +470,7 @@ func (c *Client) MustNotExist(objs []*unstructured.Unstructured, timeout time.Du
 	c.T.Logf("Checking absence of objects %q on %q", ExtractGVKNNs(objs), c)
 
 	existing := objs
-	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	retryFrequency := getFrequency(c.T, timeout)
 	err := retry.OnError(retryFrequency, func(err error) bool {
 		return apierrors.IsAlreadyExists(err)
 	}, func() (err error) {
@@ -468,7 +488,8 @@ func (c *Client) MustNotExist(objs []*unstructured.Unstructured, timeout time.Du
 
 // recordFailed - returns all objects on which op failed and an error
 // encompassing all corresponding errors
-func (c *Client) recordFailed(op func(*unstructured.Unstructured) error, objs []*unstructured.Unstructured) ([]*unstructured.Unstructured, error) {
+func (c *Client) recordFailed(op func(*unstructured.Unstructured) error,
+	objs []*unstructured.Unstructured) ([]*unstructured.Unstructured, error) {
 	c.T.Helper()
 
 	var failed []*unstructured.Unstructured

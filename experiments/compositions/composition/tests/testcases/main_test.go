@@ -17,10 +17,8 @@ package e2e
 import (
 	"flag"
 	"log"
-	"math/rand"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster/kind"
@@ -37,7 +35,7 @@ var (
 func TestMain(m *testing.M) {
 	flag.Parse()
 
-	rand.Seed(time.Now().UnixNano())
+	//rand.Seed(time.Now().UnixNano())
 	logf.SetLogger(zap.New(zap.UseDevMode(true)))
 
 	// sanity check

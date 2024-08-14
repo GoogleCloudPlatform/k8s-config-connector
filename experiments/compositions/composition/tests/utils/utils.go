@@ -68,11 +68,14 @@ func StartLocalController(config *rest.Config) error {
 		return fmt.Errorf("unable to create Plan controller: %w", err)
 	}
 
-	//if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
-	//	return fmt.Errorf("Problem running manager: %w", err)
-	//}
-	go mgr.Start(ctrl.SetupSignalHandler())
+	var managerStartError error
+	go func() {
+		managerStartError = mgr.Start(ctrl.SetupSignalHandler())
+	}()
 	time.Sleep(time.Second * 5)
+	if managerStartError != nil {
+		return fmt.Errorf("Problem running manager: %w", managerStartError)
+	}
 	return nil
 }
 

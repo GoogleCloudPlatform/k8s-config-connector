@@ -206,7 +206,7 @@ func (r *CompositionReconciler) validateExpanders(
 func (r *CompositionReconciler) validateExpanderConfig(ctx context.Context, logger logr.Logger,
 	expander compositionv1alpha1.Expander, ev *compositionv1alpha1.ExpanderVersion, grpcService string) (string, error) {
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		logger.Error(err, "grpc dial failed: "+grpcService)
 		return "GRPCConnError", err

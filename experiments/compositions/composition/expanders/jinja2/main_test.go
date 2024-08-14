@@ -18,15 +18,18 @@ import (
 	"context"
 	"flag"
 	"log"
-	"math/rand"
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+)
+
+const (
+	trivialJsonObject          string = "{\"key\": \"val\"}"
+	noAttributeZoneErrorString string = "has no attribute 'zone'"
 )
 
 var (
@@ -39,10 +42,8 @@ var expanderClient pb.ExpanderClient
 func TestMain(m *testing.M) {
 	flag.Parse()
 
-	rand.Seed(time.Now().UnixNano())
-	flag.Parse()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -58,8 +59,8 @@ func TestEvaluateEmptyConfig(t *testing.T) {
 			Config:   []byte{},
 			Resource: "sqls",
 			Context:  []byte("{\"project\": \"foo\"}"),
-			Facade:   []byte("{\"key\": \"val\"}"),
-			Value:    []byte("{\"key\": \"val\"}"),
+			Facade:   []byte(trivialJsonObject),
+			Value:    []byte(trivialJsonObject),
 		})
 	if err != nil {
 		t.Fatalf("could not evaluate: %v", err)
@@ -70,15 +71,15 @@ func TestEvaluateEmptyConfig(t *testing.T) {
 }
 
 func TestEvaluateEmptyContext(t *testing.T) {
-	config := "{\"key\": \"val\"}"
-	manifests := "{\"key\": \"val\"}"
+	config := trivialJsonObject
+	manifests := trivialJsonObject
 	r, err := expanderClient.Evaluate(context.Background(),
 		&pb.EvaluateRequest{
 			Config:   []byte(config),
 			Resource: "sqls",
 			Context:  []byte{},
-			Facade:   []byte("{\"key\": \"val\"}"),
-			Value:    []byte("{\"key\": \"val\"}"),
+			Facade:   []byte(trivialJsonObject),
+			Value:    []byte(trivialJsonObject),
 		})
 	if err != nil {
 		t.Fatalf("expected no error. got: %v", err)
@@ -90,14 +91,14 @@ func TestEvaluateEmptyContext(t *testing.T) {
 }
 
 func TestEvaluateEmptyFacade(t *testing.T) {
-	manifests := "{\"key\": \"val\"}"
+	manifests := trivialJsonObject
 	r, err := expanderClient.Evaluate(context.Background(),
 		&pb.EvaluateRequest{
-			Config:   []byte("{\"key\": \"val\"}"),
+			Config:   []byte(trivialJsonObject),
 			Resource: "sqls",
-			Context:  []byte("{\"key\": \"val\"}"),
+			Context:  []byte(trivialJsonObject),
 			Facade:   []byte{},
-			Value:    []byte("{\"key\": \"val\"}"),
+			Value:    []byte(trivialJsonObject),
 		})
 	if err != nil {
 		t.Fatalf("expected no error. got: %v", err)
@@ -109,14 +110,14 @@ func TestEvaluateEmptyFacade(t *testing.T) {
 }
 
 func TestEvaluateEmptyValue(t *testing.T) {
-	config := "{\"key\": \"val\"}"
-	manifests := "{\"key\": \"val\"}"
+	config := trivialJsonObject
+	manifests := trivialJsonObject
 	r, err := expanderClient.Evaluate(context.Background(),
 		&pb.EvaluateRequest{
 			Config:   []byte(config),
 			Resource: "sqls",
-			Context:  []byte("{\"key\": \"val\"}"),
-			Facade:   []byte("{\"key\": \"val\"}"),
+			Context:  []byte(trivialJsonObject),
+			Facade:   []byte(trivialJsonObject),
 			Value:    []byte{},
 		})
 	if err != nil {
@@ -164,7 +165,7 @@ func TestEvaluateTemplateMissingFacadeField(t *testing.T) {
 		t.Fatalf("\nexpected: EVALUATE_FAILED \n got: %s", r)
 	}
 
-	expectedErrorString := "has no attribute 'zone'"
+	expectedErrorString := noAttributeZoneErrorString
 	if !strings.Contains(r.Error.Message, expectedErrorString) {
 		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
 	}
@@ -207,7 +208,7 @@ func TestEvaluateTemplateMissingContextField(t *testing.T) {
 		t.Fatalf("\nexpected: EVALUATE_FAILED \n got: %s", r)
 	}
 
-	expectedErrorString := "has no attribute 'zone'"
+	expectedErrorString := noAttributeZoneErrorString
 	if !strings.Contains(r.Error.Message, expectedErrorString) {
 		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
 	}
@@ -250,7 +251,7 @@ func TestEvaluateTemplateMissingValuesField(t *testing.T) {
 		t.Fatalf("\nexpected: EVALUATE_FAILED \n got: %s", r)
 	}
 
-	expectedErrorString := "has no attribute 'zone'"
+	expectedErrorString := noAttributeZoneErrorString
 	if !strings.Contains(r.Error.Message, expectedErrorString) {
 		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
 	}
@@ -305,8 +306,8 @@ func TestValidateEmptyConfig(t *testing.T) {
 			Config:   []byte{},
 			Resource: "sqls",
 			Context:  []byte("{\"project\": \"foo\"}"),
-			Facade:   []byte("{\"key\": \"val\"}"),
-			Value:    []byte("{\"key\": \"val\"}"),
+			Facade:   []byte(trivialJsonObject),
+			Value:    []byte(trivialJsonObject),
 		})
 	if err != nil {
 		t.Fatalf("could not validate: %v", err)
@@ -317,14 +318,14 @@ func TestValidateEmptyConfig(t *testing.T) {
 }
 
 func TestValidateEmptyContext(t *testing.T) {
-	config := "{\"key\": \"val\"}"
+	config := trivialJsonObject
 	r, err := expanderClient.Validate(context.Background(),
 		&pb.ValidateRequest{
 			Config:   []byte(config),
 			Resource: "sqls",
 			Context:  []byte{},
-			Facade:   []byte("{\"key\": \"val\"}"),
-			Value:    []byte("{\"key\": \"val\"}"),
+			Facade:   []byte(trivialJsonObject),
+			Value:    []byte(trivialJsonObject),
 		})
 	if err != nil {
 		t.Fatalf("expected no error. got: %v", err)
@@ -337,11 +338,11 @@ func TestValidateEmptyContext(t *testing.T) {
 func TestValidateEmptyFacade(t *testing.T) {
 	r, err := expanderClient.Validate(context.Background(),
 		&pb.ValidateRequest{
-			Config:   []byte("{\"key\": \"val\"}"),
+			Config:   []byte(trivialJsonObject),
 			Resource: "sqls",
-			Context:  []byte("{\"key\": \"val\"}"),
+			Context:  []byte(trivialJsonObject),
 			Facade:   []byte{},
-			Value:    []byte("{\"key\": \"val\"}"),
+			Value:    []byte(trivialJsonObject),
 		})
 	if err != nil {
 		t.Fatalf("expected no error. got: %v", err)
@@ -353,13 +354,13 @@ func TestValidateEmptyFacade(t *testing.T) {
 }
 
 func TestValidateEmptyValue(t *testing.T) {
-	config := "{\"key\": \"val\"}"
+	config := trivialJsonObject
 	r, err := expanderClient.Validate(context.Background(),
 		&pb.ValidateRequest{
 			Config:   []byte(config),
 			Resource: "sqls",
-			Context:  []byte("{\"key\": \"val\"}"),
-			Facade:   []byte("{\"key\": \"val\"}"),
+			Context:  []byte(trivialJsonObject),
+			Facade:   []byte(trivialJsonObject),
 			Value:    []byte{},
 		})
 	if err != nil {

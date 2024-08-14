@@ -58,7 +58,6 @@ type Scenario struct {
 
 	// Scenario
 	noTestData      bool
-	namespace       string
 	name            string
 	dataFolder      string
 	inputObjects    []*unstructured.Unstructured
