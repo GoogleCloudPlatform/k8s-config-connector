@@ -46,6 +46,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
+const DefaultWaitForReadyTimeout = 35 * time.Minute
+
 type Sample struct {
 	Name      string
 	Resources []*unstructured.Unstructured
@@ -122,12 +124,12 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 			t.Fatalf("error creating resource: %v", err)
 		}
 		if opt.CreateInOrder && !opt.SkipWaitForReady {
-			waitForReadySingleResource(t, u)
+			waitForReadySingleResource(t, u, DefaultWaitForReadyTimeout)
 		}
 	}
 
 	if !opt.CreateInOrder && !opt.SkipWaitForReady {
-		WaitForReady(t, opt.Create...)
+		WaitForReady(t, DefaultWaitForReadyTimeout, opt.Create...)
 	}
 
 	if len(opt.Updates) != 0 {
@@ -137,12 +139,12 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 				t.Fatalf("error updating resource: %v", err)
 			}
 			if opt.CreateInOrder && !opt.SkipWaitForReady {
-				waitForReadySingleResource(t, updateUnstruct)
+				waitForReadySingleResource(t, updateUnstruct, DefaultWaitForReadyTimeout)
 			}
 		}
 
 		if !opt.CreateInOrder && !opt.SkipWaitForReady {
-			WaitForReady(t, opt.Updates...)
+			WaitForReady(t, DefaultWaitForReadyTimeout, opt.Updates...)
 		}
 	}
 
@@ -152,20 +154,20 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 }
 
-func WaitForReady(h *Harness, unstructs ...*unstructured.Unstructured) {
+func WaitForReady(h *Harness, timeout time.Duration, unstructs ...*unstructured.Unstructured) {
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		u := u
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			waitForReadySingleResource(h, u)
+			waitForReadySingleResource(h, u, timeout)
 		}()
 	}
 	wg.Wait()
 }
 
-func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
+func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeout time.Duration) {
 	logger := log.FromContext(t.Ctx)
 
 	switch u.GroupVersionKind().GroupKind() {
@@ -178,7 +180,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 	}
 
 	name := k8s.GetNamespacedName(u)
-	err := wait.PollImmediate(1*time.Second, 35*time.Minute, func() (done bool, err error) {
+	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
 		done = true
 		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
 		err = t.GetClient().Get(t.Ctx, name, u)
