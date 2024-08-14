@@ -35,6 +35,13 @@ type PlanSpec struct {
 // ActionType is an enum type for the type of change (no-change/create/update etc).
 type ActionType string
 
+const (
+	ActionTypeUnchanged    ActionType = "Unchanged"
+	ActionTypeCreate       ActionType = "Create"
+	ActionTypeApplyChanges ActionType = "ApplyChanges"
+	ActionTypeError        ActionType = "Error"
+)
+
 // Action represents an individual object change.
 type Action struct {
 	Type       ActionType                 `json:"action,omitempty"`
@@ -43,4 +50,17 @@ type Action struct {
 	Name       string                     `json:"name,omitempty"`
 	Namespace  string                     `json:"namespace,omitempty"`
 	Object     *unstructured.Unstructured `json:"object,omitempty"`
+	Diff       *ObjectDiff                `json:"diff,omitempty"`
+}
+
+type ObjectDiff struct {
+	OldObject *unstructured.Unstructured `json:"oldObject,omitempty"`
+
+	Fields []FieldDiff `json:"fields,omitempty"`
+}
+
+type FieldDiff struct {
+	Path     string `json:"path"`
+	OldValue any    `json:"oldValue,omitempty"`
+	NewValue any    `json:"newValue,omitempty"`
 }

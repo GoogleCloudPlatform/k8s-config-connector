@@ -23,6 +23,8 @@ import (
 
 // printPlan writes a plan to out for human consumption (usually will be stdout)
 func printPlan(ctx context.Context, plan *Plan, out io.Writer) error {
+	prettyPrintOptions := PrettyPrintOptions{PrintObjectInfo: true, Indent: "    "}
+
 	minwidth := 0
 	tabwidth := 4
 	padding := 1
@@ -32,6 +34,10 @@ func printPlan(ctx context.Context, plan *Plan, out io.Writer) error {
 	fmt.Fprintf(w, "%s\t%s\t%s\t%s\t\n", "ACTION", "KIND", "NAMESPACE", "NAME")
 	for _, action := range plan.Spec.Actions {
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t\n", action.Type, action.Kind, action.Namespace, action.Name)
+
+		if action.Diff != nil {
+			action.Diff.PrettyPrintTo(action.Object, prettyPrintOptions, w)
+		}
 	}
 	w.Flush()
 
