@@ -6,30 +6,22 @@ metadata:
     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"containerSpecGcsPath":"gs://dataflow-templates-us-central1/2024-08-06-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex","parameters":{"inputSubscription":"projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}","outputDirectory":"gs://bucket-dataflow-output-${uniqueId}/path2"}}}'
     cnrm.cloud.google.com/on-delete: cancel
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-two
   name: streamingdataflowflextemplatejob2-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  additionalExperiments:
-  - disable_runner_v2_reason=java_job_google_template
-  - enable_always_on_exception_sampling
-  - enable_streaming_java_vmr
   containerSpecGcsPath: gs://dataflow-templates-us-central1/2024-08-06-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex
   parameters:
     inputSubscription: projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}
     outputDirectory: gs://bucket-dataflow-output-${uniqueId}/path2
   region: us-central1
-  serviceAccountEmailRef:
-    external: ${projectNumber}-compute@developer.gserviceaccount.com
-  stagingLocation: gs://dataflow-staging-us-central1-${projectNumber}/staging
-  tempLocation: gs://dataflow-staging-us-central1-${projectNumber}/tmp
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -38,6 +30,6 @@ status:
     status: "True"
     type: Ready
   jobId: ${jobID}
-  observedGeneration: 3
+  observedGeneration: 2
   state: JOB_STATE_RUNNING
   type: JOB_TYPE_STREAMING

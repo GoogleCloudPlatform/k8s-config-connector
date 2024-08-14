@@ -6,19 +6,16 @@ metadata:
     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"containerSpecGcsPath":"gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion","parameters":{"inputFileFormat":"csv","inputFileSpec":"gs://config-connector-samples/dataflowflextemplate/numbertest.csv","outputBucket":"gs://storagebucket-${uniqueId}","outputFileFormat":"avro","schema":"gs://config-connector-samples/dataflowflextemplate/numbers.avsc"}}}'
     cnrm.cloud.google.com/on-delete: cancel
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: dataflowflextemplatejob-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  additionalExperiments:
-  - disable_runner_v2_reason=java_job_google_template
-  - enable_always_on_exception_sampling
   containerSpecGcsPath: gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion
   parameters:
     inputFileFormat: csv
@@ -27,10 +24,6 @@ spec:
     outputFileFormat: avro
     schema: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
   region: us-central1
-  serviceAccountEmailRef:
-    external: ${projectNumber}-compute@developer.gserviceaccount.com
-  stagingLocation: gs://dataflow-staging-us-central1-${projectNumber}/staging
-  tempLocation: gs://dataflow-staging-us-central1-${projectNumber}/tmp
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -39,6 +32,6 @@ status:
     status: "True"
     type: Ready
   jobId: ${jobID}
-  observedGeneration: 2
+  observedGeneration: 1
   state: JOB_STATE_RUNNING
   type: JOB_TYPE_BATCH
