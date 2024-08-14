@@ -22,7 +22,7 @@ spec:
     external: ${projectId}
   pscConfigs:
   - networkRef:
-      external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      external: projects/${projectId}/global/networks/${networkID}
   redisConfigs:
     maxmemory-policy: volatile-ttl
   replicaCount: 1
@@ -42,23 +42,23 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     discoveryEndpoints:
-    - address: 10.128.0.2
+    - address: 10.128.0.3
       port: 6379
       pscConfig:
         networkRef:
-          external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+          external: projects/${projectId}/global/networks/${networkID}
     preciseSizeGb: 39
     pscConnections:
     - address: 10.128.0.2
-      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-f4ecb051-fc9e-4c67-b91d-8f9d0024a0da
-      network: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+      network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
-      pscConnectionID: "92489118713380866"
+      pscConnectionID: ${pscConnectionID}
     - address: 10.128.0.3
-      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-9166fe72-77ad-4360-96ac-f4a6a6f332b4
-      network: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+      network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
-      pscConnectionID: "92489118713380867"
+      pscConnectionID: ${pscConnectionID}
     sizeGb: 39
     state: ACTIVE
-    uid: af1f36bb-9dd9-40f1-973d-6feb4cb1cfb2
+    uid: 0123456789abcdef
