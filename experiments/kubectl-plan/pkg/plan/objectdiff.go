@@ -93,11 +93,19 @@ func (d *diffBuilder) walkAny(oldVal, newVal any, fieldPath *FieldPath) {
 	}
 }
 
+func pruneDynamicFields(u *unstructured.Unstructured) *unstructured.Unstructured {
+	out := u.DeepCopy()
+	unstructured.RemoveNestedField(out.Object, "metadata", "creationTimestamp")
+	unstructured.RemoveNestedField(out.Object, "metadata", "resourceVersion")
+	unstructured.RemoveNestedField(out.Object, "metadata", "uid")
+	return out
+}
+
 func BuildObjectDiff(oldObj, newObj *unstructured.Unstructured) (*ObjectDiff, error) {
 	b := diffBuilder{}
 	b.walkMap(oldObj.Object, newObj.Object, nil)
 	d := &ObjectDiff{
-		OldObject: oldObj,
+		OldObject: pruneDynamicFields(oldObj),
 		Fields:    b.fieldDiffs,
 	}
 	return d, nil
