@@ -1,0 +1,50 @@
+apiVersion: redis.cnrm.cloud.google.com/v1alpha1
+kind: RedisCluster
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: rediscluster-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  pscConfigs:
+  - networkRef:
+      external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  shardCount: 10
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    discoveryEndpoints:
+    - address: 10.128.0.3
+      port: 6379
+      pscConfig:
+        networkRef:
+          external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+    preciseSizeGb: 130
+    pscConnections:
+    - address: 10.128.0.3
+      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-c1b4ae0f-bca3-40e3-9816-d1479c568143
+      network: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      projectID: ${projectId}
+      pscConnectionID: "7500705292091395"
+    - address: 10.128.0.2
+      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-ee088ecf-fe3e-47b1-bf2e-bcc5a6cd074a
+      network: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      projectID: ${projectId}
+      pscConnectionID: "7500705292091394"
+    sizeGb: 130
+    state: ACTIVE
+    uid: 68a3a69a-9675-44ad-a944-25dd89505b7c

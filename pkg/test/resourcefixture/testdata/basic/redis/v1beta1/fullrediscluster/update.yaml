@@ -20,8 +20,10 @@ spec:
  shardCount: 6
  pscConfigs:
    - networkRef:
-       name: computenetwork-${uniqueId}
- #region: us-central1
+       external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+ location: us-central1
+ projectRef:
+  external: ${projectId}
  replicaCount: 1
  nodeType: REDIS_STANDARD_SMALL
  transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION

@@ -1,0 +1,64 @@
+apiVersion: redis.cnrm.cloud.google.com/v1alpha1
+kind: RedisCluster
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: rediscluster-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  authorizationMode: AUTH_MODE_IAM_AUTH
+  deletionProtectionEnabled: false
+  location: us-central1
+  nodeType: REDIS_STANDARD_SMALL
+  persistenceConfig:
+    aofConfig:
+      appendFsync: EVERYSEC
+    mode: AOF
+  projectRef:
+    external: ${projectId}
+  pscConfigs:
+  - networkRef:
+      external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  redisConfigs:
+    maxmemory-policy: volatile-ttl
+  replicaCount: 1
+  shardCount: 6
+  transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    discoveryEndpoints:
+    - address: 10.128.0.2
+      port: 6379
+      pscConfig:
+        networkRef:
+          external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+    preciseSizeGb: 39
+    pscConnections:
+    - address: 10.128.0.2
+      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-f4ecb051-fc9e-4c67-b91d-8f9d0024a0da
+      network: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      projectID: ${projectId}
+      pscConnectionID: "92489118713380866"
+    - address: 10.128.0.3
+      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-9166fe72-77ad-4360-96ac-f4a6a6f332b4
+      network: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      projectID: ${projectId}
+      pscConnectionID: "92489118713380867"
+    sizeGb: 39
+    state: ACTIVE
+    uid: af1f36bb-9dd9-40f1-973d-6feb4cb1cfb2
