@@ -1,0 +1,160 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: workstationsworkstations.workstations.cnrm.cloud.google.com
+spec:
+  group: workstations.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: WorkstationsWorkstation
+    listKind: WorkstationsWorkstationList
+    plural: workstationsworkstations
+    singular: workstationsworkstation
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: WorkstationsWorkstation is the Schema for the WorkstationsWorkstation
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: WorkstationsWorkstationSpec defines the desired state of
+              WorkstationsWorkstation
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Optional. Client-specified annotations.
+                type: object
+              displayName:
+                description: Optional. Human-readable name for this workstation.
+                type: string
+              resourceID:
+                description: The WorkstationsWorkstation name. If not given, the metadata.name
+                  will be used.
+                type: string
+            type: object
+          status:
+            description: WorkstationsWorkstationStatus defines the config connector
+              machine state of WorkstationsWorkstation
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the WorkstationsWorkstation resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time when this workstation was created.
+                    type: string
+                  deleteTime:
+                    description: Output only. Time when this workstation was soft-deleted.
+                    type: string
+                  etag:
+                    description: Optional. Checksum computed by the server. May be
+                      sent on update and delete requests to make sure that the client
+                      has an up-to-date value before proceeding.
+                    type: string
+                  host:
+                    description: Output only. Host to which clients can send HTTPS
+                      traffic that will be received by the workstation. Authorized
+                      traffic will be received to the workstation as HTTP on port
+                      80. To send traffic to a different port, clients may prefix
+                      the host with the destination port in the format `{port}-{host}`.
+                    type: string
+                  startTime:
+                    description: Output only. Time when this workstation was most
+                      recently successfully started, regardless of the workstation's
+                      initial state.
+                    type: string
+                  state:
+                    description: Output only. Current state of the workstation.
+                    type: string
+                  uid:
+                    description: Output only. A system-assigned unique identifier
+                      for this workstation.
+                    type: string
+                  updateTime:
+                    description: Output only. Time when this workstation was most
+                      recently updated.
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
