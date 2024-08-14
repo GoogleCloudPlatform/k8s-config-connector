@@ -16,6 +16,8 @@ package e2e
 
 import (
 	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 )
 
 // Replacements manages replacements of dynamic values, like resource IDs
@@ -30,6 +32,28 @@ func NewReplacements() *Replacements {
 		PathIDs:      make(map[string]string),
 		OperationIDs: make(map[string]bool),
 	}
+}
+
+func (r *Replacements) ApplyReplacementsToHTTPEvents(events test.LogEntries) {
+	for _, event := range events {
+		event.Request.Body = r.ApplyReplacements(event.Request.Body)
+		event.Request.URL = r.ApplyReplacements(event.Request.URL)
+		event.Response.Body = r.ApplyReplacements(event.Response.Body)
+	}
+}
+
+func (r *Replacements) ApplyReplacements(s string) string {
+	normalizers := []func(string) string{}
+	for k, v := range r.PathIDs {
+		normalizers = append(normalizers, ReplaceString(k, v))
+	}
+	for k := range r.OperationIDs {
+		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+	}
+	for _, normalizer := range normalizers {
+		s = normalizer(s)
+	}
+	return s
 }
 
 // ExtractIDsFromLinks parses the URL or partial URL, and extracts generated IDs from it.
@@ -62,6 +86,8 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			r.PathIDs[id] = "${conditionID}"
 		case "exclusions":
 			r.PathIDs[id] = "${exclusionID}"
+		case "forwardingRules":
+			r.PathIDs[id] = "${forwardingRuleID}"
 		case "groups":
 			r.PathIDs[id] = "${groupID}"
 		case "uptimeCheckConfigs":

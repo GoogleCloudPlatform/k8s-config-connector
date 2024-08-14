@@ -31,7 +31,10 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+	replacements := NewReplacements()
+	findLinksInKRMObject(t, replacements, u)
+
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
 		// Includes resource versions, very volatile
@@ -44,6 +47,11 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	u.SetAnnotations(annotations)
 
 	visitor := objectWalker{}
+
+	// Apply replacements
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return replacements.ApplyReplacements(s)
+	})
 
 	visitor.removePaths = sets.New[string]()
 	visitor.removePaths.Insert(".metadata.creationTimestamp")
@@ -85,6 +93,10 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.serverCaCert.expirationTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+
+	// Specific to Redis
+	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
+	visitor.replacePaths[".status.observedState.pscConnections[].pscConnectionID"] = "${pscConnectionID}"
 
 	// Specific to VertexAI
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
@@ -370,7 +382,75 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 	return nil
 }
 
+// findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
+func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEntry) {
+	linkPaths := sets.New(
+		".response.pscConnections[].forwardingRule",
+		".response.pscConnections[].network",
+	)
+
+	wellKnownPaths := map[string]string{
+		".pscConnections[].pscConnectionId":          "${pscConnectionID}",
+		".response.pscConnections[].pscConnectionId": "${pscConnectionID}",
+	}
+
+	s := event.Response.Body
+	if s == "" {
+		return
+	}
+
+	obj := make(map[string]any)
+	if err := json.Unmarshal([]byte(s), &obj); err != nil {
+		t.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+		return
+	}
+
+	visitor := objectWalker{}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if linkPaths.Has(path) {
+			replacement.ExtractIDsFromLinks(s)
+		}
+		if v := wellKnownPaths[path]; v != "" {
+			replacement.PathIDs[s] = v
+		}
+		return s
+	})
+
+	if err := visitor.visitMap(obj, ""); err != nil {
+		t.Fatalf("visiting response object: %v", err)
+	}
+}
+
+// findLinksInKRMObject looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
+func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructured.Unstructured) {
+	linkPaths := sets.New(
+		".status.observedState.pscConnections[].forwardingRule",
+		".status.observedState.pscConnections[].network",
+	)
+
+	visitor := objectWalker{}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if linkPaths.Has(path) {
+			replacement.ExtractIDsFromLinks(s)
+		}
+		return s
+	})
+
+	if err := visitor.visitMap(u.Object, ""); err != nil {
+		t.Fatalf("visiting KRM object: %v", err)
+	}
+}
+
 func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+	replacements := NewReplacements()
+
+	// Find any URLs
+	for _, event := range events {
+		findLinksInEvent(t, replacements, event)
+	}
+
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
@@ -415,10 +495,13 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	events.PrettifyJSON(func(obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(u, project, uniqueID); err != nil {
+		if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
 			t.Fatalf("error from normalizeObject: %v", err)
 		}
 	})
+
+	// Apply replacements
+	replacements.ApplyReplacementsToHTTPEvents(events)
 }
 
 func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
@@ -455,6 +538,7 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		return s
 	})
 
+	// Run visitors
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)

@@ -106,6 +106,7 @@ cloud.google.com/go/gkebackup v1.5.2/go.mod h1:ZuWJKacdXtjiO8ry9RrdT57gvcsU7c7/F
 cloud.google.com/go/gkebackup v1.5.4/go.mod h1:V+llvHlRD0bCyrkYaAMJX+CHralceQcaOWjNQs8/Ymw=
 cloud.google.com/go/gkeconnect v0.8.9/go.mod h1:gl758q5FLXewQZIsxQ7vHyYmLcGBuubvQO6J3yFDh08=
 cloud.google.com/go/gkeconnect v0.8.11/go.mod h1:ejHv5ehbceIglu1GsMwlH0nZpTftjxEY6DX7tvaM8gA=
+cloud.google.com/go/gkehub v0.14.9 h1:fWHBKtPwH7Wp5JjNxlPLanYYmXj6XuHjIRk6oa4yqkY=
 cloud.google.com/go/gkehub v0.14.9/go.mod h1:W2rDU2n2xgMpf3/BqpT6ffUX/I8yez87rrW/iGRz6Kk=
 cloud.google.com/go/gkehub v0.14.11/go.mod h1:CsmDJ4qbBnSPkoBltEubK6qGOjG0xNfeeT5jI5gCnRQ=
 cloud.google.com/go/gkemulticloud v1.2.2/go.mod h1:VMsMYDKpUVYNrhese31TVJMVXPLEtFT/AnIarqlcwVo=

@@ -280,7 +280,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeKRMObject(exportedObj, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, exportedObj, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
@@ -298,7 +298,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
