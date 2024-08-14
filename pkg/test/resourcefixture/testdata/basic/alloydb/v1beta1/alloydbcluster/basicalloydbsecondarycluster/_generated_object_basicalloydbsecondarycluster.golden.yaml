@@ -40,3 +40,5 @@ status:
   databaseVersion: DATABASE_VERSION_UNSPECIFIED
   name: projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}
   observedGeneration: 3
+  observedState:
+    clusterType: SECONDARY

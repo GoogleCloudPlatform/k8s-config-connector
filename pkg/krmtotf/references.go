@@ -220,6 +220,10 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 		if val, exists, _ := unstructured.NestedString(r.GetStatusOrObservedState(), strings.Split(key, ".")...); exists {
 			return val, nil
 		}
+		// Check 'status.observedState' for the observed, optional 'spec' fields.
+		if val, exists, _ := unstructured.NestedString(getObservedStateFromStatus(r.Status), strings.Split(key, ".")...); exists {
+			return val, nil
+		}
 		// For now, we do not support recursive target field resolution (i.e. targeting a field in
 		// the referenced resource that itself is a reference to a third resource, which would require
 		// its own target field resolution).
