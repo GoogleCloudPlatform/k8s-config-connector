@@ -641,11 +641,6 @@ X-Xss-Protection: 0
       "mode": "AOF"
     },
     "preciseSizeGb": 39,
-    "pscConfigs": [
-      {
-        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-      }
-    ],
     "pscConnections": [
       {
         "address": "10.128.0.2",
@@ -717,11 +712,6 @@ X-Xss-Protection: 0
     "mode": 3
   },
   "preciseSizeGb": 39,
-  "pscConfigs": [
-    {
-      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-    }
-  ],
   "pscConnections": [
     {
       "address": "10.128.0.2",
@@ -806,14 +796,14 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "v1/projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-x-goog-request-params: name=v1%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -836,7 +826,7 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "v1/projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -860,11 +850,6 @@ X-Xss-Protection: 0
       "mode": "AOF"
     },
     "preciseSizeGb": 39,
-    "pscConfigs": [
-      {
-        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-      }
-    ],
     "pscConnections": [
       {
         "address": "10.128.0.2",
@@ -936,11 +921,6 @@ X-Xss-Protection: 0
     "mode": 3
   },
   "preciseSizeGb": 39,
-  "pscConfigs": [
-    {
-      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-    }
-  ],
   "pscConnections": [
     {
       "address": "10.128.0.2",

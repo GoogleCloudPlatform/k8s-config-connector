@@ -620,11 +620,6 @@ X-Xss-Protection: 0
       "mode": "DISABLED"
     },
     "preciseSizeGb": 39,
-    "pscConfigs": [
-      {
-        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-      }
-    ],
     "pscConnections": [
       {
         "address": "10.128.0.2",
@@ -641,6 +636,7 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "replicaCount": 0,
     "shardCount": 3,
     "sizeGb": 39,
     "state": "ACTIVE",
@@ -688,11 +684,6 @@ X-Xss-Protection: 0
     "mode": 1
   },
   "preciseSizeGb": 39,
-  "pscConfigs": [
-    {
-      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-    }
-  ],
   "pscConnections": [
     {
       "address": "10.128.0.2",
@@ -709,6 +700,7 @@ X-Xss-Protection: 0
       "pscConnectionId": "${pscConnectionID}"
     }
   ],
+  "replicaCount": 0,
   "shardCount": 3,
   "sizeGb": 39,
   "state": 2,
@@ -754,14 +746,14 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "v1/projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-x-goog-request-params: name=v1%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -784,7 +776,7 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "v1/projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_DISABLED",
@@ -804,12 +796,7 @@ X-Xss-Protection: 0
     "persistenceConfig": {
       "mode": "DISABLED"
     },
-    "preciseSizeGb": 39,
-    "pscConfigs": [
-      {
-        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-      }
-    ],
+    "preciseSizeGb": 130,
     "pscConnections": [
       {
         "address": "10.128.0.2",
@@ -826,8 +813,9 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "replicaCount": 0,
     "shardCount": 10,
-    "sizeGb": 39,
+    "sizeGb": 130,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
     "uid": "111111111111111111111",
@@ -872,12 +860,7 @@ X-Xss-Protection: 0
   "persistenceConfig": {
     "mode": 1
   },
-  "preciseSizeGb": 39,
-  "pscConfigs": [
-    {
-      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-    }
-  ],
+  "preciseSizeGb": 130,
   "pscConnections": [
     {
       "address": "10.128.0.2",
@@ -894,8 +877,9 @@ X-Xss-Protection: 0
       "pscConnectionId": "${pscConnectionID}"
     }
   ],
+  "replicaCount": 0,
   "shardCount": 10,
-  "sizeGb": 39,
+  "sizeGb": 130,
   "state": 2,
   "transitEncryptionMode": 1,
   "uid": "111111111111111111111",
