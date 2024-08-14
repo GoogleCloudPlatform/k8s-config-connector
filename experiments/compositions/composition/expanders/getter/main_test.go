@@ -177,6 +177,25 @@ func TestEvaluateEmptyFacade(t *testing.T) {
 	}
 }
 
+func evaluateGetterConfigurationMissingObject(t *testing.T, getter []byte, expectedErrorString string) {
+	r, err := expanderClient.Evaluate(context.Background(),
+		&pb.EvaluateRequest{
+			Config: getter,
+			Facade: sampleFacade,
+		})
+	if err != nil {
+		t.Fatalf("expected no error. got %v", err)
+	}
+
+	if r.Status != pb.Status_EVALUATE_WAIT {
+		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r)
+	}
+
+	if !strings.Contains(r.Error.Message, expectedErrorString) {
+		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
+	}
+}
+
 func TestEvaluateGetterConfigurationMissingObjectGroup(t *testing.T) {
 	// Marshall GetterConfiguration config
 	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
@@ -201,23 +220,8 @@ func TestEvaluateGetterConfigurationMissingObjectGroup(t *testing.T) {
 		log.Fatalf("unable to marshall getter: %v", err)
 	}
 
-	r, err := expanderClient.Evaluate(context.Background(),
-		&pb.EvaluateRequest{
-			Config: getter,
-			Facade: sampleFacade,
-		})
-	if err != nil {
-		t.Fatalf("expected no error. got %v", err)
-	}
-
-	if r.Status != pb.Status_EVALUATE_WAIT {
-		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r)
-	}
-
 	expectedErrorString := "Dependent object not found: GVR: foobars.acme.something.com(v1)/composition-system/missing"
-	if !strings.Contains(r.Error.Message, expectedErrorString) {
-		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
-	}
+	evaluateGetterConfigurationMissingObject(t, getter, expectedErrorString)
 }
 
 func TestEvaluateGetterConfigurationMissingObjectResource(t *testing.T) {
@@ -244,23 +248,8 @@ func TestEvaluateGetterConfigurationMissingObjectResource(t *testing.T) {
 		log.Fatalf("unable to marshall getter: %v", err)
 	}
 
-	r, err := expanderClient.Evaluate(context.Background(),
-		&pb.EvaluateRequest{
-			Config: getter,
-			Facade: sampleFacade,
-		})
-	if err != nil {
-		t.Fatalf("expected no error. got %v", err)
-	}
-
-	if r.Status != pb.Status_EVALUATE_WAIT {
-		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r.Status)
-	}
-
 	expectedErrorString := "Dependent object not found: GVR: unknown.apps(v1)/composition-system/missing"
-	if !strings.Contains(r.Error.Message, expectedErrorString) {
-		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
-	}
+	evaluateGetterConfigurationMissingObject(t, getter, expectedErrorString)
 }
 
 func TestEvaluateGetterConfigurationMissingObject(t *testing.T) {
