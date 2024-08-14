@@ -65,6 +65,10 @@ func returnView(obj *pb.Table, view pb.Table_View) *pb.Table {
 		if proto.Equal(columnFamily.GcRule, &pb.GcRule{}) {
 			columnFamily.GcRule = nil
 		}
+
+		if proto.Equal(columnFamily.ValueType, &pb.Type{}) {
+			columnFamily.ValueType = nil
+		}
 	}
 
 	return ret
@@ -105,6 +109,12 @@ func (s *tableAdminServer) CreateTable(ctx context.Context, req *pb.CreateTableR
 
 	if obj.Granularity == pb.Table_TIMESTAMP_GRANULARITY_UNSPECIFIED {
 		obj.Granularity = pb.Table_MILLIS
+	}
+
+	for _, columnFamily := range obj.GetColumnFamilies() {
+		if columnFamily.ValueType == nil {
+			columnFamily.ValueType = &pb.Type{}
+		}
 	}
 
 	if err := s.storage.Create(ctx, tableFQN, obj); err != nil {
