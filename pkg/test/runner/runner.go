@@ -79,7 +79,7 @@ func RunAllWithObjectCreated(ctx context.Context, t *testing.T, mgr manager.Mana
 
 func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
 	testFunc := func(ctx context.Context, t *testing.T, testContext TestContext, sysContext SystemContext) {
-		dependencyCleanup := sysContext.Reconciler.CreateAndReconcile(ctx, testContext.DependencyUnstructs, testreconciler.CleanupPolicyAlways)
+		dependencyCleanup := sysContext.Reconciler.CreateAndReconcile(ctx, testContext.DependencyUnstructs, testreconciler.CleanupPolicyAlways, testContext.CreateUnstruct)
 		defer dependencyCleanup()
 		testCaseFunc(ctx, t, testContext, sysContext)
 	}
