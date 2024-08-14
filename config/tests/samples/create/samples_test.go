@@ -35,6 +35,8 @@ import (
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func init() {
