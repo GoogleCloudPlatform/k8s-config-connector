@@ -174,9 +174,7 @@ type RowLayout struct {
 // +kcc:proto=google.monitoring.dashboard.v1.RowLayout.Row
 type RowLayout_Row struct {
 	// The relative weight of this row. The row weight is used to adjust the
-	//  height of rows on the screen (relative to peers). Greater the weight,
-	//  greater the height of the row on the screen. If omitted, a value
-	//  of 1 is used while rendering.
+	//  height of rows on the screen (relative to peers).
 	Weight *int64 `json:"weight,omitempty"`
 
 	// The display widgets arranged horizontally in this row.
@@ -683,13 +681,13 @@ type MonitoringDashboardSpec struct {
 	//  occupying one or more grid blocks.
 	MosaicLayout *MosaicLayout `json:"mosaicLayout,omitempty"`
 
-	// The content is divided into equally spaced columns and the widgets are
-	//  arranged vertically.
-	ColumnLayout *ColumnLayout `json:"columnLayout,omitempty"`
-
 	// The content is divided into equally spaced rows and the widgets are
 	//  arranged horizontally.
 	RowLayout *RowLayout `json:"rowLayout,omitempty"`
+
+	// The content is divided into equally spaced columns and the widgets are
+	//  arranged vertically.
+	ColumnLayout *ColumnLayout `json:"columnLayout,omitempty"`
 
 	// Filters to reduce the amount of data charted based on the filter criteria.
 	DashboardFilters []DashboardFilter `json:"dashboardFilters,omitempty"`

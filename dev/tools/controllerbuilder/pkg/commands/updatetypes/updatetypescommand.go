@@ -34,6 +34,8 @@ import (
 	"k8s.io/klog/v2"
 )
 
+const kccProtoPrefix = "+kcc:proto="
+
 type UpdateTypeOptions struct {
 	*options.GenerateOptions
 
@@ -91,11 +93,11 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 }
 
 type TypeUpdater struct {
-	opts              *UpdateTypeOptions
-	newField          newProtoField
-	dependentMessages map[string]protoreflect.MessageDescriptor // key: fully qualified name of proto message
-	generatedGoField  generatedGoField                          // TOOD: support multiple new fields
-	generatedGoStruts []generatedGoStruct
+	opts               *UpdateTypeOptions
+	newField           newProtoField
+	dependentMessages  map[string]protoreflect.MessageDescriptor // key: fully qualified name of proto message
+	generatedGoField   generatedGoField                          // TOOD: support multiple new fields
+	generatedGoStructs []generatedGoStruct
 }
 
 type newProtoField struct {
@@ -109,6 +111,7 @@ type generatedGoField struct {
 }
 
 type generatedGoStruct struct {
+	name    string // fully qualified name of the proto message
 	content []byte // the content of the genearted Go struct
 }
 
@@ -130,10 +133,10 @@ func (u *TypeUpdater) Run() error {
 	}
 
 	// 3. insert the generated Go code back to files
-	if err := u.insertGoFieldGemini(); err != nil {
+	if err := u.insertGoField(); err != nil {
 		return err
 	}
-	if err := u.insertGoMessagesGemini(); err != nil {
+	if err := u.insertGoMessages(); err != nil {
 		return err
 	}
 
@@ -237,7 +240,11 @@ func (u *TypeUpdater) generate() error {
 		var buf bytes.Buffer
 		klog.Infof("genearte Go code for messge %s", msg.FullName())
 		codegen.WriteMessage(&buf, msg)
-		u.generatedGoStruts = append(u.generatedGoStruts, generatedGoStruct{content: buf.Bytes()})
+		u.generatedGoStructs = append(u.generatedGoStructs,
+			generatedGoStruct{
+				name:    string(msg.FullName()),
+				content: buf.Bytes(),
+			})
 	}
 	return nil
 }

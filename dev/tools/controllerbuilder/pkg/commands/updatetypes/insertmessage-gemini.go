@@ -22,15 +22,9 @@ import (
 
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
-	"k8s.io/klog/v2"
 )
 
 func (u *TypeUpdater) insertGoMessagesGemini() error {
-	klog.Infof("inserting the generated Go code for the following messages\n")
-	for _, m := range u.dependentMessages {
-		klog.Infof("%s", m.FullName())
-	}
-
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
 	if err != nil {
@@ -60,7 +54,7 @@ func (u *TypeUpdater) insertGoMessagesGemini() error {
 	}
 	// provide the content of the Go structs
 	goStructs := ""
-	for _, s := range u.generatedGoStruts {
+	for _, s := range u.generatedGoStructs {
 		goStructs += string(s.content) + "\n"
 	}
 
