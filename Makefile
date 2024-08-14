@@ -239,3 +239,47 @@ ready-pr: lint manifests resource-docs generate-go-client
 upgrade-dcl:
 	go get github.com/GoogleCloudPlatform/declarative-resource-client-library
 	make ensure
+
+# Build all binaries
+.PHONY: all-binary
+all-binary: config-connector-bin deletiondefender manager-bin recorder unmanageddetector webhook gke-addon-poststart operator-manager-bin
+
+# Build config-connector binary from cmd/config-connector
+.PHONY: config-connector-bin
+config-connector-bin:
+	go build -o bin/config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+
+# Build deletiondefender binary from cmd/deletiondefender
+.PHONY: deletiondefender
+deletiondefender:
+	go build -o bin/deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender
+
+# Build manager binary from cmd/manager
+.PHONY: manager-bin
+manager-bin:
+	go build -o bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
+
+# Build recorder binary from cmd/recorder
+.PHONY: recorder
+recorder:
+	go build -o bin/recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder
+
+# Build unmanageddetector binary from cmd/unmanageddetector
+.PHONY: unmanageddetector
+unmanageddetector:
+	go build -o bin/unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector
+
+# Build webhook binary from cmd/webhook
+.PHONY: webhook
+webhook:
+	go build -o bin/webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook
+
+# Build gke-addon-poststart binary from operator/cmd/gke_addon_poststart
+.PHONY: gke-addon-poststart
+gke-addon-poststart:
+	go build -o bin/gke-addon-poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
+
+# Build operator-manager binary from operator/cmd/manager
+.PHONY: operator-manager-bin
+operator-manager-bin:
+	go build -o bin/operator-manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
