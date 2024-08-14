@@ -43,11 +43,7 @@ func buildAddCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 				Kind:        kind,
 				KindToLower: strings.ToLower(kind),
 			}
-			path, err := scaffold.BuildControllerPath(baseOptions.ServiceName, kind)
-			if err != nil {
-				return err
-			}
-			return scaffold.Scaffold(path, cArgs)
+			return scaffold.Scaffold(baseOptions.ServiceName, kind, cArgs)
 		},
 	}
 	addCmd.PersistentFlags().StringVarP(&kind, "resourceInKind", "r", "", "the GCP resource name under the GCP service. should be in camel case ")

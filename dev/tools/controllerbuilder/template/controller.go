@@ -52,7 +52,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const ctrlName = "{{.Service}}-controller"
+const (
+	ctrlName = "{{.Service}}-controller"
+    // TODO(user): Confirm service domain
+	serviceDomain = "//{{.Service}}.googleapis.com"
+)
 
 func init() {
 	registry.RegisterModel(krm.GroupVersionKind, NewModel)
@@ -323,3 +327,4 @@ func SetStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 	return nil
 }
+`

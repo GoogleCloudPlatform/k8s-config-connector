@@ -22,11 +22,6 @@ import (
 	"strings"
 )
 
-const (
-	// TODO(user): Add service domain
-	serviceDomain = "//{{.Service}}.googleapis.com"
-)
-
 // TODO(user): Define resource identity
 type {{.Kind}}Identity struct {
 	project    string
@@ -51,7 +46,7 @@ func (c *{{.Kind}}Identity) ExternalRef() *string {
 }
 
 // BuildIDFromExternal builds a {{.Kind}}Identity from a external reference
-func BuildIDFromExternal(external string) (*{{.Kind}}Identity, error) {
+func BuildIDFromExternal(externalRef string) (*{{.Kind}}Identity, error) {
 	// TODO(user): Build resource identity from external reference
 	if !strings.HasPrefix(externalRef, serviceDomain) {
 		return nil, fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
@@ -80,3 +75,4 @@ func BuildID(project, location string) *{{.Kind}}Identity {
 		{{.KindToLower}}: {{.KindToLower}},
 	}
 }
+`
