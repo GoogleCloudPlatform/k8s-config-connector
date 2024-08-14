@@ -182,7 +182,8 @@ type ClusterObservedStateStatus struct {
 
 type ClusterPscConfigStatus struct {
 	/* Required. The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	// +optional
+	Network *string `json:"network,omitempty"`
 }
 
 type ClusterPscConnectionsStatus struct {

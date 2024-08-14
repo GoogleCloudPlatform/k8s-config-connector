@@ -49,8 +49,7 @@ status:
     - address: 10.128.0.3
       port: 6379
       pscConfig:
-        networkRef:
-          external: projects/${projectId}/global/networks/${networkID}
+        network: projects/${projectId}/global/networks/${networkID}
     preciseSizeGb: 39
     pscConnections:
     - address: 10.128.0.2
