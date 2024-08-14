@@ -23,7 +23,42 @@ on:
     branches: ["master"]
     paths:
       - "experiments/compositions/**"
+
+env:
+  GOWORK: off
 jobs:
+  verify-goimports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          stable: true
+      - uses: actions/checkout@v4
+      - name: verify goimports
+        run: |
+          ./experiments/compositions/scripts/github-actions/verify-goimports.sh
+  verify-gomod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          stable: true
+      - uses: actions/checkout@v4
+      - run: |
+          ./experiments/compositions/scripts/github-actions/format-gomod.sh
+      - run: |
+          changes=$(git status --porcelain)
+          if [[ -n "${changes}" ]]; then
+            echo "::error Changes detected from dev/format-gomod:"
+            echo "::error (You may need to run go clean -cache -modcache)"
+            git diff | head -n60
+            echo "${changes}"
+            exit 1
+          fi
   test-expander-helm:
     runs-on: ubuntu-latest
     timeout-minutes: 20

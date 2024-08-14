@@ -63,13 +63,13 @@ manifests: ## Generate WebhookConfiguration, ClusterRole and CustomResourceDefin
 .PHONY: generate
 generate: ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
 	$(GOPREFIX) go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION) object:headerFile="hack/boilerplate.go.txt" paths="./..."
-	$(GOPREFIX) go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
+	$(GOPREFIX) go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests proto
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	$(GOPREFIX) go fmt ./...
 	GOFLAGS= $(GOPREFIX) go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ./
-	$(GOPREFIX) go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
+	$(GOPREFIX) go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests proto
 
 .PHONY: vet
 vet: ## Run go vet against code.
@@ -89,11 +89,11 @@ golangci-lint:
 
 .PHONY: lint
 lint: golangci-lint ## Run golangci-lint linter & yamllint
-	$(GOLANGCI_LINT) run
+	$(GOPREFIX) $(GOLANGCI_LINT) run
 
 .PHONY: lint-fix
 lint-fix: golangci-lint ## Run golangci-lint linter and perform fixes
-	$(GOLANGCI_LINT) run --fix
+	$(GOPREFIX) $(GOLANGCI_LINT) run --fix
 
 ##@ Build
 
