@@ -15,11 +15,11 @@ spec:
           foo: bar1
         kind: ConfigMap
         metadata:
-          creationTimestamp: "2024-08-14T16:00:00Z"
+          creationTimestamp: "2024-08-14T16:02:49Z"
           name: cm1
           namespace: default
-          resourceVersion: "188"
-          uid: f8d6d9b1-a678-44c4-9d29-3d8560514a52
+          resourceVersion: "193"
+          uid: f0bcf71c-082f-4abe-b7b3-81bb633aff67
     kind: ConfigMap
     name: cm1
     namespace: default

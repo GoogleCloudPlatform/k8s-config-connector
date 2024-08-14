@@ -113,7 +113,7 @@ type PrettyPrintOptions struct {
 	Indent          string
 }
 
-func (d *ObjectDiff) PrettyPrintTo(newObject *unstructured.Unstructured, options PrettyPrintOptions, out io.Writer) {
+func (d *ObjectDiff) PrettyPrintTo(newObject *unstructured.Unstructured, options PrettyPrintOptions, out io.Writer) error {
 	diffs := d.sortFieldPaths()
 
 	fieldIndent := options.Indent
@@ -150,6 +150,8 @@ func (d *ObjectDiff) PrettyPrintTo(newObject *unstructured.Unstructured, options
 		fmt.Fprintf(out, "%s%s: %v -> %v\n", indent, diff.keyPath[len(diff.keyPath)-1], diff.OldValue, diff.NewValue)
 		previousKeyPath = diff.keyPath
 	}
+
+	return nil
 }
 
 func (d *ObjectDiff) PrintStructuredTo(out io.Writer) {

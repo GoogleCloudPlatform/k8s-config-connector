@@ -36,7 +36,9 @@ func printPlan(ctx context.Context, plan *Plan, out io.Writer) error {
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t\n", action.Type, action.Kind, action.Namespace, action.Name)
 
 		if action.Diff != nil {
-			action.Diff.PrettyPrintTo(action.Object, prettyPrintOptions, w)
+			if err := action.Diff.PrettyPrintTo(action.Object, prettyPrintOptions, w); err != nil {
+				return err
+			}
 		}
 	}
 	w.Flush()

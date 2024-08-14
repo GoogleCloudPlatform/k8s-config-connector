@@ -105,7 +105,13 @@ func TestPlanner(t *testing.T) {
 			if err != nil {
 				t.Fatalf("yaml.Marshal failed: %v", err)
 			}
-			CompareGoldenFile(t, filepath.Join(p, "plan.yaml"), actual)
+			CompareGoldenFile(t, filepath.Join(p, "_plan.yaml"), actual)
+
+			var pretty bytes.Buffer
+			if err := printPlan(ctx, plan, &pretty); err != nil {
+				t.Fatalf("printPlan failed: %v", err)
+			}
+			CompareGoldenFile(t, filepath.Join(p, "_plan.txt"), []byte(pretty.String()))
 		})
 	}
 }
