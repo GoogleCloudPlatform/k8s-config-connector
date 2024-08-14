@@ -213,9 +213,11 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.SizeGb = req.Cluster.SizeGb
 		case "replicaCount":
 			obj.ReplicaCount = req.Cluster.ReplicaCount
+		case "shardCount":
+			obj.ShardCount = req.Cluster.ShardCount
 
 		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
 
