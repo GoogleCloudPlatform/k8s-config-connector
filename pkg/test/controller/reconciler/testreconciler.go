@@ -142,12 +142,12 @@ func (r *TestReconciler) ReconcileObjectMeta(ctx context.Context, om metav1.Obje
 }
 
 // Creates and reconciles all unstructureds in the unstruct list. Returns a cleanup function that should be defered immediately after calling this function.
-func (r *TestReconciler) CreateAndReconcile(ctx context.Context, unstructs []*unstructured.Unstructured, cleanupPolicy ResourceCleanupPolicy) func() {
+func (r *TestReconciler) CreateAndReconcile(ctx context.Context, dependencies []*unstructured.Unstructured, cleanupPolicy ResourceCleanupPolicy, mainResource *unstructured.Unstructured) func() {
 	r.t.Helper()
-	cleanupFuncs := make([]func(), 0, len(unstructs))
-	for _, u := range unstructs {
+	cleanupFuncs := make([]func(), 0, len(dependencies))
+	for _, u := range dependencies {
 		if err := r.mgr.GetClient().Create(ctx, u); err != nil {
-			r.t.Fatalf("error creating resource '%v': %v", u.GetKind(), err)
+			r.t.Fatalf("error creating dependecy '%v' for resource '%v/%v': %v", u.GetKind(), mainResource.GetName(), mainResource.GetKind(), err)
 		}
 		cleanupFuncs = append(cleanupFuncs, r.BuildCleanupFunc(ctx, u, cleanupPolicy))
 		r.ReconcileIfManagedByKCC(ctx, u, ExpectedSuccessfulReconcileResultFor(r, u), nil)
