@@ -22,7 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/protobuf/proto"
 )
@@ -41,7 +40,7 @@ func (n *notifications) GetNotification(ctx context.Context, req *pb.GetNotifica
 	}
 
 	// The real GCP service stores what the request gives but returns the topic with the PubSub domain.
-	obj.Topic = PtrTo("//pubsub.googleapis.com/" + direct.ValueOf(obj.Topic))
+	obj.Topic = PtrTo("//pubsub.googleapis.com/" + ValueOf(obj.Topic))
 	ret := proto.Clone(obj).(*pb.Notification)
 	return ret, nil
 
@@ -60,12 +59,12 @@ func (n *notifications) InsertNotification(ctx context.Context, req *pb.InsertNo
 		return nil, err
 	}
 	// The real GCP service stores what the request gives but returns the topic with the PubSub domain.
-	obj.Topic = PtrTo("//pubsub.googleapis.com/" + direct.ValueOf(obj.Topic))
+	obj.Topic = PtrTo("//pubsub.googleapis.com/" + ValueOf(obj.Topic))
 	return obj, nil
 }
 
 func (n *notifications) DeleteNotification(ctx context.Context, req *pb.DeleteNotificationRequest) (*empty.Empty, error) {
-	fqn := fullyQualifiedName(req.GetBucket(), direct.ValueOf(req.Name))
+	fqn := fullyQualifiedName(req.GetBucket(), ValueOf(req.Name))
 	deletedObj := &pb.Notification{}
 	if err := n.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
