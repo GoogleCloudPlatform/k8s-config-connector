@@ -40,12 +40,4 @@ spec:
 
   continuousBackupConfig:
     enabled: false
-  maintenanceUpdatePolicy:
-    maintenanceWindows:
-      - day: THURSDAY
-        startTime:
-          hours: 10
-          minutes: 0
-          seconds: 0
-          nanos: 0
           

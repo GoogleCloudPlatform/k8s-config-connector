@@ -50,14 +50,6 @@ spec:
       value: Postgres123
     user: postgres
   location: us-central1
-  maintenanceUpdatePolicy:
-    maintenanceWindows:
-    - day: THURSDAY
-      startTime:
-        hours: 10
-        minutes: 0
-        nanos: 0
-        seconds: 0
   networkConfig:
     networkRef:
       name: computenetwork-${uniqueId}
