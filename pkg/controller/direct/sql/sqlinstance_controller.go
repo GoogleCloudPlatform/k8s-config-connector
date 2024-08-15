@@ -122,14 +122,14 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 	a.actual = instance
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("found cloudsql instance", "actual", a.actual)
+	log.V(2).Info("found SQLInstance", "actual", a.actual)
 
 	return true, nil
 }
 
 func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating instance", "desired", a.desired)
+	log.V(2).Info("creating SQLInstance", "desired", a.desired)
 
 	if a.projectID == "" {
 		return fmt.Errorf("project is empty")
@@ -216,7 +216,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 
 func (a *sqlInstanceAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating instance", "desired", a.desired)
+	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
 	// First, handle database version updates
 	if a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion {
@@ -261,7 +261,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, u *unstructured.Unstruc
 	// Next, update rest of the fields
 	merged, diffDetected, err := MergeDesiredSQLInstanceWithActual(a.desired, a.refs, a.actual)
 	if err != nil {
-		return fmt.Errorf("diff SQL instances failed: %w", err)
+		return fmt.Errorf("diff SQLInstances failed: %w", err)
 	}
 
 	if diffDetected {
@@ -310,7 +310,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, u *unstructured.Unstruc
 // Delete implements the Adapter interface.
 func (a *sqlInstanceAdapter) Delete(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting instance", "actual", a.actual)
+	log.V(2).Info("deleting SQLInstance", "actual", a.actual)
 
 	if a.resourceID == "" {
 		return false, nil
@@ -320,7 +320,7 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("deleting SQLInstance %s: %w", a.resourceID, err)
 	}
 
-	log.V(2).Info("deleted instance", "op", op)
+	log.V(2).Info("deleted SQLInstance", "op", op)
 
 	return true, nil
 }
@@ -332,12 +332,12 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	sqlInstance, err := SQLInstanceGCPToKRM(a.actual)
 	if err != nil {
-		return nil, fmt.Errorf("error converting SQL Instance from API %w", err)
+		return nil, fmt.Errorf("error converting SQLInstance from API %w", err)
 	}
 
 	sqlInstanceObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(sqlInstance)
 	if err != nil {
-		return nil, fmt.Errorf("error converting SQL Instance spec to unstructured: %w", err)
+		return nil, fmt.Errorf("error converting SQLInstance spec to unstructured: %w", err)
 	}
 
 	u := &unstructured.Unstructured{
