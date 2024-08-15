@@ -2496,7 +2496,7 @@ spec:
   localityLbPolicy: MAGLEV
   timeoutSec: 86400
   consistentHash:
-    httpHeaderName: "Hash string"
+    httpHeaderName: "Hash_String"
   healthChecks:
   - healthCheckRef:
       name: computebackendservice-dep-internalmanagedloadbalancing
