@@ -465,9 +465,10 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	if err := resourceContext.Delete(ctx, t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, systemContext.HttpClient); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
+
 	// Underlying APIs may not have strongly-consistent reads due to caching. Sleep before attempting a re-reconcile, to
 	// give the underlying system some time to propagate the deletion info.
-	time.Sleep(time.Second * 10)
+	time.Sleep(resourceContext.RecreateDelay)
 
 	// get the current state
 	t.Logf("reconcile with %v\r", testUnstruct)

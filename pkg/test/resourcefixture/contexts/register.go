@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
@@ -49,12 +50,19 @@ import (
 )
 
 type ResourceContext struct {
-	ResourceGVK        schema.GroupVersionKind
-	ResourceKind       string
-	SkipNoChange       bool
-	SkipUpdate         bool
+	ResourceGVK  schema.GroupVersionKind
+	ResourceKind string
+
+	SkipNoChange bool
+	SkipUpdate   bool
+	SkipDelete   bool
+
+	// Time to delay before recreating the resource as part of the drift detection test.
+	// The default wait time is 10 seconds. However, some resources appear to need to
+	// wait longer before recreating, so this value is customizable.
+	RecreateDelay time.Duration
+	// If true, skip drift detection test.
 	SkipDriftDetection bool
-	SkipDelete         bool
 
 	// fields related to DCL-based resources
 	DCLSchema *openapi.Schema
@@ -76,6 +84,11 @@ func GetResourceContext(fixture resourcefixture.ResourceFixture, serviceMetadata
 	}
 	if rc.ResourceGVK == emptyGVK {
 		rc.ResourceGVK = fixture.GVK
+	}
+	if rc.RecreateDelay == 0 {
+		// By default, wait for 10 seconds before recreating resource as part of drift detection test.
+		// Some resources appear to need to wait longer than 10 seconds, so this value is customizable.
+		rc.RecreateDelay = time.Second * 10
 	}
 	if dclmetadata.IsDCLBasedResourceKind(rc.ResourceGVK, serviceMetadataLoader) {
 		s, err := dclschemaloader.GetDCLSchemaForGVK(rc.ResourceGVK, serviceMetadataLoader, dclSchemaLoader)

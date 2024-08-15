@@ -19,6 +19,7 @@ import (
 
 	api "google.golang.org/api/sqladmin/v1beta4"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 )
 
@@ -460,6 +461,276 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		for k, v := range in.Labels {
 			out.Settings.UserLabels[k] = v
 		}
+	}
+
+	return out, nil
+}
+
+func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
+	out := &krm.SQLInstance{}
+
+	if in == nil {
+		return nil, fmt.Errorf("cannot convert nil DatabaseInstance")
+	}
+
+	if in.DatabaseVersion != "" {
+		out.Spec.DatabaseVersion = &in.DatabaseVersion
+	}
+
+	if in.DiskEncryptionConfiguration != nil {
+		out.Spec.EncryptionKMSCryptoKeyRef = &refs.KMSCryptoKeyRef{
+			External: in.DiskEncryptionConfiguration.KmsKeyName,
+		}
+	}
+
+	if in.InstanceType != "" {
+		out.Spec.InstanceType = &in.InstanceType
+	}
+
+	if in.MaintenanceVersion != "" {
+		out.Spec.MaintenanceVersion = &in.MaintenanceVersion
+	}
+
+	if in.MasterInstanceName != "" {
+		out.Spec.MasterInstanceRef = &refs.SQLInstanceRef{
+			External: in.MasterInstanceName,
+		}
+	}
+
+	if in.Region != "" {
+		out.Spec.Region = &in.Region
+	}
+
+	if in.ReplicaConfiguration != nil {
+		rc := &krm.InstanceReplicaConfiguration{}
+
+		rc.FailoverTarget = &in.ReplicaConfiguration.FailoverTarget
+
+		if in.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+			rc.CaCertificate = &in.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate
+			rc.ClientKey = &in.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey
+			rc.ConnectRetryInterval = &in.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval
+			rc.DumpFilePath = &in.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath
+			rc.MasterHeartbeatPeriod = &in.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod
+			rc.Password = &krm.InstancePassword{
+				Value: &in.ReplicaConfiguration.MysqlReplicaConfiguration.Password,
+			}
+			rc.SslCipher = &in.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher
+			rc.Username = &in.ReplicaConfiguration.MysqlReplicaConfiguration.Username
+			rc.VerifyServerCertificate = &in.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate
+		}
+
+		out.Spec.ReplicaConfiguration = rc
+	}
+
+	out.Spec.ResourceID = &in.Name
+
+	out.Spec.RootPassword = &krm.InstanceRootPassword{
+		Value: &in.RootPassword,
+	}
+
+	if in.Settings.ActivationPolicy != "" {
+		out.Spec.Settings.ActivationPolicy = &in.Settings.ActivationPolicy
+	}
+
+	if in.Settings.ActiveDirectoryConfig != nil {
+		out.Spec.Settings.ActiveDirectoryConfig = &krm.InstanceActiveDirectoryConfig{
+			Domain: in.Settings.ActiveDirectoryConfig.Domain,
+		}
+	}
+
+	if in.Settings.AdvancedMachineFeatures != nil {
+		out.Spec.Settings.AdvancedMachineFeatures = &krm.InstanceAdvancedMachineFeatures{
+			ThreadsPerCore: &in.Settings.AdvancedMachineFeatures.ThreadsPerCore,
+		}
+	}
+
+	if in.Settings.AuthorizedGaeApplications != nil {
+		out.Spec.Settings.AuthorizedGaeApplications = in.Settings.AuthorizedGaeApplications
+	}
+
+	if in.Settings.AvailabilityType != "" {
+		out.Spec.Settings.AvailabilityType = &in.Settings.AvailabilityType
+	}
+
+	if in.Settings.BackupConfiguration != nil {
+		bc := &krm.InstanceBackupConfiguration{}
+
+		if in.Settings.BackupConfiguration.BackupRetentionSettings != nil {
+			bc.BackupRetentionSettings = &krm.InstanceBackupRetentionSettings{
+				RetainedBackups: in.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups,
+				RetentionUnit:   &in.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit,
+			}
+		}
+
+		bc.BinaryLogEnabled = &in.Settings.BackupConfiguration.BinaryLogEnabled
+		bc.Enabled = &in.Settings.BackupConfiguration.Enabled
+		bc.Location = &in.Settings.BackupConfiguration.Location
+		bc.PointInTimeRecoveryEnabled = &in.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
+		bc.StartTime = &in.Settings.BackupConfiguration.StartTime
+		bc.TransactionLogRetentionDays = &in.Settings.BackupConfiguration.TransactionLogRetentionDays
+
+		out.Spec.Settings.BackupConfiguration = bc
+	}
+
+	if in.Settings.Collation != "" {
+		out.Spec.Settings.Collation = &in.Settings.Collation
+	}
+
+	if in.Settings.ConnectorEnforcement != "" {
+		out.Spec.Settings.ConnectorEnforcement = &in.Settings.ConnectorEnforcement
+	}
+
+	out.Spec.Settings.CrashSafeReplication = &in.Settings.CrashSafeReplicationEnabled
+
+	if in.Settings.DatabaseFlags != nil {
+		dbFlags := []krm.InstanceDatabaseFlags{}
+		for _, dbFlag := range in.Settings.DatabaseFlags {
+			dbFlags = append(dbFlags, krm.InstanceDatabaseFlags{
+				Name:  dbFlag.Name,
+				Value: dbFlag.Value,
+			})
+		}
+		out.Spec.Settings.DatabaseFlags = dbFlags
+	}
+
+	out.Spec.Settings.DeletionProtectionEnabled = &in.Settings.DeletionProtectionEnabled
+
+	// todo: handle multiple periods (?)
+	if in.Settings.DenyMaintenancePeriods != nil && len(in.Settings.DenyMaintenancePeriods) >= 1 {
+		out.Spec.Settings.DenyMaintenancePeriod = &krm.InstanceDenyMaintenancePeriod{
+			EndDate:   in.Settings.DenyMaintenancePeriods[0].EndDate,
+			StartDate: in.Settings.DenyMaintenancePeriods[0].StartDate,
+			Time:      in.Settings.DenyMaintenancePeriods[0].Time,
+		}
+	}
+
+	out.Spec.Settings.DiskAutoresize = in.Settings.StorageAutoResize
+
+	if in.Settings.StorageAutoResizeLimit != 0 {
+		out.Spec.Settings.DiskAutoresizeLimit = &in.Settings.StorageAutoResizeLimit
+	}
+
+	out.Spec.Settings.DiskSize = &in.Settings.DataDiskSizeGb
+
+	if in.Settings.DataDiskType != "" {
+		out.Spec.Settings.DiskType = &in.Settings.DataDiskType
+	}
+
+	if in.Settings.Edition != "" {
+		out.Spec.Settings.Edition = &in.Settings.Edition
+	}
+
+	if in.Settings.InsightsConfig != nil {
+		out.Spec.Settings.InsightsConfig = &krm.InstanceInsightsConfig{
+			QueryInsightsEnabled:  &in.Settings.InsightsConfig.QueryInsightsEnabled,
+			QueryPlansPerMinute:   &in.Settings.InsightsConfig.QueryPlansPerMinute,
+			QueryStringLength:     &in.Settings.InsightsConfig.QueryStringLength,
+			RecordApplicationTags: &in.Settings.InsightsConfig.RecordApplicationTags,
+			RecordClientAddress:   &in.Settings.InsightsConfig.RecordClientAddress,
+		}
+	}
+
+	if in.Settings.IpConfiguration != nil {
+		ic := &krm.InstanceIpConfiguration{}
+
+		if in.Settings.IpConfiguration.AllocatedIpRange != "" {
+			ic.AllocatedIpRange = &in.Settings.IpConfiguration.AllocatedIpRange
+		}
+
+		if in.Settings.IpConfiguration.AuthorizedNetworks != nil {
+			ans := []krm.InstanceAuthorizedNetworks{}
+			for _, an := range in.Settings.IpConfiguration.AuthorizedNetworks {
+				ans = append(ans, krm.InstanceAuthorizedNetworks{
+					ExpirationTime: &an.ExpirationTime,
+					Name:           &an.Name,
+					Value:          an.Value,
+				})
+			}
+			ic.AuthorizedNetworks = ans
+		}
+
+		ic.EnablePrivatePathForGoogleCloudServices = &in.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices
+
+		ic.Ipv4Enabled = &in.Settings.IpConfiguration.Ipv4Enabled
+
+		if in.Settings.IpConfiguration.PrivateNetwork != "" {
+			ic.PrivateNetworkRef = &refs.ComputeNetworkRef{
+				External: in.Settings.IpConfiguration.PrivateNetwork,
+			}
+		}
+
+		if in.Settings.IpConfiguration.PscConfig != nil {
+			out.Spec.Settings.IpConfiguration.PscConfig = []krm.InstancePscConfig{
+				{
+					AllowedConsumerProjects: in.Settings.IpConfiguration.PscConfig.AllowedConsumerProjects,
+					PscEnabled:              &in.Settings.IpConfiguration.PscConfig.PscEnabled,
+				},
+			}
+		}
+
+		ic.RequireSsl = &in.Settings.IpConfiguration.RequireSsl
+
+		if in.Settings.IpConfiguration.SslMode != "" {
+			ic.SslMode = &in.Settings.IpConfiguration.SslMode
+		}
+
+		out.Spec.Settings.IpConfiguration = ic
+	}
+
+	if in.Settings.LocationPreference != nil {
+		out.Spec.Settings.LocationPreference = &krm.InstanceLocationPreference{
+			FollowGaeApplication: &in.Settings.LocationPreference.FollowGaeApplication,
+			SecondaryZone:        &in.Settings.LocationPreference.SecondaryZone,
+			Zone:                 &in.Settings.LocationPreference.Zone,
+		}
+	}
+
+	if in.Settings.MaintenanceWindow != nil {
+		out.Spec.Settings.MaintenanceWindow = &krm.InstanceMaintenanceWindow{
+			Day:         &in.Settings.MaintenanceWindow.Day,
+			Hour:        &in.Settings.MaintenanceWindow.Hour,
+			UpdateTrack: &in.Settings.MaintenanceWindow.UpdateTrack,
+		}
+	}
+
+	if in.Settings.PasswordValidationPolicy != nil {
+		out.Spec.Settings.PasswordValidationPolicy = &krm.InstancePasswordValidationPolicy{
+			EnablePasswordPolicy:      in.Settings.PasswordValidationPolicy.EnablePasswordPolicy,
+			Complexity:                &in.Settings.PasswordValidationPolicy.Complexity,
+			DisallowUsernameSubstring: &in.Settings.PasswordValidationPolicy.DisallowUsernameSubstring,
+			MinLength:                 &in.Settings.PasswordValidationPolicy.MinLength,
+			PasswordChangeInterval:    &in.Settings.PasswordValidationPolicy.PasswordChangeInterval,
+			ReuseInterval:             &in.Settings.PasswordValidationPolicy.ReuseInterval,
+		}
+	}
+
+	if in.Settings.PricingPlan != "" {
+		out.Spec.Settings.PricingPlan = &in.Settings.PricingPlan
+	}
+
+	if in.Settings.ReplicationType != "" {
+		out.Spec.Settings.ReplicationType = &in.Settings.ReplicationType
+	}
+
+	if in.Settings.SqlServerAuditConfig != nil {
+		out.Spec.Settings.SqlServerAuditConfig = &krm.InstanceSqlServerAuditConfig{
+			BucketRef: &refs.StorageBucketRef{
+				External: in.Settings.SqlServerAuditConfig.Bucket,
+			},
+			RetentionInterval: &in.Settings.SqlServerAuditConfig.RetentionInterval,
+			UploadInterval:    &in.Settings.SqlServerAuditConfig.UploadInterval,
+		}
+	}
+
+	out.Spec.Settings.Tier = in.Settings.Tier
+
+	if in.Settings.TimeZone != "" {
+		out.Spec.Settings.TimeZone = &in.Settings.TimeZone
+	}
+
+	if in.Settings.UserLabels != nil {
+		out.Labels = in.Settings.UserLabels
 	}
 
 	return out, nil
