@@ -53,7 +53,10 @@ func (r *clusterServer) GetCluster(ctx context.Context, req *pb.GetClusterReques
 		return nil, err
 	}
 
-	return obj, nil
+	retObj := proto.Clone(obj).(*pb.Cluster)
+	// pscConfigs is not included in the response
+	retObj.PscConfigs = nil
+	return retObj, nil
 }
 
 func (r *clusterServer) CreateCluster(ctx context.Context, req *pb.CreateClusterRequest) (*longrunning.Operation, error) {
@@ -97,7 +100,10 @@ func (r *clusterServer) CreateCluster(ctx context.Context, req *pb.CreateCluster
 			return nil, err
 		}
 
-		return obj, nil
+		retObj := proto.Clone(obj).(*pb.Cluster)
+		// pscConfigs is not included in the response
+		retObj.PscConfigs = nil
+		return retObj, nil
 	})
 }
 
@@ -157,12 +163,25 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 		obj.PersistenceConfig.Mode = pb.ClusterPersistenceConfig_DISABLED
 	}
 
-	if obj.SizeGb == nil {
-		obj.SizeGb = direct.PtrTo(int32(39))
+	if obj.ReplicaCount == nil {
+		obj.ReplicaCount = direct.PtrTo[int32](0)
 	}
-	if obj.PreciseSizeGb == nil {
-		obj.PreciseSizeGb = direct.PtrTo(float64(39))
+
+	nodeCapacity := float64(1)
+	switch obj.GetNodeType() {
+	case pb.NodeType_REDIS_SHARED_CORE_NANO:
+		nodeCapacity = 1.4
+	case pb.NodeType_REDIS_STANDARD_SMALL:
+		nodeCapacity = 6.5
+	case pb.NodeType_REDIS_HIGHMEM_MEDIUM:
+		nodeCapacity = 13.0
+	case pb.NodeType_REDIS_HIGHMEM_XLARGE:
+		nodeCapacity = 58.0
+	default:
+		return fmt.Errorf("unknown node type %v", obj.GetNodeType())
 	}
+	obj.PreciseSizeGb = direct.PtrTo(float64(nodeCapacity * float64(obj.GetShardCount())))
+	obj.SizeGb = direct.PtrTo(int32(obj.GetPreciseSizeGb()))
 
 	if obj.TransitEncryptionMode == pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
 		obj.TransitEncryptionMode = pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_DISABLED
@@ -221,6 +240,10 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 		}
 	}
 
+	if err := r.populateDefaultsForCluster(name, obj); err != nil {
+		return nil, err
+	}
+
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -231,10 +254,14 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 		Target:     fqn,
 		Verb:       "update",
 	}
-	prefix := fmt.Sprintf("v1/projects/%s/locations/%s", name.Project.ID, name.Location)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
-		return obj, nil
+
+		retObj := proto.Clone(obj).(*pb.Cluster)
+		// pscConfigs is not included in the response
+		retObj.PscConfigs = nil
+		return retObj, nil
 	})
 }
 
