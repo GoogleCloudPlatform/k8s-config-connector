@@ -63,12 +63,12 @@ func ReserveCluster(t *testing.T) ClusterUser {
 	found := false
 	for !found {
 		clusterSet.available.Range(func(k, v any) bool {
-			v, loaded := clusterSet.available.LoadAndDelete(k)
+			c, loaded := clusterSet.available.LoadAndDelete(k)
 			if !loaded {
 				return true
 			}
 			found = true
-			cluster = v.(ClusterUser)
+			cluster = c.(ClusterUser)
 			return false
 		})
 
@@ -95,8 +95,8 @@ func CreateKindClusters(clusterCount int, images string) {
 	wg.Add(clusterCount)
 	// Start with 1 e2e cluster
 	for i := 0; i < clusterCount; i++ {
-		go func() {
-			name := fmt.Sprintf("composition-e2e-%d", i)
+		go func(index int) {
+			name := fmt.Sprintf("composition-e2e-%d", index)
 			// kind cluster
 			kc := kind.NewCluster(name,
 				// that adds these images
@@ -117,7 +117,7 @@ func CreateKindClusters(clusterCount int, images string) {
 			// TODO ADD CLUSTER
 			AddCluster(kc)
 			wg.Done()
-		}()
+		}(i)
 	}
 	wg.Wait()
 }
@@ -132,8 +132,8 @@ func CreateCCClusters(clusterCount int, images string) {
 	wg.Add(clusterCount)
 	// Start with 1 e2e cluster
 	for i := 0; i < clusterCount; i++ {
-		go func() {
-			name := fmt.Sprintf("composition-e2e-%d", i)
+		go func(index int) {
+			name := fmt.Sprintf("composition-e2e-%d", index)
 			// cc cluster
 
 			// HACK for master CIDR
@@ -144,7 +144,7 @@ func CreateCCClusters(clusterCount int, images string) {
 			//   192.168.0.0 – 192.168.255.255
 			//   except 172.16 and 172.17.
 			//   Also this must be /28
-			masterCidr := fmt.Sprintf("172.18.%d.0/28", i)
+			masterCidr := fmt.Sprintf("172.18.%d.0/28", index)
 
 			cc := configcontroller.NewCluster(name, masterCidr,
 				// and installs these manifests
@@ -164,7 +164,7 @@ func CreateCCClusters(clusterCount int, images string) {
 			// TODO ADD CLUSTER
 			AddCluster(cc)
 			wg.Done()
-		}()
+		}(i)
 	}
 	wg.Wait()
 }

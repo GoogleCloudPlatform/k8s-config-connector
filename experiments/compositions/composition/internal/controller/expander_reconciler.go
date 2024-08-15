@@ -71,12 +71,6 @@ type EvaluateWaitError struct {
 
 func (e *EvaluateWaitError) Error() string { return e.msg }
 
-var planGVK schema.GroupVersionKind = schema.GroupVersionKind{
-	Group:   "composition.google.com",
-	Version: "v1alpha1",
-	Kind:    "Plan",
-}
-
 var contextGVK schema.GroupVersionKind = schema.GroupVersionKind{
 	Group:   "composition.google.com",
 	Version: "v1alpha1",
@@ -330,7 +324,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		if !ready {
 			r.Recorder.Event(&inputcr, "Warning", "ReconcileFailed", fmt.Sprintf("Some resources are not healthy. name: %s", expander))
-			logger.Info("Applied succesfully but some resources did not become healthy")
+			logger.Info("Applied successfully but some resources did not become healthy")
 			// Inject plan.Waiting Condition
 			newStatus.AppendWaitingCondition(expander, "Not all resources are healthy", "WaitingForAppliedResources")
 			return ctrl.Result{}, fmt.Errorf("Some applied resources are not healthy")
@@ -433,7 +427,7 @@ func (r *ExpanderReconciler) runJob(ctx context.Context, logger logr.Logger,
 		logger.Info("Expander job completed but Failed")
 		return "ExpansionFailed", fmt.Errorf("Expander Job Failed")
 	}
-	r.Recorder.Event(cr, "Normal", "ExpansionSucceded", fmt.Sprintf("Job succeded for name: %s", expanderName))
+	r.Recorder.Event(cr, "Normal", "ExpansionSucceeded", fmt.Sprintf("Job succeeded for name: %s", expanderName))
 	logger.Info("Expander job Completed successfully")
 	return "", nil
 }
@@ -444,7 +438,7 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 	// Set up a connection to the server.
 	updated := false
 
-	conn, err := grpc.Dial(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		logger.Error(err, "grpc dial failed: "+grpcService)
 		return values, updated, "GRPCConnError", err
@@ -634,7 +628,8 @@ func (r *ExpanderReconciler) enqueueAllFromGVK(ctx context.Context, _ client.Obj
 	if len(inputcrList.Items) == 0 {
 		return nil
 	}
-	var reqs []reconcile.Request
+
+	reqs := []reconcile.Request{}
 	// TODO: If there are lots of objects, this will result in very many reconciles. Have not tested to see how the
 	// queue copes with this. If it becomes a problem, this will need a rethink.
 	for _, inputcr := range inputcrList.Items {

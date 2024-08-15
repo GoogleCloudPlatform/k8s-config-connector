@@ -19,11 +19,9 @@ import (
 	"encoding/json"
 	"flag"
 	"log"
-	"math/rand"
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/proto"
@@ -66,10 +64,8 @@ var (
 func TestMain(m *testing.M) {
 	flag.Parse()
 
-	rand.Seed(time.Now().UnixNano())
-	flag.Parse()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -192,7 +188,7 @@ func evaluateGetterConfigurationMissingObject(t *testing.T, getter []byte, expec
 	}
 
 	if !strings.Contains(r.Error.Message, expectedErrorString) {
-		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
+		t.Fatalf("expected error contains: %q \n got: %q", expectedErrorString, r)
 	}
 }
 
@@ -379,7 +375,9 @@ func TestEvaluateGetterConfigurationValidObjectWithMissingField(t *testing.T) {
 		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r)
 	}
 
-	expectedErrorString := "Field path not present in object yet: Deployment.apps(v1)/composition-system/composition-controller-manager[.spec.template.foobar]"
+	expectedErrorString := "Field path not present in object yet: " +
+		"Deployment.apps(v1)/composition-system/composition-controller-manager" +
+		"[.spec.template.foobar]"
 	if !strings.Contains(r.Error.Message, expectedErrorString) {
 		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
 	}

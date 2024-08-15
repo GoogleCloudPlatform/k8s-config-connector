@@ -17,7 +17,6 @@ package kind
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"os"
 	"os/exec"
@@ -102,8 +101,12 @@ func (c *kindCluster) create() error {
 	if err != nil {
 		return fmt.Errorf("kindClusterDefinition failed. err: %v", err)
 	}
-	defer os.Remove(clusterConfig)
-
+	defer func() {
+		err := os.Remove(clusterConfig)
+		if err != nil {
+			panic("Error removing file: " + clusterConfig)
+		}
+	}()
 	c.config, err = c.createCluster(clusterConfig)
 	if err != nil {
 		return fmt.Errorf("createCluster() failed. err: %v", err)
@@ -129,11 +132,14 @@ func (c *kindCluster) registerImages() error {
 
 func (c *kindCluster) installManifests() error {
 	for _, path := range c.manifestPaths {
-		manifests, err := ioutil.ReadFile(path)
+		manifests, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}
 		objects, err := manifest.ParseObjects(context.Background(), string(manifests))
+		if err != nil {
+			return err
+		}
 		for _, item := range objects.Items {
 			err := c.Client.Create(context.Background(), item.UnstructuredObject())
 			if err != nil {
@@ -184,7 +190,7 @@ func isDeploymentReady(ctx context.Context, c client.Client, nn types.Namespaced
 
 func (c *kindCluster) WaitForWorkloads() error {
 	start := time.Now()
-	for true {
+	for {
 		allReady := true
 		for _, workload := range c.deployments {
 			ready, err := isDeploymentReady(c.ctx, c.Client, workload)
@@ -197,12 +203,12 @@ func (c *kindCluster) WaitForWorkloads() error {
 			}
 		}
 		if allReady {
-			return nil
+			break
 		}
 		if time.Since(start).Seconds() > 40 {
 			return fmt.Errorf("timed out waiting for operator to be ready")
 		}
-		time.Sleep(2)
+		time.Sleep(2 * time.Second)
 	}
 	return nil
 }
@@ -300,14 +306,18 @@ func (c *kindCluster) kindClusterDefinition() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer clusterConfigFile.Close()
 	kindClusterConfig := `kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
   # Allow connections to the API Sever with the host IP address
   apiServerAddress: "` + ipAddress + `"`
 	bytes := []byte(kindClusterConfig)
-	_, err = clusterConfigFile.Write(bytes)
+	if _, err = clusterConfigFile.Write(bytes); err != nil {
+		return "", err
+	}
+	if err = clusterConfigFile.Close(); err != nil {
+		return "", err
+	}
 	return clusterConfigFile.Name(), err
 }
 
@@ -321,14 +331,24 @@ func (c *kindCluster) createCluster(clusterConfig string) (*rest.Config, error) 
 	if err != nil {
 		return nil, err
 	}
-	defer os.Remove(kubeConfigFile.Name())
+	defer func() {
+		err := os.Remove(kubeConfigFile.Name())
+		if err != nil {
+			panic("Error removing kubeconfig file")
+		}
+	}()
 	content, err := exec.Command("kind", "get", "kubeconfig", "--name", c.name).CombinedOutput()
 	if err != nil {
 		return nil, err
 	}
-	bytes := []byte(content)
-	_, err = kubeConfigFile.Write(bytes)
-	kubeConfigFile.Close()
+	bytes := content
+	if _, err = kubeConfigFile.Write(bytes); err != nil {
+		return nil, err
+	}
+	err = kubeConfigFile.Close()
+	if err != nil {
+		return nil, err
+	}
 
 	return clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
 		&clientcmd.ClientConfigLoadingRules{ExplicitPath: kubeConfigFile.Name()},
@@ -346,8 +366,11 @@ func (c *kindCluster) getHostIPAddress() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer conn.Close()
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	err = conn.Close()
+	if err != nil {
+		return "", err
+	}
 	return localAddr.IP.String(), nil
 }
 

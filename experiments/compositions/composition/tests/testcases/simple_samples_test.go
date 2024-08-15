@@ -33,7 +33,7 @@ import (
 
 func getNamespaceObj(ns string) []*unstructured.Unstructured {
 	return []*unstructured.Unstructured{
-		&unstructured.Unstructured{
+		{
 			Object: map[string]interface{}{
 				"apiVersion": "v1",
 				"kind":       "Namespace",
@@ -47,7 +47,7 @@ func getNamespaceObj(ns string) []*unstructured.Unstructured {
 
 func getTeamPageObj(team string) []*unstructured.Unstructured {
 	return []*unstructured.Unstructured{
-		&unstructured.Unstructured{
+		{
 			Object: map[string]interface{}{
 				"apiVersion": "idp.mycompany.com/v1alpha1",
 				"kind":       "TeamPage",

@@ -17,7 +17,6 @@ package configcontroller
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -174,7 +173,9 @@ func (c *ccCluster) create() error {
 
 	// grant cc permissions
 	sa := fmt.Sprintf("serviceAccount:service-%s@gcp-sa-yakima.iam.gserviceaccount.com", projectNumber)
-	//gcloud projects add-iam-policy-binding "${PROJECT_ID}" --member "serviceAccount:${SA_EMAIL}" --role "roles/owner" --project "${PROJECT_ID}"
+	//gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
+	// --member "serviceAccount:${SA_EMAIL}" --role "roles/owner" \
+	// --project "${PROJECT_ID}"
 	c.exec(
 		"gcloud", "projects", "add-iam-policy-binding", project,
 		"--member", sa,
@@ -184,7 +185,8 @@ func (c *ccCluster) create() error {
 
 	// allow custom workloads
 
-	//kubectl patch k8sallowedresources.constraints.gatekeeper.sh block-workloads --patch '{"spec":{"enforcementAction":"dryrun"}}' --type merge
+	//kubectl patch k8sallowedresources.constraints.gatekeeper.sh block-workloads \
+	// --patch '{"spec":{"enforcementAction":"dryrun"}}' --type merge
 	// Not needed anymore: https://source.corp.google.com/h/acp/acp/+/51a8ebb6fbb9de6637dd0eda72cf6c16937fd107
 	/*
 		c.exec("kubectl", "patch",
@@ -193,22 +195,27 @@ func (c *ccCluster) create() error {
 			"{\"spec\":{\"enforcementAction\":\"dryrun\"}}", "--type", "merge")
 	*/
 
-	//kubectl label validatingwebhookconfigurations.admissionregistration.k8s.io gatekeeper-validating-webhook-configuration policycontroller.configmanagement.gke.io/managed-by-operator-
+	//kubectl label validatingwebhookconfigurations.admissionregistration.k8s.io \
+	//  gatekeeper-validating-webhook-configuration policycontroller.configmanagement.gke.io/managed-by-operator-
 	c.exec("kubectl", "label",
 		"validatingwebhookconfigurations.admissionregistration.k8s.io",
 		"gatekeeper-validating-webhook-configuration",
 		"policycontroller.configmanagement.gke.io/managed-by-operator-")
 
-	//kubectl patch validatingwebhookconfigurations.admissionregistration.k8s.io gatekeeper-validating-webhook-configuration --type=json -p '[ {"op":"remove","path":"/webhooks"} ]'
+	//kubectl patch validatingwebhookconfigurations.admissionregistration.k8s.io \
+	// gatekeeper-validating-webhook-configuration \
+	// --type=json -p '[ {"op":"remove","path":"/webhooks"} ]'
 	c.exec("kubectl", "patch",
 		"validatingwebhookconfigurations.admissionregistration.k8s.io",
 		"gatekeeper-validating-webhook-configuration", "--type", "json",
 		"-p", "[ {\"op\":\"remove\",\"path\":\"/webhooks\"} ]")
 
 	// this is reverted:
-	//  kubectl patch K8sAllowedResources forbidden-namespaces --type=json --patch '[ {"op":"add","path":"/spec/parameters/exemptedNamespaces/-", "value": "composition-system"} ]'
+	//  kubectl patch K8sAllowedResources forbidden-namespaces --type=json --patch \
+	//  '[ {"op":"add","path":"/spec/parameters/exemptedNamespaces/-", "value": "composition-system"} ]'
 	// so do this instead:
-	//  kubectl patch K8sAllowedResources forbidden-namespaces --patch  '{"spec":{"enforcementAction":"dryrun"}}' --type merge
+	//  kubectl patch K8sAllowedResources forbidden-namespaces \
+	//  --patch  '{"spec":{"enforcementAction":"dryrun"}}' --type merge
 	c.exec("kubectl", "patch",
 		"K8sAllowedResources",
 		"forbidden-namespaces",
@@ -224,12 +231,15 @@ func (c *ccCluster) create() error {
 			"--max-cpu", "10",
 			"--max-memory", "64",
 			"--autoprovisioning-scopes",
-			"https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/devstorage.read_only",
+			"https://www.googleapis.com/auth/logging.write," +
+			 https://www.googleapis.com/auth/monitoring," +
+			 https://www.googleapis.com/auth/devstorage.read_only",
 		)
 	*/
 
 	// allow image pulls
-	//export defaultGCESA="$(gcloud iam service-accounts list --format=json | jq '.[] | select(.displayName == "Compute Engine default service account") | .email' | xargs echo)"
+	//export defaultGCESA="$(gcloud iam service-accounts list --format=json | \
+	// jq '.[] | select(.displayName == "Compute Engine default service account") | .email' | xargs echo)"
 	defaultGCESA := fmt.Sprintf("%s-compute@developer.gserviceaccount.com", projectNumber)
 	registryBucket := fmt.Sprintf("gs://artifacts.%s.appspot.com/", project)
 	iamPermissions := fmt.Sprintf("serviceAccount:%s:roles/storage.objectViewer", defaultGCESA)
@@ -244,11 +254,14 @@ func (c *ccCluster) create() error {
 
 func (c *ccCluster) installManifests() error {
 	for _, path := range c.manifestPaths {
-		manifests, err := ioutil.ReadFile(path)
+		manifests, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}
 		objects, err := manifest.ParseObjects(context.Background(), string(manifests))
+		if err != nil {
+			return err
+		}
 		for _, item := range objects.Items {
 			err := c.Client.Create(context.Background(), item.UnstructuredObject())
 			if err != nil {
@@ -328,7 +341,7 @@ func isDeploymentReady(ctx context.Context, c client.Client, nn types.Namespaced
 
 func (c *ccCluster) WaitForWorkloads() error {
 	start := time.Now()
-	for true {
+	for {
 		allReady := true
 		for _, workload := range c.deployments {
 			ready, err := isDeploymentReady(c.ctx, c.Client, workload)
@@ -341,12 +354,12 @@ func (c *ccCluster) WaitForWorkloads() error {
 			}
 		}
 		if allReady {
-			return nil
+			break
 		}
 		if time.Since(start).Seconds() > 40 {
 			return fmt.Errorf("timed out waiting for operator to be ready")
 		}
-		time.Sleep(2)
+		time.Sleep(2 * time.Second)
 	}
 	return nil
 }

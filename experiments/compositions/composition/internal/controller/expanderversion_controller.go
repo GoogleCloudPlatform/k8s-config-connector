@@ -100,17 +100,13 @@ func (r *ExpanderVersionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 
 	ev.Status.ClearCondition(compositionv1alpha1.Error)
 	logger.Info("Processing ExpanderVersion object")
-	if err := r.processExpanderVersion(ctx, &ev, logger); err != nil {
-		logger.Info("Error processing ExpanderVersion")
-		return ctrl.Result{}, err
-	}
-
+	r.processExpanderVersion(&ev, logger)
 	return ctrl.Result{}, nil
 }
 
 func (r *ExpanderVersionReconciler) processExpanderVersion(
-	ctx context.Context, ev *compositionv1alpha1.ExpanderVersion, logger logr.Logger,
-) error {
+	ev *compositionv1alpha1.ExpanderVersion, logger logr.Logger,
+) {
 	if ev.Status.VersionMap == nil {
 		ev.Status.VersionMap = make(map[string]string)
 	}
@@ -144,8 +140,6 @@ func (r *ExpanderVersionReconciler) processExpanderVersion(
 	sort.Sort(semver.Collection(semVerVersions))
 	latest := "v" + semVerVersions[len(semVerVersions)-1].String()
 	ev.Status.VersionMap["latest"] = ev.Status.VersionMap[latest]
-
-	return nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

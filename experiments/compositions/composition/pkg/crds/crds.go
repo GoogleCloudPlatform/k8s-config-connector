@@ -85,11 +85,12 @@ func (c *CRDInfo) SetCRDSchema(schema *apiextensions.JSONSchemaProps) {
 func (c *CRDInfo) SetSpec(specProperties *apiextensionsv1.JSONSchemaProps) error {
 	specUnversionedProperties := &apiextensions.JSONSchemaProps{}
 	// Risk ? nil conversion.Scope passed
-	if err := apiextensionsv1.Convert_v1_JSONSchemaProps_To_apiextensions_JSONSchemaProps(specProperties, specUnversionedProperties, nil); err != nil {
+	if err := apiextensionsv1.Convert_v1_JSONSchemaProps_To_apiextensions_JSONSchemaProps(
+		specProperties, specUnversionedProperties, nil); err != nil {
 		return err
 	}
 	statusProperties := map[string]apiextensions.JSONSchemaProps{
-		"conditions": apiextensions.JSONSchemaProps{
+		"conditions": {
 			Type: "array",
 			Items: &apiextensions.JSONSchemaPropsOrArray{
 				Schema: &apiextensions.JSONSchemaProps{
@@ -97,39 +98,41 @@ func (c *CRDInfo) SetSpec(specProperties *apiextensionsv1.JSONSchemaProps) error
 					Required:    []string{"lastTransitionTime", "message", "reason", "status", "type"},
 					Type:        "object",
 					Properties: map[string]apiextensions.JSONSchemaProps{
-						"lastTransitionTime": apiextensions.JSONSchemaProps{
+						"lastTransitionTime": {
 							Description: "",
 							Format:      "date-time",
 							Type:        "string",
 						},
-						"message": apiextensions.JSONSchemaProps{
+						"message": {
 							Description: "human readable message",
 							MaxLength:   ptr.To[int64](1024),
 							Type:        "string",
 						},
-						"observedGeneration": apiextensions.JSONSchemaProps{
+						"observedGeneration": {
 							Description: "",
 							Format:      "int64",
 							Minimum:     ptr.To[float64](0),
 							Type:        "integer",
 						},
-						"reason": apiextensions.JSONSchemaProps{
+						"reason": {
 							Description: "",
 							MaxLength:   ptr.To[int64](256),
 							MinLength:   ptr.To[int64](1),
 							Pattern:     "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
 							Type:        "string",
 						},
-						"status": apiextensions.JSONSchemaProps{
+						"status": {
 							Description: "status of the condition, one of True, False, Unknown.",
 							Enum:        []apiextensions.JSON{"True", "False", "Unknown"},
 							Type:        "string",
 						},
-						"type": apiextensions.JSONSchemaProps{
-							Description: "type of condition in CamelCase or in foo.example.com/CamelCase. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
-							MaxLength:   ptr.To[int64](316),
-							Pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
-							Type:        "string",
+						"type": {
+							Description: "type of condition in CamelCase or in foo.example.com/CamelCase." +
+								" The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+							MaxLength: ptr.To[int64](316),
+							Pattern: "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)" +
+								"?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+							Type: "string",
 						},
 					},
 				},

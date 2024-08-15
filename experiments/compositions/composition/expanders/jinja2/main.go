@@ -64,7 +64,10 @@ func (s *server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.Val
 		return nil, newerr
 	}
 	// cleanup
-	defer os.RemoveAll(dir)
+	defer func() {
+		err := os.RemoveAll(dir)
+		log.Printf("Error removing directory: %s, %v", dir, err)
+	}()
 
 	e := expander{
 		path:     dir,
@@ -91,7 +94,8 @@ func (s *server) Evaluate(ctx context.Context, req *pb.EvaluateRequest) (*pb.Eva
 		Error:  &pb.Error{},
 	}
 
-	//log.Printf("EvaluateRequest:\n  config: %s\n  context: %s\n  facade: %s\n  values: %s\n", req.Config, req.Context, req.Facade, req.Value)
+	//log.Printf("EvaluateRequest:\n  config: %s\n  context: %s\n  facade: "
+	//    "%s\n  values: %s\n", req.Config, req.Context, req.Facade, req.Value)
 	dir, err := os.MkdirTemp("", "jinja2")
 	if err != nil {
 		newerr := fmt.Errorf("unexpected tmp file creation failure. %w", err)
@@ -99,7 +103,10 @@ func (s *server) Evaluate(ctx context.Context, req *pb.EvaluateRequest) (*pb.Eva
 		return nil, newerr
 	}
 	// cleanup
-	defer os.RemoveAll(dir)
+	defer func() {
+		err := os.RemoveAll(dir)
+		log.Printf("Error removing directory: %s, %v", dir, err)
+	}()
 
 	e := expander{
 		path:     dir,
@@ -170,6 +177,7 @@ func (e *expander) WriteInputsToFileSystem() error {
 	return nil
 }
 
+// nolint:unparam
 func (e *expander) Validate(result *pb.ValidateResult) (*pb.ValidateResult, error) {
 	// usage: python parse_template.py <file>
 	args := []string{
@@ -216,7 +224,9 @@ func (e *expander) Evaluate(result *pb.EvaluateResult) (*pb.EvaluateResult, erro
 
 	result.Manifests = manifests
 
-	//log.Printf("Result:\n  type: %s\n  error: %s\n  status: %s\n  manifests: %s\n  values: %s\n", result.Type, result.Errors, result.Status, result.Manifests, result.Values)
+	//log.Printf("Result:\n  type: %s\n  error: %s\n  status: %s\n "
+	//" manifests: %s\n  values: %s\n", result.Type, result.Errors,
+	// result.Status, result.Manifests, result.Values)
 	return result, nil
 }
 
