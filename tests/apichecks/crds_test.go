@@ -80,6 +80,53 @@ func TestMissingRefs(t *testing.T) {
 	test.CompareGoldenFile(t, "testdata/exceptions/missingrefs.txt", want)
 }
 
+// Looks for fields that looks like refs, but are in the status.
+// These fields should not be refs, they should be "external style" links.
+func TestNoRefsInStatus(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider status
+				if !strings.HasPrefix(fieldPath, ".status.") {
+					return
+				}
+
+				// Well-known exception
+				if fieldPath == ".status.externalRef" {
+					return
+				}
+
+				// Check if this is named like a ref
+				isRef := false
+				if strings.HasSuffix(fieldPath, "Ref") {
+					isRef = true
+				}
+				if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
+					isRef = true
+				}
+
+				if isRef {
+					errs = append(errs, fmt.Sprintf("[no_refs_in_status] crd=%s version=%v: reference field %q should not be in status", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/no_refs_in_status.txt", want)
+}
+
 func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
