@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/google/go-cmp/cmp"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -63,7 +62,7 @@ func (r *Planner) BuildPlan(ctx context.Context, objects []*unstructured.Unstruc
 		if err != nil {
 			// The Kind doesn't even exist; the object can't exist already
 			// TODO: We should invalide mappings above, in case our cache is out of date
-			action.Type = "Create"
+			action.Type = ActionTypeCreate
 			plan.Spec.Actions = append(plan.Spec.Actions, action)
 			continue
 		}
@@ -71,7 +70,7 @@ func (r *Planner) BuildPlan(ctx context.Context, objects []*unstructured.Unstruc
 		beforeApply, err := resource.Get(ctx, object, metav1.GetOptions{})
 		if err != nil {
 			if apierrors.IsNotFound(unwrap(err)) {
-				action.Type = "Create"
+				action.Type = ActionTypeCreate
 				plan.Spec.Actions = append(plan.Spec.Actions, action)
 				continue
 			}
@@ -88,14 +87,15 @@ func (r *Planner) BuildPlan(ctx context.Context, objects []*unstructured.Unstruc
 			afterApply.SetManagedFields(nil)
 
 			if reflect.DeepEqual(beforeApply, afterApply) {
-				action.Type = "Unchanged"
+				action.Type = ActionTypeUnchanged
 				plan.Spec.Actions = append(plan.Spec.Actions, action)
 			} else {
-				diff := cmp.Diff(beforeApply, afterApply)
-				if diff != "" {
-					klog.Infof("diff is %v", diff)
+				action.Type = ActionTypeApplyChanges
+				diff, err := BuildObjectDiff(beforeApply, afterApply)
+				if err != nil {
+					return nil, fmt.Errorf("building object diff: %w", err)
 				}
-				action.Type = "ApplyChanges"
+				action.Diff = diff
 				plan.Spec.Actions = append(plan.Spec.Actions, action)
 			}
 		}
@@ -103,7 +103,7 @@ func (r *Planner) BuildPlan(ctx context.Context, objects []*unstructured.Unstruc
 		if err != nil {
 			if action.Type == "" {
 				klog.Errorf("unknown error applying (%s) %#v", id, err)
-				action.Type = "Error"
+				action.Type = ActionTypeError
 			}
 			plan.Spec.Actions = append(plan.Spec.Actions, action)
 			continue

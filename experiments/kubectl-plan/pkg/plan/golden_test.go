@@ -22,6 +22,10 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
@@ -88,6 +92,8 @@ func TestPlanner(t *testing.T) {
 				t.Fatalf("error building target: %v", err)
 			}
 
+			ensureNamespace(ctx, t, kubeClient, "default")
+
 			for _, existingObject := range existingObjects {
 				if err := kubeClient.Create(ctx, existingObject); err != nil {
 					t.Fatalf("error pre-creating existing object: %v", err)
@@ -105,7 +111,13 @@ func TestPlanner(t *testing.T) {
 			if err != nil {
 				t.Fatalf("yaml.Marshal failed: %v", err)
 			}
-			CompareGoldenFile(t, filepath.Join(p, "plan.yaml"), actual)
+			CompareGoldenFile(t, filepath.Join(p, "_plan.yaml"), actual)
+
+			var pretty bytes.Buffer
+			if err := printPlan(ctx, plan, &pretty); err != nil {
+				t.Fatalf("printPlan failed: %v", err)
+			}
+			CompareGoldenFile(t, filepath.Join(p, "_plan.txt"), []byte(pretty.String()))
 		})
 	}
 }
@@ -131,4 +143,30 @@ func CompareGoldenFile(t *testing.T, p string, got []byte) {
 			t.Errorf("unexpected diff in %s: %s", p, diff)
 		}
 	}
+}
+
+func ensureNamespace(ctx context.Context, t *testing.T, kubeclient client.Client, namespace string) {
+	id := types.NamespacedName{Name: namespace}
+	gvk := schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"}
+
+	existing := &unstructured.Unstructured{}
+	existing.SetGroupVersionKind(gvk)
+	if err := kubeclient.Get(ctx, id, existing); err != nil {
+		if !apierrors.IsNotFound(err) {
+			t.Fatalf("checking that namespace exists: %v", err)
+		}
+	} else {
+		// Namespace exists
+		return
+	}
+
+	ns := &unstructured.Unstructured{}
+	ns.SetGroupVersionKind(gvk)
+	ns.SetName(id.Name)
+	ns.SetNamespace(id.Namespace)
+
+	if err := kubeclient.Create(ctx, ns); err != nil {
+		t.Fatalf("creating namespace: %v", err)
+	}
+
 }
