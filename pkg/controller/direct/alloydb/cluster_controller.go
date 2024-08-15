@@ -101,6 +101,12 @@ func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reade
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	// apply labels
+	desired.Labels = make(map[string]string)
+	desired.Labels["managed-by-cnrm"] = "true"
+	for k, v := range obj.Labels {
+		desired.Labels[k] = v
+	}
 
 	return &clusterAdapter{
 		resourceID: resourceID,
@@ -320,6 +326,7 @@ func (a *clusterAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 	u.SetName(a.resourceID)
 	u.SetGroupVersionKind(krm.AlloyDBClusterGVK)
+	u.SetLabels(a.actual.Labels)
 	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
 		return nil, fmt.Errorf("setting spec: %w", err)
 	}
