@@ -211,7 +211,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				// Create test harness
 				var h *create.Harness
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
-					h = create.NewHarnessWithOptions(ctx, t, &create.HarnessOptions{VCRPath: fixture.SourceDir})
+					h = create.NewVCRHarness(ctx, t, fixture.SourceDir)
 					hash := func(s string) uint64 {
 						h := fnv.New64a()
 						h.Write([]byte(s))

@@ -35,7 +35,7 @@ import (
 
 func ForIntegrationTests(m *testing.M, mgr *manager.Manager) {
 	if os.Getenv("E2E_GCP_TARGET") != "" {
-		log.Fatalf("dynamic integration tests do not support variable E2E_GCP_TARGET")
+		log.Fatalf("integration tests do not support variable E2E_GCP_TARGET")
 	}
 
 	// Since Terraform logging defers to the Go standard logger,
