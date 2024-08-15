@@ -236,7 +236,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 
 {
   "clusterType": "PRIMARY",
-  "displayName": "test alloydb cluster",
   "initialUser": {
     "password": "postgres",
     "user": "postgres"
@@ -279,7 +278,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
   "deleteTime": null,
-  "displayName": "test alloydb cluster",
+  "displayName": "",
   "encryptionConfig": null,
   "encryptionInfo": null,
   "etag": "abcdef0123A=",
@@ -310,7 +309,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=displayName%2CautomatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=automatedBackupPolicy
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -321,7 +320,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     }
   },
   "clusterType": "PRIMARY",
-  "displayName": "test alloydb cluster 2",
   "initialUser": {
     "password": "postgres",
     "user": "postgres"
@@ -371,7 +369,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
   "deleteTime": null,
-  "displayName": "test alloydb cluster 2",
+  "displayName": "",
   "encryptionConfig": null,
   "encryptionInfo": null,
   "etag": "abcdef0123A=",
