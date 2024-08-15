@@ -297,7 +297,34 @@ func (a *clusterAdapter) Update(ctx context.Context, u *unstructured.Unstructure
 }
 
 func (a *clusterAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, fmt.Errorf("unimplemented")
+	if a.actual == nil {
+		return nil, fmt.Errorf("alloydb cluster %q not found", a.fullyQualifiedName())
+	}
+
+	mc := &direct.MapContext{}
+	spec := ClusterSpecFromAPI(mc, a.actual)
+	if err := mc.Err(); err != nil {
+		return nil, fmt.Errorf("error converting alloydb cluster from API %w", err)
+	}
+
+	spec.ProjectRef.External = a.projectID
+	spec.ResourceID = &a.resourceID
+
+	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
+	if err != nil {
+		return nil, fmt.Errorf("error converting alloydb cluster spec to unstructured: %w", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: make(map[string]interface{}),
+	}
+	u.SetName(a.resourceID)
+	u.SetGroupVersionKind(krm.AlloyDBClusterGVK)
+	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
+		return nil, fmt.Errorf("setting spec: %w", err)
+	}
+
+	return u, nil
 }
 
 func (a *clusterAdapter) fullyQualifiedName() string {
