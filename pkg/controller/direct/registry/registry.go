@@ -70,11 +70,7 @@ func AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) 
 	}
 	return nil, nil
 }
-
 func Init(ctx context.Context, config *config.ControllerConfig) error {
-	if singleton.registrations == nil {
-		return fmt.Errorf("unable to initialize registry")
-	}
 	for _, registration := range singleton.registrations {
 		model, err := registration.factory(ctx, config)
 		if err != nil {

@@ -25,8 +25,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-
 	"github.com/go-logr/logr"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
@@ -46,6 +44,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
@@ -98,8 +97,7 @@ type Harness struct {
 }
 
 type HarnessOptions struct {
-	VCRPath    string
-	RunSamples bool
+	VCRPath string
 }
 
 type httpRoundTripperKeyType int
@@ -107,29 +105,25 @@ type httpRoundTripperKeyType int
 // httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
 var httpRoundTripperKey httpRoundTripperKeyType
 
+// NewHarnessWithManager builds a Harness for an existing manager.
+// deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
+func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manager) *Harness {
+	h := &Harness{
+		T:      t,
+		Ctx:    ctx,
+		client: mgr.GetClient(),
+	}
+	return h
+}
+
 func NewHarness(ctx context.Context, t *testing.T) *Harness {
-	return newHarnessWithOptions(ctx, t, &HarnessOptions{})
-}
-
-func NewVCRHarness(ctx context.Context, t *testing.T, path string) *Harness {
 	opts := &HarnessOptions{
-		VCRPath: path,
+		VCRPath: "",
 	}
-	return newHarnessWithOptions(ctx, t, opts)
+	return NewHarnessWithOptions(ctx, t, opts)
 }
 
-func NewSamplesHarness(ctx context.Context, t *testing.T) *Harness {
-	opts := &HarnessOptions{
-		RunSamples: true,
-	}
-	err := os.Setenv("E2E_KUBE_TARGET", "envtest")
-	if err != nil {
-		t.Errorf("error setting kube target: %v", err)
-	}
-	return newHarnessWithOptions(ctx, t, opts)
-}
-
-func newHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptions) *Harness {
+func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptions) *Harness {
 	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		ctxCancel()
@@ -151,9 +145,6 @@ func newHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
-	// Enable the configuration of state-into-spec default value in kccmanager
-	kccConfig.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
-
 	// configure caching
 	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
 
@@ -301,13 +292,15 @@ func newHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
-	} else {
-		// if E2E_GCP_TARGET is unset, default to target real GCP
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
 		t.Logf("targeting real GCP")
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+		t.Logf("creating vcr test")
+	} else {
+		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
 
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
-		t.Logf("running mock test")
 		// Some fixed-value fake org-ids for testing.
 		// We used fixed values so that the output is predictable (for golden testing)
 		testgcp.TestFolderID.Set("123451001")
@@ -359,7 +352,6 @@ func newHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		h.Project = project
 	} else if os.Getenv("E2E_GCP_TARGET") == "vcr" && os.Getenv("VCR_MODE") == "replay" {
-		t.Logf("running VCR test")
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
 
@@ -376,7 +368,6 @@ func newHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
 		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
 	} else {
-		t.Logf("running default test")
 		h.Project = testgcp.GetDefaultProject(t)
 	}
 

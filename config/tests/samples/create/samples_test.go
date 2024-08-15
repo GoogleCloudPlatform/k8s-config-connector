@@ -23,13 +23,18 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"golang.org/x/sync/semaphore"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
 
 func init() {
@@ -227,6 +232,7 @@ var testDisabledList = map[string]bool{
 func TestAll(t *testing.T) {
 	project := testgcp.GetDefaultProject(t)
 
+	setup()
 	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
 	if len(samples) == 0 {
 		t.Fatalf("No tests to run for pattern %s", runTestsRegex)
@@ -257,7 +263,7 @@ func TestAll(t *testing.T) {
 
 			ctx := context.TODO()
 
-			h := NewSamplesHarness(ctx, t)
+			h := NewHarnessWithManager(ctx, t, mgr)
 			SetupNamespacesAndApplyDefaults(h, s.Resources, project)
 
 			networkCount := int64(networksInSampleCount(s))
@@ -272,6 +278,26 @@ func TestAll(t *testing.T) {
 			RunCreateDeleteTest(h, CreateDeleteTestOptions{Create: s.Resources, CleanupResources: cleanupResources})
 		})
 	}
+}
+
+func setup() {
+	ctx := context.TODO()
+	flag.Parse()
+	var err error
+	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
+	if err != nil {
+		logging.Fatal(err, "error creating new manager")
+	}
+	// Register the deletion defender controller
+	if err := registration.Add(mgr, &controller.Deps{}, registration.RegisterDeletionDefenderController); err != nil {
+		logging.Fatal(err, "error adding registration controller for deletion defender controllers")
+	}
+	// start the manager, Start(...) is a blocking operation so it needs to be done asynchronously
+	go func() {
+		if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
+			logging.Fatal(err, "error starting manager")
+		}
+	}()
 }
 
 func TestMain(m *testing.M) {
