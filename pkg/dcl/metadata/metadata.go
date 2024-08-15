@@ -890,7 +890,8 @@ type Resource struct {
 	// DCLVersion is the version of DCL client used for this resource, e.g. "ga", "beta" and "alpha".
 	// If omitted, it will default to the DCLVersion specified at the service level.
 	DCLVersion string
-	// DCLType is the resource type named by DCL, see https://source.corp.google.com/piper///depot/google3/cloud/graphite/mmv2/dcl/resource.go
+	// DCLType is the resource type named by DCL, see
+	// https://github.com/GoogleCloudPlatform/declarative-resource-client-library/blob/v1.71.0/dcl/resource.go.
 	// If omitted, it assumes that DCL and KCC use the exact same name (case-sensitive) for this resource.
 	// This field should only be specified if we want to change acronyms in the resource name to consistent capitalization to follow k8s naming conventions
 	// e.g OAuthIdpConfig -> OAuthIDPConfig.
