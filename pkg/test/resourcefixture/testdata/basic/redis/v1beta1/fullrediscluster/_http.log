@@ -543,7 +543,7 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "authorizationMode": 1,
-  "deletionProtectionEnabled": false,
+  "deletionProtectionEnabled": true,
   "nodeType": 4,
   "persistenceConfig": {
     "aofConfig": {
@@ -622,7 +622,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "deletionProtectionEnabled": false,
+    "deletionProtectionEnabled": true,
     "discoveryEndpoints": [
       {
         "address": "10.128.0.3",
@@ -693,7 +693,7 @@ X-Xss-Protection: 0
 {
   "authorizationMode": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "deletionProtectionEnabled": false,
+  "deletionProtectionEnabled": true,
   "discoveryEndpoints": [
     {
       "address": "10.128.0.3",
@@ -755,10 +755,11 @@ x-goog-request-params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
-    "aofConfig": {
-      "appendFsync": 2
-    },
-    "mode": 3
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+    }
   },
   "pscConfigs": [
     {
@@ -766,6 +767,148 @@ x-goog-request-params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     }
   ],
   "redisConfigs": {
+    "maxclients": "10",
+    "maxmemory-policy": "volatile-ttl"
+  },
+  "replicaCount": 1,
+  "shardCount": 6,
+  "transitEncryptionMode": 2,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": true,
+    "discoveryEndpoints": [
+      {
+        "address": "10.128.0.3",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_STANDARD_SMALL",
+    "persistenceConfig": {
+      "aofConfig": {
+        "appendFsync": "EVERYSEC"
+      },
+      "mode": "AOF"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.128.0.2",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      },
+      {
+        "address": "10.128.0.3",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "redisConfigs": {
+      "maxmemory-policy": "volatile-ttl"
+    },
+    "replicaCount": 1,
+    "shardCount": 6,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
+    "uid": "111111111111111111111",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=deletionProtectionEnabled
+Content-Type: application/json
+x-goog-request-params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "authorizationMode": 1,
+  "deletionProtectionEnabled": false,
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "nodeType": 4,
+  "persistenceConfig": {
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+    }
+  },
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    }
+  ],
+  "redisConfigs": {
+    "maxclients": "10",
     "maxmemory-policy": "volatile-ttl"
   },
   "replicaCount": 1,
@@ -884,6 +1027,291 @@ X-Xss-Protection: 0
 
 ---
 
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=persistenceConfig
+Content-Type: application/json
+x-goog-request-params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "authorizationMode": 1,
+  "deletionProtectionEnabled": false,
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "nodeType": 4,
+  "persistenceConfig": {
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+    }
+  },
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    }
+  ],
+  "redisConfigs": {
+    "maxclients": "10",
+    "maxmemory-policy": "volatile-ttl"
+  },
+  "replicaCount": 1,
+  "shardCount": 6,
+  "transitEncryptionMode": 2,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.128.0.3",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_STANDARD_SMALL",
+    "persistenceConfig": {
+      "mode": "RDB",
+      "rdbConfig": {
+        "rdbSnapshotPeriod": "ONE_HOUR",
+        "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+      }
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.128.0.2",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      },
+      {
+        "address": "10.128.0.3",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "redisConfigs": {
+      "maxmemory-policy": "volatile-ttl"
+    },
+    "replicaCount": 1,
+    "shardCount": 6,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
+    "uid": "111111111111111111111",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=redisConfigs
+Content-Type: application/json
+x-goog-request-params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "authorizationMode": 1,
+  "deletionProtectionEnabled": false,
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "nodeType": 4,
+  "persistenceConfig": {
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+    }
+  },
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    }
+  ],
+  "redisConfigs": {
+    "maxclients": "10",
+    "maxmemory-policy": "volatile-ttl"
+  },
+  "replicaCount": 1,
+  "shardCount": 6,
+  "transitEncryptionMode": 2,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.128.0.3",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_STANDARD_SMALL",
+    "persistenceConfig": {
+      "mode": "RDB",
+      "rdbConfig": {
+        "rdbSnapshotPeriod": "ONE_HOUR",
+        "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+      }
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.128.0.2",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      },
+      {
+        "address": "10.128.0.3",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "redisConfigs": {
+      "maxclients": "10",
+      "maxmemory-policy": "volatile-ttl"
+    },
+    "replicaCount": 1,
+    "shardCount": 6,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
+    "uid": "111111111111111111111",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
 GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
@@ -915,10 +1343,11 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
-    "aofConfig": {
-      "appendFsync": 2
-    },
-    "mode": 3
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+    }
   },
   "preciseSizeGb": 39,
   "pscConnections": [
@@ -938,6 +1367,7 @@ X-Xss-Protection: 0
     }
   ],
   "redisConfigs": {
+    "maxclients": "10",
     "maxmemory-policy": "volatile-ttl"
   },
   "replicaCount": 1,

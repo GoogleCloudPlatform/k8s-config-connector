@@ -36,7 +36,7 @@ spec:
     zone: us-central1-b
   persistenceConfig:
     mode: RDB
-    rdbConfig: 
+    rdbConfig:
       rdbSnapshotPeriod: ONE_HOUR
       rdbSnapshotStartTime: 2024-10-02T15:01:23Z
   deletionProtectionEnabled: false

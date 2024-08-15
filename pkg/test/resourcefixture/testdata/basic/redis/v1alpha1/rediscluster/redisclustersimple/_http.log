@@ -542,6 +542,9 @@ Content-Type: application/json
 x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
+  "persistenceConfig": {
+    "mode": 1
+  },
   "pscConfigs": [
     {
       "network": "projects/${projectId}/global/networks/network-${uniqueId}"
@@ -720,6 +723,9 @@ x-goog-request-params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
 
 {
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "persistenceConfig": {
+    "mode": 1
+  },
   "pscConfigs": [
     {
       "network": "projects/${projectId}/global/networks/network-${uniqueId}"
