@@ -70,7 +70,7 @@ type FeaturemembershipConfigmanagement struct {
 	// +optional
 	ConfigSync *FeaturemembershipConfigSync `json:"configSync,omitempty"`
 
-	/* Hierarchy Controller configuration for the cluster. */
+	/* **DEPRECATED** Configuring Hierarchy Controller through the configmanagement feature is no longer recommended. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead. */
 	// +optional
 	HierarchyController *FeaturemembershipHierarchyController `json:"hierarchyController,omitempty"`
 
