@@ -90,6 +90,8 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			r.PathIDs[id] = "${forwardingRuleID}"
 		case "groups":
 			r.PathIDs[id] = "${groupID}"
+		case "jobs":
+			r.PathIDs[id] = "${jobID}"
 		case "uptimeCheckConfigs":
 			r.PathIDs[id] = "${uptimeCheckConfigId}"
 		case "operations":
