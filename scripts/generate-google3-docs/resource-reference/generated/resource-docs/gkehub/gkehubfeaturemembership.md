@@ -474,7 +474,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Hierarchy Controller configuration for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}**DEPRECATED** Configuring Hierarchy Controller through the configmanagement feature is no longer recommended. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
