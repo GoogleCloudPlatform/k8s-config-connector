@@ -15,7 +15,7 @@
 apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
 kind: CertificateManagerDNSAuthorization
 metadata:
-  name: certificatemanagerdnsauthorization-sample
+  name: dnsrecordset-dep-cname
 spec:
   description: sample dns authorization
   domain: www.example.com
