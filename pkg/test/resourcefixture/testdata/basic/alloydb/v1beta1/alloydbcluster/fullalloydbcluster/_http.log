@@ -459,16 +459,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "WEDNESDAY",
-        "startTime": {
-          "hours": 12
-        }
-      }
-    ]
-  },
   "networkConfig": {
     "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
   }
@@ -543,19 +533,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "WEDNESDAY",
-        "startTime": {
-          "hours": 12,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      }
-    ]
-  },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
   "network": "",
   "networkConfig": {
@@ -574,7 +552,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -621,16 +599,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10
-        }
-      }
-    ]
   },
   "networkConfig": {
     "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
@@ -714,19 +682,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      }
-    ]
-  },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
   "network": "",
   "networkConfig": {

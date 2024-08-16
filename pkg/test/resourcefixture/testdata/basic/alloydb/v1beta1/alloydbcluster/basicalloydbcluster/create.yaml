@@ -17,7 +17,6 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-${uniqueId}
 spec:
-  displayName: test alloydb cluster
   location: southamerica-east1
   networkConfig:
     networkRef:

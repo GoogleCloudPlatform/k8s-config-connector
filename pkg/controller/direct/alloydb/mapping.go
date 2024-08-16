@@ -16,6 +16,7 @@ package alloydb
 
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/alloydb/v1beta"
 )
@@ -160,6 +161,152 @@ func InitialUser_KRMToApi(ctx *direct.MapContext, in *krm.ClusterInitialUser) *a
 		out.Password = in.Password.ValueFrom.SecretKeyRef.Key
 	}
 	return out
+}
+
+func ClusterSpecFromAPI(ctx *direct.MapContext, in *api.Cluster) *krm.AlloyDBClusterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDBClusterSpec{
+		AutomatedBackupPolicy:  AutomatedBackupPolicy_APIToKRM(ctx, in.AutomatedBackupPolicy),
+		ClusterType:            direct.LazyPtr(in.ClusterType),
+		ContinuousBackupConfig: ContinuousBackupConfig_APIToKRM(ctx, in.ContinuousBackupConfig),
+		DisplayName:            direct.LazyPtr(in.DisplayName),
+		EncryptionConfig:       EncryptionConfig_APIToKRM(ctx, in.EncryptionConfig),
+		InitialUser:            InitialUser_APIToKRM(ctx, in.InitialUser),
+		NetworkConfig:          NetworkConfig_APIToKRM(ctx, in.NetworkConfig),
+	}
+	if in.NetworkConfig != nil {
+		out.NetworkRef = &v1alpha1.ResourceRef{
+			External: in.NetworkConfig.Network,
+		}
+	}
+
+	return out
+}
+
+func AutomatedBackupPolicy_APIToKRM(ctx *direct.MapContext, in *api.AutomatedBackupPolicy) *krm.ClusterAutomatedBackupPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterAutomatedBackupPolicy{
+		BackupWindow:           direct.LazyPtr(in.BackupWindow),
+		Enabled:                &in.Enabled,
+		EncryptionConfig:       EncryptionConfig_APIToKRM(ctx, in.EncryptionConfig),
+		Labels:                 in.Labels,
+		Location:               direct.LazyPtr(in.Location),
+		QuantityBasedRetention: QuantityBasedRetention_APIToKRM(ctx, in.QuantityBasedRetention),
+		TimeBasedRetention:     TimeBasedRetention_APIToKRM(ctx, in.TimeBasedRetention),
+		WeeklySchedule:         WeeklySchedule_APIToKRM(ctx, in.WeeklySchedule),
+	}
+	return out
+}
+
+func EncryptionConfig_APIToKRM(ctx *direct.MapContext, in *api.EncryptionConfig) *krm.ClusterEncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterEncryptionConfig{
+		KmsKeyNameRef: &v1alpha1.ResourceRef{
+			External: in.KmsKeyName,
+		},
+	}
+	return out
+}
+
+func QuantityBasedRetention_APIToKRM(ctx *direct.MapContext, in *api.QuantityBasedRetention) *krm.ClusterQuantityBasedRetention {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterQuantityBasedRetention{
+		Count: direct.LazyPtr(in.Count),
+	}
+
+	return out
+}
+
+func TimeBasedRetention_APIToKRM(ctx *direct.MapContext, in *api.TimeBasedRetention) *krm.ClusterTimeBasedRetention {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterTimeBasedRetention{
+		RetentionPeriod: direct.LazyPtr(in.RetentionPeriod),
+	}
+
+	return out
+}
+
+func WeeklySchedule_APIToKRM(ctx *direct.MapContext, in *api.WeeklySchedule) *krm.ClusterWeeklySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterWeeklySchedule{
+		DaysOfWeek: in.DaysOfWeek,
+		StartTimes: StartTimes_APIToKRM(ctx, in.StartTimes),
+	}
+
+	return out
+}
+
+func StartTimes_APIToKRM(ctx *direct.MapContext, in []*api.GoogleTypeTimeOfDay) []krm.ClusterStartTimes {
+	out := make([]krm.ClusterStartTimes, len(in))
+	for i, v := range in {
+		out[i] = direct.ValueOf(Time_APIToKRM(ctx, v))
+	}
+	return out
+}
+
+func Time_APIToKRM(ctx *direct.MapContext, in *api.GoogleTypeTimeOfDay) *krm.ClusterStartTimes {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterStartTimes{
+		Hours:   &in.Hours,
+		Minutes: &in.Minutes,
+		Nanos:   &in.Nanos,
+		Seconds: &in.Seconds,
+	}
+	return out
+}
+
+func ContinuousBackupConfig_APIToKRM(ctx *direct.MapContext, in *api.ContinuousBackupConfig) *krm.ClusterContinuousBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterContinuousBackupConfig{
+		Enabled:            &in.Enabled,
+		EncryptionConfig:   EncryptionConfig_APIToKRM(ctx, in.EncryptionConfig),
+		RecoveryWindowDays: direct.LazyPtr(in.RecoveryWindowDays),
+	}
+
+	return out
+}
+
+func InitialUser_APIToKRM(ctx *direct.MapContext, in *api.UserPassword) *krm.ClusterInitialUser {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterInitialUser{
+		User: direct.LazyPtr(in.User),
+		Password: krm.ClusterPassword{
+			Value: direct.LazyPtr(in.Password),
+		},
+	}
+	return out
+}
+
+func NetworkConfig_APIToKRM(ctx *direct.MapContext, in *api.NetworkConfig) *krm.ClusterNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterNetworkConfig{
+		AllocatedIpRange: direct.LazyPtr(in.AllocatedIpRange),
+		NetworkRef: &v1alpha1.ResourceRef{
+			External: in.Network,
+		},
+	}
+	return out
+
 }
 
 func ClusterStatusFromApi(ctx *direct.MapContext, in *api.Cluster) *krm.AlloyDBClusterStatus {

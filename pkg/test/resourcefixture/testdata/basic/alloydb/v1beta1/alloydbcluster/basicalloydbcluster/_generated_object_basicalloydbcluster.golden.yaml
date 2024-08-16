@@ -3,8 +3,7 @@ kind: AlloyDBCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"DEFAULT","displayName":"test
-      alloydb cluster 2","initialUser":{"password":{"value":"postgres"},"user":"postgres"}}}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"DEFAULT","initialUser":{"password":{"value":"postgres"},"user":"postgres"}}}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
@@ -21,7 +20,6 @@ spec:
       source: kcc-test
   clusterType: PRIMARY
   deletionPolicy: DEFAULT
-  displayName: test alloydb cluster 2
   initialUser:
     password:
       value: postgres
