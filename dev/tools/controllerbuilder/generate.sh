@@ -93,5 +93,15 @@ go run . generate-mapper \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
 
+# Storage
+go run . generate-types \
+    --service google.storage.v1  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --output-api ${APIS_DIR} \
+    --api-version "storage.cnrm.cloud.google.com/v1beta1" \
+    --kind StorageNotification \
+    --proto-resource Notification
+
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
