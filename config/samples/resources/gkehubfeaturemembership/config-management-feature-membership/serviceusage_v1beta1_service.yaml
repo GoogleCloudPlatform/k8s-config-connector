@@ -17,7 +17,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: gkehubfeaturemembership-dep1-acm1
 spec:
   resourceID: container.googleapis.com
@@ -27,7 +27,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: gkehubfeaturemembership-dep2-acm
 spec:
   resourceID: gkehub.googleapis.com
@@ -37,7 +37,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: gkehubfeaturemembership-dep3-acm
 spec:
   resourceID: anthosconfigmanagement.googleapis.com
