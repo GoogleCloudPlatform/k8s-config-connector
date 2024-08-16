@@ -41,7 +41,7 @@ func (c *CloudBuildWorkerPoolIdentity) FullyQualifiedName() string {
 	return fmt.Sprintf("projects/%s/locations/%s/workerPools/%s", c.project, c.location, c.workerpool)
 }
 
-// fromID builds a externalRef from a CloudBuildWorkerPoolIdentity
+// AsExternalRef builds a externalRef from a CloudBuildWorkerPoolIdentity
 func (c *CloudBuildWorkerPoolIdentity) AsExternalRef() *string {
 	e := serviceDomain + "/" + c.FullyQualifiedName()
 	return &e
@@ -65,7 +65,7 @@ func asID(externalRef string) (*CloudBuildWorkerPoolIdentity, error) {
 	}, nil
 }
 
-// fromRaw builds a CloudBuildWorkerPoolIdentity from resource components.
+// BuildID builds a CloudBuildWorkerPoolIdentity from resource components.
 func BuildID(project, location, workerpool string) *CloudBuildWorkerPoolIdentity {
 	return &CloudBuildWorkerPoolIdentity{
 		project:    project,
