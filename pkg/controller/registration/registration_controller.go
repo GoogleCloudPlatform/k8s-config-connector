@@ -194,7 +194,6 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 	}
-
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
 		groupKind := gvk.GroupKind()
