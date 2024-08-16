@@ -36,7 +36,9 @@ var (
 	oauth2ClientIDRefPath = []string{"iap", "oauth2ClientIdRef"}
 
 	networkIPRefFieldPath = []string{"networkIpRef"}
-	supportedKinds        = []string{"ComputeAddress"}
+	supportedKinds        = []MultiKindRef{
+		{Kind: "ComputeAddress"},
+	}
 )
 
 func GetComputeMangedSSLCertificateResourceOverrides() ResourceOverrides {

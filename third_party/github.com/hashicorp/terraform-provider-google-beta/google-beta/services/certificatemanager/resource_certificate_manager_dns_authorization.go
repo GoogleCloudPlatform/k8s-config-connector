@@ -82,13 +82,10 @@ and all following characters must be a dash, underscore, letter or digit.`,
 				Description: `A human-readable description of the resource.`,
 			},
 			"labels": {
-				Type:     schema.TypeMap,
-				Optional: true,
-				Description: `Set of label tags associated with the DNS Authorization resource.
-
-**Note**: This field is non-authoritative, and will only manage the labels present in your configuration.
-Please refer to the field 'effective_labels' for all of the labels present on the resource.`,
-				Elem: &schema.Schema{Type: schema.TypeString},
+				Type:        schema.TypeMap,
+				Optional:    true,
+				Description: "Set of label tags associated with the DNS Authorization resource.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 			"location": {
 				Type:        schema.TypeString,
@@ -139,19 +136,6 @@ E.g. '_acme-challenge.example.com'.`,
 					},
 				},
 			},
-			"effective_labels": {
-				Type:        schema.TypeMap,
-				Computed:    true,
-				Description: `All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services.`,
-				Elem:        &schema.Schema{Type: schema.TypeString},
-			},
-			"terraform_labels": {
-				Type:     schema.TypeMap,
-				Computed: true,
-				Description: `The combination of labels configured directly on the resource
- and default labels configured on the provider.`,
-				Elem: &schema.Schema{Type: schema.TypeString},
-			},
 			"project": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -189,10 +173,10 @@ func resourceCertificateManagerDnsAuthorizationCreate(d *schema.ResourceData, me
 	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
-	labelsProp, err := expandCertificateManagerDnsAuthorizationEffectiveLabels(d.Get("effective_labels"), d, config)
+	labelsProp, err := expandCertificateManagerDnsAuthorizationLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("effective_labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
@@ -305,12 +289,6 @@ func resourceCertificateManagerDnsAuthorizationRead(d *schema.ResourceData, meta
 	if err := d.Set("dns_resource_record", flattenCertificateManagerDnsAuthorizationDnsResourceRecord(res["dnsResourceRecord"], d, config)); err != nil {
 		return fmt.Errorf("Error reading DnsAuthorization: %s", err)
 	}
-	if err := d.Set("terraform_labels", flattenCertificateManagerDnsAuthorizationTerraformLabels(res["labels"], d, config)); err != nil {
-		return fmt.Errorf("Error reading DnsAuthorization: %s", err)
-	}
-	if err := d.Set("effective_labels", flattenCertificateManagerDnsAuthorizationEffectiveLabels(res["labels"], d, config)); err != nil {
-		return fmt.Errorf("Error reading DnsAuthorization: %s", err)
-	}
 
 	return nil
 }
@@ -337,10 +315,10 @@ func resourceCertificateManagerDnsAuthorizationUpdate(d *schema.ResourceData, me
 	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
-	labelsProp, err := expandCertificateManagerDnsAuthorizationEffectiveLabels(d.Get("effective_labels"), d, config)
+	labelsProp, err := expandCertificateManagerDnsAuthorizationLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("effective_labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
@@ -356,7 +334,7 @@ func resourceCertificateManagerDnsAuthorizationUpdate(d *schema.ResourceData, me
 		updateMask = append(updateMask, "description")
 	}
 
-	if d.HasChange("effective_labels") {
+	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
@@ -428,7 +406,6 @@ func resourceCertificateManagerDnsAuthorizationDelete(d *schema.ResourceData, me
 		billingProject = bp
 	}
 
-
 	log.Printf("[DEBUG] Deleting DnsAuthorization %q", d.Id())
 	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
 		Config:    config,
@@ -480,18 +457,7 @@ func flattenCertificateManagerDnsAuthorizationDescription(v interface{}, d *sche
 }
 
 func flattenCertificateManagerDnsAuthorizationLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
-	if v == nil {
-		return v
-	}
-
-	transformed := make(map[string]interface{})
-	if l, ok := d.GetOkExists("labels"); ok {
-		for k := range l.(map[string]interface{}) {
-			transformed[k] = v.(map[string]interface{})[k]
-		}
-	}
-
-	return transformed
+	return v
 }
 
 func flattenCertificateManagerDnsAuthorizationDomain(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -531,25 +497,6 @@ func flattenCertificateManagerDnsAuthorizationDnsResourceRecordData(v interface{
 	return v
 }
 
-func flattenCertificateManagerDnsAuthorizationTerraformLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
-	if v == nil {
-		return v
-	}
-
-	transformed := make(map[string]interface{})
-	if l, ok := d.GetOkExists("terraform_labels"); ok {
-		for k := range l.(map[string]interface{}) {
-			transformed[k] = v.(map[string]interface{})[k]
-		}
-	}
-
-	return transformed
-}
-
-func flattenCertificateManagerDnsAuthorizationEffectiveLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
-	return v
-}
-
 func expandCertificateManagerDnsAuthorizationDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
@@ -562,7 +509,7 @@ func expandCertificateManagerDnsAuthorizationType(v interface{}, d tpgresource.T
 	return v, nil
 }
 
-func expandCertificateManagerDnsAuthorizationEffectiveLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
+func expandCertificateManagerDnsAuthorizationLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -606,13 +553,10 @@ and all following characters must be a dash, underscore, letter or digit.`,
 				Description: `A human-readable description of the resource.`,
 			},
 			"labels": {
-				Type:     schema.TypeMap,
-				Optional: true,
-				Description: `Set of label tags associated with the DNS Authorization resource.
-
-**Note**: This field is non-authoritative, and will only manage the labels present in your configuration.
-Please refer to the field 'effective_labels' for all of the labels present on the resource.`,
-				Elem: &schema.Schema{Type: schema.TypeString},
+				Type:        schema.TypeMap,
+				Optional:    true,
+				Description: "Set of label tags associated with the DNS Authorization resource.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 			"dns_resource_record": {
 				Type:     schema.TypeList,
@@ -641,19 +585,6 @@ E.g. '_acme-challenge.example.com'.`,
 					},
 				},
 			},
-			"effective_labels": {
-				Type:        schema.TypeMap,
-				Computed:    true,
-				Description: `All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services.`,
-				Elem:        &schema.Schema{Type: schema.TypeString},
-			},
-			"terraform_labels": {
-				Type:     schema.TypeMap,
-				Computed: true,
-				Description: `The combination of labels configured directly on the resource
- and default labels configured on the provider.`,
-				Elem: &schema.Schema{Type: schema.TypeString},
-			},
 			"project": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -664,4 +595,3 @@ E.g. '_acme-challenge.example.com'.`,
 	}
 
 }
-

@@ -26,11 +26,27 @@ import (
 )
 
 var (
-	rrdatasFieldName              = "rrdatas"
-	rrdatasRefsFieldName          = "rrdatasRefs"
-	routingPolicyFieldName        = "routingPolicy"
-	nameFieldName                 = "name"
-	dnsAuthorizationsRefFieldName = "dnsAuthorizationsRef"
+	rrdatasFieldName       = "rrdatas"
+	rrdatasRefsFieldName   = "rrdatasRefs"
+	routingPolicyFieldName = "routingPolicy"
+	nameFieldName          = "name"
+
+	rrdatasRefKinds = []MultiKindRef{
+		{
+			Kind:        "ComputeAddress",
+			TargetField: "address",
+		},
+		{
+			Kind:        "CertificateManagerDnsAuthorization",
+			TargetField: "dnsResourceRecord.data",
+		},
+	}
+
+	routingPolicyRefKinds = []MultiKindRef{
+		{
+			Kind: "ComputeAddress",
+		},
+	}
 )
 
 func GetDNSRecordSetOverrides() ResourceOverrides {
@@ -42,7 +58,7 @@ func GetDNSRecordSetOverrides() ResourceOverrides {
 	ro.Overrides = append(ro.Overrides, preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind())
 	// Configure the top-level OneOf to make 'routingPolicy', 'rrdatas', 'rrdatasRef
 	// and 'dnsAuthorizationsRef' mutually exclusive.
-	ro.Overrides = append(ro.Overrides, enforceMutuallyExclusiveRrdatasRoutingPolicyAndDnsAuthorizations())
+	ro.Overrides = append(ro.Overrides, enforceMutuallyExclusiveRrdatasAndRoutingPolicy())
 	// Configure rrdatasRefs fields under routingPolicy to be MultiKind.
 	ro.Overrides = append(ro.Overrides, ensureRoutingPoliciesRrDatasRefsFieldsAreMultiKind())
 	// Configure rrdata
@@ -56,7 +72,7 @@ func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride
 		if err := PreserveMutuallyExclusiveNonReferenceField(crd, nil, rrdatasRefsFieldName, rrdatasFieldName); err != nil {
 			return fmt.Errorf("error preserving '%v' field in DNSRecordSet: %w", rrdatasFieldName, err)
 		}
-		if err := EnsureReferenceFieldIsMultiKind(crd, nil, rrdatasRefsFieldName, []string{"ComputeAddress"}); err != nil {
+		if err := EnsureReferenceFieldIsMultiKind(crd, nil, rrdatasRefsFieldName, rrdatasRefKinds); err != nil {
 			return fmt.Errorf("error ensuring '%v' field in DNSRecordSet is a multi-kind reference field: %w", rrdatasRefsFieldName, err)
 		}
 		// PreserveMutuallyExclusiveNonReferenceField adds a `not` condition to
@@ -89,7 +105,7 @@ func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride
 	return o
 }
 
-func enforceMutuallyExclusiveRrdatasRoutingPolicyAndDnsAuthorizations() ResourceOverride {
+func enforceMutuallyExclusiveRrdatasAndRoutingPolicy() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
 		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
@@ -103,7 +119,6 @@ func enforceMutuallyExclusiveRrdatasRoutingPolicyAndDnsAuthorizations() Resource
 			requireField(rrdatasFieldName),
 			requireField(rrdatasRefsFieldName),
 			requireField(routingPolicyFieldName),
-			requireField(dnsAuthorizationsRefFieldName),
 		}); err != nil {
 			return err
 		}
@@ -116,10 +131,10 @@ func enforceMutuallyExclusiveRrdatasRoutingPolicyAndDnsAuthorizations() Resource
 func ensureRoutingPoliciesRrDatasRefsFieldsAreMultiKind() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		if err := EnsureReferenceFieldIsMultiKind(crd, []string{routingPolicyFieldName, "wrr"}, rrdatasRefsFieldName, []string{"ComputeAddress"}); err != nil {
+		if err := EnsureReferenceFieldIsMultiKind(crd, []string{routingPolicyFieldName, "wrr"}, rrdatasRefsFieldName, routingPolicyRefKinds); err != nil {
 			return fmt.Errorf("error ensuring '%v' field in DNSRecordSet is a multi-kind reference field: %w", rrdatasRefsFieldName, err)
 		}
-		if err := EnsureReferenceFieldIsMultiKind(crd, []string{routingPolicyFieldName, "geo"}, rrdatasRefsFieldName, []string{"ComputeAddress"}); err != nil {
+		if err := EnsureReferenceFieldIsMultiKind(crd, []string{routingPolicyFieldName, "geo"}, rrdatasRefsFieldName, routingPolicyRefKinds); err != nil {
 			return fmt.Errorf("error ensuring '%v' field in DNSRecordSet is a multi-kind reference field: %w", rrdatasRefsFieldName, err)
 		}
 		return nil

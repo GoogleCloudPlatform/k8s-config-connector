@@ -167,10 +167,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              effectiveLabels:
-                additionalProperties:
-                  type: string
-                type: object
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -178,13 +174,6 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              terraformLabels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  The combination of labels configured directly on the resource
-                   and default labels configured on the provider.
-                type: object
             type: object
         required:
         - spec
@@ -335,10 +324,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              effectiveLabels:
-                additionalProperties:
-                  type: string
-                type: object
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -346,13 +331,6 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              terraformLabels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  The combination of labels configured directly on the resource
-                   and default labels configured on the provider.
-                type: object
             type: object
         required:
         - spec

@@ -113,7 +113,7 @@ spec:
           group: compute.cnrm.cloud.google.com
         targetField: address
       - tfField: rrdatas
-        key: dnsAuthorizationsRef
+        key: rrdatasRefs
         gvk:
           kind: CertificateManagerDNSAuthorization
           version: v1beta1

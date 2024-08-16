@@ -30,6 +30,11 @@ import (
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
+type MultiKindRef struct {
+	Kind        string
+	TargetField string
+}
+
 // KeepTopLevelFieldOptionalWithDefault decorates the input CRD to modify the given top field as optional with the default.
 func KeepTopLevelFieldOptionalWithDefault(crd *apiextensions.CustomResourceDefinition, defaultValue interface{}, field string) error {
 	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
@@ -230,7 +235,7 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 
 // EnsureReferenceFieldIsMultiKind adds the required `kind` field under the
 // reference field if the `kind` field doesn't exist.
-func EnsureReferenceFieldIsMultiKind(crd *apiextensions.CustomResourceDefinition, parentPath []string, referenceFieldName string, supportedKinds []string) error {
+func EnsureReferenceFieldIsMultiKind(crd *apiextensions.CustomResourceDefinition, parentPath []string, referenceFieldName string, supportedKinds []MultiKindRef) error {
 	if referenceFieldName == "" {
 		return fmt.Errorf("param 'referenceFieldName' must be specified")
 	}
@@ -280,7 +285,14 @@ func EnsureReferenceFieldIsMultiKind(crd *apiextensions.CustomResourceDefinition
 		if len(supportedKinds) == 0 {
 			return fmt.Errorf("there must be at least one kind specified in 'supportedKinds' list")
 		}
-		referenceFieldSchemaWithKind := crdboilerplate.GetMultiKindResourceReferenceSchemaBoilerplate(externalRefSchema.Description, supportedKinds)
+		if len(supportedKinds) > 1 {
+			externalRefSchema.Description = NewMultiKindExternalRefDescription(supportedKinds)
+		}
+		kindsSlice := make([]string, len(supportedKinds))
+		for i, kind := range supportedKinds {
+			kindsSlice[i] = kind.Kind
+		}
+		referenceFieldSchemaWithKind := crdboilerplate.GetMultiKindResourceReferenceSchemaBoilerplate(externalRefSchema.Description, kindsSlice)
 
 		if fieldType == "array" {
 			referenceFieldSchema.Items.Schema = referenceFieldSchemaWithKind
@@ -725,4 +737,13 @@ func handleProjectsPrefixInProjectRefExternalFields(fps []fieldPath) ResourceOve
 		return nil
 	}
 	return o
+}
+
+func NewMultiKindExternalRefDescription(supportedKinds []MultiKindRef) string {
+	var description strings.Builder
+	description.WriteString("Allowed values:")
+	for _, ref := range supportedKinds {
+		fmt.Fprintf(&description, " The `%s` field of a `%s` resource.", ref.TargetField, ref.Kind)
+	}
+	return description.String()
 }
