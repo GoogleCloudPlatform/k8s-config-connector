@@ -158,6 +158,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to DataFlow
+	visitor.replacePaths[".status.jobId"] = "${jobID}"
+
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountId"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
@@ -272,6 +275,8 @@ type objectWalker struct {
 	sortSlices       sets.Set[string]
 	replacePaths     map[string]any
 	stringTransforms []func(path string, value string) string
+	objectTransforms []func(path string, value map[string]any)
+	sliceTransforms  []func(path string, value []any) []any
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
@@ -296,6 +301,10 @@ func (o *objectWalker) visitAny(v any, path string) (any, error) {
 }
 
 func (o *objectWalker) visitMap(m map[string]any, path string) error {
+	for _, fn := range o.objectTransforms {
+		fn(path, m)
+	}
+
 	for k, v := range m {
 		childPath := path + "." + k
 		if o.removePaths.Has(childPath) {
@@ -346,6 +355,10 @@ func sortSlice(s []any) error {
 }
 
 func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
+	for _, fn := range o.sliceTransforms {
+		s = fn(path+"[]", s)
+	}
+
 	for i, v := range s {
 		v2, err := o.visitAny(v, path+"[]")
 		if err != nil {
@@ -509,6 +522,7 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	visitor.removePaths = sets.New[string]()
 	visitor.replacePaths = make(map[string]any)
+	visitor.sortSlices = sets.New[string]()
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
@@ -537,6 +551,39 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		}
 		return s
 	})
+
+	// Specific to DataFlow
+	{
+		visitor.replacePaths[".job.startTime"] = "2024-04-01T12:34:56.123456Z"
+		visitor.replacePaths[".job.createTime"] = "2024-04-01T12:34:56.123456Z"
+		visitor.replacePaths[".currentStateTime"] = "2024-04-01T12:34:56.123456Z"
+		visitor.sortSlices.Insert(".environment.experiments")
+
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			switch path {
+			case ".environment.userAgent",
+				".environment.version",
+				".jobMetadata",
+				".pipelineDescription",
+				".environment.sdkPipelineOptions.serialized_fn":
+				// These fields have a _lot_ of information, but it isn't surfaced in KCC
+				clear(m)
+				m["removed"] = "simplicity"
+			}
+		})
+
+		visitor.sliceTransforms = append(visitor.sliceTransforms, func(path string, a []any) []any {
+			switch path {
+			case ".environment.workerPools[]",
+				".stageStates[]",
+				".steps[]",
+				".environment.sdkPipelineOptions.display_data[]":
+				// These fields have a _lot_ of information, but it isn't surfaced in KCC
+				return []any{}
+			}
+			return a
+		})
+	}
 
 	// Run visitors
 	events.PrettifyJSON(func(obj map[string]any) {
