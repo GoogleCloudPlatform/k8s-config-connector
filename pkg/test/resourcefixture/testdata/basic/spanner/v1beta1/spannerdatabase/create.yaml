@@ -15,8 +15,9 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerDatabase
 metadata:
-  # Database names can be only 30 characters max
-  name: spannerdatabase-${uniqueId}
+  # Database names can be only 30 characters max. As ${uniqueId} is a 20-char
+  # long random alphanumeric string, the prefix can be at most 9-char long.
+  name: spannerdb-${uniqueId}
 spec:
   instanceRef:
     name: spannerinstance-${uniqueId}

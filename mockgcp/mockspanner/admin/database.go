@@ -20,12 +20,15 @@ import (
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/database/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/database/v1"
 )
 
 var _ pb.DatabaseAdminServer = &SpannerDatabaseV1{}
@@ -58,6 +61,13 @@ func (s *SpannerDatabaseV1) GetDatabase(ctx context.Context, req *pb.GetDatabase
 func (s *SpannerDatabaseV1) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*longrunningpb.Operation, error) {
 	databaseName := databaseNameFromCreateStatement(req.GetCreateStatement())
 	fqn := req.GetParent() + "/databases/" + databaseName
+	if isValid := validateDatabaseName(databaseName); !isValid {
+		return nil, status.Errorf(codes.InvalidArgument,
+			"Expected projects/{project ID}/instances/{instance ID}/databases/{database name}\n"+
+				"Got: %v\nError: Invalid database name: %q. Database name must start with a lowercase letter, "+
+				"be 2-30 characters long, contain only lowercase letters, numbers, underscores or hyphens, "+
+				"and not end with an underscore or hyphen.", fqn, databaseName)
+	}
 
 	obj := &pb.Database{}
 	obj.Name = fqn
@@ -82,6 +92,16 @@ func (s *SpannerDatabaseV1) CreateDatabase(ctx context.Context, req *pb.CreateDa
 		result := proto.Clone(obj).(*pb.Database)
 		return result, nil
 	})
+}
+
+// validateDatabaseName verifies that the databaseName matches the API's
+// requirement:
+// "Database name must start with a lowercase letter, be 2-30 characters long,
+// contain only lowercase letters, numbers, underscores or hyphens, and not end
+// with an underscore or hyphen.
+func validateDatabaseName(databaseName string) bool {
+	validDatabaseName := regexp.MustCompile(`^[a-z][-a-z0-9_]*[a-z0-9]$`)
+	return validDatabaseName.MatchString(databaseName) && len(databaseName) <= 30 && len(databaseName) >= 2
 }
 
 func (s *SpannerDatabaseV1) DropDatabase(ctx context.Context, req *pb.DropDatabaseRequest) (*emptypb.Empty, error) {
