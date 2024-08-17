@@ -751,7 +751,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 
 					got := events.FormatHTTP()
-					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, IgnoreComments)
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
@@ -777,6 +776,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					if testPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {
+						expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
+
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
 				}
