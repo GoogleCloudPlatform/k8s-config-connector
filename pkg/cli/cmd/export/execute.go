@@ -24,9 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 )
 
 func Execute(ctx context.Context, params *parameters.Parameters) error {
@@ -36,11 +34,7 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 	}
 
 	// Initialize direct controllers/exporters
-	controllerConfig := &config.ControllerConfig{
-		HTTPClient: params.HTTPClient,
-		UserAgent:  gcp.KCCUserAgent,
-	}
-	if err := registry.Init(ctx, controllerConfig); err != nil {
+	if err := registry.Init(ctx, params.ControllerConfig()); err != nil {
 		return err
 	}
 

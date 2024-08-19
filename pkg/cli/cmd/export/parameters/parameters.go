@@ -18,6 +18,8 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 )
 
 type Parameters struct {
@@ -34,6 +36,13 @@ type Parameters struct {
 
 	// HTTPClient allows for overriding the default HTTP Client
 	HTTPClient *http.Client
+}
+
+func (p *Parameters) ControllerConfig() *config.ControllerConfig {
+	return &config.ControllerConfig{
+		HTTPClient: p.HTTPClient,
+		UserAgent:  gcp.KCCUserAgent,
+	}
 }
 
 func Validate(p *Parameters) error {

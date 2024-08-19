@@ -36,13 +36,14 @@ type AssetToUnstructuredResourceStream struct {
 	serviceClient serviceclient.ServiceClient
 	smLoader      *servicemappingloader.ServiceMappingLoader
 	tfProvider    *schema.Provider
+	config        config.ControllerConfig
 }
 
 // NewUnstructuredResourceStreamFromAssetStream returns an unstructured stream. The stream converts each asset in the 'assetStream' to
 // a KCC resource and does a GET request to GCP finally returning the current value of the resource in KCC format
 // as an unstructured
-func NewUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, client gcpclient.Client, tfProvider *schema.Provider, serviceClient serviceclient.ServiceClient) (*AssetToUnstructuredResourceStream, error) {
-	stream, err := newUnstructuredResourceStreamFromAssetStream(assetStream, tfProvider, serviceClient)
+func NewUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, client gcpclient.Client, tfProvider *schema.Provider, serviceClient serviceclient.ServiceClient, config *config.ControllerConfig) (*AssetToUnstructuredResourceStream, error) {
+	stream, err := newUnstructuredResourceStreamFromAssetStream(assetStream, tfProvider, serviceClient, config)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +51,7 @@ func NewUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, clien
 	return stream, nil
 }
 
-func newUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, tfProvider *schema.Provider, serviceClient serviceclient.ServiceClient) (*AssetToUnstructuredResourceStream, error) {
+func newUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, tfProvider *schema.Provider, serviceClient serviceclient.ServiceClient, config *config.ControllerConfig) (*AssetToUnstructuredResourceStream, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		return nil, fmt.Errorf("error creating service mapping loader: %w", err)
@@ -60,6 +61,7 @@ func newUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, tfPro
 		serviceClient: serviceClient,
 		smLoader:      smLoader,
 		tfProvider:    tfProvider,
+		config:        *config,
 	}
 	return &stream, nil
 }
@@ -74,9 +76,7 @@ func (s *AssetToUnstructuredResourceStream) Next(ctx context.Context) (*unstruct
 	}
 
 	// First check if this resource uses our direct-reconciliation model
-	exported, err := direct.Export(ctx, asset.Name, &config.ControllerConfig{
-		// HTTPClient: s.httpClient,
-	})
+	exported, err := direct.Export(ctx, asset.Name, &s.config)
 	if err != nil {
 		return nil, err
 	}

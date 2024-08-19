@@ -21,6 +21,8 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/valutil"
 )
 
@@ -61,6 +63,13 @@ type Parameters struct {
 	OAuth2Token             string
 	ResourceFormat          string
 	Verbose                 bool
+}
+
+func (p *Parameters) ControllerConfig() *config.ControllerConfig {
+	return &config.ControllerConfig{
+		UserAgent: gcp.KCCUserAgent,
+		// OAuth2Token: p.OAuth2Token,
+	}
 }
 
 // convenience struct used during validation
