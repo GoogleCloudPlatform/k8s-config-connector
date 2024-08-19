@@ -22,6 +22,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/serviceclient"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceskeleton"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -70,6 +72,18 @@ func (s *AssetToUnstructuredResourceStream) Next(ctx context.Context) (*unstruct
 		}
 		return nil, err
 	}
+
+	// First check if this resource uses our direct-reconciliation model
+	exported, err := direct.Export(ctx, asset.Name, &config.ControllerConfig{
+		// HTTPClient: s.httpClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if exported != nil {
+		return exported, nil
+	}
+
 	skel, err := resourceskeleton.NewFromAsset(asset, s.smLoader, s.tfProvider, s.serviceClient)
 	if err != nil {
 		return nil, fmt.Errorf("error converting asset '%v' with kind '%v' to skeleton: %w", asset.Name, asset.AssetType, err)

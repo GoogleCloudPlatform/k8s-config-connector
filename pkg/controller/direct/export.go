@@ -23,6 +23,15 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
+// ExportUsesDirect returns true if we have a direct-implemented exporter for the URL.
+func ExportUsesDirect(ctx context.Context, url string, config *config.ControllerConfig) (bool, error) {
+	adapter, err := registry.AdapterForURL(ctx, url)
+	if err != nil {
+		return false, err
+	}
+	return adapter != nil, nil
+}
+
 // Export attempts to export the resource specified by url.
 // The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
 // If url is not recognized or not implemented by a direct controller, this returns (nil, nil)

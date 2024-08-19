@@ -15,14 +15,18 @@
 package filteredinputstream
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"k8s.io/klog/v2"
 )
 
 var defaultNetworkingNameRegexByAssetType = map[string]string{
@@ -31,7 +35,19 @@ var defaultNetworkingNameRegexByAssetType = map[string]string{
 	"compute.googleapis.com/Route":      ".*default-route-.*$",
 }
 
-func isAssetSupported(smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider, a *asset.Asset) bool {
+func isAssetSupported(ctx context.Context, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider, a *asset.Asset) bool {
+	log := klog.FromContext(ctx)
+
+	// First check if this resource uses our direct-reconciliation model
+	exportUsesDirect, err := direct.ExportUsesDirect(ctx, a.Name, &config.ControllerConfig{
+		// HTTPClient: s.httpClient,
+	})
+	if err != nil {
+		log.Error(err, "checking if resource is direct-implemented", "url", a.Name)
+	} else if exportUsesDirect {
+		return true
+	}
+
 	_, rc, err := asset.GetServiceMappingAndResourceConfig(smLoader, a)
 	if err != nil {
 		// ignore resources that we don't have service mappings and resource configs for
@@ -58,12 +74,14 @@ func isDefaultNetworkingAsset(a *asset.Asset) bool {
 }
 
 func NewFilteredAssetStream(assetStream *asset.Stream, tfProvider *schema.Provider) (stream.AssetStream, error) {
+	ctx := context.TODO()
+
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		return nil, fmt.Errorf("error loading service mappings: %w", err)
 	}
 	filter := func(a *asset.Asset) bool {
-		if !isAssetSupported(smLoader, tfProvider, a) {
+		if !isAssetSupported(ctx, smLoader, tfProvider, a) {
 			log.Verbose("skipping unsupported asset: %v", a.AssetType)
 			return false
 		}
