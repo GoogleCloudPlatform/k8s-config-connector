@@ -29,6 +29,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
@@ -42,6 +45,16 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 	if err != nil {
 		return err
 	}
+
+	// Initialize direct controllers/exporters
+	controllerConfig := &config.ControllerConfig{
+		//HTTPClient: params.HTTPClient,
+		UserAgent: gcp.KCCUserAgent,
+	}
+	if err := registry.Init(ctx, controllerConfig); err != nil {
+		return err
+	}
+
 	assetStream, err := newFilteredAssetStream(params, tfProvider)
 	if err != nil {
 		return err
