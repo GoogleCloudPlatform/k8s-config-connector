@@ -77,41 +77,37 @@ var contextGVK schema.GroupVersionKind = schema.GroupVersionKind{
 	Kind:    "Context",
 }
 
-func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *ExpanderReconciler) updatePlanStatus(ctx context.Context, plancr *compositionv1alpha1.Plan, newStatus *compositionv1alpha1.PlanStatus) {
 	logger := log.FromContext(ctx)
 	logger = logger.WithName(r.Composition.Name).WithName(r.InputGVK.Group)
-
-	logger.Info("Got Input API for expansion", "request", req)
-
-	inputcr := unstructured.Unstructured{}
-	inputcr.SetGroupVersionKind(r.InputGVK)
-	if err := r.Get(ctx, req.NamespacedName, &inputcr); err != nil {
-		logger.Error(err, "unable to fetch Input API Object")
-		// we'll ignore not-found errors, since they can't be fixed by an immediate
-		// requeue (we'll need to wait for a new notification), and we can get them
-		// on deleted requests.
-		return ctrl.Result{}, client.IgnoreNotFound(err)
-	}
-
-	loggerCR := logger.WithName(inputcr.GetName())
-
-	// Grab the latest composition
-	// TODO(barni@) - Decide how we want the latest composition changes are to be applied.
-	var compositionCR compositionv1alpha1.Composition
-	if err := r.Client.Get(ctx, r.Composition, &compositionCR); err != nil {
-		if client.IgnoreNotFound(err) != nil {
-			logger.Error(err, "Unable to fetch Composition Object")
-			return ctrl.Result{}, err
+	err := retry.RetryOnConflict(retry.DefaultRetry, func() error {
+		nn := types.NamespacedName{Namespace: plancr.Namespace, Name: plancr.Name}
+		err := r.Client.Get(ctx, nn, plancr)
+		if err != nil {
+			return err
 		}
+		plancr.Status = *newStatus.DeepCopy()
+		return r.Client.Status().Update(ctx, plancr)
+	})
+	if err != nil {
+		logger.Error(err, "unable to update Plan status", "name", plancr.Name, "namespace", plancr.Namespace)
 	}
+}
 
-	// Associate a plan object with this input CR
+func (r *ExpanderReconciler) getPlanForInputCR(ctx context.Context, inputcr *unstructured.Unstructured) (types.NamespacedName,
+	*compositionv1alpha1.Plan, error) {
 	var plancr compositionv1alpha1.Plan
-	planNN := types.NamespacedName{Name: r.InputGVR.Resource + "-" + inputcr.GetName(), Namespace: inputcr.GetNamespace()}
+	logger := log.FromContext(ctx)
+	logger = logger.WithName(r.Composition.Name).WithName(r.InputGVK.Group).WithName(inputcr.GetName())
+
+	planNN := types.NamespacedName{
+		Name:      r.InputGVR.Resource + "-" + inputcr.GetName(),
+		Namespace: inputcr.GetNamespace(),
+	}
 	if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
 		if client.IgnoreNotFound(err) != nil {
 			logger.Error(err, "Unable to fetch Plan Object")
-			return ctrl.Result{}, err
+			return planNN, &plancr, err
 		}
 		// create a plan object
 		plancr = compositionv1alpha1.Plan{
@@ -126,21 +122,59 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 				Stages: map[string]*compositionv1alpha1.StageStatus{},
 			},
 		}
-		if err := ctrl.SetControllerReference(&inputcr, &plancr, r.Scheme); err != nil {
-			logger.Error(err, "Unable to set controller reference for Plan Object")
-			return ctrl.Result{}, err
+		if err := ctrl.SetControllerReference(inputcr, &plancr, r.Scheme); err != nil {
+			logger.Error(err, "Unable to set controller reference for Plan Object",
+				"name", plancr.Name, "namespace", plancr.Namespace)
+			return planNN, &plancr, err
 		}
 		if err := r.Client.Create(ctx, &plancr); err != nil {
 			logger.Error(err, "Unable to create Plan Object")
-			return ctrl.Result{}, err
+			return planNN, &plancr, err
 		}
 
 		// Read after create to get the UID
 		if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
 			logger.Error(err, "Unable to fetch Plan Object")
+			return planNN, &plancr, err
+		}
+	}
+	return planNN, &plancr, nil
+}
+
+func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	logger := log.FromContext(ctx)
+	logger = logger.WithName(r.Composition.Name).WithName(r.InputGVK.Group)
+
+	logger.Info("Got Input API for expansion", "request", req)
+
+	inputcr := unstructured.Unstructured{}
+	inputcr.SetGroupVersionKind(r.InputGVK)
+	logger = logger.WithName(req.NamespacedName.Name).WithName(req.NamespacedName.Namespace)
+	if err := r.Get(ctx, req.NamespacedName, &inputcr); err != nil {
+		logger.Error(err, "unable to fetch Input API Object")
+		// we'll ignore not-found errors, since they can't be fixed by an immediate
+		// requeue (we'll need to wait for a new notification), and we can get them
+		// on deleted requests.
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	// Grab the latest composition
+	// TODO(barni@) - Decide how we want the latest composition changes are to be applied.
+	var compositionCR compositionv1alpha1.Composition
+	if err := r.Client.Get(ctx, r.Composition, &compositionCR); err != nil {
+		if client.IgnoreNotFound(err) != nil {
+			logger.Error(err, "Unable to fetch Composition Object")
 			return ctrl.Result{}, err
 		}
 	}
+
+	// Associate a plan object with this input CR
+	planNN, plancr, err := r.getPlanForInputCR(ctx, &inputcr)
+	if err != nil {
+		logger.Error(err, "Unable to get Plan Object")
+		return ctrl.Result{}, err
+	}
+
 	// Since applylib doesnt support multiple apply batches we are
 	// tracking all old objects and accumulating them each apply.
 	oldAppliers := []*applier.Applier{}
@@ -154,20 +188,8 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	}
 
 	// Try updating status before returning
-	defer func() {
-		err := retry.RetryOnConflict(retry.DefaultRetry, func() error {
-			nn := types.NamespacedName{Namespace: plancr.Namespace, Name: plancr.Name}
-			err := r.Client.Get(ctx, nn, &plancr)
-			if err != nil {
-				return err
-			}
-			plancr.Status = *newStatus.DeepCopy()
-			return r.Client.Status().Update(ctx, &plancr)
-		})
-		if err != nil {
-			logger.Error(err, "unable to update Plan status")
-		}
-	}()
+	defer r.updatePlanStatus(ctx, plancr, &newStatus)
+
 	expanderDebugLogsEnabled := false
 	_, exist := inputcr.GetAnnotations()["composition-expander-debug-logs"]
 	if exist {
@@ -175,6 +197,9 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		logger.Info("annotation'composition-expander-debug-logs' is turned on.")
 	}
 	logger.Info("annotation'composition-expander-debug-logs' is turned off.")
+
+	// Grab a top level logger so we can add expander name in the eval and apply sections
+	loggerCR := logger
 
 	// ------------------- EVALUATION SECTION -----------------------
 	stagesEvaluated := []string{}
@@ -197,14 +222,14 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if expanderDebugLogsEnabled {
 			r.Recorder.Event(&inputcr, "Normal", fmt.Sprintf("Running expander stage %d: %s", i, expander.Name), expanderDebugLog(&inputcr))
 		}
+
 		if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
-			reason, err := r.runJob(ctx, logger, &inputcr, expander.Name, planNN.Name, uri, ev.Spec.ImageRegistry)
-			if err != nil {
-				newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
-				return ctrl.Result{}, err
-			}
+			reason, err = r.runJob(ctx, logger, &inputcr, expander.Name, planNN.Name, uri, ev.Spec.ImageRegistry)
 		} else {
-			newValues, updated, reason, err := r.evaluateAndSavePlan(ctx, logger, &inputcr, values, expander, planNN, ev, uri, expanderDebugLogsEnabled)
+			var newValues map[string]interface{}
+			var updated bool
+
+			newValues, updated, reason, err = r.evaluateAndSavePlan(ctx, logger, &inputcr, values, expander, planNN, ev, uri, expanderDebugLogsEnabled)
 			_, iswaitErr := err.(*EvaluateWaitError)
 			if iswaitErr {
 				newStatus.AppendWaitingCondition(expander.Name, err.Error(), reason)
@@ -213,13 +238,14 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 				// continue to apply phase
 				break
 			}
-			if err != nil {
-				newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
-				// Skip apply phase and return
-				return ctrl.Result{}, err
-			}
 			planUpdated = updated
 			values = newValues
+		}
+
+		if err != nil {
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
+			// Skip apply phase and return
+			return ctrl.Result{}, err
 		}
 		stagesEvaluated = append(stagesEvaluated, expander.Name)
 		// Inject plan.Ready Condition with list of expanders
@@ -236,7 +262,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Re-read the Plan CR to load the expanded manifests
 	oldGeneration := plancr.GetGeneration()
-	if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
+	if err := r.Client.Get(ctx, planNN, plancr); err != nil {
 		logger.Error(err, "unable to read Plan CR")
 		return ctrl.Result{}, err
 	}
@@ -275,7 +301,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if compositionCR.Spec.NamespaceMode != compositionv1alpha1.NamespaceModeExplicit {
 			namespace = inputcr.GetNamespace()
 		}
-		applier := applier.NewApplier(ctx, logger, ac, expander, namespace, r.InputGVR.Resource, &plancr, compositionCR.Spec.Readiness)
+		applier := applier.NewApplier(ctx, logger, ac, expander, namespace, r.InputGVR.Resource, plancr, compositionCR.Spec.Readiness)
 		err := applier.Load() // Load Manifests
 		if err != nil {
 			r.Recorder.Event(&inputcr, "Warning", "ApplyFailed", fmt.Sprintf("error loading manifests for expander, name: %s", expander))
