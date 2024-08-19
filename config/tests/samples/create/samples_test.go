@@ -232,7 +232,7 @@ var testDisabledList = map[string]bool{
 func TestAll(t *testing.T) {
 	project := testgcp.GetDefaultProject(t)
 
-	setup()
+	ctx := setup(t)
 	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
 	if len(samples) == 0 {
 		t.Fatalf("No tests to run for pattern %s", runTestsRegex)
@@ -260,8 +260,7 @@ func TestAll(t *testing.T) {
 		s.Resources = updateProjectResourceWithExistingResourceIDs(t, s.Resources)
 		t.Run(s.Name, func(t *testing.T) {
 			t.Parallel()
-
-			ctx := context.TODO()
+			ctx, cancel := context.WithCancel(ctx)
 
 			h := NewHarnessWithManager(ctx, t, mgr)
 			SetupNamespacesAndApplyDefaults(h, s.Resources, project)
@@ -276,12 +275,16 @@ func TestAll(t *testing.T) {
 				defer releaseFunc(s, networkCount)
 			}
 			RunCreateDeleteTest(h, CreateDeleteTestOptions{Create: s.Resources, CleanupResources: cleanupResources})
+
+			cancel()
 		})
 	}
 }
 
-func setup() {
-	ctx := context.TODO()
+func setup(t *testing.T) context.Context {
+	t.Helper()
+
+	ctx, ctxCancel := context.WithCancel(context.Background())
 	flag.Parse()
 	var err error
 	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
@@ -298,6 +301,17 @@ func setup() {
 			logging.Fatal(err, "error starting manager")
 		}
 	}()
+
+	// Given the informers a chance to sync
+	mgr.GetCache().WaitForCacheSync(ctx)
+
+	t.Cleanup(
+		func() {
+			ctxCancel()
+		},
+	)
+
+	return ctx
 }
 
 func TestMain(m *testing.M) {
