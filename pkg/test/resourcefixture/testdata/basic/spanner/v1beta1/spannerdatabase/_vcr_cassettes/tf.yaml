@@ -298,7 +298,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6?alt=json
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -329,7 +329,7 @@ interactions:
         remote_addr: ""
         request_uri: ""
         body: |
-            {"createStatement":"CREATE DATABASE `spannerdatabase-3eej62fms64k6`"}
+            {"createStatement":"CREATE DATABASE `spannerdb-3eej62fms64k6`"}
         form: {}
         headers:
             Content-Type:
@@ -346,10 +346,10 @@ interactions:
         uncompressed: true
         body: |
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6/operations/_auto_op_7b3efdd90c06b543",
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6/operations/_auto_op_7b3efdd90c06b543",
               "metadata": {
                 "@type": "type.googleapis.com/google.spanner.admin.database.v1.CreateDatabaseMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6"
+                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6"
               }
             }
         headers:
@@ -376,7 +376,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6/operations/_auto_op_7b3efdd90c06b543?alt=json
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6/operations/_auto_op_7b3efdd90c06b543?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -388,15 +388,15 @@ interactions:
         uncompressed: true
         body: |
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6/operations/_auto_op_7b3efdd90c06b543",
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6/operations/_auto_op_7b3efdd90c06b543",
               "metadata": {
                 "@type": "type.googleapis.com/google.spanner.admin.database.v1.CreateDatabaseMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6"
+                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6"
               },
               "done": true,
               "response": {
                 "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
-                "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6",
+                "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6",
                 "state": "READY",
                 "createTime": "2024-06-18T23:37:24.573540Z",
                 "versionRetentionPeriod": "1h",
@@ -429,7 +429,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6/ddl?alt=json
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6/ddl?alt=json
         method: PATCH
       response:
         proto: HTTP/2.0
@@ -441,10 +441,10 @@ interactions:
         uncompressed: true
         body: |
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6/operations/_auto_op_f2e2ff6f79751456",
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6/operations/_auto_op_f2e2ff6f79751456",
               "metadata": {
                 "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6",
+                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6",
                 "statements": [
                   "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
                 ],
@@ -488,7 +488,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6/operations/_auto_op_f2e2ff6f79751456?alt=json
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6/operations/_auto_op_f2e2ff6f79751456?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -500,10 +500,10 @@ interactions:
         uncompressed: true
         body: |
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6/operations/_auto_op_f2e2ff6f79751456",
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6/operations/_auto_op_f2e2ff6f79751456",
               "metadata": {
                 "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6",
+                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6",
                 "statements": [
                   "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
                 ],
@@ -556,7 +556,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6?alt=json
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -568,7 +568,7 @@ interactions:
         uncompressed: true
         body: |
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6",
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6",
               "state": "READY",
               "createTime": "2024-06-18T23:37:24.573540Z",
               "versionRetentionPeriod": "1h",
@@ -604,7 +604,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6?alt=json
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -616,7 +616,7 @@ interactions:
         uncompressed: true
         body: |
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-3eej62fms64k6",
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdb-3eej62fms64k6",
               "state": "READY",
               "createTime": "2024-06-18T23:37:24.573540Z",
               "versionRetentionPeriod": "1h",
