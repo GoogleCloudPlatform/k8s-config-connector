@@ -17,7 +17,7 @@ package compute
 import (
 	"strconv"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
@@ -47,22 +47,22 @@ func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krm.ForwardingruleIpAddress{}
-	out.AddressRef = &refs.ComputeAddressRef{
+	out.AddressRef = &v1alpha1.ResourceRef{
 		External: in,
 	}
 	return out
 }
 
-func ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeBackendServiceRef {
+func ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx *direct.MapContext, in string) *v1alpha1.ResourceRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeBackendServiceRef{
+	return &v1alpha1.ResourceRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeBackendServiceRef) *string {
+func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapContext, in *v1alpha1.ResourceRef) *string {
 	if in == nil {
 		return nil
 	}
@@ -72,16 +72,16 @@ func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapCont
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeNetworkRef {
+func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *v1alpha1.ResourceRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeNetworkRef{
+	return &v1alpha1.ResourceRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeNetworkRef) *string {
+func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *v1alpha1.ResourceRef) *string {
 	if in == nil {
 		return nil
 	}
@@ -91,16 +91,16 @@ func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in 
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeSubnetworkRef {
+func ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *v1alpha1.ResourceRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeSubnetworkRef{
+	return &v1alpha1.ResourceRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeSubnetworkRef) *string {
+func ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx *direct.MapContext, in *v1alpha1.ResourceRef) *string {
 	if in == nil {
 		return nil
 	}
@@ -168,7 +168,7 @@ func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *direct.MapContext, in st
 	out := &krm.ForwardingruleTarget{}
 	// TODO(yuhou): ForwardingRuleTarget can be one of multiple target objects. We need to determine which one to assign the value to.
 	// Assign to TargetHTTPProxy temporarily
-	out.TargetHTTPProxyRef = &refs.ComputeTargetHTTPProxyRef{
+	out.TargetHTTPProxyRef = &v1alpha1.ResourceRef{
 		External: in,
 	}
 	return out

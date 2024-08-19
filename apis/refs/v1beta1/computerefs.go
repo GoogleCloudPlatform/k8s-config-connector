@@ -224,91 +224,6 @@ type ComputeTargetHTTPProxyRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type ComputeTargetHTTPProxy struct {
-	Project                  string
-	Location                 string
-	ComputeTargetHTTPProxyID string
-}
-
-func (c *ComputeTargetHTTPProxy) String() string {
-	if c.Location == "global" {
-		return fmt.Sprintf("projects/%s/global/targetHttpProxies/%s", c.Project, c.ComputeTargetHTTPProxyID)
-	}
-	return fmt.Sprintf("projects/%s/location/%s/targetHttpProxies/%s", c.Project, c.Location, c.ComputeTargetHTTPProxyID)
-}
-
-func ResolveTargetHTTPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeTargetHTTPProxyRef) (*ComputeTargetHTTPProxy, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on ComputeNetwork reference")
-		}
-
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "targetHttpProxies" {
-			return &ComputeTargetHTTPProxy{
-				Project:                  tokens[1],
-				Location:                 "global",
-				ComputeTargetHTTPProxyID: tokens[4]}, nil
-		} else if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "location" && tokens[4] == "targetHttpProxies" {
-			return &ComputeTargetHTTPProxy{
-				Project:                  tokens[1],
-				Location:                 tokens[3],
-				ComputeTargetHTTPProxyID: tokens[5]}, nil
-		}
-		return nil, fmt.Errorf("format of ComputeTargetHTTPProxy external=%q was not known (use projects/<projectId>/global/targetHttpProxies/<proxyId> or projects/<projectId>/location/<location>/targetHttpProxies/<proxyId>)", ref.External)
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on ComputeTargetHTTPProxy reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeTargetHTTPProxy := &unstructured.Unstructured{}
-	computeTargetHTTPProxy.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeTargetHTTPProxy",
-	})
-	if err := reader.Get(ctx, key, computeTargetHTTPProxy); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced ComputeTargetHTTPProxy %v not found", key)
-		}
-		return nil, fmt.Errorf("error reading referenced ComputeTargetHTTPProxy %v: %w", key, err)
-	}
-
-	computeTargetHTTPProxyID, err := GetResourceID(computeTargetHTTPProxy)
-	if err != nil {
-		return nil, err
-	}
-
-	computeTargetHTTPProxyProjectID, err := ResolveProjectID(ctx, reader, computeTargetHTTPProxy)
-	if err != nil {
-		return nil, err
-	}
-
-	computeTargetHTTPProxyLocation, err := getLocation(computeTargetHTTPProxy)
-	if err != nil {
-		return nil, err
-	}
-
-	return &ComputeTargetHTTPProxy{
-		Project:                  computeTargetHTTPProxyProjectID,
-		Location:                 computeTargetHTTPProxyLocation,
-		ComputeTargetHTTPProxyID: computeTargetHTTPProxyID,
-	}, nil
-}
-
 type ComputeTargetHTTPSProxyRef struct {
 	/* The ComputeTargetHTTPSProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by KCC. */
 	External string `json:"external,omitempty"`
@@ -343,17 +258,4 @@ type ComputeTargetVPNGatewayRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeTargetVPNGateway` resource. */
 	Namespace string `json:"namespace,omitempty"`
-}
-
-// TODO(yuhou): Location can be optional. Use provider default location when it's unset.
-func getLocation(obj *unstructured.Unstructured) (string, error) {
-	// TODO(yuhou): field can be "location" or "region".
-	location, _, err := unstructured.NestedString(obj.Object, "spec", "location")
-	if err != nil {
-		return "", fmt.Errorf("cannot get location for referenced %s %v: %w", obj.GetKind(), obj.GetNamespace(), err)
-	}
-	if location == "" {
-		return "", fmt.Errorf("cannot get location for referenced %s %v (spec.location not set)", obj.GetKind(), obj.GetNamespace())
-	}
-	return location, nil
 }
