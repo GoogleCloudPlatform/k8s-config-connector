@@ -42,6 +42,7 @@ func init() {
 	// regexes to be used to match test names. The "test name" in this case
 	// corresponds to the directory name of the sample YAMLs.
 	flag.StringVar(&runTestsRegex, "run-tests", "", "run only the tests whose names match the given regex")
+	flag.StringVar(&skipTestsRegex, "skip-tests", "", "skip the tests whose names match the given regex, even those that match the run-tests regex")
 	// cleanup-resources allows you to disable the cleanup of resources created during testing. This can be useful for debugging test failures.
 	// The default value is true.
 	//
@@ -52,6 +53,7 @@ func init() {
 
 var (
 	runTestsRegex    string
+	skipTestsRegex   string
 	cleanupResources bool
 	mgr              manager.Manager
 	// this manager is only used to get the rest.Config from the test framework
@@ -233,7 +235,19 @@ func TestAll(t *testing.T) {
 	project := testgcp.GetDefaultProject(t)
 
 	setup()
-	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
+	allSamples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
+	skippedSamples := ListMatchingSamples(t, regexp.MustCompile(skipTestsRegex))
+
+	var samples []Sample
+	skippedMap := make(map[string]bool)
+	for _, skipped := range skippedSamples {
+		skippedMap[skipped.Name] = true
+	}
+	for _, sample := range allSamples {
+		if _, exists := skippedMap[sample.Name]; !exists {
+			samples = append(samples, sample)
+		}
+	}
 	if len(samples) == 0 {
 		t.Fatalf("No tests to run for pattern %s", runTestsRegex)
 	}
