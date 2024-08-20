@@ -34,6 +34,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/yaml"
 )
@@ -67,7 +68,7 @@ func BuildExportCmd() *cobra.Command {
 		Args: cobra.ExactArgs(0),
 	}
 
-	cmd.Flags().StringVarP(&opts.kubeconfig, kubeconfigFlag, "", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "path to the kubeconfig file.")
+	cmd.Flags().StringVarP(&opts.kubeconfig, kubeconfigFlag, "", opts.kubeconfig, "path to the kubeconfig file.")
 	cmd.Flags().StringVarP(&opts.reportNamePrefix, reportNamePrefixFlag, "", "report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 
 	cmd.Flags().StringArrayVarP(&opts.targetNamespaces, targetNamespacesFlag, "", []string{}, "namespace prefix to target the export tool. Targets all if empty. Can be specified multiple times.")
@@ -200,6 +201,21 @@ func (opts *ExportOptions) validateFlags() error {
 	return nil
 }
 
+func getRESTConfig(ctx context.Context, opts *ExportOptions) (*rest.Config, error) {
+	var loadingRules clientcmd.ClientConfigLoader
+	if opts.kubeconfig != "" {
+		loadingRules = &clientcmd.ClientConfigLoadingRules{ExplicitPath: opts.kubeconfig}
+	} else {
+		loadingRules = clientcmd.NewDefaultClientConfigLoadingRules()
+	}
+
+	return clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
+		loadingRules,
+		&clientcmd.ConfigOverrides{
+			// ClusterInfo: clientcmdapi.Cluster{Server: masterUrl},
+		}).ClientConfig()
+}
+
 func RunExport(ctx context.Context, opts *ExportOptions) error {
 	log.Printf("Running kompanion export with kubeconfig: %s", opts.kubeconfig)
 
@@ -207,7 +223,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		return err
 	}
 
-	config, err := clientcmd.BuildConfigFromFlags("", opts.kubeconfig)
+	config, err := getRESTConfig(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
