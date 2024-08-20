@@ -34,7 +34,7 @@ trap dev/tasks/cleanup-test-resources EXIT
 
 dev/tasks/run-e2e || EXIT_CODE=$?
 
-if [[ -n "${ARTIFACTS:-}"]];; then
+if [[ -n "${ARTIFACTS:-}"]]; then
   # Capture our source tree, which includes golden output
   echo "Storing golden output in ${ARTIFACTS}/golden.zip"
   zip --recurse-paths --quiet "${ARTIFACTS}/golden.zip" apis/ pkg/
