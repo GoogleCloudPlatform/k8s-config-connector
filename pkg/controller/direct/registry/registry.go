@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 )
 
 var singleton = registry{}
@@ -121,6 +122,9 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 		return false, nil
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		return false, nil
+	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}:
+		return false, nil
 	}
-	return false, fmt.Errorf("groupKind %v is not recognized as a direct kind", groupKind)
+	klog.Warningf("groupKind %v is not recognized as a direct kind for SupportsIAM check", groupKind)
+	return false, nil
 }
