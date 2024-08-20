@@ -23,5 +23,10 @@ spec:
   autoscaling:
     minNodeCount: 1
     maxNodeCount: 3
+  nodeConfig:
+    taint:
+    - effect: NO_SCHEDULE
+      key: originalKey
+      value: originalValue
   clusterRef:
     name: cluster-sample-${uniqueId}

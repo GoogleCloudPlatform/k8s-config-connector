@@ -181,6 +181,11 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
 	update.Name = ""
 
+	if update.Taints != nil {
+		obj.Config.Taints = update.GetTaints().Taints
+		update.Taints = nil
+	}
+
 	// TODO: Support more updates!
 
 	if !proto.Equal(update, &pb.UpdateNodePoolRequest{}) {
