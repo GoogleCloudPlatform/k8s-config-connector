@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/valutil"
+	"golang.org/x/oauth2"
 )
 
 type OnErrorOption string
@@ -66,10 +67,15 @@ type Parameters struct {
 }
 
 func (p *Parameters) ControllerConfig() *config.ControllerConfig {
-	return &config.ControllerConfig{
+	c := &config.ControllerConfig{
 		UserAgent: gcp.KCCUserAgent,
-		// OAuth2Token: p.OAuth2Token,
 	}
+	if p.OAuth2Token != "" {
+		c.GCPTokenSource = oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: p.OAuth2Token},
+		)
+	}
+	return c
 }
 
 // convenience struct used during validation

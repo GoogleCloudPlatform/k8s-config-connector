@@ -17,6 +17,7 @@ package config
 import (
 	"net/http"
 
+	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
 )
 
@@ -36,9 +37,9 @@ type ControllerConfig struct {
 	// This is particularly useful in mocks/tests.
 	HTTPClient *http.Client
 
-	// GCPAccessToken is the OAuth2 Bearer Token to be passed with GCP API calls,
+	// GCPTokenSource mints OAuth2 tokens to be passed with GCP API calls,
 	// allowing use of a non-default OAuth2 identity
-	GCPAccessToken string
+	GCPTokenSource oauth2.TokenSource
 }
 
 func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
@@ -57,6 +58,9 @@ func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
 	}
 	if c.UserProjectOverride && c.BillingProject != "" {
 		opts = append(opts, option.WithQuotaProject(c.BillingProject))
+	}
+	if c.GCPTokenSource != nil {
+		opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
 	}
 
 	// TODO: support endpoints?
@@ -85,6 +89,9 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 	}
 	if c.UserProjectOverride && c.BillingProject != "" {
 		opts = append(opts, option.WithQuotaProject(c.BillingProject))
+	}
+	if c.GCPTokenSource != nil {
+		opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
 	}
 
 	// TODO: support endpoints?
