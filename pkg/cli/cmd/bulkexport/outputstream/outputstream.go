@@ -47,9 +47,10 @@ func NewUnstructuredStream(params *parameters.Parameters, assetStream stream.Ass
 	if err != nil {
 		return nil, fmt.Errorf("error creating http client: %w", err)
 	}
+	config := params.ControllerConfig()
 	serviceClient := serviceclient.NewServiceClient(httpClient)
 	gcpClient := gcpclient.New(provider, smLoader)
-	unstructuredResourceStream, err := stream.NewUnstructuredResourceStreamFromAssetStream(assetStream, gcpClient, provider, &serviceClient)
+	unstructuredResourceStream, err := stream.NewUnstructuredResourceStreamFromAssetStream(assetStream, gcpClient, provider, &serviceClient, config)
 	if err != nil {
 		return nil, fmt.Errorf("error creating unstructured resource stream: %w", err)
 	}

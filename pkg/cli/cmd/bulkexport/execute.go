@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
@@ -42,7 +43,14 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 	if err != nil {
 		return err
 	}
-	assetStream, err := newFilteredAssetStream(params, tfProvider)
+
+	// Initialize direct controllers/exporters
+	controllerConfig := params.ControllerConfig()
+	if err := registry.Init(ctx, controllerConfig); err != nil {
+		return err
+	}
+
+	assetStream, err := newFilteredAssetStream(ctx, params, tfProvider)
 	if err != nil {
 		return err
 	}
@@ -73,10 +81,12 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 	return nil
 }
 
-func newFilteredAssetStream(params *parameters.Parameters, tfProvider *schema.Provider) (stream.AssetStream, error) {
+func newFilteredAssetStream(ctx context.Context, params *parameters.Parameters, tfProvider *schema.Provider) (stream.AssetStream, error) {
+	config := params.ControllerConfig()
+
 	assetStream, err := inputstream.NewAssetStream(params, os.Stdin)
 	if err != nil {
 		return nil, err
 	}
-	return filteredinputstream.NewFilteredAssetStream(assetStream, tfProvider)
+	return filteredinputstream.NewFilteredAssetStream(ctx, assetStream, tfProvider, config)
 }

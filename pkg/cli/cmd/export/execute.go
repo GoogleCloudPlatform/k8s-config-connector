@@ -24,11 +24,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
 func Execute(ctx context.Context, params *parameters.Parameters) error {
 	tfProvider, err := tf.NewProvider(ctx, params.GCPAccessToken)
 	if err != nil {
+		return err
+	}
+
+	// Initialize direct controllers/exporters
+	if err := registry.Init(ctx, params.ControllerConfig()); err != nil {
 		return err
 	}
 

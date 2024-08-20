@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/serviceclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
@@ -45,7 +46,8 @@ func newTestUnstructuredResourceStreamFromAsset(t *testing.T, assetStream stream
 	mockClient := newMockGCPClient(t)
 	serviceClient := serviceclient.NewMockServiceClient(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
-	unstructuredStream, err := stream.NewUnstructuredResourceStreamFromAssetStream(assetStream, mockClient, tfProvider, &serviceClient)
+	config := &config.ControllerConfig{}
+	unstructuredStream, err := stream.NewUnstructuredResourceStreamFromAssetStream(assetStream, mockClient, tfProvider, &serviceClient, config)
 	if err != nil {
 		t.Fatalf("error creating unstructured stream: %v", err)
 	}

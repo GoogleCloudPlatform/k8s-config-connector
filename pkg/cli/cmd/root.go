@@ -29,6 +29,8 @@ import (
 
 	tfversion "github.com/hashicorp/terraform-provider-google-beta/version"
 	"github.com/spf13/cobra"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 const (

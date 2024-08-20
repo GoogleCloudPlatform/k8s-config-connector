@@ -58,7 +58,7 @@ func PreferredGVK(gk schema.GroupKind) (schema.GroupVersionKind, bool) {
 func AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	for _, registration := range singleton.registrations {
 		if registration.model == nil {
-			return nil, fmt.Errorf("registry was not initialized")
+			return nil, fmt.Errorf("registry was not initialized (must call registry.Init)")
 		}
 		adapter, err := registration.model.AdapterForURL(ctx, url)
 		if err != nil {
