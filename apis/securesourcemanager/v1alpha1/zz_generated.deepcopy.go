@@ -5,6 +5,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -302,9 +303,9 @@ func (in *SecureSourceManagerInstanceSpec) DeepCopyInto(out *SecureSourceManager
 		*out = new(string)
 		**out = **in
 	}
-	if in.KmsKey != nil {
-		in, out := &in.KmsKey, &out.KmsKey
-		*out = new(string)
+	if in.KmsKeyRef != nil {
+		in, out := &in.KmsKeyRef, &out.KmsKeyRef
+		*out = new(v1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }

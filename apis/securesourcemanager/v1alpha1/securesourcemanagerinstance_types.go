@@ -29,6 +29,7 @@ type SecureSourceManagerInstanceSpec struct {
 	ProjectRef refs.ProjectRef `json:"projectRef"`
 
 	/* Immutable. Location of the instance. */
+	// +required
 	Location string `json:"location"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -40,9 +41,8 @@ type SecureSourceManagerInstanceSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	*/
 
-	// Optional. Immutable. Customer-managed encryption key name, in the format
-	//  projects/*/locations/*/keyRings/*/cryptoKeys/*.
-	KmsKey *string `json:"kmsKey,omitempty"`
+	// Optional. Immutable. Customer-managed encryption key name.
+	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // SecureSourceManagerInstanceStatus defines the config connector machine state of SecureSourceManagerInstance
