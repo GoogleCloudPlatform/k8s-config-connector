@@ -17,13 +17,17 @@ spec:
   persistenceConfig:
     aofConfig:
       appendFsync: EVERYSEC
-    mode: AOF
+    mode: RDB
+    rdbConfig:
+      rdbSnapshotPeriod: ONE_HOUR
+      rdbSnapshotStartTime: "2024-10-02T15:01:23Z"
   projectRef:
     external: ${projectId}
   pscConfigs:
   - networkRef:
       external: projects/${projectId}/global/networks/${networkID}
   redisConfigs:
+    maxclients: "10"
     maxmemory-policy: volatile-ttl
   replicaCount: 1
   shardCount: 6

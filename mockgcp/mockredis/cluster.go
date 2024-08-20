@@ -226,6 +226,14 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 		return nil, status.Errorf(codes.InvalidArgument, "cluster is required")
 	}
 
+	if len(paths) != 1 {
+		return nil, status.Errorf(codes.InvalidArgument, "exactly 1 update_mask field must be specified per update request")
+	}
+
+	if obj.GetPersistenceConfig().GetAofConfig() != nil && obj.GetPersistenceConfig().GetRdbConfig() != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "unable to update RDB and AOF config at the same time")
+	}
+
 	for _, path := range paths {
 		switch path {
 		case "sizeGb":
@@ -234,6 +242,12 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.ReplicaCount = req.Cluster.ReplicaCount
 		case "shardCount":
 			obj.ShardCount = req.Cluster.ShardCount
+		case "deletionProtectionEnabled":
+			obj.DeletionProtectionEnabled = req.Cluster.DeletionProtectionEnabled
+		case "persistenceConfig":
+			obj.PersistenceConfig = req.Cluster.PersistenceConfig
+		case "redisConfigs":
+			obj.RedisConfigs = req.Cluster.RedisConfigs
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
@@ -274,8 +288,21 @@ func (r *clusterServer) DeleteCluster(ctx context.Context, req *pb.DeleteCluster
 
 	now := time.Now()
 
-	oldObj := &pb.Cluster{}
-	if err := r.storage.Delete(ctx, fqn, oldObj); err != nil {
+	obj := &pb.Cluster{}
+
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	if obj.GetDeletionProtectionEnabled() {
+		return nil, status.Errorf(codes.FailedPrecondition, "The cluster is deletion protected. Please disable deletion protection to delete the cluster. To disable, update DeleteProtectionEnabled to false via the Update API")
+	}
+
+	deletedObj := &pb.Cluster{}
+	if err := r.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
 

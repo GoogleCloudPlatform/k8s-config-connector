@@ -17,9 +17,11 @@ package cluster
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -109,16 +111,35 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, kube client.Re
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := RedisClusterSpec_ToProto(mapCtx, &obj.Spec)
+	desired := RedisClusterSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+
+	// Default to disabled persistence config
+	if desired.PersistenceConfig == nil {
+		desired.PersistenceConfig = &pb.ClusterPersistenceConfig{}
+	}
+	if desired.PersistenceConfig.Mode == pb.ClusterPersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
+		desired.PersistenceConfig.Mode = pb.ClusterPersistenceConfig_DISABLED
+	}
+
+	// Mask out some fields in the persistenceConfig, to accommodate KRM "discriminated union" semantics
+	switch desired.GetPersistenceConfig().GetMode() {
+	case pb.ClusterPersistenceConfig_DISABLED:
+		desired.PersistenceConfig.AofConfig = nil
+		desired.PersistenceConfig.RdbConfig = nil
+	case pb.ClusterPersistenceConfig_RDB:
+		desired.PersistenceConfig.AofConfig = nil
+	case pb.ClusterPersistenceConfig_AOF:
+		desired.PersistenceConfig.RdbConfig = nil
 	}
 
 	return &redisClusterAdapter{
 		projectID:      projectID,
 		location:       location,
 		resourceID:     resourceID,
-		desired:        desiredProto,
+		desired:        desired,
 		clustersClient: redisClustersClient,
 	}, nil
 }
@@ -226,49 +247,59 @@ func (a *redisClusterAdapter) Update(ctx context.Context, u *unstructured.Unstru
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
 
-	// TODO: Where/how do we want to enforce immutability?
-
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	// TODO: What if a different field (immutability again)
 
-	if a.desired.ReplicaCount != nil && direct.ValueOf(a.desired.ReplicaCount) != direct.ValueOf(a.actual.ReplicaCount) {
+	if direct.ValueOf(a.desired.ReplicaCount) != direct.ValueOf(a.actual.ReplicaCount) {
 		updateMask.Paths = append(updateMask.Paths, "replica_count")
 	}
 
-	if a.desired.ShardCount != nil && direct.ValueOf(a.desired.ShardCount) != direct.ValueOf(a.actual.ShardCount) {
+	if direct.ValueOf(a.desired.ShardCount) != direct.ValueOf(a.actual.ShardCount) {
 		updateMask.Paths = append(updateMask.Paths, "shard_count")
 	}
 
-	// TODO: exactly 1 update_mask field must be specified per update request
+	if direct.ValueOf(a.desired.DeletionProtectionEnabled) != direct.ValueOf(a.actual.DeletionProtectionEnabled) {
+		updateMask.Paths = append(updateMask.Paths, "deletion_protection_enabled")
+	}
+
+	if !proto.Equal(a.desired.PersistenceConfig, a.actual.PersistenceConfig) {
+		updateMask.Paths = append(updateMask.Paths, "persistence_config")
+	}
+
+	if !reflect.DeepEqual(a.desired.GetRedisConfigs(), a.actual.GetRedisConfigs()) {
+		updateMask.Paths = append(updateMask.Paths, "redis_configs")
+	}
 
 	var latest *pb.Cluster
 	if len(updateMask.Paths) != 0 {
 
-		// Allowed values are:
-		//   - `size_gb`
-		//   - `replica_count`
+		// exactly 1 update_mask field must be specified per update request
+		for _, path := range updateMask.Paths {
+			req := &pb.UpdateClusterRequest{
+				Cluster: a.desired,
+			}
+			req.UpdateMask = &fieldmaskpb.FieldMask{
+				Paths: []string{path},
+			}
 
-		req := &pb.UpdateClusterRequest{
-			UpdateMask: updateMask,
-			Cluster:    a.desired,
+			req.Cluster.Name = a.fullyQualifiedName()
+
+			log.V(0).Info("making redis UpdateCluster call", "request", req)
+
+			op, err := a.clustersClient.UpdateCluster(ctx, req)
+			if err != nil {
+				return err
+			}
+
+			updated, err := op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting for redisCluster update %s: %w", a.fullyQualifiedName(), err)
+			}
+			log.V(0).Info("updated redisCluster", "redisCluster", updated)
+
+			latest = updated
 		}
-		req.Cluster.Name = a.fullyQualifiedName()
-
-		log.V(0).Info("making redis UpdateCluster call", "request", req)
-
-		op, err := a.clustersClient.UpdateCluster(ctx, req)
-		if err != nil {
-			return err
-		}
-
-		updated, err := op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("waiting for redisCluster update %s: %w", a.fullyQualifiedName(), err)
-		}
-		log.V(0).Info("updated redisCluster", "redisCluster", updated)
-
-		latest = updated
 	} else {
 		latest = a.actual
 	}

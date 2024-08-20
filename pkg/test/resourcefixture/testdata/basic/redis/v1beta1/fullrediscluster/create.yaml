@@ -37,4 +37,4 @@ spec:
     mode: AOF
     aofConfig: 
       appendFsync: EVERYSEC
-  deletionProtectionEnabled: false
+  deletionProtectionEnabled: true
