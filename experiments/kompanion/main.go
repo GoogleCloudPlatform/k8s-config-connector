@@ -23,22 +23,22 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var commands = []*cobra.Command{
-	export.ExportCmd,
-}
+func BuildRootCommand() *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:   "kompanion subcommand",
+		Short: "kompanion is an alpha cli tool for KCC usage.",
+	}
 
-var rootCmd = &cobra.Command{
-	Use:   "kompanion subcommand",
-	Short: "kompanion is an alpha cli tool for KCC usage.",
-}
+	rootCmd.AddCommand(export.BuildExportCmd())
 
-func init() {
-	rootCmd.AddCommand(commands...)
 	rootCmd.Version = version.GetVersion()
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
+
+	return rootCmd
 }
 
 func main() {
+	rootCmd := BuildRootCommand()
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)

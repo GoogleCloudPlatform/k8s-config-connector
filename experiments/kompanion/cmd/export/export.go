@@ -18,9 +18,9 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"context"
+	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -54,12 +54,31 @@ const (
 	`
 )
 
-var ExportCmd = &cobra.Command{
-	Use:     "export",
-	Short:   "export Config Connector resources",
-	Example: examples,
-	RunE:    runE,
-	Args:    cobra.ExactArgs(0),
+func BuildExportCmd() *cobra.Command {
+	var opts ExportOptions
+
+	cmd := &cobra.Command{
+		Use:     "export",
+		Short:   "export Config Connector resources",
+		Example: examples,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunExport(cmd.Context(), &opts)
+		},
+		Args: cobra.ExactArgs(0),
+	}
+
+	cmd.Flags().StringVarP(&opts.kubeconfig, kubeconfigFlag, "", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "path to the kubeconfig file.")
+	cmd.Flags().StringVarP(&opts.reportNamePrefix, reportNamePrefixFlag, "", "report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
+
+	cmd.Flags().StringArrayVarP(&opts.targetNamespaces, targetNamespacesFlag, "", []string{}, "namespace prefix to target the export tool. Targets all if empty. Can be specified multiple times.")
+	cmd.Flags().StringArrayVarP(&opts.ignoreNamespaces, ignoreNamespacesFlag, "", []string{"kube"}, "namespace prefix to ignore. Excludes nothing if empty. Can be specified multiple times. Defaults to \"kube\".")
+
+	cmd.Flags().StringArrayVarP(&opts.targetObjects, targetObjectsFlag, "", []string{}, "object name prefix to target. Targets all if empty. Can be specified multiple times.")
+	cmd.Flags().StringArrayVarP(&opts.ignoreObjects, ignoreObjectsFlag, "", []string{}, "object name prefix to ignore. Excludes nothing if empty. Can be specified multiple times.")
+
+	cmd.Flags().IntVarP(&opts.workerRountines, workerRoutinesFlag, "", 10, "Configure the number of worker routines to export namespaces with. Defaults to 10. ")
+
+	return cmd
 }
 
 const (
@@ -76,7 +95,7 @@ const (
 	workerRoutinesFlag = "worker-routines"
 )
 
-var (
+type ExportOptions struct {
 	kubeconfig       string
 	reportNamePrefix string
 
@@ -87,82 +106,59 @@ var (
 	ignoreObjects []string
 
 	workerRountines int
-)
-
-func init() {
-	ExportCmd.Flags().StringVarP(&kubeconfig, kubeconfigFlag, "", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "path to the kubeconfig file. Defaults to ~HOME/.kube/config")
-	ExportCmd.Flags().StringVarP(&reportNamePrefix, reportNamePrefixFlag, "", "report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
-
-	ExportCmd.Flags().StringArrayVarP(&targetNamespaces, targetNamespacesFlag, "", []string{}, "namespace prefix to target the export tool. Targets all if empty. Can be specified multiple times.")
-	ExportCmd.Flags().StringArrayVarP(&ignoreNamespaces, ignoreNamespacesFlag, "", []string{"kube"}, "namespace prefix to ignore. Excludes nothing if empty. Can be specified multiple times. Defaults to \"kube\".")
-
-	ExportCmd.Flags().StringArrayVarP(&targetObjects, targetObjectsFlag, "", []string{}, "object name prefix to target. Targets all if empty. Can be specified multiple times.")
-	ExportCmd.Flags().StringArrayVarP(&ignoreObjects, ignoreObjectsFlag, "", []string{}, "object name prefix to ignore. Excludes nothing if empty. Can be specified multiple times.")
-
-	ExportCmd.Flags().IntVarP(&workerRountines, workerRoutinesFlag, "", 10, "Configure the number of worker rountines to export namespaces with. Defaults to 10. ")
 }
 
-var (
-	reportName string
-	resources  []*metav1.APIResource
-)
+// Task is implemented by our namespace-collection routine, or anything else we want to run in parallel.
+type Task interface {
+	Run(ctx context.Context) error
+}
 
 // tracks the namespaces to be exported.
 // thread safe.
-type namespacesWorkLog struct {
-	mu         sync.Mutex
-	namespaces []string // will be treated as a FIFO queue
-	errs       []error  // for err accumulaiton while working on work items
+type taskQueue struct {
+	mu    sync.Mutex
+	tasks []Task // will be treated as a FIFO queue
 }
 
-func (n *namespacesWorkLog) AddError(e error) {
+func (n *taskQueue) GetWork() Task {
 	n.mu.Lock()
 	defer n.mu.Unlock()
 
-	n.errs = append(n.errs, e)
-}
-
-func (n *namespacesWorkLog) GetErrors() []error {
-	n.mu.Lock()
-	defer n.mu.Unlock()
-
-	return n.errs
-}
-
-func (n *namespacesWorkLog) GetWork() string {
-	n.mu.Lock()
-	defer n.mu.Unlock()
-
-	if len(n.namespaces) == 0 {
-		return ""
+	if len(n.tasks) == 0 {
+		return nil
 	}
 
-	workItem := n.namespaces[0]
-	n.namespaces = n.namespaces[1:]
+	workItem := n.tasks[0]
+	n.tasks = n.tasks[1:]
 
 	return workItem
 }
 
-func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient) error {
+func (n *taskQueue) AddTask(t Task) {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	n.tasks = append(n.tasks, t)
+}
+
+type collectNamespaceTask struct {
+	Namespace     string
+	DynamicClient *dynamic.DynamicClient
+	Resources     []schema.GroupVersionResource
+	ReportDir     string
+
+	ShouldExcludeObject func(name string) bool
+}
+
+func (t *collectNamespaceTask) Run(ctx context.Context) error {
+	namespaceName := t.Namespace
 	log.Printf("Processing namespace: %s", namespaceName)
-	if shouldExclude(namespaceName, ignoreNamespaces, targetNamespaces) {
-		return nil
-	}
 
-	if err := os.Mkdir(filepath.Join(reportName, namespaceName), 0o700); err != nil {
-		return fmt.Errorf("error creating directory for namespace %s:, err: %w; skipping", namespaceName, err)
-	}
-
-	for _, res := range resources {
-		gvr := schema.GroupVersionResource{
-			Group:    res.Group,
-			Version:  res.Version,
-			Resource: res.Name,
-		}
+	for _, gvr := range t.Resources {
 		// todo acpana debug logs
 		// log.Printf("Looking for gvr %s in namespace %s", gvr, ns.Name)
 
-		resources, err := dynamicClient.Resource(gvr).Namespace(namespaceName).List(context.TODO(), metav1.ListOptions{})
+		resources, err := t.DynamicClient.Resource(gvr).Namespace(namespaceName).List(ctx, metav1.ListOptions{})
 		if err != nil {
 			return fmt.Errorf("error fetching gvr %s resources in namespace %s: %w", gvr, namespaceName, err)
 		}
@@ -171,18 +167,23 @@ func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient
 		// log.Printf("Found %d resources of type gvr %s in namespace %s", len(resources.Items), gvr, ns.Name)
 
 		for _, r := range resources.Items {
-			if shouldExclude(r.GetName(), ignoreObjects, targetObjects) {
+			if t.ShouldExcludeObject(r.GetName()) {
 				continue
 			}
 
-			// todo acpana if the file exists, log error but move on
-			filename := filepath.Join(reportName, namespaceName, fmt.Sprintf("%s_%s.yaml", r.GroupVersionKind().Kind, r.GetName()))
 			data, err := yaml.Marshal(r)
 			if err != nil {
 				return fmt.Errorf("error marshalling resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
 			}
-			err = ioutil.WriteFile(filename, data, 0o644)
-			if err != nil {
+
+			// todo acpana if the file exists, log error but move on
+			filename := filepath.Join(t.ReportDir, namespaceName, fmt.Sprintf("%s_%s.yaml", r.GroupVersionKind().Kind, r.GetName()))
+			filedir := filepath.Dir(filename)
+			if err := os.MkdirAll(filedir, 0o700); err != nil {
+				return fmt.Errorf("error creating directory %s: %w", filedir, err)
+			}
+
+			if err := os.WriteFile(filename, data, 0o644); err != nil {
 				return fmt.Errorf("error writing file for resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
 			}
 		}
@@ -191,22 +192,22 @@ func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient
 	return nil
 }
 
-func validateFlags() error {
-	if workerRountines <= 0 || workerRountines > 100 {
-		return fmt.Errorf("invalid value %d for flag %s. Supported values are [1,100]", workerRountines, workerRoutinesFlag)
+func (opts *ExportOptions) validateFlags() error {
+	if opts.workerRountines <= 0 || opts.workerRountines > 100 {
+		return fmt.Errorf("invalid value %d for flag %s. Supported values are [1,100]", opts.workerRountines, workerRoutinesFlag)
 	}
 
 	return nil
 }
 
-func runE(_ *cobra.Command, _ []string) error {
-	log.Printf("Running kompanion export with kubeconfig: %s", kubeconfig)
+func RunExport(ctx context.Context, opts *ExportOptions) error {
+	log.Printf("Running kompanion export with kubeconfig: %s", opts.kubeconfig)
 
-	if err := validateFlags(); err != nil {
+	if err := opts.validateFlags(); err != nil {
 		return err
 	}
 
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	config, err := clientcmd.BuildConfigFromFlags("", opts.kubeconfig)
 	if err != nil {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
@@ -228,6 +229,8 @@ func runE(_ *cobra.Command, _ []string) error {
 		return fmt.Errorf("failed to get preferred resources: %w", err)
 	}
 
+	var resources []schema.GroupVersionResource
+
 	for _, apiResourceList := range apiResourceLists {
 		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
 			// todo acpana log debug level
@@ -247,71 +250,98 @@ func runE(_ *cobra.Command, _ []string) error {
 				continue
 			}
 
-			resources = append(resources, &apiResource)
+			gvr := schema.GroupVersionResource{
+				Group:    apiResource.Group,
+				Version:  apiResource.Version,
+				Resource: apiResource.Name,
+			}
+
+			resources = append(resources, gvr)
 		}
 	}
 
-	// incentiveze determinism for debuggability and idempotency
+	// Improve determinism for debuggability and idempotency
 	sort.Slice(resources, func(i, j int) bool {
-		return resources[i].SingularName < resources[j].SingularName
+		return resources[i].String() < resources[j].String()
 	})
 
 	// todo acpana debug logs
 	// log.Printf("Going to iterate over the following resources %+v", resourcesToName(resources))
 
-	namespaces, err := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
+	namespaces, err := clientset.CoreV1().Namespaces().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return fmt.Errorf("error fetching namespaces: %w", err)
 	}
 
-	reportName = timestampedName(reportNamePrefix)
-	if err := os.Mkdir(filepath.Join(reportName), 0o700); err != nil {
-		return fmt.Errorf("could not create \"%s\" directory: %w", reportName, err)
+	reportName := timestampedName(opts.reportNamePrefix)
+	reportTempDir := filepath.Join(".", reportName)
+	reportFile := filepath.Join(".", reportName+".tar.gz")
+	if err := os.Mkdir(filepath.Join(reportTempDir), 0o700); err != nil {
+		return fmt.Errorf("could not create %q directory: %w", reportTempDir, err)
 	}
 
 	// create the work log for go routine workers to use
-	workLog := &namespacesWorkLog{}
+	q := &taskQueue{}
 	for _, ns := range namespaces.Items {
-		workLog.namespaces = append(workLog.namespaces, ns.Name)
+		if shouldExclude(ns.Name, opts.ignoreNamespaces, opts.targetNamespaces) {
+			return nil
+		}
+
+		q.AddTask(&collectNamespaceTask{
+			Namespace:     ns.Name,
+			Resources:     resources,
+			DynamicClient: dynamicClient,
+			ReportDir:     reportTempDir,
+			ShouldExcludeObject: func(name string) bool {
+				return shouldExclude(name, opts.ignoreObjects, opts.targetObjects)
+			},
+		})
 	}
 
 	log.Printf("Starting worker threads to process namespaces")
 	var wg sync.WaitGroup
-	for i := 0; i < workerRountines; i++ {
+
+	var errs []error
+	var errsMutex sync.Mutex
+
+	for i := 0; i < opts.workerRountines; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 
 			for {
-				ns := workLog.GetWork()
-				if ns == "" {
+				task := q.GetWork()
+				if task == nil {
 					// no work
 					return
 				}
 
-				if err := processNamespace(ns, dynamicClient); err != nil {
-					workLog.AddError(err)
+				if err := task.Run(ctx); err != nil {
+					errsMutex.Lock()
+					errs = append(errs, err)
+					errsMutex.Unlock()
 				}
 			}
 		}()
 	}
 
-	log.Printf("Dumping Config Connector objects to %s.tar.gz", reportName)
+	log.Printf("Dumping Config Connector objects to %s", reportFile)
 	wg.Wait()
 
-	if err := tarReport("./"+reportName+".tar.gz", "./"+reportName); err != nil {
-		return fmt.Errorf("failed to tar report %s: %w", reportName, err)
+	if err := tarReport(reportFile, reportTempDir); err != nil {
+		return fmt.Errorf("failed to create report file %s: %w", reportFile, err)
 	}
 
-	errors := workLog.GetErrors()
-	if len(errors) != 0 {
-		return fmt.Errorf("there have been errors in the export process: %+v", errors)
+	if len(errs) != 0 {
+		return fmt.Errorf("there have been errors in the export process: %+v", errors.Join(errs...))
 	}
 
 	// clean up files
-	if err := os.RemoveAll(reportName); err != nil {
-		return fmt.Errorf("failed to clean up report folder: %w", err)
+	if err := os.RemoveAll(reportTempDir); err != nil {
+		return fmt.Errorf("failed to clean up report folder %q: %w", reportTempDir, err)
 	}
+
+	fmt.Fprintf(os.Stderr, "created report file: %v", reportFile)
 
 	return nil
 }
