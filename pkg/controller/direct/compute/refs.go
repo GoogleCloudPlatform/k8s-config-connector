@@ -27,22 +27,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func resolveResource(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return nil, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
+func resolveResourceName(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
 	key := types.NamespacedName{
 		Namespace: ref.Namespace,
 		Name:      ref.Name,
@@ -64,22 +49,54 @@ func resolveResource(ctx context.Context, reader client.Reader, src client.Objec
 }
 
 func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeNetwork, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	resource, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeNetwork",
 	})
+
 	if err != nil {
 		return nil, err
 	}
+
 	// targetField: self_link
 	// See compute servicemappings for details
 	return &v1alpha1.ResourceRef{
-		External: computeNetwork.GetSelfLink()}, nil
+		External: resource.GetSelfLink()}, nil
 }
 
 func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeSubnetwork, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeSubnetwork, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeSubnetwork",
@@ -95,7 +112,22 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 }
 
 func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeAddress, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeAddress, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeAddress",
@@ -115,7 +147,22 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 }
 
 func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeBackendService, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeBackendService, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeBackendService",
@@ -131,7 +178,22 @@ func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src
 }
 
 func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeServiceAttachment, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeServiceAttachment, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeServiceAttachment",
@@ -147,7 +209,22 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 }
 
 func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeTargetGrpcProxy, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeTargetGrpcProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetGrpcProxy",
@@ -163,7 +240,22 @@ func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, sr
 }
 
 func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeTargetHTTPProxy, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeTargetHTTPProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetHTTPProxy",
@@ -179,7 +271,22 @@ func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, sr
 }
 
 func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeTargetHTTPSProxy, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeTargetHTTPSProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetHTTPSProxy",
@@ -195,7 +302,22 @@ func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, s
 }
 
 func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeTargetSSLProxy, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeTargetSSLProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetSSLProxy",
@@ -211,7 +333,22 @@ func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src
 }
 
 func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeTargetTCPProxy, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeTargetTCPProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetTCPProxy",
@@ -227,7 +364,22 @@ func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src
 }
 
 func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
-	computeTargetVPNGateway, err := resolveResource(ctx, reader, src, ref, schema.GroupVersionKind{
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	computeTargetVPNGateway, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetVPNGateway",
