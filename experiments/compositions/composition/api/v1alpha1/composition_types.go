@@ -97,10 +97,12 @@ const (
 
 // ReadyOn defines ready condition for a GVK
 type ReadyOn struct {
-	Group   string `json:"group"`
-	Version string `json:"version,omitempty"`
-	Kind    string `json:"kind"`
-	Ready   string `json:"readyIf"`
+	Group     string `json:"group"`
+	Version   string `json:"version,omitempty"`
+	Kind      string `json:"kind"`
+	Name      string `json:"name,omitempty"`
+	Namespace string `json:"namespace,omitempty"`
+	Ready     string `json:"readyIf"`
 }
 
 // CompositionSpec defines the desired state of Composition
