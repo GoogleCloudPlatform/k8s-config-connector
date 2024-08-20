@@ -271,6 +271,20 @@ type ClusterDnsConfig struct {
 	ClusterDnsScope *string `json:"clusterDnsScope,omitempty"`
 }
 
+type ClusterEffectiveTaints struct {
+	/* Effect for taint. */
+	// +optional
+	Effect *string `json:"effect,omitempty"`
+
+	/* Key for taint. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* Value for taint. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+}
+
 type ClusterEnableK8sBetaApis struct {
 	/* Enabled Kubernetes Beta APIs. */
 	EnabledApis []string `json:"enabledApis"`
@@ -619,6 +633,10 @@ type ClusterNodeConfig struct {
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
+	/* List of kubernetes taints applied to each node. */
+	// +optional
+	EffectiveTaints []ClusterEffectiveTaints `json:"effectiveTaints,omitempty"`
+
 	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
 	EphemeralStorageConfig *ClusterEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
@@ -732,7 +750,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 
-	/* Immutable. List of Kubernetes taints to be applied to each node. */
+	/* List of Kubernetes taints to be applied to each node. */
 	// +optional
 	Taint []ClusterTaint `json:"taint,omitempty"`
 
@@ -953,13 +971,13 @@ type ClusterStandardRolloutPolicy struct {
 }
 
 type ClusterTaint struct {
-	/* Immutable. Effect for taint. */
+	/* Effect for taint. */
 	Effect string `json:"effect"`
 
-	/* Immutable. Key for taint. */
+	/* Key for taint. */
 	Key string `json:"key"`
 
-	/* Immutable. Value for taint. */
+	/* Value for taint. */
 	Value string `json:"value"`
 }
 

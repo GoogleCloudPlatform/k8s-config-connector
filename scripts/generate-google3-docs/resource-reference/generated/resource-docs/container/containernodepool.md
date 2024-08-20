@@ -128,6 +128,10 @@ nodeConfig:
     enabled: boolean
   diskSizeGb: integer
   diskType: string
+  effectiveTaints:
+  - effect: string
+    key: string
+    value: string
   ephemeralStorageConfig:
     localSsdCount: integer
   ephemeralStorageLocalSsdConfig:
@@ -767,6 +771,56 @@ version: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.effectiveTaints</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}List of kubernetes taints applied to each node.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.effectiveTaints[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.effectiveTaints[].effect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Effect for taint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.effectiveTaints[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Key for taint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.effectiveTaints[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Value for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1488,7 +1542,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. List of Kubernetes taints to be applied to each node.{% endverbatim %}</p>
+            <p>{% verbatim %}List of Kubernetes taints to be applied to each node.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1508,7 +1562,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Effect for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Effect for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1518,7 +1572,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Key for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Key for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1528,7 +1582,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Value for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Value for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

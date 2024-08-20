@@ -360,6 +360,21 @@ spec:
                     description: Immutable. Type of the disk attached to each node.
                       Such as pd-standard, pd-balanced or pd-ssd.
                     type: string
+                  effectiveTaints:
+                    description: List of kubernetes taints applied to each node.
+                    items:
+                      properties:
+                        effect:
+                          description: Effect for taint.
+                          type: string
+                        key:
+                          description: Key for taint.
+                          type: string
+                        value:
+                          description: Value for taint.
+                          type: string
+                      type: object
+                    type: array
                   ephemeralStorageConfig:
                     description: Immutable. Parameters for the ephemeral storage filesystem.
                       If unspecified, ephemeral storage is backed by the boot disk.
@@ -706,18 +721,17 @@ spec:
                       type: string
                     type: array
                   taint:
-                    description: Immutable. List of Kubernetes taints to be applied
-                      to each node.
+                    description: List of Kubernetes taints to be applied to each node.
                     items:
                       properties:
                         effect:
-                          description: Immutable. Effect for taint.
+                          description: Effect for taint.
                           type: string
                         key:
-                          description: Immutable. Key for taint.
+                          description: Key for taint.
                           type: string
                         value:
-                          description: Immutable. Value for taint.
+                          description: Value for taint.
                           type: string
                       required:
                       - effect
