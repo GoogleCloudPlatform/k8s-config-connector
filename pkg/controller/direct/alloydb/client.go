@@ -20,7 +20,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	api "google.golang.org/api/alloydb/v1beta"
-	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,23 +33,8 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) options() ([]option.ClientOption, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
-	}
-	if m.config.HTTPClient != nil {
-		// TODO: Set UserAgent in this scenario (error is: WithHTTPClient is incompatible with gRPC dial options)
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-	return opts, nil
-}
-
 func (m *gcpClient) newAlloyDBAdminClient(ctx context.Context) (*api.Service, error) {
-	opts, err := m.options()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}

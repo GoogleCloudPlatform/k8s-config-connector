@@ -17,11 +17,9 @@ package monitoring
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	api "cloud.google.com/go/monitoring/dashboard/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -35,48 +33,8 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) options() ([]option.ClientOption, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
-	}
-	if m.config.HTTPClient != nil {
-		// TODO: Set UserAgent in this scenario (error is: WithHTTPClient is incompatible with gRPC dial options)
-
-		httpClient := &http.Client{}
-		*httpClient = *m.config.HTTPClient
-		httpClient.Transport = &optionsRoundTripper{
-			config: m.config,
-			inner:  m.config.HTTPClient.Transport,
-		}
-		opts = append(opts, option.WithHTTPClient(httpClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
-
-	return opts, nil
-}
-
-type optionsRoundTripper struct {
-	config config.ControllerConfig
-	inner  http.RoundTripper
-}
-
-func (m *optionsRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	if m.config.UserAgent != "" {
-		req.Header.Set("User-Agent", m.config.UserAgent)
-	}
-	return m.inner.RoundTrip(req)
-}
-
 func (m *gcpClient) newDashboardsClient(ctx context.Context) (*api.DashboardsClient, error) {
-	opts, err := m.options()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
