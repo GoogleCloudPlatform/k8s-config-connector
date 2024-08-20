@@ -35,4 +35,4 @@ GOLDEN_REQUEST_CHECKS=1 \
 E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=mock \
 KCC_USE_DIRECT_RECONCILERS="SQLInstance" \
-  go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures
+  go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run TestAllInSeries/fixtures
