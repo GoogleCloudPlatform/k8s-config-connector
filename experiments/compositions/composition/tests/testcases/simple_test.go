@@ -458,7 +458,7 @@ func TestUpdateCompositionModifyStage(t *testing.T) {
 
 func TestCustomStatusCELRule(t *testing.T) {
 	s := scenario.NewBasic(t)
-	//defer s.Cleanup()
+	defer s.Cleanup()
 	s.Setup()
 
 	// Check plan object has no error
@@ -471,4 +471,19 @@ func TestCustomStatusCELRule(t *testing.T) {
 	s.VerifyOutputSpecMatches()
 
 	// Verify plan has no errors
+}
+
+func TestMultipleCompositionsDisallowedForSameGVK(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	s.ApplyManifests("second composition", "composition2.yaml")
+
+	// Verify the second composition has the expected error
+	cm := utils.GetCompositionObj("default", "secondprojectconfigmap")
+	condition := utils.GetErrorCondition("DuplicateForGVK", "")
+	s.C.MustHaveCondition(cm, condition, scenario.CompositionReconcileTimeout)
 }

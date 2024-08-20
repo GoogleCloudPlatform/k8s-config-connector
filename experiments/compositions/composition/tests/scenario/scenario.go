@@ -153,11 +153,11 @@ func NewFromSample(t *testing.T, sample Sample, dependentSamples []Sample, hasCl
 }
 
 func (s *Scenario) Cleanup() {
+	defer cluster.ReleaseCluster(s.T, s.cluster)
+	defer s.GatherLogs()
 	s.CleanupInput()
 	s.CleanupIntermediateManifests()
 	s.CleanupOutput()
-	s.GatherLogs()
-	cluster.ReleaseCluster(s.T, s.cluster)
 }
 
 func (s *Scenario) Setup() {
