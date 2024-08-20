@@ -284,7 +284,27 @@ func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 }
 
 func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("apikeyskey %q not found", a.fullyQualifiedName())
+	}
+
+	spec := direct.LazyPtr(a.actual.Spec)
+	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
+	if err != nil {
+		return nil, fmt.Errorf("error converting apikeyskey spec to unstructured: %w", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: make(map[string]interface{}),
+	}
+	u.SetName(a.keyID)
+	u.SetGroupVersionKind(krm.APIKeysKeyGVK)
+	u.SetLabels(a.actual.Labels)
+	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
+		return nil, fmt.Errorf("setting spec: %w", err)
+	}
+
+	return u, nil
 }
 
 func (a *adapter) fullyQualifiedName() string {
