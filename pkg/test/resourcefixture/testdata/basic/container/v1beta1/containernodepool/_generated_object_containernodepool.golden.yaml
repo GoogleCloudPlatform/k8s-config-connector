@@ -29,10 +29,6 @@ spec:
   nodeConfig:
     diskSizeGb: 100
     diskType: pd-balanced
-    effectiveTaints:
-    - effect: NO_SCHEDULE
-      key: originalKey
-      value: originalValue
     imageType: COS_CONTAINERD
     loggingVariant: DEFAULT
     machineType: e2-standard-4
