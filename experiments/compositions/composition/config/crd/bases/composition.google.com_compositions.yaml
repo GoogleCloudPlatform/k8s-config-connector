@@ -119,6 +119,10 @@ spec:
                       type: string
                     kind:
                       type: string
+                    name:
+                      type: string
+                    namespace:
+                      type: string
                     readyIf:
                       type: string
                     version:

@@ -292,12 +292,29 @@ func (a *Applier) Apply(oldAppliers []*Applier, prune bool) error {
 
 func (a *Applier) getReadinessRule(u *unstructured.Unstructured) string {
 	gvk := u.GetObjectKind().GroupVersionKind()
+	match := false
 	for i := range a.readiness {
 		if a.readiness[i].Group == gvk.Group &&
 			a.readiness[i].Version == gvk.Version &&
 			a.readiness[i].Kind == gvk.Kind {
-			return a.readiness[i].Ready
+			match = true
 		}
+		if !match {
+			continue
+		}
+		if a.readiness[i].Name != "" {
+			match = a.readiness[i].Name == u.GetName()
+		}
+		if !match {
+			continue
+		}
+		if a.readiness[i].Namespace != "" {
+			match = a.readiness[i].Namespace == u.GetNamespace()
+		}
+		if !match {
+			continue
+		}
+		return a.readiness[i].Ready
 	}
 	return ""
 }

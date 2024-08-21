@@ -31,10 +31,14 @@ import (
 
 	"github.com/spf13/cobra"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
 
@@ -67,7 +71,7 @@ func BuildExportCmd() *cobra.Command {
 		Args: cobra.ExactArgs(0),
 	}
 
-	cmd.Flags().StringVarP(&opts.kubeconfig, kubeconfigFlag, "", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "path to the kubeconfig file.")
+	cmd.Flags().StringVarP(&opts.kubeconfig, kubeconfigFlag, "", opts.kubeconfig, "path to the kubeconfig file.")
 	cmd.Flags().StringVarP(&opts.reportNamePrefix, reportNamePrefixFlag, "", "report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 
 	cmd.Flags().StringArrayVarP(&opts.targetNamespaces, targetNamespacesFlag, "", []string{}, "namespace prefix to target the export tool. Targets all if empty. Can be specified multiple times.")
@@ -141,50 +145,71 @@ func (n *taskQueue) AddTask(t Task) {
 	n.tasks = append(n.tasks, t)
 }
 
-type collectNamespaceTask struct {
-	Namespace     string
-	DynamicClient *dynamic.DynamicClient
-	Resources     []schema.GroupVersionResource
-	ReportDir     string
+type dumpResourcesTask struct {
+	// Namespace is the namespace to filter down
+	Namespace string
 
-	ShouldExcludeObject func(name string) bool
+	DynamicClient *dynamic.DynamicClient
+
+	// Resources is the list of resources to query
+	Resources []schema.GroupVersionResource
+
+	ReportDir string
+
+	ShouldExcludeObject func(id types.NamespacedName) bool
 }
 
-func (t *collectNamespaceTask) Run(ctx context.Context) error {
-	namespaceName := t.Namespace
-	log.Printf("Processing namespace: %s", namespaceName)
+func (t *dumpResourcesTask) Run(ctx context.Context) error {
+	log := klog.FromContext(ctx)
 
 	for _, gvr := range t.Resources {
 		// todo acpana debug logs
 		// log.Printf("Looking for gvr %s in namespace %s", gvr, ns.Name)
 
-		resources, err := t.DynamicClient.Resource(gvr).Namespace(namespaceName).List(ctx, metav1.ListOptions{})
-		if err != nil {
-			return fmt.Errorf("error fetching gvr %s resources in namespace %s: %w", gvr, namespaceName, err)
+		var resources *unstructured.UnstructuredList
+		if t.Namespace != "" {
+			log.Info(fmt.Sprintf("Fetching %v in namespace %s", gvr.Resource, t.Namespace))
+			r, err := t.DynamicClient.Resource(gvr).Namespace(t.Namespace).List(ctx, metav1.ListOptions{})
+			if err != nil {
+				return fmt.Errorf("fetching gvr %s resources in namespace %s: %w", gvr, t.Namespace, err)
+			}
+			resources = r
+
+		} else {
+			log.Info(fmt.Sprintf("Fetching %v", gvr.Resource))
+			r, err := t.DynamicClient.Resource(gvr).List(ctx, metav1.ListOptions{})
+			if err != nil {
+				return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+			}
+			resources = r
 		}
 
 		// todo acpana debug logs
 		// log.Printf("Found %d resources of type gvr %s in namespace %s", len(resources.Items), gvr, ns.Name)
 
 		for _, r := range resources.Items {
-			if t.ShouldExcludeObject(r.GetName()) {
+			id := types.NamespacedName{
+				Namespace: r.GetNamespace(),
+				Name:      r.GetName(),
+			}
+			if t.ShouldExcludeObject(id) {
 				continue
 			}
 
 			data, err := yaml.Marshal(r)
 			if err != nil {
-				return fmt.Errorf("error marshalling resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
+				return fmt.Errorf("error marshalling resource %s: %w", id, err)
 			}
 
 			// todo acpana if the file exists, log error but move on
-			filename := filepath.Join(t.ReportDir, namespaceName, fmt.Sprintf("%s_%s.yaml", r.GroupVersionKind().Kind, r.GetName()))
+			filename := filepath.Join(t.ReportDir, id.Namespace, fmt.Sprintf("%s_%s.yaml", r.GroupVersionKind().Kind, id.Name))
 			filedir := filepath.Dir(filename)
 			if err := os.MkdirAll(filedir, 0o700); err != nil {
 				return fmt.Errorf("error creating directory %s: %w", filedir, err)
 			}
 
 			if err := os.WriteFile(filename, data, 0o644); err != nil {
-				return fmt.Errorf("error writing file for resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
+				return fmt.Errorf("error writing file for resource %s in namespace %s: %w", id.Name, id.Namespace, err)
 			}
 		}
 	}
@@ -200,6 +225,21 @@ func (opts *ExportOptions) validateFlags() error {
 	return nil
 }
 
+func getRESTConfig(ctx context.Context, opts *ExportOptions) (*rest.Config, error) {
+	var loadingRules clientcmd.ClientConfigLoader
+	if opts.kubeconfig != "" {
+		loadingRules = &clientcmd.ClientConfigLoadingRules{ExplicitPath: opts.kubeconfig}
+	} else {
+		loadingRules = clientcmd.NewDefaultClientConfigLoadingRules()
+	}
+
+	return clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
+		loadingRules,
+		&clientcmd.ConfigOverrides{
+			// ClusterInfo: clientcmdapi.Cluster{Server: masterUrl},
+		}).ClientConfig()
+}
+
 func RunExport(ctx context.Context, opts *ExportOptions) error {
 	log.Printf("Running kompanion export with kubeconfig: %s", opts.kubeconfig)
 
@@ -207,7 +247,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		return err
 	}
 
-	config, err := clientcmd.BuildConfigFromFlags("", opts.kubeconfig)
+	config, err := getRESTConfig(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
@@ -280,25 +320,46 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		return fmt.Errorf("could not create %q directory: %w", reportTempDir, err)
 	}
 
-	// create the work log for go routine workers to use
-	q := &taskQueue{}
-	for _, ns := range namespaces.Items {
-		if shouldExclude(ns.Name, opts.ignoreNamespaces, opts.targetNamespaces) {
-			return nil
+	shouldExcludeObject := func(id types.NamespacedName) bool {
+		if shouldExclude(id.Namespace, opts.ignoreNamespaces, opts.targetNamespaces) {
+			return true
 		}
-
-		q.AddTask(&collectNamespaceTask{
-			Namespace:     ns.Name,
-			Resources:     resources,
-			DynamicClient: dynamicClient,
-			ReportDir:     reportTempDir,
-			ShouldExcludeObject: func(name string) bool {
-				return shouldExclude(name, opts.ignoreObjects, opts.targetObjects)
-			},
-		})
+		return shouldExclude(id.Name, opts.ignoreObjects, opts.targetObjects)
 	}
 
-	log.Printf("Starting worker threads to process namespaces")
+	// create the work log for go routine workers to use
+	q := &taskQueue{}
+
+	// Parallize across resources, unless we are scoped to a few namespaces
+	// The thought is that if users target a particular namespace (or a few), they may not have cluster-wide permission.
+	perNamespace := len(opts.targetNamespaces) == 0
+
+	if perNamespace {
+		for _, ns := range namespaces.Items {
+			if shouldExclude(ns.Name, opts.ignoreNamespaces, opts.targetNamespaces) {
+				continue
+			}
+
+			q.AddTask(&dumpResourcesTask{
+				Namespace:           ns.Name,
+				Resources:           resources,
+				DynamicClient:       dynamicClient,
+				ReportDir:           reportTempDir,
+				ShouldExcludeObject: shouldExcludeObject,
+			})
+		}
+	} else {
+		for _, resource := range resources {
+			q.AddTask(&dumpResourcesTask{
+				Resources:           []schema.GroupVersionResource{resource},
+				DynamicClient:       dynamicClient,
+				ReportDir:           reportTempDir,
+				ShouldExcludeObject: shouldExcludeObject,
+			})
+		}
+	}
+
+	log.Printf("Starting worker threads to process KCC objects")
 	var wg sync.WaitGroup
 
 	var errs []error
@@ -341,7 +402,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		return fmt.Errorf("failed to clean up report folder %q: %w", reportTempDir, err)
 	}
 
-	fmt.Fprintf(os.Stderr, "created report file: %v", reportFile)
+	fmt.Fprintf(os.Stderr, "created report file: %v\n", reportFile)
 
 	return nil
 }
