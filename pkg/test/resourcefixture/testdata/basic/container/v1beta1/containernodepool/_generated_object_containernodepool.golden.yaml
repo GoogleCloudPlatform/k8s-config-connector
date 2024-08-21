@@ -45,6 +45,10 @@ spec:
       external: default
     shieldedInstanceConfig:
       enableIntegrityMonitoring: true
+    taint:
+    - effect: NO_SCHEDULE
+      key: newKey
+      value: newValue
   nodeCount: 0
   resourceID: nodepool-sample-${uniqueId}
   upgradeSettings:

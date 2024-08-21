@@ -1488,7 +1488,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. List of Kubernetes taints to be applied to each node.{% endverbatim %}</p>
+            <p>{% verbatim %}List of Kubernetes taints to be applied to each node.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1508,7 +1508,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Effect for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Effect for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1518,7 +1518,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Key for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Key for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1528,7 +1528,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Value for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Value for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

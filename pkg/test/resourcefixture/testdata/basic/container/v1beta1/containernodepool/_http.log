@@ -343,13 +343,17 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "totalMinNodeCount": 0
     },
     "config": {
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/devstorage.read_only",
-        "https://www.googleapis.com/auth/logging.write",
-        "https://www.googleapis.com/auth/monitoring",
-        "https://www.googleapis.com/auth/service.management.readonly",
-        "https://www.googleapis.com/auth/servicecontrol",
-        "https://www.googleapis.com/auth/trace.append"
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      },
+      "taints": [
+        {
+          "effect": "NO_SCHEDULE",
+          "key": "originalKey",
+          "value": "originalValue"
+        }
       ]
     },
     "name": "nodepool-sample-${uniqueId}",
@@ -429,6 +433,11 @@ X-Xss-Protection: 0
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
     "imageType": "COS_CONTAINERD",
+    "loggingConfig": {
+      "variantConfig": {
+        "variant": "DEFAULT"
+      }
+    },
     "machineType": "e2-standard-4",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -445,6 +454,13 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
+    "taints": [
+      {
+        "effect": "NO_SCHEDULE",
+        "key": "originalKey",
+        "value": "originalValue"
+      }
+    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
@@ -529,6 +545,69 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "zone": "us-central1-a"
+}
+
+---
+
+PUT https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "name": "nodepool-sample-${uniqueId}",
+  "taints": {
+    "taints": [
+      {
+        "effect": "NO_SCHEDULE",
+        "key": "newKey",
+        "value": "newValue"
+      }
+    ]
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "${operationID}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "${operationID}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
   "zone": "us-central1-a"
 }
 
@@ -720,6 +799,11 @@ X-Xss-Protection: 0
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
     "imageType": "COS_CONTAINERD",
+    "loggingConfig": {
+      "variantConfig": {
+        "variant": "DEFAULT"
+      }
+    },
     "machineType": "e2-standard-4",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -736,6 +820,13 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
+    "taints": [
+      {
+        "effect": "NO_SCHEDULE",
+        "key": "newKey",
+        "value": "newValue"
+      }
+    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
