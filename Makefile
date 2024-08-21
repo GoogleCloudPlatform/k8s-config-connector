@@ -283,3 +283,28 @@ gke-addon-poststart:
 .PHONY: operator-manager-bin
 operator-manager-bin:
 	go build -o bin/operator-manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
+
+# Build all manifests
+.PHONY: all-manifests
+all-manifests: crd-manifests rbac-manifests manager-manifests
+	kustomize build config/installbundle/release-manifests -o config/installbundle/release-manifests/manifests.yaml
+
+.PHONY: crd-manifests
+crd-manifests:
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
+	kustomize build operator/config/crd -o config/installbundle/release-manifests/crds.yaml
+
+.PHONY: rbac-manifests
+rbac-manifests:
+	kustomize build operator/config/rbac -o config/installbundle/release-manifests/rbac.yaml
+
+.PHONY: manager-manifests
+manager-manifests:
+	make -C operator docker-build
+	kustomize build operator/config/manager -o config/installbundle/release-manifests/manager.yaml
+
+.PHONY: clean-release-manifests
+clean-release-manifests:
+	rm config/installbundle/release-manifests/crds.yaml
+	rm config/installbundle/release-manifests/rbac.yaml
+	rm config/installbundle/release-manifests/manager.yaml
