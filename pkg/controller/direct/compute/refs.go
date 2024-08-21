@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,28 +27,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func resolveResourceName(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	resource := &unstructured.Unstructured{}
-	resource.SetGroupVersionKind(gvk)
-	if err := reader.Get(ctx, key, resource); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(resource.GroupVersionKind(), key)
-		}
-		return nil, fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
-	}
-
-	return resource, nil
-}
-
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*refs.ComputeNetworkRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -64,7 +43,15 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	resource, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeNetwork, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeNetwork",
@@ -76,11 +63,11 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
-		External: resource.GetSelfLink()}, nil
+	return &refs.ComputeNetworkRef{
+		External: computeNetwork.GetSelfLink()}, nil
 }
 
-func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeSubnetworkRef) (*refs.ComputeSubnetworkRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -96,7 +83,15 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeSubnetwork, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeSubnetwork, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeSubnetwork",
@@ -106,12 +101,12 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 	}
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeSubnetworkRef{
 		External: computeSubnetwork.GetSelfLink(),
 	}, nil
 }
 
-func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeAddressRef) (*refs.ComputeAddressRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -127,7 +122,15 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeAddress, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeAddress, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeAddress",
@@ -142,11 +145,11 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 	if address == "" {
 		return nil, fmt.Errorf("cannot get address for referenced %s %v (spec.address is empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
 	}
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeAddressRef{
 		External: address}, nil
 }
 
-func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeBackendServiceRef) (*refs.ComputeBackendServiceRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -162,7 +165,15 @@ func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeBackendService, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeBackendService, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeBackendService",
@@ -173,11 +184,11 @@ func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeBackendServiceRef{
 		External: computeBackendService.GetSelfLink()}, nil
 }
 
-func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeServiceAttachmentRef) (*refs.ComputeServiceAttachmentRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -193,7 +204,15 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeServiceAttachment, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeServiceAttachment, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeServiceAttachment",
@@ -204,11 +223,11 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeServiceAttachmentRef{
 		External: computeServiceAttachment.GetSelfLink()}, nil
 }
 
-func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetGrpcProxyRef) (*refs.ComputeTargetGrpcProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -224,7 +243,15 @@ func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, sr
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeTargetGrpcProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeTargetGrpcProxy, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetGrpcProxy",
@@ -235,11 +262,11 @@ func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, sr
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeTargetGrpcProxyRef{
 		External: computeTargetGrpcProxy.GetSelfLink()}, nil
 }
 
-func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetHTTPProxyRef) (*refs.ComputeTargetHTTPProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -255,7 +282,15 @@ func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, sr
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeTargetHTTPProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeTargetHTTPProxy, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetHTTPProxy",
@@ -266,11 +301,11 @@ func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, sr
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeTargetHTTPProxyRef{
 		External: computeTargetHTTPProxy.GetSelfLink()}, nil
 }
 
-func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetHTTPSProxyRef) (*refs.ComputeTargetHTTPSProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -286,7 +321,15 @@ func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, s
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeTargetHTTPSProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeTargetHTTPSProxy, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetHTTPSProxy",
@@ -297,11 +340,11 @@ func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, s
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeTargetHTTPSProxyRef{
 		External: computeTargetHTTPSProxy.GetSelfLink()}, nil
 }
 
-func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetSSLProxyRef) (*refs.ComputeTargetSSLProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -317,7 +360,15 @@ func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeTargetSSLProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeTargetSSLProxy, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetSSLProxy",
@@ -328,11 +379,11 @@ func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeTargetSSLProxyRef{
 		External: computeTargetSSLProxy.GetSelfLink()}, nil
 }
 
-func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetTCPProxyRef) (*refs.ComputeTargetTCPProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -348,7 +399,15 @@ func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeTargetTCPProxy, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeTargetTCPProxy, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetTCPProxy",
@@ -359,11 +418,11 @@ func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeTargetTCPProxyRef{
 		External: computeTargetTCPProxy.GetSelfLink()}, nil
 }
 
-func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
+func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetVPNGatewayRef) (*refs.ComputeTargetVPNGatewayRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -379,7 +438,15 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 		return nil, fmt.Errorf("must specify either name or external on reference")
 	}
 
-	computeTargetVPNGateway, err := resolveResourceName(ctx, reader, src, ref, schema.GroupVersionKind{
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeTargetVPNGateway, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeTargetVPNGateway",
@@ -390,6 +457,19 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &v1alpha1.ResourceRef{
+	return &refs.ComputeTargetVPNGatewayRef{
 		External: computeTargetVPNGateway.GetSelfLink()}, nil
+}
+
+func resolveResourceName(ctx context.Context, reader client.Reader, key client.ObjectKey, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
+	resource := &unstructured.Unstructured{}
+	resource.SetGroupVersionKind(gvk)
+	if err := reader.Get(ctx, key, resource); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(resource.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
+	}
+
+	return resource, nil
 }

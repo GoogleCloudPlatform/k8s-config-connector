@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -104,7 +105,7 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 	}
 	if in.BackendServiceRef != nil {
 		in, out := &in.BackendServiceRef, &out.BackendServiceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeBackendServiceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -146,7 +147,7 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.NetworkTier != nil {
@@ -193,7 +194,7 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.Target != nil {
@@ -296,7 +297,7 @@ func (in *ForwardingruleIpAddress) DeepCopyInto(out *ForwardingruleIpAddress) {
 	*out = *in
 	if in.AddressRef != nil {
 		in, out := &in.AddressRef, &out.AddressRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeAddressRef)
 		**out = **in
 	}
 	if in.Ip != nil {
@@ -369,37 +370,37 @@ func (in *ForwardingruleTarget) DeepCopyInto(out *ForwardingruleTarget) {
 	*out = *in
 	if in.ServiceAttachmentRef != nil {
 		in, out := &in.ServiceAttachmentRef, &out.ServiceAttachmentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeServiceAttachmentRef)
 		**out = **in
 	}
 	if in.TargetGRPCProxyRef != nil {
 		in, out := &in.TargetGRPCProxyRef, &out.TargetGRPCProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeTargetGrpcProxyRef)
 		**out = **in
 	}
 	if in.TargetHTTPProxyRef != nil {
 		in, out := &in.TargetHTTPProxyRef, &out.TargetHTTPProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeTargetHTTPProxyRef)
 		**out = **in
 	}
 	if in.TargetHTTPSProxyRef != nil {
 		in, out := &in.TargetHTTPSProxyRef, &out.TargetHTTPSProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeTargetHTTPSProxyRef)
 		**out = **in
 	}
 	if in.TargetSSLProxyRef != nil {
 		in, out := &in.TargetSSLProxyRef, &out.TargetSSLProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeTargetSSLProxyRef)
 		**out = **in
 	}
 	if in.TargetTCPProxyRef != nil {
 		in, out := &in.TargetTCPProxyRef, &out.TargetTCPProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeTargetTCPProxyRef)
 		**out = **in
 	}
 	if in.TargetVPNGatewayRef != nil {
 		in, out := &in.TargetVPNGatewayRef, &out.TargetVPNGatewayRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeTargetVPNGatewayRef)
 		**out = **in
 	}
 	return
