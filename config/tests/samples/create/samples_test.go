@@ -235,21 +235,26 @@ func TestAll(t *testing.T) {
 	project := testgcp.GetDefaultProject(t)
 
 	setup()
-	allSamples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
-	skippedSamples := ListMatchingSamples(t, regexp.MustCompile(skipTestsRegex))
+	// When runTestsRegex is unset, we run all the samples.
+	matchedSamples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
+	// When skipTestsRegex is unset, we don't skip any sample.
+	var skippedSamples []SampleKey
+	if skipTestsRegex != "" {
+		skippedSamples = ListMatchingSamples(t, regexp.MustCompile(skipTestsRegex))
+	}
 
 	var samples []Sample
 	skippedMap := make(map[string]bool)
 	for _, skipped := range skippedSamples {
 		skippedMap[skipped.Name] = true
 	}
-	for _, sample := range allSamples {
+	for _, sample := range matchedSamples {
 		if _, exists := skippedMap[sample.Name]; !exists {
 			samples = append(samples, sample)
 		}
 	}
 	if len(samples) == 0 {
-		t.Fatalf("No tests to run for pattern %s", runTestsRegex)
+		t.Fatalf("No tests to run for -run-tests=%s, -skip-tests=%s", runTestsRegex, skipTestsRegex)
 	}
 
 	// Sort the samples in descending order by number of resources. This is an attempt to start the samples that use
