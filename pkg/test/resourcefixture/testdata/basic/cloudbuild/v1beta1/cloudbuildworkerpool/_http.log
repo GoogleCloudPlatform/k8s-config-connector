@@ -533,6 +533,7 @@ X-Xss-Protection: 0
 
 GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: location=us-central1
 
 404 Not Found
@@ -558,6 +559,7 @@ X-Xss-Protection: 0
 
 POST https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools?%24alt=json%3Benum-encoding%3Dint&workerPoolId=cloudbuildworkerpool-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: location=us-central1
 
 {
@@ -601,6 +603,7 @@ X-Xss-Protection: 0
 
 GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
@@ -649,6 +652,7 @@ X-Xss-Protection: 0
 
 GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: location=us-central1
 
 200 OK
@@ -682,6 +686,7 @@ X-Xss-Protection: 0
 
 PATCH https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CprivatePoolV1Config.networkConfig.egressOption%2CprivatePoolV1Config.workerConfig.diskSizeGb%2CprivatePoolV1Config.workerConfig.machineType
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: location=us-central1
 
 {
@@ -725,6 +730,7 @@ X-Xss-Protection: 0
 
 GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
@@ -772,6 +778,7 @@ X-Xss-Protection: 0
 
 GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: location=us-central1
 
 200 OK
@@ -806,6 +813,7 @@ X-Xss-Protection: 0
 
 DELETE https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&allowMissing=true
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: location=us-central1
 
 200 OK

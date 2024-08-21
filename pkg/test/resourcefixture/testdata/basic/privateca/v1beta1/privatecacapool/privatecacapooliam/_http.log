@@ -482,6 +482,7 @@ X-Xss-Protection: 0
 
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fprivatecacapool-${uniqueId}
 
 200 OK
@@ -503,6 +504,7 @@ X-Xss-Protection: 0
 
 POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}:setIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fprivatecacapool-${uniqueId}
 
 {
@@ -548,6 +550,7 @@ X-Xss-Protection: 0
 
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fprivatecacapool-${uniqueId}
 
 200 OK
@@ -578,6 +581,7 @@ X-Xss-Protection: 0
 
 POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}:setIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/controller-manager
 x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fprivatecacapool-${uniqueId}
 
 {
