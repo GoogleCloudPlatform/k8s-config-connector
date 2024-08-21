@@ -134,7 +134,6 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	if err := r.processComposition(ctx, &composition, logger); err != nil {
 		// Don't return an error to avoid requeuing a request that we know can't succeed.
 		if errors.Is(err, errDuplicate) {
-			logger.Info("Returning nil")
 			return ctrl.Result{}, nil
 		}
 		logger.Info("Error processing Composition")
