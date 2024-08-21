@@ -284,6 +284,12 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 			continue
 		}
 
+		apiResourceListGroupVersion, err := schema.ParseGroupVersion(apiResourceList.GroupVersion)
+		if err != nil {
+			klog.Warningf("skipping unparseable groupVersion %q", apiResourceList.GroupVersion)
+			continue
+		}
+
 		for _, apiResource := range apiResourceList.APIResources {
 			if !apiResource.Namespaced {
 				// todo acpana log debug level
@@ -300,6 +306,16 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 				Group:    apiResource.Group,
 				Version:  apiResource.Version,
 				Resource: apiResource.Name,
+			}
+
+			if gvr.Group == "" {
+				// Empty implies the group of the containing resource list.
+				gvr.Group = apiResourceListGroupVersion.Group
+			}
+
+			if gvr.Version == "" {
+				// Empty implies the version of the containing resource list
+				gvr.Version = apiResourceListGroupVersion.Version
 			}
 
 			resources = append(resources, gvr)
