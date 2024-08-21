@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -46,6 +47,7 @@ import (
 )
 
 var FacadeControllers sync.Map
+var errDuplicate = fmt.Errorf("duplicate composition")
 
 // CompositionReconciler reconciles a Composition object
 type CompositionReconciler struct {
@@ -130,6 +132,10 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 
 	logger.Info("Processing Composition object")
 	if err := r.processComposition(ctx, &composition, logger); err != nil {
+		// Don't return an error to avoid requeuing a request that we know can't succeed.
+		if errors.Is(err, errDuplicate) {
+			return ctrl.Result{}, nil
+		}
 		logger.Info("Error processing Composition")
 		return ctrl.Result{}, err
 	}
@@ -337,8 +343,22 @@ func (r *CompositionReconciler) processComposition(
 
 	// TODO(barni@) Stop existing reconciler and start a new one
 	logger.Info("Checking if Reconciler already exists for InputAPI CRD")
-	_, loaded := FacadeControllers.LoadOrStore(gvk, true)
+	cNN := types.NamespacedName{Namespace: c.Namespace, Name: c.Name}
+	nn, loaded := FacadeControllers.LoadOrStore(gvk, cNN)
 	if loaded {
+		existingNN := nn.(types.NamespacedName)
+		if existingNN.Namespace != c.Namespace || existingNN.Name != c.Name {
+			msg := fmt.Sprintf("Failed to apply composition %v over existing composition named %v for GVK %v", cNN, nn, gvk)
+			logger.Error(errDuplicate, msg)
+			c.Status.Conditions = append(c.Status.Conditions, metav1.Condition{
+				LastTransitionTime: metav1.Now(),
+				Message:            msg,
+				Reason:             "DuplicateForGVK",
+				Type:               string(compositionv1alpha1.Error),
+				Status:             metav1.ConditionTrue,
+			})
+			return errDuplicate
+		}
 		logger.Info("Sending event to handoff channel")
 		r.handoffChannels[gvk] <- event.GenericEvent{
 			Object: &corev1.Pod{
