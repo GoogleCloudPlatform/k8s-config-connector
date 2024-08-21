@@ -271,20 +271,6 @@ type ClusterDnsConfig struct {
 	ClusterDnsScope *string `json:"clusterDnsScope,omitempty"`
 }
 
-type ClusterEffectiveTaints struct {
-	/* Effect for taint. */
-	// +optional
-	Effect *string `json:"effect,omitempty"`
-
-	/* Key for taint. */
-	// +optional
-	Key *string `json:"key,omitempty"`
-
-	/* Value for taint. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-}
-
 type ClusterEnableK8sBetaApis struct {
 	/* Enabled Kubernetes Beta APIs. */
 	EnabledApis []string `json:"enabledApis"`
@@ -632,10 +618,6 @@ type ClusterNodeConfig struct {
 	/* Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd. */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
-
-	/* List of kubernetes taints applied to each node. */
-	// +optional
-	EffectiveTaints []ClusterEffectiveTaints `json:"effectiveTaints,omitempty"`
 
 	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
