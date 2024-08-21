@@ -252,6 +252,12 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
 
+	// We rely more on server-side rate limiting now, so give it a high client-side QPS
+	if config.QPS == 0 {
+		config.QPS = 100
+		config.Burst = 20
+	}
+
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return fmt.Errorf("error creating Kubernetes clientset: %sw", err)
