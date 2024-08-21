@@ -21,6 +21,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
@@ -99,8 +100,19 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error creating project: %v", err)
 	}
+	for i := 0; i < 10; i++ {
+		if op.Done {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+		latest, err := crm.Operations.Get(op.Name).Context(h.Ctx).Do()
+		if err != nil {
+			t.Fatalf("error getting operation %q: %v", op.Name, err)
+		}
+		op = latest
+	}
 	if !op.Done {
-		t.Fatalf("expected mock create project operation to be done immediately")
+		t.Fatalf("expected mock create project operation to be done")
 	}
 
 	t.Logf("creating controller")
