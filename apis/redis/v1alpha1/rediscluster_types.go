@@ -50,7 +50,7 @@ type RedisClusterSpec struct {
 	// Required. Each PscConfig configures the consumer network where IPs will
 	//  be designated to the cluster for client access through Private Service
 	//  Connect Automation. Currently, only one PscConfig is supported.
-	PscConfigs []PscConfig `json:"pscConfigs,omitempty"`
+	PscConfigs []PscConfigSpec `json:"pscConfigs,omitempty"`
 
 	// Optional. The type of a redis node in the cluster. NodeType determines the
 	//  underlying machine-type of a redis node.
@@ -73,8 +73,7 @@ type RedisClusterSpec struct {
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
-type PscConfig struct {
+type PscConfigSpec struct {
 	// Required. The network where the IP address of the discovery endpoint will
 	//  be reserved, in the form of
 	//  projects/{network_project}/global/networks/{network_id}.

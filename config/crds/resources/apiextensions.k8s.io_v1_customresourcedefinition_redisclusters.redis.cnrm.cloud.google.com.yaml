@@ -282,41 +282,11 @@ spec:
                           description: Output only. Customer configuration for where
                             the endpoint is created and accessed from.
                           properties:
-                            networkRef:
+                            network:
                               description: Required. The network where the IP address
                                 of the discovery endpoint will be reserved, in the
                                 form of projects/{network_project}/global/networks/{network_id}.
-                              oneOf:
-                              - not:
-                                  required:
-                                  - external
-                                required:
-                                - name
-                              - not:
-                                  anyOf:
-                                  - required:
-                                    - name
-                                  - required:
-                                    - namespace
-                                required:
-                                - external
-                              properties:
-                                external:
-                                  description: The compute network selflink of form
-                                    "projects/<project>/global/networks/<network>",
-                                    when not managed by Config Connector.
-                                  type: string
-                                name:
-                                  description: The `name` field of a `ComputeNetwork`
-                                    resource.
-                                  type: string
-                                namespace:
-                                  description: The `namespace` field of a `ComputeNetwork`
-                                    resource.
-                                  type: string
-                              type: object
-                          required:
-                          - networkRef
+                              type: string
                           type: object
                       type: object
                     type: array

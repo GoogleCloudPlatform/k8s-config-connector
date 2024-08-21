@@ -37,79 +37,6 @@ type CertificateAuthority_ManagedCertificateAuthority_CertChain struct {
 	Certificates []string `json:"certificates,omitempty"`
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.Cluster
-type Cluster struct {
-	// Required. Unique name of the resource in this scope including project and
-	//  location using the form:
-	//      `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The timestamp associated with the cluster creation request.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The current state of this cluster.
-	//  Can be CREATING, READY, UPDATING, DELETING and SUSPENDED
-	State *string `json:"state,omitempty"`
-
-	// Output only. System assigned, unique identifier for the cluster.
-	Uid *string `json:"uid,omitempty"`
-
-	// Optional. The number of replica nodes per shard.
-	ReplicaCount *int32 `json:"replicaCount,omitempty"`
-
-	// Optional. The authorization mode of the Redis cluster.
-	//  If not provided, auth feature is disabled for the cluster.
-	AuthorizationMode *string `json:"authorizationMode,omitempty"`
-
-	// Optional. The in-transit encryption for the Redis cluster.
-	//  If not provided, encryption  is disabled for the cluster.
-	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
-
-	// Output only. Redis memory size in GB for the entire cluster rounded up to
-	//  the next integer.
-	SizeGb *int32 `json:"sizeGb,omitempty"`
-
-	// Required. Number of shards for the Redis cluster.
-	ShardCount *int32 `json:"shardCount,omitempty"`
-
-	// Required. Each PscConfig configures the consumer network where IPs will
-	//  be designated to the cluster for client access through Private Service
-	//  Connect Automation. Currently, only one PscConfig is supported.
-	PscConfigs []PscConfig `json:"pscConfigs,omitempty"`
-
-	// Output only. Endpoints created on each given network, for Redis clients to
-	//  connect to the cluster. Currently only one discovery endpoint is supported.
-	DiscoveryEndpoints []DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
-
-	// Output only. PSC connections for discovery of the cluster topology and
-	//  accessing the cluster.
-	PscConnections []PscConnection `json:"pscConnections,omitempty"`
-
-	// Output only. Additional information about the current state of the cluster.
-	StateInfo *Cluster_StateInfo `json:"stateInfo,omitempty"`
-
-	// Optional. The type of a redis node in the cluster. NodeType determines the
-	//  underlying machine-type of a redis node.
-	NodeType *string `json:"nodeType,omitempty"`
-
-	// Optional. Persistence config (RDB, AOF) for the cluster.
-	PersistenceConfig *ClusterPersistenceConfig `json:"persistenceConfig,omitempty"`
-
-	// Optional. Key/Value pairs of customer overrides for mutable Redis Configs
-	RedisConfigs map[string]string `json:"redisConfigs,omitempty"`
-
-	// Output only. Precise value of redis memory size in GB for the entire
-	//  cluster.
-	PreciseSizeGb *float64 `json:"preciseSizeGb,omitempty"`
-
-	// Optional. This config will be used to determine how the customer wants us
-	//  to distribute cluster resources within the region.
-	ZoneDistributionConfig *ZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
-
-	// Optional. The delete operation will fail when the value is set to true.
-	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
-}
-
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo
 type Cluster_StateInfo struct {
 	// Describes ongoing update on the cluster when cluster state is UPDATING.
@@ -166,6 +93,14 @@ type DiscoveryEndpoint struct {
 	// Output only. Customer configuration for where the endpoint is created and
 	//  accessed from.
 	PscConfig *PscConfig `json:"pscConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
+type PscConfig struct {
+	// Required. The network where the IP address of the discovery endpoint will
+	//  be reserved, in the form of
+	//  projects/{network_project}/global/networks/{network_id}.
+	Network *string `json:"network,omitempty"`
 }
 
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConnection

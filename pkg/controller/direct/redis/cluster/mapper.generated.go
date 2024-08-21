@@ -72,58 +72,6 @@ func CertificateAuthority_ManagedCertificateAuthority_CertChain_ToProto(mapCtx *
 	out.Certificates = in.Certificates
 	return out
 }
-func Cluster_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.Cluster {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Cluster{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CreateTime = Cluster_CreateTime_FromProto(mapCtx, in.GetCreateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
-	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
-	out.SizeGb = in.SizeGb
-	out.ShardCount = in.ShardCount
-	out.PscConfigs = direct.Slice_FromProto(mapCtx, in.PscConfigs, PscConfig_FromProto)
-	out.DiscoveryEndpoints = direct.Slice_FromProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpoint_FromProto)
-	out.PscConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PscConnection_FromProto)
-	out.StateInfo = Cluster_StateInfo_FromProto(mapCtx, in.GetStateInfo())
-	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
-	out.PersistenceConfig = ClusterPersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
-	out.RedisConfigs = in.RedisConfigs
-	out.PreciseSizeGb = in.PreciseSizeGb
-	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
-	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	return out
-}
-func Cluster_ToProto(mapCtx *direct.MapContext, in *krm.Cluster) *pb.Cluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Cluster{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = Cluster_CreateTime_ToProto(mapCtx, in.CreateTime)
-	out.State = direct.Enum_ToProto[pb.Cluster_State](mapCtx, in.State)
-	out.Uid = direct.ValueOf(in.Uid)
-	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_ToProto[pb.AuthorizationMode](mapCtx, in.AuthorizationMode)
-	out.TransitEncryptionMode = direct.Enum_ToProto[pb.TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
-	out.SizeGb = in.SizeGb
-	out.ShardCount = in.ShardCount
-	out.PscConfigs = direct.Slice_ToProto(mapCtx, in.PscConfigs, PscConfig_ToProto)
-	out.DiscoveryEndpoints = direct.Slice_ToProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpoint_ToProto)
-	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PscConnections, PscConnection_ToProto)
-	out.StateInfo = Cluster_StateInfo_ToProto(mapCtx, in.StateInfo)
-	out.NodeType = direct.Enum_ToProto[pb.NodeType](mapCtx, in.NodeType)
-	out.PersistenceConfig = ClusterPersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
-	out.RedisConfigs = in.RedisConfigs
-	out.PreciseSizeGb = in.PreciseSizeGb
-	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
-	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	return out
-}
 func ClusterPersistenceConfig_FromProto(mapCtx *direct.MapContext, in *pb.ClusterPersistenceConfig) *krm.ClusterPersistenceConfig {
 	if in == nil {
 		return nil
@@ -234,6 +182,22 @@ func DiscoveryEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEndpo
 	out.PscConfig = PscConfig_ToProto(mapCtx, in.PscConfig)
 	return out
 }
+func PscConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PscConfig{}
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	return out
+}
+func PscConfig_ToProto(mapCtx *direct.MapContext, in *krm.PscConfig) *pb.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConfig{}
+	out.Network = direct.ValueOf(in.Network)
+	return out
+}
 func PscConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PscConnection {
 	if in == nil {
 		return nil
@@ -324,7 +288,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
 	// MISSING: SizeGb
 	out.ShardCount = in.ShardCount
-	out.PscConfigs = direct.Slice_FromProto(mapCtx, in.PscConfigs, PscConfig_FromProto)
+	out.PscConfigs = direct.Slice_FromProto(mapCtx, in.PscConfigs, PscConfigSpec_FromProto)
 	// MISSING: DiscoveryEndpoints
 	// MISSING: PscConnections
 	// MISSING: StateInfo
@@ -350,7 +314,7 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	out.TransitEncryptionMode = direct.Enum_ToProto[pb.TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
 	// MISSING: SizeGb
 	out.ShardCount = in.ShardCount
-	out.PscConfigs = direct.Slice_ToProto(mapCtx, in.PscConfigs, PscConfig_ToProto)
+	out.PscConfigs = direct.Slice_ToProto(mapCtx, in.PscConfigs, PscConfigSpec_ToProto)
 	// MISSING: DiscoveryEndpoints
 	// MISSING: PscConnections
 	// MISSING: StateInfo
