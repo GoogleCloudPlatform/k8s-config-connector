@@ -100,20 +100,6 @@ type NodepoolConfidentialNodes struct {
 	Enabled bool `json:"enabled"`
 }
 
-type NodepoolEffectiveTaints struct {
-	/* Effect for taint. */
-	// +optional
-	Effect *string `json:"effect,omitempty"`
-
-	/* Key for taint. */
-	// +optional
-	Key *string `json:"key,omitempty"`
-
-	/* Value for taint. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-}
-
 type NodepoolEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int64 `json:"localSsdCount"`
@@ -279,10 +265,6 @@ type NodepoolNodeConfig struct {
 	/* Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd. */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
-
-	/* List of kubernetes taints applied to each node. */
-	// +optional
-	EffectiveTaints []NodepoolEffectiveTaints `json:"effectiveTaints,omitempty"`
 
 	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
