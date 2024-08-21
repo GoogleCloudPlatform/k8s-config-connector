@@ -44,7 +44,7 @@ import (
 
 const (
 	examples = `
-	# export KCC resources across all namespaces, excludes \"kube\" namespaces by default
+	# export Config Connector resources across all namespaces, excludes \"kube\" namespaces by default
 	kompanion export
 
 	# exclude certain namespace prefixes
@@ -365,7 +365,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		}
 	}
 
-	log.Printf("Starting worker threads to process KCC objects")
+	log.Printf("Starting worker threads to process Config Connector objects")
 	var wg sync.WaitGroup
 
 	var errs []error
