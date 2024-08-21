@@ -427,31 +427,6 @@ func schemaNodeConfig() *schema.Schema {
 					},
 				},
 
-				"effective_taints": {
-					Type:        schema.TypeList,
-					Computed:    true,
-					Description: `List of kubernetes taints applied to each node.`,
-					Elem: &schema.Resource{
-						Schema: map[string]*schema.Schema{
-							"key": {
-								Type:        schema.TypeString,
-								Computed:    true,
-								Description: `Key for taint.`,
-							},
-							"value": {
-								Type:        schema.TypeString,
-								Computed:    true,
-								Description: `Value for taint.`,
-							},
-							"effect": {
-								Type:        schema.TypeString,
-								Computed:    true,
-								Description: `Effect for taint.`,
-							},
-						},
-					},
-				},
-
 				"workload_metadata_config": {
 					Computed:    true,
 					Type:        schema.TypeList,
@@ -1175,7 +1150,6 @@ func flattenNodeConfig(c *container.NodeConfig, v interface{}) []map[string]inte
 		"min_cpu_platform":                   c.MinCpuPlatform,
 		"shielded_instance_config":           flattenShieldedInstanceConfig(c.ShieldedInstanceConfig),
 		"taint":                              flattenTaints(c.Taints, oldTaints),
-		"effective_taints":                   flattenEffectiveTaints(c.Taints),
 		"workload_metadata_config":           flattenWorkloadMetadataConfig(c.WorkloadMetadataConfig),
 		"sandbox_config":                     flattenSandboxConfig(c.SandboxConfig),
 		"host_maintenance_policy":            flattenHostMaintenancePolicy(c.HostMaintenancePolicy),
@@ -1333,20 +1307,6 @@ func flattenTaints(c []*container.NodeTaint, oldTaints []interface{}) []map[stri
 				"effect": taint.Effect,
 			})
 		}
-	}
-
-	return result
-}
-
-// flattenEffectiveTaints records the complete set of taints returned from GKE.
-func flattenEffectiveTaints(c []*container.NodeTaint) []map[string]interface{} {
-	result := []map[string]interface{}{}
-	for _, taint := range c {
-		result = append(result, map[string]interface{}{
-			"key":    taint.Key,
-			"value":  taint.Value,
-			"effect": taint.Effect,
-		})
 	}
 
 	return result
