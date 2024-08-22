@@ -60,6 +60,63 @@ spec:
             type: object
           spec:
             properties:
+              cloneSource:
+                description: Create this database as a clone of a source instance.
+                  Immutable.
+                properties:
+                  binLogCoordinates:
+                    description: Binary log coordinates, if specified, identify the
+                      position up to which the source instance is cloned. If not specified,
+                      the source instance is cloned up to the most recent binary log
+                      coordinates.
+                    properties:
+                      binLogFileName:
+                        description: Name of the binary log file for a Cloud SQL instance.
+                        type: string
+                      binLogPosition:
+                        description: Position (offset) within the binary log file.
+                        format: int64
+                        type: integer
+                    type: object
+                  databaseNames:
+                    description: (SQL Server only) Clone only the specified databases
+                      from the source instance. Clone all databases if empty.
+                    items:
+                      type: string
+                    type: array
+                  pointInTime:
+                    description: Timestamp, if specified, identifies the time to which
+                      the source instance is cloned.
+                    type: string
+                  sqlInstanceRef:
+                    description: The source SQLInstance to clone
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
+                type: object
               databaseVersion:
                 description: The MySQL, PostgreSQL or SQL Server (beta) version to
                   use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6,
@@ -201,11 +258,6 @@ spec:
                             type: object
                         type: object
                     type: object
-                    x-kubernetes-validations:
-                    - message: valueFrom is forbidden when value is specified
-                      rule: 'has(self.value) ? !has(self.valueFrom) : true'
-                    - message: value is forbidden when valueFrom is specified
-                      rule: 'has(self.valueFrom) ? !has(self.value): true'
                   sslCipher:
                     description: Immutable. Permissible ciphers for use in SSL encryption.
                     type: string
@@ -249,11 +301,6 @@ spec:
                         type: object
                     type: object
                 type: object
-                x-kubernetes-validations:
-                - message: valueFrom is forbidden when value is specified
-                  rule: 'has(self.value) ? !has(self.valueFrom) : true'
-                - message: value is forbidden when valueFrom is specified
-                  rule: 'has(self.valueFrom) ? !has(self.value): true'
               settings:
                 description: The settings to use for the database. The configuration
                   is detailed below.

@@ -69,7 +69,7 @@ var _ directbase.Adapter = &sqlInstanceAdapter{}
 func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.SQLInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+		return nil, fmt.Errorf("converting to %T failed: %w", obj, err)
 	}
 
 	resourceID, err := refs.GetResourceID(u)
@@ -138,14 +138,22 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 		return fmt.Errorf("resourceID is empty")
 	}
 
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.refs)
+	if a.desired.Spec.CloneSource != nil {
+		return a.cloneInstance(ctx, u, log)
+	} else {
+		return a.insertInstance(ctx, u, log)
+	}
+}
+
+func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
+	desiredGCP, err := SQLInstanceKRMToGCPCloneRequest(a.desired, a.refs)
 	if err != nil {
 		return err
 	}
 
-	op, err := a.sqlInstancesClient.Insert(a.projectID, desiredGCP).Context(ctx).Do()
+	op, err := a.sqlInstancesClient.Clone(a.projectID, a.refs.sourceSQLInstance, desiredGCP).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("create SQLInstance %s failed: %w", a.desired.Name, err)
+		return fmt.Errorf("cloning SQLInstance %s failed: %w", a.desired.Name, err)
 	}
 
 	pollingBackoff := gax.Backoff{
@@ -160,22 +168,67 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 			break
 		}
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-			return fmt.Errorf("wait SQLInstance %s creation failed: %w", a.desired.Name, err)
+			return fmt.Errorf("waiting for SQLInstance %s clone failed: %w", a.desired.Name, err)
 		}
 		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
 		if err != nil {
-			return fmt.Errorf("get SQLInstance %s create operation %s failed: %w", a.desired.Name, op.Name, err)
+			return fmt.Errorf("getting SQLInstance %s clone operation %s failed: %w", a.desired.Name, op.Name, err)
 		}
 	}
 
 	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("get SQLInstance %s failed: %w", a.desired.Name, err)
+		return fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
+	}
+
+	log.V(2).Info("instance cloned", "op", op, "instance", created)
+
+	status := &krm.SQLInstanceStatus{}
+	if err := Convert_SQLInstance_API_v1_To_KRM_status(created, status); err != nil {
+		return fmt.Errorf("updating SQLInstance status failed: %w", err)
+	}
+	return setStatus(u, status)
+}
+
+func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
+	desiredGCP, err := SQLInstanceKRMToGCPInstance(a.desired, a.refs)
+	if err != nil {
+		return err
+	}
+
+	op, err := a.sqlInstancesClient.Insert(a.projectID, desiredGCP).Context(ctx).Do()
+	if err != nil {
+		return fmt.Errorf("creating SQLInstance %s failed: %w", a.desired.Name, err)
+	}
+
+	pollingBackoff := gax.Backoff{
+		Initial:    time.Second,
+		Max:        time.Minute,
+		Multiplier: 2,
+	}
+	for {
+		log.V(2).Info("polling", "op", op)
+
+		if op.Status == "DONE" {
+			break
+		}
+		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
+			return fmt.Errorf("waiting for SQLInstance %s creation failed: %w", a.desired.Name, err)
+		}
+		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		if err != nil {
+			return fmt.Errorf("getting SQLInstance %s create operation %s failed: %w", a.desired.Name, op.Name, err)
+		}
+	}
+
+	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	if err != nil {
+		return fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
 	}
 
 	users, err := a.sqlUsersClient.List(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("list SQLInstance %s users failed: %w", a.desired.Name, err)
+		return fmt.Errorf("listing SQLInstance %s users failed: %w", a.desired.Name, err)
 	}
 
 	if users != nil {
@@ -185,7 +238,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 				// Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database_instance
 				op, err := a.sqlUsersClient.Delete(a.projectID, a.resourceID).Context(ctx).Name(user.Name).Do()
 				if err != nil {
-					return fmt.Errorf("delete SQLInstance %s root user failed: %w", a.desired.Name, err)
+					return fmt.Errorf("deleting SQLInstance %s root user failed: %w", a.desired.Name, err)
 				}
 				for {
 					log.V(2).Info("polling", "op", op)
@@ -194,11 +247,11 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 						break
 					}
 					if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-						return fmt.Errorf("wait SQLInstance %s delete user failed: %w", a.desired.Name, err)
+						return fmt.Errorf("waiting for SQLInstance %s delete user failed: %w", a.desired.Name, err)
 					}
 					op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
 					if err != nil {
-						return fmt.Errorf("get SQLInstance %s delete root user operation %s failed: %w", a.desired.Name, op.Name, err)
+						return fmt.Errorf("getting SQLInstance %s delete root user operation %s failed: %w", a.desired.Name, op.Name, err)
 					}
 				}
 			}
@@ -209,7 +262,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 
 	status := &krm.SQLInstanceStatus{}
 	if err := Convert_SQLInstance_API_v1_To_KRM_status(created, status); err != nil {
-		return fmt.Errorf("update SQLInstance status failed: %w", err)
+		return fmt.Errorf("updating SQLInstance status failed: %w", err)
 	}
 	return setStatus(u, status)
 }
@@ -225,7 +278,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, u *unstructured.Unstruc
 		}
 		op, err := a.sqlInstancesClient.Patch(a.projectID, *a.desired.Spec.ResourceID, newVersionDb).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("patch SQLInstance %s version failed: %w", *a.desired.Spec.ResourceID, err)
+			return fmt.Errorf("patching SQLInstance %s version failed: %w", *a.desired.Spec.ResourceID, err)
 		}
 
 		pollingBackoff := gax.Backoff{
@@ -240,17 +293,17 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, u *unstructured.Unstruc
 				break
 			}
 			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-				return fmt.Errorf("wait SQLInstance %s version patch failed: %w", *a.desired.Spec.ResourceID, err)
+				return fmt.Errorf("waiting for SQLInstance %s version patch failed: %w", *a.desired.Spec.ResourceID, err)
 			}
 			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
 			if err != nil {
-				return fmt.Errorf("get SQLInstance %s version patch operation %s failed: %w", *a.desired.Spec.ResourceID, op.Name, err)
+				return fmt.Errorf("getting SQLInstance %s version patch operation %s failed: %w", *a.desired.Spec.ResourceID, op.Name, err)
 			}
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("get SQLInstance %s failed: %w", *a.desired.Spec.ResourceID, err)
+			return fmt.Errorf("getting SQLInstance %s failed: %w", *a.desired.Spec.ResourceID, err)
 		}
 
 		log.V(2).Info("instance version updated", "op", op, "instance", updated)
@@ -261,13 +314,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, u *unstructured.Unstruc
 	// Next, update rest of the fields
 	merged, diffDetected, err := MergeDesiredSQLInstanceWithActual(a.desired, a.refs, a.actual)
 	if err != nil {
-		return fmt.Errorf("diff SQLInstances failed: %w", err)
+		return fmt.Errorf("diffing SQLInstances failed: %w", err)
 	}
 
 	if diffDetected {
 		op, err := a.sqlInstancesClient.Update(a.projectID, merged.Name, merged).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("update SQLInstance %s failed: %w", merged.Name, err)
+			return fmt.Errorf("updating SQLInstance %s failed: %w", merged.Name, err)
 		}
 
 		pollingBackoff := gax.Backoff{
@@ -282,24 +335,24 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, u *unstructured.Unstruc
 				break
 			}
 			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-				return fmt.Errorf("wait SQLInstance %s update failed: %w", merged.Name, err)
+				return fmt.Errorf("waiting for SQLInstance %s update failed: %w", merged.Name, err)
 			}
 			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
 			if err != nil {
-				return fmt.Errorf("get SQLInstance %s update operation %s failed: %w", merged.Name, op.Name, err)
+				return fmt.Errorf("getting SQLInstance %s update operation %s failed: %w", merged.Name, op.Name, err)
 			}
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("get SQLInstance %s failed: %w", merged.Name, err)
+			return fmt.Errorf("getting SQLInstance %s failed: %w", merged.Name, err)
 		}
 
 		log.V(2).Info("instance updated", "op", op, "instance", updated)
 
 		status := &krm.SQLInstanceStatus{}
 		if err := Convert_SQLInstance_API_v1_To_KRM_status(updated, status); err != nil {
-			return fmt.Errorf("update SQLInstance status failed: %w", err)
+			return fmt.Errorf("updating SQLInstance status failed: %w", err)
 		}
 		return setStatus(u, status)
 	}
@@ -317,7 +370,7 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context) (bool, error) {
 	}
 	op, err := a.sqlInstancesClient.Delete(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return false, fmt.Errorf("deleting SQLInstance %s: %w", a.resourceID, err)
+		return false, fmt.Errorf("deleting SQLInstance %s failed: %w", a.resourceID, err)
 	}
 
 	log.V(2).Info("deleted SQLInstance", "op", op)
@@ -332,12 +385,12 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	sqlInstance, err := SQLInstanceGCPToKRM(a.actual)
 	if err != nil {
-		return nil, fmt.Errorf("error converting SQLInstance from API %w", err)
+		return nil, fmt.Errorf("converting SQLInstance from API failed: %w", err)
 	}
 
 	sqlInstanceObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(sqlInstance)
 	if err != nil {
-		return nil, fmt.Errorf("error converting SQLInstance spec to unstructured: %w", err)
+		return nil, fmt.Errorf("converting SQLInstance spec to unstructured failed: %w", err)
 	}
 
 	u := &unstructured.Unstructured{
@@ -352,7 +405,7 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
 	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
+		return fmt.Errorf("converting status to unstructured failed: %w", err)
 	}
 
 	old, _, _ := unstructured.NestedMap(u.Object, "status")
