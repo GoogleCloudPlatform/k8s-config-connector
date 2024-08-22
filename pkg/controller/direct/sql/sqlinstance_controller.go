@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/googleapis/gax-go/v2"
 )
@@ -38,7 +39,21 @@ import (
 const ctrlName = "sqlinstance-controller"
 
 func init() {
-	registry.RegisterModel(krm.SQLInstanceGVK, newSQLInstanceModel)
+	rg := &SQLInstanceReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.SQLInstanceGVK, newSQLInstanceModel, rg)
+}
+
+type SQLInstanceReconcileGate struct{}
+
+var _ kccpredicate.ReconcileGate = &SQLInstanceReconcileGate{}
+
+func (*SQLInstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	obj := &krm.SQLInstance{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
+		return false
+	}
+	// Run the direct reconciler only when spec.cloneSource is specified
+	return obj.Spec.CloneSource != nil
 }
 
 func newSQLInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
