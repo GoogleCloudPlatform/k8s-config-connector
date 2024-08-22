@@ -124,7 +124,7 @@ type RecordsetRoutingPolicy struct {
 }
 
 type RecordsetRrdatasRefs struct {
-	/* Allowed values: The `address` field of a `ComputeAddress` resource.The `dnsResourceRecord.data` field of a `CertificateManagerDnsAuthorization` resource. */
+	/* Allowed values: The `address` field of a `ComputeAddress` resource. The `dnsResourceRecord.data` field of a `CertificateManagerDnsAuthorization` resource. */
 	// +optional
 	External *string `json:"external,omitempty"`
 
