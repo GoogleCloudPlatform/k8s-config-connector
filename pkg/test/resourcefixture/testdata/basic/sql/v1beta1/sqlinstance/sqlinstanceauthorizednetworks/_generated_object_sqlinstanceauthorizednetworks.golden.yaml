@@ -13,16 +13,24 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: postgresbasic-${uniqueId}
+  name: postgresauthorizednetworks-${uniqueId}
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_16
   region: us-central1
-  resourceID: postgresbasic-${uniqueId}
+  resourceID: postgresauthorizednetworks-${uniqueId}
   settings:
+    ipConfiguration:
+      authorizedNetworks:
+      - expirationTime: "2099-01-01T00:00:00+00:00"
+        name: all
+        value: 0.0.0.0/0
+      - expirationTime: "2100-01-01T00:00:00+00:00"
+        name: my-network
+        value: 1.2.3.0/24
     locationPreference:
       zone: us-central1-a
-    tier: db-custom-2-7680
+    tier: db-custom-1-3840
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -30,13 +38,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:postgresbasic-${uniqueId}
+  connectionName: ${projectId}:us-central1:postgresauthorizednetworks-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 3
   publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----

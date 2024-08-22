@@ -704,55 +704,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		merged.Settings.InsightsConfig = actual.Settings.InsightsConfig
 	}
 
-	if desired.Spec.Settings.IpConfiguration != nil {
-		if actual.Settings.IpConfiguration == nil {
-			// Add ip configuration
-			updateRequired = true
-		} else if (direct.ValueOf(desired.Spec.Settings.IpConfiguration.AllocatedIpRange) != actual.Settings.IpConfiguration.AllocatedIpRange) ||
-			(len(desired.Spec.Settings.IpConfiguration.AuthorizedNetworks) != len(actual.Settings.IpConfiguration.AuthorizedNetworks)) ||
-			(desired.Spec.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices != &actual.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices) ||
-			(direct.ValueOf(desired.Spec.Settings.IpConfiguration.Ipv4Enabled) != actual.Settings.IpConfiguration.Ipv4Enabled) ||
-			(refs.privateNetwork != actual.Settings.IpConfiguration.PrivateNetwork) ||
-			(len(desired.Spec.Settings.IpConfiguration.PscConfig) == 1 &&
-				(len(desired.Spec.Settings.IpConfiguration.PscConfig[0].AllowedConsumerProjects) != len(actual.Settings.IpConfiguration.PscConfig.AllowedConsumerProjects)) ||
-				(direct.ValueOf(desired.Spec.Settings.IpConfiguration.PscConfig[0].PscEnabled) != actual.Settings.IpConfiguration.PscConfig.PscEnabled)) ||
-			(direct.ValueOf(desired.Spec.Settings.IpConfiguration.RequireSsl) != actual.Settings.IpConfiguration.RequireSsl) ||
-			(direct.ValueOf(desired.Spec.Settings.IpConfiguration.SslMode) != actual.Settings.IpConfiguration.SslMode) {
-			// Change ip configuration
-			updateRequired = true
-		}
-		merged.Settings.IpConfiguration = &api.IpConfiguration{
-			AllocatedIpRange:                        direct.ValueOf(desired.Spec.Settings.IpConfiguration.AllocatedIpRange),
-			EnablePrivatePathForGoogleCloudServices: direct.ValueOf(desired.Spec.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices),
-			Ipv4Enabled:                             direct.ValueOf(desired.Spec.Settings.IpConfiguration.Ipv4Enabled),
-			PrivateNetwork:                          refs.privateNetwork,
-			RequireSsl:                              direct.ValueOf(desired.Spec.Settings.IpConfiguration.RequireSsl),
-			SslMode:                                 direct.ValueOf(desired.Spec.Settings.IpConfiguration.SslMode),
-		}
-		if len(desired.Spec.Settings.IpConfiguration.PscConfig) == 1 {
-			merged.Settings.IpConfiguration.PscConfig = &api.PscConfig{
-				PscEnabled: direct.ValueOf(desired.Spec.Settings.IpConfiguration.PscConfig[0].PscEnabled),
-			}
-			merged.Settings.IpConfiguration.PscConfig.AllowedConsumerProjects = append(merged.Settings.IpConfiguration.PscConfig.AllowedConsumerProjects, desired.Spec.Settings.IpConfiguration.PscConfig[0].AllowedConsumerProjects...)
-		}
-		for _, authorizedNetwork := range desired.Spec.Settings.IpConfiguration.AuthorizedNetworks {
-			merged.Settings.IpConfiguration.AuthorizedNetworks = append(merged.Settings.IpConfiguration.AuthorizedNetworks, &api.AclEntry{
-				Name:           direct.ValueOf(authorizedNetwork.Name),
-				ExpirationTime: direct.ValueOf(authorizedNetwork.ExpirationTime),
-				Value:          authorizedNetwork.Value,
-				Kind:           "sql#aclEntry",
-			})
-		}
-	} else if actual.Settings.IpConfiguration != nil {
-		// Keep ip configuration
-		merged.Settings.IpConfiguration = actual.Settings.IpConfiguration
-	}
-	if merged.Settings.IpConfiguration != nil {
-		merged.Settings.IpConfiguration.ForceSendFields = []string{
-			"EnablePrivatePathForGoogleCloudServices",
-			"Ipv4Enabled",
-			"RequireSsl",
-		}
+	merged.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(desired.Spec.Settings.IpConfiguration, refs)
+	if !IpConfigurationsMatch(merged.Settings.IpConfiguration, actual.Settings.IpConfiguration) {
+		updateRequired = true
 	}
 
 	if desired.Spec.Settings.LocationPreference != nil {
@@ -904,4 +858,131 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 	merged.Settings.UserLabels = desired.Labels
 
 	return merged, updateRequired, nil
+}
+
+func IpConfigurationsMatch(desired *api.IpConfiguration, actual *api.IpConfiguration) bool {
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+
+	if desired == nil && actual == nil {
+		return true
+	}
+
+	if desired.AllocatedIpRange != actual.AllocatedIpRange {
+		return false
+	}
+
+	if !AclEntryListsMatch(desired.AuthorizedNetworks, actual.AuthorizedNetworks) {
+		return false
+	}
+
+	if desired.EnablePrivatePathForGoogleCloudServices != actual.EnablePrivatePathForGoogleCloudServices {
+		return false
+	}
+
+	if desired.Ipv4Enabled != actual.Ipv4Enabled {
+		return false
+	}
+
+	if desired.PrivateNetwork != actual.PrivateNetwork {
+		return false
+	}
+
+	if !PscConfigsMatch(desired.PscConfig, actual.PscConfig) {
+		return false
+	}
+
+	if desired.RequireSsl != actual.RequireSsl {
+		return false
+	}
+
+	// Ignore ServerCaMode. It is not supported in KRM API.
+
+	if desired.SslMode != actual.SslMode {
+		return false
+	}
+
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+
+	// Ignore NullFields. Assume it is set correctly in desired.
+
+	return true
+}
+
+func AclEntryListsMatch(desired []*api.AclEntry, actual []*api.AclEntry) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+
+	for i := 0; i < len(desired); i++ {
+		if !AclEntriesMatch(desired[i], actual[i]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func AclEntriesMatch(desired *api.AclEntry, actual *api.AclEntry) bool {
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+
+	if desired == nil && actual == nil {
+		return true
+	}
+
+	if desired.ExpirationTime != actual.ExpirationTime {
+		return false
+	}
+
+	// Ignore Kind. It is sometimes not set in API responses.
+
+	if desired.Name != actual.Name {
+		return false
+	}
+
+	if desired.Value != actual.Value {
+		return false
+	}
+
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+
+	// Ignore NullFields. Assume it is set correctly in desired.
+
+	return true
+}
+
+func PscConfigsMatch(desired *api.PscConfig, actual *api.PscConfig) bool {
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+
+	if desired == nil && actual == nil {
+		return true
+	}
+
+	if !reflect.DeepEqual(desired.AllowedConsumerProjects, actual.AllowedConsumerProjects) {
+		return false
+	}
+
+	if desired.PscEnabled != actual.PscEnabled {
+		return false
+	}
+
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+
+	// Ignore NullFields. Assume it is set correctly in desired.
+
+	return true
+}
+
+func PointersMatch[T any](desired *T, actual *T) bool {
+	if (desired == nil && actual != nil) || (desired != nil && actual == nil) {
+		// Pointers are not matching if one is nil and the other is not nil.
+		return false
+	}
+	// Otherwise, they match. Either both are nil, or both are not nil.
+	return true
 }

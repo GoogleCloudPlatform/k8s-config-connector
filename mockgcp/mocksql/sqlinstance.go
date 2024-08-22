@@ -113,16 +113,41 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	}
 
 	obj.GceZone = zone
-	obj.IpAddresses = []*pb.IpMapping{
-		{
-			IpAddress: "10.10.10.10",
-			Type:      pb.SqlIpAddressType_PRIMARY,
-		},
+
+	// By default, allocate a public IP for the instance.
+	shouldAllocatePublicIP := true
+	// By default, do not allocate a private IP for the instance.
+	shouldAllocatePrivateIP := false
+
+	ipConfigurationSpecified := obj.Settings != nil && obj.Settings.IpConfiguration != nil
+	ipv4Specified := ipConfigurationSpecified && obj.Settings.IpConfiguration.Ipv4Enabled != nil
+
+	if ipv4Specified && !obj.Settings.IpConfiguration.Ipv4Enabled.Value {
+		shouldAllocatePublicIP = false
 	}
-	if isPostgres(obj) {
+	if ipConfigurationSpecified && obj.Settings.IpConfiguration.PrivateNetwork != "" {
+		shouldAllocatePrivateIP = true
+	}
+
+	if shouldAllocatePublicIP {
+		obj.IpAddresses = []*pb.IpMapping{
+			{
+				IpAddress: "10.10.10.10",
+				Type:      pb.SqlIpAddressType_PRIMARY,
+			},
+		}
+		if isPostgres(obj) {
+			obj.IpAddresses = append(obj.IpAddresses, &pb.IpMapping{
+				IpAddress: "10.10.10.11",
+				Type:      pb.SqlIpAddressType_OUTGOING,
+			})
+		}
+	}
+
+	if shouldAllocatePrivateIP {
 		obj.IpAddresses = append(obj.IpAddresses, &pb.IpMapping{
-			IpAddress: "10.10.10.11",
-			Type:      pb.SqlIpAddressType_OUTGOING,
+			IpAddress: "192.168.0.3",
+			Type:      pb.SqlIpAddressType_PRIVATE,
 		})
 	}
 	obj.Kind = "sql#instance"

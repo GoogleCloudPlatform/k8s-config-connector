@@ -206,7 +206,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 }
 
 func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCPInstance(a.desired, a.refs)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.refs)
 	if err != nil {
 		return err
 	}

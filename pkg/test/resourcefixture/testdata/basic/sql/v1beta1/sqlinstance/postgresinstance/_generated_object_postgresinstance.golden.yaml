@@ -3,19 +3,26 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"settings":{"ipConfiguration":{"sslMode":"ENCRYPTED_ONLY"}}}}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: sqlinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_9_6
+  instanceType: CLOUD_SQL_INSTANCE
+  maintenanceVersion: POSTGRES_9_6_24.R20240514.00_12
   region: us-central1
+  resourceID: sqlinstance-${uniqueId}
   settings:
+    activationPolicy: ALWAYS
     availabilityType: REGIONAL
     backupConfiguration:
       backupRetentionSettings:
@@ -25,6 +32,7 @@ spec:
       pointInTimeRecoveryEnabled: true
       startTime: "05:00"
       transactionLogRetentionDays: 3
+    connectorEnforcement: NOT_REQUIRED
     databaseFlags:
     - name: cloudsql.iam_authentication
       value: "on"
@@ -37,6 +45,7 @@ spec:
     diskAutoresizeLimit: 0
     diskSize: 100
     diskType: PD_SSD
+    edition: ENTERPRISE
     insightsConfig:
       queryInsightsEnabled: true
       queryStringLength: 1024
@@ -48,6 +57,9 @@ spec:
         name: computenetwork-${uniqueId}
       requireSsl: false
       sslMode: ENCRYPTED_ONLY
+    locationPreference:
+      zone: us-central1-c
+    pricingPlan: PER_USE
     tier: db-custom-1-3840
 status:
   conditions:
@@ -60,8 +72,8 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 2
-  publicIpAddress: 10.1.2.3
+  observedGeneration: 3
+  privateIpAddress: 10.98.0.2
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
   serverCaCert:
     cert: |

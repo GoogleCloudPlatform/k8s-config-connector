@@ -3,25 +3,29 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 3
   labels:
     cnrm-test: "true"
-  name: postgres-clone-${uniqueId}
+  name: postgresprivatenetwork-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  cloneSource:
-    sqlInstanceRef:
-      name: postgres-source-${uniqueId}
   databaseVersion: POSTGRES_16
   region: us-central1
+  resourceID: postgresprivatenetwork-${uniqueId}
   settings:
-    backupConfiguration:
-      enabled: true
-      pointInTimeRecoveryEnabled: true
+    ipConfiguration:
+      allocatedIpRange: computeaddress2-${uniqueId}
+      enablePrivatePathForGoogleCloudServices: true
+      ipv4Enabled: false
+      privateNetworkRef:
+        name: computenetwork2-${uniqueId}
     locationPreference:
       zone: us-central1-a
     tier: db-custom-1-3840
@@ -32,13 +36,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:postgres-clone-${uniqueId}
+  connectionName: ${projectId}:us-central1:postgresprivatenetwork-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 1
-  publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-clone-${uniqueId}
+  observedGeneration: 3
+  privateIpAddress: 192.168.1.3
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----
