@@ -16,6 +16,7 @@ generate-pb: install-protoc-linux
 		./third_party/googleapis/google/bigtable/*/*/*.proto \
 		./third_party/googleapis/google/cloud/*/*/*.proto \
 		./third_party/googleapis/google/cloud/*/*/*/*.proto \
+		./third_party/googleapis/google/dataflow/*/*.proto \
 		./third_party/googleapis/google/iam/v1/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto \
 		./third_party/googleapis/google/monitoring/v3/*.proto \

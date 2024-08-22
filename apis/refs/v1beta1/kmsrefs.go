@@ -27,11 +27,13 @@ import (
 )
 
 type KMSCryptoKeyRef struct {
-	//  If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+	// A reference to an externally managed KMSCryptoKey.
+	// Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
 	External string `json:"external,omitempty"`
-	// The `name` field of a `KMSCryptoKey` resource.
+
+	// The `name` of a `KMSCryptoKey` resource.
 	Name string `json:"name,omitempty"`
-	// The `metadata.namespace` field of a `KMSCryptoKey` resource.
+	// The `namespace` of a `KMSCryptoKey` resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

@@ -24,6 +24,23 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
+# DataFlow
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.dataflow.v1beta3 \
+    --api-version dataflow.cnrm.cloud.google.com/v1beta1 \
+    --output-api ${APIS_DIR} \
+    --kind DataflowFlexTemplateJob \
+    --proto-resource FlexTemplateRuntimeEnvironment
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.dataflow.v1beta3 \
+    --api-version dataflow.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # SecureSourceManagerInstance
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
