@@ -204,6 +204,8 @@ type InstanceMaintenanceWindow struct {
 	UpdateTrack *string `json:"updateTrack,omitempty"`
 }
 
+// +kubebuilder:validation:XValidation:rule="has(self.value) ? !has(self.valueFrom) : true",message="valueFrom is forbidden when value is specified"
+// +kubebuilder:validation:XValidation:rule="has(self.valueFrom) ? !has(self.value): true",message="value is forbidden when valueFrom is specified"
 type InstancePassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -295,6 +297,8 @@ type InstanceReplicaConfiguration struct {
 	VerifyServerCertificate *bool `json:"verifyServerCertificate,omitempty"`
 }
 
+// +kubebuilder:validation:XValidation:rule="has(self.value) ? !has(self.valueFrom) : true",message="valueFrom is forbidden when value is specified"
+// +kubebuilder:validation:XValidation:rule="has(self.valueFrom) ? !has(self.value): true",message="value is forbidden when valueFrom is specified"
 type InstanceRootPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -465,6 +469,7 @@ type CloneSource struct {
 
 type SQLInstanceSpec struct {
 	/* Create this database as a clone of a source instance. Immutable. */
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="spec.cloneSource is immutable"
 	// +optional
 	CloneSource *CloneSource `json:"cloneSource,omitempty"`
 

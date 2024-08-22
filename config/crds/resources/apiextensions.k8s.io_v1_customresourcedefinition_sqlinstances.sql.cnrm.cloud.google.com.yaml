@@ -117,6 +117,9 @@ spec:
                         type: string
                     type: object
                 type: object
+                x-kubernetes-validations:
+                - message: spec.cloneSource is immutable
+                  rule: self == oldSelf
               databaseVersion:
                 description: The MySQL, PostgreSQL or SQL Server (beta) version to
                   use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6,
@@ -258,6 +261,11 @@ spec:
                             type: object
                         type: object
                     type: object
+                    x-kubernetes-validations:
+                    - message: valueFrom is forbidden when value is specified
+                      rule: 'has(self.value) ? !has(self.valueFrom) : true'
+                    - message: value is forbidden when valueFrom is specified
+                      rule: 'has(self.valueFrom) ? !has(self.value): true'
                   sslCipher:
                     description: Immutable. Permissible ciphers for use in SSL encryption.
                     type: string
@@ -301,6 +309,11 @@ spec:
                         type: object
                     type: object
                 type: object
+                x-kubernetes-validations:
+                - message: valueFrom is forbidden when value is specified
+                  rule: 'has(self.value) ? !has(self.valueFrom) : true'
+                - message: value is forbidden when valueFrom is specified
+                  rule: 'has(self.valueFrom) ? !has(self.value): true'
               settings:
                 description: The settings to use for the database. The configuration
                   is detailed below.
