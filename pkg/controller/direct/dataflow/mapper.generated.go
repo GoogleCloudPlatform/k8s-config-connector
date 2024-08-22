@@ -132,28 +132,6 @@ func ComputationTopology_ToProto(mapCtx *direct.MapContext, in *krm.ComputationT
 	out.StateFamilies = direct.Slice_ToProto(mapCtx, in.StateFamilies, StateFamilyConfig_ToProto)
 	return out
 }
-func ContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ContainerSpec) *krm.ContainerSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContainerSpec{}
-	out.Image = direct.LazyPtr(in.GetImage())
-	out.Metadata = TemplateMetadata_FromProto(mapCtx, in.GetMetadata())
-	out.SdkInfo = SDKInfo_FromProto(mapCtx, in.GetSdkInfo())
-	out.DefaultEnvironment = FlexTemplateRuntimeEnvironment_FromProto(mapCtx, in.GetDefaultEnvironment())
-	return out
-}
-func ContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerSpec) *pb.ContainerSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContainerSpec{}
-	out.Image = direct.ValueOf(in.Image)
-	out.Metadata = TemplateMetadata_ToProto(mapCtx, in.Metadata)
-	out.SdkInfo = SDKInfo_ToProto(mapCtx, in.SdkInfo)
-	out.DefaultEnvironment = FlexTemplateRuntimeEnvironment_ToProto(mapCtx, in.DefaultEnvironment)
-	return out
-}
 func CustomSourceLocation_FromProto(mapCtx *direct.MapContext, in *pb.CustomSourceLocation) *krm.CustomSourceLocation {
 	if in == nil {
 		return nil
@@ -186,66 +164,6 @@ func DataDiskAssignment_ToProto(mapCtx *direct.MapContext, in *krm.DataDiskAssig
 	out := &pb.DataDiskAssignment{}
 	out.VmInstance = direct.ValueOf(in.VmInstance)
 	out.DataDisks = in.DataDisks
-	return out
-}
-func DataFlowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.FlexTemplateRuntimeEnvironment) *krm.DataFlowFlexTemplateJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataFlowFlexTemplateJobSpec{}
-	out.NumWorkers = direct.LazyPtr(in.GetNumWorkers())
-	out.MaxWorkers = direct.LazyPtr(in.GetMaxWorkers())
-	// MISSING: Zone
-	// MISSING: ServiceAccountEmail
-	out.TempLocation = direct.LazyPtr(in.GetTempLocation())
-	out.MachineType = direct.LazyPtr(in.GetMachineType())
-	out.AdditionalExperiments = in.AdditionalExperiments
-	// MISSING: Network
-	// MISSING: Subnetwork
-	// MISSING: AdditionalUserLabels
-	// MISSING: KmsKeyName
-	out.IpConfiguration = direct.Enum_FromProto(mapCtx, in.GetIpConfiguration())
-	// MISSING: WorkerRegion
-	// MISSING: WorkerZone
-	out.EnableStreamingEngine = direct.LazyPtr(in.GetEnableStreamingEngine())
-	// MISSING: FlexrsGoal
-	out.StagingLocation = direct.LazyPtr(in.GetStagingLocation())
-	out.SdkContainerImage = direct.LazyPtr(in.GetSdkContainerImage())
-	// MISSING: DiskSizeGb
-	out.AutoscalingAlgorithm = direct.Enum_FromProto(mapCtx, in.GetAutoscalingAlgorithm())
-	// MISSING: DumpHeapOnOom
-	// MISSING: SaveHeapDumpsToGcsPath
-	out.LauncherMachineType = direct.LazyPtr(in.GetLauncherMachineType())
-	return out
-}
-func DataFlowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataFlowFlexTemplateJobSpec) *pb.FlexTemplateRuntimeEnvironment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FlexTemplateRuntimeEnvironment{}
-	out.NumWorkers = direct.ValueOf(in.NumWorkers)
-	out.MaxWorkers = direct.ValueOf(in.MaxWorkers)
-	// MISSING: Zone
-	// MISSING: ServiceAccountEmail
-	out.TempLocation = direct.ValueOf(in.TempLocation)
-	out.MachineType = direct.ValueOf(in.MachineType)
-	out.AdditionalExperiments = in.AdditionalExperiments
-	// MISSING: Network
-	// MISSING: Subnetwork
-	// MISSING: AdditionalUserLabels
-	// MISSING: KmsKeyName
-	out.IpConfiguration = direct.Enum_ToProto[pb.WorkerIPAddressConfiguration](mapCtx, in.IpConfiguration)
-	// MISSING: WorkerRegion
-	// MISSING: WorkerZone
-	out.EnableStreamingEngine = direct.ValueOf(in.EnableStreamingEngine)
-	// MISSING: FlexrsGoal
-	out.StagingLocation = direct.ValueOf(in.StagingLocation)
-	out.SdkContainerImage = direct.ValueOf(in.SdkContainerImage)
-	// MISSING: DiskSizeGb
-	out.AutoscalingAlgorithm = direct.Enum_ToProto[pb.AutoscalingAlgorithm](mapCtx, in.AutoscalingAlgorithm)
-	// MISSING: DumpHeapOnOom
-	// MISSING: SaveHeapDumpsToGcsPath
-	out.LauncherMachineType = direct.ValueOf(in.LauncherMachineType)
 	return out
 }
 func DatastoreIODetails_FromProto(mapCtx *direct.MapContext, in *pb.DatastoreIODetails) *krm.DatastoreIODetails {
@@ -302,58 +220,6 @@ func Disk_ToProto(mapCtx *direct.MapContext, in *krm.Disk) *pb.Disk {
 	out.MountPoint = direct.ValueOf(in.MountPoint)
 	return out
 }
-func DisplayData_FromProto(mapCtx *direct.MapContext, in *pb.DisplayData) *krm.DisplayData {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DisplayData{}
-	out.Key = direct.LazyPtr(in.GetKey())
-	out.Namespace = direct.LazyPtr(in.GetNamespace())
-	out.StrValue = direct.LazyPtr(in.GetStrValue())
-	out.Int64Value = direct.LazyPtr(in.GetInt64Value())
-	out.FloatValue = direct.LazyPtr(in.GetFloatValue())
-	out.JavaClassValue = direct.LazyPtr(in.GetJavaClassValue())
-	out.TimestampValue = DisplayData_TimestampValue_FromProto(mapCtx, in.GetTimestampValue())
-	out.DurationValue = DisplayData_DurationValue_FromProto(mapCtx, in.GetDurationValue())
-	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
-	out.ShortStrValue = direct.LazyPtr(in.GetShortStrValue())
-	out.URL = direct.LazyPtr(in.GetUrl())
-	out.Label = direct.LazyPtr(in.GetLabel())
-	return out
-}
-func DisplayData_ToProto(mapCtx *direct.MapContext, in *krm.DisplayData) *pb.DisplayData {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DisplayData{}
-	out.Key = direct.ValueOf(in.Key)
-	out.Namespace = direct.ValueOf(in.Namespace)
-	if oneof := DisplayData_StrValue_ToProto(mapCtx, in.StrValue); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := DisplayData_Int64Value_ToProto(mapCtx, in.Int64Value); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := DisplayData_FloatValue_ToProto(mapCtx, in.FloatValue); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := DisplayData_JavaClassValue_ToProto(mapCtx, in.JavaClassValue); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := DisplayData_TimestampValue_ToProto(mapCtx, in.TimestampValue); oneof != nil {
-		out.Value = &pb.DisplayData_TimestampValue{TimestampValue: oneof}
-	}
-	if oneof := DisplayData_DurationValue_ToProto(mapCtx, in.DurationValue); oneof != nil {
-		out.Value = &pb.DisplayData_DurationValue{DurationValue: oneof}
-	}
-	if oneof := DisplayData_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
-		out.Value = oneof
-	}
-	out.ShortStrValue = direct.ValueOf(in.ShortStrValue)
-	out.Url = direct.ValueOf(in.URL)
-	out.Label = direct.ValueOf(in.Label)
-	return out
-}
 func DynamicTemplateLaunchParams_FromProto(mapCtx *direct.MapContext, in *pb.DynamicTemplateLaunchParams) *krm.DynamicTemplateLaunchParams {
 	if in == nil {
 		return nil
@@ -370,54 +236,6 @@ func DynamicTemplateLaunchParams_ToProto(mapCtx *direct.MapContext, in *krm.Dyna
 	out := &pb.DynamicTemplateLaunchParams{}
 	out.GcsPath = direct.ValueOf(in.GcsPath)
 	out.StagingLocation = direct.ValueOf(in.StagingLocation)
-	return out
-}
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment{}
-	out.TempStoragePrefix = direct.LazyPtr(in.GetTempStoragePrefix())
-	out.ClusterManagerApiService = direct.LazyPtr(in.GetClusterManagerApiService())
-	out.Experiments = in.Experiments
-	out.ServiceOptions = in.ServiceOptions
-	out.ServiceKmsKeyName = direct.LazyPtr(in.GetServiceKmsKeyName())
-	out.WorkerPools = direct.Slice_FromProto(mapCtx, in.WorkerPools, WorkerPool_FromProto)
-	out.UserAgent = google_protobuf_Struct_FromProto(mapCtx, in.GetUserAgent())
-	out.Version = google_protobuf_Struct_FromProto(mapCtx, in.GetVersion())
-	out.Dataset = direct.LazyPtr(in.GetDataset())
-	out.SdkPipelineOptions = google_protobuf_Struct_FromProto(mapCtx, in.GetSdkPipelineOptions())
-	out.InternalExperiments = google_protobuf_Any_FromProto(mapCtx, in.GetInternalExperiments())
-	out.ServiceAccountEmail = direct.LazyPtr(in.GetServiceAccountEmail())
-	out.FlexResourceSchedulingGoal = direct.Enum_FromProto(mapCtx, in.GetFlexResourceSchedulingGoal())
-	out.WorkerRegion = direct.LazyPtr(in.GetWorkerRegion())
-	out.WorkerZone = direct.LazyPtr(in.GetWorkerZone())
-	out.ShuffleMode = direct.Enum_FromProto(mapCtx, in.GetShuffleMode())
-	out.DebugOptions = DebugOptions_FromProto(mapCtx, in.GetDebugOptions())
-	return out
-}
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	out.TempStoragePrefix = direct.ValueOf(in.TempStoragePrefix)
-	out.ClusterManagerApiService = direct.ValueOf(in.ClusterManagerApiService)
-	out.Experiments = in.Experiments
-	out.ServiceOptions = in.ServiceOptions
-	out.ServiceKmsKeyName = direct.ValueOf(in.ServiceKmsKeyName)
-	out.WorkerPools = direct.Slice_ToProto(mapCtx, in.WorkerPools, WorkerPool_ToProto)
-	out.UserAgent = google_protobuf_Struct_ToProto(mapCtx, in.UserAgent)
-	out.Version = google_protobuf_Struct_ToProto(mapCtx, in.Version)
-	out.Dataset = direct.ValueOf(in.Dataset)
-	out.SdkPipelineOptions = google_protobuf_Struct_ToProto(mapCtx, in.SdkPipelineOptions)
-	out.InternalExperiments = google_protobuf_Any_ToProto(mapCtx, in.InternalExperiments)
-	out.ServiceAccountEmail = direct.ValueOf(in.ServiceAccountEmail)
-	out.FlexResourceSchedulingGoal = direct.Enum_ToProto[pb.FlexResourceSchedulingGoal](mapCtx, in.FlexResourceSchedulingGoal)
-	out.WorkerRegion = direct.ValueOf(in.WorkerRegion)
-	out.WorkerZone = direct.ValueOf(in.WorkerZone)
-	out.ShuffleMode = direct.Enum_ToProto[pb.ShuffleMode](mapCtx, in.ShuffleMode)
-	out.DebugOptions = DebugOptions_ToProto(mapCtx, in.DebugOptions)
 	return out
 }
 func ExecutionStageState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStageState) *krm.ExecutionStageState {
@@ -598,70 +416,6 @@ func InvalidTemplateParameters_ParameterViolation_ToProto(mapCtx *direct.MapCont
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
-func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Job{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
-	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Step_FromProto)
-	out.StepsLocation = direct.LazyPtr(in.GetStepsLocation())
-	out.CurrentState = direct.Enum_FromProto(mapCtx, in.GetCurrentState())
-	out.CurrentStateTime = Job_CurrentStateTime_FromProto(mapCtx, in.GetCurrentStateTime())
-	out.RequestedState = direct.Enum_FromProto(mapCtx, in.GetRequestedState())
-	out.ExecutionInfo = JobExecutionInfo_FromProto(mapCtx, in.GetExecutionInfo())
-	out.CreateTime = Job_CreateTime_FromProto(mapCtx, in.GetCreateTime())
-	out.ReplaceJobID = direct.LazyPtr(in.GetReplaceJobId())
-	out.TransformNameMapping = in.TransformNameMapping
-	out.ClientRequestID = direct.LazyPtr(in.GetClientRequestId())
-	out.ReplacedByJobID = direct.LazyPtr(in.GetReplacedByJobId())
-	out.TempFiles = in.TempFiles
-	out.Labels = in.Labels
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.PipelineDescription = PipelineDescription_FromProto(mapCtx, in.GetPipelineDescription())
-	out.StageStates = direct.Slice_FromProto(mapCtx, in.StageStates, ExecutionStageState_FromProto)
-	out.JobMetadata = JobMetadata_FromProto(mapCtx, in.GetJobMetadata())
-	out.StartTime = Job_StartTime_FromProto(mapCtx, in.GetStartTime())
-	out.CreatedFromSnapshotID = direct.LazyPtr(in.GetCreatedFromSnapshotId())
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	return out
-}
-func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	out.Id = direct.ValueOf(in.ID)
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.Name = direct.ValueOf(in.Name)
-	out.Type = direct.Enum_ToProto[pb.JobType](mapCtx, in.Type)
-	out.Environment = Environment_ToProto(mapCtx, in.Environment)
-	out.Steps = direct.Slice_ToProto(mapCtx, in.Steps, Step_ToProto)
-	out.StepsLocation = direct.ValueOf(in.StepsLocation)
-	out.CurrentState = direct.Enum_ToProto[pb.JobState](mapCtx, in.CurrentState)
-	out.CurrentStateTime = Job_CurrentStateTime_ToProto(mapCtx, in.CurrentStateTime)
-	out.RequestedState = direct.Enum_ToProto[pb.JobState](mapCtx, in.RequestedState)
-	out.ExecutionInfo = JobExecutionInfo_ToProto(mapCtx, in.ExecutionInfo)
-	out.CreateTime = Job_CreateTime_ToProto(mapCtx, in.CreateTime)
-	out.ReplaceJobId = direct.ValueOf(in.ReplaceJobID)
-	out.TransformNameMapping = in.TransformNameMapping
-	out.ClientRequestId = direct.ValueOf(in.ClientRequestID)
-	out.ReplacedByJobId = direct.ValueOf(in.ReplacedByJobID)
-	out.TempFiles = in.TempFiles
-	out.Labels = in.Labels
-	out.Location = direct.ValueOf(in.Location)
-	out.PipelineDescription = PipelineDescription_ToProto(mapCtx, in.PipelineDescription)
-	out.StageStates = direct.Slice_ToProto(mapCtx, in.StageStates, ExecutionStageState_ToProto)
-	out.JobMetadata = JobMetadata_ToProto(mapCtx, in.JobMetadata)
-	out.StartTime = Job_StartTime_ToProto(mapCtx, in.StartTime)
-	out.CreatedFromSnapshotId = direct.ValueOf(in.CreatedFromSnapshotID)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	return out
-}
 func JobExecutionDetails_FromProto(mapCtx *direct.MapContext, in *pb.JobExecutionDetails) *krm.JobExecutionDetails {
 	if in == nil {
 		return nil
@@ -734,24 +488,6 @@ func JobMessage_ToProto(mapCtx *direct.MapContext, in *krm.JobMessage) *pb.JobMe
 	out.MessageImportance = direct.Enum_ToProto[pb.JobMessageImportance](mapCtx, in.MessageImportance)
 	return out
 }
-func JobMetrics_FromProto(mapCtx *direct.MapContext, in *pb.JobMetrics) *krm.JobMetrics {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobMetrics{}
-	out.MetricTime = JobMetrics_MetricTime_FromProto(mapCtx, in.GetMetricTime())
-	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, MetricUpdate_FromProto)
-	return out
-}
-func JobMetrics_ToProto(mapCtx *direct.MapContext, in *krm.JobMetrics) *pb.JobMetrics {
-	if in == nil {
-		return nil
-	}
-	out := &pb.JobMetrics{}
-	out.MetricTime = JobMetrics_MetricTime_ToProto(mapCtx, in.MetricTime)
-	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, MetricUpdate_ToProto)
-	return out
-}
 func KeyRangeDataDiskAssignment_FromProto(mapCtx *direct.MapContext, in *pb.KeyRangeDataDiskAssignment) *krm.KeyRangeDataDiskAssignment {
 	if in == nil {
 		return nil
@@ -796,40 +532,6 @@ func KeyRangeLocation_ToProto(mapCtx *direct.MapContext, in *krm.KeyRangeLocatio
 	out.DeprecatedPersistentDirectory = direct.ValueOf(in.DeprecatedPersistentDirectory)
 	return out
 }
-func LaunchFlexTemplateParameter_FromProto(mapCtx *direct.MapContext, in *pb.LaunchFlexTemplateParameter) *krm.LaunchFlexTemplateParameter {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LaunchFlexTemplateParameter{}
-	out.JobName = direct.LazyPtr(in.GetJobName())
-	out.ContainerSpec = ContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
-	out.ContainerSpecGcsPath = direct.LazyPtr(in.GetContainerSpecGcsPath())
-	out.Parameters = in.Parameters
-	out.LaunchOptions = in.LaunchOptions
-	out.Environment = FlexTemplateRuntimeEnvironment_FromProto(mapCtx, in.GetEnvironment())
-	out.Update = direct.LazyPtr(in.GetUpdate())
-	out.TransformNameMappings = in.TransformNameMappings
-	return out
-}
-func LaunchFlexTemplateParameter_ToProto(mapCtx *direct.MapContext, in *krm.LaunchFlexTemplateParameter) *pb.LaunchFlexTemplateParameter {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LaunchFlexTemplateParameter{}
-	out.JobName = direct.ValueOf(in.JobName)
-	if oneof := ContainerSpec_ToProto(mapCtx, in.ContainerSpec); oneof != nil {
-		out.Template = &pb.LaunchFlexTemplateParameter_ContainerSpec{ContainerSpec: oneof}
-	}
-	if oneof := LaunchFlexTemplateParameter_ContainerSpecGcsPath_ToProto(mapCtx, in.ContainerSpecGcsPath); oneof != nil {
-		out.Template = oneof
-	}
-	out.Parameters = in.Parameters
-	out.LaunchOptions = in.LaunchOptions
-	out.Environment = FlexTemplateRuntimeEnvironment_ToProto(mapCtx, in.Environment)
-	out.Update = direct.ValueOf(in.Update)
-	out.TransformNameMappings = in.TransformNameMappings
-	return out
-}
 func LaunchTemplateParameters_FromProto(mapCtx *direct.MapContext, in *pb.LaunchTemplateParameters) *krm.LaunchTemplateParameters {
 	if in == nil {
 		return nil
@@ -872,42 +574,6 @@ func MetricStructuredName_ToProto(mapCtx *direct.MapContext, in *krm.MetricStruc
 	out.Origin = direct.ValueOf(in.Origin)
 	out.Name = direct.ValueOf(in.Name)
 	out.Context = in.Context
-	return out
-}
-func MetricUpdate_FromProto(mapCtx *direct.MapContext, in *pb.MetricUpdate) *krm.MetricUpdate {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetricUpdate{}
-	out.Name = MetricStructuredName_FromProto(mapCtx, in.GetName())
-	out.Kind = direct.LazyPtr(in.GetKind())
-	out.Cumulative = direct.LazyPtr(in.GetCumulative())
-	out.Scalar = google_protobuf_Value_FromProto(mapCtx, in.GetScalar())
-	out.MeanSum = google_protobuf_Value_FromProto(mapCtx, in.GetMeanSum())
-	out.MeanCount = google_protobuf_Value_FromProto(mapCtx, in.GetMeanCount())
-	out.Set = google_protobuf_Value_FromProto(mapCtx, in.GetSet())
-	out.Distribution = google_protobuf_Value_FromProto(mapCtx, in.GetDistribution())
-	out.Gauge = google_protobuf_Value_FromProto(mapCtx, in.GetGauge())
-	out.Internal = google_protobuf_Value_FromProto(mapCtx, in.GetInternal())
-	out.UpdateTime = MetricUpdate_UpdateTime_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func MetricUpdate_ToProto(mapCtx *direct.MapContext, in *krm.MetricUpdate) *pb.MetricUpdate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MetricUpdate{}
-	out.Name = MetricStructuredName_ToProto(mapCtx, in.Name)
-	out.Kind = direct.ValueOf(in.Kind)
-	out.Cumulative = direct.ValueOf(in.Cumulative)
-	out.Scalar = google_protobuf_Value_ToProto(mapCtx, in.Scalar)
-	out.MeanSum = google_protobuf_Value_ToProto(mapCtx, in.MeanSum)
-	out.MeanCount = google_protobuf_Value_ToProto(mapCtx, in.MeanCount)
-	out.Set = google_protobuf_Value_ToProto(mapCtx, in.Set)
-	out.Distribution = google_protobuf_Value_ToProto(mapCtx, in.Distribution)
-	out.Gauge = google_protobuf_Value_ToProto(mapCtx, in.Gauge)
-	out.Internal = google_protobuf_Value_ToProto(mapCtx, in.Internal)
-	out.UpdateTime = MetricUpdate_UpdateTime_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func MountedDataDisk_FromProto(mapCtx *direct.MapContext, in *pb.MountedDataDisk) *krm.MountedDataDisk {
@@ -1268,26 +934,6 @@ func StateFamilyConfig_ToProto(mapCtx *direct.MapContext, in *krm.StateFamilyCon
 	out.IsRead = direct.ValueOf(in.IsRead)
 	return out
 }
-func Step_FromProto(mapCtx *direct.MapContext, in *pb.Step) *krm.Step {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Step{}
-	out.Kind = direct.LazyPtr(in.GetKind())
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Properties = google_protobuf_Struct_FromProto(mapCtx, in.GetProperties())
-	return out
-}
-func Step_ToProto(mapCtx *direct.MapContext, in *krm.Step) *pb.Step {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Step{}
-	out.Kind = direct.ValueOf(in.Kind)
-	out.Name = direct.ValueOf(in.Name)
-	out.Properties = google_protobuf_Struct_ToProto(mapCtx, in.Properties)
-	return out
-}
 func StreamLocation_FromProto(mapCtx *direct.MapContext, in *pb.StreamLocation) *krm.StreamLocation {
 	if in == nil {
 		return nil
@@ -1406,24 +1052,6 @@ func StructuredMessage_ToProto(mapCtx *direct.MapContext, in *krm.StructuredMess
 	out.MessageText = direct.ValueOf(in.MessageText)
 	out.MessageKey = direct.ValueOf(in.MessageKey)
 	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, StructuredMessage_Parameter_ToProto)
-	return out
-}
-func StructuredMessage_Parameter_FromProto(mapCtx *direct.MapContext, in *pb.StructuredMessage_Parameter) *krm.StructuredMessage_Parameter {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StructuredMessage_Parameter{}
-	out.Key = direct.LazyPtr(in.GetKey())
-	out.Value = google_protobuf_Value_FromProto(mapCtx, in.GetValue())
-	return out
-}
-func StructuredMessage_Parameter_ToProto(mapCtx *direct.MapContext, in *krm.StructuredMessage_Parameter) *pb.StructuredMessage_Parameter {
-	if in == nil {
-		return nil
-	}
-	out := &pb.StructuredMessage_Parameter{}
-	out.Key = direct.ValueOf(in.Key)
-	out.Value = google_protobuf_Value_ToProto(mapCtx, in.Value)
 	return out
 }
 func TaskRunnerSettings_FromProto(mapCtx *direct.MapContext, in *pb.TaskRunnerSettings) *krm.TaskRunnerSettings {
@@ -1572,64 +1200,6 @@ func WorkerDetails_ToProto(mapCtx *direct.MapContext, in *krm.WorkerDetails) *pb
 	out := &pb.WorkerDetails{}
 	out.WorkerName = direct.ValueOf(in.WorkerName)
 	out.WorkItems = direct.Slice_ToProto(mapCtx, in.WorkItems, WorkItemDetails_ToProto)
-	return out
-}
-func WorkerPool_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krm.WorkerPool {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkerPool{}
-	out.Kind = direct.LazyPtr(in.GetKind())
-	out.NumWorkers = direct.LazyPtr(in.GetNumWorkers())
-	out.Packages = direct.Slice_FromProto(mapCtx, in.Packages, Package_FromProto)
-	out.DefaultPackageSet = direct.Enum_FromProto(mapCtx, in.GetDefaultPackageSet())
-	out.MachineType = direct.LazyPtr(in.GetMachineType())
-	out.TeardownPolicy = direct.Enum_FromProto(mapCtx, in.GetTeardownPolicy())
-	out.DiskSizeGb = direct.LazyPtr(in.GetDiskSizeGb())
-	out.DiskType = direct.LazyPtr(in.GetDiskType())
-	out.DiskSourceImage = direct.LazyPtr(in.GetDiskSourceImage())
-	out.Zone = direct.LazyPtr(in.GetZone())
-	out.TaskrunnerSettings = TaskRunnerSettings_FromProto(mapCtx, in.GetTaskrunnerSettings())
-	out.OnHostMaintenance = direct.LazyPtr(in.GetOnHostMaintenance())
-	out.DataDisks = direct.Slice_FromProto(mapCtx, in.DataDisks, Disk_FromProto)
-	out.Metadata = in.Metadata
-	out.AutoscalingSettings = AutoscalingSettings_FromProto(mapCtx, in.GetAutoscalingSettings())
-	out.PoolArgs = google_protobuf_Any_FromProto(mapCtx, in.GetPoolArgs())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
-	out.WorkerHarnessContainerImage = direct.LazyPtr(in.GetWorkerHarnessContainerImage())
-	out.NumThreadsPerWorker = direct.LazyPtr(in.GetNumThreadsPerWorker())
-	out.IpConfiguration = direct.Enum_FromProto(mapCtx, in.GetIpConfiguration())
-	out.SdkHarnessContainerImages = direct.Slice_FromProto(mapCtx, in.SdkHarnessContainerImages, SdkHarnessContainerImage_FromProto)
-	return out
-}
-func WorkerPool_ToProto(mapCtx *direct.MapContext, in *krm.WorkerPool) *pb.WorkerPool {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkerPool{}
-	out.Kind = direct.ValueOf(in.Kind)
-	out.NumWorkers = direct.ValueOf(in.NumWorkers)
-	out.Packages = direct.Slice_ToProto(mapCtx, in.Packages, Package_ToProto)
-	out.DefaultPackageSet = direct.Enum_ToProto[pb.DefaultPackageSet](mapCtx, in.DefaultPackageSet)
-	out.MachineType = direct.ValueOf(in.MachineType)
-	out.TeardownPolicy = direct.Enum_ToProto[pb.TeardownPolicy](mapCtx, in.TeardownPolicy)
-	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGb)
-	out.DiskType = direct.ValueOf(in.DiskType)
-	out.DiskSourceImage = direct.ValueOf(in.DiskSourceImage)
-	out.Zone = direct.ValueOf(in.Zone)
-	out.TaskrunnerSettings = TaskRunnerSettings_ToProto(mapCtx, in.TaskrunnerSettings)
-	out.OnHostMaintenance = direct.ValueOf(in.OnHostMaintenance)
-	out.DataDisks = direct.Slice_ToProto(mapCtx, in.DataDisks, Disk_ToProto)
-	out.Metadata = in.Metadata
-	out.AutoscalingSettings = AutoscalingSettings_ToProto(mapCtx, in.AutoscalingSettings)
-	out.PoolArgs = google_protobuf_Any_ToProto(mapCtx, in.PoolArgs)
-	out.Network = direct.ValueOf(in.Network)
-	out.Subnetwork = direct.ValueOf(in.Subnetwork)
-	out.WorkerHarnessContainerImage = direct.ValueOf(in.WorkerHarnessContainerImage)
-	out.NumThreadsPerWorker = direct.ValueOf(in.NumThreadsPerWorker)
-	out.IpConfiguration = direct.Enum_ToProto[pb.WorkerIPAddressConfiguration](mapCtx, in.IpConfiguration)
-	out.SdkHarnessContainerImages = direct.Slice_ToProto(mapCtx, in.SdkHarnessContainerImages, SdkHarnessContainerImage_ToProto)
 	return out
 }
 func WorkerSettings_FromProto(mapCtx *direct.MapContext, in *pb.WorkerSettings) *krm.WorkerSettings {

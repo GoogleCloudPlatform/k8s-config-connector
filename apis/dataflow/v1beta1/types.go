@@ -31,3 +31,6 @@ type PubsubSnapshotMetadata struct {
 
 type FlexTemplateRuntimeEnvironment struct {
 }
+
+type JobMetadata struct {
+}

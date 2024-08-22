@@ -10,6 +10,7 @@ require (
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/cloudbuild v1.16.6
 	cloud.google.com/go/compute v1.27.5
+	cloud.google.com/go/dataflow v0.9.11
 	cloud.google.com/go/dataform v0.9.9
 	cloud.google.com/go/iam v1.1.13
 	cloud.google.com/go/monitoring v1.20.4
