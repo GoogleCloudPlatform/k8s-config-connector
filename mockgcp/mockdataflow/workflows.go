@@ -47,7 +47,7 @@ func (r *MockService) StopJob(fqn string) error {
 		obj.CurrentStateTime = timestamppb.New(now)
 		obj.RequestedState = pb.JobState_JOB_STATE_UNKNOWN
 	default:
-		return fmt.Errorf("unexpected state for job %q: %v", fqn, obj.CurrentState)
+		return fmt.Errorf("unexpected state for job, got=%q, expected=JobState_JOB_STATE_CANCELLING: %v", fqn, obj.CurrentState)
 	}
 
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
@@ -85,7 +85,7 @@ func (r *MockService) StartJob(fqn string, project *projects.ProjectData, req *p
 			}
 
 		default:
-			return fmt.Errorf("unexpected state for job %q: %v", fqn, job.CurrentState)
+			return fmt.Errorf("unexpected state for job, got=%q, expected=JobState_JOB_STATE_UNKNOWN: %v", fqn, job.CurrentState)
 		}
 
 		if err := r.storage.Update(ctx, fqn, job); err != nil {
@@ -112,7 +112,7 @@ func (r *MockService) StartJob(fqn string, project *projects.ProjectData, req *p
 			job.Environment.Experiments = buildExperiments()
 
 		default:
-			return fmt.Errorf("unexpected state for job %q: %v", fqn, job.CurrentState)
+			return fmt.Errorf("unexpected state for job, got=%q, expected=JobState_JOB_STATE_QUEUED: %v", fqn, job.CurrentState)
 		}
 
 		if err := r.storage.Update(ctx, fqn, job); err != nil {
@@ -149,7 +149,7 @@ func (r *MockService) StartJob(fqn string, project *projects.ProjectData, req *p
 			job.Environment.Version = &structpb.Struct{}
 			job.Environment.WorkerPools = []*pb.WorkerPool{{Kind: "placeholder"}}
 		default:
-			return fmt.Errorf("unexpected state for job %q: %v", fqn, job.CurrentState)
+			return fmt.Errorf("unexpected state for job, got=%q, expected=JobState_JOB_STATE_PENDING: %v", fqn, job.CurrentState)
 		}
 
 		if err := r.storage.Update(ctx, fqn, job); err != nil {

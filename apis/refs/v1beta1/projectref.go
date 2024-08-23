@@ -57,6 +57,16 @@ type Project struct {
 	ProjectID string
 }
 
+// ResolveProjectFromAnnotation resolves the projectID to use for a resource,
+// it should be used for resources which do not have a projectRef
+func ResolveProjectFromAnnotation(ctx context.Context, reader client.Reader, src client.Object) (*Project, error) {
+	if projectID := src.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
+		return &Project{ProjectID: projectID}, nil
+	}
+
+	return nil, fmt.Errorf("project-id annotation not set on resource")
+}
+
 // ResolveProject will resolve a ProjectRef to a Project, with the ProjectID.
 func ResolveProject(ctx context.Context, reader client.Reader, src client.Object, ref *ProjectRef) (*Project, error) {
 	if ref == nil {
