@@ -51,6 +51,41 @@ func (s *sqlInstancesService) Get(ctx context.Context, req *pb.SqlInstancesGetRe
 	return obj, nil
 }
 
+func (s *sqlInstancesService) Clone(ctx context.Context, req *pb.SqlInstancesCloneRequest) (*pb.Operation, error) {
+	sourceFQN, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
+	if err != nil {
+		return nil, err
+	}
+
+	source := &pb.DatabaseInstance{}
+	if err := s.storage.Get(ctx, sourceFQN.String(), source); err != nil {
+		return nil, err
+	}
+
+	cloneName := req.Body.CloneContext.DestinationInstanceName
+	clone := proto.Clone(source).(*pb.DatabaseInstance)
+	clone.Name = cloneName
+
+	insertReq := &pb.SqlInstancesInsertRequest{
+		Project: req.GetProject(),
+		Body:    clone,
+	}
+
+	insertOp, err := s.Insert(ctx, insertReq)
+	if err != nil {
+		return nil, err
+	}
+
+	cloneOp := &pb.Operation{
+		TargetProject: insertOp.TargetProject,
+		OperationType: pb.Operation_CLONE,
+	}
+
+	return s.operations.startLRO(ctx, cloneOp, clone, func() (proto.Message, error) {
+		return clone, nil
+	})
+}
+
 func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesInsertRequest) (*pb.Operation, error) {
 	name, err := s.buildInstanceName(req.GetProject(), req.GetBody().GetName())
 	if err != nil {

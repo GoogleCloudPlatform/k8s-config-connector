@@ -626,7 +626,7 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 	}
 
 	if desired.Spec.Settings.DiskAutoresize != nil {
-		if desired.Spec.Settings.DiskAutoresize != actual.Settings.StorageAutoResize {
+		if direct.ValueOf(desired.Spec.Settings.DiskAutoresize) != direct.ValueOf(actual.Settings.StorageAutoResize) {
 			// Change disk autoresize
 			updateRequired = true
 		}

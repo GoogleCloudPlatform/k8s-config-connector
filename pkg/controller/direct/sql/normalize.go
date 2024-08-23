@@ -32,12 +32,13 @@ import (
 )
 
 type SQLInstanceInternalRefs struct {
-	cryptoKey       string
-	masterInstance  string
-	replicaPassword string
-	rootPassword    string
-	privateNetwork  string
-	auditLogBucket  string
+	cryptoKey         string
+	masterInstance    string
+	replicaPassword   string
+	rootPassword      string
+	privateNetwork    string
+	auditLogBucket    string
+	sourceSQLInstance string
 }
 
 func NormalizeSQLInstance(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (*SQLInstanceInternalRefs, error) {
@@ -65,6 +66,10 @@ func NormalizeSQLInstance(ctx context.Context, kube client.Reader, obj *krm.SQLI
 	if err != nil {
 		return nil, err
 	}
+	sourceSQLInstance, err := normalizeSourceSQLInstanceRef(ctx, kube, obj)
+	if err != nil {
+		return nil, err
+	}
 	if err := normalizeLabels(obj); err != nil {
 		return nil, err
 	}
@@ -72,12 +77,13 @@ func NormalizeSQLInstance(ctx context.Context, kube client.Reader, obj *krm.SQLI
 		return nil, err
 	}
 	return &SQLInstanceInternalRefs{
-		cryptoKey:       cryptoKeyRef,
-		masterInstance:  masterInstanceRef,
-		replicaPassword: replicaPassword,
-		rootPassword:    rootPassword,
-		privateNetwork:  privateNetwork,
-		auditLogBucket:  auditLogBucket,
+		cryptoKey:         cryptoKeyRef,
+		masterInstance:    masterInstanceRef,
+		replicaPassword:   replicaPassword,
+		rootPassword:      rootPassword,
+		privateNetwork:    privateNetwork,
+		auditLogBucket:    auditLogBucket,
+		sourceSQLInstance: sourceSQLInstance,
 	}, nil
 }
 
@@ -287,6 +293,48 @@ func normalizeAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *kr
 		return "gs://" + storageBucketName, nil
 	} else {
 		return "", fmt.Errorf("must specify either spec.settings.sqlServerAuditConfig.bucketRef.external or spec.settings.sqlServerAuditConfig.bucketRef.name")
+	}
+}
+
+func normalizeSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+	if obj.Spec.CloneSource == nil {
+		return "", nil
+	}
+
+	sqlInstanceRef := obj.Spec.CloneSource.SQLInstanceRef
+
+	if sqlInstanceRef.External != "" && sqlInstanceRef.Name != "" {
+		return "", fmt.Errorf("cannot specify both spec.settings.cloneSource.sqlInstanceRef.external and spec.settings.cloneSource.sqlInstanceRef.name")
+	}
+
+	if sqlInstanceRef.External != "" {
+		return sqlInstanceRef.External, nil
+	} else if sqlInstanceRef.Name != "" {
+		if sqlInstanceRef.Namespace == "" {
+			sqlInstanceRef.Namespace = obj.Namespace
+		}
+
+		key := types.NamespacedName{
+			Namespace: sqlInstanceRef.Namespace,
+			Name:      sqlInstanceRef.Name,
+		}
+
+		sqlInstance := &unstructured.Unstructured{}
+		sqlInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
+		if err := kube.Get(ctx, key, sqlInstance); err != nil {
+			if apierrors.IsNotFound(err) {
+				return "", k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
+			}
+			return "", fmt.Errorf("error reading referenced SQLInstance %v: %w", key, err)
+		}
+
+		sqlInstanceName, err := refs.GetResourceID(sqlInstance)
+		if err != nil {
+			return "", err
+		}
+		return sqlInstanceName, nil
+	} else {
+		return "", fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
 	}
 }
 
