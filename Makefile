@@ -308,3 +308,38 @@ clean-release-manifests:
 	rm config/installbundle/release-manifests/crds.yaml
 	rm config/installbundle/release-manifests/rbac.yaml
 	rm config/installbundle/release-manifests/manager.yaml
+	rm config/installbundle/release-manifests/manifests.yaml
+
+# deploy config connector manifests to a k8s cluster
+# make sure to connect to a k8s cluster first
+.PHONY: deploy-kcc-manifests
+deploy-kcc-manifests: all-manifests
+	kubectl apply -f config/installbundle/release-manifests/manifests.yaml 
+
+.PHONY: powertool-tests
+powertool-tests:	
+	cd scripts/github-actions/ && ./powertool-test.sh
+
+.PHONY: e2e-scenario-tests
+e2e-scenario-tests:
+	cd scripts/github-actions/ && ./tests-e2e-scenarios.sh
+
+# indicate which samples testcases will be run
+SAMPLE_TESTCASE ?= TestAllInSeries/samples
+# indicate whether the testcases will be run again real/mock GCP
+TEST_TARGET ?= mock
+
+.PHONY: e2e-sample-tests
+e2e-sample-tests:
+	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="SQLInstance" go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
+
+# orgnization ID for google.com
+ORG_ID ?= 433637338589
+# billing account for ACP
+BILLING_ACCOUNT ?= 010E8D-490B6B-088E1C
+
+.PHONY: operator-e2e-tests
+operator-e2e-tests:
+	export TEST_ORG_ID=${ORG_ID}
+	export TEST_BILLING_ACCOUNT_ID=${BILLING_ACCOUNT}
+	cd operator/tests/e2e/ && go test --project-id=${PROJECT_ID}
