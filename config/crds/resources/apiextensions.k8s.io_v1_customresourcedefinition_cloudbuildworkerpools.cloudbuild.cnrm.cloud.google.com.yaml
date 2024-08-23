@@ -384,7 +384,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the CloudBuild workerpool resource
+                description: A unique Config Connector specifier for the resource
                   in GCP.
                 type: string
               observedGeneration:

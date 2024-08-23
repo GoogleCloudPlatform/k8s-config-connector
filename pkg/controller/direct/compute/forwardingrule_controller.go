@@ -53,9 +53,7 @@ type forwardingRuleModel struct {
 var _ directbase.Model = &forwardingRuleModel{}
 
 type forwardingRuleAdapter struct {
-	resourceID                  string
-	projectID                   string
-	Location                    string
+	id                          *ForwardingRuleIdentity
 	forwardingRulesClient       *gcp.ForwardingRulesClient
 	globalForwardingRulesClient *gcp.GlobalForwardingRulesClient
 	desired                     *krm.ComputeForwardingRule
@@ -133,11 +131,35 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
 	}
 
+	// Validate ExternalRef
+	var id *ForwardingRuleIdentity
+	externalRef := direct.ValueOf(obj.Status.ExternalRef)
+	if externalRef == "" {
+		id = BuildID(projectID, location, resourceID)
+	} else {
+		id, err = asID(externalRef)
+		if err != nil {
+			return nil, err
+		}
+
+		if id.project != projectID {
+			return nil, fmt.Errorf("ComputeForwardingRule %s/%s has spec.projectRef changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.project, projectID)
+		}
+		if id.location != location {
+			return nil, fmt.Errorf("ComputeForwardingRule %s/%s has spec.location changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.location, location)
+		}
+		// TODO: need to support more cases
+		if id.forwardingRule != resourceID {
+			return nil, fmt.Errorf("ComputeForwardingRule  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.forwardingRule, resourceID)
+		}
+	}
+
 	forwardingRuleAdapter := &forwardingRuleAdapter{
-		resourceID: resourceID,
-		projectID:  projectID,
-		Location:   location,
-		desired:    obj,
+		id:      id,
+		desired: obj,
 	}
 
 	// Get GCP client
@@ -167,19 +189,19 @@ func (m *forwardingRuleModel) AdapterForURL(ctx context.Context, url string) (di
 }
 
 func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
+	if a.id.forwardingRule == "" {
 		return false, nil
 	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting ComputeForwardingRule", "name", a.resourceID)
+	log.V(2).Info("getting ComputeForwardingRule", "name", a.id.forwardingRule)
 
 	var err error
 	forwardingRule := &computepb.ForwardingRule{}
-	if a.Location == "global" {
+	if a.id.location == "global" {
 		req := &computepb.GetGlobalForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Project:        a.id.project,
 		}
 		forwardingRule, err = a.globalForwardingRulesClient.Get(ctx, req)
 		if err != nil {
@@ -190,9 +212,9 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 		}
 	} else {
 		req := &computepb.GetForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Region:         a.Location,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Region:         a.id.location,
+			Project:        a.id.project,
 		}
 		forwardingRule, err = a.forwardingRulesClient.Get(ctx, req)
 		if err != nil {
@@ -207,40 +229,39 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *forwardingRuleAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
-	if a.projectID == "" {
+	if a.id.project == "" {
 		return fmt.Errorf("project is empty")
 	}
-	if a.resourceID == "" {
+	if a.id.forwardingRule == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating ComputeForwardingRule", "name", a.resourceID)
+	log.V(2).Info("creating ComputeForwardingRule", "name", a.id.forwardingRule)
 	mapCtx := &direct.MapContext{}
 
-	a.desired.Labels["managed-by-cnrm"] = "true"
 	desired := a.desired.DeepCopy()
 
 	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	forwardingRule.Name = direct.LazyPtr(a.resourceID)
+	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
 	forwardingRule.Labels = desired.Labels
 
 	var err error
 	op := &gcp.Operation{}
-	if a.Location == "global" {
+	if a.id.location == "global" {
 		req := &computepb.InsertGlobalForwardingRuleRequest{
 			ForwardingRuleResource: forwardingRule,
-			Project:                a.projectID,
+			Project:                a.id.project,
 		}
 		op, err = a.globalForwardingRulesClient.Insert(ctx, req)
 	} else {
 		req := &computepb.InsertForwardingRuleRequest{
 			ForwardingRuleResource: forwardingRule,
-			Region:                 a.Location,
-			Project:                a.projectID,
+			Region:                 a.id.location,
+			Project:                a.id.project,
 		}
 		op, err = a.forwardingRulesClient.Insert(ctx, req)
 	}
@@ -250,17 +271,17 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, u *unstructured.Unst
 	log.V(2).Info("successfully created ComputeForwardingRule", "name", a.fullyQualifiedName())
 	// Get the created resource
 	created := &computepb.ForwardingRule{}
-	if a.Location == "global" {
+	if a.id.location == "global" {
 		getReq := &computepb.GetGlobalForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Project:        a.id.project,
 		}
 		created, err = a.globalForwardingRulesClient.Get(ctx, getReq)
 	} else {
 		getReq := &computepb.GetForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Region:         a.Location,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Region:         a.id.location,
+			Project:        a.id.project,
 		}
 		created, err = a.forwardingRulesClient.Get(ctx, getReq)
 	}
@@ -273,16 +294,17 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, u *unstructured.Unst
 		CreationTimestamp: op.Proto().InsertTime,
 		SelfLink:          created.SelfLink,
 	}
+	status.ExternalRef = a.id.AsExternalRef()
 	return setStatus(u, status)
 }
 
 func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
-	if a.resourceID == "" {
+	if a.id.forwardingRule == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating ComputeForwardingRule", "name", a.resourceID)
+	log.V(2).Info("updating ComputeForwardingRule", "name", a.id.forwardingRule)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -290,7 +312,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	forwardingRule.Name = direct.LazyPtr(a.resourceID)
+	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
 	forwardingRule.Labels = desired.Labels
 
 	// Patch only support update on networkTier field, which KCC does not support yet.
@@ -300,19 +322,19 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 	updated := &computepb.ForwardingRule{}
 	// TODO(yuhou): Checked the realGCP logs, setLabels request is being sent even when there are no updates to labels.
 	// That might because of the generated labelsFingerPrint?
-	if a.Location == "global" {
+	if a.id.location == "global" {
 		setLabelsReq := &computepb.SetLabelsGlobalForwardingRuleRequest{
-			Resource:                       a.resourceID,
+			Resource:                       a.id.forwardingRule,
 			GlobalSetLabelsRequestResource: &computepb.GlobalSetLabelsRequest{LabelFingerprint: a.actual.LabelFingerprint, Labels: forwardingRule.Labels},
-			Project:                        a.projectID,
+			Project:                        a.id.project,
 		}
 		op, err = a.globalForwardingRulesClient.SetLabels(ctx, setLabelsReq)
 	} else {
 		setLabelsReq := &computepb.SetLabelsForwardingRuleRequest{
-			Resource:                       a.resourceID,
+			Resource:                       a.id.forwardingRule,
 			RegionSetLabelsRequestResource: &computepb.RegionSetLabelsRequest{LabelFingerprint: a.actual.LabelFingerprint, Labels: forwardingRule.Labels},
-			Project:                        a.projectID,
-			Region:                         a.Location,
+			Project:                        a.id.project,
+			Region:                         a.id.location,
 		}
 		op, err = a.forwardingRulesClient.SetLabels(ctx, setLabelsReq)
 	}
@@ -325,39 +347,39 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 	}
 	log.V(2).Info("successfully updated ComputeForwardingRule labels", "name", a.fullyQualifiedName())
 	// Get the updated resource
-	if a.Location == "global" {
+	if a.id.location == "global" {
 		getReq := &computepb.GetGlobalForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Project:        a.id.project,
 		}
 		updated, err = a.globalForwardingRulesClient.Get(ctx, getReq)
 	} else {
 		getReq := &computepb.GetForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Region:         a.Location,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Region:         a.id.location,
+			Project:        a.id.project,
 		}
 		updated, err = a.forwardingRulesClient.Get(ctx, getReq)
 	}
 	if err != nil {
-		return fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.resourceID, err)
+		return fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.id.forwardingRule, err)
 	}
 
 	// setTarget request is sent when there are updates to target.
 	if !reflect.DeepEqual(forwardingRule.Target, a.actual.Target) {
-		if a.Location == "global" {
+		if a.id.location == "global" {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
-				ForwardingRule:          a.resourceID,
+				ForwardingRule:          a.id.forwardingRule,
 				TargetReferenceResource: &computepb.TargetReference{Target: forwardingRule.Target},
-				Project:                 a.projectID,
+				Project:                 a.id.project,
 			}
 			op, err = a.globalForwardingRulesClient.SetTarget(ctx, setTargetReq)
 		} else {
 			setTargetReq := &computepb.SetTargetForwardingRuleRequest{
-				ForwardingRule:          a.resourceID,
+				ForwardingRule:          a.id.forwardingRule,
 				TargetReferenceResource: &computepb.TargetReference{Target: forwardingRule.Target},
-				Project:                 a.projectID,
-				Region:                  a.Location,
+				Project:                 a.id.project,
+				Region:                  a.id.location,
 			}
 			op, err = a.forwardingRulesClient.SetTarget(ctx, setTargetReq)
 		}
@@ -372,22 +394,22 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 	}
 
 	// Get the updated resource
-	if a.Location == "global" {
+	if a.id.location == "global" {
 		getReq := &computepb.GetGlobalForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Project:        a.id.project,
 		}
 		updated, err = a.globalForwardingRulesClient.Get(ctx, getReq)
 	} else {
 		getReq := &computepb.GetForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Region:         a.Location,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Region:         a.id.location,
+			Project:        a.id.project,
 		}
 		updated, err = a.forwardingRulesClient.Get(ctx, getReq)
 	}
 	if err != nil {
-		return fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.resourceID, err)
+		return fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.id.forwardingRule, err)
 	}
 
 	status := &krm.ComputeForwardingRuleStatus{
@@ -405,12 +427,12 @@ func (a *forwardingRuleAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 // Delete implements the Adapter interface.
 func (a *forwardingRuleAdapter) Delete(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
+	if a.id.forwardingRule == "" {
 		return false, fmt.Errorf("resourceID is empty")
 	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting ComputeForwardingRule", "name", a.resourceID)
+	log.V(2).Info("deleting ComputeForwardingRule", "name", a.id.forwardingRule)
 
 	exist, err := a.Find(ctx)
 	if err != nil {
@@ -422,36 +444,37 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context) (bool, error) {
 	}
 
 	op := &gcp.Operation{}
-	if a.Location == "global" {
+	if a.id.location == "global" {
 		req := &computepb.DeleteGlobalForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Project:        a.id.project,
 		}
 		op, err = a.globalForwardingRulesClient.Delete(ctx, req)
 	} else {
 		req := &computepb.DeleteForwardingRuleRequest{
-			ForwardingRule: a.resourceID,
-			Region:         a.Location,
-			Project:        a.projectID,
+			ForwardingRule: a.id.forwardingRule,
+			Region:         a.id.location,
+			Project:        a.id.project,
 		}
 		op, err = a.forwardingRulesClient.Delete(ctx, req)
 	}
 	if err != nil {
-		return false, fmt.Errorf("deleting ComputeForwardingRule %s failed: %w", a.resourceID, err)
+		return false, fmt.Errorf("deleting ComputeForwardingRule %s failed: %w", a.id.forwardingRule, err)
 	}
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.resourceID, err)
+		return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.id.forwardingRule, err)
 	}
-	log.V(2).Info("successfully deleted ComputeForwardingRule", "name", a.resourceID)
+	log.V(2).Info("successfully deleted ComputeForwardingRule", "name", a.id.forwardingRule)
 	return true, nil
 }
 
 func (a *forwardingRuleAdapter) fullyQualifiedName() string {
-	if a.Location == "global" {
-		return fmt.Sprintf("projects/%s/global/forwardingRules/%s", a.projectID, a.resourceID)
+	if a.id.location == "global" {
+		return fmt.Sprintf("projects/%s/global/forwardingRules/%s", a.id.project, a.id.forwardingRule)
 	}
-	return fmt.Sprintf("projects/%s/regions/%s/forwardingRules/%s", a.projectID, a.Location, a.resourceID)
+	return fmt.Sprintf("projects/%s/regions/%s/forwardingRules/%s", a.id.project, a.id.location, a.id.forwardingRule)
+
 }
 
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
@@ -464,6 +487,7 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	if old != nil {
 		status["conditions"] = old["conditions"]
 		status["observedGeneration"] = old["observedGeneration"]
+		status["externalRef"] = old["externalRef"]
 	}
 
 	u.Object["status"] = status
