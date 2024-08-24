@@ -1,6 +1,6 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -27,7 +27,7 @@ X-Xss-Protection: 0
 
 PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -95,7 +95,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -122,7 +122,7 @@ X-Xss-Protection: 0
 
 PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
@@ -157,7 +157,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -190,7 +190,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -217,7 +217,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Cache-Control: private
@@ -248,7 +248,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "checkIntervalSec": 10,
@@ -290,7 +290,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -325,7 +325,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Cache-Control: private
@@ -356,7 +356,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "connectionDraining": {
@@ -400,7 +400,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -437,7 +437,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Cache-Control: private
@@ -468,7 +468,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "${networkID}Service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
@@ -501,7 +501,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -527,7 +527,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Cache-Control: private
@@ -558,7 +558,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "description": "test description",
@@ -592,7 +592,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -619,7 +619,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Cache-Control: private
@@ -650,7 +650,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "description": "other test description",
@@ -684,7 +684,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -711,7 +711,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Cache-Control: private
@@ -742,7 +742,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "IPAddress": "0.0.0.0",
@@ -788,7 +788,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -821,7 +821,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -861,7 +861,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -902,7 +902,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -935,7 +935,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -975,7 +975,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setTarget?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}"
@@ -1010,7 +1010,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1043,7 +1043,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1083,7 +1083,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1114,7 +1114,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1147,7 +1147,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1174,7 +1174,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1202,7 +1202,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1229,7 +1229,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1257,7 +1257,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1283,7 +1283,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1311,7 +1311,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1348,7 +1348,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1376,7 +1376,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1411,7 +1411,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private

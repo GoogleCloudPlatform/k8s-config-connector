@@ -369,7 +369,7 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Cache-Control: private
@@ -394,7 +394,7 @@ X-Xss-Protection: 0
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "labels": {
@@ -452,7 +452,7 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -503,7 +503,7 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -524,7 +524,7 @@ X-Xss-Protection: 0
 
 POST https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "policy": {
@@ -569,7 +569,7 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -599,7 +599,7 @@ X-Xss-Protection: 0
 
 POST https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "policy": {
@@ -628,7 +628,7 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -650,7 +650,7 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -701,7 +701,7 @@ X-Xss-Protection: 0
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private

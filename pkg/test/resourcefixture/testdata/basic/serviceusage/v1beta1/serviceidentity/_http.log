@@ -1,6 +1,6 @@
 POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Content-Type: application/json
@@ -21,7 +21,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Content-Type: application/json
