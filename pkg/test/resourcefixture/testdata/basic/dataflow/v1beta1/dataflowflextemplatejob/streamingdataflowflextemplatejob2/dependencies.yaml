@@ -12,23 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-kind: BigQueryDataset
-metadata:
-  name: bigquerydataset${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
----
-apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-kind: BigQueryTable
-metadata:
-  name: bigquerytable${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
-spec:
-  datasetRef:
-    name: bigquerydataset${uniqueId}
----
+
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
@@ -36,13 +20,6 @@ metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
 
----
-apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-kind: PubSubTopic
-metadata:
-  name: pubsubtopic1-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
