@@ -41,6 +41,9 @@ type NamespacedControllerReconcilerSpec struct {
 	// If not specified, the default will be Token Bucket with qps 20, burst 30.
 	// +optional
 	RateLimit *RateLimit `json:"rateLimit,omitempty"`
+	// Configures the debug endpoint on the service.
+	// +optional
+	Pprof *PprofConfig `json:"pprof,omitempty"`
 }
 
 type RateLimit struct {
@@ -50,6 +53,16 @@ type RateLimit struct {
 	// The burst of the token bucket rate limit for all the requests to the kubernetes client.
 	// +optional
 	Burst int `json:"burst,omitempty"`
+}
+
+type PprofConfig struct {
+	// Control if pprof should be turned on and which types should be enabled.
+	// +kubebuilder:validation:Enum=none;all
+	// +optional
+	Support string `json:"support,omitempty"`
+	// The port that the pprof server binds to if enabled
+	// +optional
+	Port int `json:"port,omitempty"`
 }
 
 // NamespacedControllerReconcilerStatus defines the observed state of NamespacedControllerReconciler.
@@ -92,6 +105,9 @@ type ControllerReconcilerSpec struct {
 	// If not specified, the default will be Token Bucket with qps 20, burst 30.
 	// +optional
 	RateLimit *RateLimit `json:"rateLimit,omitempty"`
+	// Configures the debug endpoint on the service.
+	// +optional
+	Pprof *PprofConfig `json:"pprof,omitempty"`
 }
 
 // ControllerReconcilerStatus defines the observed state of ControllerReconciler.
@@ -113,6 +129,10 @@ type ControllerReconcilerList struct {
 }
 
 var ValidRateLimitControllers = []string{
+	"cnrm-controller-manager",
+}
+
+var SupportedPprofControllers = []string{
 	"cnrm-controller-manager",
 }
 
