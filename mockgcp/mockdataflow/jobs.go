@@ -74,8 +74,12 @@ func (r *jobsServer) UpdateJob(ctx context.Context, req *pb.UpdateJobRequest) (*
 		obj.CurrentState = pb.JobState_JOB_STATE_CANCELLING
 		obj.CurrentStateTime = timestamppb.New(now)
 		obj.RequestedState = pb.JobState_JOB_STATE_CANCELLED
+	case pb.JobState_JOB_STATE_DRAINING:
+		obj.CurrentState = pb.JobState_JOB_STATE_DRAINING
+		obj.CurrentStateTime = timestamppb.New(now)
+		obj.RequestedState = pb.JobState_JOB_STATE_DRAINING
 	default:
-		return nil, status.Errorf(codes.InvalidArgument, "unhandled requestedState in mock")
+		return nil, status.Errorf(codes.InvalidArgument, "unhandled requestedState %v in mock", req.GetJob())
 	}
 
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {

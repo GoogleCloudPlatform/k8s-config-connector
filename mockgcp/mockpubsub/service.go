@@ -50,7 +50,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterPublisherServer(grpcServer, &publisherService{MockService: s})
-	// pb.RegisterSubscriberServer(grpcServer, &subscriberService{MockService: s})
+	pb.RegisterSubscriberServer(grpcServer, &subscriberService{MockService: s})
 	pb.RegisterSchemaServiceServer(grpcServer, &schemaService{MockService: s})
 }
 
