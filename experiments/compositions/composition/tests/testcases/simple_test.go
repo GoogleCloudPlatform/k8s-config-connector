@@ -23,13 +23,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func TestSimpleCompositionCreate(t *testing.T) {
-	//t.Parallel()
-	s := scenario.NewBasic(t)
-	defer s.Cleanup()
-	s.Setup()
-}
-
 func TestSimpleExpansionJob(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
