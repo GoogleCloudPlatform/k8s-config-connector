@@ -26,7 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
@@ -48,6 +48,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
@@ -64,7 +65,7 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler)
+	return add(mgr, reconciler, deps.ReconcilePredicate)
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
@@ -97,16 +98,21 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *DirectReconciler) error {
+func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.Predicate) error {
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
+
+	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
+	if reconcilePredicate != nil {
+		predicateList = append(predicateList, reconcilePredicate)
+	}
 
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
 		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
 		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...)).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
@@ -117,7 +123,8 @@ func add(mgr manager.Manager, r *DirectReconciler) error {
 var _ reconcile.Reconciler = &DirectReconciler{}
 
 type Deps struct {
-	JitterGenerator jitter.Generator
+	JitterGenerator    jitter.Generator
+	ReconcilePredicate predicate.Predicate
 }
 
 // DirectReconciler is a reconciler for reconciling resources that support the Model/Adapter pattern.

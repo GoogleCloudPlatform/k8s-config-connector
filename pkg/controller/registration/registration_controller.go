@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
@@ -247,7 +248,7 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 		}
 		// register controllers for tf-based CRDs
 		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; ok && val == "true" {
-			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
+			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, nil)
 			if err != nil {
 				return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
@@ -259,8 +260,28 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 			if err != nil {
 				return nil, err
 			}
-			if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+			deps := directbase.Deps{
+				JitterGenerator: r.jitterGenerator,
+			}
+			rg := registry.GetReconcileGate(gvk.GroupKind())
+			if rg != nil {
+				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
+				// run the direct reconciler only when the reconcile gate returns true.
+				rp := kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, rg)
+				deps.ReconcilePredicate = rp
+			}
+			if err := directbase.AddController(r.mgr, gvk, model, deps); err != nil {
 				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+			if rg != nil {
+				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
+				// run the terraform-based reconciler when the reconcile gate returns false.
+				irp := kccpredicate.NewInverseReconcilePredicate(r.mgr.GetClient(), gvk, rg)
+				su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, irp)
+				if err != nil {
+					return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+				}
+				return su, nil
 			}
 			return schemaUpdater, nil
 		}
