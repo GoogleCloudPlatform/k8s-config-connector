@@ -41,6 +41,20 @@ spec:
           spec:
             description: ControllerReconcilerSpec is the specification of ControllerReconciler.
             properties:
+              pprof:
+                description: Configures the debug endpoint on the service.
+                properties:
+                  port:
+                    description: The port that the pprof server binds to if enabled
+                    type: integer
+                  support:
+                    description: Control if pprof should be turned on and which types
+                      should be enabled.
+                    enum:
+                    - none
+                    - all
+                    type: string
+                type: object
               rateLimit:
                 description: |-
                   RateLimit configures the token bucket rate limit to the kubernetes client used

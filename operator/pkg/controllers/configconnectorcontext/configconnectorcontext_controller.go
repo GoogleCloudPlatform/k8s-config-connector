@@ -551,6 +551,10 @@ func (r *Reconciler) applyNamespacedControllerReconciler(ctx context.Context, cr
 		msg := fmt.Sprintf("failed to apply rate limit customization %s: %v", cr.Name, err)
 		return r.handleApplyNamespacedControllerReconcilerFailed(ctx, cr.Namespace, cr.Name, msg)
 	}
+	if err := controllers.ApplyContainerPprof(m, cr.Name, cr.Spec.Pprof); err != nil {
+		msg := fmt.Sprintf("failed to apply pprof customization %s: %v", cr.Name, err)
+		return r.handleApplyNamespacedControllerReconcilerFailed(ctx, cr.Namespace, cr.Name, msg)
+	}
 	return r.handleApplyNamespacedControllerReconcilerSucceeded(ctx, cr.Namespace, cr.Name)
 }
 
