@@ -77,23 +77,19 @@ func (l *BucketLease) Get(ctx context.Context) (*resourcelock.LeaderElectionReco
 	recordBytes, err := io.ReadAll(r)
 	if err != nil {
 		l.log.Error(err, "error reading record")
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("error reading gs://%s/%s: %w", l.bucketName, l.leaseName, err)
 	}
 	var record resourcelock.LeaderElectionRecord
 	if err := json.Unmarshal(recordBytes, &record); err != nil {
 		l.log.Error(err, "error unmarshaling record")
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("error unmarshaling gs://%s/%s: %w", l.bucketName, l.leaseName, err)
 	}
 	return &record, recordBytes, nil
 }
 
 func (l *BucketLease) Create(ctx context.Context, record resourcelock.LeaderElectionRecord) error {
 	b := l.client.Bucket(l.bucketName)
-	attrs, err := b.Attrs(ctx)
-	if err != nil {
-		return fmt.Errorf("error getting bucket attributes: %v", err)
-	}
-	w := b.If(storage.BucketConditions{MetagenerationMatch: attrs.MetaGeneration}).Object(l.leaseName).NewWriter(ctx)
+	w := b.Object(l.leaseName).If(storage.Conditions{DoesNotExist: true}).NewWriter(ctx)
 
 	recordByte, err := json.Marshal(record)
 	if err != nil {
@@ -111,13 +107,13 @@ func (l *BucketLease) Create(ctx context.Context, record resourcelock.LeaderElec
 				// TODO: add metrics
 				return fmt.Errorf("error writing record because the precondition failed: %v", err)
 			}
-		default:
-			return fmt.Errorf("error writing record: %v", err)
 		}
+		return fmt.Errorf("error creating gs://%s/%s: %w", l.bucketName, l.leaseName, err)
 	}
 	return nil
 }
 
+// TODO: this is incorrect. We need to perform some version of "compare and swap" during the update.
 func (l *BucketLease) Update(ctx context.Context, record resourcelock.LeaderElectionRecord) error {
 	b := l.client.Bucket(l.bucketName)
 	objAttrs, err := b.Object(l.leaseName).Attrs(ctx)
@@ -142,9 +138,8 @@ func (l *BucketLease) Update(ctx context.Context, record resourcelock.LeaderElec
 				// TODO: add metrics
 				return fmt.Errorf("error writing record due to precondition failed: %v", err)
 			}
-		default:
-			return fmt.Errorf("error writing record: %v", err)
 		}
+		return fmt.Errorf("error updating gs://%s/%s: %w", l.bucketName, l.leaseName, err)
 	}
 	return nil
 }
@@ -161,7 +156,7 @@ func (l *BucketLease) Identity() string {
 }
 
 func (l *BucketLease) Describe() string {
-	return fmt.Sprintf("%v/%v", l.bucketName, l.leaseName)
+	return fmt.Sprintf("gs://%s/%s", l.bucketName, l.leaseName)
 }
 
 func toAPIError(err error) error {

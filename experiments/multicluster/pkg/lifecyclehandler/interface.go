@@ -18,15 +18,15 @@ import (
 	"context"
 )
 
+const MultiClusterFieldManager = "multicluster-controller-manager"
+
 type LifecycleHandler interface {
-	// OnStartedLeading is called when a LeaderElector starts leading
-	OnStartedLeading(ctx context.Context) error
-	// OnStoppedLeading is called when a LeaderElector stops leading
-	OnStoppedLeading(ctx context.Context) error
-	// OnNewLeader is called when a LeaderElector observes a leader that is
-	// not the previously observed leader. This includes the first observed
-	// leader when the LeaderElector starts.
-	OnNewLeader(ctx context.Context, leaderID string) error
-	// OnStopping is called when a LeaderElector is stopping
+	// OnNewLeader is triggered when a LeaderElector detects a change in leadership.
+	// This includes the first leader detected when the LeaderElector starts.
+	// leaderID identifies the new leader.
+	// isLeader indicates if the new leader is the current LeaderElector.
+	OnNewLeader(ctx context.Context, leaderID string, isLeader bool) error
+
+	// OnStopping is triggered when a LeaderElector is in the process of stopping.
 	OnStopping() error
 }

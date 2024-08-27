@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	multiclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/api/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/util"
 )
 
 const (
@@ -47,7 +46,7 @@ func (r *MultiClusterLeaseReconciler) ensureFinalizer(ctx context.Context, mcl *
 		}
 	}
 	mcl.SetFinalizers(append(mcl.GetFinalizers(), multiClusterLeaseFinalizer))
-	return util.UpdateMultiClusterLease(ctx, r.client, mcl)
+	return r.client.Update(ctx, mcl)
 }
 
 func (r *MultiClusterLeaseReconciler) removeFinalizer(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease) error {
@@ -62,7 +61,7 @@ func (r *MultiClusterLeaseReconciler) removeFinalizer(ctx context.Context, mcl *
 	}
 	if found {
 		mcl.SetFinalizers(finalizers)
-		return util.UpdateMultiClusterLease(ctx, r.client, mcl)
+		return r.client.Update(ctx, mcl)
 	}
 	return nil
 }

@@ -107,6 +107,7 @@ func (le *LeaderElector) Acquire(ctx context.Context) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	succeeded := le.tryAcquireOrRenew(ctx)
+	// TODO: return (bool, error) so that we can differentiate between transient error (e.g. network error) and someone else has the lease
 	if !succeeded {
 		log.Info("failed to acquire lease")
 		return fmt.Errorf("failed to acquire lease")

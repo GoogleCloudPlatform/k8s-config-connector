@@ -23,11 +23,12 @@ import (
 	"github.com/go-logr/logr"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 
 	"k8s.io/client-go/tools/record"
+	"k8s.io/client-go/util/workqueue"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	multiclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/api/v1alpha1"
@@ -35,8 +36,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/lifecyclehandler/pauser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/resourcelock/bucketlease"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/util"
 )
+
+const controllerMaxConcurrentReconciles = 10
 
 func New(c MultiClusterLeaseReconcilerConfig) *MultiClusterLeaseReconciler {
 	return &MultiClusterLeaseReconciler{
@@ -75,13 +77,15 @@ type runningLeaderElector struct {
 // +kubebuilder:rbac:groups=multicluster.core.cnrm.cloud.google.com,resources=multiclusterleases/status,verbs=get;update;patch
 
 func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	mcl, err := util.GetMultiClusterLease(ctx, r.client, req.NamespacedName)
-	if err != nil {
+	mcl := &multiclusterv1alpha1.MultiClusterLease{}
+	if err := r.client.Get(ctx, req.NamespacedName, mcl); err != nil {
 		if apierrors.IsNotFound(err) {
 			r.log.Info("MultiClusterLease not found in API server; skipping the reconciliation", "namespaced name", req.NamespacedName)
 			return reconcile.Result{}, nil
 		}
+		return reconcile.Result{}, fmt.Errorf("error getting MultiClusterLease object %v/%v: %w", req.Namespace, req.Name, err)
 	}
+
 	// TODO: validate mcl
 
 	if !mcl.GetDeletionTimestamp().IsZero() { // handle deletion
@@ -149,7 +153,6 @@ func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(ctx context.Conte
 		Client:    r.client,
 		Log:       r.log,
 		Namespace: mcl.Namespace,
-		Identity:  mcl.Spec.Identity,
 	})
 	runningLeaderElector := runningLeaderElector{
 		le: le,
@@ -168,8 +171,9 @@ func (r *MultiClusterLeaseReconciler) handleRenewSucceeded(ctx context.Context, 
 }
 
 func (r *MultiClusterLeaseReconciler) handleRenewFailed(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, le *leaderelection.LeaderElector, lh lifecyclehandler.LifecycleHandler) (ctrl.Result, error) {
-	if err := lh.OnStoppedLeading(ctx); err != nil {
-		r.log.Error(err, "error calling stopped leading function")
+	if err := lh.OnNewLeader(ctx, le.LeaderIdentity(), le.IsLeader()); err != nil {
+		r.log.Error(err, "error stop leading")
+		return ctrl.Result{Requeue: true}, err // we should retry immediately to avoid more than one controller acting as leader
 	}
 	if err := r.updateStatus(ctx, mcl, le.LeaderIdentity(), le.IsLeader()); err != nil {
 		r.log.Error(err, "error updating MultiClusterLease status")
@@ -179,8 +183,8 @@ func (r *MultiClusterLeaseReconciler) handleRenewFailed(ctx context.Context, mcl
 }
 
 func (r *MultiClusterLeaseReconciler) handleAcquireSucceeded(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, le *leaderelection.LeaderElector, lh lifecyclehandler.LifecycleHandler) (ctrl.Result, error) {
-	if err := lh.OnStartedLeading(ctx); err != nil {
-		r.log.Error(err, "error calling started leading function")
+	if err := lh.OnNewLeader(ctx, le.LeaderIdentity(), le.IsLeader()); err != nil {
+		r.log.Error(err, "error start leading")
 	}
 	if err := r.updateStatus(ctx, mcl, le.LeaderIdentity(), le.IsLeader()); err != nil {
 		r.log.Error(err, "error updating MultiClusterLease status")
@@ -191,8 +195,8 @@ func (r *MultiClusterLeaseReconciler) handleAcquireSucceeded(ctx context.Context
 
 func (r *MultiClusterLeaseReconciler) handleAcquireFailed(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, le *leaderelection.LeaderElector, lh lifecyclehandler.LifecycleHandler) (ctrl.Result, error) {
 	if mcl.Status.LeaderIdentity != le.LeaderIdentity() { // observed a new leader
-		if err := lh.OnNewLeader(ctx, le.LeaderIdentity()); err != nil {
-			r.log.Error(err, "error calling new leader function")
+		if err := lh.OnNewLeader(ctx, le.LeaderIdentity(), le.IsLeader()); err != nil {
+			r.log.Error(err, "error on new leader")
 		}
 	}
 	if err := r.updateStatus(ctx, mcl, le.LeaderIdentity(), le.IsLeader()); err != nil {
@@ -203,10 +207,6 @@ func (r *MultiClusterLeaseReconciler) handleAcquireFailed(ctx context.Context, m
 }
 
 func (r *MultiClusterLeaseReconciler) updateStatus(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, leaderIdentity string, isLeader bool) error {
-	mcl, err := util.GetMultiClusterLease(ctx, r.client, types.NamespacedName{Name: mcl.Name, Namespace: mcl.Namespace})
-	if err != nil {
-		return fmt.Errorf("error getting MultiClusterLease: %w", err)
-	}
 	mcl.Status = multiclusterv1alpha1.MultiClusterLeaseStatus{
 		IsLeader:         isLeader,
 		LeaderIdentity:   leaderIdentity,
@@ -214,7 +214,7 @@ func (r *MultiClusterLeaseReconciler) updateStatus(ctx context.Context, mcl *mul
 	}
 
 	// TODO: retry in case there is a conflict
-	err = r.client.Status().Update(ctx, mcl)
+	err := r.client.Status().Update(ctx, mcl)
 	if err != nil {
 		return fmt.Errorf("error updating MultiClusterLease status: %w", err)
 	}
@@ -253,5 +253,8 @@ func (r *MultiClusterLeaseReconciler) StopAndWait() {
 func (r *MultiClusterLeaseReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&multiclusterv1alpha1.MultiClusterLease{}).
+		WithOptions(controller.Options{
+			MaxConcurrentReconciles: controllerMaxConcurrentReconciles,
+			RateLimiter:             workqueue.DefaultControllerRateLimiter()}).
 		Complete(r)
 }
