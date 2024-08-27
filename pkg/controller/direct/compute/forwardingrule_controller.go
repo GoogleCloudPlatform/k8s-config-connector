@@ -208,7 +208,7 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 			if direct.IsNotFound(err) {
 				return false, nil
 			}
-			return false, fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.fullyQualifiedName(), err)
+			return false, fmt.Errorf("getting ComputeForwardingRule %q: %w", a.fullyQualifiedName(), err)
 		}
 	} else {
 		req := &computepb.GetForwardingRuleRequest{
@@ -221,7 +221,7 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 			if direct.IsNotFound(err) {
 				return false, nil
 			}
-			return false, fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.fullyQualifiedName(), err)
+			return false, fmt.Errorf("getting ComputeForwardingRule %q: %w", a.fullyQualifiedName(), err)
 		}
 	}
 	a.actual = forwardingRule
@@ -266,7 +266,11 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, u *unstructured.Unst
 		op, err = a.forwardingRulesClient.Insert(ctx, req)
 	}
 	if err != nil {
-		return fmt.Errorf("creating ComputeForwardingRule %s failed: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("creating ComputeForwardingRule %s: %w", a.fullyQualifiedName(), err)
+	}
+	err = op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("waiting ComputeForwardingRule %s create failed: %w", a.fullyQualifiedName(), err)
 	}
 	log.V(2).Info("successfully created ComputeForwardingRule", "name", a.fullyQualifiedName())
 	// Get the created resource
@@ -286,12 +290,12 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, u *unstructured.Unst
 		created, err = a.forwardingRulesClient.Get(ctx, getReq)
 	}
 	if err != nil {
-		return fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("getting ComputeForwardingRule %q: %w", a.fullyQualifiedName(), err)
 	}
 
 	status := &krm.ComputeForwardingRuleStatus{
 		LabelFingerprint:  created.LabelFingerprint,
-		CreationTimestamp: op.Proto().InsertTime,
+		CreationTimestamp: created.CreationTimestamp,
 		SelfLink:          created.SelfLink,
 	}
 	status.ExternalRef = a.id.AsExternalRef()
@@ -339,7 +343,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 		op, err = a.forwardingRulesClient.SetLabels(ctx, setLabelsReq)
 	}
 	if err != nil {
-		return fmt.Errorf("updating ComputeForwardingRule labels %s failed: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("updating ComputeForwardingRule labels %s: %w", a.fullyQualifiedName(), err)
 	}
 	err = op.Wait(ctx)
 	if err != nil {
@@ -362,7 +366,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 		updated, err = a.forwardingRulesClient.Get(ctx, getReq)
 	}
 	if err != nil {
-		return fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.id.forwardingRule, err)
+		return fmt.Errorf("getting ComputeForwardingRule %q: %w", a.id.forwardingRule, err)
 	}
 
 	// setTarget request is sent when there are updates to target.
@@ -384,7 +388,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 			op, err = a.forwardingRulesClient.SetTarget(ctx, setTargetReq)
 		}
 		if err != nil {
-			return fmt.Errorf("updating ComputeForwardingRule target %s failed: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("updating ComputeForwardingRule target %s: %w", a.fullyQualifiedName(), err)
 		}
 		err = op.Wait(ctx)
 		if err != nil {
@@ -392,7 +396,6 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule target", "name", a.fullyQualifiedName())
 	}
-
 	// Get the updated resource
 	if a.id.location == "global" {
 		getReq := &computepb.GetGlobalForwardingRuleRequest{
@@ -409,12 +412,12 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unst
 		updated, err = a.forwardingRulesClient.Get(ctx, getReq)
 	}
 	if err != nil {
-		return fmt.Errorf("getting ComputeForwardingRule %q failed: %w", a.id.forwardingRule, err)
+		return fmt.Errorf("getting ComputeForwardingRule %q: %w", a.id.forwardingRule, err)
 	}
 
 	status := &krm.ComputeForwardingRuleStatus{
 		LabelFingerprint:  updated.LabelFingerprint,
-		CreationTimestamp: op.Proto().InsertTime,
+		CreationTimestamp: updated.CreationTimestamp,
 		SelfLink:          updated.SelfLink,
 	}
 	return setStatus(u, status)
@@ -434,15 +437,7 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting ComputeForwardingRule", "name", a.id.forwardingRule)
 
-	exist, err := a.Find(ctx)
-	if err != nil {
-		return false, err
-	}
-	if !exist {
-		// return (false, nil) if the object was not found but should be presumed deleted.
-		return false, nil
-	}
-
+	var err error
 	op := &gcp.Operation{}
 	if a.id.location == "global" {
 		req := &computepb.DeleteGlobalForwardingRuleRequest{
@@ -459,7 +454,7 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context) (bool, error) {
 		op, err = a.forwardingRulesClient.Delete(ctx, req)
 	}
 	if err != nil {
-		return false, fmt.Errorf("deleting ComputeForwardingRule %s failed: %w", a.id.forwardingRule, err)
+		return false, fmt.Errorf("deleting ComputeForwardingRule %s: %w", a.id.forwardingRule, err)
 	}
 	err = op.Wait(ctx)
 	if err != nil {

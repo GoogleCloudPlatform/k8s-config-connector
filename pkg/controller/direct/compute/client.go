@@ -71,7 +71,6 @@ type optionsRoundTripper struct {
 func (m *optionsRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	if m.config.UserAgent != "" {
 		req.Header.Set("User-Agent", m.config.UserAgent)
-		req.Header.Del("x-goog-request-params")
 	}
 	return m.inner.RoundTrip(req)
 }
