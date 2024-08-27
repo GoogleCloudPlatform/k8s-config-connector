@@ -20,6 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"golang.org/x/oauth2"
 )
 
 type Parameters struct {
@@ -39,10 +40,16 @@ type Parameters struct {
 }
 
 func (p *Parameters) ControllerConfig() *config.ControllerConfig {
-	return &config.ControllerConfig{
+	c := &config.ControllerConfig{
 		HTTPClient: p.HTTPClient,
 		UserAgent:  gcp.KCCUserAgent,
 	}
+	if p.GCPAccessToken != "" {
+		c.GCPTokenSource = oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: p.GCPAccessToken},
+		)
+	}
+	return c
 }
 
 func Validate(p *Parameters) error {

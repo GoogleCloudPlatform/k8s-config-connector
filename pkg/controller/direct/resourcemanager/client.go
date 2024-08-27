@@ -20,7 +20,6 @@ import (
 
 	api "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,29 +33,8 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) options() ([]option.ClientOption, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
-	}
-	if m.config.HTTPClient != nil {
-		// TODO: Set UserAgent in this scenario (error is: WithHTTPClient is incompatible with gRPC dial options)
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
-
-	return opts, nil
-}
-
 func (m *gcpClient) newTagKeysClient(ctx context.Context) (*api.TagKeysClient, error) {
-	opts, err := m.options()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}

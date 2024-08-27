@@ -28,7 +28,6 @@ import (
 
 	gcp "cloud.google.com/go/dataform/apiv1beta1"
 	dataformpb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -54,15 +53,9 @@ type model struct {
 }
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
-	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
 	}
 
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)

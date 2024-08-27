@@ -21,7 +21,6 @@ import (
 
 	api "cloud.google.com/go/apikeys/apiv2"
 	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -88,21 +87,10 @@ type adapter struct {
 var _ directbase.Adapter = &adapter{}
 
 func (m *model) client(ctx context.Context) (*api.Client, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
 	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
 
 	gcpClient, err := api.NewRESTClient(ctx, opts...)
 	if err != nil {

@@ -14,7 +14,12 @@
 
 package config
 
-import "net/http"
+import (
+	"net/http"
+
+	"golang.org/x/oauth2"
+	"google.golang.org/api/option"
+)
 
 type ControllerConfig struct {
 	UserAgent string
@@ -31,4 +36,80 @@ type ControllerConfig struct {
 	// HTTPClient allows us to specify the HTTP client to use with DCL.
 	// This is particularly useful in mocks/tests.
 	HTTPClient *http.Client
+
+	// GCPTokenSource mints OAuth2 tokens to be passed with GCP API calls,
+	// allowing use of a non-default OAuth2 identity
+	GCPTokenSource oauth2.TokenSource
+}
+
+func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
+	var opts []option.ClientOption
+	if c.UserAgent != "" {
+		opts = append(opts, option.WithUserAgent(c.UserAgent))
+	}
+	if c.HTTPClient != nil {
+		httpClient := &http.Client{}
+		*httpClient = *c.HTTPClient
+		httpClient.Transport = &optionsRoundTripper{
+			config: *c,
+			inner:  c.HTTPClient.Transport,
+		}
+		opts = append(opts, option.WithHTTPClient(httpClient))
+	}
+	if c.UserProjectOverride && c.BillingProject != "" {
+		opts = append(opts, option.WithQuotaProject(c.BillingProject))
+	}
+	if c.GCPTokenSource != nil {
+		opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
+	}
+
+	// TODO: support endpoints?
+	// if m.config.Endpoint != "" {
+	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
+	// }
+
+	return opts, nil
+}
+
+func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
+	var opts []option.ClientOption
+	if c.UserAgent != "" {
+		opts = append(opts, option.WithUserAgent(c.UserAgent))
+	}
+	if c.HTTPClient != nil {
+		// TODO: Set UserAgent in this scenario (error is: WithHTTPClient is incompatible with gRPC dial options)
+
+		httpClient := &http.Client{}
+		*httpClient = *c.HTTPClient
+		httpClient.Transport = &optionsRoundTripper{
+			config: *c,
+			inner:  c.HTTPClient.Transport,
+		}
+		opts = append(opts, option.WithHTTPClient(httpClient))
+	}
+	if c.UserProjectOverride && c.BillingProject != "" {
+		opts = append(opts, option.WithQuotaProject(c.BillingProject))
+	}
+	if c.GCPTokenSource != nil {
+		opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
+	}
+
+	// TODO: support endpoints?
+	// if m.config.Endpoint != "" {
+	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
+	// }
+
+	return opts, nil
+}
+
+type optionsRoundTripper struct {
+	config ControllerConfig
+	inner  http.RoundTripper
+}
+
+func (m *optionsRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	if m.config.UserAgent != "" {
+		req.Header.Set("User-Agent", m.config.UserAgent)
+	}
+	return m.inner.RoundTrip(req)
 }
