@@ -134,17 +134,17 @@ func (m *caPoolModel) AdapterForURL(ctx context.Context, url string) (directbase
 }
 
 // Delete implements the Adapter interface.
-func (a *caPoolAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *caPoolAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	return false, fmt.Errorf("not implemented")
 }
 
 // Create implements the Adapter interface.
-func (a *caPoolAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *caPoolAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	return fmt.Errorf("not implemented")
 }
 
 // Update implements the Adapter interface.
-func (a *caPoolAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *caPoolAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	return fmt.Errorf("not implemented")
 }
 

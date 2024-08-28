@@ -157,7 +157,7 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *gkeHubAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	exist, err := a.Find(ctx)
 	if err != nil {
 		return false, fmt.Errorf("finding feature for %s:%w", a.featureID, err)
@@ -185,7 +185,9 @@ func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error)
 	return op.Response, nil
 }
 
-func (a *gkeHubAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *gkeHubAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating gkehubfeaturemembership", "obj", u)
 
@@ -198,7 +200,9 @@ func (a *gkeHubAdapter) Create(ctx context.Context, u *unstructured.Unstructured
 	return nil
 }
 
-func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]

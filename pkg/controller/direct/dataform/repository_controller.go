@@ -178,7 +178,9 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating object", "u", u)
 
@@ -214,7 +216,8 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	return setStatus(u, status)
 }
 
-func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
 
 	updateMask := &fieldmaskpb.FieldMask{}
 
@@ -279,7 +282,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 }
 
 // Delete implements the Adapter interface.
-func (a *Adapter) Delete(ctx context.Context) (bool, error) {
+func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	if a.resourceID == "" {
 		return false, nil
 	}

@@ -168,7 +168,9 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating object", "u", u)
 
@@ -203,7 +205,9 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	return setStatus(u, status)
 }
 
-func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
+
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
@@ -293,7 +297,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete implements the Adapter interface.
 // TODO: Delete can rely on status.externalRef and do not need spec.projectRef.
-func (a *Adapter) Delete(ctx context.Context) (bool, error) {
+func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	req := &cloudbuildpb.DeleteWorkerPoolRequest{Name: a.id.FullyQualifiedName(), AllowMissing: true}
 	op, err := a.gcpClient.DeleteWorkerPool(ctx, req)
 	if err != nil {

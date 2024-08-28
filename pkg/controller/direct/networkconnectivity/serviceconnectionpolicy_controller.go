@@ -194,7 +194,7 @@ func (a *serviceConnectionPolicyAdapter) waitForOperation(ctx context.Context, o
 }
 
 // Delete implements the Adapter interface.
-func (a *serviceConnectionPolicyAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *serviceConnectionPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// Check if exists / already deleted
 	// Technically we can just delete, but this is a little cleaner in logs etc.
 	exists, err := a.Find(ctx)
@@ -225,7 +225,9 @@ func (a *serviceConnectionPolicyAdapter) Delete(ctx context.Context) (bool, erro
 }
 
 // Create implements the Adapter interface.
-func (a *serviceConnectionPolicyAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *serviceConnectionPolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
@@ -270,7 +272,9 @@ func (a *serviceConnectionPolicyAdapter) Create(ctx context.Context, u *unstruct
 }
 
 // Update implements the Adapter interface.
-func (a *serviceConnectionPolicyAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *serviceConnectionPolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating object", "u", u)
 

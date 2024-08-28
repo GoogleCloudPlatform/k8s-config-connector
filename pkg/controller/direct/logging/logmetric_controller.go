@@ -157,7 +157,7 @@ func (a *logMetricAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *logMetricAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *logMetricAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// Already deleted
 	if a.resourceID == "" {
 		return false, nil
@@ -174,7 +174,9 @@ func (a *logMetricAdapter) Delete(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating object", "u", u)
 
@@ -235,7 +237,9 @@ func logMetricStatusToKRM(in *api.LogMetric, out *krm.LoggingLogMetricStatus) er
 	return nil
 }
 
-func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 
 	latest := a.actual

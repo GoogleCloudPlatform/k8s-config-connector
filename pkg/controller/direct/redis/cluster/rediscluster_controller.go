@@ -171,7 +171,7 @@ func (a *redisClusterAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *redisClusterAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *redisClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// Already deleted
 	if a.resourceID == "" {
 		return false, nil
@@ -202,7 +202,9 @@ func (a *redisClusterAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 }
 
 // Create implements the Adapter interface.
-func (a *redisClusterAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *redisClusterAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(0).Info("creating object", "u", u)
 
@@ -243,7 +245,9 @@ func (a *redisClusterAdapter) Create(ctx context.Context, u *unstructured.Unstru
 }
 
 // Update implements the Adapter interface.
-func (a *redisClusterAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
 

@@ -228,7 +228,9 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *forwardingRuleAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	if a.id.project == "" {
 		return fmt.Errorf("project is empty")
 	}
@@ -302,7 +304,9 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, u *unstructured.Unst
 	return setStatus(u, status)
 }
 
-func (a *forwardingRuleAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
+
 	if a.id.forwardingRule == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
@@ -429,7 +433,7 @@ func (a *forwardingRuleAdapter) Export(ctx context.Context) (*unstructured.Unstr
 }
 
 // Delete implements the Adapter interface.
-func (a *forwardingRuleAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	if a.id.forwardingRule == "" {
 		return false, fmt.Errorf("resourceID is empty")
 	}

@@ -122,7 +122,7 @@ func (a *tagKeyAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *tagKeyAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *tagKeyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// Already deleted
 	if a.resourceID == "" {
 		return false, nil
@@ -150,7 +150,9 @@ func (a *tagKeyAdapter) Delete(ctx context.Context) (bool, error) {
 }
 
 // Create implements the Adapter interface.
-func (a *tagKeyAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *tagKeyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
@@ -216,7 +218,7 @@ func timeToKRMString(t *timestamppb.Timestamp) *string {
 }
 
 // Update implements the Adapter interface.
-func (a *tagKeyAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *tagKeyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	// TODO: Skip updates at the higher level if no changes?
 	updateMask := &fieldmaskpb.FieldMask{}
 	update := &pb.TagKey{}
