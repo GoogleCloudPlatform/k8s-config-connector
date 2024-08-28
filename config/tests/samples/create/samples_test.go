@@ -35,6 +35,9 @@ import (
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+
+	// Register direct controllers
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func init() {
@@ -232,9 +235,14 @@ var testDisabledList = map[string]bool{
 }
 
 func TestAll(t *testing.T) {
+	ctx, ctxCancel := context.WithCancel(signals.SetupSignalHandler())
+	t.Cleanup(func() {
+		ctxCancel()
+	})
+
 	project := testgcp.GetDefaultProject(t)
 
-	setup()
+	setup(ctx)
 	// When runTestsRegex is unset, we run all the samples.
 	matchedSamples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
 	// When skipTestsRegex is unset, we don't skip any sample.
@@ -280,15 +288,13 @@ func TestAll(t *testing.T) {
 		t.Run(s.Name, func(t *testing.T) {
 			t.Parallel()
 
-			ctx := context.TODO()
-
 			h := NewHarnessWithManager(ctx, t, mgr)
 			SetupNamespacesAndApplyDefaults(h, s.Resources, project)
 
 			networkCount := int64(networksInSampleCount(s))
 			if networkCount > 0 {
 				logger.Info("Acquiring network semaphore for test...", "testName", s.Name)
-				if err := sem.Acquire(context.TODO(), networkCount); err != nil {
+				if err := sem.Acquire(ctx, networkCount); err != nil {
 					t.Fatalf("error acquiring semaphore: %v", err)
 				}
 				logger.Info("Acquired network semaphore for test", "testName", s.Name)
@@ -299,8 +305,7 @@ func TestAll(t *testing.T) {
 	}
 }
 
-func setup() {
-	ctx := context.TODO()
+func setup(ctx context.Context) {
 	flag.Parse()
 	var err error
 	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
@@ -313,7 +318,7 @@ func setup() {
 	}
 	// start the manager, Start(...) is a blocking operation so it needs to be done asynchronously
 	go func() {
-		if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
+		if err := mgr.Start(ctx); err != nil {
 			logging.Fatal(err, "error starting manager")
 		}
 	}()
