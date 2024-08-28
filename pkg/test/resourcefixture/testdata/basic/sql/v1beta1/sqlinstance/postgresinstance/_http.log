@@ -555,6 +555,7 @@ User-Agent: kcc/controller-manager
     "ipConfiguration": {
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
     },
     "pricingPlan": "PER_USE",
@@ -656,11 +657,7 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
-      "type": "PRIMARY"
-    },
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "OUTGOING"
+      "type": "PRIVATE"
     }
   ],
   "kind": "sql#instance",
@@ -813,11 +810,7 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
-      "type": "PRIMARY"
-    },
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "OUTGOING"
+      "type": "PRIVATE"
     }
   ],
   "kind": "sql#instance",
@@ -956,7 +949,6 @@ User-Agent: kcc/controller-manager
       "recordClientAddress": true
     },
     "ipConfiguration": {
-      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": false,
@@ -1067,11 +1059,7 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
-      "type": "PRIMARY"
-    },
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "OUTGOING"
+      "type": "PRIVATE"
     }
   ],
   "kind": "sql#instance",
@@ -1134,7 +1122,6 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": false,

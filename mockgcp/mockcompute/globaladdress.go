@@ -64,7 +64,9 @@ func (s *GlobalAddressesV1) Insert(ctx context.Context, req *pb.InsertGlobalAddr
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")
-	obj.Address = PtrTo("8.8.8.8")
+	if obj.Address == nil {
+		obj.Address = PtrTo("8.8.8.8")
+	}
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
 	}

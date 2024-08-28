@@ -24,7 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func SQLInstanceKRMToGCPInstance(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*api.DatabaseInstance, error) {
+func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*api.DatabaseInstance, error) {
 	out := &api.DatabaseInstance{}
 
 	if in == nil {
@@ -308,68 +308,7 @@ func SQLInstanceKRMToGCPInstance(in *krm.SQLInstance, refs *SQLInstanceInternalR
 		out.Settings.InsightsConfig = insightsConfig
 	}
 
-	if in.Spec.Settings.IpConfiguration != nil {
-		out.Settings.IpConfiguration = &api.IpConfiguration{}
-
-		if in.Spec.Settings.IpConfiguration.AllocatedIpRange != nil {
-			out.Settings.IpConfiguration.AllocatedIpRange = *in.Spec.Settings.IpConfiguration.AllocatedIpRange
-		}
-
-		if in.Spec.Settings.IpConfiguration.AuthorizedNetworks != nil {
-			authorizedNetworks := []*api.AclEntry{}
-			for _, net := range in.Spec.Settings.IpConfiguration.AuthorizedNetworks {
-				netEntry := &api.AclEntry{
-					Kind:  "sql#aclEntry",
-					Value: net.Value,
-				}
-				if net.ExpirationTime != nil {
-					netEntry.ExpirationTime = *net.ExpirationTime
-				}
-				if net.Name != nil {
-					netEntry.Name = *net.Name
-				}
-				authorizedNetworks = append(authorizedNetworks, netEntry)
-			}
-			out.Settings.IpConfiguration.AuthorizedNetworks = authorizedNetworks
-		}
-
-		if in.Spec.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices != nil {
-			out.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices = *in.Spec.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices
-		}
-
-		if in.Spec.Settings.IpConfiguration.Ipv4Enabled != nil {
-			out.Settings.IpConfiguration.Ipv4Enabled = *in.Spec.Settings.IpConfiguration.Ipv4Enabled
-		} else {
-			out.Settings.IpConfiguration.Ipv4Enabled = false
-		}
-		// todo: must do this for all fields (?)
-		out.Settings.IpConfiguration.ForceSendFields = []string{"Ipv4Enabled"}
-
-		if in.Spec.Settings.IpConfiguration.PrivateNetworkRef != nil {
-			out.Settings.IpConfiguration.PrivateNetwork = refs.privateNetwork
-		}
-
-		if in.Spec.Settings.IpConfiguration.PscConfig != nil {
-			if len(in.Spec.Settings.IpConfiguration.PscConfig) != 1 {
-				return nil, fmt.Errorf("only one psc config allowed per instance")
-			}
-			out.Settings.IpConfiguration.PscConfig = &api.PscConfig{
-				AllowedConsumerProjects: in.Spec.Settings.IpConfiguration.PscConfig[0].AllowedConsumerProjects,
-			}
-			if in.Spec.Settings.IpConfiguration.PscConfig[0].PscEnabled != nil {
-				out.Settings.IpConfiguration.PscConfig.PscEnabled = *in.Spec.Settings.IpConfiguration.PscConfig[0].PscEnabled
-			}
-		}
-
-		if in.Spec.Settings.IpConfiguration.RequireSsl != nil {
-			// todo: deprecated
-			out.Settings.IpConfiguration.RequireSsl = *in.Spec.Settings.IpConfiguration.RequireSsl
-		}
-
-		if in.Spec.Settings.IpConfiguration.SslMode != nil {
-			out.Settings.IpConfiguration.SslMode = *in.Spec.Settings.IpConfiguration.SslMode
-		}
-	}
+	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
 
 	if in.Spec.Settings.LocationPreference != nil {
 		out.Settings.LocationPreference = &api.LocationPreference{}
@@ -471,6 +410,73 @@ func SQLInstanceKRMToGCPInstance(in *krm.SQLInstance, refs *SQLInstanceInternalR
 	}
 
 	return out, nil
+}
+
+func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration, refs *SQLInstanceInternalRefs) *api.IpConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.IpConfiguration{
+		AllocatedIpRange:                        direct.ValueOf(in.AllocatedIpRange),
+		AuthorizedNetworks:                      InstanceAuthorizedNetworksKRMToGCP(in.AuthorizedNetworks),
+		EnablePrivatePathForGoogleCloudServices: direct.ValueOf(in.EnablePrivatePathForGoogleCloudServices),
+		Ipv4Enabled:                             direct.ValueOf(in.Ipv4Enabled),
+		PscConfig:                               InstancePscConfigKRMToGCP(in.PscConfig),
+		RequireSsl:                              direct.ValueOf(in.RequireSsl),
+		SslMode:                                 direct.ValueOf(in.SslMode),
+	}
+
+	if in.PrivateNetworkRef != nil {
+		out.PrivateNetwork = refs.privateNetwork
+	}
+
+	if in.EnablePrivatePathForGoogleCloudServices != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "EnablePrivatePathForGoogleCloudServices")
+	}
+	if in.Ipv4Enabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "Ipv4Enabled")
+	}
+	if in.RequireSsl != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "RequireSsl")
+	}
+
+	return out
+}
+
+func InstanceAuthorizedNetworksKRMToGCP(in []krm.InstanceAuthorizedNetworks) []*api.AclEntry {
+	out := []*api.AclEntry{}
+	for _, net := range in {
+		out = append(out, &api.AclEntry{
+			Kind:           "sql#aclEntry",
+			ExpirationTime: direct.ValueOf(net.ExpirationTime),
+			Name:           direct.ValueOf(net.Name),
+			Value:          net.Value,
+		})
+	}
+	return out
+}
+
+func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
+	if len(in) < 1 {
+		return nil
+	}
+
+	// Note:  For some reason, the KRM API allows []InstancePscConfig. However, in the GCP proto there is only
+	// a single *api.PscConfig. I think there is a mistake in the KRM API; it should not allow a list. For
+	// now, we will only use the first item in the []InstancePscConfig list.
+	inFixed := in[0]
+
+	out := &api.PscConfig{
+		AllowedConsumerProjects: inFixed.AllowedConsumerProjects,
+		PscEnabled:              direct.ValueOf(inFixed.PscEnabled),
+	}
+
+	if inFixed.PscEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
+	}
+
+	return out
 }
 
 func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {

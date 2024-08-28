@@ -1,4 +1,4 @@
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 404 Not Found
@@ -33,15 +33,24 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager
 
 {
-  "databaseVersion": "SQLSERVER_2019_EXPRESS",
-  "name": "sqlserverbasic-${uniqueId}",
+  "databaseVersion": "POSTGRES_16",
+  "name": "postgresauthorizednetworks-${uniqueId}",
   "region": "us-central1",
-  "rootPassword": "1234!@#$asdf",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [
+        {
+          "expirationTime": "2099-01-01T00:00:00+00:00",
+          "kind": "sql#aclEntry",
+          "name": "all",
+          "value": "0.0.0.0/0"
+        }
+      ]
+    },
     "locationPreference": {
       "zone": "us-central1-a"
     },
@@ -73,8 +82,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlserverbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "targetId": "postgresauthorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -103,15 +112,15 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "DONE",
-  "targetId": "sqlserverbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "targetId": "postgresauthorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -127,32 +136,43 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlserverbasic-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:postgresauthorizednetworks-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2019_EXPRESS_CU26",
-  "databaseVersion": "SQLSERVER_2019_EXPRESS",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05",
-  "name": "sqlserverbasic-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgresauthorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlserverbasic-${uniqueId}",
+    "instance": "postgresauthorizednetworks-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -200,49 +220,12 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "SQL Server 2019 Standard",
-      "majorVersion": "SQLSERVER_2019_STANDARD",
-      "name": "SQLSERVER_2019_STANDARD"
-    },
-    {
-      "displayName": "SQL Server 2019 Enterprise",
-      "majorVersion": "SQLSERVER_2019_ENTERPRISE",
-      "name": "SQLSERVER_2019_ENTERPRISE"
-    },
-    {
-      "displayName": "SQL Server 2019 Web",
-      "majorVersion": "SQLSERVER_2019_WEB",
-      "name": "SQLSERVER_2019_WEB"
-    },
-    {
-      "displayName": "SQL Server 2022 Standard",
-      "majorVersion": "SQLSERVER_2022_STANDARD",
-      "name": "SQLSERVER_2022_STANDARD"
-    },
-    {
-      "displayName": "SQL Server 2022 Enterprise",
-      "majorVersion": "SQLSERVER_2022_ENTERPRISE",
-      "name": "SQLSERVER_2022_ENTERPRISE"
-    },
-    {
-      "displayName": "SQL Server 2022 Express",
-      "majorVersion": "SQLSERVER_2022_EXPRESS",
-      "name": "SQLSERVER_2022_EXPRESS"
-    },
-    {
-      "displayName": "SQL Server 2022 Web",
-      "majorVersion": "SQLSERVER_2022_WEB",
-      "name": "SQLSERVER_2022_WEB"
-    }
-  ]
+  "state": "RUNNABLE"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -261,37 +244,10 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlserverbasic-${uniqueId}",
+      "instance": "postgresauthorizednetworks-${uniqueId}",
       "kind": "sql#user",
-      "name": "##MS_PolicyEventProcessingLogin##",
-      "project": "${projectId}",
-      "sqlserverUserDetails": {
-        "disabled": true
-      }
-    },
-    {
-      "etag": "abcdef0123A=",
-      "host": "",
-      "instance": "sqlserverbasic-${uniqueId}",
-      "kind": "sql#user",
-      "name": "##MS_PolicyTsqlExecutionLogin##",
-      "project": "${projectId}",
-      "sqlserverUserDetails": {
-        "disabled": true
-      }
-    },
-    {
-      "etag": "abcdef0123A=",
-      "host": "",
-      "instance": "sqlserverbasic-${uniqueId}",
-      "kind": "sql#user",
-      "name": "sqlserver",
-      "project": "${projectId}",
-      "sqlserverUserDetails": {
-        "serverRoles": [
-          "CustomerDbRootRole"
-        ]
-      }
+      "name": "postgres",
+      "project": "${projectId}"
     }
   ],
   "kind": "sql#usersList"
@@ -299,7 +255,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -315,32 +271,43 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlserverbasic-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:postgresauthorizednetworks-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2019_EXPRESS_CU26",
-  "databaseVersion": "SQLSERVER_2019_EXPRESS",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05",
-  "name": "sqlserverbasic-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgresauthorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlserverbasic-${uniqueId}",
+    "instance": "postgresauthorizednetworks-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -388,234 +355,21 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "SQL Server 2019 Standard",
-      "majorVersion": "SQLSERVER_2019_STANDARD",
-      "name": "SQLSERVER_2019_STANDARD"
-    },
-    {
-      "displayName": "SQL Server 2019 Enterprise",
-      "majorVersion": "SQLSERVER_2019_ENTERPRISE",
-      "name": "SQLSERVER_2019_ENTERPRISE"
-    },
-    {
-      "displayName": "SQL Server 2019 Web",
-      "majorVersion": "SQLSERVER_2019_WEB",
-      "name": "SQLSERVER_2019_WEB"
-    },
-    {
-      "displayName": "SQL Server 2022 Standard",
-      "majorVersion": "SQLSERVER_2022_STANDARD",
-      "name": "SQLSERVER_2022_STANDARD"
-    },
-    {
-      "displayName": "SQL Server 2022 Enterprise",
-      "majorVersion": "SQLSERVER_2022_ENTERPRISE",
-      "name": "SQLSERVER_2022_ENTERPRISE"
-    },
-    {
-      "displayName": "SQL Server 2022 Express",
-      "majorVersion": "SQLSERVER_2022_EXPRESS",
-      "name": "SQLSERVER_2022_EXPRESS"
-    },
-    {
-      "displayName": "SQL Server 2022 Web",
-      "majorVersion": "SQLSERVER_2022_WEB",
-      "name": "SQLSERVER_2022_WEB"
-    }
-  ]
+  "state": "RUNNABLE"
 }
 
 ---
 
-PATCH https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 
 {
-  "databaseVersion": "SQLSERVER_2022_EXPRESS"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "UPDATE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "PENDING",
-  "targetId": "sqlserverbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "UPDATE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "DONE",
-  "targetId": "sqlserverbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlserverbasic-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
-  "databaseVersion": "SQLSERVER_2022_EXPRESS",
-  "etag": "abcdef0123A=",
-  "gceZone": "us-central1-a",
+  "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "ipAddresses": [
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "PRIMARY"
-    }
-  ],
-  "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
-  "name": "sqlserverbasic-${uniqueId}",
-  "project": "${projectId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgresauthorizednetworks-${uniqueId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
-  "serverCaCert": {
-    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
-    "certSerialNumber": "0",
-    "commonName": "common-name",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlserverbasic-${uniqueId}",
-    "kind": "sql#sslCert",
-    "sha1Fingerprint": "12345678"
-  },
-  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-  "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 7,
-        "retentionUnit": "COUNT"
-      },
-      "enabled": false,
-      "kind": "sql#backupConfiguration",
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
-    "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
-    "dataDiskType": "PD_SSD",
-    "deletionProtectionEnabled": false,
-    "edition": "ENTERPRISE",
-    "ipConfiguration": {
-      "authorizedNetworks": [],
-      "ipv4Enabled": true,
-      "requireSsl": false,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-    },
-    "kind": "sql#settings",
-    "locationPreference": {
-      "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
-    },
-    "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "123",
-    "storageAutoResize": true,
-    "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
-    "userLabels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    }
-  },
-  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "SQL Server 2022 Standard",
-      "majorVersion": "SQLSERVER_2022_STANDARD",
-      "name": "SQLSERVER_2022_STANDARD"
-    },
-    {
-      "displayName": "SQL Server 2022 Enterprise",
-      "majorVersion": "SQLSERVER_2022_ENTERPRISE",
-      "name": "SQLSERVER_2022_ENTERPRISE"
-    },
-    {
-      "displayName": "SQL Server 2022 Web",
-      "majorVersion": "SQLSERVER_2022_WEB",
-      "name": "SQLSERVER_2022_WEB"
-    }
-  ]
-}
-
----
-
-PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: kcc/controller-manager
-
-{
-  "databaseVersion": "SQLSERVER_2022_EXPRESS",
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
-  "name": "sqlserverbasic-${uniqueId}",
-  "region": "us-central1",
-  "rootPassword": "1234!@#$asdf",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
@@ -636,6 +390,22 @@ User-Agent: kcc/controller-manager
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [
+        {
+          "expirationTime": "2099-01-01T00:00:00+00:00",
+          "kind": "sql#aclEntry",
+          "name": "all",
+          "value": "0.0.0.0/0"
+        },
+        {
+          "expirationTime": "2100-01-01T00:00:00+00:00",
+          "kind": "sql#aclEntry",
+          "name": "my-network",
+          "value": "1.2.3.0/24"
+        }
+      ]
+    },
     "locationPreference": {
       "zone": "us-central1-a"
     },
@@ -643,7 +413,7 @@ User-Agent: kcc/controller-manager
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
-    "tier": "db-custom-2-7680",
+    "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -669,8 +439,8 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlserverbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "targetId": "postgresauthorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -699,15 +469,15 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "DONE",
-  "targetId": "sqlserverbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "targetId": "postgresauthorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -723,32 +493,43 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlserverbasic-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:postgresauthorizednetworks-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
-  "databaseVersion": "SQLSERVER_2022_EXPRESS",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
-  "name": "sqlserverbasic-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgresauthorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlserverbasic-${uniqueId}",
+    "instance": "postgresauthorizednetworks-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -765,6 +546,7 @@ X-Xss-Protection: 0
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": false,
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -790,36 +572,19 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-2-7680",
+    "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "SQL Server 2022 Standard",
-      "majorVersion": "SQLSERVER_2022_STANDARD",
-      "name": "SQLSERVER_2022_STANDARD"
-    },
-    {
-      "displayName": "SQL Server 2022 Enterprise",
-      "majorVersion": "SQLSERVER_2022_ENTERPRISE",
-      "name": "SQLSERVER_2022_ENTERPRISE"
-    },
-    {
-      "displayName": "SQL Server 2022 Web",
-      "majorVersion": "SQLSERVER_2022_WEB",
-      "name": "SQLSERVER_2022_WEB"
-    }
-  ]
+  "state": "RUNNABLE"
 }
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -840,8 +605,8 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlserverbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
+  "targetId": "postgresauthorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }

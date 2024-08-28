@@ -539,12 +539,6 @@ User-Agent: kcc/controller-manager
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
-    "ipConfiguration": {
-      "enablePrivatePathForGoogleCloudServices": false,
-      "ipv4Enabled": true,
-      "requireSsl": false,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-    },
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -692,7 +686,6 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"

@@ -4,50 +4,27 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
     cnrm-test: "true"
-  name: sqlinstance-${uniqueId}
+  name: postgresprivatenetwork-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseVersion: POSTGRES_9_6
+  databaseVersion: POSTGRES_16
   region: us-central1
   settings:
-    availabilityType: REGIONAL
-    backupConfiguration:
-      backupRetentionSettings:
-        retainedBackups: 7
-        retentionUnit: COUNT
-      enabled: true
-      pointInTimeRecoveryEnabled: true
-      startTime: "05:00"
-      transactionLogRetentionDays: 3
-    databaseFlags:
-    - name: cloudsql.iam_authentication
-      value: "on"
-    - name: max_connections
-      value: "1000"
-    - name: max_worker_processes
-      value: "8"
-    deletionProtectionEnabled: false
-    diskAutoresize: false
-    diskAutoresizeLimit: 0
-    diskSize: 100
-    diskType: PD_SSD
-    insightsConfig:
-      queryInsightsEnabled: true
-      queryStringLength: 1024
-      recordApplicationTags: true
-      recordClientAddress: true
     ipConfiguration:
+      allocatedIpRange: computeaddress2-${uniqueId}
+      enablePrivatePathForGoogleCloudServices: true
       ipv4Enabled: false
       privateNetworkRef:
-        name: computenetwork-${uniqueId}
-      requireSsl: false
-      sslMode: ENCRYPTED_ONLY
+        name: computenetwork2-${uniqueId}
+    locationPreference:
+      zone: us-central1-a
     tier: db-custom-1-3840
 status:
   conditions:
@@ -56,13 +33,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-${uniqueId}
+  connectionName: ${projectId}:us-central1:postgresprivatenetwork-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
   privateIpAddress: 192.168.0.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----
