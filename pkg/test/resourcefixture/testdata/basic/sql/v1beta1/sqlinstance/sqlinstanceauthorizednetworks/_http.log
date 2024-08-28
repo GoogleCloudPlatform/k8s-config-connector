@@ -111,7 +111,6 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "postgresauthorizednetworks-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
@@ -162,11 +161,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_12",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "postgresauthorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -298,11 +296,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_12",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "postgresauthorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -370,7 +367,7 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_12",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "postgresauthorizednetworks-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -471,7 +468,6 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "postgresauthorizednetworks-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
@@ -522,11 +518,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_12",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "postgresauthorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
