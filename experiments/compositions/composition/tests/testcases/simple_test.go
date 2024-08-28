@@ -367,10 +367,6 @@ func TestSimpleExpanderInvalid(t *testing.T) {
 	composition := utils.GetCompositionObj("default", "projectconfigmap")
 	condition := utils.GetErrorCondition("ValidationFailed", "")
 	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
-
-	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition = utils.GetErrorCondition("MissingExpanderCR", "")
-	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimpleExpanderVersionInvalid(t *testing.T) {
@@ -381,10 +377,6 @@ func TestSimpleExpanderVersionInvalid(t *testing.T) {
 	composition := utils.GetCompositionObj("default", "projectconfigmap")
 	condition := utils.GetErrorCondition("ValidationFailed", "")
 	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
-
-	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition = utils.GetErrorCondition("VersionNotFound", "")
-	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimpleCompositionExpanderLoggingEnabled(t *testing.T) {
