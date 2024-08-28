@@ -372,7 +372,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the CloudBuild workerpool resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique Config Connector specifier for the resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

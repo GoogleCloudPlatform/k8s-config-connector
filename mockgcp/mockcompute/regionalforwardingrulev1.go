@@ -109,7 +109,7 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 		OperationType: PtrTo("insert"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
@@ -134,7 +134,7 @@ func (s *RegionalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteFo
 		OperationType: PtrTo("delete"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return deleted, nil
 	})
 }
@@ -166,7 +166,7 @@ func (s *RegionalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLa
 		// SetLabels operation has EndTime in response
 		EndTime: PtrTo("2024-04-01T12:34:56.123456Z"),
 	}
-	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
@@ -196,7 +196,7 @@ func (s *RegionalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTa
 		OperationType: PtrTo("SetTarget"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }

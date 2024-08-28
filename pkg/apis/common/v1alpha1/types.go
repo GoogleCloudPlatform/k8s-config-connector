@@ -40,7 +40,7 @@ type CommonStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* A unique specifier for the CloudBuild workerpool resource in GCP.*/
+	/* A unique Config Connector specifier for the resource in GCP.*/
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 }

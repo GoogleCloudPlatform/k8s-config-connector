@@ -18,7 +18,7 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
@@ -365,9 +365,7 @@ type ComputeForwardingRuleSpec struct {
 
 // +kcc:proto=google.cloud.compute.v1.ForwardingRule
 type ComputeForwardingRuleStatus struct {
-	/* Conditions represent the latest available observations of the
-	   ComputeForwardingRule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	commonv1alpha1.CommonStatus `json:",inline"`
 	/* [Output Only] The URL for the corresponding base Forwarding Rule. By base Forwarding Rule, we mean the Forwarding Rule that has the same IP address, protocol, and port settings with the current Forwarding Rule, but without sourceIPRanges specified. Always empty if the current Forwarding Rule does not have sourceIPRanges specified. */
 	// +optional
 	BaseForwardingRule *string `json:"baseForwardingRule,omitempty"`
@@ -380,10 +378,6 @@ type ComputeForwardingRuleStatus struct {
 	internally during updates. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The PSC connection id of the PSC Forwarding Rule. */
 	// +optional

@@ -27,6 +27,9 @@ export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-en
 # so as we are moving resources to direct actuation, we add them here.
 # e.g. export KCC_USE_DIRECT_RECONCILERS=MonitoringDashboard
 
+echo "Using direct controllers: SQLInstance,ComputeForwardingRule"
+export KCC_USE_DIRECT_RECONCILERS=SQLInstance,ComputeForwardingRule
+
 echo "Running fixtures in tests/e2e..."
 
 export SKIP_TEST_APIGROUP="compute.cnrm.cloud.google.com,gkehub.cnrm.cloud.google.com"
@@ -36,5 +39,4 @@ GOLDEN_OBJECT_CHECKS=1 \
 GOLDEN_REQUEST_CHECKS=1 \
 E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=mock \
-KCC_USE_DIRECT_RECONCILERS="SQLInstance" \
   go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run TestAllInSeries/fixtures
