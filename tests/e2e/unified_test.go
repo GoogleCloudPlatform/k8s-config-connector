@@ -31,6 +31,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
+	"k8s.io/klog/v2"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -146,8 +149,21 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 		fixtures := resourcefixture.Load(t)
 		for _, fixture := range fixtures {
 			fixture := fixture
+			group := fixture.GVK.Group
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slice.StringSliceContains(skippedGroups, group) {
+					klog.Infof("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
+					continue
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
+				if group != s {
+					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUP=%s", fixture.Name, group, s)
+					continue
+				}
+			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
-
 			t.Run(fixture.Name, func(t *testing.T) {
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
@@ -192,19 +208,12 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
-					primaryObject, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
+					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
 					create.MaybeSkip(t, fixture.Name, opt.Create)
 					if testPause && containsCCOrCCC(opt.Create) {
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
 							"pause test should not run against test cases already contain ConfigConnector "+
 							"or ConfigConnectorContext objects", fixture.Name)
-					}
-
-					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
-						group := primaryObject.GroupVersionKind().Group
-						if group != s {
-							t.Skipf("skipping test because group %q did not match ONLY_TEST_APIGROUP=%s", group, s)
-						}
 					}
 				}
 
