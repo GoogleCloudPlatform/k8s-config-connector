@@ -94,6 +94,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computedisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -150,6 +151,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computedisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -455,6 +457,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   ],
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "env": "test",
     "managed-by-cnrm": "true"
   },
@@ -538,6 +541,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "env": "test",
     "managed-by-cnrm": "true"
   },
@@ -588,6 +592,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computedisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -636,6 +641,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "env": "test",
     "managed-by-cnrm": "true"
   },
@@ -686,6 +692,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computedisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -734,6 +741,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "env": "test",
     "managed-by-cnrm": "true"
   },
@@ -784,6 +792,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computedisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -832,6 +841,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "env": "test",
     "managed-by-cnrm": "true"
   },
@@ -882,6 +892,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computedisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -947,6 +958,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computedisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",

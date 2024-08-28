@@ -242,6 +242,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "alloydbcluster",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
@@ -288,6 +289,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "alloydbcluster",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": null,
@@ -326,6 +328,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "alloydbcluster",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
@@ -379,6 +382,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "alloydbcluster",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": null,

@@ -15,891 +15,902 @@
 ---
 version: 2
 interactions:
-  - id: 0
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 116.708467ms
-  - id: 1
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 128
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"format":"DOCKER","labels":{"cnrm-test":"true","label-one":"value-two","managed-by-cnrm":"true"},"mode":"STANDARD_REPOSITORY"}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories?alt=json&repository_id=arrepository-1xauxp2uke0mr-2
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/1565b925-15d2-48cf-befd-632d55b77fed",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 83.156985ms
-  - id: 2
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/1565b925-15d2-48cf-befd-632d55b77fed?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/1565b925-15d2-48cf-befd-632d55b77fed",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
-            "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-            "format": "DOCKER",
-            "labels": {
-              "cnrm-test": "true",
-              "label-one": "value-two",
-              "managed-by-cnrm": "true"
-            },
-            "mode": "STANDARD_REPOSITORY"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 43.963028ms
-  - id: 3
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-          "format": "DOCKER",
-          "labels": {
-            "label-one": "value-two",
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true"
-          },
-          "createTime": "2024-04-25T01:18:01.028989Z",
-          "updateTime": "2024-04-25T01:18:01.028989Z",
-          "mode": "STANDARD_REPOSITORY"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 65.410366ms
-  - id: 4
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-          "format": "DOCKER",
-          "labels": {
-            "cnrm-test": "true",
-            "label-one": "value-two",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T01:18:01.028989Z",
-          "updateTime": "2024-04-25T01:18:01.028989Z",
-          "mode": "STANDARD_REPOSITORY"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 44.993372ms
-  - id: 5
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 44.615591ms
-  - id: 6
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 368
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"description":"test repository description","format":"DOCKER","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"mode":"VIRTUAL_REPOSITORY","virtualRepositoryConfig":{"upstreamPolicies":[{"id":"upstream-repo","priority":1,"repository":"projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2"}]}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories?alt=json&repository_id=arrepository-1xauxp2uke0mr
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/34f3b016-f20a-4290-9f35-a6ffd980ff37",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 60.959074ms
-  - id: 7
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/34f3b016-f20a-4290-9f35-a6ffd980ff37?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/34f3b016-f20a-4290-9f35-a6ffd980ff37",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
-            "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
-            "format": "DOCKER",
-            "description": "test repository description",
-            "labels": {
-              "label-one": "value-one",
-              "managed-by-cnrm": "true",
-              "cnrm-test": "true"
-            },
-            "mode": "VIRTUAL_REPOSITORY",
-            "virtualRepositoryConfig": {
-              "upstreamPolicies": [
-                {
-                  "id": "upstream-repo",
-                  "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-                  "priority": 1
-                }
-              ]
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 408.052731ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 190
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"format":"DOCKER","labels":{"cnrm-test":"true","config-connector-resource-type":"artifactregistryrepository","label-one":"value-two","managed-by-cnrm":"true"},"mode":"STANDARD_REPOSITORY"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories?alt=json&repository_id=arrepository-1xauxp2uke0mr-2
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/a39e7da5-4208-4dc7-8891-4c94ba11cb61",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+              }
             }
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 32.218899ms
-  - id: 8
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
-          "format": "DOCKER",
-          "description": "test repository description",
-          "labels": {
-            "cnrm-test": "true",
-            "label-one": "value-one",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T01:18:03.577229Z",
-          "updateTime": "2024-04-25T01:18:03.577229Z",
-          "mode": "VIRTUAL_REPOSITORY",
-          "virtualRepositoryConfig": {
-            "upstreamPolicies": [
-              {
-                "id": "upstream-repo",
-                "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-                "priority": 1
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 301.340224ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/a39e7da5-4208-4dc7-8891-4c94ba11cb61?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/a39e7da5-4208-4dc7-8891-4c94ba11cb61",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
+                "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                "format": "DOCKER",
+                "labels": {
+                  "managed-by-cnrm": "true",
+                  "cnrm-test": "true",
+                  "config-connector-resource-type": "artifactregistryrepository",
+                  "label-one": "value-two"
+                },
+                "mode": "STANDARD_REPOSITORY"
               }
-            ]
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 50.527176ms
-  - id: 9
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
-          "format": "DOCKER",
-          "description": "test repository description",
-          "labels": {
-            "cnrm-test": "true",
-            "label-one": "value-one",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T01:18:03.577229Z",
-          "updateTime": "2024-04-25T01:18:03.577229Z",
-          "mode": "VIRTUAL_REPOSITORY",
-          "virtualRepositoryConfig": {
-            "upstreamPolicies": [
-              {
-                "id": "upstream-repo",
-                "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-                "priority": 1
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 99.607098ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+              "format": "DOCKER",
+              "labels": {
+                "label-one": "value-two",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "artifactregistryrepository"
+              },
+              "createTime": "2024-08-28T03:47:10.491815Z",
+              "updateTime": "2024-08-28T03:47:10.491815Z",
+              "mode": "STANDARD_REPOSITORY"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 113.462528ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+              "format": "DOCKER",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "artifactregistryrepository",
+                "label-one": "value-two",
+                "managed-by-cnrm": "true"
+              },
+              "createTime": "2024-08-28T03:47:10.491815Z",
+              "updateTime": "2024-08-28T03:47:10.491815Z",
+              "mode": "STANDARD_REPOSITORY"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 281.815275ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 282.113804ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 420
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"description":"test repository description","format":"DOCKER","labels":{"cnrm-test":"true","config-connector-resource-type":"artifactregistryrepository","label-one":"value-one","managed-by-cnrm":"true"},"mode":"VIRTUAL_REPOSITORY","virtualRepositoryConfig":{"upstreamPolicies":[{"id":"upstream-repo","priority":1,"repository":"projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2"}]}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories?alt=json&repository_id=arrepository-1xauxp2uke0mr
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/ef6c8bd2-3b81-4830-b544-ac119ce4abc4",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
               }
-            ]
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 23.506451ms
-  - id: 10
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
-          "format": "DOCKER",
-          "description": "test repository description",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true",
-            "label-one": "value-one"
-          },
-          "createTime": "2024-04-25T01:18:03.577229Z",
-          "updateTime": "2024-04-25T01:18:03.577229Z",
-          "mode": "VIRTUAL_REPOSITORY",
-          "virtualRepositoryConfig": {
-            "upstreamPolicies": [
-              {
-                "id": "upstream-repo",
-                "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-                "priority": 1
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 292.221514ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/ef6c8bd2-3b81-4830-b544-ac119ce4abc4?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/ef6c8bd2-3b81-4830-b544-ac119ce4abc4",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
+                "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
+                "format": "DOCKER",
+                "description": "test repository description",
+                "labels": {
+                  "cnrm-test": "true",
+                  "config-connector-resource-type": "artifactregistryrepository",
+                  "label-one": "value-one",
+                  "managed-by-cnrm": "true"
+                },
+                "mode": "VIRTUAL_REPOSITORY",
+                "virtualRepositoryConfig": {
+                  "upstreamPolicies": [
+                    {
+                      "id": "upstream-repo",
+                      "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                      "priority": 1
+                    }
+                  ]
+                }
               }
-            ]
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 50.085534ms
-  - id: 11
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 345
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"cleanupPolicies":{},"description":"test repository description 2","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"virtualRepositoryConfig":{"upstreamPolicies":[{"id":"upstream-repo","priority":1,"repository":"projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2"}]}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json&updateMask=description
-      method: PATCH
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
-          "format": "DOCKER",
-          "description": "test repository description 2",
-          "labels": {
-            "cnrm-test": "true",
-            "label-one": "value-one",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T01:18:03.577229Z",
-          "updateTime": "2024-04-25T01:18:13.307770Z",
-          "mode": "VIRTUAL_REPOSITORY",
-          "virtualRepositoryConfig": {
-            "upstreamPolicies": [
-              {
-                "id": "upstream-repo",
-                "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-                "priority": 1
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 320.143203ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
+              "format": "DOCKER",
+              "description": "test repository description",
+              "labels": {
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "artifactregistryrepository"
+              },
+              "createTime": "2024-08-28T03:47:23.320914Z",
+              "updateTime": "2024-08-28T03:47:23.320914Z",
+              "mode": "VIRTUAL_REPOSITORY",
+              "virtualRepositoryConfig": {
+                "upstreamPolicies": [
+                  {
+                    "id": "upstream-repo",
+                    "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                    "priority": 1
+                  }
+                ]
               }
-            ]
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 59.839933ms
-  - id: 12
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
-          "format": "DOCKER",
-          "description": "test repository description 2",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true",
-            "label-one": "value-one"
-          },
-          "createTime": "2024-04-25T01:18:03.577229Z",
-          "updateTime": "2024-04-25T01:18:13.307770Z",
-          "mode": "VIRTUAL_REPOSITORY",
-          "virtualRepositoryConfig": {
-            "upstreamPolicies": [
-              {
-                "id": "upstream-repo",
-                "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-                "priority": 1
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 323.001843ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
+              "format": "DOCKER",
+              "description": "test repository description",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "artifactregistryrepository",
+                "label-one": "value-one"
+              },
+              "createTime": "2024-08-28T03:47:23.320914Z",
+              "updateTime": "2024-08-28T03:47:23.320914Z",
+              "mode": "VIRTUAL_REPOSITORY",
+              "virtualRepositoryConfig": {
+                "upstreamPolicies": [
+                  {
+                    "id": "upstream-repo",
+                    "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                    "priority": 1
+                  }
+                ]
               }
-            ]
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 42.758826ms
-  - id: 13
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-          "format": "DOCKER",
-          "labels": {
-            "cnrm-test": "true",
-            "label-one": "value-two",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T01:18:01.028989Z",
-          "updateTime": "2024-04-25T01:18:01.028989Z",
-          "mode": "STANDARD_REPOSITORY"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 54.332311ms
-  - id: 14
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
-          "format": "DOCKER",
-          "description": "test repository description 2",
-          "labels": {
-            "cnrm-test": "true",
-            "label-one": "value-one",
-            "managed-by-cnrm": "true"
-          },
-          "createTime": "2024-04-25T01:18:03.577229Z",
-          "updateTime": "2024-04-25T01:18:13.307770Z",
-          "mode": "VIRTUAL_REPOSITORY",
-          "virtualRepositoryConfig": {
-            "upstreamPolicies": [
-              {
-                "id": "upstream-repo",
-                "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
-                "priority": 1
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 257.690934ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
+              "format": "DOCKER",
+              "description": "test repository description",
+              "labels": {
+                "config-connector-resource-type": "artifactregistryrepository",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "createTime": "2024-08-28T03:47:23.320914Z",
+              "updateTime": "2024-08-28T03:47:23.320914Z",
+              "mode": "VIRTUAL_REPOSITORY",
+              "virtualRepositoryConfig": {
+                "upstreamPolicies": [
+                  {
+                    "id": "upstream-repo",
+                    "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                    "priority": 1
+                  }
+                ]
               }
-            ]
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 54.09324ms
-  - id: 15
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/f6caae0c-ff7c-463d-8d61-417d383da336",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 143.615257ms
-  - id: 16
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/3216fa66-c004-4fcf-8c7e-ac8f54780c35",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 149.636021ms
-  - id: 17
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/3216fa66-c004-4fcf-8c7e-ac8f54780c35?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/3216fa66-c004-4fcf-8c7e-ac8f54780c35",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.protobuf.Empty"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 32.946081ms
-  - id: 18
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: artifactregistry.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/f6caae0c-ff7c-463d-8d61-417d383da336?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/us-west1/operations/f6caae0c-ff7c-463d-8d61-417d383da336",
-          "metadata": {
-            "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.protobuf.Empty"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 56.722771ms
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 297.228124ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 397
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"cleanupPolicies":{},"description":"test repository description 2","labels":{"cnrm-test":"true","config-connector-resource-type":"artifactregistryrepository","label-one":"value-one","managed-by-cnrm":"true"},"virtualRepositoryConfig":{"upstreamPolicies":[{"id":"upstream-repo","priority":1,"repository":"projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2"}]}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json&updateMask=description
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
+              "format": "DOCKER",
+              "description": "test repository description 2",
+              "labels": {
+                "config-connector-resource-type": "artifactregistryrepository",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "createTime": "2024-08-28T03:47:23.320914Z",
+              "updateTime": "2024-08-28T03:47:37.251776Z",
+              "mode": "VIRTUAL_REPOSITORY",
+              "virtualRepositoryConfig": {
+                "upstreamPolicies": [
+                  {
+                    "id": "upstream-repo",
+                    "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                    "priority": 1
+                  }
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 299.091914ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
+              "format": "DOCKER",
+              "description": "test repository description 2",
+              "labels": {
+                "config-connector-resource-type": "artifactregistryrepository",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "createTime": "2024-08-28T03:47:23.320914Z",
+              "updateTime": "2024-08-28T03:47:37.251776Z",
+              "mode": "VIRTUAL_REPOSITORY",
+              "virtualRepositoryConfig": {
+                "upstreamPolicies": [
+                  {
+                    "id": "upstream-repo",
+                    "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                    "priority": 1
+                  }
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 277.296313ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr",
+              "format": "DOCKER",
+              "description": "test repository description 2",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "artifactregistryrepository",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true"
+              },
+              "createTime": "2024-08-28T03:47:23.320914Z",
+              "updateTime": "2024-08-28T03:47:37.251776Z",
+              "mode": "VIRTUAL_REPOSITORY",
+              "virtualRepositoryConfig": {
+                "upstreamPolicies": [
+                  {
+                    "id": "upstream-repo",
+                    "repository": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+                    "priority": 1
+                  }
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 243.731895ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2",
+              "format": "DOCKER",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "artifactregistryrepository",
+                "label-one": "value-two"
+              },
+              "createTime": "2024-08-28T03:47:10.491815Z",
+              "updateTime": "2024-08-28T03:47:10.491815Z",
+              "mode": "STANDARD_REPOSITORY"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 271.647944ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/9ff1ec67-1fb5-420d-aebb-5cf0791b6a6b",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 410.253321ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/repositories/arrepository-1xauxp2uke0mr-2?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/058bb10f-0238-40b9-8a7d-e860f39b3d69",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 464.35779ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/9ff1ec67-1fb5-420d-aebb-5cf0791b6a6b?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/9ff1ec67-1fb5-420d-aebb-5cf0791b6a6b",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 228.030005ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: artifactregistry.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://artifactregistry.googleapis.com/v1/projects/example-project/locations/us-west1/operations/058bb10f-0238-40b9-8a7d-e860f39b3d69?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west1/operations/058bb10f-0238-40b9-8a7d-e860f39b3d69",
+              "metadata": {
+                "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 94.824208ms

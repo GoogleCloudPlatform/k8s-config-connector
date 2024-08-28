@@ -1,0 +1,465 @@
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates?alt=json&certificateTemplateId=privatecacertificatetemplate-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "description": "An basic sample certificate template",
+  "identityConstraints": {
+    "allowSubjectAltNamesPassthrough": true,
+    "allowSubjectPassthrough": true,
+    "celExpression": {
+      "description": "Always true",
+      "expression": "true",
+      "location": "any.file.anywhere",
+      "title": "Sample expression"
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "config-connector-resource-type": "privatecacertificatetemplate",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+  "passthroughExtensions": {
+    "additionalExtensions": [
+      {
+        "objectIdPath": [
+          1,
+          6
+        ]
+      }
+    ],
+    "knownExtensions": [
+      "EXTENDED_KEY_USAGE"
+    ]
+  },
+  "predefinedValues": {
+    "additionalExtensions": [
+      {
+        "critical": true,
+        "objectId": {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        },
+        "value": "c3RyaW5nCg=="
+      }
+    ],
+    "aiaOcspServers": [
+      "string"
+    ],
+    "caOptions": {
+      "isCa": false,
+      "maxIssuerPathLength": 6
+    },
+    "keyUsage": {
+      "baseKeyUsage": {
+        "certSign": false,
+        "contentCommitment": true,
+        "crlSign": false,
+        "dataEncipherment": true,
+        "decipherOnly": true,
+        "digitalSignature": true,
+        "encipherOnly": true,
+        "keyAgreement": true,
+        "keyEncipherment": true
+      },
+      "extendedKeyUsage": {
+        "clientAuth": true,
+        "codeSigning": true,
+        "emailProtection": true,
+        "ocspSigning": true,
+        "serverAuth": true,
+        "timeStamping": true
+      },
+      "unknownExtendedKeyUsages": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    "policyIds": [
+      {
+        "objectIdPath": [
+          1,
+          6
+        ]
+      }
+    ]
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateTemplate",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "An basic sample certificate template",
+    "identityConstraints": {
+      "allowSubjectAltNamesPassthrough": true,
+      "allowSubjectPassthrough": true,
+      "celExpression": {
+        "description": "Always true",
+        "expression": "true",
+        "location": "any.file.anywhere",
+        "title": "Sample expression"
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "config-connector-resource-type": "privatecacertificatetemplate",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+    "passthroughExtensions": {
+      "additionalExtensions": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ],
+      "knownExtensions": [
+        "EXTENDED_KEY_USAGE"
+      ]
+    },
+    "predefinedValues": {
+      "additionalExtensions": [
+        {
+          "critical": true,
+          "objectId": {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          },
+          "value": "c3RyaW5nCg=="
+        }
+      ],
+      "aiaOcspServers": [
+        "string"
+      ],
+      "caOptions": {
+        "isCa": false,
+        "maxIssuerPathLength": 6
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "contentCommitment": true,
+          "dataEncipherment": true,
+          "decipherOnly": true,
+          "digitalSignature": true,
+          "encipherOnly": true,
+          "keyAgreement": true,
+          "keyEncipherment": true
+        },
+        "extendedKeyUsage": {
+          "clientAuth": true,
+          "codeSigning": true,
+          "emailProtection": true,
+          "ocspSigning": true,
+          "serverAuth": true,
+          "timeStamping": true
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          }
+        ]
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An basic sample certificate template",
+  "identityConstraints": {
+    "allowSubjectAltNamesPassthrough": true,
+    "allowSubjectPassthrough": true,
+    "celExpression": {
+      "description": "Always true",
+      "expression": "true",
+      "location": "any.file.anywhere",
+      "title": "Sample expression"
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "config-connector-resource-type": "privatecacertificatetemplate",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+  "passthroughExtensions": {
+    "additionalExtensions": [
+      {
+        "objectIdPath": [
+          1,
+          6
+        ]
+      }
+    ],
+    "knownExtensions": [
+      "EXTENDED_KEY_USAGE"
+    ]
+  },
+  "predefinedValues": {
+    "additionalExtensions": [
+      {
+        "critical": true,
+        "objectId": {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        },
+        "value": "c3RyaW5nCg=="
+      }
+    ],
+    "aiaOcspServers": [
+      "string"
+    ],
+    "caOptions": {
+      "isCa": false,
+      "maxIssuerPathLength": 6
+    },
+    "keyUsage": {
+      "baseKeyUsage": {
+        "contentCommitment": true,
+        "dataEncipherment": true,
+        "decipherOnly": true,
+        "digitalSignature": true,
+        "encipherOnly": true,
+        "keyAgreement": true,
+        "keyEncipherment": true
+      },
+      "extendedKeyUsage": {
+        "clientAuth": true,
+        "codeSigning": true,
+        "emailProtection": true,
+        "ocspSigning": true,
+        "serverAuth": true,
+        "timeStamping": true
+      },
+      "unknownExtendedKeyUsages": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    "policyIds": [
+      {
+        "objectIdPath": [
+          1,
+          6
+        ]
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}

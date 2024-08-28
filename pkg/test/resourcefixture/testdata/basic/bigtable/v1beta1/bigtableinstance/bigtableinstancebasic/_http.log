@@ -37,6 +37,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
     "displayName": "BigtableSample",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "bigtableinstance",
       "managed-by-cnrm": "true"
     },
     "type": "PRODUCTION"
@@ -72,6 +73,7 @@ OK
         "displayName": "BigtableSample",
         "labels": {
           "cnrm-test": "true",
+          "config-connector-resource-type": "bigtableinstance",
           "managed-by-cnrm": "true"
         },
         "type": "PRODUCTION"
@@ -121,6 +123,7 @@ OK
         "displayName": "BigtableSample",
         "labels": {
           "cnrm-test": "true",
+          "config-connector-resource-type": "bigtableinstance",
           "managed-by-cnrm": "true"
         },
         "type": "PRODUCTION"
@@ -136,6 +139,7 @@ OK
     "displayName": "BigtableSample",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "bigtableinstance",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
@@ -161,6 +165,7 @@ OK
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "bigtableinstance",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
@@ -223,6 +228,7 @@ OK
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "bigtableinstance",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
@@ -285,6 +291,7 @@ OK
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "bigtableinstance",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
@@ -429,6 +436,7 @@ OK
     "displayName": "BigtableSample",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "bigtableinstance",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
@@ -646,6 +654,7 @@ OK
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "bigtableinstance",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
@@ -708,6 +717,7 @@ OK
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "bigtableinstance",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
@@ -770,6 +780,7 @@ OK
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "bigtableinstance",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}",

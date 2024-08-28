@@ -30,6 +30,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "secretmanagersecret",
     "managed-by-cnrm": "true"
   },
   "replication": {
@@ -53,6 +54,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "secretmanagersecret",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
@@ -83,6 +85,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "secretmanagersecret",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
@@ -411,6 +414,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "secretmanagersecret",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",

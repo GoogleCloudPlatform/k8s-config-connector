@@ -117,6 +117,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -135,6 +136,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
@@ -160,6 +162,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
@@ -332,6 +335,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
