@@ -43,14 +43,6 @@ spec:
   networkRef:
     name: computenetwork-${uniqueId}
 ---
-apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-kind: Service
-metadata:
-  name: servicenetworking.googleapis.com
-spec:
-  projectRef:
-    external: ${projectId}
----
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:

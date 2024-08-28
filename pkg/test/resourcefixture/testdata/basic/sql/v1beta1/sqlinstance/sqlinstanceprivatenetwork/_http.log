@@ -349,7 +349,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "1226295466264861991",
+  "targetId": "183785656598851840",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
   "user": "user@example.com"
 }
@@ -381,7 +381,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "1226295466264861991",
+  "targetId": "183785656598851840",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
   "user": "user@example.com"
 }
@@ -456,7 +456,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "1226295466264861991",
+  "targetId": "183785656598851840",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
   "user": "user@example.com"
 }
@@ -497,177 +497,6 @@ X-Xss-Protection: 0
   "purpose": "VPC_PEERING",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
   "status": "RESERVED"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/alloydb.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/appenginereporting.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigtable.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigtableadmin.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudbuild.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudresourcemanager.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/container.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/dns.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/firebaserules.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/firestore.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/iam.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/logging.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/servicenetworking.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/sqladmin.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/storage.googleapis.com"
-    }
-  ]
 }
 
 ---
@@ -769,7 +598,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/pssn.p24-${projectNumber}-43e86a03-17cb-4159-87a9-e93d55ac5c2f"
+  "name": "operations/pssn.p24-${projectNumber}-c96e55e2-7434-453a-9020-86fc7fc92611"
 }
 
 ---
@@ -790,7 +619,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/pssn.p24-${projectNumber}-43e86a03-17cb-4159-87a9-e93d55ac5c2f",
+  "name": "operations/pssn.p24-${projectNumber}-c96e55e2-7434-453a-9020-86fc7fc92611",
   "response": {
     "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
     "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
@@ -1211,7 +1040,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "819475408073497253",
+  "targetId": "9003324252440686256",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1243,7 +1072,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "819475408073497253",
+  "targetId": "9003324252440686256",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1318,7 +1147,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "819475408073497253",
+  "targetId": "9003324252440686256",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1460,7 +1289,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/pssn.p24-${projectNumber}-ad4ddd66-97f0-4bcc-8a04-10c192321b65"
+  "name": "operations/pssn.p24-${projectNumber}-05a4ce42-f463-4a02-8dce-5128355db46e"
 }
 
 ---
@@ -1481,7 +1310,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/pssn.p24-${projectNumber}-ad4ddd66-97f0-4bcc-8a04-10c192321b65",
+  "name": "operations/pssn.p24-${projectNumber}-05a4ce42-f463-4a02-8dce-5128355db46e",
   "response": {
     "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
     "network": "projects/${projectNumber}/global/networks/computenetwork2-${uniqueId}",
@@ -1552,7 +1381,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -1581,66 +1410,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${testFolderId}",
-    "type": "organization"
-  },
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork-${uniqueId}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "connections": [
-    {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
-      "peering": "servicenetworking-googleapis-com",
-      "reservedPeeringRanges": [
-        "computeaddress-${uniqueId}"
-      ],
-      "service": "services/servicenetworking.googleapis.com"
-    }
-  ]
-}
-
----
-
 POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_16",
@@ -1655,8 +1427,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "allocatedIpRange": "computeaddress-${uniqueId}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-      "requireSsl": false
+      "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
     },
     "locationPreference": {
       "zone": "us-central1-a"
@@ -1735,124 +1506,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allowSubnetCidrRoutesOverlap": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
-  "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
-  "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
-  "kind": "compute#subnetwork",
-  "logConfig": {
-    "enable": false
-  },
-  "name": "computesubnetwork-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "privateIpGoogleAccess": false,
-  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
-  "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork-${uniqueId}",
-  "stackType": "IPV4_ONLY"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "address": "192.168.1.0",
-  "addressType": "INTERNAL",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "id": "000000000000000000000",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "computeaddress2-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
-  "networkTier": "PREMIUM",
-  "prefixLength": 24,
-  "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}",
-  "status": "RESERVED"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allowSubnetCidrRoutesOverlap": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
-  "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.1.1",
-  "id": "000000000000000000000",
-  "ipCidrRange": "10.0.1.0/24",
-  "kind": "compute#subnetwork",
-  "logConfig": {
-    "enable": false
-  },
-  "name": "computesubnetwork2-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
-  "privateIpGoogleAccess": false,
-  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
-  "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork2-${uniqueId}",
-  "stackType": "IPV4_ONLY"
-}
-
----
-
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1882,8 +1537,113 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:postgresprivatenetwork-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "PRIVATE"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_12",
+  "name": "postgresprivatenetwork-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "postgresprivatenetwork-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "allocatedIpRange": "computeaddress-${uniqueId}",
+      "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": true,
+      "ipv4Enabled": false,
+      "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1913,7 +1673,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -2019,10 +1779,14 @@ X-Xss-Protection: 0
 
 PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 {
+  "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_12",
+  "name": "postgresprivatenetwork-${uniqueId}",
+  "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
@@ -2033,9 +1797,11 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       },
       "binaryLogEnabled": false,
       "enabled": false,
+      "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "10",
@@ -2045,13 +1811,13 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "allocatedIpRange": "computeaddress2-${uniqueId}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
-      "requireSsl": false
+      "privateNetwork": "projects/${projectId}/global/networks/computenetwork2-${uniqueId}"
     },
     "locationPreference": {
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
     "tier": "db-custom-1-3840",
@@ -2088,6 +1854,45 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.1.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.1.0/24",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "computesubnetwork2-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork2-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -2119,10 +1924,10 @@ X-Xss-Protection: 0
       "importCustomRoutes": false,
       "importSubnetRoutesWithPublicIp": false,
       "name": "servicenetworking-googleapis-com",
-      "network": "https://www.googleapis.com/compute/beta/projects/ea1060a5d9d178df4p-tp/global/networks/servicenetworking",
+      "network": "https://www.googleapis.com/compute/beta/projects/u30104e53a663ef53p-tp/global/networks/servicenetworking",
       "stackType": "IPV4_ONLY",
       "state": "ACTIVE",
-      "stateDetails": "[2024-08-27T12:11:18.978-07:00]: Connected."
+      "stateDetails": "[2024-08-28T09:31:40.133-07:00]: Connected."
     }
   ],
   "routingConfig": {
@@ -2133,6 +1938,190 @@ X-Xss-Protection: 0
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork-${uniqueId}"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.0.0/24",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "computesubnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork2-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [
+    {
+      "autoCreateRoutes": true,
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": false,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": false,
+      "name": "servicenetworking-googleapis-com",
+      "network": "https://www.googleapis.com/compute/beta/projects/l5702e3a99bdf1377p-tp/global/networks/servicenetworking",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2024-08-28T09:36:43.021-07:00]: Connected."
+    }
+  ],
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "GLOBAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork2-${uniqueId}"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "192.168.0.0",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "networkTier": "PREMIUM",
+  "prefixLength": 24,
+  "purpose": "VPC_PEERING",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "status": "RESERVED"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "${testFolderId}",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork2-${uniqueId}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connections": [
+    {
+      "network": "projects/${projectNumber}/global/networks/computenetwork2-${uniqueId}",
+      "peering": "servicenetworking-googleapis-com",
+      "reservedPeeringRanges": [
+        "computeaddress2-${uniqueId}"
+      ],
+      "service": "services/servicenetworking.googleapis.com"
+    }
   ]
 }
 
@@ -2195,56 +2184,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "computenetwork2-${uniqueId}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "peerings": [
-    {
-      "autoCreateRoutes": true,
-      "exchangeSubnetRoutes": true,
-      "exportCustomRoutes": false,
-      "exportSubnetRoutesWithPublicIp": false,
-      "importCustomRoutes": false,
-      "importSubnetRoutesWithPublicIp": false,
-      "name": "servicenetworking-googleapis-com",
-      "network": "https://www.googleapis.com/compute/beta/projects/y1c95afbd2a977511p-tp/global/networks/servicenetworking",
-      "stackType": "IPV4_ONLY",
-      "state": "ACTIVE",
-      "stateDetails": "[2024-08-27T12:16:09.845-07:00]: Connected."
-    }
-  ],
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "GLOBAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork2-${uniqueId}"
-  ]
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -2283,142 +2222,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "address": "192.168.0.0",
-  "addressType": "INTERNAL",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "id": "000000000000000000000",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "computeaddress-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "networkTier": "PREMIUM",
-  "prefixLength": 24,
-  "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
-  "status": "RESERVED"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allowSubnetCidrRoutesOverlap": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
-  "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.1.1",
-  "id": "000000000000000000000",
-  "ipCidrRange": "10.0.1.0/24",
-  "kind": "compute#subnetwork",
-  "logConfig": {
-    "enable": false
-  },
-  "name": "computesubnetwork2-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
-  "privateIpGoogleAccess": false,
-  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
-  "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork2-${uniqueId}",
-  "stackType": "IPV4_ONLY"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${testFolderId}",
-    "type": "organization"
-  },
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork2-${uniqueId}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "connections": [
-    {
-      "network": "projects/${projectNumber}/global/networks/computenetwork2-${uniqueId}",
-      "peering": "servicenetworking-googleapis-com",
-      "reservedPeeringRanges": [
-        "computeaddress2-${uniqueId}"
-      ],
-      "service": "services/servicenetworking.googleapis.com"
-    }
-  ]
-}
-
----
-
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -2449,7 +2254,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -2556,7 +2361,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -2576,76 +2381,6 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresprivatenetwork-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allowSubnetCidrRoutesOverlap": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
-  "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
-  "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
-  "kind": "compute#subnetwork",
-  "logConfig": {
-    "enable": false
-  },
-  "name": "computesubnetwork-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "privateIpGoogleAccess": false,
-  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
-  "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork-${uniqueId}",
-  "stackType": "IPV4_ONLY"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
   "targetId": "postgresprivatenetwork-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
   "targetProject": "${projectId}",
@@ -2870,9 +2605,44 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "819475408073497253",
+  "targetId": "9003324252440686256",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}",
   "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork2-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "GLOBAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computesubnetwork2-${uniqueId}"
+  ]
 }
 
 ---
@@ -2902,7 +2672,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "819475408073497253",
+  "targetId": "9003324252440686256",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -3263,248 +3033,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/alloydb.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/appenginereporting.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigtable.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/bigtableadmin.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudbuild.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudresourcemanager.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/container.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/dns.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/firebaserules.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/firestore.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/iam.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/logging.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/servicenetworking.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/sqladmin.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/storage.googleapis.com"
-    }
-  ]
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/servicenetworking.googleapis.com:disable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "operations/acat.p17-${projectNumber}-51e14aa5-62ee-4145-9260-e2214b563183"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  },
-  "name": "operations/acat.p17-${projectNumber}-51e14aa5-62ee-4145-9260-e2214b563183",
-  "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.DisableServiceResponse",
-    "service": {
-      "config": {
-        "authentication": {},
-        "documentation": {
-          "summary": "Provides automatic management of network configurations necessary for certain services."
-        },
-        "monitoring": {},
-        "name": "servicenetworking.googleapis.com",
-        "quota": {},
-        "title": "Service Networking API",
-        "usage": {
-          "requirements": [
-            "serviceusage.googleapis.com/tos/cloud"
-          ]
-        }
-      },
-      "name": "projects/${projectNumber}/services/servicenetworking.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "DISABLED"
-    }
-  }
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -3568,7 +3096,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "1226295466264861991",
+  "targetId": "183785656598851840",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
   "user": "user@example.com"
 }
@@ -3600,7 +3128,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "1226295466264861991",
+  "targetId": "183785656598851840",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
   "user": "user@example.com"
 }

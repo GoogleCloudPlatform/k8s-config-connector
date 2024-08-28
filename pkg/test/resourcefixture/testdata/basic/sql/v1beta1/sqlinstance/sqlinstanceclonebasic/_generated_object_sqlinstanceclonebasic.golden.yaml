@@ -7,47 +7,23 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
-  name: sqlinstance-${uniqueId}
+  name: postgres-clone-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseVersion: POSTGRES_9_6
+  cloneSource:
+    sqlInstanceRef:
+      name: postgres-source-${uniqueId}
+  databaseVersion: POSTGRES_16
   region: us-central1
   settings:
-    availabilityType: REGIONAL
     backupConfiguration:
-      backupRetentionSettings:
-        retainedBackups: 7
-        retentionUnit: COUNT
       enabled: true
       pointInTimeRecoveryEnabled: true
-      startTime: "05:00"
-      transactionLogRetentionDays: 3
-    databaseFlags:
-    - name: cloudsql.iam_authentication
-      value: "on"
-    - name: max_connections
-      value: "1000"
-    - name: max_worker_processes
-      value: "8"
-    deletionProtectionEnabled: false
-    diskAutoresize: false
-    diskAutoresizeLimit: 0
-    diskSize: 100
-    diskType: PD_SSD
-    insightsConfig:
-      queryInsightsEnabled: true
-      queryStringLength: 1024
-      recordApplicationTags: true
-      recordClientAddress: true
-    ipConfiguration:
-      ipv4Enabled: false
-      privateNetworkRef:
-        name: computenetwork-${uniqueId}
-      requireSsl: false
-      sslMode: ENCRYPTED_ONLY
+    locationPreference:
+      zone: us-central1-a
     tier: db-custom-1-3840
 status:
   conditions:
@@ -56,13 +32,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-${uniqueId}
+  connectionName: ${projectId}:us-central1:postgres-clone-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 1
-  privateIpAddress: 10.104.0.2
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
+  publicIpAddress: 10.1.2.3
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-clone-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----
