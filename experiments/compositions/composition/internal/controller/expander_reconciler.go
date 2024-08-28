@@ -29,12 +29,15 @@ import (
 	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/selection"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/rest"
@@ -44,11 +47,13 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
+	"sigs.k8s.io/kubebuilder-declarative-pattern/applylib/forked/github.com/kubernetes/kubectl/pkg/cmd/apply"
 )
 
 // ExpanderReconciler reconciles a expander object
@@ -68,6 +73,11 @@ type ExpanderReconciler struct {
 type EvaluateWaitError struct {
 	msg string
 }
+
+const (
+	finalizerName    = "compositions.google.com/expander-finalizer"
+	stagesAnnotation = "compositions.google.com/expander-stages"
+)
 
 func (e *EvaluateWaitError) Error() string { return e.msg }
 
@@ -138,6 +148,16 @@ func (r *ExpanderReconciler) getPlanForInputCR(ctx context.Context, inputcr *uns
 			return planNN, &plancr, err
 		}
 	}
+
+	// Add a finalizer to the Plan to discourage out of band deletions. Stage information is
+	// stored in the Plan to handle proper cleanup of resources when a Facade is deleted.
+	if !controllerutil.ContainsFinalizer(&plancr, finalizerName) {
+		controllerutil.AddFinalizer(&plancr, finalizerName)
+		if err := r.Update(ctx, &plancr); err != nil {
+			logger.Error(err, "Unable to add finalizer to Plan Object")
+			return planNN, &plancr, err
+		}
+	}
 	return planNN, &plancr, nil
 }
 
@@ -156,6 +176,18 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// requeue (we'll need to wait for a new notification), and we can get them
 		// on deleted requests.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	if !inputcr.GetDeletionTimestamp().IsZero() {
+		return r.reconcileDelete(ctx, logger, inputcr)
+	}
+	// Add a finalizer to prevent removal of facade before all applied objects are cleaned up.
+	if !controllerutil.ContainsFinalizer(&inputcr, finalizerName) {
+		controllerutil.AddFinalizer(&inputcr, finalizerName)
+		if err := r.Update(ctx, &inputcr); err != nil {
+			logger.Error(err, "Unable to add finalizer to input CR")
+			return ctrl.Result{}, err
+		}
 	}
 
 	// Grab the latest composition
@@ -266,6 +298,15 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		logger.Error(err, "unable to read Plan CR")
 		return ctrl.Result{}, err
 	}
+
+	// Write out the (in-order) stages to the plan as a reference for later when we need to delete resources.
+	metav1.SetMetaDataAnnotation(&plancr.ObjectMeta, stagesAnnotation, strings.Join(stagesEvaluated, ","))
+	err = r.Client.Update(ctx, plancr)
+	if err != nil {
+		logger.Error(err, "error updating plan stages", "plan", planNN)
+		return ctrl.Result{}, err
+	}
+
 	if planUpdated && oldGeneration == plancr.GetGeneration() {
 		logger.Info("Did not get the latest Plan CR. Will retry.", "generation", oldGeneration)
 		return ctrl.Result{RequeueAfter: 5 * time.Second}, nil
@@ -663,6 +704,147 @@ func (r *ExpanderReconciler) enqueueAllFromGVK(ctx context.Context, _ client.Obj
 		reqs = append(reqs, reconcile.Request{NamespacedName: nn})
 	}
 	return reqs
+}
+
+func (r *ExpanderReconciler) reconcileDelete(ctx context.Context, logger logr.Logger, inputcr unstructured.Unstructured) (ctrl.Result, error) {
+	logger = logger.WithName("Delete")
+	if !controllerutil.ContainsFinalizer(&inputcr, finalizerName) {
+		return ctrl.Result{}, nil
+	}
+	planNN := types.NamespacedName{
+		Name:      r.InputGVR.Resource + "-" + inputcr.GetName(),
+		Namespace: inputcr.GetNamespace(),
+	}
+	plancr := compositionv1alpha1.Plan{}
+	if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
+		logger.Error(err, "Unable to fetch Plan Object", "plan", planNN)
+		return ctrl.Result{}, err
+	}
+	annotations := plancr.GetAnnotations()
+	planLabels := plancr.GetLabels()
+	stageList, ok := annotations[stagesAnnotation]
+	if !ok {
+		err := fmt.Errorf("Plan is missing stage order annotation")
+		logger.Error(err, "Unable to fetch stage order from Plan", "Plan", planNN)
+		return ctrl.Result{}, err
+	}
+	stages := strings.Split(stageList, ",")
+	numFound := 0
+	for i := len(stages) - 1; i >= 0; i-- {
+		r.Recorder.Eventf(&inputcr, corev1.EventTypeNormal, "Delete", "Deleting objects for stage %s", stages[i])
+		nsList, ok := annotations[apply.ApplySetAdditionalNamespacesAnnotation]
+		if !ok {
+			err := fmt.Errorf("Plan is missing Namespace annotation")
+			logger.Error(err, "Unable to fetch Namespaces from Plan", "Plan", planNN)
+			return ctrl.Result{}, err
+		}
+		namespaces := strings.Split(nsList, ",")
+		namespaces = append(namespaces, inputcr.GetNamespace())
+		opts, err := deleteListOpts(stages[i], planLabels[apply.ApplySetParentIDLabel])
+		if err != nil {
+			logger.Error(err, "Error creating list options")
+			return ctrl.Result{}, err
+		}
+		gkList, ok := annotations[apply.ApplySetGKsAnnotation]
+		if !ok {
+			err := fmt.Errorf("Plan is missing GroupKind annotation")
+			logger.Error(err, "Unable to fetch GroupKinds from Plan", "Plan", planNN)
+			return ctrl.Result{}, err
+		}
+		gks := strings.Split(gkList, ",")
+		for _, gk := range gks {
+			parsedGK := schema.ParseGroupKind(gk)
+			mapping, err := r.RESTMapper.RESTMapping(parsedGK)
+			if err != nil {
+				return ctrl.Result{}, err
+			}
+			n := 0
+			if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
+				n, err = r.deleteNamespacedResources(ctx, logger, stages[i], mapping.Resource, namespaces, opts)
+			} else if mapping.Scope.Name() == meta.RESTScopeNameRoot {
+				n, err = r.deleteClusterResources(ctx, logger, stages[i], mapping.Resource, opts)
+			}
+			if err != nil {
+				logger.Error(err, "Error deleting resources", "GroupKind", gk)
+				r.Recorder.Eventf(&inputcr, corev1.EventTypeWarning, "Delete", "Failed deleting objects of GroupKind %q for stage %q: %v", gk, stages[i], err)
+				return ctrl.Result{}, err
+			}
+			numFound += n
+		}
+		if numFound > 0 {
+			break
+		}
+	}
+	if numFound > 0 {
+		return ctrl.Result{Requeue: true, RequeueAfter: 10 * time.Second}, nil
+	}
+
+	// Remove the finalizers to allow the Plan and Facade to be deleted.
+	controllerutil.RemoveFinalizer(&plancr, finalizerName)
+	if err := r.Update(ctx, &plancr); err != nil {
+		logger.Error(err, "Unable to remove finalizer from Plan")
+		return ctrl.Result{}, err
+	}
+	controllerutil.RemoveFinalizer(&inputcr, finalizerName)
+	if err := r.Update(ctx, &inputcr); err != nil {
+		logger.Error(err, "Unable to remove finalizer from input CR")
+		return ctrl.Result{}, err
+	}
+	// Expanded resources are all deleted, stop reconciliation.
+	return ctrl.Result{}, nil
+}
+
+func deleteListOpts(stage, applysetId string) (metav1.ListOptions, error) {
+	stageReq, err := labels.NewRequirement(applier.StageLabel, selection.Equals, []string{stage})
+	if err != nil {
+		return metav1.ListOptions{}, fmt.Errorf("failed making stage label selector: %v", err)
+	}
+	asReq, err := labels.NewRequirement(apply.ApplysetPartOfLabel, selection.Equals, []string{applysetId})
+	if err != nil {
+		return metav1.ListOptions{}, fmt.Errorf("failed making applysetId label selector: %v", err)
+	}
+	opts := metav1.ListOptions{
+		LabelSelector: labels.NewSelector().Add(*stageReq).Add(*asReq).String(),
+	}
+	return opts, nil
+}
+
+func (r *ExpanderReconciler) deleteNamespacedResources(ctx context.Context, logger logr.Logger, stage string, endpoint schema.GroupVersionResource, namespaces []string, opts metav1.ListOptions) (int, error) {
+	numFound := 0
+	for _, ns := range namespaces {
+		resources, err := r.Dynamic.Resource(endpoint).Namespace(ns).List(ctx, opts)
+		if err != nil {
+			return numFound, fmt.Errorf("error listing resources in Namespace %q for stage %q: %v", ns, stage, err)
+		}
+		for _, res := range resources.Items {
+			logger.Info("Attempting to delete resource", "Resource", res, "Namespace", ns)
+			err := r.Delete(ctx, &res)
+			if err == nil {
+				numFound++
+			} else if err != nil && !apierrors.IsNotFound(err) {
+				return numFound, fmt.Errorf("failed deleting object %v in Namespace %q for stage %q: %v", res, ns, stage, err)
+			}
+		}
+	}
+	return numFound, nil
+}
+
+func (r *ExpanderReconciler) deleteClusterResources(ctx context.Context, logger logr.Logger, stage string, endpoint schema.GroupVersionResource, opts metav1.ListOptions) (int, error) {
+	numFound := 0
+	resources, err := r.Dynamic.Resource(endpoint).List(ctx, opts)
+	if err != nil {
+		return numFound, fmt.Errorf("error listing resources for stage %q: %v", stage, err)
+	}
+	for _, res := range resources.Items {
+		logger.Info("Attempting to delete resource", "Resource", res)
+		err := r.Delete(ctx, &res)
+		if err == nil {
+			numFound++
+		} else if err != nil && !apierrors.IsNotFound(err) {
+			return numFound, fmt.Errorf("failed deleting object %v for stage %q: %v", res, stage, err)
+		}
+	}
+	return numFound, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

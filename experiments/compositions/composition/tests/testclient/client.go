@@ -486,6 +486,69 @@ func (c *Client) MustNotExist(objs []*unstructured.Unstructured, timeout time.Du
 	}
 }
 
+func (c *Client) MustHaveEvent(ns, reason, msg string, timeout time.Duration) {
+	c.T.Helper()
+	c.T.Logf("Checking event with reason %q and message %q is present in namespace %q", reason, msg, ns)
+	retryFrequency := getFrequency(c.T, timeout)
+	errMissing := fmt.Errorf("could not find any events")
+	errMismatch := fmt.Errorf("could not find matching event")
+
+	err := retry.OnError(retryFrequency, func(err error) bool {
+		return apierrors.IsNotFound(err) || errors.Is(err, errMissing) || errors.Is(err, errMismatch)
+	}, func() (err error) {
+		var eventList corev1.EventList
+		opts := []client.ListOption{client.InNamespace(ns)}
+		err = c.List(c.Ctx, &eventList, opts...)
+		if err != nil {
+			return err
+		}
+		if len(eventList.Items) == 0 {
+			return errMissing
+		}
+		for _, event := range eventList.Items {
+			if event.Reason == reason && event.Message == msg {
+				return nil
+			}
+		}
+		return errMismatch
+	})
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
+		c.T.FailNow()
+	}
+}
+
+func (c *Client) MustNotHaveEvent(ns, reason, msg string, timeout time.Duration) {
+	c.T.Helper()
+	c.T.Logf("Checking event with reason %q and message %q is not present in namespace %q", reason, msg, ns)
+	retryFrequency := getFrequency(c.T, timeout)
+	errMatches := fmt.Errorf("matching event found")
+
+	err := retry.OnError(retryFrequency, func(err error) bool {
+		return apierrors.IsNotFound(err) || errors.Is(err, errMatches)
+	}, func() (err error) {
+		var eventList corev1.EventList
+		opts := []client.ListOption{client.InNamespace(ns)}
+		err = c.List(c.Ctx, &eventList, opts...)
+		if err != nil {
+			return err
+		}
+		if len(eventList.Items) == 0 {
+			return nil
+		}
+		for _, event := range eventList.Items {
+			if event.Reason == reason && event.Message == msg {
+				return errMatches
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
+		c.T.FailNow()
+	}
+}
+
 // recordFailed - returns all objects on which op failed and an error
 // encompassing all corresponding errors
 func (c *Client) recordFailed(op func(*unstructured.Unstructured) error,
