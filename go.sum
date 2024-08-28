@@ -76,6 +76,8 @@ cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RX
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 cloud.google.com/go/storage v1.42.0 h1:4QtGpplCVt1wz6g5o1ifXd656P5z+yNgzdw1tVfp0cU=
 cloud.google.com/go/storage v1.42.0/go.mod h1:HjMXRFq65pGKFn6hxj6x3HCyR41uSB72Z0SO/Vn6JFQ=
+cloud.google.com/go/workstations v1.0.5 h1:dPtjXaqfSjMIRx2mycd9UVRgOurkX/HXykZJqJ51ZEM=
+cloud.google.com/go/workstations v1.0.5/go.mod h1:MHT4NkSb5gpclWnRIh85kYH2DVgGYv/kWDt8CiZqbyI=
 contrib.go.opencensus.io/exporter/prometheus v0.1.0 h1:SByaIoWwNgMdPSgl5sMqM2KDE5H/ukPWBRo314xiDvg=
 contrib.go.opencensus.io/exporter/prometheus v0.1.0/go.mod h1:cGFniUXGZlKRjzOyuZJ6mgB+PgBcCIa79kEKR8YCW+A=
 dario.cat/mergo v1.0.0 h1:AGCNq9Evsj31mOgNPcLyXc+4PNABt905YmuqPYYpBWk=

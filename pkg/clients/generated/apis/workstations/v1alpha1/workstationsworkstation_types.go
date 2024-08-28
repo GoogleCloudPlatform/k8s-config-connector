@@ -35,56 +35,26 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type WorkstationclusterPrivateClusterConfig struct {
-	/* Optional. Additional projects that are allowed to attach to the workstation cluster's service attachment. By default, the workstation cluster's project and the VPC host project (if different) are allowed. */
-	// +optional
-	AllowedProjects []string `json:"allowedProjects,omitempty"`
-
-	/* Immutable. Whether Workstations endpoint is private. */
-	// +optional
-	EnablePrivateEndpoint *bool `json:"enablePrivateEndpoint,omitempty"`
-}
-
-type WorkstationsWorkstationClusterSpec struct {
+type WorkstationsWorkstationSpec struct {
 	/* Optional. Client-specified annotations. */
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Optional. Human-readable name for this workstation cluster. */
+	/* Optional. Human-readable name for this workstation. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. The location where the workstation cluster should reside. */
-	Location string `json:"location"`
-
-	/* Immutable. Name of the Compute Engine network in which instances associated with this workstation cluster will be created. */
-	Network string `json:"network"`
-
-	/* Optional. Configuration for private workstation cluster. */
-	// +optional
-	PrivateClusterConfig *WorkstationclusterPrivateClusterConfig `json:"privateClusterConfig,omitempty"`
-
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
-
-	/* The WorkstationCluster name. If not given, the metadata.name will be used. */
+	/* The WorkstationsWorkstation name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Immutable. Name of the Compute Engine subnetwork in which instances associated with this workstation cluster will be created. Must be part of the subnetwork specified for this workstation cluster. */
-	Subnetwork string `json:"subnetwork"`
 }
 
-type WorkstationclusterObservedStateStatus struct {
-	/* Output only. The private IP address of the control plane for this workstation cluster. Workstation VMs need access to this IP address to work with the service, so make sure that your firewall rules allow egress from the workstation VMs to this address. */
-	// +optional
-	ControlPlaneIP *string `json:"controlPlaneIP,omitempty"`
-
-	/* Output only. Time when this workstation cluster was created. */
+type WorkstationObservedStateStatus struct {
+	/* Output only. Time when this workstation was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Time when this workstation cluster was soft-deleted. */
+	/* Output only. Time when this workstation was soft-deleted. */
 	// +optional
 	DeleteTime *string `json:"deleteTime,omitempty"`
 
@@ -92,20 +62,32 @@ type WorkstationclusterObservedStateStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
-	/* Output only. A system-assigned unique identifier for this workstation cluster. */
+	/* Output only. Host to which clients can send HTTPS traffic that will be received by the workstation. Authorized traffic will be received to the workstation as HTTP on port 80. To send traffic to a different port, clients may prefix the host with the destination port in the format `{port}-{host}`. */
+	// +optional
+	Host *string `json:"host,omitempty"`
+
+	/* Output only. Time when this workstation was most recently successfully started, regardless of the workstation's initial state. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+
+	/* Output only. Current state of the workstation. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* Output only. A system-assigned unique identifier for this workstation. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
 
-	/* Output only. Time when this workstation cluster was most recently updated. */
+	/* Output only. Time when this workstation was most recently updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type WorkstationsWorkstationClusterStatus struct {
+type WorkstationsWorkstationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   WorkstationsWorkstationCluster's current state. */
+	   WorkstationsWorkstation's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the WorkstationCluster resource in GCP. */
+	/* A unique specifier for the WorkstationsWorkstation resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -115,38 +97,38 @@ type WorkstationsWorkstationClusterStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *WorkstationclusterObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *WorkstationObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpworkstationsworkstationcluster;gcpworkstationsworkstationclusters
+// +kubebuilder:resource:categories=gcp,shortName=
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// WorkstationsWorkstationCluster is the Schema for the workstations API
+// WorkstationsWorkstation is the Schema for the workstations API
 // +k8s:openapi-gen=true
-type WorkstationsWorkstationCluster struct {
+type WorkstationsWorkstation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   WorkstationsWorkstationClusterSpec   `json:"spec,omitempty"`
-	Status WorkstationsWorkstationClusterStatus `json:"status,omitempty"`
+	Spec   WorkstationsWorkstationSpec   `json:"spec,omitempty"`
+	Status WorkstationsWorkstationStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// WorkstationsWorkstationClusterList contains a list of WorkstationsWorkstationCluster
-type WorkstationsWorkstationClusterList struct {
+// WorkstationsWorkstationList contains a list of WorkstationsWorkstation
+type WorkstationsWorkstationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []WorkstationsWorkstationCluster `json:"items"`
+	Items           []WorkstationsWorkstation `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&WorkstationsWorkstationCluster{}, &WorkstationsWorkstationClusterList{})
+	SchemeBuilder.Register(&WorkstationsWorkstation{}, &WorkstationsWorkstationList{})
 }

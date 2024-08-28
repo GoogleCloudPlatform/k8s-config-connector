@@ -6,22 +6,17 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
-  name: workstationsworkstationclusters.workstations.cnrm.cloud.google.com
+  name: workstationsworkstations.workstations.cnrm.cloud.google.com
 spec:
   group: workstations.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: WorkstationsWorkstationCluster
-    listKind: WorkstationsWorkstationClusterList
-    plural: workstationsworkstationclusters
-    shortNames:
-    - gcpworkstationsworkstationcluster
-    - gcpworkstationsworkstationclusters
-    singular: workstationsworkstationcluster
+    kind: WorkstationsWorkstation
+    listKind: WorkstationsWorkstationList
+    plural: workstationsworkstations
+    singular: workstationsworkstation
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -44,8 +39,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: WorkstationsWorkstationCluster is the Schema for the Workstations
-          WorkstationCluster API
+        description: WorkstationsWorkstation is the Schema for the WorkstationsWorkstation
+          API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,7 +55,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: Defines the desired state of WorkstationsWorkstationCluster
+            description: WorkstationsWorkstationSpec defines the desired state of
+              WorkstationsWorkstation
             properties:
               annotations:
                 additionalProperties:
@@ -68,79 +64,16 @@ spec:
                 description: Optional. Client-specified annotations.
                 type: object
               displayName:
-                description: Optional. Human-readable name for this workstation cluster.
+                description: Optional. Human-readable name for this workstation.
                 type: string
-              location:
-                description: Immutable. The location where the workstation cluster
-                  should reside.
-                type: string
-              network:
-                description: Immutable. Name of the Compute Engine network in which
-                  instances associated with this workstation cluster will be created.
-                type: string
-              privateClusterConfig:
-                description: Optional. Configuration for private workstation cluster.
-                properties:
-                  allowedProjects:
-                    description: Optional. Additional projects that are allowed to
-                      attach to the workstation cluster's service attachment. By default,
-                      the workstation cluster's project and the VPC host project (if
-                      different) are allowed.
-                    items:
-                      type: string
-                    type: array
-                  enablePrivateEndpoint:
-                    description: Immutable. Whether Workstations endpoint is private.
-                    type: boolean
-                type: object
-              projectRef:
-                description: Immutable. The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by KCC.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
-                description: The WorkstationCluster name. If not given, the metadata.name
+                description: The WorkstationsWorkstation name. If not given, the metadata.name
                   will be used.
                 type: string
-              subnetwork:
-                description: Immutable. Name of the Compute Engine subnetwork in which
-                  instances associated with this workstation cluster will be created.
-                  Must be part of the subnetwork specified for this workstation cluster.
-                type: string
-            required:
-            - location
-            - network
-            - projectRef
-            - subnetwork
             type: object
           status:
+            description: WorkstationsWorkstationStatus defines the config connector
+              machine state of WorkstationsWorkstation
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -169,7 +102,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the WorkstationCluster resource
+                description: A unique specifier for the WorkstationsWorkstation resource
                   in GCP.
                 type: string
               observedGeneration:
@@ -184,38 +117,42 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  controlPlaneIP:
-                    description: Output only. The private IP address of the control
-                      plane for this workstation cluster. Workstation VMs need access
-                      to this IP address to work with the service, so make sure that
-                      your firewall rules allow egress from the workstation VMs to
-                      this address.
-                    type: string
                   createTime:
-                    description: Output only. Time when this workstation cluster was
-                      created.
+                    description: Output only. Time when this workstation was created.
                     type: string
                   deleteTime:
-                    description: Output only. Time when this workstation cluster was
-                      soft-deleted.
+                    description: Output only. Time when this workstation was soft-deleted.
                     type: string
                   etag:
                     description: Optional. Checksum computed by the server. May be
                       sent on update and delete requests to make sure that the client
                       has an up-to-date value before proceeding.
                     type: string
+                  host:
+                    description: Output only. Host to which clients can send HTTPS
+                      traffic that will be received by the workstation. Authorized
+                      traffic will be received to the workstation as HTTP on port
+                      80. To send traffic to a different port, clients may prefix
+                      the host with the destination port in the format `{port}-{host}`.
+                    type: string
+                  startTime:
+                    description: Output only. Time when this workstation was most
+                      recently successfully started, regardless of the workstation's
+                      initial state.
+                    type: string
+                  state:
+                    description: Output only. Current state of the workstation.
+                    type: string
                   uid:
                     description: Output only. A system-assigned unique identifier
-                      for this workstation cluster.
+                      for this workstation.
                     type: string
                   updateTime:
-                    description: Output only. Time when this workstation cluster was
-                      most recently updated.
+                    description: Output only. Time when this workstation was most
+                      recently updated.
                     type: string
                 type: object
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true

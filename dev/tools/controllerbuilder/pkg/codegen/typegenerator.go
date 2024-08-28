@@ -335,6 +335,8 @@ func isAcronym(s string) bool {
 	switch s {
 	case "id":
 		return true
+	case "ip":
+		return true
 	case "html", "url":
 		return true
 	case "http", "https", "ssh":

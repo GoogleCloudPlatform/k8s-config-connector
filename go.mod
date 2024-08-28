@@ -18,6 +18,7 @@ require (
 	cloud.google.com/go/resourcemanager v1.9.12
 	cloud.google.com/go/securesourcemanager v1.1.1
 	cloud.google.com/go/security v1.17.5
+	cloud.google.com/go/workstations v1.0.5
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
