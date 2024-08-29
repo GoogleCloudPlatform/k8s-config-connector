@@ -428,8 +428,29 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 }
 
 func (a *forwardingRuleAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	// TODO(kcc)
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("forwardingrule %q not found", a.fullyQualifiedName())
+	}
+
+	mc := &direct.MapContext{}
+	spec := ComputeForwardingRuleSpec_FromProto(mc, a.actual)
+	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
+	if err != nil {
+		return nil, fmt.Errorf("error converting forwardingrule spec to unstructured: %w", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: make(map[string]interface{}),
+	}
+	u.SetName(a.id.forwardingRule)
+	u.SetGroupVersionKind(krm.ComputeForwardingRuleGVK)
+	u.SetLabels(a.actual.Labels)
+
+	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
+		return nil, fmt.Errorf("setting spec: %w", err)
+	}
+
+	return u, nil
 }
 
 // Delete implements the Adapter interface.

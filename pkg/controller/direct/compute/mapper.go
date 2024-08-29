@@ -16,6 +16,7 @@ package compute
 
 import (
 	"strconv"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
@@ -47,9 +48,7 @@ func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krm.ForwardingruleIpAddress{}
-	out.AddressRef = &refs.ComputeAddressRef{
-		External: in,
-	}
+	out.Ip = direct.LazyPtr(in)
 	return out
 }
 
@@ -166,10 +165,34 @@ func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *direct.MapContext, in st
 		return nil
 	}
 	out := &krm.ForwardingruleTarget{}
-	// TODO(yuhou): ForwardingRuleTarget can be one of multiple target objects. We need to determine which one to assign the value to.
-	// Assign to TargetHTTPProxy temporarily
-	out.TargetHTTPProxyRef = &refs.ComputeTargetHTTPProxyRef{
-		External: in,
+	if strings.Contains(in, "serviceAttachments") {
+		out.ServiceAttachmentRef = &refs.ComputeServiceAttachmentRef{
+			External: in,
+		}
+	} else if strings.Contains(in, "targetGrpcProxies") {
+		out.TargetGRPCProxyRef = &refs.ComputeTargetGrpcProxyRef{
+			External: in,
+		}
+	} else if strings.Contains(in, "targetHttpProxies") {
+		out.TargetHTTPProxyRef = &refs.ComputeTargetHTTPProxyRef{
+			External: in,
+		}
+	} else if strings.Contains(in, "targetHttpsProxies") {
+		out.TargetHTTPSProxyRef = &refs.ComputeTargetHTTPSProxyRef{
+			External: in,
+		}
+	} else if strings.Contains(in, "targetSslProxies") {
+		out.TargetSSLProxyRef = &refs.ComputeTargetSSLProxyRef{
+			External: in,
+		}
+	} else if strings.Contains(in, "targetTcpProxies") {
+		out.TargetTCPProxyRef = &refs.ComputeTargetTCPProxyRef{
+			External: in,
+		}
+	} else if strings.Contains(in, "targetVpnGateways") {
+		out.TargetVPNGatewayRef = &refs.ComputeTargetVPNGatewayRef{
+			External: in,
+		}
 	}
 	return out
 }
