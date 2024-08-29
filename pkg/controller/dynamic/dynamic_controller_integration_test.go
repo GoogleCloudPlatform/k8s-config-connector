@@ -718,7 +718,7 @@ func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemCo
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		verifyResourceID(t, isServerGeneratedID, reconciledUnstruct, appliedUnstruct)
-	} else {
+	} else if resourceContext.IsTFResource {
 		rc, err := systemContext.SMLoader.GetResourceConfig(reconciledUnstruct)
 		if err != nil {
 			t.Fatalf("error getting resource config for Kind '%s', "+
