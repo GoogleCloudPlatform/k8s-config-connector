@@ -155,9 +155,13 @@ func (a *Applier) Load() error {
 		a.logger.Info(".spec.stages did not have a matching expander name")
 		return fmt.Errorf(".spec.stages did not have a matching expander name")
 	}
+
+	a.objects = []applyset.ApplyableObject{}
+
+	// We dont error out on empty manifests
 	if stage.Manifest == "" {
 		a.logger.Info(".spec.stages[name] has empty manifests. Nothing to apply")
-		return fmt.Errorf(".spec.stages[name] has empty manifests. Nothing to apply.")
+		return nil
 	}
 
 	objects, err := manifest.ParseObjects(a.ctx, stage.Manifest)
@@ -173,7 +177,6 @@ func (a *Applier) Load() error {
 	}
 	a.addStageLabel(objects)
 
-	a.objects = []applyset.ApplyableObject{}
 	// loop over objects and extract unstructured
 	for _, item := range objects.Items {
 
