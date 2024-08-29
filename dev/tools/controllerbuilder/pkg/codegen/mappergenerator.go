@@ -48,6 +48,8 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string) *Mapp
 	return g
 }
 
+type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
+
 func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 	packages, err := gocode.LoadPackageTree(goPackage, basePath)
 	if err != nil {
