@@ -525,6 +525,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("user", "user@example.com")
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("labelFingerprint", "abcdef0123A=")
+					addReplacement("fingerprint", "abcdef0123A=")
 					// Extract resource targetID numbers from compute operations
 					for _, event := range events {
 						body := event.Response.ParseBody()
@@ -542,6 +543,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									r.PathIDs[targetId] = "${sslCertificatesId}"
 								case "forwardingRules":
 									r.PathIDs[targetId] = "${forwardingRulesId}"
+								case "serviceAttachments":
+									r.PathIDs[targetId] = "${serviceAttachmentsId}"
 								}
 							}
 						}

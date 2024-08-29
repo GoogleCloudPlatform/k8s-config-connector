@@ -134,7 +134,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.gatewayId"] = 1111111111111111
 	visitor.replacePaths[".status.proxyId"] = 1111111111111111
 	visitor.replacePaths[".status.mapId"] = 1111111111111111
+	visitor.replacePaths[".status.id"] = 1111111111111111
 	visitor.replacePaths[".status.labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".status.fingerprint"] = "abcdef0123A="
 
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
