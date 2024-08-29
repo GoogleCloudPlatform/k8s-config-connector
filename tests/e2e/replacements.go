@@ -63,6 +63,9 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 		n := len(tokens)
 		kind := tokens[n-2]
 		id := tokens[n-1]
+		if id == "" {
+			break
+		}
 		switch kind {
 		case "tensorboards":
 			r.PathIDs[id] = "${tensorboardID}"
