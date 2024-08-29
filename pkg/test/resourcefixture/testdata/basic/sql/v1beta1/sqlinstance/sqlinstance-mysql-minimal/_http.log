@@ -311,7 +311,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysqlbasic-${uniqueId}/users?alt=json&name=root&prettyPrint=false
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysqlbasic-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK

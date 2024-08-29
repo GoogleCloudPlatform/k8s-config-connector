@@ -253,7 +253,7 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 			if user.Name == "root" && strings.HasPrefix(created.DatabaseVersion, "MYSQL") {
 				// Delete "root" user to match Terraform behavior, to improve default security.
 				// Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database_instance
-				op, err := a.sqlUsersClient.Delete(a.projectID, a.resourceID).Context(ctx).Name(user.Name).Do()
+				op, err := a.sqlUsersClient.Delete(a.projectID, a.resourceID).Context(ctx).Name(user.Name).Host(user.Host).Do()
 				if err != nil {
 					return fmt.Errorf("deleting SQLInstance %s root user failed: %w", a.desired.Name, err)
 				}
