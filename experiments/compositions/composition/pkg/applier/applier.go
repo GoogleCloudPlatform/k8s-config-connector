@@ -31,6 +31,8 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
+const StageLabel = "compositions.google.com/applier-stage"
+
 type ApplierClient struct {
 	RESTMapper meta.RESTMapper
 	Dynamic    *dynamic.DynamicClient
@@ -169,6 +171,7 @@ func (a *Applier) Load() error {
 		a.logger.Error(err, "Error injecting ownerRefs")
 		return err
 	}
+	a.addStageLabel(objects)
 
 	a.objects = []applyset.ApplyableObject{}
 	// loop over objects and extract unstructured
@@ -214,6 +217,13 @@ func (a *Applier) injectOwnerRef(objects *manifest.Objects) error {
 		}
 	}
 	return nil
+}
+
+func (a *Applier) addStageLabel(objects *manifest.Objects) {
+	labels := map[string]string{StageLabel: a.stageName}
+	for _, o := range objects.Items {
+		o.AddLabels(labels)
+	}
 }
 
 func (a *Applier) getApplyOptions(prune bool) (applyset.Options, error) {
