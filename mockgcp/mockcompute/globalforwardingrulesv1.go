@@ -82,6 +82,17 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 	if obj.NetworkTier == nil {
 		obj.NetworkTier = PtrTo("PREMIUM")
 	}
+	if isPSCForwardingRule(obj) {
+		var num uint64 = 111111111111
+		obj.PscConnectionId = &num
+		obj.ServiceDirectoryRegistrations = []*pb.ForwardingRuleServiceDirectoryRegistration{
+			{
+				Namespace:              PtrTo("goog-psc-${networkID}-${networkID}"),
+				ServiceDirectoryRegion: PtrTo("us-central1"),
+			},
+		}
+
+	}
 
 	// pattern: \d+(?:-\d+)?
 	if obj.PortRange != nil {
@@ -113,10 +124,17 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 		return nil, err
 	}
 
+	var opType *string
+	if isPSCForwardingRule(obj) {
+		opType = PtrTo("createPSCServiceEndpoint")
+	} else {
+		opType = PtrTo("insert")
+	}
+
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("insert"),
+		OperationType: opType,
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
@@ -138,10 +156,17 @@ func (s *GlobalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteGlob
 		return nil, err
 	}
 
+	var opType *string
+	if isPSCForwardingRule(deleted) {
+		opType = PtrTo("deletePSCServiceEndpoint")
+	} else {
+		opType = PtrTo("delete")
+	}
+
 	op := &pb.Operation{
 		TargetId:      deleted.Id,
 		TargetLink:    deleted.SelfLink,
-		OperationType: PtrTo("delete"),
+		OperationType: opType,
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
@@ -206,7 +231,7 @@ func (s *GlobalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTarg
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("SetTarget"),
+		OperationType: PtrTo("setTarget"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
@@ -243,4 +268,12 @@ func (s *MockService) parseGlobalForwardingRuleName(name string) (*globalForward
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func isPSCForwardingRule(obj *pb.ForwardingRule) bool {
+	target := *obj.Target
+	if target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/") {
+		return true
+	}
+	return false
 }

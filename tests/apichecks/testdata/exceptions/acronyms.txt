@@ -110,6 +110,7 @@
 [acronyms] crd=computefirewallpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".status.selfLinkWithId" should be ".status.selfLinkWithID"
 [acronyms] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceIpRanges" should be ".spec.sourceIPRanges"
 [acronyms] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceIpRanges[]" should be ".spec.sourceIPRanges[]"
+[acronyms] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.googleApiBundle" should be ".spec.target.googleAPIBundle"
 [acronyms] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".status.pscConnectionId" should be ".status.pscConnectionID"
 [acronyms] crd=computeimages.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.guestOsFeatures" should be ".spec.guestOSFeatures"
 [acronyms] crd=computeimages.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.guestOsFeatures[]" should be ".spec.guestOSFeatures[]"

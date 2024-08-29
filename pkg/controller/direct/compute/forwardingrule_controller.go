@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	"k8s.io/klog/v2"
 
@@ -110,7 +111,7 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 		obj.Spec.BackendServiceRef.External = backendServiceRef.External
 	}
 
-	// Get ip address, ip address is optional
+	// Get compute address, address is optional
 	if obj.Spec.IpAddress != nil && obj.Spec.IpAddress.AddressRef != nil {
 		computeAddressRef, err := ResolveComputeAddress(ctx, reader, obj, obj.Spec.IpAddress.AddressRef)
 		if err != nil {
@@ -293,7 +294,13 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = desired.Labels
+	target := direct.ValueOf(forwardingRule.Target)
+
+	// API restriction: Labels are invalid in Private Service Connect Forwarding Rule.
+	// TF workaround: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/944
+	if target != "all-apis" && target != "vpc-sc" && !strings.Contains(target, "/serviceAttachments/") {
+		forwardingRule.Labels = desired.Labels
+	}
 
 	// Create forwarding rule(labels are not set during Insert)
 	var err error
