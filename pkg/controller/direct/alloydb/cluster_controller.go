@@ -143,7 +143,7 @@ func (a *clusterAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *clusterAdapter) Delete(ctx context.Context) (bool, error) {
+func (a *clusterAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// Already deleted
 	if a.resourceID == "" {
 		return false, nil
@@ -181,7 +181,9 @@ func (a *clusterAdapter) waitForOp(ctx context.Context, op *api.Operation) error
 }
 
 // Create implements the Adapter interface.
-func (a *clusterAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *clusterAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(0).Info("creating object", "u", u)
 
@@ -228,7 +230,9 @@ func (a *clusterAdapter) Create(ctx context.Context, u *unstructured.Unstructure
 }
 
 // Update implements the Adapter interface.
-func (a *clusterAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *clusterAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	u := updateOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
 	var latest *api.Cluster

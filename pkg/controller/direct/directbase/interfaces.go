@@ -39,7 +39,7 @@ type Adapter interface {
 	// It returns (true, nil) if the object was deleted,
 	// and (false, nil) if the object was not found but should be presumed deleted.
 	// In an error, the state is not fully determined - a delete might be in progress.
-	Delete(ctx context.Context) (deleted bool, err error)
+	Delete(ctx context.Context, op *DeleteOperation) (deleted bool, err error)
 
 	// Find must be called as the first operation (unless we are deleting).
 	// It returns whether the corresponding GCP object was found.
@@ -48,12 +48,12 @@ type Adapter interface {
 	// Create creates a new GCP object.
 	// This should only be called when Find has previously returned false.
 	// The implementation should write the updated status into `u`.
-	Create(ctx context.Context, u *unstructured.Unstructured) error
+	Create(ctx context.Context, op *CreateOperation) error
 
 	// Update updates an existing GCP object.
 	// This should only be called when Find has previously returned true.
 	// The implementation should write the updated status into `u`.
-	Update(ctx context.Context, u *unstructured.Unstructured) error
+	Update(ctx context.Context, op *UpdateOperation) error
 
 	// Export fetches the cloud provider's representation of the object
 	// as an unstructured.Unstructured.

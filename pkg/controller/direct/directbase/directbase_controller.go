@@ -263,7 +263,8 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			return true, nil
 		}
 		if !k8s.HasAbandonAnnotation(u) {
-			if _, err := adapter.Delete(ctx); err != nil {
+			deleteOp := NewDeleteOperation(u)
+			if _, err := adapter.Delete(ctx, deleteOp); err != nil {
 				if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
@@ -287,7 +288,8 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	//policy.Spec.Etag = ""
 
 	if !existsAlready {
-		if err := adapter.Create(ctx, u); err != nil {
+		createOp := NewCreateOperation(u)
+		if err := adapter.Create(ctx, createOp); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
@@ -295,7 +297,8 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			return false, r.handleUpdateFailed(ctx, u, fmt.Errorf("error creating: %w", err))
 		}
 	} else {
-		if err := adapter.Update(ctx, u); err != nil {
+		updateOp := NewUpdateOperation(u)
+		if err := adapter.Update(ctx, updateOp); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)

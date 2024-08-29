@@ -401,7 +401,8 @@ func directCreate(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 		return nil, fmt.Errorf("GVK %s '%v' already exist", u.GroupVersionKind(), u.GetName())
 	}
 
-	err = a.Create(ctx, u)
+	op := directbase.NewCreateOperation(u)
+	err = a.Create(ctx, op)
 	if err != nil {
 		return nil, err
 	}
@@ -422,6 +423,7 @@ func directDelete(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 		return fmt.Errorf("GVK %s '%v' is not found", u.GroupVersionKind(), u.GetName())
 	}
 
-	_, err = a.Delete(ctx)
+	op := directbase.NewDeleteOperation(u)
+	_, err = a.Delete(ctx, op)
 	return err
 }

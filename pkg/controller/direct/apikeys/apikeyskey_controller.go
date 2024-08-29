@@ -168,7 +168,7 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *adapter) Delete(ctx context.Context) (bool, error) {
+func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteKeyRequest{
 		Name: a.fullyQualifiedName(),
@@ -204,7 +204,9 @@ func (a *adapter) buildCreateRequest() (*pb.CreateKeyRequest, error) {
 }
 
 // Create implements the Adapter interface.
-func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
@@ -228,7 +230,9 @@ func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 }
 
 // Update implements the Adapter interface.
-func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	// u := Op.GetUnstructured()
+
 	// TODO: Skip updates if no changes
 	// TODO: Where/how do we want to enforce immutability?
 	updateMask := &fieldmaskpb.FieldMask{}
