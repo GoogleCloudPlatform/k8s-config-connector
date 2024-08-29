@@ -26,6 +26,8 @@ cd ${REPO_ROOT}
 go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicySpec -fuzztime 60s
 go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicyObservedState -fuzztime 60s
 
+go test -v ./pkg/controller/direct/dataflow/ -fuzz=FuzzDataflowFlexTemplateJobSpec -fuzztime 60s
+
 go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterObservedState -fuzztime 60s
 

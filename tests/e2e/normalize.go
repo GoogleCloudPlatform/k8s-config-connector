@@ -47,19 +47,20 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	u.SetAnnotations(annotations)
 
 	visitor := objectWalker{}
+	visitor.removePaths = sets.New[string]()
+	visitor.replacePaths = map[string]any{}
+	visitor.sortSlices = sets.New[string]()
 
 	// Apply replacements
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return replacements.ApplyReplacements(s)
 	})
 
-	visitor.removePaths = sets.New[string]()
 	visitor.removePaths.Insert(".metadata.creationTimestamp")
 	visitor.removePaths.Insert(".metadata.managedFields")
 	visitor.removePaths.Insert(".metadata.resourceVersion")
 	visitor.removePaths.Insert(".metadata.uid")
 
-	visitor.replacePaths = map[string]any{}
 	visitor.replacePaths[".metadata.deletionTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
@@ -81,6 +82,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
+
+	// Specific to Dataflow
+	visitor.sortSlices.Insert(".spec.additionalExperiments")
 
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
@@ -164,7 +168,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountId"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
-	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")

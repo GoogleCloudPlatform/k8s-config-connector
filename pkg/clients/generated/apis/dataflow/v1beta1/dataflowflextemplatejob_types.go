@@ -42,25 +42,26 @@ type FlextemplatejobTransformNameMapping struct {
 }
 
 type DataflowFlexTemplateJobSpec struct {
-	/* List of experiments that should be used by the job. An example value is ["enable_stackdriver_agent_metrics"]. */
+	/* Additional experiment flags for the job. */
 	// +optional
 	AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
 
-	/* The algorithm to use for autoscaling. */
+	/* The algorithm to use for autoscaling */
 	// +optional
 	AutoscalingAlgorithm *string `json:"autoscalingAlgorithm,omitempty"`
 
+	/* Cloud Storage path to a file with json serialized ContainerSpec as content. */
 	ContainerSpecGcsPath string `json:"containerSpecGcsPath"`
 
-	/* Immutable. Indicates if the job should use the streaming engine feature. */
+	/* Whether to enable Streaming Engine for the job. */
 	// +optional
 	EnableStreamingEngine *bool `json:"enableStreamingEngine,omitempty"`
 
-	/* The configuration for VM IPs. Options are "WORKER_IP_PUBLIC" or "WORKER_IP_PRIVATE". */
+	/* Configuration for VM IPs. */
 	// +optional
 	IpConfiguration *string `json:"ipConfiguration,omitempty"`
 
-	/* The name for the Cloud KMS key for the job. */
+	/* The Cloud KMS key for the job. */
 	// +optional
 	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 
@@ -68,21 +69,23 @@ type DataflowFlexTemplateJobSpec struct {
 	// +optional
 	LauncherMachineType *string `json:"launcherMachineType,omitempty"`
 
-	/* The machine type to use for the job. */
+	/* The machine type to use for the job. Defaults to the value from the template if not specified. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Immutable. The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000. */
+	/* The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000. */
 	// +optional
-	MaxWorkers *int64 `json:"maxWorkers,omitempty"`
+	MaxWorkers *int32 `json:"maxWorkers,omitempty"`
 
+	/* Network to which VMs will be assigned.  If empty or unspecified, the service will use the network "default". */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. The initial number of Google Compute Engine instances for the job. */
+	/* The initial number of Google Compute Engine instances for the job. */
 	// +optional
-	NumWorkers *int64 `json:"numWorkers,omitempty"`
+	NumWorkers *int32 `json:"numWorkers,omitempty"`
 
+	/* The parameters for FlexTemplate. Ex. {"num_workers":"5"} */
 	// +optional
 	Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
 
@@ -94,21 +97,23 @@ type DataflowFlexTemplateJobSpec struct {
 	// +optional
 	SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
 
+	/* The email address of the service account to run the job as. */
 	// +optional
 	ServiceAccountEmailRef *v1alpha1.ResourceRef `json:"serviceAccountEmailRef,omitempty"`
 
-	/* The Cloud Storage path to use for staging files. Must be a valid Cloud Storage URL, beginning with gs://. */
+	/* The Cloud Storage path for staging local files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
 	// +optional
 	StagingLocation *string `json:"stagingLocation,omitempty"`
 
+	/* Subnetwork to which VMs will be assigned, if desired. You can specify a subnetwork using either a complete URL or an abbreviated path. Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK" or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in a Shared VPC network, you must use the complete URL. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with gs://. */
+	/* The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
 	// +optional
 	TempLocation *string `json:"tempLocation,omitempty"`
 
-	/* Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. */
+	/* Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. Only applicable when updating a pipeline. */
 	// +optional
 	TransformNameMapping *FlextemplatejobTransformNameMapping `json:"transformNameMapping,omitempty"`
 }
@@ -124,10 +129,21 @@ type DataflowFlexTemplateJobStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* The current state of the job.
+
+	Jobs are created in the `JOB_STATE_STOPPED` state unless otherwise
+	specified.
+
+	A job in the `JOB_STATE_RUNNING` state may asynchronously enter a
+	terminal state. After a job has reached a terminal state, no
+	further state updates may be made.
+
+	This field may be mutated by the Cloud Dataflow service;
+	callers cannot mutate it. */
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* The type of this job, selected from the JobType enum. */
+	/* The type of Cloud Dataflow job. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }

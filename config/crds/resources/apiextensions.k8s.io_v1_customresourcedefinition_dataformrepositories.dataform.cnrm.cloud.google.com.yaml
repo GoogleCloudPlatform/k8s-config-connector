@@ -239,9 +239,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The GCP Service Account Email used for auth when
-                      secretType is gcpServiceAccount. Allowed value: The `email`
-                      field of an `IAMServiceAccount` resource.'
+                    description: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

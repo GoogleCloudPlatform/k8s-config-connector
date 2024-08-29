@@ -27,7 +27,7 @@ import (
 )
 
 type IAMServiceAccountRef struct {
-	/* The GCP Service Account Email used for auth when secretType is gcpServiceAccount. Allowed value: The `email` field of an `IAMServiceAccount` resource. */
+	/* The `email` field of an `IAMServiceAccount` resource. */
 	External string `json:"external,omitempty"`
 	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
 	Name string `json:"name,omitempty"`

@@ -130,7 +130,7 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 	}
 	if in.MaxWorkers != nil {
 		in, out := &in.MaxWorkers, &out.MaxWorkers
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.NetworkRef != nil {
@@ -140,7 +140,7 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 	}
 	if in.NumWorkers != nil {
 		in, out := &in.NumWorkers, &out.NumWorkers
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Parameters != nil {

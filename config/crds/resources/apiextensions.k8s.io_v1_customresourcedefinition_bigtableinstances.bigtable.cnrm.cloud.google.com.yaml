@@ -129,14 +129,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.'
+                          description: A reference to an externally managed KMSCryptoKey.
+                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                           type: string
                         name:
-                          description: The `name` field of a `KMSCryptoKey` resource.
+                          description: The `name` of a `KMSCryptoKey` resource.
                           type: string
                         namespace:
-                          description: The `metadata.namespace` field of a `KMSCryptoKey`
-                            resource.
+                          description: The `namespace` of a `KMSCryptoKey` resource.
                           type: string
                       type: object
                     numNodes:
