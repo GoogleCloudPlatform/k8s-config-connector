@@ -28,6 +28,13 @@ import (
 	"k8s.io/klog/v2"
 )
 
+// Some special-case values that are not obvious how to map in KRM
+var protoMessagesNotMappedToGoStruct = map[string]string{
+	"google.protobuf.Timestamp":  "string",
+	"google.protobuf.Duration":   "string",
+	"google.protobuf.Int64Value": "int64",
+}
+
 type TypeGenerator struct {
 	generatorBase
 	goPackageForMessage OutputFunc
@@ -122,7 +129,7 @@ func (g *TypeGenerator) writeVisitedMessages() {
 		}
 		out := g.getOutputFile(k)
 
-		goTypeName := goNameForProtoMessage(msg, msg)
+		goTypeName := goNameForProtoMessage(msg)
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
 		if err != nil {
@@ -154,7 +161,7 @@ func (g *TypeGenerator) writeVisitedMessages() {
 }
 
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
-	goType := goNameForProtoMessage(msg, msg)
+	goType := goNameForProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
@@ -188,7 +195,7 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	} else {
 		switch field.Kind() {
 		case protoreflect.MessageKind:
-			goType = goNameForProtoMessage(msg, field.Message())
+			goType = goNameForProtoMessage(field.Message())
 
 		case protoreflect.EnumKind:
 			goType = "string" //string(field.Enum().Name())
@@ -239,21 +246,17 @@ func sorted(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDes
 	return messages
 }
 
-func goNameForProtoMessage(parentMessage protoreflect.MessageDescriptor, msg protoreflect.MessageDescriptor) string {
+func goNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
-	fullName = strings.TrimPrefix(fullName, string(parentMessage.ParentFile().FullName()))
-	fullName = strings.TrimPrefix(fullName, ".")
-	fullName = strings.ReplaceAll(fullName, ".", "_")
 
 	// Some special-case values that are not obvious how to map in KRM
-	switch fullName {
-	case "google_protobuf_Timestamp":
-		return "string"
-	case "google_protobuf_Duration":
-		return "string"
-	case "google_protobuf_Int64Value":
-		return "int64"
+	if goType, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
+		return goType
 	}
+
+	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
+	fullName = strings.TrimPrefix(fullName, ".")
+	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
 

@@ -112,10 +112,10 @@ type DataSourceParameter struct {
 	AllowedValues []string `json:"allowedValues,omitempty"`
 
 	// For integer and double values specifies minimum allowed value.
-	MinValue *google_protobuf_DoubleValue `json:"minValue,omitempty"`
+	MinValue *DoubleValue `json:"minValue,omitempty"`
 
 	// For integer and double values specifies maximum allowed value.
-	MaxValue *google_protobuf_DoubleValue `json:"maxValue,omitempty"`
+	MaxValue *DoubleValue `json:"maxValue,omitempty"`
 
 	// Deprecated. This field has no effect.
 	Fields []DataSourceParameter `json:"fields,omitempty"`
@@ -147,7 +147,7 @@ type EmailPreferences struct {
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
 type EncryptionConfiguration struct {
 	// The name of the KMS key used for encrypting BigQuery data.
-	KmsKeyName *google_protobuf_StringValue `json:"kmsKeyName,omitempty"`
+	KmsKeyName *StringValue `json:"kmsKeyName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptions
@@ -198,7 +198,7 @@ type TransferConfig struct {
 	//  bq tab in the 'Setting up a data transfer' section for each data source.
 	//  For example the parameters for Cloud Storage transfers are listed here:
 	//  https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
-	Params *google_protobuf_Struct `json:"params,omitempty"`
+	Params *Struct `json:"params,omitempty"`
 
 	// Data transfer schedule.
 	//  If the data source does not support a custom schedule, this should be
@@ -297,7 +297,7 @@ type TransferRun struct {
 	RunTime *string `json:"runTime,omitempty"`
 
 	// Status of the transfer run.
-	ErrorStatus *google_rpc_Status `json:"errorStatus,omitempty"`
+	ErrorStatus *Status `json:"errorStatus,omitempty"`
 
 	// Output only. Time when transfer run was started.
 	//  Parameter ignored by server for input requests.
@@ -315,7 +315,7 @@ type TransferRun struct {
 	//  source. For example the parameters for Cloud Storage transfers are listed
 	//  here:
 	//  https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
-	Params *google_protobuf_Struct `json:"params,omitempty"`
+	Params *Struct `json:"params,omitempty"`
 
 	// Output only. The BigQuery target dataset id.
 	DestinationDatasetID *string `json:"destinationDatasetID,omitempty"`
