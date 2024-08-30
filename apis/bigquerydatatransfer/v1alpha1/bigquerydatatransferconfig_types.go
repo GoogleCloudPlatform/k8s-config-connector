@@ -33,6 +33,8 @@ type BigQueryDataTransferConfigSpec struct {
 	//  to use the default value.
 	DataRefreshWindowDays *int32 `json:"dataRefreshWindowDays,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="DataSourceID field is immutable"
+	// Immutable.
 	// Data source ID. This cannot be changed once data transfer is created. The
 	//  full list of available data source IDs can be returned through an API call:
 	//  https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list
@@ -75,6 +77,8 @@ type BigQueryDataTransferConfigSpec struct {
 	// +required
 	Parent `json:",inline"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
+	// Immutable.
 	// The BigQueryDataTransferConfig name. If not given, the metadata.name will be used.
 	// + optional
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -105,6 +109,8 @@ type Parent struct {
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
 	// +required
 	Location string `json:"location"`
 }
