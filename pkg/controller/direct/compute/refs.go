@@ -154,9 +154,12 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 
 	// targetField: address
 	// See compute servicemappings for details
-	address, _, err := unstructured.NestedString(computeAddress.Object, "spec", "address")
+	// Because `spec.address` field is optional, we can't guarantee it always
+	// exists in a successfully reconciled ComputeAddress CR, so we should use
+	// the `status.observedState.address` instead.
+	address, _, err := unstructured.NestedString(computeAddress.Object, "status", "observedState", "address")
 	if err != nil || address == "" {
-		return nil, fmt.Errorf("cannot get address for referenced %s %v (spec.address is empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
+		return nil, fmt.Errorf("cannot get address for referenced %s %v (status.observedState.address is empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
 	}
 	return &refs.ComputeAddressRef{
 		External: address}, nil
