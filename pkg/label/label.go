@@ -15,12 +15,17 @@
 package label
 
 import (
+	"os"
 	"strings"
 )
 
-func NewGcpFromK8sLabels(labels map[string]string) map[string]string {
+func NewGcpFromK8sLabels(labels map[string]string, kccResourceType string) map[string]string {
 	res := RemoveLabelsWithKRMPrefix(labels)
 	res[CnrmManagedKey] = "true"
+	if os.Getenv("RUN_E2E") == "" {
+		return res
+	}
+	res[KCCResourceTypeKey] = strings.ToLower(kccResourceType)
 	return res
 }
 
@@ -56,8 +61,15 @@ func NewGCPLabelsFromK8SLabels(labelMaps ...map[string]string) map[string]interf
 	return res
 }
 
-func GetDefaultLabels() map[string]string {
+func GetDefaultLabels(resourceKind string) map[string]string {
+	// only add the resource type label for e2e tests.
+	if os.Getenv("RUN_E2E") == "" {
+		return map[string]string{
+			CnrmManagedKey: "true",
+		}
+	}
 	return map[string]string{
-		CnrmManagedKey: "true",
+		CnrmManagedKey:     "true",
+		KCCResourceTypeKey: strings.ToLower(resourceKind), // added to map KCC resource kind to product SKU ID.
 	}
 }

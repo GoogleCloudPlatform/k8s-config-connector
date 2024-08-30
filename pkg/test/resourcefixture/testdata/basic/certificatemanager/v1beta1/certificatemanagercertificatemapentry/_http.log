@@ -31,6 +31,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "sample certificate-map for creating certificate-map-entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificatemap",
     "managed-by-cnrm": "true"
   }
 }
@@ -117,6 +118,7 @@ X-Xss-Protection: 0
   "description": "sample certificate-map for creating certificate-map-entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificatemap",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
@@ -158,6 +160,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "sample certificate for creating certificate map entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -248,6 +251,7 @@ X-Xss-Protection: 0
   "description": "sample certificate for creating certificate map entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -296,6 +300,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "sample certificate map entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificatemapentry",
     "managed-by-cnrm": "true"
   },
   "matcher": "PRIMARY",
@@ -388,6 +393,7 @@ X-Xss-Protection: 0
   "description": "sample certificate map entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificatemapentry",
     "managed-by-cnrm": "true"
   },
   "matcher": "PRIMARY",
@@ -407,6 +413,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "updated certificate map entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificatemapentry",
     "managed-by-cnrm": "true"
   }
 }
@@ -497,6 +504,7 @@ X-Xss-Protection: 0
   "description": "updated certificate map entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificatemapentry",
     "managed-by-cnrm": "true"
   },
   "matcher": "PRIMARY",
@@ -584,6 +592,7 @@ X-Xss-Protection: 0
   "description": "sample certificate for creating certificate map entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -676,6 +685,7 @@ X-Xss-Protection: 0
   "description": "sample certificate-map for creating certificate-map-entry",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "certificatemanagercertificatemap",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",

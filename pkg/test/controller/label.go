@@ -23,7 +23,7 @@ import (
 // AssertLabelsMatchAndHaveManagedLabel checks that a given label appears in the label map.
 func AssertLabelsMatchAndHaveManagedLabel(t *testing.T, actual, expected map[string]string) {
 	t.Helper()
-	expectedCopy := label.NewGcpFromK8sLabels(expected)
+	expectedCopy := label.NewGcpFromK8sLabels(expected, "IAMPolicy")
 	for k, v := range expectedCopy {
 		if actualValue, ok := actual[k]; !ok {
 			t.Errorf("missing expected label with key '%v'", k)

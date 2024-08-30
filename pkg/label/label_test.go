@@ -27,7 +27,7 @@ func TestNewGcpFromK8sLabelsBasicMap(t *testing.T) {
 		"key2":        "val2",
 		"test.io/foo": "bar",
 	}
-	result := label.NewGcpFromK8sLabels(labels)
+	result := label.NewGcpFromK8sLabels(labels, "IAMPolicy")
 	expectedResult := map[string]string{
 		"key1":            "val1",
 		"key2":            "val2",
@@ -39,7 +39,7 @@ func TestNewGcpFromK8sLabelsBasicMap(t *testing.T) {
 }
 
 func TestNilMap(t *testing.T) {
-	result := label.NewGcpFromK8sLabels(nil)
+	result := label.NewGcpFromK8sLabels(nil, "IAMPolicy")
 	expectedResult := map[string]string{
 		"managed-by-cnrm": "true",
 	}
@@ -68,7 +68,7 @@ func TestNewGCPLabelsFromK8sLabelsBasicMap(t *testing.T) {
 		"key2":        "val2",
 		"test.io/foo": "bar",
 	}
-	result := label.NewGCPLabelsFromK8SLabels(labels, label.GetDefaultLabels())
+	result := label.NewGCPLabelsFromK8SLabels(labels, label.GetDefaultLabels("IAMPolicy"))
 	expectedResult := map[string]interface{}{
 		"key1":            "val1",
 		"key2":            "val2",

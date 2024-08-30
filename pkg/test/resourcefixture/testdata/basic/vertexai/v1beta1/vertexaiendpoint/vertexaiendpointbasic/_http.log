@@ -39,6 +39,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "displayName": "vertexai-endpoint-basic",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "vertexaiendpoint",
     "managed-by-cnrm": "true"
   }
 }
@@ -98,6 +99,7 @@ X-Xss-Protection: 0
     "displayName": "vertexai-endpoint-basic",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "vertexaiendpoint",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}"
@@ -128,6 +130,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "vertexaiendpoint",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
@@ -145,6 +148,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "displayName": "vertexai-endpoint-basic-updated",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -168,6 +172,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -199,6 +204,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "vertexaiendpoint",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },

@@ -38,6 +38,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
@@ -71,6 +72,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",
@@ -117,6 +119,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",
@@ -804,6 +807,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "storagebucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",

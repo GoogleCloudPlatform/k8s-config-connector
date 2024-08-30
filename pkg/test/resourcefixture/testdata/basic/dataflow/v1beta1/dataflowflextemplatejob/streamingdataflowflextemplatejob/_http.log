@@ -40,6 +40,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerydataset",
     "managed-by-cnrm": "true"
   },
   "location": "US"
@@ -85,6 +86,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerydataset",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -139,6 +141,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerydataset",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -187,6 +190,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerytable",
     "managed-by-cnrm": "true"
   },
   "tableReference": {
@@ -214,6 +218,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerytable",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -257,6 +262,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerytable",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -310,6 +316,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -328,6 +335,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
@@ -353,6 +361,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
@@ -392,6 +401,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -410,6 +420,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}"
@@ -435,6 +446,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}"
@@ -476,6 +488,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "expirationPolicy": null,
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubsubscription",
     "managed-by-cnrm": "true"
   },
   "messageRetentionDuration": "604800s",
@@ -499,6 +512,7 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubsubscription",
     "managed-by-cnrm": "true"
   },
   "messageRetentionDuration": "604800s",
@@ -556,6 +570,7 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubsubscription",
     "managed-by-cnrm": "true"
   },
   "messageRetentionDuration": "604800s",
@@ -1229,6 +1244,7 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubsubscription",
     "managed-by-cnrm": "true"
   },
   "messageRetentionDuration": "604800s",
@@ -1277,6 +1293,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}"
@@ -1321,6 +1338,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "pubsubtopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
@@ -1368,6 +1386,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerytable",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -1449,6 +1468,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "bigquerydataset",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",

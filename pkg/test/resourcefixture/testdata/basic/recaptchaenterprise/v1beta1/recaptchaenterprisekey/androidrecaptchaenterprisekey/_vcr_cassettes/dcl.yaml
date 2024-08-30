@@ -26,7 +26,7 @@ interactions:
       host: recaptchaenterprise.googleapis.com
       remote_addr: ""
       request_uri: ""
-      body: '{"androidSettings":{"allowAllPackageNames":true},"displayName":"display-name-one","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"testingOptions":{"testingScore":0.8}}'
+      body: '{"androidSettings":{"allowAllPackageNames":true},"displayName":"display-name-one","labels":{"cnrm-test":"true","config-connector-resource-type":"recaptchaenterprisekey","label-one":"value-one","managed-by-cnrm":"true"},"testingOptions":{"testingScore":0.8}}'
       form: {}
       headers:
         Content-Type:
@@ -52,6 +52,7 @@ interactions:
           },
           "labels": {
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "label-one": "value-one",
             "managed-by-cnrm": "true"
           },
@@ -103,6 +104,7 @@ interactions:
           },
           "labels": {
             "label-one": "value-one",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
@@ -154,6 +156,7 @@ interactions:
             "supportNonGoogleAppStoreDistribution": false
           },
           "labels": {
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "label-one": "value-one",
             "managed-by-cnrm": "true",
             "cnrm-test": "true"
@@ -207,6 +210,7 @@ interactions:
           },
           "labels": {
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "label-one": "value-one",
             "managed-by-cnrm": "true"
           },
@@ -260,6 +264,7 @@ interactions:
           "labels": {
             "label-one": "value-one",
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "managed-by-cnrm": "true"
           },
           "testingOptions": {
@@ -310,6 +315,7 @@ interactions:
             "supportNonGoogleAppStoreDistribution": false
           },
           "labels": {
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "managed-by-cnrm": "true",
             "label-one": "value-one",
             "cnrm-test": "true"
@@ -363,6 +369,7 @@ interactions:
           },
           "labels": {
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "label-one": "value-one",
             "managed-by-cnrm": "true"
           },
@@ -416,6 +423,7 @@ interactions:
           "labels": {
             "label-one": "value-one",
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "managed-by-cnrm": "true"
           },
           "testingOptions": {
@@ -467,6 +475,7 @@ interactions:
           },
           "labels": {
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "managed-by-cnrm": "true",
             "label-one": "value-one"
           },
@@ -518,6 +527,7 @@ interactions:
             "supportNonGoogleAppStoreDistribution": false
           },
           "labels": {
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "label-one": "value-one",
             "managed-by-cnrm": "true",
             "cnrm-test": "true"
@@ -545,7 +555,7 @@ interactions:
       host: recaptchaenterprise.googleapis.com
       remote_addr: ""
       request_uri: ""
-      body: '{"androidSettings":{"allowAllPackageNames":false,"allowedPackageNames":["com.android.application"]},"displayName":"display-name-two","labels":{"cnrm-test":"true","label-one":"value-one","label-two":"value-two","managed-by-cnrm":"true"}}'
+      body: '{"androidSettings":{"allowAllPackageNames":false,"allowedPackageNames":["com.android.application"]},"displayName":"display-name-two","labels":{"cnrm-test":"true","config-connector-resource-type":"recaptchaenterprisekey","label-one":"value-one","label-two":"value-two","managed-by-cnrm":"true"}}'
       form: {}
       headers:
         Content-Type:
@@ -573,6 +583,7 @@ interactions:
           },
           "labels": {
             "label-one": "value-one",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "cnrm-test": "true",
             "managed-by-cnrm": "true",
             "label-two": "value-two"
@@ -628,6 +639,7 @@ interactions:
           },
           "labels": {
             "label-two": "value-two",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "cnrm-test": "true",
             "managed-by-cnrm": "true",
             "label-one": "value-one"
@@ -685,6 +697,7 @@ interactions:
             "managed-by-cnrm": "true",
             "label-two": "value-two",
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "label-one": "value-one"
           },
           "testingOptions": {
@@ -740,6 +753,7 @@ interactions:
             "label-two": "value-two",
             "label-one": "value-one",
             "cnrm-test": "true",
+            "config-connector-resource-type": "recaptchaenterprisekey",
             "managed-by-cnrm": "true"
           },
           "testingOptions": {

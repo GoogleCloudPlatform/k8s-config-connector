@@ -62,7 +62,7 @@ interactions:
         remote_addr: ""
         request_uri: ""
         body: |
-            {"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"KCC 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby"}
+            {"labels":{"cnrm-test":"true","config-connector-resource-type":"project","managed-by-cnrm":"true"},"name":"KCC 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby"}
         form: {}
         headers:
             Content-Type:
@@ -131,6 +131,7 @@ interactions:
                 "name": "KCC 2r0ydlvdt0yby",
                 "labels": {
                   "cnrm-test": "true",
+                  "config-connector-resource-type": "Project",
                   "managed-by-cnrm": "true"
                 },
                 "createTime": "2024-04-30T17:16:39.043644Z",
@@ -174,7 +175,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
@@ -242,7 +243,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
@@ -310,7 +311,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
@@ -378,7 +379,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
@@ -399,7 +400,7 @@ interactions:
         remote_addr: ""
         request_uri: ""
         body: |
-            {"createTime":"2024-04-30T17:16:39.043644Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby","projectNumber":"473324289142"}
+            {"createTime":"2024-04-30T17:16:39.043644Z","labels":{"cnrm-test":"config-connector-resource-type":"project","true","managed-by-cnrm":"true"},"lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby","projectNumber":"473324289142"}
         form: {}
         headers:
             Content-Type:
@@ -416,7 +417,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
@@ -437,7 +438,7 @@ interactions:
         remote_addr: ""
         request_uri: ""
         body: |
-            {"createTime":"2024-04-30T17:16:39.043644Z","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby","projectNumber":"473324289142"}
+            {"createTime":"2024-04-30T17:16:39.043644Z","labels":{"cnrm-test":"true","config-connector-resource-type":"project","label-one":"value-one","managed-by-cnrm":"true"},"lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby","projectNumber":"473324289142"}
         form: {}
         headers:
             Content-Type:
@@ -454,7 +455,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
@@ -489,7 +490,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
@@ -557,7 +558,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","config-connector-resource-type":"project","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8

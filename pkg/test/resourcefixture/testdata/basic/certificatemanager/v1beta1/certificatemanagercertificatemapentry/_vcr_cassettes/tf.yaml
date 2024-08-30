@@ -15,1270 +15,1520 @@
 ---
 version: 2
 interactions:
-  - id: 0
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 181.287632ms
-  - id: 1
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 338.815342ms
-  - id: 2
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 131
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"description":"sample certificate-map for creating certificate-map-entry","labels":{"cnrm-test":"true","managed-by-cnrm":"true"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps?alt=json&certificateMapId=certificatemanagercertificatemap17jkligfb0gpx
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007991376-616e19577d9eb-af968051-62a692eb",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:51.465665742Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
-            "verb": "create",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": false
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 468.839083ms
-  - id: 3
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 3078
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"description":"sample certificate for creating certificate map entry","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"selfManaged":{"pemCertificate":"-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----","pemPrivateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC85P3bkYbiUpX0\ne8Aext5wyEY8CqOFVELbqJlQkLyhJY673mVYlJflmFuIXo3PX3bAMZX9UCHcvGPx\nFi1yfvl4PFApNwqi4OV35OgIYhK08VZtHqtvKwu5moVURdU5O+nZAh6Aid+u+cYL\niPtCmJzvOsUH0fMnH7Qel4TI7iCR3Ml8Qr+AyaiVSAmspfn2j7T5GP4mrcS1xDEv\nV9UFUlLHQ2+mhHV5imccyv+skpmRRRnbETzqGu2mI/o4RhBOLTSuZ/gadkXlB8YY\nPTG6hBe1HtO75eEqJtciHFwPhHM8tfVBLTjQ9e+Yw8sNvhiVRDpXdGzjYkO+SQPA\ngxdm+fxrAgMBAAECggEAV4/A24TQpV4KFBw/WSTvnRFBeXinB1mhamhztWR6hCrA\nSPcVPKQY632eRI8sJmpGxl3V/Ogl4khT/cA9jfstEl7G++v/WrRsupCaPLSVnlnX\nKdsTNgOauk1WK9P5PMA4rPcuA4Cl91riQpubeWn8KWsxRWg90i+Ak8PB8lBsOaB1\nQzjigWlrRWSpodaw0MBIMZFDL2BYK8HEr+wyATYIyGvDQc9zCnMQIQIZyEPYepLO\n04Dw17YcjgnoJ5gLAFiTvDrCpTMewud1RQzvW5TAvG2piw34sf3QMGPM7aXNrfuZ\n4ZPC/MwVQgq9Nc+jeDsjApQmJKJ+3a8OdIPU89ArTQKBgQDCpHHQe1RzpHmIx47/\n9N5r+NPBhh8flDYmvgi6zPeBfrAaLWhidS8c7Voa6HwvMxbhryDEvc0YqI3vllfy\nxnRF+DfSryozW0gjrkXDGoOzqOJ3EuQwLSJnyX6La2lmufqsRFazwYJ5sxcjoGHK\n/sbwZkIUj1ejuH44ve+ZJQFfpwKBgQD4cLJrJhqImUDhHZRx9jBvxyeHy/RjmHK6\n70xQVDi9ZqeExHwtoSbolhXKLB1RtBnw+t5Csy7IDNBDsbUg9fXU8KyCTIdmsyws\nbDb5hdKsUF76rkKzlpttiXMRVWGS3CMKWahBpnL3lFB3tdtmskemkBTXVn4VgKAH\nxk9XnZ11nQKBgDbQSJ0FnkrSzscOK984/ko50Kh3NNyXyIgwjBTPFASLwNweXX8c\nsR/cV7usLQy9vnvf7cJ6EQAYt5/5Httnt+bceBwE6EV+N1qVAWBoXx6BOQV/dHN8\nwmun+tMYdJ5RUZ6hwCjvHedX3/RQfjnEdhHNOl6/31Zj5mfkVU0zdqeRAoGAcvIh\nerXMfPr7K6y16+xOCMmKHqhc0F/OZXMmSdxNzEPcqe8GzU3MZLxcJIg4oH7FqdtI\nTm/86w4Spd9owHFMZlNcXYTu+LNZcsw2u0gRayxcZXuO3OyHySxZEuIAHSTBCZ7l\n3EoY0zfJ6zk249MEl6n+GouoFmbGpBI6z3zbR3kCgYEAlCNZVH4uJrP5beTOZTTR\nVJRk7BXvEC6HsM140YtIN7NHy2GtzrgmmY/ZAFB/hX8Ft4ex2MxbIp3hvxroTqGn\nbfu7uv97NoPQqbjtc3Mz8h2IaXTVDUnWYY5gDu6rM2w+Z75/sWIGiTWrsdYX4ohb\nujngzJ7Ew7GgKSboj6mtlVM=\n-----END PRIVATE KEY-----\n"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate17jkligfb0gpx
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007991749-616e1957d8adb-fa3ede67-b1477105",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:51.868961673Z",
-            "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-            "verb": "create",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": false
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 528.984918ms
-  - id: 4
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714007991376-616e19577d9eb-af968051-62a692eb?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007991376-616e19577d9eb-af968051-62a692eb",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:51.465665742Z",
-            "endTime": "2024-04-25T01:19:51.663396871Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
-            "verb": "create",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMap",
-            "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
-            "createTime": "2024-04-25T01:19:51.427076968Z",
-            "description": "sample certificate-map for creating certificate-map-entry",
-            "updateTime": "2024-04-25T01:19:51.427076968Z"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 317.982634ms
-  - id: 5
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714007991749-616e1957d8adb-fa3ede67-b1477105?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007991749-616e1957d8adb-fa3ede67-b1477105",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:51.868961673Z",
-            "endTime": "2024-04-25T01:19:52.251302611Z",
-            "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-            "verb": "create",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
-            "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-            "createTime": "2024-04-25T01:19:51.796275912Z",
-            "updateTime": "2024-04-25T01:19:51.796275912Z",
-            "labels": {
-              "managed-by-cnrm": "true",
-              "cnrm-test": "true",
-              "label-one": "value-one"
-            },
-            "selfManaged": {},
-            "sanDnsnames": [
-              "example.com"
-            ],
-            "expireTime": "3021-12-25T08:40:51Z",
-            "description": "sample certificate for creating certificate map entry",
-            "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 314.887691ms
-  - id: 6
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:51.427076968Z",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true"
-          },
-          "description": "sample certificate-map for creating certificate-map-entry",
-          "updateTime": "2024-04-25T01:19:51.690363345Z"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 318.565289ms
-  - id: 7
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:51.796275912Z",
-          "updateTime": "2024-04-25T01:19:52.416687117Z",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true",
-            "label-one": "value-one"
-          },
-          "selfManaged": {},
-          "sanDnsnames": [
-            "example.com"
-          ],
-          "expireTime": "3021-12-25T08:40:51Z",
-          "description": "sample certificate for creating certificate map entry",
-          "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 349.617246ms
-  - id: 8
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 301.51045ms
-  - id: 9
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 310
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"certificates":["projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"],"description":"sample certificate map entry","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"matcher":"PRIMARY","name":"certificatemanagercertificatemapentry17jkligfb0gpx"}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries?alt=json&certificateMapEntryId=certificatemanagercertificatemapentry17jkligfb0gpx
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007994845-616e195acc7d2-8af0525d-bf4501be",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:54.985712759Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "verb": "create",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": false
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 555.630236ms
-  - id: 10
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714007994845-616e195acc7d2-8af0525d-bf4501be?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007994845-616e195acc7d2-8af0525d-bf4501be",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:54.985712759Z",
-            "endTime": "2024-04-25T01:19:55.224705546Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "verb": "create",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMapEntry",
-            "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "createTime": "2024-04-25T01:19:54.945820851Z",
-            "updateTime": "2024-04-25T01:19:54.945820851Z",
-            "labels": {
-              "cnrm-test": "true",
-              "managed-by-cnrm": "true"
-            },
-            "certificates": [
-              "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
-            ],
-            "state": "PENDING",
-            "description": "sample certificate map entry",
-            "matcher": "PRIMARY"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 284.011107ms
-  - id: 11
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:54.945820851Z",
-          "updateTime": "2024-04-25T01:19:55.250734574Z",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "certificates": [
-            "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
-          ],
-          "state": "PENDING",
-          "description": "sample certificate map entry",
-          "matcher": "PRIMARY"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 315.207826ms
-  - id: 12
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:54.945820851Z",
-          "updateTime": "2024-04-25T01:19:55.250734574Z",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "certificates": [
-            "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
-          ],
-          "state": "PENDING",
-          "description": "sample certificate map entry",
-          "matcher": "PRIMARY"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 247.75457ms
-  - id: 13
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 216
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"certificates":["projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"],"description":"updated certificate map entry","labels":{"cnrm-test":"true","managed-by-cnrm":"true"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json&updateMask=description
-      method: PATCH
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007998291-616e195e15e9b-9230900f-a8357c35",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:58.383140672Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "verb": "update",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": false
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 448.388538ms
-  - id: 14
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714007998291-616e195e15e9b-9230900f-a8357c35?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714007998291-616e195e15e9b-9230900f-a8357c35",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:19:58.383140672Z",
-            "endTime": "2024-04-25T01:19:58.625055390Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "verb": "update",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMapEntry",
-            "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "createTime": "2024-04-25T01:19:54.945820851Z",
-            "updateTime": "2024-04-25T01:19:58.385369854Z",
-            "labels": {
-              "cnrm-test": "true",
-              "managed-by-cnrm": "true"
-            },
-            "certificates": [
-              "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
-            ],
-            "state": "PENDING",
-            "description": "updated certificate map entry",
-            "matcher": "PRIMARY"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 311.028299ms
-  - id: 15
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:54.945820851Z",
-          "updateTime": "2024-04-25T01:19:58.648632061Z",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "certificates": [
-            "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
-          ],
-          "state": "PENDING",
-          "description": "updated certificate map entry",
-          "matcher": "PRIMARY"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 276.345664ms
-  - id: 16
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:51.796275912Z",
-          "updateTime": "2024-04-25T01:19:52.416687117Z",
-          "labels": {
-            "cnrm-test": "true",
-            "label-one": "value-one",
-            "managed-by-cnrm": "true"
-          },
-          "selfManaged": {},
-          "sanDnsnames": [
-            "example.com"
-          ],
-          "expireTime": "3021-12-25T08:40:51Z",
-          "description": "sample certificate for creating certificate map entry",
-          "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 111.349855ms
-  - id: 17
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:54.945820851Z",
-          "updateTime": "2024-04-25T01:19:58.648632061Z",
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "certificates": [
-            "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
-          ],
-          "state": "PENDING",
-          "description": "updated certificate map entry",
-          "matcher": "PRIMARY"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 113.147004ms
-  - id: 18
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:51.427076968Z",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true"
-          },
-          "description": "sample certificate-map for creating certificate-map-entry",
-          "updateTime": "2024-04-25T01:19:51.690363345Z"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 273.972337ms
-  - id: 19
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714008000903-616e19609382c-c436e581-181bf414",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:20:00.945165491Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "verb": "delete",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": false
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 235.06025ms
-  - id: 20
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 400 Bad Request
-      code: 400
-      duration: 332.869306ms
-  - id: 21
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714008000903-616e19609382c-c436e581-181bf414?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714008000903-616e19609382c-c436e581-181bf414",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:20:00.945165491Z",
-            "endTime": "2024-04-25T01:20:01.201149305Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
-            "verb": "delete",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.protobuf.Empty"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 276.948354ms
-  - id: 22
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714008001388-616e19610a029-9e85393d-eb8d7bb2",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:20:01.433141878Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
-            "verb": "delete",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": false
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 475.180934ms
-  - id: 23
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714008001388-616e19610a029-9e85393d-eb8d7bb2?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714008001388-616e19610a029-9e85393d-eb8d7bb2",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:20:01.433141878Z",
-            "endTime": "2024-04-25T01:20:01.710930724Z",
-            "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
-            "verb": "delete",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.protobuf.Empty"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 118.210019ms
-  - id: 24
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-          "createTime": "2024-04-25T01:19:51.796275912Z",
-          "updateTime": "2024-04-25T01:19:52.416687117Z",
-          "labels": {
-            "managed-by-cnrm": "true",
-            "cnrm-test": "true",
-            "label-one": "value-one"
-          },
-          "selfManaged": {},
-          "sanDnsnames": [
-            "example.com"
-          ],
-          "expireTime": "3021-12-25T08:40:51Z",
-          "description": "sample certificate for creating certificate map entry",
-          "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 318.539093ms
-  - id: 25
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714008003490-616e19630b0f5-aa909968-bd53fb92",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:20:03.615984972Z",
-            "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-            "verb": "delete",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": false
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 564.280955ms
-  - id: 26
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: certificatemanager.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714008003490-616e19630b0f5-aa909968-bd53fb92?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "name": "projects/example-project/locations/global/operations/operation-1714008003490-616e19630b0f5-aa909968-bd53fb92",
-          "metadata": {
-            "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
-            "createTime": "2024-04-25T01:20:03.615984972Z",
-            "endTime": "2024-04-25T01:20:03.996660860Z",
-            "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
-            "verb": "delete",
-            "requestedCancellation": false,
-            "apiVersion": "v1"
-          },
-          "done": true,
-          "response": {
-            "@type": "type.googleapis.com/google.protobuf.Empty"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 116.37746ms
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 169.094373ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 199.614002ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 199
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"description":"sample certificate-map for creating certificate-map-entry","labels":{"cnrm-test":"true","config-connector-resource-type":"certificatemanagercertificatemap","managed-by-cnrm":"true"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps?alt=json&certificateMapId=certificatemanagercertificatemap17jkligfb0gpx
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818568547-620b69e148c2a-b69f3749-2d7d30f4",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:08.620489394Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 216.682161ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 3143
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"description":"sample certificate for creating certificate map entry","labels":{"cnrm-test":"true","config-connector-resource-type":"certificatemanagercertificate","label-one":"value-one","managed-by-cnrm":"true"},"selfManaged":{"pemCertificate":"-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----","pemPrivateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC85P3bkYbiUpX0\ne8Aext5wyEY8CqOFVELbqJlQkLyhJY673mVYlJflmFuIXo3PX3bAMZX9UCHcvGPx\nFi1yfvl4PFApNwqi4OV35OgIYhK08VZtHqtvKwu5moVURdU5O+nZAh6Aid+u+cYL\niPtCmJzvOsUH0fMnH7Qel4TI7iCR3Ml8Qr+AyaiVSAmspfn2j7T5GP4mrcS1xDEv\nV9UFUlLHQ2+mhHV5imccyv+skpmRRRnbETzqGu2mI/o4RhBOLTSuZ/gadkXlB8YY\nPTG6hBe1HtO75eEqJtciHFwPhHM8tfVBLTjQ9e+Yw8sNvhiVRDpXdGzjYkO+SQPA\ngxdm+fxrAgMBAAECggEAV4/A24TQpV4KFBw/WSTvnRFBeXinB1mhamhztWR6hCrA\nSPcVPKQY632eRI8sJmpGxl3V/Ogl4khT/cA9jfstEl7G++v/WrRsupCaPLSVnlnX\nKdsTNgOauk1WK9P5PMA4rPcuA4Cl91riQpubeWn8KWsxRWg90i+Ak8PB8lBsOaB1\nQzjigWlrRWSpodaw0MBIMZFDL2BYK8HEr+wyATYIyGvDQc9zCnMQIQIZyEPYepLO\n04Dw17YcjgnoJ5gLAFiTvDrCpTMewud1RQzvW5TAvG2piw34sf3QMGPM7aXNrfuZ\n4ZPC/MwVQgq9Nc+jeDsjApQmJKJ+3a8OdIPU89ArTQKBgQDCpHHQe1RzpHmIx47/\n9N5r+NPBhh8flDYmvgi6zPeBfrAaLWhidS8c7Voa6HwvMxbhryDEvc0YqI3vllfy\nxnRF+DfSryozW0gjrkXDGoOzqOJ3EuQwLSJnyX6La2lmufqsRFazwYJ5sxcjoGHK\n/sbwZkIUj1ejuH44ve+ZJQFfpwKBgQD4cLJrJhqImUDhHZRx9jBvxyeHy/RjmHK6\n70xQVDi9ZqeExHwtoSbolhXKLB1RtBnw+t5Csy7IDNBDsbUg9fXU8KyCTIdmsyws\nbDb5hdKsUF76rkKzlpttiXMRVWGS3CMKWahBpnL3lFB3tdtmskemkBTXVn4VgKAH\nxk9XnZ11nQKBgDbQSJ0FnkrSzscOK984/ko50Kh3NNyXyIgwjBTPFASLwNweXX8c\nsR/cV7usLQy9vnvf7cJ6EQAYt5/5Httnt+bceBwE6EV+N1qVAWBoXx6BOQV/dHN8\nwmun+tMYdJ5RUZ6hwCjvHedX3/RQfjnEdhHNOl6/31Zj5mfkVU0zdqeRAoGAcvIh\nerXMfPr7K6y16+xOCMmKHqhc0F/OZXMmSdxNzEPcqe8GzU3MZLxcJIg4oH7FqdtI\nTm/86w4Spd9owHFMZlNcXYTu+LNZcsw2u0gRayxcZXuO3OyHySxZEuIAHSTBCZ7l\n3EoY0zfJ6zk249MEl6n+GouoFmbGpBI6z3zbR3kCgYEAlCNZVH4uJrP5beTOZTTR\nVJRk7BXvEC6HsM140YtIN7NHy2GtzrgmmY/ZAFB/hX8Ft4ex2MxbIp3hvxroTqGn\nbfu7uv97NoPQqbjtc3Mz8h2IaXTVDUnWYY5gDu6rM2w+Z75/sWIGiTWrsdYX4ohb\nujngzJ7Ew7GgKSboj6mtlVM=\n-----END PRIVATE KEY-----\n"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate17jkligfb0gpx
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818568520-620b69e142401-48b94717-dcb2238a",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:08.652600313Z",
+                "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 285.360589ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1724818568547-620b69e148c2a-b69f3749-2d7d30f4?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818568547-620b69e148c2a-b69f3749-2d7d30f4",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:08.620489394Z",
+                "endTime": "2024-08-28T04:16:08.765526639Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMap",
+                "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+                "createTime": "2024-08-28T04:16:08.616034287Z",
+                "description": "sample certificate-map for creating certificate-map-entry",
+                "updateTime": "2024-08-28T04:16:08.616034287Z"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 44.323219ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1724818568520-620b69e142401-48b94717-dcb2238a?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818568520-620b69e142401-48b94717-dcb2238a",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:08.652600313Z",
+                "endTime": "2024-08-28T04:16:08.884408687Z",
+                "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
+                "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+                "createTime": "2024-08-28T04:16:08.647706434Z",
+                "updateTime": "2024-08-28T04:16:08.647706434Z",
+                "labels": {
+                  "cnrm-test": "true",
+                  "config-connector-resource-type": "certificatemanagercertificate",
+                  "label-one": "value-one",
+                  "managed-by-cnrm": "true"
+                },
+                "selfManaged": {},
+                "sanDnsnames": [
+                  "example.com"
+                ],
+                "expireTime": "3021-12-25T08:40:51Z",
+                "description": "sample certificate for creating certificate map entry",
+                "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 45.407359ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.616034287Z",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificatemap"
+              },
+              "description": "sample certificate-map for creating certificate-map-entry",
+              "updateTime": "2024-08-28T04:16:08.794517522Z"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 150.565094ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.647706434Z",
+              "updateTime": "2024-08-28T04:16:08.909315910Z",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificate",
+                "label-one": "value-one"
+              },
+              "selfManaged": {},
+              "sanDnsnames": [
+                "example.com"
+              ],
+              "expireTime": "3021-12-25T08:40:51Z",
+              "description": "sample certificate for creating certificate map entry",
+              "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 62.731488ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 74.193797ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 373
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"certificates":["projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"],"description":"sample certificate map entry","labels":{"cnrm-test":"true","config-connector-resource-type":"certificatemanagercertificatemapentry","managed-by-cnrm":"true"},"matcher":"PRIMARY","name":"certificatemanagercertificatemapentry17jkligfb0gpx"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries?alt=json&certificateMapEntryId=certificatemanagercertificatemapentry17jkligfb0gpx
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818569679-620b69e25d128-f52f65be-c984b264",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:09.787719542Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 261.76056ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1724818569679-620b69e25d128-f52f65be-c984b264?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818569679-620b69e25d128-f52f65be-c984b264",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:09.787719542Z",
+                "endTime": "2024-08-28T04:16:10.002083615Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMapEntry",
+                "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "createTime": "2024-08-28T04:16:09.781604262Z",
+                "updateTime": "2024-08-28T04:16:09.781604262Z",
+                "labels": {
+                  "cnrm-test": "true",
+                  "config-connector-resource-type": "certificatemanagercertificatemapentry",
+                  "managed-by-cnrm": "true"
+                },
+                "certificates": [
+                  "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
+                ],
+                "state": "PENDING",
+                "description": "sample certificate map entry",
+                "matcher": "PRIMARY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 79.208048ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:09.781604262Z",
+              "updateTime": "2024-08-28T04:16:10.026782133Z",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificatemapentry"
+              },
+              "certificates": [
+                "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
+              ],
+              "state": "PENDING",
+              "description": "sample certificate map entry",
+              "matcher": "PRIMARY"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 55.253958ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:09.781604262Z",
+              "updateTime": "2024-08-28T04:16:10.026782133Z",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificatemapentry",
+                "managed-by-cnrm": "true"
+              },
+              "certificates": [
+                "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
+              ],
+              "state": "PENDING",
+              "description": "sample certificate map entry",
+              "matcher": "PRIMARY"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 63.106198ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 290
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"certificates":["projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"],"description":"updated certificate map entry","labels":{"cnrm-test":"true","config-connector-resource-type":"certificatemanagercertificatemapentry","managed-by-cnrm":"true"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json&updateMask=description
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818571714-620b69e44e0f5-bb60166e-6a08b907",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:11.772539160Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "verb": "update",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 205.540722ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1724818571714-620b69e44e0f5-bb60166e-6a08b907?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818571714-620b69e44e0f5-bb60166e-6a08b907",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:11.772539160Z",
+                "endTime": "2024-08-28T04:16:11.951854915Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "verb": "update",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMapEntry",
+                "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "createTime": "2024-08-28T04:16:09.781604262Z",
+                "updateTime": "2024-08-28T04:16:11.774303520Z",
+                "labels": {
+                  "managed-by-cnrm": "true",
+                  "cnrm-test": "true",
+                  "config-connector-resource-type": "certificatemanagercertificatemapentry"
+                },
+                "certificates": [
+                  "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
+                ],
+                "state": "PENDING",
+                "description": "updated certificate map entry",
+                "matcher": "PRIMARY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 63.144448ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:09.781604262Z",
+              "updateTime": "2024-08-28T04:16:11.976595529Z",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificatemapentry"
+              },
+              "certificates": [
+                "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
+              ],
+              "state": "PENDING",
+              "description": "updated certificate map entry",
+              "matcher": "PRIMARY"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 68.146757ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.647706434Z",
+              "updateTime": "2024-08-28T04:16:08.909315910Z",
+              "labels": {
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificate"
+              },
+              "selfManaged": {},
+              "sanDnsnames": [
+                "example.com"
+              ],
+              "expireTime": "3021-12-25T08:40:51Z",
+              "description": "sample certificate for creating certificate map entry",
+              "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 55.866818ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:09.781604262Z",
+              "updateTime": "2024-08-28T04:16:11.976595529Z",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificatemapentry"
+              },
+              "certificates": [
+                "projects/123456789/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx"
+              ],
+              "state": "PENDING",
+              "description": "updated certificate map entry",
+              "matcher": "PRIMARY"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 82.197327ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.616034287Z",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificatemap",
+                "managed-by-cnrm": "true"
+              },
+              "description": "sample certificate-map for creating certificate-map-entry",
+              "updateTime": "2024-08-28T04:16:08.794517522Z"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 100.266016ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 400 Bad Request
+        code: 400
+        duration: 92.442737ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 400 Bad Request
+        code: 400
+        duration: 75.268627ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.647706434Z",
+              "updateTime": "2024-08-28T04:16:08.909315910Z",
+              "labels": {
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificate"
+              },
+              "selfManaged": {},
+              "sanDnsnames": [
+                "example.com"
+              ],
+              "expireTime": "3021-12-25T08:40:51Z",
+              "description": "sample certificate for creating certificate map entry",
+              "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 73.031867ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.616034287Z",
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificatemap",
+                "managed-by-cnrm": "true"
+              },
+              "description": "sample certificate-map for creating certificate-map-entry",
+              "updateTime": "2024-08-28T04:16:08.794517522Z"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 48.174978ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 400 Bad Request
+        code: 400
+        duration: 66.936307ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 400 Bad Request
+        code: 400
+        duration: 196.462432ms
+    - id: 25
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818573312-620b69e5d42b9-f9bcde82-bff11935",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:13.836986675Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 2.294763021s
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1724818573312-620b69e5d42b9-f9bcde82-bff11935?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818573312-620b69e5d42b9-f9bcde82-bff11935",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:13.836986675Z",
+                "endTime": "2024-08-28T04:16:15.354664748Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx/certificateMapEntries/certificatemanagercertificatemapentry17jkligfb0gpx",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 65.525807ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.647706434Z",
+              "updateTime": "2024-08-28T04:16:08.909315910Z",
+              "labels": {
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "config-connector-resource-type": "certificatemanagercertificate"
+              },
+              "selfManaged": {},
+              "sanDnsnames": [
+                "example.com"
+              ],
+              "expireTime": "3021-12-25T08:40:51Z",
+              "description": "sample certificate for creating certificate map entry",
+              "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 73.491106ms
+    - id: 28
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818583098-620b69ef29480-a571820d-6556aff9",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:23.121097313Z",
+                "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 155.537957ms
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+              "createTime": "2024-08-28T04:16:08.616034287Z",
+              "labels": {
+                "config-connector-resource-type": "certificatemanagercertificatemap",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "description": "sample certificate-map for creating certificate-map-entry",
+              "updateTime": "2024-08-28T04:16:08.794517522Z"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 45.454083ms
+    - id: 30
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818583348-620b69ef66571-3f22acc6-35413857",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:23.372976450Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 152.029194ms
+    - id: 31
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1724818583348-620b69ef66571-3f22acc6-35413857?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818583348-620b69ef66571-3f22acc6-35413857",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:23.372976450Z",
+                "endTime": "2024-08-28T04:16:23.546645703Z",
+                "target": "projects/example-project/locations/global/certificateMaps/certificatemanagercertificatemap17jkligfb0gpx",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 52.200165ms
+    - id: 32
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: certificatemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://certificatemanager.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1724818583098-620b69ef29480-a571820d-6556aff9?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/operations/operation-1724818583098-620b69ef29480-a571820d-6556aff9",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+                "createTime": "2024-08-28T04:16:23.121097313Z",
+                "endTime": "2024-08-28T04:16:23.404168883Z",
+                "target": "projects/example-project/locations/global/certificates/certificatemanagercertificate17jkligfb0gpx",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 50.674495ms

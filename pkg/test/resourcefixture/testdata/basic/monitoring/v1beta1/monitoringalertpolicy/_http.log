@@ -11,6 +11,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -44,6 +45,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -83,6 +85,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -102,6 +105,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -135,6 +139,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -174,6 +179,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -193,6 +199,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -226,6 +233,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -265,6 +273,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -316,6 +325,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "severity": "WARNING",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringalertpolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -382,6 +392,7 @@ X-Xss-Protection: 0
   "severity": "WARNING",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringalertpolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -454,6 +465,7 @@ X-Xss-Protection: 0
   "severity": "WARNING",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringalertpolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -506,6 +518,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "severity": "ERROR",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringalertpolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -572,6 +585,7 @@ X-Xss-Protection: 0
   "severity": "ERROR",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringalertpolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -644,6 +658,7 @@ X-Xss-Protection: 0
   "severity": "ERROR",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringalertpolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -702,6 +717,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -760,6 +776,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }
@@ -818,6 +835,7 @@ X-Xss-Protection: 0
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "monitoringnotificationchannel",
     "managed-by-cnrm": "true"
   }
 }

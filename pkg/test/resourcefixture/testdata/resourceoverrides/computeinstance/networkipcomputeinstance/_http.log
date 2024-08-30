@@ -488,6 +488,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   ],
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "created-from": "image",
     "managed-by-cnrm": "true",
     "network-type": "subnetwork"
@@ -571,6 +572,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "created-from": "image",
     "managed-by-cnrm": "true",
     "network-type": "subnetwork"
@@ -610,6 +612,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "created-from": "image-2",
     "managed-by-cnrm": "true",
     "network-type": "subnetwork-2"
@@ -673,6 +676,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeinstance",
     "created-from": "image-2",
     "managed-by-cnrm": "true",
     "network-type": "subnetwork-2"

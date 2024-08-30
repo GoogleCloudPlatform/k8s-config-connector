@@ -77,6 +77,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     },
     "resourceLabels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "containercluster",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -333,6 +334,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "containercluster",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -556,6 +558,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "containercluster",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },

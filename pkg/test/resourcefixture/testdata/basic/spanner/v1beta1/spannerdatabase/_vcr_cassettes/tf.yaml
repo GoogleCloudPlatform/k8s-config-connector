@@ -62,7 +62,7 @@ interactions:
         remote_addr: ""
         request_uri: ""
         body: |
-            {"instance":{"config":"projects/example-project/instanceConfigs/regional-us-west1","displayName":"Spanner Database Dependency","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"nodeCount":1},"instanceId":"spannerinstance-3eej62fms64k6"}
+            {"instance":{"config":"projects/example-project/instanceConfigs/regional-us-west1","displayName":"Spanner Database Dependency","labels":{"cnrm-test":"true","config-connector-resource-type":"spannerinstance","managed-by-cnrm":"true"},"nodeCount":1},"instanceId":"spannerinstance-3eej62fms64k6"}
         form: {}
         headers:
             Content-Type:
@@ -89,6 +89,7 @@ interactions:
                   "nodeCount": 1,
                   "state": "READY",
                   "labels": {
+                    "config-connector-resource-type": "spannerinstance",
                     "managed-by-cnrm": "true",
                     "cnrm-test": "true"
                   },
@@ -145,6 +146,7 @@ interactions:
                   "state": "READY",
                   "labels": {
                     "cnrm-test": "true",
+                    "config-connector-resource-type": "spannerinstance",
                     "managed-by-cnrm": "true"
                   },
                   "processingUnits": 1000,
@@ -165,6 +167,7 @@ interactions:
                 "nodeCount": 1,
                 "state": "READY",
                 "labels": {
+                  "config-connector-resource-type": "spannerinstance",
                   "managed-by-cnrm": "true",
                   "cnrm-test": "true"
                 },
@@ -216,6 +219,7 @@ interactions:
               "nodeCount": 1,
               "state": "READY",
               "labels": {
+                "config-connector-resource-type": "spannerinstance",
                 "managed-by-cnrm": "true",
                 "cnrm-test": "true"
               },
@@ -266,6 +270,7 @@ interactions:
               "nodeCount": 1,
               "state": "READY",
               "labels": {
+                "config-connector-resource-type": "spannerinstance",
                 "managed-by-cnrm": "true",
                 "cnrm-test": "true"
               },
@@ -671,6 +676,7 @@ interactions:
               "state": "READY",
               "labels": {
                 "cnrm-test": "true",
+                "config-connector-resource-type": "spannerinstance",
                 "managed-by-cnrm": "true"
               },
               "processingUnits": 1000,

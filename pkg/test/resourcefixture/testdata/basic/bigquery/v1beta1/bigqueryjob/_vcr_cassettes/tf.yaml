@@ -15,1666 +15,1765 @@
 ---
 version: 2
 interactions:
-  - id: 0
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 369.624831ms
-  - id: 1
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 392.395968ms
-  - id: 2
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 138
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"location":"US"}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets?alt=json
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "1oxb+cE169ziQbocLgYz5w==",
-          "id": "example-project:bigquerydataset12yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset12yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 266.0418ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 274.651869ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 189
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir"},"labels":{"cnrm-test":"true","config-connector-resource-type":"bigquerydataset","managed-by-cnrm":"true"},"location":"US"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
             {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921736",
-          "lastModifiedTime": "1714007921736",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 468.340052ms
-  - id: 3
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 138
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"location":"US"}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets?alt=json
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "5BIDIpkSuP2XjG2TO/A+pA==",
-          "id": "example-project:bigquerydataset22yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset22yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921933",
-          "lastModifiedTime": "1714007921933",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 555.587721ms
-  - id: 4
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "1oxb+cE169ziQbocLgYz5w==",
-          "id": "example-project:bigquerydataset12yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset12yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921736",
-          "lastModifiedTime": "1714007921736",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 212.337709ms
-  - id: 5
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "5BIDIpkSuP2XjG2TO/A+pA==",
-          "id": "example-project:bigquerydataset22yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset22yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921933",
-          "lastModifiedTime": "1714007921933",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 296.156142ms
-  - id: 6
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "1oxb+cE169ziQbocLgYz5w==",
-          "id": "example-project:bigquerydataset12yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset12yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921736",
-          "lastModifiedTime": "1714007921736",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 252.63049ms
-  - id: 7
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 201.043185ms
-  - id: 8
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "5BIDIpkSuP2XjG2TO/A+pA==",
-          "id": "example-project:bigquerydataset22yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset22yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921933",
-          "lastModifiedTime": "1714007921933",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 279.454008ms
-  - id: 9
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 200
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"tableReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project","tableId":"bigquerytable2yq2ldf3wcoir"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables?alt=json&prettyPrint=false
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"kind":"bigquery#table","etag":"5tjsrJs4nIXqBqyB5xL59w==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1714007923844","lastModifiedTime":"1714007923961","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 327.577094ms
-  - id: 10
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"kind":"bigquery#table","etag":"5tjsrJs4nIXqBqyB5xL59w==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1714007923844","lastModifiedTime":"1714007923961","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 294.786438ms
-  - id: 11
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 404 Not Found
-      code: 404
-      duration: 159.509962ms
-  - id: 12
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"kind":"bigquery#table","etag":"5tjsrJs4nIXqBqyB5xL59w==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1714007923844","lastModifiedTime":"1714007923961","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 242.697825ms
-  - id: 13
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 887
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: |
-        {"configuration":{"jobTimeoutMs":"600000","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"query":{"allowLargeResults":true,"createDisposition":"CREATE_NEVER","defaultDataset":{"datasetId":"bigquerydataset12yq2ldf3wcoir","projectId":"example-project"},"destinationTable":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project","tableId":"bigquerytable2yq2ldf3wcoir"},"flattenResults":true,"priority":"INTERACTIVE","query":"SELECT state FROM [lookerdata:cdc.project_tycho_reports]","schemaUpdateOptions":["ALLOW_FIELD_ADDITION","ALLOW_FIELD_RELAXATION"],"scriptOptions":{"keyResultStatement":"LAST","statementTimeoutMs":"300000"},"useLegacySql":true,"useQueryCache":true,"writeDisposition":"WRITE_APPEND"}},"jobReference":{"jobId":"bigqueryjob-2yq2ldf3wcoir","location":"US","project":"example-project"}}
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs?alt=json
-      method: POST
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#job",
-          "etag": "2HQmN+wdbuo22yXteShF0Q==",
-          "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
-          "user_email": "integration-test@example-project.iam.gserviceaccount.com",
-          "configuration": {
-            "query": {
-              "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
-              "destinationTable": {
-                "projectId": "example-project",
-                "datasetId": "bigquerydataset22yq2ldf3wcoir",
-                "tableId": "bigquerytable2yq2ldf3wcoir"
-              },
-              "createDisposition": "CREATE_NEVER",
-              "writeDisposition": "WRITE_APPEND",
-              "defaultDataset": {
+              "kind": "bigquery#dataset",
+              "etag": "UedqgBkQwePeR1bDDCth+Q==",
+              "id": "example-project:bigquerydataset12yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
+              "datasetReference": {
                 "datasetId": "bigquerydataset12yq2ldf3wcoir",
                 "projectId": "example-project"
               },
-              "priority": "INTERACTIVE",
-              "allowLargeResults": true,
-              "useQueryCache": true,
-              "flattenResults": true,
-              "useLegacySql": true,
-              "schemaUpdateOptions": [
-                "ALLOW_FIELD_ADDITION",
-                "ALLOW_FIELD_RELAXATION"
-              ],
-              "scriptOptions": {
-                "statementTimeoutMs": "300000",
-                "keyResultStatement": "LAST"
-              }
-            },
-            "jobTimeoutMs": "600000",
-            "labels": {
-              "cnrm-test": "true",
-              "label-one": "value-one",
-              "managed-by-cnrm": "true"
-            },
-            "jobType": "QUERY"
-          },
-          "jobReference": {
-            "projectId": "example-project",
-            "jobId": "bigqueryjob-2yq2ldf3wcoir",
-            "location": "US"
-          },
-          "statistics": {
-            "creationTime": "1714007925436",
-            "startTime": "1714007926032",
-            "query": {
-              "statementType": "SELECT"
-            }
-          },
-          "status": {
-            "state": "RUNNING"
-          },
-          "principal_subject": "serviceAccount:integration-test@example-project.iam.gserviceaccount.com",
-          "jobCreationReason": {
-            "code": "REQUESTED"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 777.691638ms
-  - id: 14
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#job",
-          "etag": "2HQmN+wdbuo22yXteShF0Q==",
-          "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
-          "user_email": "integration-test@example-project.iam.gserviceaccount.com",
-          "configuration": {
-            "query": {
-              "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
-              "destinationTable": {
-                "projectId": "example-project",
-                "datasetId": "bigquerydataset22yq2ldf3wcoir",
-                "tableId": "bigquerytable2yq2ldf3wcoir"
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
               },
-              "createDisposition": "CREATE_NEVER",
-              "writeDisposition": "WRITE_APPEND",
-              "defaultDataset": {
-                "datasetId": "bigquerydataset12yq2ldf3wcoir",
-                "projectId": "example-project"
-              },
-              "priority": "INTERACTIVE",
-              "allowLargeResults": true,
-              "useQueryCache": true,
-              "flattenResults": true,
-              "useLegacySql": true,
-              "schemaUpdateOptions": [
-                "ALLOW_FIELD_ADDITION",
-                "ALLOW_FIELD_RELAXATION"
-              ],
-              "scriptOptions": {
-                "statementTimeoutMs": "300000",
-                "keyResultStatement": "LAST"
-              }
-            },
-            "jobTimeoutMs": "600000",
-            "labels": {
-              "cnrm-test": "true",
-              "label-one": "value-one",
-              "managed-by-cnrm": "true"
-            },
-            "jobType": "QUERY"
-          },
-          "jobReference": {
-            "projectId": "example-project",
-            "jobId": "bigqueryjob-2yq2ldf3wcoir",
-            "location": "US"
-          },
-          "statistics": {
-            "creationTime": "1714007925436",
-            "startTime": "1714007926032",
-            "query": {
-              "statementType": "SELECT"
-            }
-          },
-          "status": {
-            "state": "RUNNING"
-          },
-          "principal_subject": "serviceAccount:integration-test@example-project.iam.gserviceaccount.com",
-          "jobCreationReason": {
-            "code": "REQUESTED"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 142.036947ms
-  - id: 15
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#job",
-          "etag": "NJVLiQ1/htz+e/SOteT2FQ==",
-          "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
-          "user_email": "integration-test@example-project.iam.gserviceaccount.com",
-          "configuration": {
-            "query": {
-              "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
-              "destinationTable": {
-                "projectId": "example-project",
-                "datasetId": "bigquerydataset22yq2ldf3wcoir",
-                "tableId": "bigquerytable2yq2ldf3wcoir"
-              },
-              "createDisposition": "CREATE_NEVER",
-              "writeDisposition": "WRITE_APPEND",
-              "defaultDataset": {
-                "datasetId": "bigquerydataset12yq2ldf3wcoir",
-                "projectId": "example-project"
-              },
-              "priority": "INTERACTIVE",
-              "allowLargeResults": true,
-              "useQueryCache": true,
-              "flattenResults": true,
-              "useLegacySql": true,
-              "schemaUpdateOptions": [
-                "ALLOW_FIELD_ADDITION",
-                "ALLOW_FIELD_RELAXATION"
-              ],
-              "scriptOptions": {
-                "statementTimeoutMs": "300000",
-                "keyResultStatement": "LAST"
-              }
-            },
-            "jobTimeoutMs": "600000",
-            "labels": {
-              "cnrm-test": "true",
-              "label-one": "value-one",
-              "managed-by-cnrm": "true"
-            },
-            "jobType": "QUERY"
-          },
-          "jobReference": {
-            "projectId": "example-project",
-            "jobId": "bigqueryjob-2yq2ldf3wcoir",
-            "location": "US"
-          },
-          "statistics": {
-            "creationTime": "1714007925436",
-            "startTime": "1714007926032",
-            "query": {
-              "queryPlan": [
+              "access": [
                 {
-                  "name": "S00: Output",
-                  "id": "0",
-                  "startMs": "1714007926424",
-                  "waitMsAvg": "0",
-                  "waitMsMax": "0",
-                  "readMsAvg": "0",
-                  "readMsMax": "0",
-                  "computeMsAvg": "0",
-                  "computeMsMax": "0",
-                  "writeMsAvg": "0",
-                  "writeMsMax": "0",
-                  "shuffleOutputBytes": "0",
-                  "shuffleOutputBytesSpilled": "0",
-                  "recordsRead": "0",
-                  "recordsWritten": "0",
-                  "parallelInputs": "1",
-                  "completedParallelInputs": "0",
-                  "status": "RUNNING",
-                  "steps": [
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
+                }
+              ],
+              "creationTime": "1724818189460",
+              "lastModifiedTime": "1724818189460",
+              "location": "US",
+              "type": "DEFAULT"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 431.008703ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 189
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir"},"labels":{"cnrm-test":"true","config-connector-resource-type":"bigquerydataset","managed-by-cnrm":"true"},"location":"US"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#dataset",
+              "etag": "gid2aV/58kz0WB+m9lJk+A==",
+              "id": "example-project:bigquerydataset22yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
+              "datasetReference": {
+                "datasetId": "bigquerydataset22yq2ldf3wcoir",
+                "projectId": "example-project"
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
+              },
+              "access": [
+                {
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
+                }
+              ],
+              "creationTime": "1724818189671",
+              "lastModifiedTime": "1724818189671",
+              "location": "US",
+              "type": "DEFAULT"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 478.820002ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#dataset",
+              "etag": "UedqgBkQwePeR1bDDCth+Q==",
+              "id": "example-project:bigquerydataset12yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
+              "datasetReference": {
+                "datasetId": "bigquerydataset12yq2ldf3wcoir",
+                "projectId": "example-project"
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
+              },
+              "access": [
+                {
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
+                }
+              ],
+              "creationTime": "1724818189460",
+              "lastModifiedTime": "1724818189460",
+              "location": "US",
+              "type": "DEFAULT"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 213.399452ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#dataset",
+              "etag": "gid2aV/58kz0WB+m9lJk+A==",
+              "id": "example-project:bigquerydataset22yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
+              "datasetReference": {
+                "datasetId": "bigquerydataset22yq2ldf3wcoir",
+                "projectId": "example-project"
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
+              },
+              "access": [
+                {
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
+                }
+              ],
+              "creationTime": "1724818189671",
+              "lastModifiedTime": "1724818189671",
+              "location": "US",
+              "type": "DEFAULT"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 186.790412ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#dataset",
+              "etag": "UedqgBkQwePeR1bDDCth+Q==",
+              "id": "example-project:bigquerydataset12yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
+              "datasetReference": {
+                "datasetId": "bigquerydataset12yq2ldf3wcoir",
+                "projectId": "example-project"
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
+              },
+              "access": [
+                {
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
+                }
+              ],
+              "creationTime": "1724818189460",
+              "lastModifiedTime": "1724818189460",
+              "location": "US",
+              "type": "DEFAULT"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 228.121132ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 137.793914ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#dataset",
+              "etag": "gid2aV/58kz0WB+m9lJk+A==",
+              "id": "example-project:bigquerydataset22yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
+              "datasetReference": {
+                "datasetId": "bigquerydataset22yq2ldf3wcoir",
+                "projectId": "example-project"
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
+              },
+              "access": [
+                {
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
+                }
+              ],
+              "creationTime": "1724818189671",
+              "lastModifiedTime": "1724818189671",
+              "location": "US",
+              "type": "DEFAULT"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 564.789999ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 239
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"labels":{"cnrm-test":"true","config-connector-resource-type":"bigquerytable","managed-by-cnrm":"true"},"tableReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project","tableId":"bigquerytable2yq2ldf3wcoir"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#table","etag":"omxEpYt47GsBylqEfuJmdQ==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"config-connector-resource-type":"bigquerytable","cnrm-test":"true","managed-by-cnrm":"true"},"schema":{},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1724818191492","lastModifiedTime":"1724818191636","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 270.05357ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#table","etag":"omxEpYt47GsBylqEfuJmdQ==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"config-connector-resource-type":"bigquerytable","cnrm-test":"true","managed-by-cnrm":"true"},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1724818191492","lastModifiedTime":"1724818191636","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 214.465332ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#table","etag":"omxEpYt47GsBylqEfuJmdQ==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"config-connector-resource-type":"bigquerytable","cnrm-test":"true","managed-by-cnrm":"true"},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1724818191492","lastModifiedTime":"1724818191636","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 201.621342ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#job",
+              "etag": "ZDLrq7LWmj/XLYm/gz2B7A==",
+              "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
+              "user_email": "xiaoweim@google.com",
+              "configuration": {
+                "query": {
+                  "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
+                  "destinationTable": {
+                    "projectId": "example-project",
+                    "datasetId": "bigquerydataset22yq2ldf3wcoir",
+                    "tableId": "bigquerytable2yq2ldf3wcoir"
+                  },
+                  "createDisposition": "CREATE_NEVER",
+                  "writeDisposition": "WRITE_APPEND",
+                  "defaultDataset": {
+                    "datasetId": "bigquerydataset12yq2ldf3wcoir",
+                    "projectId": "example-project"
+                  },
+                  "priority": "INTERACTIVE",
+                  "allowLargeResults": true,
+                  "useQueryCache": true,
+                  "flattenResults": true,
+                  "useLegacySql": true,
+                  "schemaUpdateOptions": [
+                    "ALLOW_FIELD_ADDITION",
+                    "ALLOW_FIELD_RELAXATION"
+                  ],
+                  "scriptOptions": {
+                    "statementTimeoutMs": "300000",
+                    "keyResultStatement": "LAST"
+                  }
+                },
+                "jobTimeoutMs": "600000",
+                "labels": {
+                  "config-connector-resource-type": "bigqueryjob",
+                  "cnrm-test": "true",
+                  "label-one": "value-one",
+                  "managed-by-cnrm": "true"
+                },
+                "jobType": "QUERY"
+              },
+              "jobReference": {
+                "projectId": "example-project",
+                "jobId": "bigqueryjob-2yq2ldf3wcoir",
+                "location": "US"
+              },
+              "statistics": {
+                "creationTime": "1723673705140",
+                "startTime": "1723673705602",
+                "endTime": "1723673707919",
+                "totalBytesProcessed": "3037868",
+                "query": {
+                  "queryPlan": [
                     {
-                      "kind": "READ",
-                      "substeps": [
-                        "state",
-                        "FROM lookerdata:cdc.project_tycho_reports AS lookerdata:cdc.project_tycho_reports"
-                      ]
+                      "name": "S00: Input",
+                      "id": "0",
+                      "startMs": "1723673705703",
+                      "endMs": "1723673705931",
+                      "waitRatioAvg": 0.0010351966873706005,
+                      "waitMsAvg": "1",
+                      "waitRatioMax": 0.0010351966873706005,
+                      "waitMsMax": "1",
+                      "readRatioAvg": 0.057971014492753624,
+                      "readMsAvg": "56",
+                      "readRatioMax": 0.057971014492753624,
+                      "readMsMax": "56",
+                      "computeRatioAvg": 0.31262939958592134,
+                      "computeMsAvg": "302",
+                      "computeRatioMax": 0.31262939958592134,
+                      "computeMsMax": "302",
+                      "writeRatioAvg": 0.031055900621118012,
+                      "writeMsAvg": "30",
+                      "writeRatioMax": 0.031055900621118012,
+                      "writeMsMax": "30",
+                      "shuffleOutputBytes": "5316269",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "1",
+                      "completedParallelInputs": "1",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "state",
+                            "FROM lookerdata:cdc.project_tycho_reports AS lookerdata:cdc.project_tycho_reports"
+                          ]
+                        },
+                        {
+                          "kind": "WRITE",
+                          "substeps": [
+                            "state",
+                            "TO __stage00_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "405",
+                      "computeMode": "BIGQUERY"
                     },
                     {
-                      "kind": "WRITE",
-                      "substeps": [
-                        "state",
-                        "TO __stage00_output"
-                      ]
+                      "name": "S01: Coalesce",
+                      "id": "1",
+                      "startMs": "1723673705934",
+                      "endMs": "1723673705998",
+                      "inputStages": [
+                        "0"
+                      ],
+                      "waitRatioAvg": 0.0010351966873706005,
+                      "waitMsAvg": "1",
+                      "waitRatioMax": 0.002070393374741201,
+                      "waitMsMax": "2",
+                      "readRatioAvg": 0,
+                      "readMsAvg": "0",
+                      "readRatioMax": 0,
+                      "readMsMax": "0",
+                      "computeRatioAvg": 0.013457556935817806,
+                      "computeMsAvg": "13",
+                      "computeRatioMax": 0.017598343685300208,
+                      "computeMsMax": "17",
+                      "writeRatioAvg": 0.019668737060041408,
+                      "writeMsAvg": "19",
+                      "writeRatioMax": 0.027950310559006212,
+                      "writeMsMax": "27",
+                      "shuffleOutputBytes": "5316269",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "50",
+                      "completedParallelInputs": "50",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "FROM __stage00_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "2043",
+                      "computeMode": "BIGQUERY"
+                    },
+                    {
+                      "name": "S02: Output",
+                      "id": "2",
+                      "startMs": "1723673706203",
+                      "endMs": "1723673706862",
+                      "inputStages": [
+                        "1"
+                      ],
+                      "waitRatioAvg": 0.27846790890269152,
+                      "waitMsAvg": "269",
+                      "waitRatioMax": 0.27846790890269152,
+                      "waitMsMax": "269",
+                      "readRatioAvg": 0,
+                      "readMsAvg": "0",
+                      "readRatioMax": 0,
+                      "readMsMax": "0",
+                      "computeRatioAvg": 1,
+                      "computeMsAvg": "966",
+                      "computeRatioMax": 1,
+                      "computeMsMax": "966",
+                      "writeRatioAvg": 0.17598343685300208,
+                      "writeMsAvg": "170",
+                      "writeRatioMax": 0.17598343685300208,
+                      "writeMsMax": "170",
+                      "shuffleOutputBytes": "3037868",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "1",
+                      "completedParallelInputs": "1",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "state",
+                            "FROM __stage01_output AS lookerdata:cdc.project_tycho_reports"
+                          ]
+                        },
+                        {
+                          "kind": "WRITE",
+                          "substeps": [
+                            "state",
+                            "TO __stage02_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "1084",
+                      "computeMode": "BIGQUERY"
                     }
                   ],
-                  "slotMs": "0",
-                  "computeMode": "BIGQUERY"
-                }
-              ],
-              "estimatedBytesProcessed": "3037868",
-              "timeline": [
-                {
-                  "elapsedMs": "892",
-                  "totalSlotMs": "107",
-                  "pendingUnits": "1",
-                  "completedUnits": "0",
-                  "activeUnits": "1",
-                  "estimatedRunnableUnits": "0"
-                }
-              ],
-              "totalSlotMs": "107",
-              "statementType": "SELECT"
-            },
-            "totalSlotMs": "107"
-          },
-          "status": {
-            "state": "RUNNING"
-          },
-          "principal_subject": "serviceAccount:integration-test@example-project.iam.gserviceaccount.com",
-          "jobCreationReason": {
-            "code": "REQUESTED"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 165.695217ms
-  - id: 16
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#job",
-          "etag": "NJVLiQ1/htz+e/SOteT2FQ==",
-          "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
-          "user_email": "integration-test@example-project.iam.gserviceaccount.com",
-          "configuration": {
-            "query": {
-              "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
-              "destinationTable": {
-                "projectId": "example-project",
-                "datasetId": "bigquerydataset22yq2ldf3wcoir",
-                "tableId": "bigquerytable2yq2ldf3wcoir"
+                  "estimatedBytesProcessed": "3037868",
+                  "timeline": [
+                    {
+                      "elapsedMs": "398",
+                      "totalSlotMs": "3532",
+                      "pendingUnits": "0",
+                      "completedUnits": "1",
+                      "activeUnits": "0",
+                      "estimatedRunnableUnits": "0"
+                    },
+                    {
+                      "elapsedMs": "1423",
+                      "totalSlotMs": "3532",
+                      "pendingUnits": "0",
+                      "completedUnits": "52",
+                      "activeUnits": "0",
+                      "estimatedRunnableUnits": "0"
+                    }
+                  ],
+                  "totalPartitionsProcessed": "0",
+                  "totalBytesProcessed": "3037868",
+                  "totalBytesBilled": "0",
+                  "billingTier": 1,
+                  "totalSlotMs": "3532",
+                  "cacheHit": false,
+                  "referencedTables": [
+                    {
+                      "projectId": "lookerdata",
+                      "datasetId": "cdc",
+                      "tableId": "project_tycho_reports"
+                    }
+                  ],
+                  "statementType": "SELECT",
+                  "transferredBytes": "0",
+                  "metadataCacheStatistics": {
+                    "tableMetadataCacheUsage": [
+                      {
+                        "tableReference": {
+                          "projectId": "lookerdata",
+                          "datasetId": "cdc",
+                          "tableId": "project_tycho_reports"
+                        },
+                        "unusedReason": "OTHER_REASON",
+                        "explanation": "Table does not have CMETA."
+                      }
+                    ]
+                  }
+                },
+                "totalSlotMs": "3532",
+                "finalExecutionDurationMs": "1621"
               },
-              "createDisposition": "CREATE_NEVER",
-              "writeDisposition": "WRITE_APPEND",
-              "defaultDataset": {
+              "status": {
+                "state": "DONE"
+              },
+              "principal_subject": "user:xiaoweim@google.com",
+              "jobCreationReason": {
+                "code": "REQUESTED"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 226.474082ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#job",
+              "etag": "ZDLrq7LWmj/XLYm/gz2B7A==",
+              "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
+              "user_email": "xiaoweim@google.com",
+              "configuration": {
+                "query": {
+                  "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
+                  "destinationTable": {
+                    "projectId": "example-project",
+                    "datasetId": "bigquerydataset22yq2ldf3wcoir",
+                    "tableId": "bigquerytable2yq2ldf3wcoir"
+                  },
+                  "createDisposition": "CREATE_NEVER",
+                  "writeDisposition": "WRITE_APPEND",
+                  "defaultDataset": {
+                    "datasetId": "bigquerydataset12yq2ldf3wcoir",
+                    "projectId": "example-project"
+                  },
+                  "priority": "INTERACTIVE",
+                  "allowLargeResults": true,
+                  "useQueryCache": true,
+                  "flattenResults": true,
+                  "useLegacySql": true,
+                  "schemaUpdateOptions": [
+                    "ALLOW_FIELD_ADDITION",
+                    "ALLOW_FIELD_RELAXATION"
+                  ],
+                  "scriptOptions": {
+                    "statementTimeoutMs": "300000",
+                    "keyResultStatement": "LAST"
+                  }
+                },
+                "jobTimeoutMs": "600000",
+                "labels": {
+                  "config-connector-resource-type": "bigqueryjob",
+                  "cnrm-test": "true",
+                  "label-one": "value-one",
+                  "managed-by-cnrm": "true"
+                },
+                "jobType": "QUERY"
+              },
+              "jobReference": {
+                "projectId": "example-project",
+                "jobId": "bigqueryjob-2yq2ldf3wcoir",
+                "location": "US"
+              },
+              "statistics": {
+                "creationTime": "1723673705140",
+                "startTime": "1723673705602",
+                "endTime": "1723673707919",
+                "totalBytesProcessed": "3037868",
+                "query": {
+                  "queryPlan": [
+                    {
+                      "name": "S00: Input",
+                      "id": "0",
+                      "startMs": "1723673705703",
+                      "endMs": "1723673705931",
+                      "waitRatioAvg": 0.0010351966873706005,
+                      "waitMsAvg": "1",
+                      "waitRatioMax": 0.0010351966873706005,
+                      "waitMsMax": "1",
+                      "readRatioAvg": 0.057971014492753624,
+                      "readMsAvg": "56",
+                      "readRatioMax": 0.057971014492753624,
+                      "readMsMax": "56",
+                      "computeRatioAvg": 0.31262939958592134,
+                      "computeMsAvg": "302",
+                      "computeRatioMax": 0.31262939958592134,
+                      "computeMsMax": "302",
+                      "writeRatioAvg": 0.031055900621118012,
+                      "writeMsAvg": "30",
+                      "writeRatioMax": 0.031055900621118012,
+                      "writeMsMax": "30",
+                      "shuffleOutputBytes": "5316269",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "1",
+                      "completedParallelInputs": "1",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "state",
+                            "FROM lookerdata:cdc.project_tycho_reports AS lookerdata:cdc.project_tycho_reports"
+                          ]
+                        },
+                        {
+                          "kind": "WRITE",
+                          "substeps": [
+                            "state",
+                            "TO __stage00_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "405",
+                      "computeMode": "BIGQUERY"
+                    },
+                    {
+                      "name": "S01: Coalesce",
+                      "id": "1",
+                      "startMs": "1723673705934",
+                      "endMs": "1723673705998",
+                      "inputStages": [
+                        "0"
+                      ],
+                      "waitRatioAvg": 0.0010351966873706005,
+                      "waitMsAvg": "1",
+                      "waitRatioMax": 0.002070393374741201,
+                      "waitMsMax": "2",
+                      "readRatioAvg": 0,
+                      "readMsAvg": "0",
+                      "readRatioMax": 0,
+                      "readMsMax": "0",
+                      "computeRatioAvg": 0.013457556935817806,
+                      "computeMsAvg": "13",
+                      "computeRatioMax": 0.017598343685300208,
+                      "computeMsMax": "17",
+                      "writeRatioAvg": 0.019668737060041408,
+                      "writeMsAvg": "19",
+                      "writeRatioMax": 0.027950310559006212,
+                      "writeMsMax": "27",
+                      "shuffleOutputBytes": "5316269",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "50",
+                      "completedParallelInputs": "50",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "FROM __stage00_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "2043",
+                      "computeMode": "BIGQUERY"
+                    },
+                    {
+                      "name": "S02: Output",
+                      "id": "2",
+                      "startMs": "1723673706203",
+                      "endMs": "1723673706862",
+                      "inputStages": [
+                        "1"
+                      ],
+                      "waitRatioAvg": 0.27846790890269152,
+                      "waitMsAvg": "269",
+                      "waitRatioMax": 0.27846790890269152,
+                      "waitMsMax": "269",
+                      "readRatioAvg": 0,
+                      "readMsAvg": "0",
+                      "readRatioMax": 0,
+                      "readMsMax": "0",
+                      "computeRatioAvg": 1,
+                      "computeMsAvg": "966",
+                      "computeRatioMax": 1,
+                      "computeMsMax": "966",
+                      "writeRatioAvg": 0.17598343685300208,
+                      "writeMsAvg": "170",
+                      "writeRatioMax": 0.17598343685300208,
+                      "writeMsMax": "170",
+                      "shuffleOutputBytes": "3037868",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "1",
+                      "completedParallelInputs": "1",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "state",
+                            "FROM __stage01_output AS lookerdata:cdc.project_tycho_reports"
+                          ]
+                        },
+                        {
+                          "kind": "WRITE",
+                          "substeps": [
+                            "state",
+                            "TO __stage02_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "1084",
+                      "computeMode": "BIGQUERY"
+                    }
+                  ],
+                  "estimatedBytesProcessed": "3037868",
+                  "timeline": [
+                    {
+                      "elapsedMs": "398",
+                      "totalSlotMs": "3532",
+                      "pendingUnits": "0",
+                      "completedUnits": "1",
+                      "activeUnits": "0",
+                      "estimatedRunnableUnits": "0"
+                    },
+                    {
+                      "elapsedMs": "1423",
+                      "totalSlotMs": "3532",
+                      "pendingUnits": "0",
+                      "completedUnits": "52",
+                      "activeUnits": "0",
+                      "estimatedRunnableUnits": "0"
+                    }
+                  ],
+                  "totalPartitionsProcessed": "0",
+                  "totalBytesProcessed": "3037868",
+                  "totalBytesBilled": "0",
+                  "billingTier": 1,
+                  "totalSlotMs": "3532",
+                  "cacheHit": false,
+                  "referencedTables": [
+                    {
+                      "projectId": "lookerdata",
+                      "datasetId": "cdc",
+                      "tableId": "project_tycho_reports"
+                    }
+                  ],
+                  "statementType": "SELECT",
+                  "transferredBytes": "0",
+                  "metadataCacheStatistics": {
+                    "tableMetadataCacheUsage": [
+                      {
+                        "tableReference": {
+                          "projectId": "lookerdata",
+                          "datasetId": "cdc",
+                          "tableId": "project_tycho_reports"
+                        },
+                        "unusedReason": "OTHER_REASON",
+                        "explanation": "Table does not have CMETA."
+                      }
+                    ]
+                  }
+                },
+                "totalSlotMs": "3532",
+                "finalExecutionDurationMs": "1621"
+              },
+              "status": {
+                "state": "DONE"
+              },
+              "principal_subject": "user:xiaoweim@google.com",
+              "jobCreationReason": {
+                "code": "REQUESTED"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 178.395003ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#job",
+              "etag": "ZDLrq7LWmj/XLYm/gz2B7A==",
+              "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
+              "user_email": "xiaoweim@google.com",
+              "configuration": {
+                "query": {
+                  "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
+                  "destinationTable": {
+                    "projectId": "example-project",
+                    "datasetId": "bigquerydataset22yq2ldf3wcoir",
+                    "tableId": "bigquerytable2yq2ldf3wcoir"
+                  },
+                  "createDisposition": "CREATE_NEVER",
+                  "writeDisposition": "WRITE_APPEND",
+                  "defaultDataset": {
+                    "datasetId": "bigquerydataset12yq2ldf3wcoir",
+                    "projectId": "example-project"
+                  },
+                  "priority": "INTERACTIVE",
+                  "allowLargeResults": true,
+                  "useQueryCache": true,
+                  "flattenResults": true,
+                  "useLegacySql": true,
+                  "schemaUpdateOptions": [
+                    "ALLOW_FIELD_ADDITION",
+                    "ALLOW_FIELD_RELAXATION"
+                  ],
+                  "scriptOptions": {
+                    "statementTimeoutMs": "300000",
+                    "keyResultStatement": "LAST"
+                  }
+                },
+                "jobTimeoutMs": "600000",
+                "labels": {
+                  "config-connector-resource-type": "bigqueryjob",
+                  "cnrm-test": "true",
+                  "label-one": "value-one",
+                  "managed-by-cnrm": "true"
+                },
+                "jobType": "QUERY"
+              },
+              "jobReference": {
+                "projectId": "example-project",
+                "jobId": "bigqueryjob-2yq2ldf3wcoir",
+                "location": "US"
+              },
+              "statistics": {
+                "creationTime": "1723673705140",
+                "startTime": "1723673705602",
+                "endTime": "1723673707919",
+                "totalBytesProcessed": "3037868",
+                "query": {
+                  "queryPlan": [
+                    {
+                      "name": "S00: Input",
+                      "id": "0",
+                      "startMs": "1723673705703",
+                      "endMs": "1723673705931",
+                      "waitRatioAvg": 0.0010351966873706005,
+                      "waitMsAvg": "1",
+                      "waitRatioMax": 0.0010351966873706005,
+                      "waitMsMax": "1",
+                      "readRatioAvg": 0.057971014492753624,
+                      "readMsAvg": "56",
+                      "readRatioMax": 0.057971014492753624,
+                      "readMsMax": "56",
+                      "computeRatioAvg": 0.31262939958592134,
+                      "computeMsAvg": "302",
+                      "computeRatioMax": 0.31262939958592134,
+                      "computeMsMax": "302",
+                      "writeRatioAvg": 0.031055900621118012,
+                      "writeMsAvg": "30",
+                      "writeRatioMax": 0.031055900621118012,
+                      "writeMsMax": "30",
+                      "shuffleOutputBytes": "5316269",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "1",
+                      "completedParallelInputs": "1",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "state",
+                            "FROM lookerdata:cdc.project_tycho_reports AS lookerdata:cdc.project_tycho_reports"
+                          ]
+                        },
+                        {
+                          "kind": "WRITE",
+                          "substeps": [
+                            "state",
+                            "TO __stage00_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "405",
+                      "computeMode": "BIGQUERY"
+                    },
+                    {
+                      "name": "S01: Coalesce",
+                      "id": "1",
+                      "startMs": "1723673705934",
+                      "endMs": "1723673705998",
+                      "inputStages": [
+                        "0"
+                      ],
+                      "waitRatioAvg": 0.0010351966873706005,
+                      "waitMsAvg": "1",
+                      "waitRatioMax": 0.002070393374741201,
+                      "waitMsMax": "2",
+                      "readRatioAvg": 0,
+                      "readMsAvg": "0",
+                      "readRatioMax": 0,
+                      "readMsMax": "0",
+                      "computeRatioAvg": 0.013457556935817806,
+                      "computeMsAvg": "13",
+                      "computeRatioMax": 0.017598343685300208,
+                      "computeMsMax": "17",
+                      "writeRatioAvg": 0.019668737060041408,
+                      "writeMsAvg": "19",
+                      "writeRatioMax": 0.027950310559006212,
+                      "writeMsMax": "27",
+                      "shuffleOutputBytes": "5316269",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "50",
+                      "completedParallelInputs": "50",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "FROM __stage00_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "2043",
+                      "computeMode": "BIGQUERY"
+                    },
+                    {
+                      "name": "S02: Output",
+                      "id": "2",
+                      "startMs": "1723673706203",
+                      "endMs": "1723673706862",
+                      "inputStages": [
+                        "1"
+                      ],
+                      "waitRatioAvg": 0.27846790890269152,
+                      "waitMsAvg": "269",
+                      "waitRatioMax": 0.27846790890269152,
+                      "waitMsMax": "269",
+                      "readRatioAvg": 0,
+                      "readMsAvg": "0",
+                      "readRatioMax": 0,
+                      "readMsMax": "0",
+                      "computeRatioAvg": 1,
+                      "computeMsAvg": "966",
+                      "computeRatioMax": 1,
+                      "computeMsMax": "966",
+                      "writeRatioAvg": 0.17598343685300208,
+                      "writeMsAvg": "170",
+                      "writeRatioMax": 0.17598343685300208,
+                      "writeMsMax": "170",
+                      "shuffleOutputBytes": "3037868",
+                      "shuffleOutputBytesSpilled": "0",
+                      "recordsRead": "759467",
+                      "recordsWritten": "759467",
+                      "parallelInputs": "1",
+                      "completedParallelInputs": "1",
+                      "status": "COMPLETE",
+                      "steps": [
+                        {
+                          "kind": "READ",
+                          "substeps": [
+                            "state",
+                            "FROM __stage01_output AS lookerdata:cdc.project_tycho_reports"
+                          ]
+                        },
+                        {
+                          "kind": "WRITE",
+                          "substeps": [
+                            "state",
+                            "TO __stage02_output"
+                          ]
+                        }
+                      ],
+                      "slotMs": "1084",
+                      "computeMode": "BIGQUERY"
+                    }
+                  ],
+                  "estimatedBytesProcessed": "3037868",
+                  "timeline": [
+                    {
+                      "elapsedMs": "398",
+                      "totalSlotMs": "3532",
+                      "pendingUnits": "0",
+                      "completedUnits": "1",
+                      "activeUnits": "0",
+                      "estimatedRunnableUnits": "0"
+                    },
+                    {
+                      "elapsedMs": "1423",
+                      "totalSlotMs": "3532",
+                      "pendingUnits": "0",
+                      "completedUnits": "52",
+                      "activeUnits": "0",
+                      "estimatedRunnableUnits": "0"
+                    }
+                  ],
+                  "totalPartitionsProcessed": "0",
+                  "totalBytesProcessed": "3037868",
+                  "totalBytesBilled": "0",
+                  "billingTier": 1,
+                  "totalSlotMs": "3532",
+                  "cacheHit": false,
+                  "referencedTables": [
+                    {
+                      "projectId": "lookerdata",
+                      "datasetId": "cdc",
+                      "tableId": "project_tycho_reports"
+                    }
+                  ],
+                  "statementType": "SELECT",
+                  "transferredBytes": "0",
+                  "metadataCacheStatistics": {
+                    "tableMetadataCacheUsage": [
+                      {
+                        "tableReference": {
+                          "projectId": "lookerdata",
+                          "datasetId": "cdc",
+                          "tableId": "project_tycho_reports"
+                        },
+                        "unusedReason": "OTHER_REASON",
+                        "explanation": "Table does not have CMETA."
+                      }
+                    ]
+                  }
+                },
+                "totalSlotMs": "3532",
+                "finalExecutionDurationMs": "1621"
+              },
+              "status": {
+                "state": "DONE"
+              },
+              "principal_subject": "user:xiaoweim@google.com",
+              "jobCreationReason": {
+                "code": "REQUESTED"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 101.977606ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#table","etag":"omxEpYt47GsBylqEfuJmdQ==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"config-connector-resource-type":"bigquerytable","cnrm-test":"true","managed-by-cnrm":"true"},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1724818191492","lastModifiedTime":"1724818191636","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 187.887393ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#dataset",
+              "etag": "gid2aV/58kz0WB+m9lJk+A==",
+              "id": "example-project:bigquerydataset22yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
+              "datasetReference": {
+                "datasetId": "bigquerydataset22yq2ldf3wcoir",
+                "projectId": "example-project"
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
+              },
+              "access": [
+                {
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
+                }
+              ],
+              "creationTime": "1724818189671",
+              "lastModifiedTime": "1724818189671",
+              "location": "US",
+              "type": "DEFAULT"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 233.216171ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "bigquery#dataset",
+              "etag": "UedqgBkQwePeR1bDDCth+Q==",
+              "id": "example-project:bigquerydataset12yq2ldf3wcoir",
+              "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
+              "datasetReference": {
                 "datasetId": "bigquerydataset12yq2ldf3wcoir",
                 "projectId": "example-project"
               },
-              "priority": "INTERACTIVE",
-              "allowLargeResults": true,
-              "useQueryCache": true,
-              "flattenResults": true,
-              "useLegacySql": true,
-              "schemaUpdateOptions": [
-                "ALLOW_FIELD_ADDITION",
-                "ALLOW_FIELD_RELAXATION"
-              ],
-              "scriptOptions": {
-                "statementTimeoutMs": "300000",
-                "keyResultStatement": "LAST"
-              }
-            },
-            "jobTimeoutMs": "600000",
-            "labels": {
-              "cnrm-test": "true",
-              "label-one": "value-one",
-              "managed-by-cnrm": "true"
-            },
-            "jobType": "QUERY"
-          },
-          "jobReference": {
-            "projectId": "example-project",
-            "jobId": "bigqueryjob-2yq2ldf3wcoir",
-            "location": "US"
-          },
-          "statistics": {
-            "creationTime": "1714007925436",
-            "startTime": "1714007926032",
-            "query": {
-              "queryPlan": [
-                {
-                  "name": "S00: Output",
-                  "id": "0",
-                  "startMs": "1714007926424",
-                  "waitMsAvg": "0",
-                  "waitMsMax": "0",
-                  "readMsAvg": "0",
-                  "readMsMax": "0",
-                  "computeMsAvg": "0",
-                  "computeMsMax": "0",
-                  "writeMsAvg": "0",
-                  "writeMsMax": "0",
-                  "shuffleOutputBytes": "0",
-                  "shuffleOutputBytesSpilled": "0",
-                  "recordsRead": "0",
-                  "recordsWritten": "0",
-                  "parallelInputs": "1",
-                  "completedParallelInputs": "0",
-                  "status": "RUNNING",
-                  "steps": [
-                    {
-                      "kind": "READ",
-                      "substeps": [
-                        "state",
-                        "FROM lookerdata:cdc.project_tycho_reports AS lookerdata:cdc.project_tycho_reports"
-                      ]
-                    },
-                    {
-                      "kind": "WRITE",
-                      "substeps": [
-                        "state",
-                        "TO __stage00_output"
-                      ]
-                    }
-                  ],
-                  "slotMs": "0",
-                  "computeMode": "BIGQUERY"
-                }
-              ],
-              "estimatedBytesProcessed": "3037868",
-              "timeline": [
-                {
-                  "elapsedMs": "892",
-                  "totalSlotMs": "107",
-                  "pendingUnits": "1",
-                  "completedUnits": "0",
-                  "activeUnits": "1",
-                  "estimatedRunnableUnits": "0"
-                }
-              ],
-              "totalSlotMs": "107",
-              "statementType": "SELECT"
-            },
-            "totalSlotMs": "107"
-          },
-          "status": {
-            "state": "RUNNING"
-          },
-          "principal_subject": "serviceAccount:integration-test@example-project.iam.gserviceaccount.com",
-          "jobCreationReason": {
-            "code": "REQUESTED"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 147.020072ms
-  - id: 17
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?alt=json&location=US
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#job",
-          "etag": "NJVLiQ1/htz+e/SOteT2FQ==",
-          "id": "example-project:US.bigqueryjob-2yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/jobs/bigqueryjob-2yq2ldf3wcoir?location=US",
-          "user_email": "integration-test@example-project.iam.gserviceaccount.com",
-          "configuration": {
-            "query": {
-              "query": "SELECT state FROM [lookerdata:cdc.project_tycho_reports]",
-              "destinationTable": {
-                "projectId": "example-project",
-                "datasetId": "bigquerydataset22yq2ldf3wcoir",
-                "tableId": "bigquerytable2yq2ldf3wcoir"
+              "labels": {
+                "cnrm-test": "true",
+                "config-connector-resource-type": "bigquerydataset",
+                "managed-by-cnrm": "true"
               },
-              "createDisposition": "CREATE_NEVER",
-              "writeDisposition": "WRITE_APPEND",
-              "defaultDataset": {
-                "datasetId": "bigquerydataset12yq2ldf3wcoir",
-                "projectId": "example-project"
-              },
-              "priority": "INTERACTIVE",
-              "allowLargeResults": true,
-              "useQueryCache": true,
-              "flattenResults": true,
-              "useLegacySql": true,
-              "schemaUpdateOptions": [
-                "ALLOW_FIELD_ADDITION",
-                "ALLOW_FIELD_RELAXATION"
-              ],
-              "scriptOptions": {
-                "statementTimeoutMs": "300000",
-                "keyResultStatement": "LAST"
-              }
-            },
-            "jobTimeoutMs": "600000",
-            "labels": {
-              "cnrm-test": "true",
-              "label-one": "value-one",
-              "managed-by-cnrm": "true"
-            },
-            "jobType": "QUERY"
-          },
-          "jobReference": {
-            "projectId": "example-project",
-            "jobId": "bigqueryjob-2yq2ldf3wcoir",
-            "location": "US"
-          },
-          "statistics": {
-            "creationTime": "1714007925436",
-            "startTime": "1714007926032",
-            "query": {
-              "queryPlan": [
+              "access": [
                 {
-                  "name": "S00: Output",
-                  "id": "0",
-                  "startMs": "1714007926424",
-                  "waitMsAvg": "0",
-                  "waitMsMax": "0",
-                  "readMsAvg": "0",
-                  "readMsMax": "0",
-                  "computeMsAvg": "0",
-                  "computeMsMax": "0",
-                  "writeMsAvg": "0",
-                  "writeMsMax": "0",
-                  "shuffleOutputBytes": "0",
-                  "shuffleOutputBytesSpilled": "0",
-                  "recordsRead": "0",
-                  "recordsWritten": "0",
-                  "parallelInputs": "1",
-                  "completedParallelInputs": "0",
-                  "status": "RUNNING",
-                  "steps": [
-                    {
-                      "kind": "READ",
-                      "substeps": [
-                        "state",
-                        "FROM lookerdata:cdc.project_tycho_reports AS lookerdata:cdc.project_tycho_reports"
-                      ]
-                    },
-                    {
-                      "kind": "WRITE",
-                      "substeps": [
-                        "state",
-                        "TO __stage00_output"
-                      ]
-                    }
-                  ],
-                  "slotMs": "0",
-                  "computeMode": "BIGQUERY"
+                  "role": "WRITER",
+                  "specialGroup": "projectWriters"
+                },
+                {
+                  "role": "OWNER",
+                  "specialGroup": "projectOwners"
+                },
+                {
+                  "role": "OWNER",
+                  "userByEmail": "xiaoweim@google.com"
+                },
+                {
+                  "role": "READER",
+                  "specialGroup": "projectReaders"
                 }
               ],
-              "estimatedBytesProcessed": "3037868",
-              "timeline": [
-                {
-                  "elapsedMs": "892",
-                  "totalSlotMs": "107",
-                  "pendingUnits": "1",
-                  "completedUnits": "0",
-                  "activeUnits": "1",
-                  "estimatedRunnableUnits": "0"
-                }
-              ],
-              "totalSlotMs": "107",
-              "statementType": "SELECT"
-            },
-            "totalSlotMs": "107"
-          },
-          "status": {
-            "state": "RUNNING"
-          },
-          "principal_subject": "serviceAccount:integration-test@example-project.iam.gserviceaccount.com",
-          "jobCreationReason": {
-            "code": "REQUESTED"
-          }
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 157.11189ms
-  - id: 18
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "5BIDIpkSuP2XjG2TO/A+pA==",
-          "id": "example-project:bigquerydataset22yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset22yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
+              "creationTime": "1724818189460",
+              "lastModifiedTime": "1724818189460",
+              "location": "US",
+              "type": "DEFAULT"
             }
-          ],
-          "creationTime": "1714007921933",
-          "lastModifiedTime": "1714007921933",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 226.627284ms
-  - id: 19
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "1oxb+cE169ziQbocLgYz5w==",
-          "id": "example-project:bigquerydataset12yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset12yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921736",
-          "lastModifiedTime": "1714007921736",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 227.96517ms
-  - id: 20
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: '{"kind":"bigquery#table","etag":"5tjsrJs4nIXqBqyB5xL59w==","id":"example-project:bigquerydataset22yq2ldf3wcoir.bigquerytable2yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir","tableReference":{"projectId":"example-project","datasetId":"bigquerydataset22yq2ldf3wcoir","tableId":"bigquerytable2yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1714007923844","lastModifiedTime":"1714007923961","type":"TABLE","location":"US","numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 318.668537ms
-  - id: 21
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&deleteContents=false
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: true
-      body: fake error message
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 400 Bad Request
-      code: 400
-      duration: 188.401707ms
-  - id: 22
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&deleteContents=false
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: false
-      body: ""
-      headers:
-        Content-Length:
-          - "0"
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 204 No Content
-      code: 204
-      duration: 246.780652ms
-  - id: 23
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        X-Goog-Api-Client:
-          - gl-go/1.21.5 gdcl/0.160.0
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: false
-      body: ""
-      headers:
-        Content-Length:
-          - "0"
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 204 No Content
-      code: 204
-      duration: 250.765634ms
-  - id: 24
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json
-      method: GET
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: -1
-      uncompressed: true
-      body: |
-        {
-          "kind": "bigquery#dataset",
-          "etag": "5BIDIpkSuP2XjG2TO/A+pA==",
-          "id": "example-project:bigquerydataset22yq2ldf3wcoir",
-          "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir",
-          "datasetReference": {
-            "datasetId": "bigquerydataset22yq2ldf3wcoir",
-            "projectId": "example-project"
-          },
-          "labels": {
-            "cnrm-test": "true",
-            "managed-by-cnrm": "true"
-          },
-          "access": [
-            {
-              "role": "WRITER",
-              "specialGroup": "projectWriters"
-            },
-            {
-              "role": "OWNER",
-              "specialGroup": "projectOwners"
-            },
-            {
-              "role": "OWNER",
-              "userByEmail": "integration-test@example-project.iam.gserviceaccount.com"
-            },
-            {
-              "role": "READER",
-              "specialGroup": "projectReaders"
-            }
-          ],
-          "creationTime": "1714007921933",
-          "lastModifiedTime": "1714007921933",
-          "location": "US",
-          "type": "DEFAULT"
-        }
-      headers:
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 200 OK
-      code: 200
-      duration: 249.096259ms
-  - id: 25
-    request:
-      proto: HTTP/1.1
-      proto_major: 1
-      proto_minor: 1
-      content_length: 0
-      transfer_encoding: []
-      trailer: {}
-      host: bigquery.googleapis.com
-      remote_addr: ""
-      request_uri: ""
-      body: ""
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-      url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&deleteContents=false
-      method: DELETE
-    response:
-      proto: HTTP/2.0
-      proto_major: 2
-      proto_minor: 0
-      transfer_encoding: []
-      trailer: {}
-      content_length: 0
-      uncompressed: false
-      body: ""
-      headers:
-        Content-Length:
-          - "0"
-        Content-Type:
-          - application/json; charset=UTF-8
-      status: 204 No Content
-      code: 204
-      duration: 219.625286ms
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 179.942473ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.191.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir/tables/bigquerytable2yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 204 No Content
+        code: 204
+        duration: 199.549693ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&deleteContents=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 204 No Content
+        code: 204
+        duration: 184.054203ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&deleteContents=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 204 No Content
+        code: 204
+        duration: 190.967942ms

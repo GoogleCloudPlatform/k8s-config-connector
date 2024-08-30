@@ -400,6 +400,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "a test address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -455,6 +456,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -473,6 +475,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   }
 }
@@ -525,6 +528,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "computeaddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
