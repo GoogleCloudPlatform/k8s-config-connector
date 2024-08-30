@@ -64,8 +64,6 @@ cloud.google.com/go/containeranalysis v0.12.1/go.mod h1:+/lcJIQSFt45TC0N9Nq7/dPb
 cloud.google.com/go/datacatalog v1.20.3/go.mod h1:AKC6vAy5urnMg5eJK3oUjy8oa5zMbiY33h125l8lmlo=
 cloud.google.com/go/datacatalog v1.20.5/go.mod h1:DB0QWF9nelpsbB0eR/tA0xbHZZMvpoFD1XFy3Qv/McI=
 cloud.google.com/go/dataflow v0.9.9/go.mod h1:Wk/92E1BvhV7qs/dWb+3dN26uGgyp/H1Jr5ZJxeD3dw=
-cloud.google.com/go/dataflow v0.9.11 h1:YIhStasKFDESaUdpnsHsp/5bACYL/yvW0OuZ6zPQ6nY=
-cloud.google.com/go/dataflow v0.9.11/go.mod h1:CCLufd7I4pPfyp54qMgil/volrL2ZKYjXeYLfQmBGJs=
 cloud.google.com/go/dataform v0.9.6/go.mod h1:JKDPMfcYMu9oUMubIvvAGWTBX0sw4o/JIjCcczzbHmk=
 cloud.google.com/go/datafusion v1.7.9/go.mod h1:ciYV8FL0JmrwgoJ7CH64oUHiI0oOf2VLE45LWKT51Ls=
 cloud.google.com/go/datafusion v1.7.11/go.mod h1:aU9zoBHgYmoPp4dzccgm/Gi4xWDMXodSZlNZ4WNeptw=
@@ -101,6 +99,7 @@ cloud.google.com/go/eventarc v1.13.10/go.mod h1:KlCcOMApmUaqOEZUpZRVH+p0nnnsY1Ha
 cloud.google.com/go/filestore v1.8.5/go.mod h1:o8KvHyl5V30kIdrPX6hE+RknscXCUFXWSxYsEWeFfRU=
 cloud.google.com/go/filestore v1.8.7/go.mod h1:dKfyH0YdPAKdYHqAR/bxZeil85Y5QmrEVQwIYuRjcXI=
 cloud.google.com/go/firestore v1.15.0/go.mod h1:GWOxFXcv8GZUtYpWHw/w6IuYNux/BtmeVTMmjrm4yhk=
+cloud.google.com/go/firestore v1.16.0 h1:YwmDHcyrxVRErWcgxunzEaZxtNbc8QoFYA/JOEwDPgc=
 cloud.google.com/go/firestore v1.16.0/go.mod h1:+22v/7p+WNBSQwdSwP57vz47aZiY+HrDkrOsJNhk7rg=
 cloud.google.com/go/functions v1.16.4/go.mod h1:uDp5MbH0kCtXe3uBluq3Zi7bEDuHqcn60mAHxUsNezI=
 cloud.google.com/go/functions v1.16.6/go.mod h1:wOzZakhMueNQaBUJdf0yjsJIe0GBRu+ZTvdSTzqHLs0=

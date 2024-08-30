@@ -14,6 +14,7 @@
 
 package v1alpha1
 
+/*
 // +kcc:proto=google.firestore.admin.v1.Database
 type Database struct {
 	// The resource name of the Database.
@@ -89,3 +90,4 @@ type Database struct {
 	//  client has an up-to-date value before proceeding.
 	Etag *string `json:"etag,omitempty"`
 }
+*/

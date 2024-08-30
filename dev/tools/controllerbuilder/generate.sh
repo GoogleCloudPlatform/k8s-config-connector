@@ -119,5 +119,13 @@ go run . generate-types \
     --kind FirestoreDatabase \
     --proto-resource Database
 
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.firestore.admin.v1 \
+    --api-version firestore.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
