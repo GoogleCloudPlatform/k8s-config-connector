@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,6 +28,9 @@ var FirestoreDatabaseGVK = GroupVersion.WithKind("FirestoreDatabase")
 // FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
 // +kcc:proto=google.firestore.admin.v1.Database
 type FirestoreDatabaseSpec struct {
+	// Immutable. The Project that this resource belongs to.
+	ProjectRef v1beta1.ProjectRef `json:"projectRef"`
+
 	// The FirestoreDatabase name. If not given, the metadata.name will be used.
 	// + optional
 	ResourceID *string `json:"resourceID,omitempty"`

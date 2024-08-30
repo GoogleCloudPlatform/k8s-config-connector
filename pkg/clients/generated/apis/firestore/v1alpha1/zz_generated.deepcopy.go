@@ -169,6 +169,7 @@ func (in *FirestoreDatabaseSpec) DeepCopyInto(out *FirestoreDatabaseSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

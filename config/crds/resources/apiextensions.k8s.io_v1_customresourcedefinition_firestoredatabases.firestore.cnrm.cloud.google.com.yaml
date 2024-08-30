@@ -72,6 +72,38 @@ spec:
               pointInTimeRecoveryEnablement:
                 description: Whether to enable the PITR feature on this database.
                 type: string
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by KCC.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The FirestoreDatabase name. If not given, the metadata.name
                   will be used.
@@ -80,6 +112,8 @@ spec:
                 description: The type of the database. See https://cloud.google.com/datastore/docs/firestore-or-datastore
                   for information about how to choose.
                 type: string
+            required:
+            - projectRef
             type: object
           status:
             description: FirestoreDatabaseStatus defines the config connector machine
