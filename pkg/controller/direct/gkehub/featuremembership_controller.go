@@ -187,7 +187,13 @@ func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error)
 	// only change the feature configuration for the associated membership
 	mSpecs[a.membershipID] = *a.desired
 	feature.MembershipSpecs = mSpecs
-	op, err := a.hubClient.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
+	patchCall := a.hubClient.featureClient.Patch(a.featureID, feature)
+	if etag := feature.Header.Get("ETag"); etag != "" {
+		patchCall.Header().Set("If-Match", etag)
+
+	}
+	// CRUD to gkehubfeaturemembership equals to patch calls to the membershipSpecs field of the gkehub feature resource.
+	op, err := patchCall.UpdateMask("membershipSpecs").Context(ctx).Do()
 	if err != nil {
 		return nil, err
 	}
