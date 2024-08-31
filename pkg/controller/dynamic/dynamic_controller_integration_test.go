@@ -296,6 +296,15 @@ func testNoChangeAfterCreate(ctx context.Context, t *testing.T, testContext test
 
 // testNoChangeAfterUpdate is enabled only on resources allowlisted inside the function.
 func testNoChangeAfterUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	// Do not run for tests with `SkipUpdate` explicitly set to 'true'.
+	if resourceContext.SkipUpdate {
+		return
+	}
+	// Do not run for tests without an update.yaml set.
+	if testContext.UpdateUnstruct == nil {
+		t.Logf("UpdateUnstruct not set; skipping testNoChangeAfterUpdate")
+		return
+	}
 	switch testContext.ResourceFixture.GVK.GroupKind() {
 	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}: // test coverage for https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/1802
 	default:
