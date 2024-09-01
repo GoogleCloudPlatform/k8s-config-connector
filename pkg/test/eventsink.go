@@ -102,6 +102,8 @@ func (s *LogEntries) RemoveHTTPResponseHeader(key string) {
 	}
 }
 
+// KeepIf returns a new LogEntries with only the entries that satisfy the predicate.
+// (where the predicate function returns true)
 func (s LogEntries) KeepIf(pred func(e *LogEntry) bool) LogEntries {
 	var keep LogEntries
 	for _, entry := range s {
