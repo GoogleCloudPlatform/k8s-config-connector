@@ -41,6 +41,7 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
 	single domain and its wildcard, e.g. authorization for "example.com" can
 	be used to issue certificates for "example.com" and "*.example.com". */
@@ -49,6 +50,7 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef refs.ProjectRef `json:"projectRef"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
