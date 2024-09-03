@@ -18,16 +18,8 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-
 cd ${REPO_ROOT}/
 
-echo "Downloading envtest assets..."
-export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+echo "Running samples in tests/e2e..."
 
-echo "Running fixtures in tests/e2e..."
-
-RUN_E2E=1 \
-E2E_KUBE_TARGET=envtest \
-E2E_GCP_TARGET=mock \
-KCC_USE_DIRECT_RECONCILERS="SQLInstance,ComputeForwardingRule" \
-  go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/samples
+RUN_TESTS=TestAllInSeries/samples dev/tasks/run-e2e

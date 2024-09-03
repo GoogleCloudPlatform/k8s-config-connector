@@ -349,14 +349,9 @@ powertool-tests:
 e2e-scenario-tests:
 	cd scripts/github-actions/ && ./tests-e2e-scenarios.sh
 
-# indicate which samples testcases will be run
-SAMPLE_TESTCASE ?= TestAllInSeries/samples
-# indicate whether the testcases will be run again real/mock GCP
-TEST_TARGET ?= mock
-
 .PHONY: e2e-sample-tests
 e2e-sample-tests:
-	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="SQLInstance,ComputeForwardingRule" \ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
+	cd scripts/github-actions/ && ./tests-e2e-samples.sh
 
 # orgnization ID for google.com
 ORG_ID ?= 433637338589
