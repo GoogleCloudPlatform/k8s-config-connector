@@ -153,4 +153,5 @@ Session.vim
 .build
 
 # Go workspaces
+go.work
 go.work.sum
