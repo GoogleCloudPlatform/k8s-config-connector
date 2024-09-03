@@ -51,3 +51,12 @@ gcloud beta billing projects link --billing-account=${BILLING_ACCOUNT_ID} "${GCP
 # Tell gcloud to use this project by default
 echo "Setting default project to ${GCP_PROJECT_ID}"
 gcloud config set project "${GCP_PROJECT_ID}"
+
+gcloud services enable \
+  compute.googleapis.com \
+  dataflow.googleapis.com \
+  logging.googleapis.com \
+  monitoring.googleapis.com \
+  redis.googleapis.com \
+  servicenetworking.googleapis.com \
+  sqladmin.googleapis.com
