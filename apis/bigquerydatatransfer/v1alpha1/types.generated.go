@@ -20,12 +20,6 @@ type EmailPreferences struct {
 	EnableFailureEmail *bool `json:"enableFailureEmail,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
-type EncryptionConfiguration struct {
-	// The name of the KMS key used for encrypting BigQuery data.
-	KmsKeyName *string `json:"kmsKeyName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptions
 type ScheduleOptions struct {
 	// If true, automatic scheduling of data transfer runs for this configuration

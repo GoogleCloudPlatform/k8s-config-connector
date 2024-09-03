@@ -74,9 +74,34 @@ spec:
                 x-kubernetes-validations:
                 - message: DataSourceID field is immutable
                   rule: self == oldSelf
-              destinationDatasetID:
+              datasetRef:
                 description: The BigQuery target dataset id.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: If provided must be in the format `bigquery.googleapis.com/projects/[project_id]/datasets/[dataset_id]`.
+                    type: string
+                  name:
+                    description: The `metadata.name` field of a `PubSubTopic` resource.
+                    type: string
+                  namespace:
+                    description: The `metadata.namespace` field of a `PubSubTopic`
+                      resource.
+                    type: string
+                type: object
               disabled:
                 description: Is this config disabled. When set to true, no runs will
                   be scheduled for this transfer config.
@@ -101,10 +126,34 @@ spec:
                   will apply the key if it is present, or otherwise try to apply project
                   default keys if it is absent.
                 properties:
-                  kmsKeyName:
-                    description: The name of the KMS key used for encrypting BigQuery
-                      data.
-                    type: string
+                  kmsKeyRef:
+                    description: The KMS key used for encrypting BigQuery data.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.'
+                        type: string
+                      name:
+                        description: The `name` field of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a `KMSCryptoKey`
+                          resource.
+                        type: string
+                    type: object
                 type: object
               location:
                 description: Immutable.
@@ -112,14 +161,6 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
-              notificationPubsubTopic:
-                description: |-
-                  Pub/Sub topic where notifications will be sent after transfer runs
-                   associated with this transfer config finish.
-
-                   The format for specifying a pubsub topic is:
-                   `projects/{project_id}/topics/{topic_id}`
-                type: string
               params:
                 additionalProperties:
                   type: string
@@ -158,6 +199,35 @@ spec:
                     type: string
                   namespace:
                     description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pubSubTopicRef:
+                description: Pub/Sub topic where notifications will be sent after
+                  transfer runs associated with this transfer config finish.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                    type: string
+                  name:
+                    description: The `metadata.name` field of a `PubSubTopic` resource.
+                    type: string
+                  namespace:
+                    description: The `metadata.namespace` field of a `PubSubTopic`
+                      resource.
                     type: string
                 type: object
               resourceID:
