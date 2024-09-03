@@ -126,7 +126,7 @@ go run . generate-mapper \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
- 
+
 # Firestore
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -143,6 +143,23 @@ go run . generate-mapper \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
+
+# Certificate Manager DNSAuthorization
+go run . generate-types \
+    --service google.cloud.certificatemanager.v1  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --output-api $REPO_ROOT/apis \
+    --kind CertificateManagerDNSAuthorization \
+    --proto-resource DnsAuthorization \
+    --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1"
+
+go run . generate-types \
+    --service google.cloud.certificatemanager.v1  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --output-api $REPO_ROOT/apis \
+    --kind CertificateManagerDNSAuthorization \
+    --proto-resource DnsAuthorization \
+    --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1"
 
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
