@@ -743,6 +743,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					NormalizeHTTPLog(t, events, project, uniqueID)
 
+					events = RemoveExtraEvents(events)
+
 					// Remove repeated GET requests (after normalization)
 					{
 						var previous *test.LogEntry

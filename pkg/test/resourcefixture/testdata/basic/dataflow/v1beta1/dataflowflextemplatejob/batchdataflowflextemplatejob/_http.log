@@ -197,43 +197,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_QUEUED",
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow"
-  },
-  "id": "000000000000000000000",
-  "labels": {
-    "goog-dataflow-provided-template-name": "file_format_conversion",
-    "goog-dataflow-provided-template-type": "flex"
-  },
-  "location": "us-central1",
-  "name": "dataflowflextemplatejob-${uniqueId}",
-  "pipelineDescription": {
-    "removed": "simplicity"
-  },
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "currentState": "JOB_STATE_RUNNING",
   "currentStateTime": "2024-04-01T12:34:56.123456Z",
   "environment": {
