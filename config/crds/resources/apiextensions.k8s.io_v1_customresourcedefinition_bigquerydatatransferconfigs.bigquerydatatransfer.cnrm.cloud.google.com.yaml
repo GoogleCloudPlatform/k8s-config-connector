@@ -213,7 +213,6 @@ spec:
                 format: int64
                 type: integer
             required:
-            - ""
             - location
             - projectRef
             type: object
@@ -297,6 +296,8 @@ spec:
                     type: string
                 type: object
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

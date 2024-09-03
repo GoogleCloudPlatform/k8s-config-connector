@@ -74,7 +74,6 @@ type BigQueryDataTransferConfigSpec struct {
 	//  https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
 	Params map[string]string `json:"params,omitempty"`
 
-	// +required
 	Parent `json:",inline"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
@@ -122,15 +121,12 @@ type BigQueryDataTransferConfigStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// A unique specifier for the BigQueryDataTransferConfig resource in GCP.
-	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	// +optional
 	ObservedState *BigQueryDataTransferConfigObservedState `json:"observedState,omitempty"`
 }
 
@@ -180,6 +176,7 @@ type BigQueryDataTransferConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// +required
 	Spec   BigQueryDataTransferConfigSpec   `json:"spec,omitempty"`
 	Status BigQueryDataTransferConfigStatus `json:"status,omitempty"`
 }
