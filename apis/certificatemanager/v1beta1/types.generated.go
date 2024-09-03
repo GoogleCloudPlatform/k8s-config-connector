@@ -261,41 +261,6 @@ type CertificateMapEntry struct {
 	State *string `json:"state,omitempty"`
 }
 
-// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization
-type DnsAuthorization struct {
-	// A user-defined name of the dns authorization. DnsAuthorization names must
-	//  be unique globally and match pattern
-	//  `projects/*/locations/*/dnsAuthorizations/*`.
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The creation timestamp of a DnsAuthorization.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The last update timestamp of a DnsAuthorization.
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Set of labels associated with a DnsAuthorization.
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// One or more paragraphs of text description of a DnsAuthorization.
-	Description *string `json:"description,omitempty"`
-
-	// Required. Immutable. A domain that is being authorized. A DnsAuthorization
-	//  resource covers a single domain and its wildcard, e.g. authorization for
-	//  `example.com` can be used to issue certificates for `example.com` and
-	//  `*.example.com`.
-	Domain *string `json:"domain,omitempty"`
-
-	// Output only. DNS Resource Record that needs to be added to DNS
-	//  configuration.
-	DnsResourceRecord *DnsAuthorization_DnsResourceRecord `json:"dnsResourceRecord,omitempty"`
-
-	// Immutable. Type of DnsAuthorization. If unset during resource creation the
-	//  following default will be used:
-	//  - in location global: FIXED_RECORD.
-	Type *string `json:"type,omitempty"`
-}
-
 // +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
 type DnsAuthorization_DnsResourceRecord struct {
 	// Output only. Fully qualified name of the DNS Resource Record.

@@ -18,17 +18,12 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-var (
-	CertificateManagerDNSAuthorizationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    "CertificateManagerDNSAuthorization",
-	}
-)
+var CertificateManagerDNSAuthorizationGVK = GroupVersion.WithKind("CertificateManagerDNSAuthorization")
 
+// CertificateManagerDNSAuthorizationSpec defines the desired state of CertificateManagerDNSAuthorization
+// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization
 type CertificateManagerDNSAuthorizationSpec struct {
 	/* A human-readable description of the resource. */
 	// +optional
@@ -43,7 +38,7 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef refs.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -64,6 +59,7 @@ type DnsauthorizationDnsResourceRecordStatus struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// CertificateManagerDNSAuthorizationStatus defines the config connector machine state of CertificateManagerDNSAuthorization
 type CertificateManagerDNSAuthorizationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerDNSAuthorization's current state. */
@@ -77,19 +73,39 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* NOTYET
+	// A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+	*/
+
+	/* NOTYET
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	// +optional
+	ObservedState *CertificateManagerDNSAuthorizationObservedState `json:"observedState,omitempty"`
+	*/
 }
+
+/* NOTYET
+// CertificateManagerDNSAuthorizationSpec defines the desired state of CertificateManagerDNSAuthorization
+// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization
+type CertificateManagerDNSAuthorizationObservedState struct {
+}
+*/
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcertificatemanagerdnsauthorization;gcpcertificatemanagerdnsauthorizations
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/tf2crd=true"
 
-// CertificateManagerDNSAuthorization is the Schema for the certificatemanager API
+// CertificateManagerDNSAuthorization is the Schema for the CertificateManagerDNSAuthorization API
 // +k8s:openapi-gen=true
 type CertificateManagerDNSAuthorization struct {
 	metav1.TypeMeta   `json:",inline"`
@@ -100,7 +116,6 @@ type CertificateManagerDNSAuthorization struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
 // CertificateManagerDNSAuthorizationList contains a list of CertificateManagerDNSAuthorization
 type CertificateManagerDNSAuthorizationList struct {
 	metav1.TypeMeta `json:",inline"`
