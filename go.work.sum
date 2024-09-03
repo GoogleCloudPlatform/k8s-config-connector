@@ -122,7 +122,11 @@ cloud.google.com/go/iap v1.9.10/go.mod h1:pO0FEirrhMOT1H0WVwpD5dD9r3oBhvsunyBQtN
 cloud.google.com/go/ids v1.4.9/go.mod h1:1pL+mhlvtUNphwBSK91yO8NoTVQYwOpqim1anIVBwbM=
 cloud.google.com/go/ids v1.4.11/go.mod h1:+ZKqWELpJm8WcRRsSvKZWUdkriu4A3XsLLzToTv3418=
 cloud.google.com/go/iot v1.7.9/go.mod h1:1fi6x4CexbygNgRPn+tcxCjOZFTl+4G6Adbo6sLPR7c=
+<<<<<<< HEAD
 cloud.google.com/go/iot v1.7.11/go.mod h1:0vZJOqFy9kVLbUXwTP95e0dWHakfR4u5IWqsKMGIfHk=
+=======
+cloud.google.com/go/kms v1.18.2 h1:EGgD0B9k9tOOkbPhYW1PHo2W0teamAUYMOUIcDRMfPk=
+>>>>>>> 83d3e1b36 (chore: generate CRD for KMSCryptoKey)
 cloud.google.com/go/kms v1.18.2/go.mod h1:YFz1LYrnGsXARuRePL729oINmN5J/5e7nYijgvfiIeY=
 cloud.google.com/go/kms v1.18.4/go.mod h1:SG1bgQ3UWW6/KdPo9uuJnzELXY5YTTMJtDYvajiQ22g=
 cloud.google.com/go/language v1.12.7/go.mod h1:4s/11zABvI/gv+li/+ICe+cErIaN9hYmilf9wrc5Py0=

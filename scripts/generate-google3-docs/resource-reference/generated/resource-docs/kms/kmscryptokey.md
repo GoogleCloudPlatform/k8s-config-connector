@@ -110,8 +110,7 @@ versionTemplate:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED.
-If not specified at creation time, the default duration is 24 hours.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The period of time that versions of this key spend in the [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED] state before transitioning to [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED]. If not specified at creation time, the default duration is 24 hours.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -141,7 +140,7 @@ If not specified at creation time, the default duration is 24 hours.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSKeyRing` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The keyRing selflink of form "projects/{project}/locations/{location}/keyRings/{name}", when not managed by KCC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -151,7 +150,7 @@ If not specified at creation time, the default duration is 24 hours.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `KMSKeyRing` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -161,7 +160,7 @@ If not specified at creation time, the default duration is 24 hours.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `KMSKeyRing` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -171,10 +170,7 @@ If not specified at creation time, the default duration is 24 hours.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The immutable purpose of this CryptoKey. See the
-[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-for possible inputs.
-Default value is "ENCRYPT_DECRYPT".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The immutable purpose of this [CryptoKey][google.cloud.kms.v1.CryptoKey].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -194,10 +190,18 @@ Default value is "ENCRYPT_DECRYPT".{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
-The first rotation will take place after the specified period. The rotation period has
-the format of a decimal number with up to 9 fractional digits, followed by the
-letter 's' (seconds). It must be greater than a day (ie, 86400).{% endverbatim %}</p>
+            <p>{% verbatim %}[next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time]
+ will be advanced by this period when the service automatically rotates a
+ key. Must be at least 24 hours and at most 876,000 hours.
+
+ If [rotation_period][google.cloud.kms.v1.CryptoKey.rotation_period] is
+ set,
+ [next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time]
+ must also be set.
+
+ Keys with [purpose][google.cloud.kms.v1.CryptoKey.purpose]
+ [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
+ support automatic rotation. For other keys, this field must be omitted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -207,8 +211,7 @@ letter 's' (seconds). It must be greater than a day (ie, 86400).{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
-You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -218,18 +221,26 @@ You must use the 'google_kms_key_ring_import_job' resource to import the CryptoK
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A template describing settings for new crypto key versions.{% endverbatim %}</p>
+            <p>{% verbatim %}A template describing settings for new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] instances. The properties of new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] instances created by either [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion] or auto-rotation are controlled by this template.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>versionTemplate.algorithm</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The algorithm to use when creating a version based on this template.
-See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs.{% endverbatim %}</p>
+            <p>{% verbatim %}Required.
+ [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+ to use when creating a
+ [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based on this
+ template.
+
+ For backwards compatibility, GOOGLE_SYMMETRIC_ENCRYPTION is implied if both
+ this field is omitted and
+ [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] is
+ [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -239,14 +250,12 @@ See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The protection level to use when creating a version based on this template. Possible values include "SOFTWARE", "HSM", "EXTERNAL", "EXTERNAL_VPC". Defaults to "SOFTWARE".{% endverbatim %}</p>
+            <p>{% verbatim %}[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] to use when creating a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based on this template. Immutable. Defaults to [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -273,7 +282,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -113,6 +113,19 @@ func Enum_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) U {
 	return 0
 }
 
+func EnumSlice_ToProto[U ProtoEnum](mapCtx *MapContext, in []string) []U {
+	if in == nil {
+		return nil
+	}
+
+	var out []U
+	for _, s := range in {
+		u := Enum_ToProto[U](mapCtx, &s)
+		out = append(out, u)
+	}
+	return out
+}
+
 func Enum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
 	descriptor := v.Descriptor()
 
@@ -127,6 +140,21 @@ func Enum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
 	}
 	s := string(val.Name())
 	return &s
+}
+
+func EnumSlice_FromProto[U ProtoEnum](mapCtx *MapContext, in []U) []string {
+	if in == nil {
+		return nil
+	}
+
+	var out []string
+	for _, u := range in {
+		s := Enum_FromProto[U](mapCtx, u)
+		if s != nil {
+			out = append(out, *s)
+		}
+	}
+	return out
 }
 
 func LazyPtr[V comparable](v V) *V {
