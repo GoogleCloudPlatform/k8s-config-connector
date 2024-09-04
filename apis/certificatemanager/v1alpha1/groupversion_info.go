@@ -12,19 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package v1beta1 contains API Schema definitions for the certificatemanager v1beta1 API group.
-// +k8s:openapi-gen=true
-// +k8s:deepcopy-gen=package,register
-// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/certificatemanager
-// +k8s:defaulter-gen=TypeMeta
+// +kubebuilder:object:generate=true
 // +groupName=certificatemanager.cnrm.cloud.google.com
-package v1beta1
+package v1alpha1
 
 import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
-	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "certificatemanager.cnrm.cloud.google.com", Version: "v1beta1"}
+	// GroupVersion is group version used to register these objects
+	GroupVersion = schema.GroupVersion{Group: "certificatemanager.cnrm.cloud.google.com", Version: "v1alpha1"}
+
+	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
+	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}
+
+	// AddToScheme adds the types in this group-version to the given scheme.
+	AddToScheme = SchemeBuilder.AddToScheme
 )
