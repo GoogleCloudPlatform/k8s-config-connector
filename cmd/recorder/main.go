@@ -146,7 +146,7 @@ func doRecord(c client.Client, gvks []schema.GroupVersionKind) error {
 			defer func() { <-sem }()
 			err := recordMetricsForGVK(c, gvk)
 			if err != nil {
-				logger.Error(err, "error recording metrics for CRD %v: %v", gvk.String())
+				logger.Error(err, "error recording metrics for CRD", "gvk", gvk.String())
 			}
 		}()
 	}
@@ -190,7 +190,7 @@ func recordMetricsForGVK(c client.Client, gvk schema.GroupVersionKind) error {
 		}
 		lastCondition, err := getTheLastCondition(obj)
 		if err != nil {
-			logger.Error(err, "error getting the last condition for metrics for %v: %v", gvk.String())
+			logger.Error(err, "error getting the last condition for metrics", "gvk", gvk.String())
 			return nil
 		}
 		s.countByStatus[lastCondition]++
