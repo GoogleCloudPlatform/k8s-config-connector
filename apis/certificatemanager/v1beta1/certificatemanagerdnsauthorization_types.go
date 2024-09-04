@@ -29,13 +29,15 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Domain field is immutable"
 	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
 	single domain and its wildcard, e.g. authorization for "example.com" can
 	be used to issue certificates for "example.com" and "*.example.com". */
+	// +required
 	Domain string `json:"domain"`
 
 	/* The project that this resource belongs to. */
+	// +required
 	ProjectRef refs.ProjectRef `json:"projectRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
@@ -111,6 +113,7 @@ type CertificateManagerDNSAuthorization struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// +required
 	Spec   CertificateManagerDNSAuthorizationSpec   `json:"spec,omitempty"`
 	Status CertificateManagerDNSAuthorizationStatus `json:"status,omitempty"`
 }
