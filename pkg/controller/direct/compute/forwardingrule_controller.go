@@ -90,28 +90,8 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 		obj.Spec.NetworkRef.External = networkRef.External
 	}
 
-	// Get subnetwork
-	if obj.Spec.SubnetworkRef != nil {
-		subnetworkRef, err := ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.SubnetworkRef)
-		if err != nil {
-			return nil, err
-
-		}
-		obj.Spec.SubnetworkRef.External = subnetworkRef.External
-	}
-
-	// Get backend service
-	if obj.Spec.BackendServiceRef != nil {
-		backendServiceRef, err := ResolveComputeBackendService(ctx, reader, obj, obj.Spec.BackendServiceRef)
-		if err != nil {
-			return nil, err
-
-		}
-		obj.Spec.BackendServiceRef.External = backendServiceRef.External
-	}
-
-	// Get ip address, ip address is optional
-	if obj.Spec.IpAddress != nil && obj.Spec.IpAddress.AddressRef != nil {
+	// Get compute address
+	if obj.Spec.IpAddress.AddressRef != nil {
 		computeAddressRef, err := ResolveComputeAddress(ctx, reader, obj, obj.Spec.IpAddress.AddressRef)
 		if err != nil {
 			return nil, err
@@ -120,37 +100,24 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 		obj.Spec.IpAddress.AddressRef.External = computeAddressRef.External
 	}
 
-	// Get target, target is optional
-	if obj.Spec.Target != nil {
-		// Get target ServiceAttachment
-		if obj.Spec.Target.ServiceAttachmentRef != nil {
-			serviceAttachmentRef, err := ResolveComputeServiceAttachment(ctx, reader, obj, obj.Spec.Target.ServiceAttachmentRef)
-			if err != nil {
-				return nil, err
+	// Get target ComputeTargetHTTPProxy
+	if obj.Spec.Target.TargetHTTPProxyRef != nil {
+		targetHTTPProxyRef, err := ResolveComputeTargetHTTPProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPProxyRef)
+		if err != nil {
+			return nil, err
 
-			}
-			obj.Spec.Target.ServiceAttachmentRef.External = serviceAttachmentRef.External
 		}
+		obj.Spec.Target.TargetHTTPProxyRef.External = targetHTTPProxyRef.External
+	}
 
-		// Get target ComputeTargetHTTPProxy
-		if obj.Spec.Target.TargetHTTPProxyRef != nil {
-			targetHTTPProxyRef, err := ResolveComputeTargetHTTPProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPProxyRef)
-			if err != nil {
-				return nil, err
+	// Get target TargetVPNGateway
+	if obj.Spec.Target.TargetVPNGatewayRef != nil {
+		targetVPNGatewayRef, err := ResolveComputeTargetVPNGateway(ctx, reader, obj, obj.Spec.Target.TargetVPNGatewayRef)
+		if err != nil {
+			return nil, err
 
-			}
-			obj.Spec.Target.TargetHTTPProxyRef.External = targetHTTPProxyRef.External
 		}
-
-		// Get target TargetVPNGateway
-		if obj.Spec.Target.TargetVPNGatewayRef != nil {
-			targetVPNGatewayRef, err := ResolveComputeTargetVPNGateway(ctx, reader, obj, obj.Spec.Target.TargetVPNGatewayRef)
-			if err != nil {
-				return nil, err
-
-			}
-			obj.Spec.Target.TargetVPNGatewayRef.External = targetVPNGatewayRef.External
-		}
+		obj.Spec.Target.TargetVPNGatewayRef.External = targetVPNGatewayRef.External
 	}
 
 	// Get location
