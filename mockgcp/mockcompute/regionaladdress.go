@@ -137,7 +137,7 @@ type regionalAddressName struct {
 }
 
 func (n *regionalAddressName) String() string {
-	return "projects/" + n.Project.ID + "/regions/" + n.Region + "/networks/" + n.Name
+	return "projects/" + n.Project.ID + "/regions/" + n.Region + "/addresses/" + n.Name
 }
 
 // parseAddressName parses a string into a addressName.

@@ -25,14 +25,14 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-type GlobalSSLCertificatesV1 struct {
+type RegionalSSLCertificatesV1 struct {
 	*MockService
-	pb.UnimplementedSslCertificatesServer
+	pb.UnimplementedRegionSslCertificatesServer
 }
 
-func (s *GlobalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetSslCertificateRequest) (*pb.SslCertificate, error) {
-	reqName := "projects/" + req.GetProject() + "/global" + "/sslCertificates/" + req.GetSslCertificate()
-	name, err := s.parseGlobalSslCertificateName(reqName)
+func (s *RegionalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetRegionSslCertificateRequest) (*pb.SslCertificate, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.Region + "/sslCertificates/" + req.GetSslCertificate()
+	name, err := s.parseRegionalSslCertificateName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -47,9 +47,9 @@ func (s *GlobalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetSslCertifi
 	return obj, nil
 }
 
-func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslCertificateRequest) (*pb.Operation, error) {
-	reqName := "projects/" + req.GetProject() + "/global" + "/sslCertificates/" + req.GetSslCertificateResource().GetName()
-	name, err := s.parseGlobalSslCertificateName(reqName)
+func (s *RegionalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertRegionSslCertificateRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/sslCertificates/" + req.GetSslCertificateResource().GetName()
+	name, err := s.parseRegionalSslCertificateName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -74,14 +74,14 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 		OperationType: PtrTo("insert"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
 
-func (s *GlobalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteSslCertificateRequest) (*pb.Operation, error) {
-	reqName := "projects/" + req.GetProject() + "/global" + "/sslCertificates/" + req.GetSslCertificate()
-	name, err := s.parseGlobalSslCertificateName(reqName)
+func (s *RegionalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteRegionSslCertificateRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/sslCertificates/" + req.GetSslCertificate()
+	name, err := s.parseRegionalSslCertificateName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -99,34 +99,36 @@ func (s *GlobalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteSslC
 		OperationType: PtrTo("delete"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return deleted, nil
 	})
 }
 
-type globalSSLCertificateName struct {
+type regionalSSLCertificateName struct {
 	Project *projects.ProjectData
+	Region  string
 	Name    string
 }
 
-func (n *globalSSLCertificateName) String() string {
-	return "projects/" + n.Project.ID + "/global" + "/sslCertificates/" + n.Name
+func (n *regionalSSLCertificateName) String() string {
+	return "projects/" + n.Project.ID + "/regions/" + n.Region + "/sslCertificates/" + n.Name
 }
 
-// parseGlobalSslCertificateName parses a string into a globalSslCertificateName.
-// The expected form is `projects/*/global/sslcertificate/*`.
-func (s *MockService) parseGlobalSslCertificateName(name string) (*globalSSLCertificateName, error) {
+// parseRegionalSslCertificateName parses a string into a regionalSSLCertificateName.
+// The expected form is `projects/*/regions/*/sslcertificate/*`.
+func (s *MockService) parseRegionalSslCertificateName(name string) (*regionalSSLCertificateName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "sslCertificates" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "sslCertificates" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &globalSSLCertificateName{
+		name := &regionalSSLCertificateName{
 			Project: project,
-			Name:    tokens[4],
+			Region:  tokens[3],
+			Name:    tokens[5],
 		}
 
 		return name, nil

@@ -23,7 +23,7 @@ spec:
   location: global
   target:
     targetSSLProxyRef:
-      name: computetargetsslproxy-${uniqueId}
+      name: computetargetsslproxy2-${uniqueId}
   portRange: "443"
   loadBalancingScheme: EXTERNAL
   ipAddress:
