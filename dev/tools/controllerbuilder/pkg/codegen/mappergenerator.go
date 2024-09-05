@@ -317,6 +317,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
 				}
 
+				// special handling for proto messages that mapped to KRM string
+				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+				}
+
 				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 					krmFieldName,
 					functionName,
@@ -478,6 +483,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
+				}
+
+				// special handling for proto messages that mapped to KRM string
+				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					functionName = krmToProtoFunctionName(protoField, krmField.Name)
 				}
 
 				oneof := protoField.ContainingOneof()
@@ -685,4 +695,28 @@ func sortIntoMessageSlice(messages protoreflect.MessageDescriptors) []protorefle
 		return out[i].FullName() < out[j].FullName()
 	})
 	return out
+}
+
+func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldName string) string {
+	fullname := string(protoField.Message().FullName())
+	switch fullname {
+	case "google.protobuf.Timestamp":
+		return "direct.StringTimestamp_FromProto"
+	case "google.protobuf.Struct":
+		return krmFieldName + "_FromProto"
+	}
+	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
+	return ""
+}
+
+func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldName string) string {
+	fullname := string(protoField.Message().FullName())
+	switch fullname {
+	case "google.protobuf.Timestamp":
+		return "direct.StringTimestamp_ToProto"
+	case "google.protobuf.Struct":
+		return krmFieldName + "_ToProto"
+	}
+	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
+	return ""
 }

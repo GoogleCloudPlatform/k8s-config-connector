@@ -34,8 +34,8 @@ func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext
 	// MISSING: ScheduleOptions
 	// MISSING: DataRefreshWindowDays
 	// MISSING: Disabled
-	out.UpdateTime = TransferConfig_UpdateTime_FromProto(mapCtx, in.GetUpdateTime())
-	out.NextRunTime = TransferConfig_NextRunTime_FromProto(mapCtx, in.GetNextRunTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: UserID
 	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
@@ -59,8 +59,8 @@ func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: ScheduleOptions
 	// MISSING: DataRefreshWindowDays
 	// MISSING: Disabled
-	out.UpdateTime = TransferConfig_UpdateTime_ToProto(mapCtx, in.UpdateTime)
-	out.NextRunTime = TransferConfig_NextRunTime_ToProto(mapCtx, in.NextRunTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
 	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
 	// MISSING: UserID
 	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
@@ -81,7 +81,7 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: DestinationDatasetID
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
-	out.Params = map[string]string_FromProto(mapCtx, in.GetParams())
+	out.Params = Params_FromProto(mapCtx, in.GetParams())
 	out.Schedule = direct.LazyPtr(in.GetSchedule())
 	out.ScheduleOptions = ScheduleOptions_FromProto(mapCtx, in.GetScheduleOptions())
 	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
@@ -106,7 +106,7 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 	// MISSING: DestinationDatasetID
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.DataSourceId = direct.ValueOf(in.DataSourceID)
-	out.Params = map[string]string_ToProto(mapCtx, in.Params)
+	out.Params = Params_ToProto(mapCtx, in.Params)
 	out.Schedule = direct.ValueOf(in.Schedule)
 	out.ScheduleOptions = ScheduleOptions_ToProto(mapCtx, in.ScheduleOptions)
 	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
@@ -160,8 +160,8 @@ func ScheduleOptions_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions
 	}
 	out := &krm.ScheduleOptions{}
 	out.DisableAutoScheduling = direct.LazyPtr(in.GetDisableAutoScheduling())
-	out.StartTime = ScheduleOptions_StartTime_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = ScheduleOptions_EndTime_FromProto(mapCtx, in.GetEndTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
 func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions) *pb.ScheduleOptions {
@@ -170,8 +170,8 @@ func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions)
 	}
 	out := &pb.ScheduleOptions{}
 	out.DisableAutoScheduling = direct.ValueOf(in.DisableAutoScheduling)
-	out.StartTime = ScheduleOptions_StartTime_ToProto(mapCtx, in.StartTime)
-	out.EndTime = ScheduleOptions_EndTime_ToProto(mapCtx, in.EndTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
 func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
