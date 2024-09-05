@@ -7,15 +7,13 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
-    label-one: value-one-updated
-    label-two: value-two
   name: certificatemanagerdnsauthorization-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: updated dns authorization
+  description: sample dns authorization
   domain: ${uniqueId}.hashicorptest.com
   projectRef:
     external: ${projectId}
@@ -31,4 +29,4 @@ status:
   - data: ${uniqueId}
     name: _acme-challenge.${uniqueId}.hashicorptest.com.
     type: CNAME
-  observedGeneration: 2
+  observedGeneration: 1

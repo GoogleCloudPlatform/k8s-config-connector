@@ -138,6 +138,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.labelFingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".status.fingerprint"] = "abcdef0123A="
 
+	// Specific to Certificate Manager
+	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
+
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {

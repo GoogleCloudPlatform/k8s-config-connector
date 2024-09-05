@@ -632,6 +632,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 					addReplacement("settings.backupConfiguration.startTime", "12:00")
 					addReplacement("settings.settingsVersion", "123")
+
+					// Specific to CertificateManager
+					addReplacement("response.dnsResourceRecord.data", uniqueID)
 					jsonMutators = append(jsonMutators, func(obj map[string]any) {
 						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
 							// Only run this mutator for sql instance objects.
