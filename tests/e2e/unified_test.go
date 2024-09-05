@@ -546,6 +546,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									r.PathIDs[targetId] = "${forwardingRulesId}"
 								case "serviceAttachments":
 									r.PathIDs[targetId] = "${serviceAttachmentsId}"
+								case "targetSslProxies":
+									r.PathIDs[targetId] = "${targetSslProxiesId}"
+								case "addresses":
+									r.PathIDs[targetId] = "${addressesId}"
 								}
 							}
 						}
