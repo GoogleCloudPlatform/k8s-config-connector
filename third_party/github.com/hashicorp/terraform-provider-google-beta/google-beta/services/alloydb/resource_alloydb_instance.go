@@ -231,7 +231,7 @@ for outbound connections.`,
 			},
 			"update_time": {
 				Type:        schema.TypeString,
-					Computed:    true,
+				Computed:    true,
 				Description: `Time the Instance was updated in UTC.`,
 			},
 			"query_insights_config": {
