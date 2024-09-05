@@ -137,9 +137,24 @@ func LazyPtr[V comparable](v V) *V {
 	return &v
 }
 
-func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
+func StringTimestamp_FromProto(mapCtx *MapContext, ts *timestamppb.Timestamp) *string {
+	if ts == nil {
+		return nil
+	}
 	formatted := ts.AsTime().Format(time.RFC3339)
 	return &formatted
+}
+
+func StringTimestamp_ToProto(mapCtx *MapContext, s *string) *timestamppb.Timestamp {
+	if s == nil {
+		return nil
+	}
+	t, err := time.Parse(time.RFC3339, *s)
+	if err != nil {
+		mapCtx.Errorf("invalid timestamp %q", *s)
+	}
+	ts := timestamppb.New(t)
+	return ts
 }
 
 func PtrTo[T any](t T) *T {
