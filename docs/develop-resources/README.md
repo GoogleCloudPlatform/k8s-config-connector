@@ -18,9 +18,15 @@ There are definitely more work need to be done, but we'd like to share the steps
 
 ## Develop by scenraios
 
-* [1. Add a new Direct resource](./scenarios/1-new-direct.md)
-* [2. Add a new TF/DCL-based resource](./scenarios/2-new-tf.md)
-* [3. Add a new field to Direct resource](./scenarios/3-new-field-to-direct.md)
-* [4. Add a new field to TF/DCL-based resource](./scenarios/4-new-field-to-tf.md)
-* [5. Bump a TF/DCL-based Alpha Resource to Direct Beta](./scenarios/5-tf-alpha-to-direct.md)
-* [6. Bump a TF/DCL-based Beta  Resource to Direct Beta](./scenarios/6-tf-beta-to-direct.md)
+*Find out the resource's current status*
+- If the resource is not in [ConfigConnector API Reference](https://cloud.google.com/config-connector/docs/reference/overview), it could be an Alpha resource. Check the list 
+
+
+* Check if the 
+Please follow this [guide](./scenarios/1-add-new-direct-resource.md) to add a Direct resource instead.
+If there are any specific reasons you cannot use the Direct resource, please let us know by filing an issue.
+* [Add a new resource](./scenarios/new-resource.md)
+* [Add a new field](./scenarios/new-field.md)
+* [Promote a Alpha Resource to Beta](./scenarios/alpha-to-beta.md)
+* [Migrate a TF/DCL-based Resource to Direct (Alpha)](./scenarios/migrate-tf-resource-alpha.md)
+* [Migrate a TF/DCL-based Resource to Direct (Beta)](./scenarios/migrate-tf-resource-beta.md)
