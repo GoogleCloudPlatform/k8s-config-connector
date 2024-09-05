@@ -110,5 +110,14 @@ go run . generate-mapper \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
 
+# BigQueryDataTransferConfig
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.bigquery.datatransfer.v1 \
+    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind BigQueryDataTransferConfig \
+    --proto-resource TransferConfig
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

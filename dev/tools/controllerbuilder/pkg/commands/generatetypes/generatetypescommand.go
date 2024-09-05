@@ -24,7 +24,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	"github.com/spf13/cobra"
@@ -112,27 +111,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
-		fullName := string(msg.FullName())
-		if strings.HasSuffix(fullName, "Request") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "Response") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "OperationMetadata") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "Metadata") {
-			return "", false
-		}
-		if !strings.HasPrefix(fullName, o.ServiceName+".") {
-			return "", false
-		}
-
-		return goPackage, true
-	}
-	typeGenerator := codegen.NewTypeGenerator(pathForMessage, o.OutputAPIDirectory)
+	resourceProtoFullName := o.ServiceName + "." + o.ResourceProtoName
+	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, resourceProtoFullName)
 	if err := typeGenerator.VisitProto(api); err != nil {
 		return err
 	}
