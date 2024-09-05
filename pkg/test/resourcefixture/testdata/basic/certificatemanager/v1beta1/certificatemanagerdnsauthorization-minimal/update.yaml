@@ -16,7 +16,10 @@ apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
 kind: CertificateManagerDNSAuthorization
 metadata:
   name: certificatemanagerdnsauthorization-${uniqueId}
+  labels:
+    label-one: "value-one"
 spec:
+  description: Updated sample description
   domain: ${uniqueId}.hashicorptest.com
   projectRef:
     external: ${projectId}
