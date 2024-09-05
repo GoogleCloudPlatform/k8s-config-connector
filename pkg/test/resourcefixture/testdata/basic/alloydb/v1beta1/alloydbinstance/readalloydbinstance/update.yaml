@@ -24,3 +24,18 @@ spec:
   readPoolConfig:
     nodeCount: 3
   resourceID: alloydbreadinstance${uniqueId}
+  queryInsightsConfig:
+    queryPlansPerMinute: 5
+    queryStringLength: 1024
+    recordApplicationTags: false
+    recordClientAddress: false
+  observabilityConfig:
+    preserveComments: false
+    trackWaitEvents: true
+    trackWaitEventTypes: true
+    maxQueryStringLength: 10240
+    recordApplicationTags: false
+    queryPlansPerMinute: 200
+    trackActiveQueries: false
+    trackClientAddress: false
+

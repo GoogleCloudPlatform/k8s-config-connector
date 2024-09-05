@@ -231,8 +231,90 @@ for outbound connections.`,
 			},
 			"update_time": {
 				Type:        schema.TypeString,
-				Computed:    true,
+					Computed:    true,
 				Description: `Time the Instance was updated in UTC.`,
+			},
+			"query_insights_config": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				Description: `Configuration for query insights.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"query_plans_per_minute": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Description: `Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 20 is considered valid.`,
+						},
+						"query_string_length": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Description: `Query string length. The default value is 1024. Any integer between 256 and 4500 is considered valid.`,
+						},
+						"record_application_tags": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Record application tags for an instance. This flag is turned "on" by default.`,
+						},
+						"record_client_address": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Record client address for an instance. Client address is PII information. This flag is turned "on" by default.`,
+						},
+					},
+				},
+			},
+			"observability_config": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				Description: `Configuration for enhanced query insights.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enabled": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Observability feature status for an instance.`,
+						},
+						"max_query_string_length": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Description: `Query string length. The default value is 10240. Any integer between 1024 and 100000 is considered valid.`,
+						},
+						"preserve_comments": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Preserve comments in the query string.`,
+						},
+						"query_plans_per_minute": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Description: `Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 200 is considered valid.`,
+						},
+						"record_application_tags": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Record application tags for an instance. This flag is turned "on" by default.`,
+						},
+						"track_active_queries": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Track actively running queries. If not set, default value is "off".`,
+						},
+						"track_wait_event_types": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Record wait event types during query execution for an instance.`,
+						},
+						"track_wait_events": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Record wait events during query execution for an instance.`,
+						},
+					},
+				},
 			},
 		},
 		UseJSONNumber: true,
