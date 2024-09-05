@@ -216,7 +216,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
 			},
 			"update_time": {
 				Type:        schema.TypeString,
-					Computed:    true,
+				Computed:    true,
 				Description: `Time the Instance was updated in UTC.`,
 			},
 			"query_insights_config": {
