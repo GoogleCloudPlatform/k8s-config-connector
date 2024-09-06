@@ -15,6 +15,7 @@
 package updatetypes
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -23,14 +24,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
-	"k8s.io/apimachinery/pkg/util/sets"
 
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
 )
+
+const kccProtoPrefix = "+kcc:proto="
 
 type UpdateTypeOptions struct {
 	*options.GenerateOptions
@@ -89,7 +93,26 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 }
 
 type TypeUpdater struct {
-	opts *UpdateTypeOptions
+	opts               *UpdateTypeOptions
+	newField           newProtoField
+	dependentMessages  map[string]protoreflect.MessageDescriptor // key: fully qualified name of proto message
+	generatedGoField   generatedGoField                          // TOOD: support multiple new fields
+	generatedGoStructs []generatedGoStruct
+}
+
+type newProtoField struct {
+	field         protoreflect.FieldDescriptor
+	parentMessage protoreflect.MessageDescriptor
+}
+
+type generatedGoField struct {
+	parentMessage string // fully qualified name of the parent proto message of this field
+	content       []byte // the content of the generated Go field
+}
+
+type generatedGoStruct struct {
+	name    string // fully qualified name of the proto message
+	content []byte // the content of the genearted Go struct
 }
 
 func NewTypeUpdater(opts *UpdateTypeOptions) *TypeUpdater {
@@ -99,9 +122,36 @@ func NewTypeUpdater(opts *UpdateTypeOptions) *TypeUpdater {
 }
 
 func (u *TypeUpdater) Run() error {
-	parentMsg, newField, err := findNewField(u.opts.ProtoSourcePath, u.opts.parentMessageFullName, u.opts.newField)
+	// 1. find new field and its dependent proto messages that needs to be generated
+	if err := u.analyze(); err != nil {
+		return nil
+	}
+
+	// 2. generate Go types for the new field and its dependent proto messages
+	if err := u.generate(); err != nil {
+		return err
+	}
+
+	// 3. insert the generated Go code back to files
+	if err := u.insertGoField(); err != nil {
+		return err
+	}
+	if err := u.insertGoMessages(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// anaylze finds the new field, its parent message, and all dependent messages that need to be generated.
+func (u *TypeUpdater) analyze() error {
+	parentMessage, newField, err := findNewField(u.opts.ProtoSourcePath, u.opts.parentMessageFullName, u.opts.newField)
 	if err != nil {
 		return err
+	}
+	u.newField = newProtoField{
+		field:         newField,
+		parentMessage: parentMessage,
 	}
 
 	msgs, err := findDependentMsgs(newField, sets.NewString(strings.Split(u.opts.ignoredFields, ",")...))
@@ -114,9 +164,8 @@ func (u *TypeUpdater) Run() error {
 	if err := removeAlreadyGenerated(u.opts.goPackagePath, u.opts.apiDirectory, msgs); err != nil {
 		return err
 	}
-
-	// TODO: find the proper file to write/update. Currently print to a tmp file.
-	return writeToLocalFile(newField, parentMsg, msgs)
+	u.dependentMessages = msgs
+	return nil
 }
 
 // findNewField locates the parent message and the new field in the proto file
@@ -178,19 +227,24 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 	return nil
 }
 
-func writeToLocalFile(field protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor, msgs map[string]protoreflect.MessageDescriptor) error {
-	file, err := os.Create("newtypes.txt")
-	if err != nil {
-		return err
+func (u *TypeUpdater) generate() error {
+	var buf bytes.Buffer
+	klog.Infof("generate Go code for field %s", u.newField.field.Name())
+	codegen.WriteField(&buf, u.newField.field, u.newField.parentMessage, 0)
+	u.generatedGoField = generatedGoField{
+		parentMessage: string(u.newField.parentMessage.FullName()),
+		content:       buf.Bytes(),
 	}
-	defer file.Close()
 
-	fmt.Fprintf(file, "[The generated new field]\n\n")
-	codegen.WriteField(file, field, parentMsg, 0)
-
-	fmt.Fprintf(file, "\n\n[The generated new messages]\n\n")
-	for _, msg := range msgs {
-		codegen.WriteMessage(file, msg)
+	for _, msg := range u.dependentMessages {
+		var buf bytes.Buffer
+		klog.Infof("genearte Go code for messge %s", msg.FullName())
+		codegen.WriteMessage(&buf, msg)
+		u.generatedGoStructs = append(u.generatedGoStructs,
+			generatedGoStruct{
+				name:    string(msg.FullName()),
+				content: buf.Bytes(),
+			})
 	}
 	return nil
 }
