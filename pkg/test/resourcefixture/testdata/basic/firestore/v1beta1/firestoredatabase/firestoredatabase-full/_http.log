@@ -56,7 +56,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "@type": "type.googleapis.com/mockgcp.firestore.admin.v1.Database",
     "appEngineIntegrationMode": 2,
     "concurrencyMode": 2,
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -184,13 +184,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.UpdateDatabaseMetadata"
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "@type": "type.googleapis.com/mockgcp.firestore.admin.v1.Database",
     "appEngineIntegrationMode": 2,
     "concurrencyMode": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -201,6 +200,48 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
     "pointInTimeRecoveryEnablement": 1,
     "type": 1,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "604800s"
+  }
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.UpdateDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": "DISABLED",
+    "concurrencyMode": "OPTIMISTIC",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "locationId": "us-west2",
+    "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
+    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_ENABLED",
+    "type": "FIRESTORE_NATIVE",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "versionRetentionPeriod": "604800s"
@@ -265,18 +306,16 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "@type": "type.googleapis.com/mockgcp.firestore.admin.v1.Database",
     "appEngineIntegrationMode": 2,
     "concurrencyMode": 1,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deleteProtectionState": 1,
-    "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
     "pointInTimeRecoveryEnablement": 1,
-    "previousId": "firestoredatabase-${uniqueId}",
     "type": 1,
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
