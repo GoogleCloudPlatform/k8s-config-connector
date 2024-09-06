@@ -110,5 +110,15 @@ go run . generate-mapper \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
 
+# BigQueryDatasetAccess
+
+go run . generate-types  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.bigquery.v2 \
+    --api-version bigquery.cnrm.cloud.google.com/v1beta1  \
+    --output-api ${APIS_DIR} \
+    --kind BigQueryDataset \
+    --proto-resource Dataset
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
