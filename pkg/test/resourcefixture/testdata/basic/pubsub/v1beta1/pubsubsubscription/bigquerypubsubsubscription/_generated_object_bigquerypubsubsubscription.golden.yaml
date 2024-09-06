@@ -15,6 +15,7 @@ metadata:
   name: pubsubsubscription-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  ackDeadlineSeconds: 10
   bigqueryConfig:
     tableRef:
       name: bigquerytable-2-${uniqueId}

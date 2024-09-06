@@ -19,15 +19,12 @@ metadata:
     cnrm.cloud.google.com/on-delete: "cancel"
   labels:
     label-one: "value-one"
-  name: dataflowflextemplatejob-${uniqueId}
+  name: streamingdataflowflextemplatejob2-${uniqueId}
 spec:
   region: us-central1
-  # This is a public, Google-maintained Dataflow Job flex template of a batch job
-  containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
+  # This is a public, Google-maintained Dataflow Job flex template of a streaming job
+  # https://cloud.google.com/dataflow/docs/guides/templates/provided/pubsub-topic-subscription-to-text
+  containerSpecGcsPath: gs://dataflow-templates-us-central1/2024-07-23-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex
   parameters:
-    # This is maintained by us.
-    schemaPath: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
     inputSubscription: projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}
-    outputTopic: projects/${projectId}/topics/pubsubtopic1-${uniqueId}
-    outputTableSpec: ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}
-    createDisposition: CREATE_NEVER
+    outputDirectory: gs://bucket-dataflow-output-${uniqueId}/path1

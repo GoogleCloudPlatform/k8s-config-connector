@@ -1,283 +1,3 @@
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  }
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "schema": {},
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic0-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -356,88 +76,6 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=pubsubtopic1-${uniqueId}).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}"
 }
 
 ---
@@ -575,15 +213,12 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 
 {
   "launchParameter": {
-    "containerSpecGcsPath": "gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery",
+    "containerSpecGcsPath": "gs://dataflow-templates-us-central1/2024-07-23-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex",
     "environment": {},
-    "jobName": "dataflowflextemplatejob-${uniqueId}",
+    "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
     "parameters": {
-      "createDisposition": "CREATE_NEVER",
       "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-      "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-      "outputTopic": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}",
-      "schemaPath": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc"
+      "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path1"
     }
   }
 }
@@ -605,7 +240,7 @@ X-Xss-Protection: 0
     "currentStateTime": "1970-01-01T00:00:00Z",
     "id": "${jobID}",
     "location": "us-central1",
-    "name": "dataflowflextemplatejob-${uniqueId}",
+    "name": "streamingdataflowflextemplatejob2-${uniqueId}",
     "projectId": "${projectId}",
     "startTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -683,62 +318,80 @@ X-Xss-Protection: 0
     "sdkPipelineOptions": {
       "display_data": [],
       "options": {
-        "HTTPWriteTimeout": 0,
         "apiRootUrl": "https://dataflow.googleapis.com/",
-        "appName": "PubsubAvroToBigQuery",
+        "appName": "PubsubToText",
         "autoscalingAlgorithm": null,
-        "createDisposition": "CREATE_NEVER",
         "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
         "dataflowEndpoint": "",
         "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
         "dataflowWorkerJar": null,
+        "dayPattern": "dd",
         "defaultEnvironmentConfig": null,
         "defaultEnvironmentType": null,
         "diskSizeGb": 0,
-        "enableCloudDebugger": false,
         "enableStreamingEngine": false,
+        "environmentOptions": null,
         "experiments": [
           "disable_runner_v2_reason=java_job_google_template",
           "enable_always_on_exception_sampling",
           "enable_streaming_java_vmr"
         ],
         "filesToStage": [
-          "/usr/local/jre1.8.0-latest/lib/ext/cldrdata.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/jaccess.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/dnsns.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/nashorn.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/localedata.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/jfxrt.jar",
-          "/template/pubsub-avro-to-bigquery/pubsub-avro-to-bigquery.jar"
+          "/template/pubsub-to-text/libs/conscrypt-openjdk-uber-2.5.2.jar",
+          "/template/pubsub-to-text/classpath/googlecloud-to-googlecloud-1.0-SNAPSHOT.jar",
+          "/template/pubsub-to-text/resources"
+        ],
+        "gcpOauthScopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/devstorage.full_control",
+          "https://www.googleapis.com/auth/userinfo.email",
+          "https://www.googleapis.com/auth/datastore",
+          "https://www.googleapis.com/auth/bigquery",
+          "https://www.googleapis.com/auth/bigquery.insertdata",
+          "https://www.googleapis.com/auth/pubsub"
         ],
         "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsHttpRequestReadTimeout": null,
+        "gcsHttpRequestWriteTimeout": null,
         "gcsPerformanceMetrics": false,
-        "gcsUploadBufferSizeBytes": null,
+        "gcsRewriteDataOpBatchLimit": null,
+        "gcsUploadBufferSizeBytes": 1048576,
         "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "hourPattern": "HH",
+        "impersonateServiceAccount": null,
         "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-        "jobName": "dataflowflextemplatejob-${uniqueId}",
+        "inputTopic": null,
+        "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
         "labels": {
-          "goog-dataflow-provided-template-name": "pubsub_avro_to_bigquery",
-          "goog-dataflow-provided-template-type": "flex"
+          "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+          "goog-dataflow-provided-template-type": "flex",
+          "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
         },
         "maxNumWorkers": 0,
-        "maxStreamingBatchSize": 65536,
-        "maxStreamingRowsToBatch": 500,
+        "minutePattern": "mm",
+        "monthPattern": "MM",
         "network": null,
-        "numStreamingKeys": 50,
+        "numShards": 0,
         "numWorkers": 0,
         "numberOfWorkerHarnessThreads": 0,
         "optionsId": 0,
-        "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-        "outputTopic": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}",
+        "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path1",
+        "outputFilenamePrefix": "output",
+        "outputFilenameSuffix": "",
+        "outputShardTemplate": "W-P-SS-of-NN",
         "overrideWindmillBinary": null,
         "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
         "pipelineUrl": "${pipelineUrl}",
         "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
         "region": "us-central1",
+        "resourceHints": [],
         "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
         "saveProfilesToGcs": null,
-        "schemaPath": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc",
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
         "stableUniqueNames": "WARNING",
         "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
@@ -747,15 +400,20 @@ X-Xss-Protection: 0
         "subnetwork": null,
         "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
         "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
-        "useGrpcForGcs": false,
-        "userAgent": "Apache_Beam_SDK_for_Java/2.20.0(JRE_8_environment)",
+        "transformsToOverride": [],
+        "updateCompatibilityVersion": null,
+        "usePublicIps": null,
+        "userAgent": "Apache_Beam_SDK_for_Java/2.57.0(JRE_11_environment)",
+        "userTempLocation": null,
+        "windowDuration": "5m",
         "workerDiskType": null,
-        "workerHarnessContainerImage": "gcr.io/cloud-dataflow/v1beta3/IMAGE:beam-2.20.0",
+        "workerHarnessContainerImage": null,
         "workerMachineType": null,
         "workerRegion": null,
-        "writeDisposition": "WRITE_APPEND",
+        "yearPattern": "YYYY",
         "zone": null
-      }
+      },
+      "revision": 6
     },
     "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
     "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
@@ -772,15 +430,274 @@ X-Xss-Protection: 0
     "removed": "simplicity"
   },
   "labels": {
-    "goog-dataflow-provided-template-name": "pubsub_avro_to_bigquery",
-    "goog-dataflow-provided-template-type": "flex"
+    "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+    "goog-dataflow-provided-template-type": "flex",
+    "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
   },
   "location": "us-central1",
-  "name": "dataflowflextemplatejob-${uniqueId}",
+  "name": "streamingdataflowflextemplatejob2-${uniqueId}",
   "pipelineDescription": {
     "removed": "simplicity"
   },
   "projectId": "${projectId}",
+  "stageStates": [],
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "steps": [],
+  "type": "JOB_TYPE_STREAMING"
+}
+
+---
+
+POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "launchParameter": {
+    "containerSpecGcsPath": "gs://dataflow-templates-us-central1/2024-08-06-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex",
+    "environment": {
+      "additionalExperiments": [
+        "disable_runner_v2_reason=java_job_google_template",
+        "enable_always_on_exception_sampling",
+        "enable_streaming_java_vmr"
+      ],
+      "additionalUserLabels": {
+        "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+        "goog-dataflow-provided-template-type": "flex",
+        "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
+      },
+      "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "stagingLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging",
+      "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp"
+    },
+    "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
+    "parameters": {
+      "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+      "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path2"
+    },
+    "update": true
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "job": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentStateTime": "1970-01-01T00:00:00Z",
+    "id": "${jobID}",
+    "location": "us-central1",
+    "name": "streamingdataflowflextemplatejob2-${uniqueId}",
+    "projectId": "${projectId}",
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": "JOB_STATE_RUNNING",
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "experiments": [
+      "autoscale_windmill_service_by_default",
+      "disable_baggins_exp",
+      "disable_prime_streaming_engine",
+      "disable_runner_v2_reason=java_job_google_template",
+      "ek_regions=",
+      "enable_always_on_exception_sampling",
+      "enable_async_job_creation",
+      "enable_billing_v_1_5",
+      "enable_cloud_permissions_checking",
+      "enable_cmek_org_policy_check",
+      "enable_compute_default_service_account_org_policy",
+      "enable_data_sampling_telemetry",
+      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_kms_on_streaming_engine",
+      "enable_lightweight_streaming_update",
+      "enable_lightweight_streaming_update_worker_utilization_hint",
+      "enable_memory_sampler",
+      "enable_oom_sampler",
+      "enable_recommendations",
+      "enable_remote_image_ping",
+      "enable_secure_boot",
+      "enable_streaming_java_vmr",
+      "enable_streaming_pubsub_io_stackdriver_metrics",
+      "enable_streaming_scaling",
+      "enable_streaming_service_billing",
+      "enable_throttled_based_rescaling",
+      "enable_worker_cloud_monitoring_exporter",
+      "enable_worker_disk_cloud_monitoring",
+      "enable_worker_memory_cloud_monitoring",
+      "enable_zonal_outage_aware_routing",
+      "force_zone_isolation=zi-fail-open",
+      "override_controller_service_account",
+      "primeflex_slow_start_pct=5",
+      "primeflex_slow_start_seconds=3600",
+      "streaming_engine_isolation_mode=PER_JOB",
+      "use_dataflow_service_account_in_igm",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_job_admission_controller",
+      "use_multi_hop_delegation",
+      "use_ppm_for_windmill",
+      "use_templates_regional_bucket",
+      "use_timer_backlog_in_streaming_autoscaling",
+      "use_worker_zone_chooser_by_default",
+      "use_workflow_job_manager_components_for_streaming",
+      "use_workflow_job_manager_components_for_streaming_reload"
+    ],
+    "sdkPipelineOptions": {
+      "display_data": [],
+      "options": {
+        "apiRootUrl": "https://dataflow.googleapis.com/",
+        "appName": "PubsubToText",
+        "autoscalingAlgorithm": null,
+        "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
+        "dataflowEndpoint": "",
+        "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
+        "dataflowWorkerJar": null,
+        "dayPattern": "dd",
+        "defaultEnvironmentConfig": null,
+        "defaultEnvironmentType": null,
+        "diskSizeGb": 0,
+        "enableStreamingEngine": false,
+        "environmentOptions": null,
+        "experiments": [
+          "disable_runner_v2_reason=java_job_google_template",
+          "enable_always_on_exception_sampling",
+          "enable_streaming_java_vmr"
+        ],
+        "filesToStage": [
+          "/template/pubsub-to-text/libs/conscrypt-openjdk-uber-2.5.2.jar",
+          "/template/pubsub-to-text/classpath/googlecloud-to-googlecloud-1.0-SNAPSHOT.jar",
+          "/template/pubsub-to-text/resources"
+        ],
+        "gcpOauthScopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/devstorage.full_control",
+          "https://www.googleapis.com/auth/userinfo.email",
+          "https://www.googleapis.com/auth/datastore",
+          "https://www.googleapis.com/auth/bigquery",
+          "https://www.googleapis.com/auth/bigquery.insertdata",
+          "https://www.googleapis.com/auth/pubsub"
+        ],
+        "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsHttpRequestReadTimeout": null,
+        "gcsHttpRequestWriteTimeout": null,
+        "gcsPerformanceMetrics": false,
+        "gcsRewriteDataOpBatchLimit": null,
+        "gcsUploadBufferSizeBytes": 1048576,
+        "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "hourPattern": "HH",
+        "impersonateServiceAccount": null,
+        "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+        "inputTopic": null,
+        "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
+        "labels": {
+          "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+          "goog-dataflow-provided-template-type": "flex",
+          "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
+        },
+        "maxNumWorkers": 0,
+        "minutePattern": "mm",
+        "monthPattern": "MM",
+        "network": null,
+        "numShards": 0,
+        "numWorkers": 0,
+        "numberOfWorkerHarnessThreads": 0,
+        "optionsId": 0,
+        "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path2",
+        "outputFilenamePrefix": "output",
+        "outputFilenameSuffix": "",
+        "outputShardTemplate": "W-P-SS-of-NN",
+        "overrideWindmillBinary": null,
+        "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
+        "pipelineUrl": "${pipelineUrl}",
+        "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
+        "region": "us-central1",
+        "resourceHints": [],
+        "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
+        "saveProfilesToGcs": null,
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "stableUniqueNames": "WARNING",
+        "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
+        "stagingLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging",
+        "streaming": true,
+        "subnetwork": null,
+        "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
+        "transformsToOverride": [],
+        "update": true,
+        "updateCompatibilityVersion": null,
+        "usePublicIps": null,
+        "userAgent": "Apache_Beam_SDK_for_Java/2.57.0(JRE_11_environment)",
+        "userTempLocation": null,
+        "windowDuration": "5m",
+        "workerDiskType": null,
+        "workerHarnessContainerImage": null,
+        "workerMachineType": null,
+        "workerRegion": null,
+        "yearPattern": "YYYY",
+        "zone": null
+      },
+      "revision": 6
+    },
+    "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
+    "userAgent": {
+      "removed": "simplicity"
+    },
+    "version": {
+      "removed": "simplicity"
+    },
+    "workerPools": []
+  },
+  "id": "000000000000000000000",
+  "jobMetadata": {
+    "removed": "simplicity"
+  },
+  "labels": {
+    "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+    "goog-dataflow-provided-template-type": "flex",
+    "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
+  },
+  "location": "us-central1",
+  "name": "streamingdataflowflextemplatejob2-${uniqueId}",
+  "pipelineDescription": {
+    "removed": "simplicity"
+  },
+  "projectId": "${projectId}",
+  "replaceJobId": "${jobID}",
   "stageStates": [],
   "startTime": "2024-04-01T12:34:56.123456Z",
   "steps": [],
@@ -884,62 +801,80 @@ X-Xss-Protection: 0
     "sdkPipelineOptions": {
       "display_data": [],
       "options": {
-        "HTTPWriteTimeout": 0,
         "apiRootUrl": "https://dataflow.googleapis.com/",
-        "appName": "PubsubAvroToBigQuery",
+        "appName": "PubsubToText",
         "autoscalingAlgorithm": null,
-        "createDisposition": "CREATE_NEVER",
         "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
         "dataflowEndpoint": "",
         "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
         "dataflowWorkerJar": null,
+        "dayPattern": "dd",
         "defaultEnvironmentConfig": null,
         "defaultEnvironmentType": null,
         "diskSizeGb": 0,
-        "enableCloudDebugger": false,
         "enableStreamingEngine": false,
+        "environmentOptions": null,
         "experiments": [
           "disable_runner_v2_reason=java_job_google_template",
           "enable_always_on_exception_sampling",
           "enable_streaming_java_vmr"
         ],
         "filesToStage": [
-          "/usr/local/jre1.8.0-latest/lib/ext/cldrdata.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/jaccess.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/dnsns.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/nashorn.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/localedata.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/jfxrt.jar",
-          "/template/pubsub-avro-to-bigquery/pubsub-avro-to-bigquery.jar"
+          "/template/pubsub-to-text/libs/conscrypt-openjdk-uber-2.5.2.jar",
+          "/template/pubsub-to-text/classpath/googlecloud-to-googlecloud-1.0-SNAPSHOT.jar",
+          "/template/pubsub-to-text/resources"
+        ],
+        "gcpOauthScopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/devstorage.full_control",
+          "https://www.googleapis.com/auth/userinfo.email",
+          "https://www.googleapis.com/auth/datastore",
+          "https://www.googleapis.com/auth/bigquery",
+          "https://www.googleapis.com/auth/bigquery.insertdata",
+          "https://www.googleapis.com/auth/pubsub"
         ],
         "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsHttpRequestReadTimeout": null,
+        "gcsHttpRequestWriteTimeout": null,
         "gcsPerformanceMetrics": false,
-        "gcsUploadBufferSizeBytes": null,
+        "gcsRewriteDataOpBatchLimit": null,
+        "gcsUploadBufferSizeBytes": 1048576,
         "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "hourPattern": "HH",
+        "impersonateServiceAccount": null,
         "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-        "jobName": "dataflowflextemplatejob-${uniqueId}",
+        "inputTopic": null,
+        "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
         "labels": {
-          "goog-dataflow-provided-template-name": "pubsub_avro_to_bigquery",
-          "goog-dataflow-provided-template-type": "flex"
+          "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+          "goog-dataflow-provided-template-type": "flex",
+          "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
         },
         "maxNumWorkers": 0,
-        "maxStreamingBatchSize": 65536,
-        "maxStreamingRowsToBatch": 500,
+        "minutePattern": "mm",
+        "monthPattern": "MM",
         "network": null,
-        "numStreamingKeys": 50,
+        "numShards": 0,
         "numWorkers": 0,
         "numberOfWorkerHarnessThreads": 0,
         "optionsId": 0,
-        "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-        "outputTopic": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}",
+        "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path2",
+        "outputFilenamePrefix": "output",
+        "outputFilenameSuffix": "",
+        "outputShardTemplate": "W-P-SS-of-NN",
         "overrideWindmillBinary": null,
         "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
         "pipelineUrl": "${pipelineUrl}",
         "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
         "region": "us-central1",
+        "resourceHints": [],
         "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
         "saveProfilesToGcs": null,
-        "schemaPath": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc",
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
         "stableUniqueNames": "WARNING",
         "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
@@ -948,15 +883,21 @@ X-Xss-Protection: 0
         "subnetwork": null,
         "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
         "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
-        "useGrpcForGcs": false,
-        "userAgent": "Apache_Beam_SDK_for_Java/2.20.0(JRE_8_environment)",
+        "transformsToOverride": [],
+        "update": true,
+        "updateCompatibilityVersion": null,
+        "usePublicIps": null,
+        "userAgent": "Apache_Beam_SDK_for_Java/2.57.0(JRE_11_environment)",
+        "userTempLocation": null,
+        "windowDuration": "5m",
         "workerDiskType": null,
-        "workerHarnessContainerImage": "gcr.io/cloud-dataflow/v1beta3/IMAGE:beam-2.20.0",
+        "workerHarnessContainerImage": null,
         "workerMachineType": null,
         "workerRegion": null,
-        "writeDisposition": "WRITE_APPEND",
+        "yearPattern": "YYYY",
         "zone": null
-      }
+      },
+      "revision": 6
     },
     "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
     "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
@@ -973,15 +914,17 @@ X-Xss-Protection: 0
     "removed": "simplicity"
   },
   "labels": {
-    "goog-dataflow-provided-template-name": "pubsub_avro_to_bigquery",
-    "goog-dataflow-provided-template-type": "flex"
+    "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+    "goog-dataflow-provided-template-type": "flex",
+    "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
   },
   "location": "us-central1",
-  "name": "dataflowflextemplatejob-${uniqueId}",
+  "name": "streamingdataflowflextemplatejob2-${uniqueId}",
   "pipelineDescription": {
     "removed": "simplicity"
   },
   "projectId": "${projectId}",
+  "replaceJobId": "${jobID}",
   "requestedState": "JOB_STATE_CANCELLED",
   "stageStates": [],
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -1061,62 +1004,80 @@ X-Xss-Protection: 0
     "sdkPipelineOptions": {
       "display_data": [],
       "options": {
-        "HTTPWriteTimeout": 0,
         "apiRootUrl": "https://dataflow.googleapis.com/",
-        "appName": "PubsubAvroToBigQuery",
+        "appName": "PubsubToText",
         "autoscalingAlgorithm": null,
-        "createDisposition": "CREATE_NEVER",
         "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
         "dataflowEndpoint": "",
         "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
         "dataflowWorkerJar": null,
+        "dayPattern": "dd",
         "defaultEnvironmentConfig": null,
         "defaultEnvironmentType": null,
         "diskSizeGb": 0,
-        "enableCloudDebugger": false,
         "enableStreamingEngine": false,
+        "environmentOptions": null,
         "experiments": [
           "disable_runner_v2_reason=java_job_google_template",
           "enable_always_on_exception_sampling",
           "enable_streaming_java_vmr"
         ],
         "filesToStage": [
-          "/usr/local/jre1.8.0-latest/lib/ext/cldrdata.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/jaccess.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/dnsns.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/nashorn.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/localedata.jar",
-          "/usr/local/jre1.8.0-latest/lib/ext/jfxrt.jar",
-          "/template/pubsub-avro-to-bigquery/pubsub-avro-to-bigquery.jar"
+          "/template/pubsub-to-text/libs/conscrypt-openjdk-uber-2.5.2.jar",
+          "/template/pubsub-to-text/classpath/googlecloud-to-googlecloud-1.0-SNAPSHOT.jar",
+          "/template/pubsub-to-text/resources"
+        ],
+        "gcpOauthScopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/devstorage.full_control",
+          "https://www.googleapis.com/auth/userinfo.email",
+          "https://www.googleapis.com/auth/datastore",
+          "https://www.googleapis.com/auth/bigquery",
+          "https://www.googleapis.com/auth/bigquery.insertdata",
+          "https://www.googleapis.com/auth/pubsub"
         ],
         "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsHttpRequestReadTimeout": null,
+        "gcsHttpRequestWriteTimeout": null,
         "gcsPerformanceMetrics": false,
-        "gcsUploadBufferSizeBytes": null,
+        "gcsRewriteDataOpBatchLimit": null,
+        "gcsUploadBufferSizeBytes": 1048576,
         "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "hourPattern": "HH",
+        "impersonateServiceAccount": null,
         "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-        "jobName": "dataflowflextemplatejob-${uniqueId}",
+        "inputTopic": null,
+        "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
         "labels": {
-          "goog-dataflow-provided-template-name": "pubsub_avro_to_bigquery",
-          "goog-dataflow-provided-template-type": "flex"
+          "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+          "goog-dataflow-provided-template-type": "flex",
+          "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
         },
         "maxNumWorkers": 0,
-        "maxStreamingBatchSize": 65536,
-        "maxStreamingRowsToBatch": 500,
+        "minutePattern": "mm",
+        "monthPattern": "MM",
         "network": null,
-        "numStreamingKeys": 50,
+        "numShards": 0,
         "numWorkers": 0,
         "numberOfWorkerHarnessThreads": 0,
         "optionsId": 0,
-        "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-        "outputTopic": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}",
+        "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path2",
+        "outputFilenamePrefix": "output",
+        "outputFilenameSuffix": "",
+        "outputShardTemplate": "W-P-SS-of-NN",
         "overrideWindmillBinary": null,
         "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
         "pipelineUrl": "${pipelineUrl}",
         "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
         "region": "us-central1",
+        "resourceHints": [],
         "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
         "saveProfilesToGcs": null,
-        "schemaPath": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc",
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
         "stableUniqueNames": "WARNING",
         "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
@@ -1125,15 +1086,21 @@ X-Xss-Protection: 0
         "subnetwork": null,
         "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
         "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
-        "useGrpcForGcs": false,
-        "userAgent": "Apache_Beam_SDK_for_Java/2.20.0(JRE_8_environment)",
+        "transformsToOverride": [],
+        "update": true,
+        "updateCompatibilityVersion": null,
+        "usePublicIps": null,
+        "userAgent": "Apache_Beam_SDK_for_Java/2.57.0(JRE_11_environment)",
+        "userTempLocation": null,
+        "windowDuration": "5m",
         "workerDiskType": null,
-        "workerHarnessContainerImage": "gcr.io/cloud-dataflow/v1beta3/IMAGE:beam-2.20.0",
+        "workerHarnessContainerImage": null,
         "workerMachineType": null,
         "workerRegion": null,
-        "writeDisposition": "WRITE_APPEND",
+        "yearPattern": "YYYY",
         "zone": null
-      }
+      },
+      "revision": 6
     },
     "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
     "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
@@ -1150,15 +1117,17 @@ X-Xss-Protection: 0
     "removed": "simplicity"
   },
   "labels": {
-    "goog-dataflow-provided-template-name": "pubsub_avro_to_bigquery",
-    "goog-dataflow-provided-template-type": "flex"
+    "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
+    "goog-dataflow-provided-template-type": "flex",
+    "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
   },
   "location": "us-central1",
-  "name": "dataflowflextemplatejob-${uniqueId}",
+  "name": "streamingdataflowflextemplatejob2-${uniqueId}",
   "pipelineDescription": {
     "removed": "simplicity"
   },
   "projectId": "${projectId}",
+  "replaceJobId": "${jobID}",
   "stageStates": [],
   "startTime": "2024-04-01T12:34:56.123456Z",
   "steps": [],
@@ -1219,50 +1188,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}"
-}
-
----
-
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic0-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -1304,131 +1229,3 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-204 No Content
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "US",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-204 No Content
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
