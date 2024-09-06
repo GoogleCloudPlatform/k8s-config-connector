@@ -36,9 +36,9 @@ import (
 )
 
 type SecureSourceManagerInstanceSpec struct {
-	/* Optional. Immutable. Customer-managed encryption key name, in the format projects/* /locations/* /keyRings/* /cryptoKeys/*. */
+	/* Optional. Immutable. Customer-managed encryption key name. */
 	// +optional
-	KmsKey *string `json:"kmsKey,omitempty"`
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. Location of the instance. */
 	Location string `json:"location"`

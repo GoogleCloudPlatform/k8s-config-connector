@@ -27,6 +27,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/refresolver"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -96,7 +97,7 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reade
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	if err := VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
+	if err := refresolver.ResolveReferences(ctx, kube, obj, projectRef); err != nil {
 		return nil, err
 	}
 
