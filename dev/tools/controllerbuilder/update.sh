@@ -18,7 +18,7 @@ set -e
 set -x
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-export GEMINI_API_KEY=${GEMINI_API_KEY}
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # example usage
 go run . update-types \
