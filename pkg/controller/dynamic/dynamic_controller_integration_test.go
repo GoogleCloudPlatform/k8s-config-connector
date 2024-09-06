@@ -799,7 +799,11 @@ func getChangedFields(initialObject, updatedObject map[string]interface{}, field
 		for k, v := range updated {
 			if !reflect.DeepEqual(initial[k], v) {
 				if _, ok := v.(map[string]interface{}); ok {
-					changedFields[k] = getChangedFields(initial, updated, k)
+					// Skip checking for changes in resource reference fields, because there
+					// is no way to export the name and namespace fields (only external).
+					if !strings.HasSuffix(k, "Ref") {
+						changedFields[k] = getChangedFields(initial, updated, k)
+					}
 				} else {
 					changedFields[k] = updated[k]
 				}
