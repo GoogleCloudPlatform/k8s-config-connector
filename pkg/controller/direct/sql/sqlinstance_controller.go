@@ -43,11 +43,16 @@ func init() {
 	registry.RegisterModelWithReconcileGate(krm.SQLInstanceGVK, newSQLInstanceModel, rg)
 }
 
-type SQLInstanceReconcileGate struct{}
+type SQLInstanceReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
 
 var _ kccpredicate.ReconcileGate = &SQLInstanceReconcileGate{}
 
-func (*SQLInstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+func (r *SQLInstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
 	obj := &krm.SQLInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
 		return false
