@@ -16,15 +16,14 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
-
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 )
 
 type RegionalTargetHTTPSProxiesV1 struct {
@@ -43,11 +42,7 @@ func (s *RegionalTargetHTTPSProxiesV1) Get(ctx context.Context, req *pb.GetRegio
 
 	obj := &pb.TargetHttpsProxy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "targetHttpsProxy %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading targetHttpsProxy: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -65,16 +60,65 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetTargetHttpsProxyResource()).(*pb.TargetHttpsProxy)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetHttpsProxy")
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating targetHttpsProxy: %v", err)
+	if obj.Fingerprint == nil {
+		obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	if obj.SslCertificates != nil {
+		var certs []string
+		for _, cert := range obj.GetSslCertificates() {
+			// todo(yuhou): this is a strange design of TF/GCP API.
+			// GCP field `sslCertificates` refers to SSL Certificate resource or Certificate Manager Certificate resource,
+			// Mixing Classic Certificates and Certificate Manager Certificates is not allowed.
+			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
+			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
+			if strings.Contains(cert, "certificates") {
+				cert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
+				tokens := strings.Split(cert, "/")
+				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
+				} else {
+					return nil, status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
+				}
+				certs = append(certs, fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/%s/certificates/%s", tokens[1], tokens[3], tokens[5]))
+
+			} else {
+				sslCertName, err := s.parseRegionalSslCertificateName(cert)
+				if err != nil {
+					return nil, status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
+				}
+				certs = append(certs, fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name))
+			}
+			obj.SslCertificates = certs
+		}
+	}
+
+	if obj.UrlMap != nil {
+		mapName, err := s.parseRegionalUrlMapName(obj.GetUrlMap())
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
+		}
+		obj.UrlMap = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name))
+	}
+	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/${projectId}/regions/%s", name.Region))
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalTargetHTTPSProxiesV1) SetUrlMap(ctx context.Context, req *pb.SetUrlMapRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
@@ -87,19 +131,32 @@ func (s *RegionalTargetHTTPSProxiesV1) SetUrlMap(ctx context.Context, req *pb.Se
 	fqn := name.String()
 	obj := &pb.TargetHttpsProxy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "targetHttpsProxy %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading targetHttpsProxy: %v", err)
+		return nil, err
 	}
 
 	obj.UrlMap = req.GetUrlMapReferenceResource().UrlMap
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating targetHttpsProxy: %v", err)
+	if obj.UrlMap != nil {
+		mapName, err := s.parseRegionalUrlMapName(obj.GetUrlMap())
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
+		}
+		obj.UrlMap = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name))
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("SetUrlMap"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalTargetHTTPSProxiesV1) Delete(ctx context.Context, req *pb.DeleteRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
@@ -113,14 +170,18 @@ func (s *RegionalTargetHTTPSProxiesV1) Delete(ctx context.Context, req *pb.Delet
 
 	deleted := &pb.TargetHttpsProxy{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "targetHttpsProxy %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting targetHttpsProxy: %v", err)
-		}
+		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalTargetHttpsProxyName struct {
@@ -139,7 +200,7 @@ func (s *MockService) parseRegionalTargetHttpsProxyName(name string) (*regionalT
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "targetHttpsProxies" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
