@@ -27,22 +27,12 @@ func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext
 	out := &krm.BigQueryDataTransferConfigObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: UserID
 	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
 	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
 	out.OwnerInfo = UserInfo_FromProto(mapCtx, in.GetOwnerInfo())
-	// MISSING: EncryptionConfiguration
 	return out
 }
 func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigObservedState) *pb.TransferConfig {
@@ -52,24 +42,14 @@ func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, 
 	out := &pb.TransferConfig{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
 	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
-	// MISSING: UserID
 	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
 	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
 	if oneof := UserInfo_ToProto(mapCtx, in.OwnerInfo); oneof != nil {
 		out.OwnerInfo = &pb.TransferConfig_OwnerInfo{OwnerInfo: oneof}
 	}
-	// MISSING: EncryptionConfiguration
 	return out
 }
 func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigSpec {
@@ -77,7 +57,6 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.BigQueryDataTransferConfigSpec{}
-	// MISSING: Name
 	// MISSING: DestinationDatasetID
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
@@ -86,14 +65,9 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ScheduleOptions = ScheduleOptions_FromProto(mapCtx, in.GetScheduleOptions())
 	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
-	// MISSING: UpdateTime
-	// MISSING: NextRunTime
-	// MISSING: State
 	out.UserID = direct.LazyPtr(in.GetUserId())
-	// MISSING: DatasetRegion
 	// MISSING: NotificationPubsubTopic
 	out.EmailPreferences = EmailPreferences_FromProto(mapCtx, in.GetEmailPreferences())
-	// MISSING: OwnerInfo
 	out.EncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.GetEncryptionConfiguration())
 	return out
 }
@@ -102,7 +76,6 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 		return nil
 	}
 	out := &pb.TransferConfig{}
-	// MISSING: Name
 	// MISSING: DestinationDatasetID
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.DataSourceId = direct.ValueOf(in.DataSourceID)
@@ -111,14 +84,9 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 	out.ScheduleOptions = ScheduleOptions_ToProto(mapCtx, in.ScheduleOptions)
 	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
 	out.Disabled = direct.ValueOf(in.Disabled)
-	// MISSING: UpdateTime
-	// MISSING: NextRunTime
-	// MISSING: State
 	out.UserId = direct.ValueOf(in.UserID)
-	// MISSING: DatasetRegion
 	// MISSING: NotificationPubsubTopic
 	out.EmailPreferences = EmailPreferences_ToProto(mapCtx, in.EmailPreferences)
-	// MISSING: OwnerInfo
 	out.EncryptionConfiguration = EncryptionConfiguration_ToProto(mapCtx, in.EncryptionConfiguration)
 	return out
 }
