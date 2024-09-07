@@ -178,7 +178,10 @@ func TestAcquire(t *testing.T) {
 		return kinds[fixture.GVK.Kind]
 	}
 	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
-		context := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
+		context, err := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
+		if err != nil {
+			t.Fatalf("error getting resource context for gvk %v: %v", testContext.ResourceFixture.GVK, err)
+		}
 		testReconcileAcquire(ctx, t, testContext, systemContext, context)
 	}
 	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testFunc)
@@ -209,7 +212,10 @@ func TestCreateNoChangeUpdateDelete(t *testing.T) {
 		return shouldRunBasedOnRunAndSkipRegexes("TestCreateNoChangeUpdateDelete", fixture)
 	}
 	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
-		context := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
+		context, err := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
+		if err != nil {
+			t.Fatalf("error getting resource context for gvk %v: %v", testContext.ResourceFixture.GVK, err)
+		}
 		testReconcileCreateNoChangeUpdateDelete(ctx, t, testContext, systemContext, context)
 	}
 	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testFunc)
@@ -255,7 +261,7 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
 	// TODO(acpana): figure out if we want to expose Updating event for direct resources
-	if !resourceContext.IsDirectResource() {
+	if !resourceContext.IsDirectResource {
 		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	}
 
@@ -290,6 +296,15 @@ func testNoChangeAfterCreate(ctx context.Context, t *testing.T, testContext test
 
 // testNoChangeAfterUpdate is enabled only on resources allowlisted inside the function.
 func testNoChangeAfterUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	// Do not run for tests with `SkipUpdate` explicitly set to 'true'.
+	if resourceContext.SkipUpdate {
+		return
+	}
+	// Do not run for tests without an update.yaml set.
+	if testContext.UpdateUnstruct == nil {
+		t.Logf("UpdateUnstruct not set; skipping testNoChangeAfterUpdate")
+		return
+	}
 	switch testContext.ResourceFixture.GVK.GroupKind() {
 	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}: // test coverage for https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/1802
 	default:
@@ -430,7 +445,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
 	// TODO(acpana): figure out if we want to expose Updating event for direct resources
-	if !resourceContext.IsDirectResource() {
+	if !resourceContext.IsDirectResource {
 		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	}
 	// Check if condition is ready and update event was recorded
@@ -488,7 +503,7 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 	}
 
 	// Skip drift detection test for dcl-based resources with server-generated id.
-	if resourceContext.DCLBased {
+	if resourceContext.IsDCLResource {
 		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
 		if !found {
 			// The resource doesn't have a 'resourceID' field.
@@ -701,7 +716,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 
 // TODO(b/174100391): Compare the resourceID of the retrieved GCP resource and the appliedUnstruct.
 func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext, reconciledUnstruct, appliedUnstruct *unstructured.Unstructured) {
-	if resourceContext.DCLBased {
+	if resourceContext.IsDCLResource {
 		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
 		if !found {
 			// The resource doesn't have a 'resourceID' field.
@@ -712,7 +727,7 @@ func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemCo
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		verifyResourceID(t, isServerGeneratedID, reconciledUnstruct, appliedUnstruct)
-	} else {
+	} else if resourceContext.IsTFResource {
 		rc, err := systemContext.SMLoader.GetResourceConfig(reconciledUnstruct)
 		if err != nil {
 			t.Fatalf("error getting resource config for Kind '%s', "+

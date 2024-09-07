@@ -20,6 +20,7 @@ spec:
   additionalExperiments:
   - disable_runner_v2_reason=java_job_google_template
   - enable_always_on_exception_sampling
+  - enable_streaming_java_vmr
   containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
   parameters:
     createDisposition: CREATE_NEVER
@@ -42,4 +43,4 @@ status:
   jobId: ${jobID}
   observedGeneration: 2
   state: JOB_STATE_RUNNING
-  type: JOB_TYPE_BATCH
+  type: JOB_TYPE_STREAMING
