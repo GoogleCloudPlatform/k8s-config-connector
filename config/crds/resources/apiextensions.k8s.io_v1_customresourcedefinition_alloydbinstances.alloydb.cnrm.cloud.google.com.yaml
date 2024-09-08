@@ -563,7 +563,7 @@ spec:
                   trackActiveQueries:
                     description: Track actively running queries. If not set, default
                       value is "off".
-                      type: boolean
+                    type: boolean
                   trackWaitEventTypes:
                     description: Record wait event types during query execution for
                       an instance.

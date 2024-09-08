@@ -22,7 +22,7 @@ spec:
     networkRef: 
       name: alloydbcluster-dep-regular
   projectRef:
-    external: ${PROJECT_ID?}
+    external: ${PROJ}
   automatedBackupPolicy:
     backupWindow: 3600s
     encryptionConfig:
