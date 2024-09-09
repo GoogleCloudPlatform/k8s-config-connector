@@ -2842,6 +2842,11 @@ func (in *ComputeForwardingRuleStatus) DeepCopyInto(out *ComputeForwardingRuleSt
 		*out = new(string)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.LabelFingerprint != nil {
 		in, out := &in.LabelFingerprint, &out.LabelFingerprint
 		*out = new(string)
