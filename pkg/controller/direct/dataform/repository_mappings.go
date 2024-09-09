@@ -16,7 +16,7 @@ package dataform
 
 import (
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

@@ -49,6 +49,7 @@ var (
 		"container":            {"containernodepool"},
 		"containeranalysis":    {"containeranalysisnote"},
 		"dataflow":             {"streamingdataflowjobupdatetemplate"},
+		"dataform":             {"dataformrepository"},
 		"datafusion":           {"datafusioninstance"},
 		"dataproc":             {"dataproccluster"},
 		"dlp":                  {"cloudstoragepathstoredinfotype"},
