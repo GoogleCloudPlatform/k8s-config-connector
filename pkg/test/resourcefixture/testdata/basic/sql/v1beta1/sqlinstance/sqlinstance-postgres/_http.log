@@ -954,10 +954,6 @@ User-Agent: kcc/controller-manager
       "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
     },
-    "locationPreference": {
-      "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
-    },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",

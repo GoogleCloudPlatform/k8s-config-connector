@@ -1312,6 +1312,7 @@ User-Agent: kcc/controller-manager
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1655,6 +1656,7 @@ User-Agent: kcc/controller-manager
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork2-${uniqueId}"
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
