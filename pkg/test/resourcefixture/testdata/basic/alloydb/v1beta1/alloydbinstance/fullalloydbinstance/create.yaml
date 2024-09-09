@@ -45,4 +45,3 @@ spec:
     recordApplicationTags: false
     queryPlansPerMinute: 200
     trackActiveQueries: false
-    trackClientAddress: false
