@@ -128,6 +128,8 @@ func (r *kmsServer) CreateCryptoKeyVersion(ctx context.Context, req *pb.CreateCr
 	obj.CreateTime = timestamppb.New(now)
 	obj.GenerateTime = timestamppb.New(now)
 	obj.State = pb.CryptoKeyVersion_ENABLED
+	obj.Algorithm = req.CryptoKeyVersion.GetAlgorithm()
+	obj.ProtectionLevel = req.CryptoKeyVersion.GetProtectionLevel()
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
