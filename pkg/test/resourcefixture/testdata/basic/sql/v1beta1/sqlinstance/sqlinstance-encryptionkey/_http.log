@@ -1177,7 +1177,7 @@ X-Xss-Protection: 0
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": true,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+      "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     },
     "kind": "sql#settings",
     "locationPreference": {
@@ -1341,7 +1341,7 @@ X-Xss-Protection: 0
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": true,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+      "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     },
     "kind": "sql#settings",
     "locationPreference": {
@@ -1602,7 +1602,7 @@ X-Xss-Protection: 0
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": true,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+      "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     },
     "kind": "sql#settings",
     "locationPreference": {
