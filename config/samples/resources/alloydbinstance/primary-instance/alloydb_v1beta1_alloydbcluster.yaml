@@ -17,9 +17,9 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-primary
 spec:
-  location: asia-east1
+  location: us-west1
   networkConfig:
     networkRef: 
-      name: alloydbinstance-dep-primary
+      name: default
   projectRef:
-    external: ${PROJECT_ID?}
+    external: ego-duet
