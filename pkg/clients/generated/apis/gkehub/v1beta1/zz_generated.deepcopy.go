@@ -298,6 +298,11 @@ func (in *FeaturemembershipConfigmanagement) DeepCopyInto(out *Featuremembership
 		*out = new(FeaturemembershipHierarchyController)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Management != nil {
+		in, out := &in.Management, &out.Management
+		*out = new(string)
+		**out = **in
+	}
 	if in.PolicyController != nil {
 		in, out := &in.PolicyController, &out.PolicyController
 		*out = new(FeaturemembershipPolicyController)

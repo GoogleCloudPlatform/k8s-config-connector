@@ -73,6 +73,10 @@ type FeaturemembershipConfigmanagement struct {
 	// +optional
 	HierarchyController *FeaturemembershipHierarchyController `json:"hierarchyController,omitempty"`
 
+	/* Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster. */
+	// +optional
+	Management *string `json:"management,omitempty"`
+
 	/* **DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead. */
 	// +optional
 	PolicyController *FeaturemembershipPolicyController `json:"policyController,omitempty"`
