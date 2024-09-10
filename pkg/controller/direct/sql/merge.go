@@ -115,209 +115,8 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		merged.Region = actual.Region
 	}
 
-	existingReplicaConfig := actual.ReplicaConfiguration != nil
-	if desired.Spec.ReplicaConfiguration != nil {
-		existingMysqlReplicaConfig := existingReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil
-
-		if !existingReplicaConfig {
-			// Add replica configuration
-			updateRequired = true
-		}
-
-		merged.ReplicaConfiguration = &api.ReplicaConfiguration{
-			Kind: "sql#replicaConfiguration",
-		}
-
-		if desired.Spec.ReplicaConfiguration.FailoverTarget != nil {
-			if existingReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.FailoverTarget) != actual.ReplicaConfiguration.FailoverTarget {
-					// Change failover target
-					updateRequired = true
-				}
-			} else {
-				// Add failover target
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.FailoverTarget = direct.ValueOf(desired.Spec.ReplicaConfiguration.FailoverTarget)
-		} else if existingReplicaConfig {
-			// Remove failover target
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.CaCertificate != nil ||
-			desired.Spec.ReplicaConfiguration.ClientCertificate != nil ||
-			desired.Spec.ReplicaConfiguration.ClientKey != nil ||
-			desired.Spec.ReplicaConfiguration.ConnectRetryInterval != nil ||
-			desired.Spec.ReplicaConfiguration.DumpFilePath != nil ||
-			desired.Spec.ReplicaConfiguration.MasterHeartbeatPeriod != nil ||
-			desired.Spec.ReplicaConfiguration.Password != nil ||
-			desired.Spec.ReplicaConfiguration.SslCipher != nil ||
-			desired.Spec.ReplicaConfiguration.Username != nil ||
-			desired.Spec.ReplicaConfiguration.VerifyServerCertificate != nil {
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
-		}
-
-		if desired.Spec.ReplicaConfiguration.CaCertificate != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.CaCertificate) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate {
-					// Change CA certificate
-					updateRequired = true
-				}
-			} else {
-				// Add CA certificate
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate = direct.ValueOf(desired.Spec.ReplicaConfiguration.CaCertificate)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate != "" {
-			// Remove CA certificate
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.ClientCertificate != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.ClientCertificate) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.ClientCertificate {
-					// Change client certificate
-					updateRequired = true
-				}
-			} else {
-				// Add client certificate
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.ClientCertificate = direct.ValueOf(desired.Spec.ReplicaConfiguration.ClientCertificate)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.ClientCertificate != "" {
-			// Remove client certificate
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.ClientKey != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.ClientKey) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey {
-					// Change client key
-					updateRequired = true
-				}
-			} else {
-				// Add client key
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey = direct.ValueOf(desired.Spec.ReplicaConfiguration.ClientKey)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey != "" {
-			// Remove client key
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.ConnectRetryInterval != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.ConnectRetryInterval) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval {
-					// Change connect retry interval
-					updateRequired = true
-				}
-			} else {
-				// Add connect retry interval
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval = direct.ValueOf(desired.Spec.ReplicaConfiguration.ConnectRetryInterval)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval != 0 {
-			// Remove connect retry interval
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.DumpFilePath != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.DumpFilePath) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath {
-					// Change dump file path
-					updateRequired = true
-				}
-			} else {
-				// Add dump file path
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath = direct.ValueOf(desired.Spec.ReplicaConfiguration.DumpFilePath)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath != "" {
-			// Remove dump file path
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.MasterHeartbeatPeriod != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.MasterHeartbeatPeriod) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod {
-					// Change master heartbeat period
-					updateRequired = true
-				}
-			} else {
-				// Add master heartbeat period
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod = direct.ValueOf(desired.Spec.ReplicaConfiguration.MasterHeartbeatPeriod)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod != 0 {
-			// Remove master heartbeat period
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.Password != nil {
-			if existingMysqlReplicaConfig {
-				if refs.replicaPassword != actual.ReplicaConfiguration.MysqlReplicaConfiguration.Password {
-					// Change password
-					updateRequired = true
-				}
-			} else {
-				// Add password
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.Password = refs.replicaPassword
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.Password != "" {
-			// Remove password
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.SslCipher != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.SslCipher) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher {
-					// Change SSL cipher
-					updateRequired = true
-				}
-			} else {
-				// Add SSL cipher
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher = direct.ValueOf(desired.Spec.ReplicaConfiguration.SslCipher)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher != "" {
-			// Remove SSL cipher
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.Username != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.Username) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.Username {
-					// Change username
-					updateRequired = true
-				}
-			} else {
-				// Add username
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.Username = direct.ValueOf(desired.Spec.ReplicaConfiguration.Username)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.Username != "" {
-			// Remove username
-			updateRequired = true
-		}
-
-		if desired.Spec.ReplicaConfiguration.VerifyServerCertificate != nil {
-			if existingMysqlReplicaConfig {
-				if direct.ValueOf(desired.Spec.ReplicaConfiguration.VerifyServerCertificate) != actual.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate {
-					// Change verify server certificate
-					updateRequired = true
-				}
-			} else {
-				// Add verify server certificate
-				updateRequired = true
-			}
-			merged.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate = direct.ValueOf(desired.Spec.ReplicaConfiguration.VerifyServerCertificate)
-		} else if existingMysqlReplicaConfig && actual.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate {
-			// Remove verify server certificate
-			updateRequired = true
-		}
-	} else if existingReplicaConfig {
-		// Remove replica configuration
+	merged.ReplicaConfiguration = InstanceReplicaConfigurationKRMToGCP(desired.Spec.ReplicaConfiguration, refs)
+	if !ReplicaConfigurationsMatch(merged.ReplicaConfiguration, actual.ReplicaConfiguration) {
 		updateRequired = true
 	}
 
@@ -807,6 +606,67 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 	merged.Settings.UserLabels = desired.Labels
 
 	return merged, updateRequired, nil
+}
+
+func ReplicaConfigurationsMatch(desired *api.ReplicaConfiguration, actual *api.ReplicaConfiguration) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	// Ignore CascadableReplica. It is not supported in KRM API.
+	if desired.FailoverTarget != actual.FailoverTarget {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
+	if !MysqlReplicaConfigurationsMatch(desired.MysqlReplicaConfiguration, actual.MysqlReplicaConfiguration) {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, actual *api.MySqlReplicaConfiguration) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.CaCertificate != actual.CaCertificate {
+		return false
+	}
+	if desired.ClientCertificate != actual.ClientCertificate {
+		return false
+	}
+	if desired.ClientKey != actual.ClientKey {
+		return false
+	}
+	if desired.ConnectRetryInterval != actual.ConnectRetryInterval {
+		return false
+	}
+	if desired.DumpFilePath != actual.DumpFilePath {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
+	if desired.MasterHeartbeatPeriod != actual.MasterHeartbeatPeriod {
+		return false
+	}
+	// Ignore Password. It is not exported.
+	if desired.SslCipher != actual.SslCipher {
+		return false
+	}
+	if desired.Username != actual.Username {
+		return false
+	}
+	if desired.VerifyServerCertificate != actual.VerifyServerCertificate {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
 }
 
 func IpConfigurationsMatch(desired *api.IpConfiguration, actual *api.IpConfiguration) bool {

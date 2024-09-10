@@ -64,71 +64,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Region = *in.Spec.Region
 	}
 
-	if in.Spec.ReplicaConfiguration != nil {
-		replicaConfiguration := &api.ReplicaConfiguration{
-			Kind: "sql#replicaConfiguration",
-		}
-
-		if in.Spec.ReplicaConfiguration.FailoverTarget != nil {
-			replicaConfiguration.FailoverTarget = *in.Spec.ReplicaConfiguration.FailoverTarget
-		}
-
-		// todo: requires mysql
-		if in.Spec.ReplicaConfiguration.CaCertificate != nil ||
-			in.Spec.ReplicaConfiguration.ClientCertificate != nil ||
-			in.Spec.ReplicaConfiguration.ClientKey != nil ||
-			in.Spec.ReplicaConfiguration.ConnectRetryInterval != nil ||
-			in.Spec.ReplicaConfiguration.DumpFilePath != nil ||
-			in.Spec.ReplicaConfiguration.MasterHeartbeatPeriod != nil ||
-			in.Spec.ReplicaConfiguration.Password != nil ||
-			in.Spec.ReplicaConfiguration.SslCipher != nil ||
-			in.Spec.ReplicaConfiguration.Username != nil ||
-			in.Spec.ReplicaConfiguration.VerifyServerCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
-		}
-
-		if in.Spec.ReplicaConfiguration.CaCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.CaCertificate = *in.Spec.ReplicaConfiguration.CaCertificate
-		}
-
-		if in.Spec.ReplicaConfiguration.ClientCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.ClientCertificate = *in.Spec.ReplicaConfiguration.ClientCertificate
-		}
-
-		if in.Spec.ReplicaConfiguration.ClientKey != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.ClientKey = *in.Spec.ReplicaConfiguration.ClientKey
-		}
-
-		if in.Spec.ReplicaConfiguration.ConnectRetryInterval != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval = *in.Spec.ReplicaConfiguration.ConnectRetryInterval
-		}
-
-		if in.Spec.ReplicaConfiguration.DumpFilePath != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.DumpFilePath = *in.Spec.ReplicaConfiguration.DumpFilePath
-		}
-
-		if in.Spec.ReplicaConfiguration.MasterHeartbeatPeriod != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod = *in.Spec.ReplicaConfiguration.MasterHeartbeatPeriod
-		}
-
-		if in.Spec.ReplicaConfiguration.Password != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.Password = refs.replicaPassword
-		}
-
-		if in.Spec.ReplicaConfiguration.SslCipher != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.SslCipher = *in.Spec.ReplicaConfiguration.SslCipher
-		}
-
-		if in.Spec.ReplicaConfiguration.Username != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.Username = *in.Spec.ReplicaConfiguration.Username
-		}
-
-		if in.Spec.ReplicaConfiguration.VerifyServerCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate = *in.Spec.ReplicaConfiguration.VerifyServerCertificate
-		}
-
-		out.ReplicaConfiguration = replicaConfiguration
-	}
+	out.ReplicaConfiguration = InstanceReplicaConfigurationKRMToGCP(in.Spec.ReplicaConfiguration, refs)
 
 	if in.Spec.ResourceID != nil {
 		out.Name = *in.Spec.ResourceID
@@ -360,6 +296,77 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	return out, nil
 }
 
+func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, refs *SQLInstanceInternalRefs) *api.ReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.ReplicaConfiguration{
+		Kind: "sql#replicaConfiguration",
+		// CascadableReplica is not supported in KRM API.
+		FailoverTarget:            direct.ValueOf(in.FailoverTarget),
+		MysqlReplicaConfiguration: InstanceMysqlReplicaConfigurationKRMToGCP(in, refs),
+	}
+
+	if in.FailoverTarget != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "FailoverTarget")
+	}
+
+	return out
+}
+
+func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, refs *SQLInstanceInternalRefs) *api.MySqlReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	// For some reason, the KRM API embeds all of the MySqlReplicaConfiguration fields into the
+	// InstanceReplicaConfiguration object (instead of using a separate object). Therefore, we
+	// need to check for each of the individual fields here.
+	if in.CaCertificate == nil &&
+		in.ClientCertificate == nil &&
+		in.ClientKey == nil &&
+		in.ConnectRetryInterval == nil &&
+		in.DumpFilePath == nil &&
+		in.MasterHeartbeatPeriod == nil &&
+		in.Password == nil &&
+		in.SslCipher == nil &&
+		in.Username == nil &&
+		in.VerifyServerCertificate == nil {
+		return nil
+	}
+
+	out := &api.MySqlReplicaConfiguration{
+		Kind:                    "sql#mysqlReplicaConfiguration",
+		CaCertificate:           direct.ValueOf(in.CaCertificate),
+		ClientCertificate:       direct.ValueOf(in.ClientCertificate),
+		ClientKey:               direct.ValueOf(in.ClientKey),
+		ConnectRetryInterval:    direct.ValueOf(in.ConnectRetryInterval),
+		DumpFilePath:            direct.ValueOf(in.DumpFilePath),
+		MasterHeartbeatPeriod:   direct.ValueOf(in.MasterHeartbeatPeriod),
+		SslCipher:               direct.ValueOf(in.SslCipher),
+		Username:                direct.ValueOf(in.Username),
+		VerifyServerCertificate: direct.ValueOf(in.VerifyServerCertificate),
+	}
+
+	// todo: embed refs in krm object external fields, remove this
+	if in.Password != nil {
+		out.Password = refs.replicaPassword
+	}
+
+	if in.ConnectRetryInterval != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ConnectRetryInterval")
+	}
+	if in.MasterHeartbeatPeriod != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "MasterHeartbeatPeriod")
+	}
+	if in.VerifyServerCertificate != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
+	}
+
+	return out
+}
+
 func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration, refs *SQLInstanceInternalRefs) *api.IpConfiguration {
 	if in == nil {
 		return nil
@@ -375,6 +382,7 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration, refs *SQLI
 		SslMode:                                 direct.ValueOf(in.SslMode),
 	}
 
+	// todo: embed refs in krm object external fields, remove this
 	if in.PrivateNetworkRef != nil {
 		out.PrivateNetwork = refs.privateNetwork
 	}
@@ -527,27 +535,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		out.Spec.Region = &in.Region
 	}
 
-	if in.ReplicaConfiguration != nil {
-		rc := &krm.InstanceReplicaConfiguration{}
-
-		rc.FailoverTarget = &in.ReplicaConfiguration.FailoverTarget
-
-		if in.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
-			rc.CaCertificate = &in.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate
-			rc.ClientKey = &in.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey
-			rc.ConnectRetryInterval = &in.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval
-			rc.DumpFilePath = &in.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath
-			rc.MasterHeartbeatPeriod = &in.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod
-			rc.Password = &krm.InstancePassword{
-				Value: &in.ReplicaConfiguration.MysqlReplicaConfiguration.Password,
-			}
-			rc.SslCipher = &in.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher
-			rc.Username = &in.ReplicaConfiguration.MysqlReplicaConfiguration.Username
-			rc.VerifyServerCertificate = &in.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate
-		}
-
-		out.Spec.ReplicaConfiguration = rc
-	}
+	out.Spec.ReplicaConfiguration = InstanceReplicaConfigurationGCPToKRM(in.ReplicaConfiguration)
 
 	out.Spec.ResourceID = &in.Name
 
@@ -691,6 +679,63 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	}
 
 	return out, nil
+}
+
+func InstanceReplicaConfigurationGCPToKRM(in *api.ReplicaConfiguration) *krm.InstanceReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	irc := &krm.InstanceReplicaConfiguration{
+		// CascadableReplica is not supported in KRM API.
+		FailoverTarget: direct.PtrTo(in.FailoverTarget),
+	}
+
+	// For some reason, the KRM API embeds all of the MySqlReplicaConfiguration fields into the
+	// InstanceReplicaConfiguration object (instead of using a separate object). Therefore, we
+	// need to merge all of the fields here.
+	mrc := InstanceMysqlReplicaConfigurationGCPToKRM(in.MysqlReplicaConfiguration)
+	if mrc == nil {
+		mrc = &krm.InstanceReplicaConfiguration{}
+	}
+
+	out := &krm.InstanceReplicaConfiguration{
+		CaCertificate:           mrc.CaCertificate,
+		ClientCertificate:       mrc.ClientCertificate,
+		ClientKey:               mrc.ClientKey,
+		ConnectRetryInterval:    mrc.ConnectRetryInterval,
+		DumpFilePath:            mrc.DumpFilePath,
+		FailoverTarget:          irc.FailoverTarget,
+		MasterHeartbeatPeriod:   mrc.MasterHeartbeatPeriod,
+		Password:                mrc.Password,
+		SslCipher:               mrc.SslCipher,
+		Username:                mrc.Username,
+		VerifyServerCertificate: mrc.VerifyServerCertificate,
+	}
+
+	return out
+}
+
+func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration) *krm.InstanceReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceReplicaConfiguration{
+		CaCertificate:           direct.LazyPtr(in.CaCertificate),
+		ClientCertificate:       direct.LazyPtr(in.ClientCertificate),
+		ClientKey:               direct.LazyPtr(in.ClientKey),
+		ConnectRetryInterval:    direct.PtrTo(in.ConnectRetryInterval),
+		DumpFilePath:            direct.LazyPtr(in.DumpFilePath),
+		MasterHeartbeatPeriod:   direct.PtrTo(in.MasterHeartbeatPeriod),
+		SslCipher:               direct.LazyPtr(in.SslCipher),
+		Username:                direct.LazyPtr(in.Username),
+		VerifyServerCertificate: direct.PtrTo(in.VerifyServerCertificate),
+	}
+
+	// Note: Password is not exported.
+
+	return out
 }
 
 func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpConfiguration {
