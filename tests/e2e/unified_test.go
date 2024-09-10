@@ -487,7 +487,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -610,23 +609,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
-
-					// Specific to Firestore
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						if _, found, _ := unstructured.NestedMap(obj, "response"); found {
-							// Only run this mutator for firestore database objects.
-							if val, found, err := unstructured.NestedString(obj, "response", "@type"); err == nil && found && val == "type.googleapis.com/google.firestore.admin.v1.Database" {
-								// Only run this mutator for firestore database objects that have a name set in the response.
-								if val, found, err := unstructured.NestedString(obj, "response", "name"); err == nil && found && val != "" {
-									// Set name field to use human-readable ID, instead of UID
-									// Note: This only works if firestore databases in all resource fixture test cases use the name "firestoredatabase-${uniqueId}"
-									if err := unstructured.SetNestedField(obj, "projects/${projectId}/databases/firestoredatabase-${uniqueId}", "response", "name"); err != nil {
-										t.Fatal(err)
-									}
-								}
-							}
-						}
-					})
 
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")

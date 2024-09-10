@@ -13,7 +13,6 @@ require (
 	cloud.google.com/go/compute v1.28.0
 	cloud.google.com/go/dataflow v0.10.0
 	cloud.google.com/go/dataform v0.10.0
-	cloud.google.com/go/firestore v1.16.0
 	cloud.google.com/go/iam v1.2.0
 	cloud.google.com/go/monitoring v1.21.0
 	cloud.google.com/go/profiler v0.4.1

@@ -83,9 +83,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
-	// Specific to Firestore
-	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
-
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
 	visitor.replacePaths[".status.firstIpAddress"] = "10.1.2.3"
@@ -503,7 +500,6 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
 	events.RemoveHTTPResponseHeader("Server-Timing")
-	events.RemoveHTTPResponseHeader("X-Debug-Tracking-Id")
 	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
 	events.RemoveHTTPResponseHeader("Etag")
 	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
@@ -565,15 +561,12 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
+	// Compute URLs: Replace any compute beta URLs with v1 URLs
+	// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+	// This special handling to avoid diffs in http logs.
+	// This can be removed once all Compute resources are migrated to direct controller.
 	for _, event := range events {
-		// Compute URLs: Replace any compute beta URLs with v1 URLs
-		// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
-		// This special handling to avoid diffs in http logs.
-		// This can be removed once all Compute resources are migrated to direct controller.
 		event.Request.URL = rewriteComputeURL(event.Request.URL)
-
-		// Normalize etags in URLS
-		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
 	}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -636,11 +629,6 @@ func rewriteComputeURL(u string) string {
 		}
 	}
 	return u
-}
-
-func normalizeEtagsInURL(u string) string {
-	re := regexp.MustCompile(`etag=[a-zA-Z0-9%]+`)
-	return re.ReplaceAllString(u, "etag=abcdef0123A")
 }
 
 // isGetOperation returns true if this is an operation poll request
