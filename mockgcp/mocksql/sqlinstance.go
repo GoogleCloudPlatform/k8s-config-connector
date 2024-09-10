@@ -567,8 +567,12 @@ func populateDefaults(obj *pb.DatabaseInstance, zone string) {
 	}
 	setDefaultBool(&ipConfiguration.Ipv4Enabled, true)
 	setDefaultBool(&ipConfiguration.RequireSsl, false)
-	if ipConfiguration.SslMode == 0 {
-		ipConfiguration.SslMode = pb.IpConfiguration_ALLOW_UNENCRYPTED_AND_ENCRYPTED
+	if ipConfiguration.SslMode == pb.IpConfiguration_SSL_MODE_UNSPECIFIED {
+		if ipConfiguration.RequireSsl.Value {
+			ipConfiguration.SslMode = pb.IpConfiguration_TRUSTED_CLIENT_CERTIFICATE_REQUIRED
+		} else {
+			ipConfiguration.SslMode = pb.IpConfiguration_ALLOW_UNENCRYPTED_AND_ENCRYPTED
+		}
 	}
 
 	locationPreference := settings.LocationPreference
