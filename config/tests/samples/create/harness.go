@@ -804,10 +804,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "service":
 		case "sourcereporepository":
 		case "spannerdatabase":
-
-		// Disabled because tests failing, needs re-record:
-		// case "sqluser":
-
+		case "sqluser":
 		case "computenodegroup":
 		case "computenodetemplate":
 		case "privatecacapool":
