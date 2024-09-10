@@ -487,6 +487,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -525,6 +526,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("user", "user@example.com")
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("labelFingerprint", "abcdef0123A=")
+					addReplacement("fingerprint", "abcdef0123A=")
 					// Extract resource targetID numbers from compute operations
 					for _, event := range events {
 						body := event.Response.ParseBody()
@@ -542,6 +544,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									r.PathIDs[targetId] = "${sslCertificatesId}"
 								case "forwardingRules":
 									r.PathIDs[targetId] = "${forwardingRulesId}"
+								case "serviceAttachments":
+									r.PathIDs[targetId] = "${serviceAttachmentsId}"
 								}
 							}
 						}
@@ -607,6 +611,23 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to Firestore
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if _, found, _ := unstructured.NestedMap(obj, "response"); found {
+							// Only run this mutator for firestore database objects.
+							if val, found, err := unstructured.NestedString(obj, "response", "@type"); err == nil && found && val == "type.googleapis.com/google.firestore.admin.v1.Database" {
+								// Only run this mutator for firestore database objects that have a name set in the response.
+								if val, found, err := unstructured.NestedString(obj, "response", "name"); err == nil && found && val != "" {
+									// Set name field to use human-readable ID, instead of UID
+									// Note: This only works if firestore databases in all resource fixture test cases use the name "firestoredatabase-${uniqueId}"
+									if err := unstructured.SetNestedField(obj, "projects/${projectId}/databases/firestoredatabase-${uniqueId}", "response", "name"); err != nil {
+										t.Fatal(err)
+									}
+								}
+							}
+						}
+					})
+
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("revisionId", "revision-id-placeholder")
@@ -629,6 +650,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 					addReplacement("settings.backupConfiguration.startTime", "12:00")
 					addReplacement("settings.settingsVersion", "123")
+
+					// Specific to CertificateManager
+					addReplacement("response.dnsResourceRecord.data", uniqueID)
 					jsonMutators = append(jsonMutators, func(obj map[string]any) {
 						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
 							// Only run this mutator for sql instance objects.
@@ -739,6 +763,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					events.PrettifyJSON(jsonMutators...)
 
 					NormalizeHTTPLog(t, events, project, uniqueID)
+
+					events = RemoveExtraEvents(events)
 
 					// Remove repeated GET requests (after normalization)
 					{

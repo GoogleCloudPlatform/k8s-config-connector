@@ -43,11 +43,16 @@ func init() {
 	registry.RegisterModelWithReconcileGate(krm.SQLInstanceGVK, newSQLInstanceModel, rg)
 }
 
-type SQLInstanceReconcileGate struct{}
+type SQLInstanceReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
 
 var _ kccpredicate.ReconcileGate = &SQLInstanceReconcileGate{}
 
-func (*SQLInstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+func (r *SQLInstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
 	obj := &krm.SQLInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
 		return false
@@ -253,7 +258,7 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 			if user.Name == "root" && strings.HasPrefix(created.DatabaseVersion, "MYSQL") {
 				// Delete "root" user to match Terraform behavior, to improve default security.
 				// Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database_instance
-				op, err := a.sqlUsersClient.Delete(a.projectID, a.resourceID).Context(ctx).Name(user.Name).Do()
+				op, err := a.sqlUsersClient.Delete(a.projectID, a.resourceID).Context(ctx).Name(user.Name).Host(user.Host).Do()
 				if err != nil {
 					return fmt.Errorf("deleting SQLInstance %s root user failed: %w", a.desired.Name, err)
 				}

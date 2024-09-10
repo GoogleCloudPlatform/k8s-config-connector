@@ -9,29 +9,16 @@ insertText: |
     projectRef:
       name: \${2:gkehubfeaturemembership-dep-acm}
     location: \${3:global}
+    membershipLocation: \${4:us-central1}
     membershipRef:
-      name: \${4:gkehubfeaturemembership-dep-acm}
-    featureRef:
       name: \${5:gkehubfeaturemembership-dep-acm}
+    featureRef:
+      name: \${6:gkehubfeaturemembership-dep-acm}
     configmanagement:
       configSync:
-        sourceFormat: \${6:unstructured}
+        sourceFormat: \${7:unstructured}
         git:
-          syncRepo: \${7:https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit}
-          syncBranch: \${8:master}
-          policyDir: \${9:config-connector}
-          syncWaitSecs: \${10:20}
-          syncRev: \${11:HEAD}
-          secretType: \${12:none}
-      policyController:
-        enabled: \${13:true}
-        exemptableNamespaces:
-        - \${14:test-namespace}
-        referentialRulesEnabled: \${15:true}
-        logDeniesEnabled: \${16:true}
-        templateLibraryInstalled: \${17:true}
-        auditIntervalSeconds: \${18:20}
-      hierarchyController:
-        enabled: \${19:true}
-        enablePodTreeLabels: \${20:true}
-        enableHierarchicalResourceQuota: \${21:true}
+          syncRepo: \${8:https://github.com/GoogleCloudPlatform/anthos-config-management-samples}
+          syncBranch: \${9:main}
+          policyDir: \${10:config-sync-quickstart/multirepo/root}
+          secretType: \${11:none}

@@ -90,7 +90,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "first sample dns for testing creating a certificate with dns-auth",
     "dnsResourceRecord": {
-      "data": "authorize.certificatemanager.goog.",
+      "data": "${uniqueId}",
       "name": "_acme-challenge.${uniqueId}1.hashicorptest.com.",
       "type": "CNAME"
     },
@@ -230,7 +230,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "second sample dns for testing creating a certificate with dns-auth",
     "dnsResourceRecord": {
-      "data": "authorize.certificatemanager.goog.",
+      "data": "${uniqueId}",
       "name": "_acme-challenge.${uniqueId}2.hashicorptest.com.",
       "type": "CNAME"
     },

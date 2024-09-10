@@ -39,17 +39,9 @@ func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
 	}
 }
 
-func (x *Normalizer) Render(events test.LogEntries) string {
-
-	// Replace any dynamic IDs that appear in URLs
-	for _, event := range events {
-		url := event.Request.URL
-		for k, v := range x.PathIDs {
-			url = strings.ReplaceAll(url, "/"+k, "/"+v)
-		}
-		event.Request.URL = url
-	}
-
+// RemoveExtraEvents removes events that are not as relevant to our golden logs
+// In particular, we remove LRO polling operations (and things that look like LROs)
+func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 	// Remove operation polling requests (ones where the operation is not ready)
 	events = events.KeepIf(func(e *test.LogEntry) bool {
 		if !isGetOperation(e) {
@@ -62,9 +54,52 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 		if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
 			return true
 		}
+		// compute operations return status==DONE
+		if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" {
+			return true
+		}
 		// remove if not done - and done can be omitted when false
 		return false
 	})
+
+	// Remove dataflow operation polling requests (ones where the job is PENDING or QUEUED)
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		if !strings.HasPrefix(e.Request.URL, "https://dataflow.googleapis.com/v1b3/") {
+			return true
+		}
+		responseBody := e.Response.ParseBody()
+		if responseBody == nil {
+			return true
+		}
+		currentState, _, _ := unstructured.NestedString(responseBody, "currentState")
+		switch currentState {
+		case "JOB_STATE_PENDING", "JOB_STATE_QUEUED":
+			return false
+		}
+		// Also handle when we're encoding enums as integers
+		currentStateEnum, _, _ := unstructured.NestedInt64(responseBody, "currentState")
+		switch currentStateEnum {
+		case 9 /* JOB_STATE_PENDING */, 11 /* JOB_STATE_QUEUED */ :
+			return false
+		}
+		return true
+	})
+
+	return events
+}
+
+func (x *Normalizer) Render(events test.LogEntries) string {
+
+	// Replace any dynamic IDs that appear in URLs
+	for _, event := range events {
+		url := event.Request.URL
+		for k, v := range x.PathIDs {
+			url = strings.ReplaceAll(url, "/"+k, "/"+v)
+		}
+		event.Request.URL = url
+	}
+
+	events = RemoveExtraEvents(events)
 
 	jsonMutators := []test.JSONMutator{}
 	addReplacement := func(path string, newValue string) {

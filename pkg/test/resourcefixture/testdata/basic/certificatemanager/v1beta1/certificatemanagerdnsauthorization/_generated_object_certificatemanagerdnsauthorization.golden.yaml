@@ -28,7 +28,7 @@ status:
     status: "True"
     type: Ready
   dnsResourceRecord:
-  - data: authorize.certificatemanager.goog.
+  - data: ${uniqueId}
     name: _acme-challenge.${uniqueId}.hashicorptest.com.
     type: CNAME
   observedGeneration: 2

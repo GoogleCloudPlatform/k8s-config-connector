@@ -36,7 +36,7 @@ func (c *ForwardingRuleIdentity) FullyQualifiedName() string {
 	if c.location == "global" {
 		return fmt.Sprintf("projects/%s/global/forwardingrules/%s", c.project, c.forwardingRule)
 	} else {
-		return fmt.Sprintf("projects/%s/locations/%s/forwardingrules/%s", c.project, c.location, c.forwardingRule)
+		return fmt.Sprintf("projects/%s/regions/%s/forwardingrules/%s", c.project, c.location, c.forwardingRule)
 	}
 }
 
@@ -53,14 +53,14 @@ func asID(externalRef string) (*ForwardingRuleIdentity, error) {
 	}
 	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
 	tokens := strings.Split(path, "/")
-	if len(tokens) == 5 || tokens[0] == "projects" || tokens[2] == "global" || tokens[3] == "forwardingrules" {
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "forwardingrules" {
 		return &ForwardingRuleIdentity{
 			project:        tokens[1],
 			location:       "global",
 			forwardingRule: tokens[4],
 		}, nil
 	}
-	if len(tokens) == 6 || tokens[0] == "projects" || tokens[2] == "locations" || tokens[4] == "forwardingrules" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "forwardingrules" {
 		return &ForwardingRuleIdentity{
 			project:        tokens[1],
 			location:       tokens[3],

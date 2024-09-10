@@ -91,7 +91,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "sample dns authorization",
     "dnsResourceRecord": {
-      "data": "authorize.certificatemanager.goog.",
+      "data": "${uniqueId}",
       "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
       "type": "CNAME"
     },
@@ -208,7 +208,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "updated dns authorization",
     "dnsResourceRecord": {
-      "data": "authorize.certificatemanager.goog.",
+      "data": "${uniqueId}",
       "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
       "type": "CNAME"
     },

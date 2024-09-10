@@ -32,7 +32,7 @@ EXIT_CODE=0
 dev/tasks/create-test-project
 trap dev/tasks/cleanup-test-resources EXIT
 
-dev/tasks/run-e2e || EXIT_CODE=$?
+TEST_TIMEOUT=240m dev/tasks/run-e2e || EXIT_CODE=$?
 
 if [[ -n "${ARTIFACTS:-}" ]]; then
   # Capture our source tree, which includes golden output

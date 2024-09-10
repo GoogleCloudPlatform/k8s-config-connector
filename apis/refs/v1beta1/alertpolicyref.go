@@ -15,7 +15,7 @@
 package v1beta1
 
 type MonitoringAlertPolicyRef struct {
-	/* The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC. */
+	/* The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `MonitoringAlertPolicy` resource. */
 	Name string `json:"name,omitempty"`

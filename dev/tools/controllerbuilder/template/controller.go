@@ -15,14 +15,20 @@
 package template
 
 type ControllerArgs struct {
-	Service     string
-	Version     string
-	Kind        string
-	KindToLower string
+	// The ConfigConnector Group without cnrm.google.com
+	KCCService string
+	// The ConfigConnector Version. Only allow v1alpha1 and v1beta1
+	KCCVersion string
+	// The ConfigConnector Kind
+	Kind string
+	// The GCP resource name. Normally the same with the `Kind` without KCCService.
+	ProtoResource string
+	// The GCP API version.
+	ProtoVersion string
 }
 
 const ControllerTemplate = `
-package {{.Service}}
+package {{.KCCService}}
 
 import (
 	"context"
@@ -30,7 +36,7 @@ import (
 	"strings"
 	"time"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.Service}}/{{.Version}}"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.KCCService}}/{{.KCCVersion}}"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -38,9 +44,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(user): Update the import with the google cloud client
-	gcp "cloud.google.com/go/{{.Service}}/apiv1"
+	gcp "cloud.google.com/go/{{.KCCService}}/apiv1"
+
 	// TODO(user): Update the import with the google cloud client api protobuf
-	{{.Service}}pb "cloud.google.com/go/{{.Service}}/v1/{{.KindToLower}}pb"
+	"cloud.google.com/go/{{.KCCService}}/{{.ProtoVersion}}/{{.KCCService}}pb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -53,9 +60,9 @@ import (
 )
 
 const (
-	ctrlName = "{{.Service}}-controller"
+	ctrlName = "{{.KCCService}}-controller"
     // TODO(user): Confirm service domain
-	serviceDomain = "//{{.Service}}.googleapis.com"
+	serviceDomain = "//{{.KCCService}}.googleapis.com"
 )
 
 func init() {
@@ -86,7 +93,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building {{.Service}} client: %w", err)
+		return nil, fmt.Errorf("building {{.KCCService}} client: %w", err)
 	}
 	return gcpClient, err
 }
@@ -136,14 +143,14 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 			return nil, fmt.Errorf("{{.Kind}} %s/%s has spec.location changed, expect %s, got %s",
 				u.GetNamespace(), u.GetName(), id.location, location)
 		}
-		if id.{{.KindToLower}} != resourceID {
+		if id.{{.ProtoResource}} != resourceID {
 			return nil, fmt.Errorf("{{.Kind}}  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.{{.KindToLower}}, resourceID)
+				u.GetNamespace(), u.GetName(), id.{{.ProtoResource}}, resourceID)
 		}
 	}
 
 	// TODO(kcc): GetGCPClient as interface method.
-	// Get {{.Service}} GCP client
+	// Get {{.KCCService}} GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -165,7 +172,7 @@ type Adapter struct {
 	projectID  string
 	gcpClient  *gcp.Client
 	desired    *krm.{{.Kind}}
-	actual     *{{.Service}}pb.{{.Kind}}
+	actual     *{{.KCCService}}pb.{{.Kind}}
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -179,8 +186,8 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	// TODO(user): write the gcp "GET" operation.
-	req := &{{.Service}}pb.Get{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
-	{{.KindToLower}}pb, err := a.gcpClient.Get{{.Kind}}(ctx, req)
+	req := &{{.KCCService}}pb.Get{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
+	{{.ProtoResource}}pb, err := a.gcpClient.Get{{.Kind}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -188,7 +195,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.fullyQualifiedName(), err)
 	}
 
-	a.actual = {{.KindToLower}}pb
+	a.actual = {{.ProtoResource}}pb
 	return true, nil
 }
 
@@ -215,7 +222,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
-	req := &{{.Service}}pb.Create{{.Kind}}Request{
+	req := &{{.KCCService}}pb.Create{{.Kind}}Request{
 		Resource:               resource,
 		Project:                a.ProjectID,
 	}
@@ -262,7 +269,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
-	req := &{{.Service}}pb.Update{{.Kind}}Request{
+	req := &{{.KCCService}}pb.Update{{.Kind}}Request{
 		Resource:               resource,
 		Project:                a.ProjectID,
 	}
@@ -299,7 +306,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	if a.resourceID == "" {
 		return false, nil
 	}
-	req := &{{.Service}}pb.Delete{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
+	req := &{{.KCCService}}pb.Delete{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
 	op, err := a.gcpClient.Delete{{.Kind}}(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)

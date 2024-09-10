@@ -197,43 +197,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": "JOB_STATE_QUEUED",
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow"
-  },
-  "id": "000000000000000000000",
-  "labels": {
-    "goog-dataflow-provided-template-name": "file_format_conversion",
-    "goog-dataflow-provided-template-type": "flex"
-  },
-  "location": "us-central1",
-  "name": "dataflowflextemplatejob-${uniqueId}",
-  "pipelineDescription": {
-    "removed": "simplicity"
-  },
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "currentState": "JOB_STATE_RUNNING",
   "currentStateTime": "2024-04-01T12:34:56.123456Z",
   "environment": {
@@ -248,7 +211,6 @@ X-Xss-Protection: 0
       "disable_primeflex",
       "disable_runner_v2_reason=java_job_google_template",
       "ek_regions=",
-      "enable_always_on_exception_sampling",
       "enable_always_on_exception_sampling",
       "enable_async_job_creation",
       "enable_billing_v_1_5",
@@ -337,7 +299,7 @@ X-Xss-Protection: 0
         "outputFilePrefix": "output",
         "overrideWindmillBinary": null,
         "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
-        "pipelineUrl": "gs://dataflow-staging-us-central1-${projectNumber}/staging/pipeline-ehKedGonx8czD0ig9N0xE85y-KvEho1OrQ2jYCtevqg.pb",
+        "pipelineUrl": "${pipelineUrl}",
         "project": "${projectId}",
         "recordJfrOnGcThrashing": false,
         "region": "us-central1",
@@ -452,7 +414,6 @@ X-Xss-Protection: 0
       "disable_runner_v2_reason=java_job_google_template",
       "ek_regions=",
       "enable_always_on_exception_sampling",
-      "enable_always_on_exception_sampling",
       "enable_async_job_creation",
       "enable_billing_v_1_5",
       "enable_cloud_permissions_checking",
@@ -540,7 +501,7 @@ X-Xss-Protection: 0
         "outputFilePrefix": "output",
         "overrideWindmillBinary": null,
         "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
-        "pipelineUrl": "gs://dataflow-staging-us-central1-${projectNumber}/staging/pipeline-ehKedGonx8czD0ig9N0xE85y-KvEho1OrQ2jYCtevqg.pb",
+        "pipelineUrl": "${pipelineUrl}",
         "project": "${projectId}",
         "recordJfrOnGcThrashing": false,
         "region": "us-central1",
@@ -631,7 +592,6 @@ X-Xss-Protection: 0
       "disable_runner_v2_reason=java_job_google_template",
       "ek_regions=",
       "enable_always_on_exception_sampling",
-      "enable_always_on_exception_sampling",
       "enable_async_job_creation",
       "enable_billing_v_1_5",
       "enable_cloud_permissions_checking",
@@ -719,7 +679,7 @@ X-Xss-Protection: 0
         "outputFilePrefix": "output",
         "overrideWindmillBinary": null,
         "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
-        "pipelineUrl": "gs://dataflow-staging-us-central1-${projectNumber}/staging/pipeline-ehKedGonx8czD0ig9N0xE85y-KvEho1OrQ2jYCtevqg.pb",
+        "pipelineUrl": "${pipelineUrl}",
         "project": "${projectId}",
         "recordJfrOnGcThrashing": false,
         "region": "us-central1",
