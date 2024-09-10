@@ -667,7 +667,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "New CloudBuild WorkerPool",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
@@ -679,7 +681,9 @@ X-Xss-Protection: 0
       "diskSizeGb": "100",
       "machineType": "e2-medium"
     }
-  }
+  },
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -691,6 +695,7 @@ x-goog-request-params: location=us-central1
 
 {
   "displayName": "Updated CloudBuild WorkerPool",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
@@ -755,6 +760,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "New CloudBuild WorkerPool",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
@@ -793,7 +799,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "New CloudBuild WorkerPool",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
@@ -806,6 +814,7 @@ X-Xss-Protection: 0
       "machineType": "e2-medium"
     }
   },
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
