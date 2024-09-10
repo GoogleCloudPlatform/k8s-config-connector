@@ -15,7 +15,7 @@
 package template
 
 const ExternalResourceTemplate = `
-package {{.Service}}
+package {{.KCCService}}
 
 import (
 	"fmt"
@@ -26,7 +26,7 @@ import (
 type {{.Kind}}Identity struct {
 	project    string
 	location   string
-	{{.KindToLower}} string
+	{{.ProtoResource}} string
 }
 
 // Parent builds a {{.Kind}} parent
@@ -55,14 +55,14 @@ func asID(externalRef string) (*{{.Kind}}Identity, error) {
 	tokens := strings.Split(path, "/")
 
 	// TODO(user): Confirm the format of your resources, and verify it like the example below
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "{{.KindToLower}}s" {
-		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/{{.KindToLower}}s/<{{.KindToLower}}>, got %s",
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "{{.ProtoResource}}s" {
+		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/{{.ProtoResource}}s/<{{.ProtoResource}}>, got %s",
 			serviceDomain, externalRef)
 	}
 	return &{{.Kind}}Identity{
 		project:    tokens[1],
 		location:   tokens[3],
-		{{.KindToLower}}: tokens[5],
+		{{.ProtoResource}}: tokens[5],
 	}, nil
 }
 
@@ -72,7 +72,7 @@ func BuildID(project, location string) *{{.Kind}}Identity {
 	return &{{.Kind}}Identity{
 		project:    project,
 		location:   location,
-		{{.KindToLower}}: {{.KindToLower}},
+		{{.ProtoResource}}: {{.ProtoResource}},
 	}
 }
 `
