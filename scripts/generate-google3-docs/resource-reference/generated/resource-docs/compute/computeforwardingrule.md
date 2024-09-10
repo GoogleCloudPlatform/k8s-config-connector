@@ -237,7 +237,7 @@ internal load balancer.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -315,7 +315,7 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -774,7 +774,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -824,7 +824,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -864,7 +864,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeTargetGrpcProxy selflink in the form "projects/{{project}}/global/targetGrpcProxies/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetGrpcProxy selflink in the form "projects/{{project}}/global/targetGrpcProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -904,7 +904,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeTargetHTTPProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetHTTPProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -944,7 +944,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeTargetHTTPSProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetHTTPSProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -984,7 +984,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeTargetSSLProxy selflink in the form "projects/{{project}}/global/targetSslProxies/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetSSLProxy selflink in the form "projects/{{project}}/global/targetSslProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1024,7 +1024,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeTargetTCPProxy selflink in the form "projects/{{project}}/global/targetTcpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetTCPProxy selflink in the form "projects/{{project}}/global/targetTcpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1064,7 +1064,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeTargetVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

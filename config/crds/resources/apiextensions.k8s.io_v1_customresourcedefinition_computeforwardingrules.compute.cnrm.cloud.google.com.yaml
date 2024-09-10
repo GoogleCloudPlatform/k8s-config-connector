@@ -115,7 +115,7 @@ spec:
                   external:
                     description: The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}"
                       or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}"
-                      when not managed by KCC.
+                      when not managed by Config Connector.
                     type: string
                   name:
                     description: The `name` field of a `ComputeBackendService` resource.
@@ -169,7 +169,7 @@ spec:
                     properties:
                       external:
                         description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeAddress` resource.
@@ -458,7 +458,7 @@ spec:
                 properties:
                   external:
                     description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                      when not managed by KCC.
+                      when not managed by Config Connector.
                     type: string
                   name:
                     description: The `name` field of a `ComputeSubnetwork` resource.
@@ -492,7 +492,7 @@ spec:
                       external:
                         description: The ComputeServiceAttachment selflink in the
                           form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeServiceAttachment`
@@ -522,7 +522,7 @@ spec:
                       external:
                         description: The ComputeTargetGrpcProxy selflink in the form
                           "projects/{{project}}/global/targetGrpcProxies/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeTargetGrpcProxy`
@@ -553,7 +553,7 @@ spec:
                         description: The ComputeTargetHTTPProxy selflink in the form
                           "projects/{{project}}/global/targetHttpProxies/{{name}}"
                           or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeTargetHTTPProxy`
@@ -584,7 +584,7 @@ spec:
                         description: The ComputeTargetHTTPSProxy selflink in the form
                           "projects/{{project}}/global/targetHttpProxies/{{name}}"
                           or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeTargetHTTPSProxy`
@@ -614,7 +614,7 @@ spec:
                       external:
                         description: The ComputeTargetSSLProxy selflink in the form
                           "projects/{{project}}/global/targetSslProxies/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeTargetSSLProxy`
@@ -645,7 +645,7 @@ spec:
                         description: The ComputeTargetTCPProxy selflink in the form
                           "projects/{{project}}/global/targetTcpProxies/{{name}}"
                           or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeTargetTCPProxy`
@@ -675,7 +675,7 @@ spec:
                       external:
                         description: The ComputeTargetVPNGateway selflink in the form
                           "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}"
-                          when not managed by KCC.
+                          when not managed by Config Connector.
                         type: string
                       name:
                         description: The `name` field of a `ComputeTargetVPNGateway`
