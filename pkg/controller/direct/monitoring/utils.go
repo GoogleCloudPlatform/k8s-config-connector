@@ -108,7 +108,7 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 	}
 
 	switch v.Kind() {
-	case reflect.Ptr:
+	case reflect.Ptr, reflect.Interface:
 		if v.IsNil() {
 			return
 		}
