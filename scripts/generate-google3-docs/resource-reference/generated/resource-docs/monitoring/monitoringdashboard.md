@@ -1414,7 +1414,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1504,7 +1504,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `projectID` field of a project, when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1664,7 +1664,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4674,7 +4674,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4764,7 +4764,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `projectID` field of a project, when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4924,7 +4924,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7884,7 +7884,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7974,7 +7974,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `projectID` field of a project, when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8134,7 +8134,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11054,7 +11054,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `projectID` field of a project, when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11184,7 +11184,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11274,7 +11274,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `projectID` field of a project, when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11434,7 +11434,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

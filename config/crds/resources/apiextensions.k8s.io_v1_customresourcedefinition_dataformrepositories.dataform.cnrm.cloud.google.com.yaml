@@ -199,7 +199,7 @@ spec:
                 properties:
                   external:
                     description: The `projectID` field of a project, when not managed
-                      by KCC.
+                      by Config Connector.
                     type: string
                   kind:
                     description: The kind of the Project resource; optional but must
