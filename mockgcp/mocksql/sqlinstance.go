@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -248,6 +249,9 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_CREATE,
+	}
+	if obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE {
+		op.OperationType = pb.Operation_CREATE_REPLICA
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
@@ -581,13 +585,19 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	backupConfiguration := settings.BackupConfiguration
 	if backupConfiguration == nil {
 		backupConfiguration = &pb.BackupConfiguration{}
-		settings.BackupConfiguration = backupConfiguration
 	} else {
 		if isPostgres(obj) {
 			setDefaultBool(&backupConfiguration.ReplicationLogArchivingEnabled, false)
 		}
+
+		if backupConfiguration.BinaryLogEnabled != nil && backupConfiguration.BinaryLogEnabled.Value {
+			if isPostgres(obj) || isMysql(obj) {
+				backupConfiguration.TransactionalLogStorageState = direct.PtrTo(pb.BackupConfiguration_CLOUD_STORAGE)
+			}
+		}
 	}
 	backupConfiguration.Kind = "sql#backupConfiguration"
+	settings.BackupConfiguration = backupConfiguration
 
 	backupRetentionSettings := backupConfiguration.BackupRetentionSettings
 	if backupRetentionSettings == nil {
