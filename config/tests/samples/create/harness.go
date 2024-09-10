@@ -76,7 +76,7 @@ type Harness struct {
 
 	Project testgcp.GCPProject
 
-	VCRRecorderDCL   *recorder.Recorder
+	VCRRecorderNonTF *recorder.Recorder
 	VCRRecorderTF    *recorder.Recorder
 	VCRRecorderOauth *recorder.Recorder
 
@@ -401,16 +401,17 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		path := filepath.Join(h.options.VCRPath, "_vcr_cassettes")
 		// In replay mode, RealTransport is unnecessary because we simply replay existing cassettes.
 		opts := &recorder.Options{
-			CassetteName: filepath.Join(path, "dcl"),
+			CassetteName: filepath.Join(path, "nontf"),
 			Mode:         vcrMode,
 		}
 		// In record mode, use the real GCP HTTP client's transport as the recorder's transport.
 		// This way, the recorder is able to capture the real request/response pairs.
 		if inputMode == "record" {
+			// Intercept (and log) DCL and direct(non TF) requests
 			if kccConfig.HTTPClient == nil {
 				httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 				if err != nil {
-					t.Fatalf("error creating the http client to be used by DCL: %v", err)
+					t.Fatalf("error creating the http client to be not used by TF: %v", err)
 				}
 				kccConfig.HTTPClient = httpClient
 			}
@@ -418,11 +419,12 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		}
 		r, err := recorder.NewWithOptions(opts)
 		if err != nil {
-			t.Fatalf("[VCR] Failed create DCL vcr recorder: %v", err)
+			t.Fatalf("[VCR] Failed create non TF vcr recorder: %v", err)
 		}
-		h.VCRRecorderDCL = r
-		kccConfig.HTTPClient = &http.Client{Transport: h.VCRRecorderDCL}
+		h.VCRRecorderNonTF = r
+		kccConfig.HTTPClient = &http.Client{Transport: h.VCRRecorderNonTF}
 
+		// Intercept (and log) TF requests
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
@@ -441,6 +443,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 			ret = &http.Client{Transport: h.VCRRecorderTF}
 			return ret
 		}
+		// Intercept (and log) OAuth requests
 		transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
@@ -496,7 +499,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 
 		transport_tpg.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 
-		// Intercept (and log) DCL requests
+		// Intercept (and log) DCL and direct(non TF) requests
 		if len(eventSinks) != 0 {
 			if kccConfig.HTTPClient == nil {
 				httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
@@ -793,7 +796,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "networkconnectivityhub":
 		case "networkservicesgrpcroute":
 		case "osconfigguestpolicy":
-		case "pubsubsubscription":
+		case "basicpubsubsubscription":
 		case "pubsublitereservation":
 		case "androidrecaptchaenterprisekey":
 		case "redisinstance":

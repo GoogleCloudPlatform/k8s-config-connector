@@ -229,9 +229,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
 					// Stop recording after tests finish and write to cassette
 					t.Cleanup(func() {
-						err := h.VCRRecorderDCL.Stop()
+						err := h.VCRRecorderNonTF.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
+							t.Errorf("[VCR] Failed stop non TF vcr recorder: %v", err)
 						}
 						err = h.VCRRecorderTF.Stop()
 						if err != nil {
@@ -1033,7 +1033,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 
 		return nil
 	}
-	h.VCRRecorderDCL.AddHook(hook, recorder.BeforeSaveHook)
+	h.VCRRecorderNonTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderOauth.AddHook(hook, recorder.BeforeSaveHook)
 
@@ -1073,7 +1073,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		}
 		return true
 	}
-	h.VCRRecorderDCL.SetMatcher(matcher)
+	h.VCRRecorderNonTF.SetMatcher(matcher)
 	h.VCRRecorderTF.SetMatcher(matcher)
 	h.VCRRecorderOauth.SetMatcher(matcher)
 }
