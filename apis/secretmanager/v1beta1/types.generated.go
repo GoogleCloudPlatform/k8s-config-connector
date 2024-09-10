@@ -14,29 +14,14 @@
 
 package v1beta1
 
-// +kcc:proto=google.cloud.secretmanager.v1.CustomerManagedEncryption
-type CustomerManagedEncryption struct {
-	// Required. The resource name of the Cloud KMS CryptoKey used to encrypt
-	//  secret payloads.
-	//
-	//  For secrets using the
-	//  [UserManaged][google.cloud.secretmanager.v1.Replication.UserManaged]
-	//  replication policy type, Cloud KMS CryptoKeys must reside in the same
-	//  location as the [replica location][Secret.UserManaged.Replica.location].
-	//
-	//  For secrets using the
-	//  [Automatic][google.cloud.secretmanager.v1.Replication.Automatic]
-	//  replication policy type, Cloud KMS CryptoKeys must reside in `global`.
-	//
-	//  The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-	KmsKeyName *string `json:"kmsKeyName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.secretmanager.v1.Replication
 type Replication struct {
+	// The Secret will automatically be replicated without any restrictions.
+	LegacyAuto *bool `json:"automatic,omitempty"`
+
 	// The [Secret][google.cloud.secretmanager.v1.Secret] will automatically be
 	//  replicated without any restrictions.
-	Automatic *Replication_Automatic `json:"automatic,omitempty"`
+	LegacyAutomatic *Replication_Automatic `json:"auto,omitempty"`
 
 	// The [Secret][google.cloud.secretmanager.v1.Secret] will only be
 	//  replicated into the locations specified.
@@ -59,6 +44,7 @@ type Replication_Automatic struct {
 
 // +kcc:proto=google.cloud.secretmanager.v1.Replication.UserManaged
 type Replication_UserManaged struct {
+	// +required
 	// Required. The list of Replicas for this
 	//  [Secret][google.cloud.secretmanager.v1.Secret].
 	//
@@ -68,6 +54,7 @@ type Replication_UserManaged struct {
 
 // +kcc:proto=google.cloud.secretmanager.v1.Replication.UserManaged.Replica
 type Replication_UserManaged_Replica struct {
+	// +required
 	// The canonical IDs of the location to replicate data.
 	//  For example: `"us-east1"`.
 	Location *string `json:"location,omitempty"`
@@ -190,6 +177,7 @@ type Secret struct {
 	//  The total size of annotation keys and values must be less than 16KiB.
 	Annotations map[string]string `json:"annotations,omitempty"`
 
+	/* NOTYET
 	// Optional. Secret Version TTL after destruction request
 	//
 	//  This is a part of the Delayed secret version destroy feature.
@@ -197,6 +185,7 @@ type Secret struct {
 	//  on calling destroy instead the version goes to a disabled state and
 	//  destruction happens after the TTL expires.
 	VersionDestroyTtl *string `json:"versionDestroyTtl,omitempty"`
+	*/
 
 	// Optional. The customer-managed encryption configuration of the Regionalised
 	//  Secrets. If no configuration is provided, Google-managed default encryption
