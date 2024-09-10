@@ -26,10 +26,10 @@ func FirestoreDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.FirestoreDatabaseObservedState{}
 	out.Uid = direct.LazyPtr(in.GetUid())
-	out.CreateTime = direct.ToOpenAPIDateTime(in.GetCreateTime())
-	out.UpdateTime = direct.ToOpenAPIDateTime(in.GetUpdateTime())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.VersionRetentionPeriod = direct.Duration_FromProto(mapCtx, in.GetVersionRetentionPeriod())
-	out.EarliestVersionTime = direct.ToOpenAPIDateTime(in.GetEarliestVersionTime())
+	out.EarliestVersionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEarliestVersionTime())
 	out.KeyPrefix = direct.LazyPtr(in.GetKeyPrefix())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
