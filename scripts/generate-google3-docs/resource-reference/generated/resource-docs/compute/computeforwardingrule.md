@@ -131,7 +131,7 @@ subnetworkRef:
   name: string
   namespace: string
 target:
-  googleApiBundle: string
+  googleAPIBundle: string
   serviceAttachmentRef:
     external: string
     name: string
@@ -810,7 +810,7 @@ subnetwork must be specified.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>target.googleApiBundle</code></p>
+            <p><code>target.googleAPIBundle</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

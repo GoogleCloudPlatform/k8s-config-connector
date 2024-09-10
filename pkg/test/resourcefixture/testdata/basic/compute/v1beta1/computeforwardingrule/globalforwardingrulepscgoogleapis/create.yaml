@@ -23,7 +23,7 @@ spec:
   location: global
   target:
     # a supported Google API bundle (global-only)
-    googleApiBundle: "all-apis"
+    googleAPIBundle: "all-apis"
   loadBalancingScheme: ""
   ipAddress:
     addressRef:

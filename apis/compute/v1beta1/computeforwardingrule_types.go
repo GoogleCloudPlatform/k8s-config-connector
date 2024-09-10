@@ -88,7 +88,7 @@ type ForwardingruleServiceDirectoryRegistrations struct {
 
 type ForwardingruleTarget struct {
 	// +optional
-	GoogleApiBundle *string `json:"googleApiBundle,omitempty"`
+	GoogleAPIBundle *string `json:"googleAPIBundle,omitempty"`
 
 	// +optional
 	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`

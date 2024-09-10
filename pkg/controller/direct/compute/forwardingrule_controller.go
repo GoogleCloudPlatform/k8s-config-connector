@@ -297,7 +297,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	target := direct.ValueOf(forwardingRule.Target)
 
 	// API restriction: Labels are invalid in Private Service Connect Forwarding Rule.
-	// TF workaround: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/944
+	// Config Connector workaround on TF-based resource: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/944
 	if target != "all-apis" && target != "vpc-sc" && !strings.Contains(target, "/serviceAttachments/") {
 		forwardingRule.Labels = desired.Labels
 	}
