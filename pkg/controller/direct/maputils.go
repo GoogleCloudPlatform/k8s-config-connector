@@ -219,17 +219,25 @@ func Duration_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
 		return nil
 	}
 
+	s := in.Seconds
+	n := in.Nanos
+
+	if in.Nanos/1e9 > 0 {
+		s += int64(in.Nanos / 1e9)
+		n = in.Nanos % 1e9
+	}
+
 	// We want to report the duration without truncation (do don't want to map via float64)
-	s := strconv.FormatInt(in.Seconds, 10)
-	if in.Nanos != 0 {
-		nanos := strconv.FormatInt(int64(in.Nanos), 10)
+	sStr := strconv.FormatInt(s, 10)
+	if n != 0 {
+		nanos := strconv.FormatInt(int64(n), 10)
 		pad := 9 - len(nanos)
 		nanos = strings.Repeat("0", pad) + nanos
 		nanos = strings.TrimRight(nanos, "0")
-		s += "." + nanos
+		sStr += "." + nanos
 	}
-	s += "s"
-	return &s
+	sStr += "s"
+	return &sStr
 }
 
 func SecondsString_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
