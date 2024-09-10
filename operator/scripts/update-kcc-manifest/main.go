@@ -23,6 +23,7 @@ import (
 	"os"
 	"path"
 	"regexp"
+	"sort"
 	"strings"
 
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/loaders"
@@ -30,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/scripts/utils"
+	"github.com/blang/semver/v4"
 )
 
 const (
@@ -233,7 +235,7 @@ func main() {
 	}
 	log.Printf("successfully updated the version annotation in %v for autopilot kustomization\n", kustomizationFilePath)
 
-	//remove the stale manifest
+	//Update the stable version
 	r := loaders.NewFSRepository(path.Join(operatorSrcRoot, loaders.FlagChannel))
 	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
 	if err != nil {
@@ -268,16 +270,77 @@ func main() {
 		log.Fatalf("error updating file %v", stableFilePath)
 	}
 
-	staleManifestDir := path.Join(operatorSrcRoot, "channels", "packages", "configconnector", currentVersion.Version)
-	log.Printf("removing stale manifest %v", staleManifestDir)
-	if err := os.RemoveAll(staleManifestDir); err != nil {
-		log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
+	channelDir := path.Join(operatorSrcRoot, "channels", "packages", "configconnector")
+	if err := dropStalePackages(channelDir); err != nil {
+		log.Fatalf("drop stale packages: %s", err)
 	}
-	staleManifestDir = path.Join(operatorSrcRoot, "autopilot-channels", "packages", "configconnector", currentVersion.Version)
-	log.Printf("removing stale manifest %v", staleManifestDir)
-	if err := os.RemoveAll(staleManifestDir); err != nil {
-		log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
+	autoPilotChannelDir := path.Join(operatorSrcRoot, "autopilot-channels", "packages", "configconnector")
+	if err := dropStalePackages(autoPilotChannelDir); err != nil {
+		log.Fatalf("drop stale packages: %s", err)
 	}
+}
+
+func dropStalePackages(pacakgesPath string) error {
+	// packagesPath := path.Join(operatorSrcRoot, "channels", "packages", "configconnector")
+
+	dirEntries, _ := os.ReadDir(pacakgesPath)
+	versionMap := map[int][]int{}
+	minorVersions := []int{}
+	totalVersions := []string{}
+	// Build map, key is the SemVer2 Minor, value is a slice of the SemVer2 Patches
+	for _, entry := range dirEntries {
+		if entry.IsDir() {
+			version, err := semver.ParseTolerant(entry.Name())
+			if err != nil {
+				log.Printf("skipping unknown package version %q under %s", entry.Name(), pacakgesPath)
+				continue
+			}
+			totalVersions = append(totalVersions, entry.Name())
+			minor := int(version.Minor)
+			patch := int(version.Patch)
+			if curPatches, ok := versionMap[minor]; !ok {
+				versionMap[minor] = []int{patch}
+				minorVersions = append(minorVersions, minor)
+			} else {
+				curPatches = append(curPatches, patch)
+				versionMap[minor] = curPatches
+			}
+		} else {
+			log.Printf("found unknown file %s under %s\n", entry.Name(), pacakgesPath)
+		}
+	}
+	supportedVersions := []semver.Version{}
+	// Support the latest 3 minor versions with their latest patch
+	sort.Sort(sort.IntSlice(minorVersions))
+	if len(minorVersions) > 3 {
+		minorVersions = minorVersions[len(minorVersions)-3:]
+	}
+	for _, minor := range minorVersions {
+		patches := versionMap[minor]
+		sort.Sort(sort.IntSlice(patches))
+		latestPatch := patches[len(patches)-1]
+		supportedVersions = append(supportedVersions, semver.Version{Major: 1, Minor: uint64(minor), Patch: uint64(latestPatch)})
+	}
+
+	// Drop older versions
+	for _, candidate := range totalVersions {
+		shouldKeep := false
+		for _, supported := range supportedVersions {
+			if candidate == supported.String() {
+				shouldKeep = true
+				break
+			}
+		}
+		if shouldKeep {
+			continue
+		}
+		staleManifestDir := path.Join(pacakgesPath, candidate)
+		log.Printf("removing stale manifest %v", staleManifestDir)
+		if err := os.RemoveAll(staleManifestDir); err != nil {
+			log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
+		}
+	}
+	return nil
 }
 
 func kustomizeBuild(operatorSrcRoot string) {
