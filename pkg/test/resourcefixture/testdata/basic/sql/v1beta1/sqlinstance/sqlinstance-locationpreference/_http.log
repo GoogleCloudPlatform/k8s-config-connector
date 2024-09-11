@@ -1,143 +1,4 @@
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-404 Not Found
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The specified bucket does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The specified bucket does not exist."
-  }
-}
-
----
-
-POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": false
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": []
-  },
-  "name": "storagebucket-${uniqueId}",
-  "storageClass": "STANDARD"
-}
-
-200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": false
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": false
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
-Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": false
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": false
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 404 Not Found
@@ -172,26 +33,24 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager
 
 {
-  "databaseVersion": "SQLSERVER_2017_EXPRESS",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "databaseVersion": "POSTGRES_16",
+  "name": "sqlinstance-locationpreference-${uniqueId}",
   "region": "us-central1",
-  "rootPassword": "1234",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
-    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
-    "pricingPlan": "PER_USE",
-    "sqlServerAuditConfig": {
-      "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig"
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "secondaryZone": "us-central1-b",
+      "zone": "us-central1-a"
     },
-    "storageAutoResize": false,
+    "pricingPlan": "PER_USE",
+    "storageAutoResize": true,
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     }
   }
@@ -215,8 +74,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-locationpreference-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -245,15 +104,15 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-locationpreference-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -269,32 +128,43 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-locationpreference-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR",
-  "databaseVersion": "SQLSERVER_2017_EXPRESS",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-locationpreference-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-locationpreference-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -328,21 +198,17 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
+      "secondaryZone": "us-central1-b",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
-    "sqlServerAuditConfig": {
-      "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig"
-    },
-    "storageAutoResize": false,
+    "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     }
   },
@@ -352,7 +218,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -371,37 +237,10 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
+      "instance": "sqlinstance-locationpreference-${uniqueId}",
       "kind": "sql#user",
-      "name": "##MS_PolicyEventProcessingLogin##",
-      "project": "${projectId}",
-      "sqlserverUserDetails": {
-        "disabled": true
-      }
-    },
-    {
-      "etag": "abcdef0123A=",
-      "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
-      "kind": "sql#user",
-      "name": "##MS_PolicyTsqlExecutionLogin##",
-      "project": "${projectId}",
-      "sqlserverUserDetails": {
-        "disabled": true
-      }
-    },
-    {
-      "etag": "abcdef0123A=",
-      "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
-      "kind": "sql#user",
-      "name": "sqlserver",
-      "project": "${projectId}",
-      "sqlserverUserDetails": {
-        "serverRoles": [
-          "CustomerDbRootRole"
-        ]
-      }
+      "name": "postgres",
+      "project": "${projectId}"
     }
   ],
   "kind": "sql#usersList"
@@ -409,7 +248,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -425,32 +264,43 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-locationpreference-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR",
-  "databaseVersion": "SQLSERVER_2017_EXPRESS",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-locationpreference-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-locationpreference-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -484,21 +334,17 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
+      "secondaryZone": "us-central1-b",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
-    "sqlServerAuditConfig": {
-      "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig"
-    },
-    "storageAutoResize": false,
+    "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     }
   },
@@ -508,17 +354,16 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 
 {
-  "databaseVersion": "SQLSERVER_2017_EXPRESS",
+  "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-locationpreference-${uniqueId}",
   "region": "us-central1",
-  "rootPassword": "1234",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
@@ -536,22 +381,21 @@ User-Agent: kcc/controller-manager
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "20",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "secondaryZone": "us-central1-f",
+      "zone": "us-central1-c"
+    },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
-    "sqlServerAuditConfig": {
-      "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig"
-    },
-    "storageAutoResize": false,
+    "storageAutoResize": true,
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
-      "label-two": "value-two",
       "managed-by-cnrm": "true"
     }
   }
@@ -575,8 +419,8 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-locationpreference-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -605,15 +449,15 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-locationpreference-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -629,32 +473,43 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-locationpreference-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR",
-  "databaseVersion": "SQLSERVER_2017_EXPRESS",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-locationpreference-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-locationpreference-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -671,12 +526,13 @@ X-Xss-Protection: 0
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": false,
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "20",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
@@ -689,22 +545,17 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
+      "secondaryZone": "us-central1-f",
+      "zone": "us-central1-c"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
-    "sqlServerAuditConfig": {
-      "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig"
-    },
-    "storageAutoResize": false,
+    "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
-      "label-two": "value-two",
       "managed-by-cnrm": "true"
     }
   },
@@ -714,7 +565,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -735,85 +586,8 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-locationpreference-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-locationpreference-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
-Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": false
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": false
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
-Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "kind": "storage#objects"
-}
-
----
-
-DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-204 No Content
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Content-Type: application/json
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
