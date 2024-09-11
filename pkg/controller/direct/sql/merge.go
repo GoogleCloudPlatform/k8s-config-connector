@@ -714,23 +714,8 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.MaintenanceWindow != nil {
-		if actual.Settings.MaintenanceWindow == nil {
-			// Add maintenance window
-			updateRequired = true
-		} else if (direct.ValueOf(desired.Spec.Settings.MaintenanceWindow.Day) != actual.Settings.MaintenanceWindow.Day) ||
-			(direct.ValueOf(desired.Spec.Settings.MaintenanceWindow.Hour) != actual.Settings.MaintenanceWindow.Hour) ||
-			(direct.ValueOf(desired.Spec.Settings.MaintenanceWindow.UpdateTrack) != actual.Settings.MaintenanceWindow.UpdateTrack) {
-			// Change maintenance window
-			updateRequired = true
-		}
-		merged.Settings.MaintenanceWindow = &api.MaintenanceWindow{
-			Day:         direct.ValueOf(desired.Spec.Settings.MaintenanceWindow.Day),
-			Hour:        direct.ValueOf(desired.Spec.Settings.MaintenanceWindow.Hour),
-			UpdateTrack: direct.ValueOf(desired.Spec.Settings.MaintenanceWindow.UpdateTrack),
-		}
-	} else if actual.Settings.MaintenanceWindow != nil {
-		// Remove maintenance window
+	merged.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(desired.Spec.Settings.MaintenanceWindow)
+	if !MaintenanceWindowsMatch(merged.Settings.MaintenanceWindow, actual.Settings.MaintenanceWindow) {
 		updateRequired = true
 	}
 
@@ -944,13 +929,33 @@ func LocationPreferencesMatch(desired *api.LocationPreference, actual *api.Locat
 	if desired.FollowGaeApplication != actual.FollowGaeApplication {
 		return false
 	}
-	if desired.Kind != actual.Kind {
-		return false
-	}
+	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.SecondaryZone != actual.SecondaryZone {
 		return false
 	}
 	if desired.Zone != actual.Zone {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func MaintenanceWindowsMatch(desired *api.MaintenanceWindow, actual *api.MaintenanceWindow) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.Day != actual.Day {
+		return false
+	}
+	if desired.Hour != actual.Hour {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
+	if desired.UpdateTrack != actual.UpdateTrack {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
