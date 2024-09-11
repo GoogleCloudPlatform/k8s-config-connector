@@ -4,11 +4,11 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -27,5 +27,5 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  observedGeneration: 2
+  observedGeneration: 3
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/computeimage-test-${uniqueId}

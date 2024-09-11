@@ -3,7 +3,7 @@ kind: EdgeContainerCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -30,7 +30,6 @@ spec:
     - 10.1.0.0/16
   projectRef:
     external: ${projectId}
-  releaseChannel: RELEASE_CHANNEL_UNSPECIFIED
   resourceID: edgecontainercluster-${uniqueId}
 status:
   conditions:
