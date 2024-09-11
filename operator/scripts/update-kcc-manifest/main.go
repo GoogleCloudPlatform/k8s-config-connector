@@ -245,10 +245,11 @@ func main() {
 	if err != nil {
 		log.Fatal(fmt.Errorf("error resolving the current version: %w", err))
 	}
-	if currentVersion.Version == version {
-		log.Printf("the current KCC version is the same as the latest version %v\n", version)
-		return
-	}
+	/*
+		if currentVersion.Version == version {
+			log.Printf("the current KCC version is the same as the latest version %v\n", version)
+			return
+		}*/
 	stableFilePath := path.Join(operatorSrcRoot, "channels", "stable")
 	b, err = ioutil.ReadFile(stableFilePath)
 	if err != nil {
@@ -281,52 +282,25 @@ func main() {
 }
 
 func dropStalePackages(pacakgesPath string) error {
-	// packagesPath := path.Join(operatorSrcRoot, "channels", "packages", "configconnector")
-
 	dirEntries, _ := os.ReadDir(pacakgesPath)
-	versionMap := map[int][]int{}
-	minorVersions := []int{}
-	totalVersions := []string{}
-	// Build map, key is the SemVer2 Minor, value is a slice of the SemVer2 Patches
+
+	totalReleases := Releases{}
 	for _, entry := range dirEntries {
 		if entry.IsDir() {
-			version, err := semver.ParseTolerant(entry.Name())
-			if err != nil {
-				log.Printf("skipping unknown package version %q under %s", entry.Name(), pacakgesPath)
-				continue
-			}
-			totalVersions = append(totalVersions, entry.Name())
-			minor := int(version.Minor)
-			patch := int(version.Patch)
-			if curPatches, ok := versionMap[minor]; !ok {
-				versionMap[minor] = []int{patch}
-				minorVersions = append(minorVersions, minor)
-			} else {
-				curPatches = append(curPatches, patch)
-				versionMap[minor] = curPatches
-			}
+			totalReleases = append(totalReleases, entry.Name())
 		} else {
 			log.Printf("found unknown file %s under %s\n", entry.Name(), pacakgesPath)
 		}
 	}
-	supportedVersions := []semver.Version{}
+
 	// Support the latest 3 minor versions with their latest patch
-	sort.Sort(sort.IntSlice(minorVersions))
-	if len(minorVersions) > 3 {
-		minorVersions = minorVersions[len(minorVersions)-3:]
-	}
-	for _, minor := range minorVersions {
-		patches := versionMap[minor]
-		sort.Sort(sort.IntSlice(patches))
-		latestPatch := patches[len(patches)-1]
-		supportedVersions = append(supportedVersions, semver.Version{Major: 1, Minor: uint64(minor), Patch: uint64(latestPatch)})
-	}
+	supported := totalReleases.StablePatchAtTopMinor(3)
 
 	// Drop older versions
-	for _, candidate := range totalVersions {
+	for _, r := range totalReleases {
 		shouldKeep := false
-		for _, supported := range supportedVersions {
-			if candidate == supported.String() {
+		for _, s := range supported {
+			if r == s {
 				shouldKeep = true
 				break
 			}
@@ -334,13 +308,52 @@ func dropStalePackages(pacakgesPath string) error {
 		if shouldKeep {
 			continue
 		}
-		staleManifestDir := path.Join(pacakgesPath, candidate)
+		staleManifestDir := path.Join(pacakgesPath, r)
 		log.Printf("removing stale manifest %v", staleManifestDir)
 		if err := os.RemoveAll(staleManifestDir); err != nil {
 			log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
 		}
 	}
 	return nil
+}
+
+type Releases []string
+
+type minor int
+
+type patches []int
+
+// StablePatchAtTopMinor returns the latest `n` semver2 Minor releases with their latest semver2 Patch.
+// For example, if the total releases are 1.121.2, 1.121.1, 1.121.0, 1.120.1, 1.120.0, 1.119.3, 1.119.2, 1.119.1, 1.119.0, 1.118.0, and n is 3, the top 3 stable versions are 1.121.2, 1.120.1, 1.119.3
+func (r Releases) StablePatchAtTopMinor(n int) []string {
+	minorPatchesMap := map[minor]patches{}
+	totalMinors := []int{}
+	for _, release := range r {
+		v, err := semver.ParseTolerant(release)
+		if err != nil {
+			log.Printf("skipping unknown package version %q", release)
+		}
+		m := minor(v.Minor)
+		if _, ok := minorPatchesMap[m]; ok {
+			minorPatchesMap[m] = append(minorPatchesMap[m], int(v.Patch))
+		} else {
+			totalMinors = append(totalMinors, int(m))
+			minorPatchesMap[m] = patches{int(v.Patch)}
+		}
+	}
+	sort.Sort(sort.IntSlice(totalMinors))
+	if len(totalMinors) > n {
+		totalMinors = totalMinors[len(totalMinors)-n:]
+	}
+	supportedVersions := []string{}
+	for _, m := range totalMinors {
+		patches := minorPatchesMap[minor(m)]
+		sort.Sort(sort.IntSlice(patches))
+		v := semver.Version{Major: 1, Minor: uint64(m), Patch: uint64(patches[len(patches)-1])}
+		supportedVersions = append(supportedVersions, v.String())
+	}
+	return supportedVersions
+
 }
 
 func kustomizeBuild(operatorSrcRoot string) {
