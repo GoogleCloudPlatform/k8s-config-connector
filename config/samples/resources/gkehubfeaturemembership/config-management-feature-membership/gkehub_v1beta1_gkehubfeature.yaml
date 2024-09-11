@@ -16,8 +16,6 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
   name: gkehubfeaturemembership-dep-acm
-  # The GKEHubFeature is a global resource in your project.
-  # In case you might have configured the resource using other clients like gcloud, abandon the resource when deleted.
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:
