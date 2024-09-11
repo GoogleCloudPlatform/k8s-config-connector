@@ -45,6 +45,7 @@ User-Agent: kcc/controller-manager
       "requireSsl": true
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -388,6 +389,7 @@ User-Agent: kcc/controller-manager
       "sslMode": "ENCRYPTED_ONLY"
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",

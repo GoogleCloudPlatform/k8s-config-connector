@@ -52,6 +52,7 @@ User-Agent: kcc/controller-manager
       ]
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -407,6 +408,7 @@ User-Agent: kcc/controller-manager
       ]
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
