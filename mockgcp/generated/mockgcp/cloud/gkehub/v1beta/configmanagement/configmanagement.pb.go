@@ -288,7 +288,7 @@ type MembershipSpec struct {
 	PolicyController *PolicyController `protobuf:"bytes,2,opt,name=policy_controller,json=policyController,proto3" json:"policy_controller,omitempty"`
 	// Binauthz conifguration for the cluster.
 	Binauthz *BinauthzConfig `protobuf:"bytes,3,opt,name=binauthz,proto3" json:"binauthz,omitempty"`
-	// **DEPRECATED** Configuring Hierarchy Controller through the configmanagement feature is no longer recommended. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
+	// Hierarchy Controller is no longer available. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
 	HierarchyController *HierarchyControllerConfig `protobuf:"bytes,4,opt,name=hierarchy_controller,json=hierarchyController,proto3" json:"hierarchy_controller,omitempty"`
 	// Version of ACM installed.
 	Version string `protobuf:"bytes,10,opt,name=version,proto3" json:"version,omitempty"`
