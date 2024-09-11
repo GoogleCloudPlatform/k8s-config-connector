@@ -7,6 +7,10 @@
 * `RedisCluster` (v1alpha1)
 * `SQLInstance`
 
+## New Resources:
+
+* Added support for `RedisCluster` (v1alpha1) resource.
+
 ## New Fields:
 
 * `ContainerCluster`
