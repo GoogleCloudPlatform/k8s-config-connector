@@ -222,7 +222,9 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if u.GetDeletionTimestamp().IsZero() {
-			k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
+			if err := r.ensureFinalizers(ctx, u); err != nil {
+				return false, nil
+			}
 		}
 
 		return false, nil
@@ -282,7 +284,9 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleDeleted(ctx, u)
 	}
 
-	k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
+	if err := r.ensureFinalizers(ctx, u); err != nil {
+		return false, err
+	}
 
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless
 	//policy.Spec.Etag = ""
@@ -310,6 +314,21 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleUpToDate(ctx, u)
 	}
 	return false, nil
+}
+
+// ensureFinalizers will apply our finalizers to the object if they are not present.
+// We update the kube-apiserver immediately if any changes are needed.
+func (r *reconcileContext) ensureFinalizers(ctx context.Context, u *unstructured.Unstructured) error {
+	if k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName) {
+		// No change
+		return nil
+	}
+
+	if err := r.Reconciler.Client.Update(ctx, u); err != nil {
+		return fmt.Errorf("updating finalizers: %w", err)
+	}
+
+	return nil
 }
 
 func (r *reconcileContext) handleUpToDate(ctx context.Context, u *unstructured.Unstructured) error {
