@@ -310,19 +310,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 
 	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
 	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
-
-	if in.Spec.Settings.MaintenanceWindow != nil {
-		out.Settings.MaintenanceWindow = &api.MaintenanceWindow{}
-		if in.Spec.Settings.MaintenanceWindow.Day != nil {
-			out.Settings.MaintenanceWindow.Day = *in.Spec.Settings.MaintenanceWindow.Day
-		}
-		if in.Spec.Settings.MaintenanceWindow.Hour != nil {
-			out.Settings.MaintenanceWindow.Hour = *in.Spec.Settings.MaintenanceWindow.Hour
-		}
-		if in.Spec.Settings.MaintenanceWindow.UpdateTrack != nil {
-			out.Settings.MaintenanceWindow.UpdateTrack = *in.Spec.Settings.MaintenanceWindow.UpdateTrack
-		}
-	}
+	out.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(in.Spec.Settings.MaintenanceWindow)
 
 	if in.Spec.Settings.PasswordValidationPolicy != nil {
 		policy := &api.PasswordValidationPolicy{
@@ -476,6 +464,25 @@ func InstanceLocationPreferenceKRMToGCP(in *krm.InstanceLocationPreference) *api
 		FollowGaeApplication: direct.ValueOf(in.FollowGaeApplication),
 		SecondaryZone:        direct.ValueOf(in.SecondaryZone),
 		Zone:                 direct.ValueOf(in.Zone),
+	}
+
+	return out
+}
+
+func InstanceMaintenanceWindowKRMToGCP(in *krm.InstanceMaintenanceWindow) *api.MaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.MaintenanceWindow{
+		Kind:        "sql#maintenanceWindow",
+		Day:         direct.ValueOf(in.Day),
+		Hour:        direct.ValueOf(in.Hour),
+		UpdateTrack: direct.ValueOf(in.UpdateTrack),
+	}
+
+	if in.Hour != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "Hour")
 	}
 
 	return out
@@ -648,14 +655,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 
 	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)
 	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
-
-	if in.Settings.MaintenanceWindow != nil {
-		out.Spec.Settings.MaintenanceWindow = &krm.InstanceMaintenanceWindow{
-			Day:         &in.Settings.MaintenanceWindow.Day,
-			Hour:        &in.Settings.MaintenanceWindow.Hour,
-			UpdateTrack: &in.Settings.MaintenanceWindow.UpdateTrack,
-		}
-	}
+	out.Spec.Settings.MaintenanceWindow = InstanceMaintenanceWindowGCPToKRM(in.Settings.MaintenanceWindow)
 
 	if in.Settings.PasswordValidationPolicy != nil {
 		out.Spec.Settings.PasswordValidationPolicy = &krm.InstancePasswordValidationPolicy{
@@ -759,6 +759,20 @@ func InstanceLocationPreferenceGCPToKRM(in *api.LocationPreference) *krm.Instanc
 		FollowGaeApplication: direct.LazyPtr(in.FollowGaeApplication),
 		SecondaryZone:        direct.LazyPtr(in.SecondaryZone),
 		Zone:                 direct.LazyPtr(in.Zone),
+	}
+
+	return out
+}
+
+func InstanceMaintenanceWindowGCPToKRM(in *api.MaintenanceWindow) *krm.InstanceMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceMaintenanceWindow{
+		Day:         direct.LazyPtr(in.Day),
+		Hour:        direct.PtrTo(in.Hour),
+		UpdateTrack: direct.LazyPtr(in.UpdateTrack),
 	}
 
 	return out

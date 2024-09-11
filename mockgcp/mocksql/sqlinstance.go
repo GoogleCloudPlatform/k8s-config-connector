@@ -488,7 +488,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
 	case pb.SqlDatabaseVersion_POSTGRES_15:
 		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
-		obj.MaintenanceVersion = "POSTGRES_15_7.R20240514.00_08"
+		obj.MaintenanceVersion = "POSTGRES_15_7.R20240514.00_12"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("POSTGRES_16"),

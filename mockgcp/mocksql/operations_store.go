@@ -85,6 +85,7 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 		}
 
 		finished.Status = pb.Operation_DONE
+		finished.StartTime = timestamppb.New(time.Now())
 		finished.EndTime = timestamppb.New(time.Now())
 
 		if err != nil {

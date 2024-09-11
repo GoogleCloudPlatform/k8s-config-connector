@@ -1072,6 +1072,7 @@ User-Agent: kcc/controller-manager
     "maintenanceWindow": {
       "day": 6,
       "hour": 2,
+      "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
     "pricingPlan": "PER_USE",
@@ -1132,6 +1133,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlinstance-sample-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
@@ -1182,7 +1184,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_08",
+  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -1248,6 +1250,7 @@ X-Xss-Protection: 0
     "maintenanceWindow": {
       "day": 6,
       "hour": 2,
+      "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
     "pricingPlan": "PER_USE",
@@ -1346,7 +1349,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_08",
+  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -1412,6 +1415,7 @@ X-Xss-Protection: 0
     "maintenanceWindow": {
       "day": 6,
       "hour": 2,
+      "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
     "pricingPlan": "PER_USE",
@@ -1450,7 +1454,7 @@ User-Agent: kcc/controller-manager
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_08",
+  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
   "name": "sqlinstance-sample-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -1496,6 +1500,7 @@ User-Agent: kcc/controller-manager
     "maintenanceWindow": {
       "day": 6,
       "hour": 2,
+      "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
     "pricingPlan": "PER_USE",
@@ -1558,6 +1563,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlinstance-sample-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
@@ -1608,7 +1614,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_08",
+  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -1674,6 +1680,7 @@ X-Xss-Protection: 0
     "maintenanceWindow": {
       "day": 6,
       "hour": 2,
+      "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
     "pricingPlan": "PER_USE",
