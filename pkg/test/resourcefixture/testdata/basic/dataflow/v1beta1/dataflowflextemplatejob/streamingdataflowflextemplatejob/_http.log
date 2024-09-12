@@ -582,7 +582,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "createDisposition": "CREATE_NEVER",
       "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
       "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-      "outputTopic": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}",
+      "outputTopic": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}",
       "schemaPath": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc"
     }
   }
