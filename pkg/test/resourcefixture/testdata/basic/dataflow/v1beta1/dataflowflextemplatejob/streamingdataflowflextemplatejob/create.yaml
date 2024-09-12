@@ -28,6 +28,6 @@ spec:
     # This is maintained by us.
     schemaPath: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
     inputSubscription: projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}
-    outputTopic: projects/${projectId}/topics/pubsubtopic1-${uniqueId}
+    outputTopic: projects/${projectId}/topics/pubsubtopic0-${uniqueId}
     outputTableSpec: ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}
     createDisposition: CREATE_NEVER
