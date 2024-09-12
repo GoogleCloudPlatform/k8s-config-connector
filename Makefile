@@ -70,7 +70,6 @@ manifests: generate
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
 	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
-	go run ./scripts/generate-cnrm-cluster-roles/main.go
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
@@ -81,6 +80,10 @@ manifests: generate
 
 	# for direct controllers
 	dev/tasks/generate-crds
+
+	# Generating cnrm cluster roles is dependent on the existence of directory
+	# config/crds/resources with all the freshly generated CRDs.
+	go run ./scripts/generate-cnrm-cluster-roles/main.go
 
 # Format code
 .PHONY: fmt
