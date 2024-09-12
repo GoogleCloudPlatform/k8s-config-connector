@@ -69,10 +69,18 @@ func (s *RegionalAddressesV1) Insert(ctx context.Context, req *pb.InsertAddressR
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating address: %v", err)
+		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalAddressesV1) Delete(ctx context.Context, req *pb.DeleteAddressRequest) (*pb.Operation, error) {
@@ -89,7 +97,15 @@ func (s *RegionalAddressesV1) Delete(ctx context.Context, req *pb.DeleteAddressR
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *RegionalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsAddressRequest) (*pb.Operation, error) {
@@ -121,7 +137,7 @@ type regionalAddressName struct {
 }
 
 func (n *regionalAddressName) String() string {
-	return "projects/" + n.Project.ID + "/regions/" + n.Region + "/networks/" + n.Name
+	return "projects/" + n.Project.ID + "/regions/" + n.Region + "/addresses/" + n.Name
 }
 
 // parseAddressName parses a string into a addressName.

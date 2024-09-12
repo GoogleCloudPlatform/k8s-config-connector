@@ -25,21 +25,21 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-type GlobalSSLCertificatesV1 struct {
+type TargetSslProxyV1 struct {
 	*MockService
-	pb.UnimplementedSslCertificatesServer
+	pb.UnimplementedTargetSslProxiesServer
 }
 
-func (s *GlobalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetSslCertificateRequest) (*pb.SslCertificate, error) {
-	reqName := "projects/" + req.GetProject() + "/global" + "/sslCertificates/" + req.GetSslCertificate()
-	name, err := s.parseGlobalSslCertificateName(reqName)
+func (s *TargetSslProxyV1) Get(ctx context.Context, req *pb.GetTargetSslProxyRequest) (*pb.TargetSslProxy, error) {
+	reqName := "projects/" + req.GetProject() + "/global/targetSslProxies/" + req.GetTargetSslProxy()
+	name, err := s.parseTargetSslProxyName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.SslCertificate{}
+	obj := &pb.TargetSslProxy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -47,9 +47,9 @@ func (s *GlobalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetSslCertifi
 	return obj, nil
 }
 
-func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslCertificateRequest) (*pb.Operation, error) {
-	reqName := "projects/" + req.GetProject() + "/global" + "/sslCertificates/" + req.GetSslCertificateResource().GetName()
-	name, err := s.parseGlobalSslCertificateName(reqName)
+func (s *TargetSslProxyV1) Insert(ctx context.Context, req *pb.InsertTargetSslProxyRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global/targetSslProxies/" + req.GetTargetSslProxyResource().GetName()
+	name, err := s.parseTargetSslProxyName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -58,11 +58,11 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetSslCertificateResource()).(*pb.SslCertificate)
+	obj := proto.Clone(req.GetTargetSslProxyResource()).(*pb.TargetSslProxy)
 	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.Kind = PtrTo("compute#sslCertificate")
+	obj.Kind = PtrTo("compute#targetSslProxy")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -79,16 +79,16 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 	})
 }
 
-func (s *GlobalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteSslCertificateRequest) (*pb.Operation, error) {
-	reqName := "projects/" + req.GetProject() + "/global" + "/sslCertificates/" + req.GetSslCertificate()
-	name, err := s.parseGlobalSslCertificateName(reqName)
+func (s *TargetSslProxyV1) Delete(ctx context.Context, req *pb.DeleteTargetSslProxyRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global/targetSslProxies/" + req.GetTargetSslProxy()
+	name, err := s.parseTargetSslProxyName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	deleted := &pb.SslCertificate{}
+	deleted := &pb.TargetSslProxy{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
@@ -104,33 +104,33 @@ func (s *GlobalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteSslC
 	})
 }
 
-type globalSSLCertificateName struct {
+type targetSslProxyName struct {
 	Project *projects.ProjectData
 	Name    string
 }
 
-func (n *globalSSLCertificateName) String() string {
-	return "projects/" + n.Project.ID + "/global" + "/sslCertificates/" + n.Name
+func (n *targetSslProxyName) String() string {
+	return "projects/" + n.Project.ID + "/global/targetSslProxies/" + n.Name
 }
 
-// parseGlobalSslCertificateName parses a string into a globalSslCertificateName.
-// The expected form is `projects/*/global/sslcertificate/*`.
-func (s *MockService) parseGlobalSslCertificateName(name string) (*globalSSLCertificateName, error) {
+// parseTargetSslProxyName parses a string into a targetSslProxyName.
+// The expected form is `projects/*/global/targetSslProxies/*`.
+func (s *MockService) parseTargetSslProxyName(name string) (*targetSslProxyName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "sslCertificates" {
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[3] == "targetSslProxies" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &globalSSLCertificateName{
+		name := &targetSslProxyName{
 			Project: project,
 			Name:    tokens[4],
 		}
 
 		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }

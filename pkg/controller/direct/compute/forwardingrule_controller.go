@@ -151,6 +151,16 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 			}
 			obj.Spec.Target.TargetVPNGatewayRef.External = targetVPNGatewayRef.External
 		}
+
+		// Get target SSLProxy
+		if obj.Spec.Target.TargetSSLProxyRef != nil {
+			targetSSLProxyRef, err := ResolveComputeTargetSSLProxy(ctx, reader, obj, obj.Spec.Target.TargetSSLProxyRef)
+			if err != nil {
+				return nil, err
+
+			}
+			obj.Spec.Target.TargetSSLProxyRef.External = targetSSLProxyRef.External
+		}
 	}
 
 	// Get location
