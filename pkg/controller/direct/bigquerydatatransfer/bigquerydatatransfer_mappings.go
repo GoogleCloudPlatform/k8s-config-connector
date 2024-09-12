@@ -54,7 +54,9 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.BigQueryDataTransferConfigSpec{}
-	out.DatasetRef = refv1beta1.BigQueryDatasetRef{External: in.GetDestinationDatasetId()}
+	if in.GetDestinationDatasetId() != "" {
+		out.DatasetRef = &refv1beta1.BigQueryDatasetRef{External: in.GetDestinationDatasetId()}
+	}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
 	out.Params = Params_FromProto(mapCtx, in.GetParams())
@@ -63,7 +65,9 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	out.UserID = direct.LazyPtr(in.GetUserId())
-	out.PubSubTopicRef = refv1beta1.PubSubTopicRef{External: in.GetNotificationPubsubTopic()}
+	if in.GetNotificationPubsubTopic() != "" {
+		out.PubSubTopicRef = &refv1beta1.PubSubTopicRef{External: in.GetNotificationPubsubTopic()}
+	}
 	out.EmailPreferences = EmailPreferences_FromProto(mapCtx, in.GetEmailPreferences())
 	out.EncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.GetEncryptionConfiguration())
 	return out
@@ -73,7 +77,9 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 		return nil
 	}
 	out := &pb.TransferConfig{}
-	out.Destination = &pb.TransferConfig_DestinationDatasetId{DestinationDatasetId: in.DatasetRef.External}
+	if in.DatasetRef != nil {
+		out.Destination = &pb.TransferConfig_DestinationDatasetId{DestinationDatasetId: in.DatasetRef.External}
+	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.DataSourceId = direct.ValueOf(in.DataSourceID)
 	out.Params = Params_ToProto(mapCtx, in.Params)
@@ -82,7 +88,9 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
 	out.Disabled = direct.ValueOf(in.Disabled)
 	out.UserId = direct.ValueOf(in.UserID)
-	out.NotificationPubsubTopic = in.PubSubTopicRef.External
+	if in.PubSubTopicRef != nil {
+		out.NotificationPubsubTopic = in.PubSubTopicRef.External
+	}
 	out.EmailPreferences = EmailPreferences_ToProto(mapCtx, in.EmailPreferences)
 	out.EncryptionConfiguration = EncryptionConfiguration_ToProto(mapCtx, in.EncryptionConfiguration)
 	return out
@@ -92,7 +100,9 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 		return nil
 	}
 	out := &krm.EncryptionConfiguration{}
-	out.KmsKeyRef = refv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName().String()}
+	if in.GetKmsKeyName() != nil {
+		out.KmsKeyRef = &refv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName().String()}
+	}
 	return out
 }
 func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfiguration) *pb.EncryptionConfiguration {
@@ -100,7 +110,9 @@ func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.Encrypti
 		return nil
 	}
 	out := &pb.EncryptionConfiguration{}
-	out.KmsKeyName = &wrapperspb.StringValue{Value: in.KmsKeyRef.External}
+	if in.KmsKeyRef != nil {
+		out.KmsKeyName = &wrapperspb.StringValue{Value: in.KmsKeyRef.External}
+	}
 	return out
 }
 func Params_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
