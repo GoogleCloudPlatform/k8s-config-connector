@@ -161,6 +161,16 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 			}
 			obj.Spec.Target.TargetSSLProxyRef.External = targetSSLProxyRef.External
 		}
+
+		// Get target TCPProxy
+		if obj.Spec.Target.TargetTCPProxyRef != nil {
+			targetTCPProxyRef, err := ResolveComputeTargetTCPProxy(ctx, reader, obj, obj.Spec.Target.TargetTCPProxyRef)
+			if err != nil {
+				return nil, err
+
+			}
+			obj.Spec.Target.TargetTCPProxyRef.External = targetTCPProxyRef.External
+		}
 	}
 
 	// Get location
