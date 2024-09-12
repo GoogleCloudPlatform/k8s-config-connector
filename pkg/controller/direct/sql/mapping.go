@@ -707,10 +707,10 @@ func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpCon
 	out := &krm.InstanceIpConfiguration{
 		AllocatedIpRange:                        direct.LazyPtr(in.AllocatedIpRange),
 		AuthorizedNetworks:                      InstanceAuthorizedNetworksGCPToKRM(in.AuthorizedNetworks),
-		EnablePrivatePathForGoogleCloudServices: direct.LazyPtr(in.EnablePrivatePathForGoogleCloudServices),
-		Ipv4Enabled:                             direct.LazyPtr(in.Ipv4Enabled),
+		EnablePrivatePathForGoogleCloudServices: direct.PtrTo(in.EnablePrivatePathForGoogleCloudServices),
+		Ipv4Enabled:                             direct.PtrTo(in.Ipv4Enabled),
 		PscConfig:                               InstancePscConfigGCPToKRM(in.PscConfig),
-		RequireSsl:                              direct.LazyPtr(in.RequireSsl),
+		RequireSsl:                              direct.PtrTo(in.RequireSsl),
 		SslMode:                                 direct.LazyPtr(in.SslMode),
 	}
 
@@ -743,7 +743,7 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 	out := []krm.InstancePscConfig{
 		{
 			AllowedConsumerProjects: in.AllowedConsumerProjects,
-			PscEnabled:              direct.LazyPtr(in.PscEnabled),
+			PscEnabled:              direct.PtrTo(in.PscEnabled),
 		},
 	}
 
