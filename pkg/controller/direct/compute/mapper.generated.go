@@ -27,36 +27,36 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	}
 	out := &krm.ComputeForwardingRuleSpec{}
 	out.IpAddress = ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx, in.GetIPAddress())
-	out.IpProtocol = direct.LazyPtr(in.GetIPProtocol())
-	out.AllPorts = direct.LazyPtr(in.GetAllPorts())
-	out.AllowGlobalAccess = direct.LazyPtr(in.GetAllowGlobalAccess())
-	out.AllowPscGlobalAccess = direct.LazyPtr(in.GetAllowPscGlobalAccess())
+	out.IpProtocol = in.IPProtocol
+	out.AllPorts = in.AllPorts
+	out.AllowGlobalAccess = in.AllowGlobalAccess
+	out.AllowPscGlobalAccess = in.AllowPscGlobalAccess
 	out.BackendServiceRef = ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx, in.GetBackendService())
 	// MISSING: BaseForwardingRule
 	// MISSING: CreationTimestamp
-	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Description = in.Description
 	// MISSING: Fingerprint
 	// MISSING: Id
 	// MISSING: IpCollection
-	out.IpVersion = direct.LazyPtr(in.GetIpVersion())
-	out.IsMirroringCollector = direct.LazyPtr(in.GetIsMirroringCollector())
+	out.IpVersion = in.IpVersion
+	out.IsMirroringCollector = in.IsMirroringCollector
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
-	out.LoadBalancingScheme = direct.LazyPtr(in.GetLoadBalancingScheme())
+	out.LoadBalancingScheme = in.LoadBalancingScheme
 	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_FromProto)
 	// MISSING: Name
 	out.NetworkRef = ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx, in.GetNetwork())
-	out.NetworkTier = direct.LazyPtr(in.GetNetworkTier())
-	out.NoAutomateDnsZone = direct.LazyPtr(in.GetNoAutomateDnsZone())
-	out.PortRange = direct.LazyPtr(in.GetPortRange())
+	out.NetworkTier = in.NetworkTier
+	out.NoAutomateDnsZone = in.NoAutomateDnsZone
+	out.PortRange = in.PortRange
 	out.Ports = in.Ports
 	// MISSING: PscConnectionId
 	// MISSING: PscConnectionStatus
 	// MISSING: Region
 	// MISSING: SelfLink
 	out.ServiceDirectoryRegistrations = direct.Slice_FromProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_FromProto)
-	out.ServiceLabel = direct.LazyPtr(in.GetServiceLabel())
+	out.ServiceLabel = in.ServiceLabel
 	// MISSING: ServiceName
 	out.SourceIpRanges = in.SourceIpRanges
 	out.SubnetworkRef = ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx, in.GetSubnetwork())
@@ -110,14 +110,13 @@ func ComputeForwardingRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb.For
 		return nil
 	}
 	out := &krm.ComputeForwardingRuleStatus{}
-
-	out.BaseForwardingRule = direct.LazyPtr(in.GetBaseForwardingRule())
-	out.CreationTimestamp = direct.LazyPtr(in.GetCreationTimestamp())
-	out.LabelFingerprint = direct.LazyPtr(in.GetLabelFingerprint())
+	out.BaseForwardingRule = in.BaseForwardingRule
+	out.CreationTimestamp = in.CreationTimestamp
+	out.LabelFingerprint = in.LabelFingerprint
 	out.PscConnectionId = ComputeForwardingRuleStatus_PscConnectionId_FromProto(mapCtx, in.GetPscConnectionId())
-	out.PscConnectionStatus = direct.LazyPtr(in.GetPscConnectionStatus())
-	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
-	out.ServiceName = direct.LazyPtr(in.GetServiceName())
+	out.PscConnectionStatus = in.PscConnectionStatus
+	out.SelfLink = in.SelfLink
+	out.ServiceName = in.ServiceName
 	return out
 }
 func ComputeForwardingRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
@@ -175,8 +174,8 @@ func ForwardingruleServiceDirectoryRegistrations_FromProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &krm.ForwardingruleServiceDirectoryRegistrations{}
-	out.Namespace = direct.LazyPtr(in.GetNamespace())
-	out.Service = direct.LazyPtr(in.GetService())
+	out.Namespace = in.Namespace
+	out.Service = in.Service
 	// MISSING: ServiceDirectoryRegion
 	return out
 }
