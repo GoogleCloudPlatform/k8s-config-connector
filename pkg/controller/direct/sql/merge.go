@@ -719,29 +719,8 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.PasswordValidationPolicy != nil {
-		if actual.Settings.PasswordValidationPolicy == nil {
-			// Add password validation policy
-			updateRequired = true
-		} else if (direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.Complexity) != actual.Settings.PasswordValidationPolicy.Complexity) ||
-			(direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.DisallowUsernameSubstring) != actual.Settings.PasswordValidationPolicy.DisallowUsernameSubstring) ||
-			(desired.Spec.Settings.PasswordValidationPolicy.EnablePasswordPolicy != actual.Settings.PasswordValidationPolicy.EnablePasswordPolicy) ||
-			(direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.MinLength) != actual.Settings.PasswordValidationPolicy.MinLength) ||
-			(direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.PasswordChangeInterval) != actual.Settings.PasswordValidationPolicy.PasswordChangeInterval) ||
-			(direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.ReuseInterval) != actual.Settings.PasswordValidationPolicy.ReuseInterval) {
-			// Change password validation policy
-			updateRequired = true
-		}
-		merged.Settings.PasswordValidationPolicy = &api.PasswordValidationPolicy{
-			Complexity:                direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.Complexity),
-			DisallowUsernameSubstring: direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.DisallowUsernameSubstring),
-			EnablePasswordPolicy:      desired.Spec.Settings.PasswordValidationPolicy.EnablePasswordPolicy,
-			MinLength:                 direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.MinLength),
-			PasswordChangeInterval:    direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.PasswordChangeInterval),
-			ReuseInterval:             direct.ValueOf(desired.Spec.Settings.PasswordValidationPolicy.ReuseInterval),
-		}
-	} else if actual.Settings.PasswordValidationPolicy != nil {
-		// Remove password validation policy
+	merged.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyKRMToGCP(desired.Spec.Settings.PasswordValidationPolicy)
+	if !PasswordValidationPoliciesMatch(merged.Settings.PasswordValidationPolicy, actual.Settings.PasswordValidationPolicy) {
 		updateRequired = true
 	}
 
@@ -956,6 +935,37 @@ func MaintenanceWindowsMatch(desired *api.MaintenanceWindow, actual *api.Mainten
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.UpdateTrack != actual.UpdateTrack {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func PasswordValidationPoliciesMatch(desired *api.PasswordValidationPolicy, actual *api.PasswordValidationPolicy) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.Complexity != actual.Complexity {
+		return false
+	}
+	// Ignore DisallowCompromisedCredentials. It is not supported in KRM API.
+	if desired.DisallowUsernameSubstring != actual.DisallowUsernameSubstring {
+		return false
+	}
+	if desired.EnablePasswordPolicy != actual.EnablePasswordPolicy {
+		return false
+	}
+	if desired.MinLength != actual.MinLength {
+		return false
+	}
+	if desired.PasswordChangeInterval != actual.PasswordChangeInterval {
+		return false
+	}
+	if desired.ReuseInterval != actual.ReuseInterval {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.

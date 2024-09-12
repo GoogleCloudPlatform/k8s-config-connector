@@ -311,34 +311,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
 	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
 	out.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(in.Spec.Settings.MaintenanceWindow)
-
-	if in.Spec.Settings.PasswordValidationPolicy != nil {
-		policy := &api.PasswordValidationPolicy{
-			EnablePasswordPolicy: in.Spec.Settings.PasswordValidationPolicy.EnablePasswordPolicy,
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.Complexity != nil {
-			policy.Complexity = *in.Spec.Settings.PasswordValidationPolicy.Complexity
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.DisallowUsernameSubstring != nil {
-			policy.DisallowUsernameSubstring = *in.Spec.Settings.PasswordValidationPolicy.DisallowUsernameSubstring
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.MinLength != nil {
-			policy.MinLength = *in.Spec.Settings.PasswordValidationPolicy.MinLength
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.PasswordChangeInterval != nil {
-			policy.PasswordChangeInterval = *in.Spec.Settings.PasswordValidationPolicy.PasswordChangeInterval
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.ReuseInterval != nil {
-			policy.ReuseInterval = *in.Spec.Settings.PasswordValidationPolicy.ReuseInterval
-		}
-
-		out.Settings.PasswordValidationPolicy = policy
-	}
+	out.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyKRMToGCP(in.Spec.Settings.PasswordValidationPolicy)
 
 	if in.Spec.Settings.PricingPlan != nil {
 		// todo: can only be PER_USE
@@ -483,6 +456,37 @@ func InstanceMaintenanceWindowKRMToGCP(in *krm.InstanceMaintenanceWindow) *api.M
 
 	if in.Hour != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "Hour")
+	}
+
+	return out
+}
+
+func InstancePasswordValidationPolicyKRMToGCP(in *krm.InstancePasswordValidationPolicy) *api.PasswordValidationPolicy {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.PasswordValidationPolicy{
+		Complexity: direct.ValueOf(in.Complexity),
+		// DisallowCompromisedCredentials is not supported in KRM API.
+		DisallowUsernameSubstring: direct.ValueOf(in.DisallowUsernameSubstring),
+		EnablePasswordPolicy:      in.EnablePasswordPolicy,
+		MinLength:                 direct.ValueOf(in.MinLength),
+		PasswordChangeInterval:    direct.ValueOf(in.PasswordChangeInterval),
+		ReuseInterval:             direct.ValueOf(in.ReuseInterval),
+	}
+
+	if in.DisallowUsernameSubstring != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "DisallowUsernameSubstring")
+	}
+	if !in.EnablePasswordPolicy {
+		out.ForceSendFields = append(out.ForceSendFields, "EnablePasswordPolicy")
+	}
+	if in.MinLength != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "MinLength")
+	}
+	if in.ReuseInterval != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ReuseInterval")
 	}
 
 	return out
@@ -656,17 +660,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)
 	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
 	out.Spec.Settings.MaintenanceWindow = InstanceMaintenanceWindowGCPToKRM(in.Settings.MaintenanceWindow)
-
-	if in.Settings.PasswordValidationPolicy != nil {
-		out.Spec.Settings.PasswordValidationPolicy = &krm.InstancePasswordValidationPolicy{
-			EnablePasswordPolicy:      in.Settings.PasswordValidationPolicy.EnablePasswordPolicy,
-			Complexity:                &in.Settings.PasswordValidationPolicy.Complexity,
-			DisallowUsernameSubstring: &in.Settings.PasswordValidationPolicy.DisallowUsernameSubstring,
-			MinLength:                 &in.Settings.PasswordValidationPolicy.MinLength,
-			PasswordChangeInterval:    &in.Settings.PasswordValidationPolicy.PasswordChangeInterval,
-			ReuseInterval:             &in.Settings.PasswordValidationPolicy.ReuseInterval,
-		}
-	}
+	out.Spec.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyGCPToKRM(in.Settings.PasswordValidationPolicy)
 
 	if in.Settings.PricingPlan != "" {
 		out.Spec.Settings.PricingPlan = &in.Settings.PricingPlan
@@ -773,6 +767,24 @@ func InstanceMaintenanceWindowGCPToKRM(in *api.MaintenanceWindow) *krm.InstanceM
 		Day:         direct.LazyPtr(in.Day),
 		Hour:        direct.PtrTo(in.Hour),
 		UpdateTrack: direct.LazyPtr(in.UpdateTrack),
+	}
+
+	return out
+}
+
+func InstancePasswordValidationPolicyGCPToKRM(in *api.PasswordValidationPolicy) *krm.InstancePasswordValidationPolicy {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstancePasswordValidationPolicy{
+		Complexity: direct.LazyPtr(in.Complexity),
+		// DisallowCompromisedCredentials is not supported in KRM API.
+		DisallowUsernameSubstring: direct.PtrTo(in.DisallowUsernameSubstring),
+		EnablePasswordPolicy:      in.EnablePasswordPolicy,
+		MinLength:                 direct.PtrTo(in.MinLength),
+		PasswordChangeInterval:    direct.LazyPtr(in.PasswordChangeInterval),
+		ReuseInterval:             direct.PtrTo(in.ReuseInterval),
 	}
 
 	return out
