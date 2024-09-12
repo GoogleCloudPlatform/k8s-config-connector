@@ -121,7 +121,6 @@ import (
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
-	securesourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securesourcemanager/v1alpha1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securitycenter/v1alpha1"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicenetworking/v1beta1"
@@ -252,7 +251,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	resourcemanagerv1beta1.AddToScheme,
 	runv1beta1.AddToScheme,
 	secretmanagerv1beta1.AddToScheme,
-	securesourcemanagerv1alpha1.AddToScheme,
 	securitycenterv1alpha1.AddToScheme,
 	servicedirectoryv1beta1.AddToScheme,
 	servicenetworkingv1beta1.AddToScheme,
