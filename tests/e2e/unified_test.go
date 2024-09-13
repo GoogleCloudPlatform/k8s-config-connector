@@ -538,20 +538,28 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if n >= 2 {
 								kind := tokens[n-2]
 								switch kind {
-								case "subnetworks":
-									r.PathIDs[targetId] = "${subnetworkNumber}"
-								case "sslCertificates":
-									r.PathIDs[targetId] = "${sslCertificatesId}"
-								case "forwardingRules":
-									r.PathIDs[targetId] = "${forwardingRulesId}"
-								case "serviceAttachments":
-									r.PathIDs[targetId] = "${serviceAttachmentsId}"
-								case "targetSslProxies":
-									r.PathIDs[targetId] = "${targetSslProxiesId}"
 								case "addresses":
 									r.PathIDs[targetId] = "${addressesId}"
+								case "backendServices":
+									r.PathIDs[targetId] = "${backendServicesId}"
+								case "forwardingRules":
+									r.PathIDs[targetId] = "${forwardingRulesId}"
+								case "healthChecks":
+									r.PathIDs[targetId] = "${healthChecksId}"
+								case "serviceAttachments":
+									r.PathIDs[targetId] = "${serviceAttachmentsId}"
+								case "sslCertificates":
+									r.PathIDs[targetId] = "${sslCertificatesId}"
+								case "subnetworks":
+									r.PathIDs[targetId] = "${subnetworkNumber}"
+								case "targetHttpsProxies":
+									r.PathIDs[targetId] = "${targetHttpsProxiesId}"
+								case "targetSslProxies":
+									r.PathIDs[targetId] = "${targetSslProxiesId}"
 								case "targetTcpProxies":
 									r.PathIDs[targetId] = "${targetTcpProxiesId}"
+								case "urlMaps":
+									r.PathIDs[targetId] = "${urlMapsId}"
 								}
 							}
 						}

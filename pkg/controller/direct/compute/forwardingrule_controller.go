@@ -142,6 +142,16 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 			obj.Spec.Target.TargetHTTPProxyRef.External = targetHTTPProxyRef.External
 		}
 
+		// Get target ComputeTargetHTTPSProxy
+		if obj.Spec.Target.TargetHTTPSProxyRef != nil {
+			targetHTTPSProxyRef, err := ResolveComputeTargetHTTPSProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPSProxyRef)
+			if err != nil {
+				return nil, err
+
+			}
+			obj.Spec.Target.TargetHTTPSProxyRef.External = targetHTTPSProxyRef.External
+		}
+
 		// Get target TargetVPNGateway
 		if obj.Spec.Target.TargetVPNGatewayRef != nil {
 			targetVPNGatewayRef, err := ResolveComputeTargetVPNGateway(ctx, reader, obj, obj.Spec.Target.TargetVPNGatewayRef)
