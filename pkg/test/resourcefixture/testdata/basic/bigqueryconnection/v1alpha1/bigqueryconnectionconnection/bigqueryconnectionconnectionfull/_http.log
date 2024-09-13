@@ -1,6 +1,6 @@
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
 
 404 Not Found
 Cache-Control: private
@@ -16,16 +16,16 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}",
+    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?alt=json&connectionId=bigqueryconnectionconnection-${uniqueId}
+POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "cloudResource": {},
@@ -52,16 +52,16 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/${connectionId}"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
 
-200 OK
+404 Not Found
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -73,26 +73,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "cloudResource": {
-    "serviceAccountId": "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
-  },
-  "creationTime": "123456789",
-  "description": "test connection for cloud resource",
-  "friendlyName": "cloud-resource-connection",
-  "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json&updateMask=friendlyName%2Cdescription
+POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "cloudResource": {
-    "serviceAccountId": "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
-  },
+  "cloudResource": {},
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated"
 }
@@ -116,16 +111,16 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/${connectionId}"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
 
-200 OK
+404 Not Found
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -137,23 +132,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "cloudResource": {
-    "serviceAccountId": "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
-  },
-  "creationTime": "123456789",
-  "description": "updated connection for cloud resource",
-  "friendlyName": "cloud-resource-connection-updated",
-  "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
 
-200 OK
+404 Not Found
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -164,4 +156,10 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
+    "status": "NOT_FOUND"
+  }
+}

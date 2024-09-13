@@ -16,10 +16,13 @@ package mockbigqueryconnection
 
 import (
 	"context"
+	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
 	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -54,7 +57,14 @@ func (s *ConnectionV1) GetConnection(ctx context.Context, req *pb.GetConnectionR
 }
 
 func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConnectionRequest) (*pb.Connection, error) {
-	reqName := req.Parent + "/connections/" + req.ConnectionId
+	var reqName string
+	if req.ConnectionId != "" {
+		reqName = req.Parent + "/connections/" + req.ConnectionId
+	} else if req.Connection.Name != "" {
+		reqName = req.Connection.Name
+	} else {
+		reqName = req.Parent + "/connections/" + uuid.New().String()
+	}
 	name, err := s.parseConnectionName(reqName)
 	if err != nil {
 		return nil, err
@@ -65,11 +75,24 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 
 	obj := proto.Clone(req.Connection).(*pb.Connection)
 
-	obj.Name = name.stringInResponse()
+	obj.Name = name.String()
 	obj.CreationTime = now.Unix()
 	obj.LastModifiedTime = now.Unix()
-	if obj.GetCloudResource().GetServiceAccountId() == "" {
-		obj.GetCloudResource().ServiceAccountId = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+
+	buildServiceAccountId := func() string {
+		letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+		b := make([]rune, 4)
+		for i := range b {
+			b[i] = letterRunes[rand.Intn(len(letterRunes))]
+		}
+		return fmt.Sprintf(
+			"bqcx-%s-%s@gcp-sa-bigquery-condel.iam.gserviceaccount.com", req.GetParent(), b)
+	}
+
+	obj.Properties = &pb.Connection_CloudResource{
+		CloudResource: &pb.CloudResourceProperties{
+			ServiceAccountId: buildServiceAccountId(),
+		},
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -133,12 +156,6 @@ type connectionName struct {
 
 func (n *connectionName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/connections/" + n.ResourceID
-}
-
-func (n *connectionName) stringInResponse() string {
-	// The returned "name" in the response uses the project number instead of
-	// project ID.
-	return "projects/${projectNumber}/locations/" + n.Location + "/connections/" + n.ResourceID
 }
 
 // parseConnectionName parses a string into a connectionName.
