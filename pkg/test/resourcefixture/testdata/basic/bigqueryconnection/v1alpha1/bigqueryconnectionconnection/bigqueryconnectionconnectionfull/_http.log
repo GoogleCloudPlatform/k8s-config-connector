@@ -1,6 +1,6 @@
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 404 Not Found
 Cache-Control: private
@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
+    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be",
     "status": "NOT_FOUND"
   }
 }
@@ -52,16 +52,16 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/${connectionId}"
+  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
-404 Not Found
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -73,18 +73,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
-    "status": "NOT_FOUND"
-  }
+  "cloudResource": {
+    "serviceAccountId": "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "123456789",
+  "description": "test connection for cloud resource",
+  "friendlyName": "cloud-resource-connection",
+  "lastModifiedTime": "123456789",
+  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=friendlyName%2Cdescription
 Content-Type: application/json
-x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 {
   "cloudResource": {},
@@ -111,16 +114,16 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/${connectionId}"
+  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
-404 Not Found
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -132,20 +135,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
-    "status": "NOT_FOUND"
-  }
+  "cloudResource": {
+    "serviceAccountId": "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "123456789",
+  "description": "updated connection for cloud resource",
+  "friendlyName": "cloud-resource-connection-updated",
+  "lastModifiedTime": "123456789",
+  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}-custom
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
-404 Not Found
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -156,10 +162,4 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{
-  "error": {
-    "code": 404,
-    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom",
-    "status": "NOT_FOUND"
-  }
-}
+{}

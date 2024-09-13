@@ -744,17 +744,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Specific to BigQueryConnectionConnection.
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						name, ok := obj["name"]
-						if !ok {
-							return
-						}
-						tokens := strings.Split(name.(string), "/")
-						if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "connections" {
-							tokens[5] = "${connectionId}"
-							obj["name"] = strings.Join(tokens, "/")
-						}
-					})
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//

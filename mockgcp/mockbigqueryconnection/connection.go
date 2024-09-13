@@ -22,7 +22,6 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -63,7 +62,9 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 	} else if req.Connection.Name != "" {
 		reqName = req.Connection.Name
 	} else {
-		reqName = req.Parent + "/connections/" + uuid.New().String()
+		// reqName = req.Parent + "/connections/" + uuid.New().String()
+		// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
+		reqName = req.Parent + "/connections/" + "71389360-831c-431d-8975-837aee2153be"
 	}
 	name, err := s.parseConnectionName(reqName)
 	if err != nil {

@@ -18,7 +18,7 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
-  resourceID: bigqueryconnectionconnection-${uniqueId}-custom
+  resourceID: 71389360-831c-431d-8975-837aee2153be
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -26,8 +26,11 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: //bigqueryconnection.googleapis.com/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}-custom
+  externalRef: //bigqueryconnection.googleapis.com/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be
   observedGeneration: 2
   observedState:
     cloudResource:
       serviceAccountID: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com
+    description: updated connection for cloud resource
+    friendlyName: cloud-resource-connection-updated
+  serviceGeneratedID: 71389360-831c-431d-8975-837aee2153be

@@ -1,14 +1,38 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package bigqueryconnection
 
 import (
 	"fmt"
 	"strings"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1alpha1"
 )
+
+type ErrNoServiceGeneratedID struct {
+}
+
+func (e ErrNoServiceGeneratedID) Error() string {
+	return fmt.Sprintf("ConfigConnector requires a GCP service-generated ID for %s. If not given, it will create a new resource",
+		krm.BigQueryConnectionConnectionGVK)
+}
 
 // The Identifier for ConfigConnector to track the BigQueryConnectionConnection resource from the GCP service.
 type BigQueryConnectionConnectionIdentity struct {
-	Parent     *parent
-	Connection string
+	Parent             *parent
+	serviceGeneratedID string
 }
 
 type parent struct {
@@ -17,18 +41,20 @@ type parent struct {
 }
 
 func (p *parent) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s", p.Project, p.Location)
+	return "projects/" + p.Project + "/locations/" + p.Location
 }
 
 // FullyQualifiedName returns both parent and resource ID in the full url format.
-func (c *BigQueryConnectionConnectionIdentity) FullyQualifiedName() string {
-	// TODO(user): Edit the URL path
-	return fmt.Sprintf("%s/connections/%s", c.Parent, c.Connection)
+func (c *BigQueryConnectionConnectionIdentity) FullyQualifiedName() (string, error) {
+	if c.serviceGeneratedID == "" {
+		return "", &ErrNoServiceGeneratedID{}
+	}
+	return fmt.Sprintf("%s/connections/%s", c.Parent, c.serviceGeneratedID), nil
 }
 
 // AsExternalRef builds a externalRef from a BigQueryConnectionConnection
 func (c *BigQueryConnectionConnectionIdentity) AsExternalRef() *string {
-	e := serviceDomain + "/" + c.FullyQualifiedName()
+	e := serviceDomain + "/" + c.Parent.String() + "/connections/" + c.serviceGeneratedID
 	return &e
 }
 
@@ -45,16 +71,21 @@ func asID(externalRef string) (*BigQueryConnectionConnectionIdentity, error) {
 			serviceDomain, externalRef)
 	}
 	return &BigQueryConnectionConnectionIdentity{
-		Parent:     &parent{Project: tokens[1], Location: tokens[3]},
-		Connection: tokens[5],
+		Parent:             &parent{Project: tokens[1], Location: tokens[3]},
+		serviceGeneratedID: tokens[5],
 	}, nil
 }
 
 // BuildID builds the ID for ConfigConnector to track the BigQueryConnectionConnection resource from the GCP service.
-func BuildID(project, location, resourceID string) *BigQueryConnectionConnectionIdentity {
+func BuildIDWithServiceGeneratedID(project, location, serviceGeneratedID string) *BigQueryConnectionConnectionIdentity {
 	// TODO(user): Build resource identity from resource components, i.e. project, location, resource id
 	return &BigQueryConnectionConnectionIdentity{
-		Parent:     &parent{Project: project, Location: location},
-		Connection: resourceID,
+		Parent:             &parent{Project: project, Location: location},
+		serviceGeneratedID: serviceGeneratedID,
 	}
+}
+
+func ParseNameFromGCP(fullyQualifiedName string) string {
+	tokens := strings.Split(fullyQualifiedName, "/")
+	return tokens[5]
 }
