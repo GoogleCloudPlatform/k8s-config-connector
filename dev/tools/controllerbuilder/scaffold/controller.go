@@ -24,7 +24,7 @@ import (
 	"strings"
 	"text/template"
 
-	ccTemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template"
+	ccTemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/fatih/color"
 	"golang.org/x/tools/imports"
 )

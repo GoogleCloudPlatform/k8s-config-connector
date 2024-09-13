@@ -24,7 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/updatetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template"
+	cctemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -44,7 +44,7 @@ func buildAddCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 				return fmt.Errorf("--kind is required")
 			}
 			if opts.ProtoName == "" {
-				return fmt.Errorf("--protoName is required")
+				return fmt.Errorf("--proto-resource is required")
 			}
 
 			if baseOptions.APIVersion == "" {
@@ -68,14 +68,14 @@ func buildAddCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 				return fmt.Errorf("--service does not contain GCP version")
 			}
 			serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
-			cArgs := &template.ControllerArgs{
+			cArgs := &cctemplate.ControllerArgs{
 				KCCService:    serviceName,
 				KCCVersion:    gv.Version,
 				Kind:          opts.Kind,
 				ProtoResource: opts.ProtoName,
 				ProtoVersion:  version,
 			}
-			return scaffold.Scaffold(serviceName, opts.Kind, cArgs)
+			return scaffold.Scaffold(serviceName, opts.ProtoName, cArgs)
 		},
 	}
 	addCmd.Flags().StringVarP(&opts.ProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `bucket`. If `--kind` is not given, the `--proto-resource` value will also be used as the kind name with a capital letter `Storage`.")

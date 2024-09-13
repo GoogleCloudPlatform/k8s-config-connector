@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package template
+package controller
 
 type ControllerArgs struct {
 	// The ConfigConnector Group without cnrm.google.com
@@ -47,7 +47,7 @@ import (
 	gcp "cloud.google.com/go/{{.KCCService}}/apiv1"
 
 	// TODO(user): Update the import with the google cloud client api protobuf
-	"cloud.google.com/go/{{.KCCService}}/{{.ProtoVersion}}/{{.KCCService}}pb"
+	{{.KCCService}}pb "cloud.google.com/go/{{.KCCService}}/{{.ProtoVersion}}/{{.KCCService}}pb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -66,7 +66,7 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.GroupVersionKind, NewModel)
+	registry.RegisterModel(krm.{{.Kind}}GVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -125,6 +125,9 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	// Get location
+	location := obj.Spec.Location
+
 	var id *{{.Kind}}Identity
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
@@ -135,13 +138,13 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 			return nil, err
 		}
 
-		if id.project != projectID {
+		if id.Parent.Project != projectID {
 			return nil, fmt.Errorf("{{.Kind}} %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.project, projectID)
+				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
 		}
-		if id.location != location {
+		if id.Parent.Location != location {
 			return nil, fmt.Errorf("{{.Kind}} %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.location, location)
+				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
 		}
 		if id.{{.ProtoResource}} != resourceID {
 			return nil, fmt.Errorf("{{.Kind}}  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
@@ -168,31 +171,26 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	resourceID string
-	projectID  string
+	id         *{{.Kind}}Identity
 	gcpClient  *gcp.Client
 	desired    *krm.{{.Kind}}
-	actual     *{{.KCCService}}pb.{{.Kind}}
+	actual     *{{.KCCService}}pb.{{.ProtoResource}}
 }
 
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting {{.Kind}}", "name", a.id.fullyQualifiedName())
-
-	if a.resourceID == "" {
-		return false, nil
-	}
+	log.V(2).Info("getting {{.Kind}}", "name", a.id.FullyQualifiedName())
 
 	// TODO(user): write the gcp "GET" operation.
-	req := &{{.KCCService}}pb.Get{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
-	{{.ProtoResource}}pb, err := a.gcpClient.Get{{.Kind}}(ctx, req)
+	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.FullyQualifiedName()}
+	{{.ProtoResource}}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.fullyQualifiedName(), err)
+		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.FullyQualifiedName(), err)
 	}
 
 	a.actual = {{.ProtoResource}}pb
@@ -203,16 +201,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating {{.Kind}}", "name", a.id.fullyQualifiedName())
+	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
-
-	projectID := a.projectID
-	if projectID == "" {
-		return fmt.Errorf("project is empty")
-	}
-	if a.resourceID == "" {
-		return fmt.Errorf("resourceID is empty")
-	}
 
 	desired := a.desired.DeepCopy()
 	// TODO(user): Please add the Spec_ToProto mappers under the same package
@@ -222,20 +212,20 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
-	req := &{{.KCCService}}pb.Create{{.Kind}}Request{
-		Resource:               resource,
-		Project:                a.ProjectID,
+	req := &{{.KCCService}}pb.Create{{.ProtoResource}}Request{
+		Parent: 						  a.id.Parent.String(),
+		{{.ProtoResource}}:               resource,
 	}
-	op, err := a.gcpClient.Create{{.Kind}}(ctx, req)
+	op, err := a.gcpClient.Create{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
 	}
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s waiting creation: %w", a.id.fullyQualifiedName(), err)
+		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id.FullyQualifiedName(), err)
 	}
-	log.V(2).Info("successfully created {{.Kind}}", "name", a.id.fullyQualifiedName())
+	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
 	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
@@ -251,7 +241,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating {{.Kind}}", "name", a.id.fullyQualifiedName())
+	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
 	// TODO(user): (Optional) Add GCP mutable fields.
@@ -269,24 +259,25 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
-	req := &{{.KCCService}}pb.Update{{.Kind}}Request{
-		Resource:               resource,
-		Project:                a.ProjectID,
+	req := &{{.KCCService}}pb.Update{{.ProtoResource}}Request{
+		Name:       			a.id.FullyQualifiedName(),
+		UpdateMask:             updateMask,
+		{{.ProtoResource}}:     resource,
 	}
-	op, err := a.gcpClient.Update{{.Kind}}(ctx, req)
+	op, err := a.gcpClient.Update{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
+		return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
 	}
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s waiting update: %w", a.id.fullyQualifiedName(), err)
+		return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id.FullyQualifiedName(), err)
 	}
-	log.V(2).Info("successfully updated {{.Kind}}", "name", a.id.fullyQualifiedName())
+	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
 	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
-	status := {{.Kind}}StatusObservedState_FromProto(mapCtx, created)
+	status := {{.Kind}}StatusObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -294,29 +285,44 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	// TODO(kcc) 
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.{{.Kind}}{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf({{.Kind}}Spec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	// TODO(user): Update other resource reference 
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Parent.Project}
+	obj.Spec.Location = a.id.Parent.Location
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u.Object = uObj
+	return u, nil
 }
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting {{.Kind}}", "name", a.id.fullyQualifiedName())
+	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
-	if a.resourceID == "" {
-		return false, nil
-	}
-	req := &{{.KCCService}}pb.Delete{{.Kind}}Request{Name: a.id.fullyQualifiedName()}
-	op, err := a.gcpClient.Delete{{.Kind}}(ctx, req)
+	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.FullyQualifiedName()}
+	op, err := a.gcpClient.Delete{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
 	}
-	log.V(2).Info("successfully deleted {{.Kind}}", "name", a.id.fullyQualifiedName())
+	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete {{.Kind}} %s: %w", a.id.fullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
 	}
 	return true, nil
 }

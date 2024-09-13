@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package template
+package controller
 
 const ExternalResourceTemplate = `
 package {{.KCCService}}
@@ -22,21 +22,25 @@ import (
 	"strings"
 )
 
-// TODO(user): Define resource identity
+// The Identifier for ConfigConnector to track the {{.Kind}} resource from the GCP service.
 type {{.Kind}}Identity struct {
-	project    string
-	location   string
+	Parent parent
 	{{.ProtoResource}} string
 }
 
-// Parent builds a {{.Kind}} parent
-func (c *{{.Kind}}Identity) Parent() string {
-	// TODO(user): Define resource parent
+type parent struct {
+	Project string
+	Location string
 }
 
-// FullyQualifiedName builds a {{.Kind}} resource fully qualified name
+func (p *parent) String() string{
+	return fmt.Sprintf("projects/%s/locations/%s", p.Project, p.Location)
+}
+
+// FullyQualifiedName returns both parent and resource ID in the full url format. 
 func (c *{{.Kind}}Identity) FullyQualifiedName() string {
-	// TODO(user): Define resource fully qualified name
+	// TODO(user): Edit the URL path
+	return fmt.Sprintf("%s/{{.ProtoResource}}s/%s", c.Parent, c.{{.ProtoResource}})
 }
 
 // AsExternalRef builds a externalRef from a {{.Kind}}
@@ -45,7 +49,7 @@ func (c *{{.Kind}}Identity) AsExternalRef() *string {
 	return &e
 }
 
-// asID builds a {{.Kind}}Identity from a external reference
+// asID builds a {{.Kind}}Identity from a ` + "`" + `status.externalRef` + "`" + `
 func asID(externalRef string) (*{{.Kind}}Identity, error) {
 	// TODO(user): Build resource identity from external reference
 	if !strings.HasPrefix(externalRef, serviceDomain) {
@@ -60,19 +64,17 @@ func asID(externalRef string) (*{{.Kind}}Identity, error) {
 			serviceDomain, externalRef)
 	}
 	return &{{.Kind}}Identity{
-		project:    tokens[1],
-		location:   tokens[3],
+		Parent: parent{Project: tokens[1], Location: tokens[3]},
 		{{.ProtoResource}}: tokens[5],
 	}, nil
 }
 
-// BuildID builds a unique identifier {{.Kind}}Identity from resource components
-func BuildID(project, location string) *{{.Kind}}Identity {
+// BuildID builds the ID for ConfigConnector to track the {{.Kind}} resource from the GCP service.
+func BuildID(project, location, resourceID string) *{{.Kind}}Identity {
 	// TODO(user): Build resource identity from resource components, i.e. project, location, resource id
 	return &{{.Kind}}Identity{
-		project:    project,
-		location:   location,
-		{{.ProtoResource}}: {{.ProtoResource}},
+		Parent: parent{Project: project, Location: location},
+		{{.ProtoResource}}: resourceID,
 	}
 }
 `
