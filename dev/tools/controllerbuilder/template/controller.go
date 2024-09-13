@@ -66,7 +66,7 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.GroupVersionKind, NewModel)
+	registry.RegisterModel(krm.{{.Kind}}GVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
