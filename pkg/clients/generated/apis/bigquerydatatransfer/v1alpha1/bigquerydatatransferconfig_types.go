@@ -37,110 +37,87 @@ import (
 
 type ConfigEmailPreferences struct {
 	/* If true, email notifications will be sent on transfer run failures. */
-	EnableFailureEmail bool `json:"enableFailureEmail"`
+	// +optional
+	EnableFailureEmail *bool `json:"enableFailureEmail,omitempty"`
+}
+
+type ConfigEncryptionConfiguration struct {
+	/* The KMS key used for encrypting BigQuery data. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type ConfigScheduleOptions struct {
-	/* If true, automatic scheduling of data transfer runs for this
-	configuration will be disabled. The runs can be started on ad-hoc
-	basis using transferConfigs.startManualRuns API. When automatic
-	scheduling is disabled, the TransferConfig.schedule field will
-	be ignored. */
+	/* If true, automatic scheduling of data transfer runs for this configuration will be disabled. The runs can be started on ad-hoc basis using StartManualTransferRuns API. When automatic scheduling is disabled, the TransferConfig.schedule field will be ignored. */
 	// +optional
 	DisableAutoScheduling *bool `json:"disableAutoScheduling,omitempty"`
 
-	/* Defines time to stop scheduling transfer runs. A transfer run cannot be
-	scheduled at or after the end time. The end time can be changed at any
-	moment. The time when a data transfer can be triggered manually is not
-	limited by this option. */
+	/* Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. The time when a data transfer can be triggered manually is not limited by this option. */
 	// +optional
 	EndTime *string `json:"endTime,omitempty"`
 
-	/* Specifies time to start scheduling transfer runs. The first run will be
-	scheduled at or after the start time according to a recurrence pattern
-	defined in the schedule string. The start time can be changed at any
-	moment. The time when a data transfer can be triggered manually is not
-	limited by this option. */
+	/* Specifies time to start scheduling transfer runs. The first run will be scheduled at or after the start time according to a recurrence pattern defined in the schedule string. The start time can be changed at any moment. The time when a data transfer can be triggered manually is not limited by this option. */
 	// +optional
 	StartTime *string `json:"startTime,omitempty"`
 }
 
-type ConfigSecretAccessKey struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *ConfigValueFrom `json:"valueFrom,omitempty"`
-}
-
-type ConfigSensitiveParams struct {
-	/* The Secret Access Key of the AWS account transferring data from. */
-	SecretAccessKey ConfigSecretAccessKey `json:"secretAccessKey"`
-}
-
-type ConfigValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
-}
-
 type BigQueryDataTransferConfigSpec struct {
-	/* The number of days to look back to automatically refresh the data.
-	For example, if dataRefreshWindowDays = 10, then every day BigQuery
-	reingests data for [today-10, today-1], rather than ingesting data for
-	just [today-1]. Only valid if the data source supports the feature.
-	Set the value to 0 to use the default value. */
+	/* The number of days to look back to automatically refresh the data. For example, if `data_refresh_window_days = 10`, then every day BigQuery reingests data for [today-10, today-1], rather than ingesting data for just [today-1]. Only valid if the data source supports the feature. Set the value to 0 to use the default value. */
 	// +optional
-	DataRefreshWindowDays *int64 `json:"dataRefreshWindowDays,omitempty"`
+	DataRefreshWindowDays *int32 `json:"dataRefreshWindowDays,omitempty"`
 
-	/* Immutable. The data source id. Cannot be changed once the transfer config is created. */
-	DataSourceId string `json:"dataSourceId"`
+	/* Immutable. Data source ID. This cannot be changed once data transfer is created. The full list of available data source IDs can be returned through an API call: https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list */
+	DataSourceID string `json:"dataSourceID"`
 
 	/* The BigQuery target dataset id. */
-	// +optional
-	DestinationDatasetId *string `json:"destinationDatasetId,omitempty"`
+	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
 
-	/* When set to true, no runs are scheduled for a given transfer. */
+	/* Is this config disabled. When set to true, no runs will be scheduled for this transfer config. */
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
-	/* The user specified display name for the transfer config. */
-	DisplayName string `json:"displayName"`
+	/* User specified display name for the data transfer. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Email notifications will be sent according to these preferences to the
-	email address of the user who owns this transfer config. */
+	/* Email notifications will be sent according to these preferences to the email address of the user who owns this transfer config. */
 	// +optional
 	EmailPreferences *ConfigEmailPreferences `json:"emailPreferences,omitempty"`
 
-	/* Immutable. The geographic location where the transfer config should reside.
-	Examples: US, EU, asia-northeast1. The default value is US. */
+	/* The encryption configuration part. Currently, it is only used for the optional KMS key name. The BigQuery service account of your project must be granted permissions to use the key. Read methods will return the key name applied in effect. Write methods will apply the key if it is present, or otherwise try to apply project default keys if it is absent. */
 	// +optional
-	Location *string `json:"location,omitempty"`
+	EncryptionConfiguration *ConfigEncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
 
-	/* Pub/Sub topic where notifications will be sent after transfer runs
-	associated with this transfer config finish. */
-	// +optional
-	NotificationPubsubTopic *string `json:"notificationPubsubTopic,omitempty"`
+	/* Immutable. */
+	Location string `json:"location"`
 
+	/* Parameters specific to each data source. For more information see the bq tab in the 'Setting up a data transfer' section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq */
 	Params map[string]string `json:"params"`
 
-	/* The project that this resource belongs to. */
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. */
+	// +optional
+	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
+
+	/* Immutable. The BigQueryDataTransferConfig name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Data transfer schedule. If the data source does not support a custom
-	schedule, this should be empty. If it is empty, the default value for
-	the data source will be used. The specified times are in UTC. Examples
-	of valid format: 1st,3rd monday of month 15:30, every wed,fri of jan,
-	jun 13:15, and first sunday of quarter 00:00. See more explanation
-	about the format here:
+	/* Data transfer schedule.
+	If the data source does not support a custom schedule, this should be
+	empty. If it is empty, the default value for the data source will be used.
+	The specified times are in UTC.
+	Examples of valid format:
+	`1st,3rd monday of month 15:30`,
+	`every wed,fri of jan,jun 13:15`, and
+	`first sunday of quarter 00:00`.
+	See more explanation about the format here:
 	https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
-	NOTE: the granularity should be at least 8 hours, or less frequent. */
+
+	NOTE: The minimum interval time between recurring transfers depends on the
+	data source; refer to the documentation for your data source. */
 	// +optional
 	Schedule *string `json:"schedule,omitempty"`
 
@@ -148,45 +125,65 @@ type BigQueryDataTransferConfigSpec struct {
 	// +optional
 	ScheduleOptions *ConfigScheduleOptions `json:"scheduleOptions,omitempty"`
 
-	/* Different parameters are configured primarily using the the 'params' field on this
-	resource. This block contains the parameters which contain secrets or passwords so that they can be marked
-	sensitive and hidden from plan output. The name of the field, eg: secret_access_key, will be the key
-	in the 'params' map in the api request.
-
-	Credentials may not be specified in both locations and will cause an error. Changing from one location
-	to a different credential configuration in the config will require an apply to update state. */
+	/* Deprecated. Unique ID of the user on whose behalf transfer is done. */
 	// +optional
-	SensitiveParams *ConfigSensitiveParams `json:"sensitiveParams,omitempty"`
+	UserID *int64 `json:"userID,omitempty"`
+}
 
-	/* Service account email. If this field is set, transfer config will
-	be created with this service account credentials. It requires that
-	requesting user calling this API has permissions to act as this service account. */
+type ConfigObservedStateStatus struct {
+	/* Output only. Region in which BigQuery dataset is located. */
 	// +optional
-	ServiceAccountName *string `json:"serviceAccountName,omitempty"`
+	DatasetRegion *string `json:"datasetRegion,omitempty"`
+
+	/* Identifier. The resource name of the transfer config. Transfer config names have the form either `projects/{project_id}/locations/{region}/transferConfigs/{config_id}` or `projects/{project_id}/transferConfigs/{config_id}`, where `config_id` is usually a UUID, even though it is not guaranteed or required. The name is ignored when creating a transfer config. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Output only. Next time when data transfer will run. */
+	// +optional
+	NextRunTime *string `json:"nextRunTime,omitempty"`
+
+	/* Output only. Information about the user whose credentials are used to transfer data. Populated only for `transferConfigs.get` requests. In case the user information is not available, this field will not be populated. */
+	// +optional
+	OwnerInfo *ConfigOwnerInfoStatus `json:"ownerInfo,omitempty"`
+
+	/* Output only. State of the most recently updated transfer run. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* Output only. Data transfer modification time. Ignored by server on input. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type ConfigOwnerInfoStatus struct {
+	/* E-mail address of the user. */
+	// +optional
+	Email *string `json:"email,omitempty"`
 }
 
 type BigQueryDataTransferConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryDataTransferConfig's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource name of the transfer config. Transfer config names have the
-	form projects/{projectId}/locations/{location}/transferConfigs/{configId}
-	or projects/{projectId}/transferConfigs/{configId},
-	where configId is usually a uuid, but this is not required.
-	The name is ignored when creating a transfer config. */
+	/* A unique specifier for the BigQueryDataTransferConfig resource in GCP. */
 	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ConfigObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbigquerydatatransferconfig;gcpbigquerydatatransferconfigs
+// +kubebuilder:resource:categories=gcp,shortName=
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
