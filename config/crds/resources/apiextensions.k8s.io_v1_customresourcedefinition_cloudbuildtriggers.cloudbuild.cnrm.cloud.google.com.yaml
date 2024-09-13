@@ -1043,6 +1043,7 @@ spec:
                   type: string
                 type: array
               location:
+                default: global
                 description: |-
                   Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
                   If not specified, "global" is used.

@@ -62,6 +62,7 @@ spec:
                 description: Immutable. The collection being indexed.
                 type: string
               database:
+                default: (default)
                 description: Immutable. The Firestore database id. Defaults to '"(default)"'.
                 type: string
               fields:

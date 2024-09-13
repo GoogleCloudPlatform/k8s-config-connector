@@ -96,6 +96,7 @@ spec:
                 - id
                 type: object
               initialGroupConfig:
+                default: EMPTY
                 description: |-
                   Immutable. The initial configuration options for creating a Group.
 

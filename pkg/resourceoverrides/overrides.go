@@ -240,4 +240,10 @@ func init() {
 	Handler.Register(GetIAMCustomRoleResourceOverrides())
 
 	Handler.Register(GetCloudIDSEndpointResourceOverrides())
+
+	// Shift-left the defaulting for optional and immutable spec field defaulted
+	// by TF.
+	Handler.Register(GetCloudBuildTriggerResourceOverrides())
+	Handler.Register(GetCloudIdentityGroupResourceOverrides())
+	Handler.Register(GetFirestoreIndexResourceOverrides())
 }
