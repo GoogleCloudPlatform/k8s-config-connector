@@ -16,14 +16,14 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: "value-two"
   name: computeglobalforwardingrule-${uniqueId}
 spec:
   description: "A global forwarding rule"
   location: global
   target:
     targetHTTPProxyRef:
-      name: computetargethttpproxy-${uniqueId}
+      name: computetargethttpproxy-2-${uniqueId}
   # The 'ports', 'port_range', and 'allPorts' fields are mutually exclusive.
   portRange: "80"
   loadBalancingScheme: INTERNAL_SELF_MANAGED
