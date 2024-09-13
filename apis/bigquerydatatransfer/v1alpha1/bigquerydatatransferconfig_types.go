@@ -25,7 +25,7 @@ var BigQueryDataTransferConfigGVK = GroupVersion.WithKind("BigQueryDataTransferC
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
 type EncryptionConfiguration struct {
 	// The KMS key used for encrypting BigQuery data.
-	KmsKeyRef refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
@@ -47,7 +47,7 @@ type BigQueryDataTransferConfigSpec struct {
 	DataSourceID *string `json:"dataSourceID,omitempty"`
 
 	// The BigQuery target dataset id.
-	DatasetRef refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
+	DatasetRef *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
 	//  this transfer config.
@@ -69,7 +69,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// Pub/Sub topic where notifications will be sent after transfer runs
 	//  associated with this transfer config finish.
-	PubSubTopicRef refv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
+	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
 
 	// Parameters specific to each data source. For more information see the
 	//  bq tab in the 'Setting up a data transfer' section for each data source.

@@ -51,8 +51,6 @@
 [acronyms] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].view.datasetId" should be ".spec.access[].view.datasetID"
 [acronyms] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].view.projectId" should be ".spec.access[].view.projectID"
 [acronyms] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].view.tableId" should be ".spec.access[].view.tableID"
-[acronyms] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataSourceId" should be ".spec.dataSourceID"
-[acronyms] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationDatasetId" should be ".spec.destinationDatasetID"
 [acronyms] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.connectionId" should be ".spec.externalDataConfiguration.connectionID"
 [acronyms] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.tableConstraints.foreignKeys[].referencedTable.datasetId" should be ".spec.tableConstraints.foreignKeys[].referencedTable.datasetID"
 [acronyms] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.tableConstraints.foreignKeys[].referencedTable.projectId" should be ".spec.tableConstraints.foreignKeys[].referencedTable.projectID"
