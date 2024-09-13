@@ -19,10 +19,17 @@ metadata:
 spec:
   # The resourceID needs to match the name of the eks cluster to be attached
   resourceID: kcc-attached-cluster-127
+  annotations:
+    key1: "value1"
+    key2: "value2"
+  authorization:
+    adminUsers: ["user@company.com"]
+  binaryAuthorization:
+    evaluationMode: "PROJECT_SINGLETON_POLICY_ENFORCE"
   location: us-west1
   projectRef:
     external: ${KCC_ATTACHED_CLUSTER_TEST_PROJECT}
-  description: "Test attached cluster update"
+  description: "Test attached cluster"
   distribution: "eks"
   oidcConfig:
     issuerUrl: https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F
@@ -30,4 +37,10 @@ spec:
   fleet:
     projectRef:
       name: project-${uniqueId}
+  loggingConfig:
+    componentConfig:
+      enableComponents: ["SYSTEM_COMPONENTS"]
+  monitoringConfig:
+    managedPrometheusConfig:
+      enabled: false
   deletionPolicy: "DELETE_IGNORE_ERRORS"
