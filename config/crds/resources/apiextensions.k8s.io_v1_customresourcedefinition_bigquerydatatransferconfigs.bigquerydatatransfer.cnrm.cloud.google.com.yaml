@@ -189,7 +189,7 @@ spec:
                 properties:
                   external:
                     description: The `projectID` field of a project, when not managed
-                      by KCC.
+                      by Config Connector.
                     type: string
                   kind:
                     description: The kind of the Project resource; optional but must
@@ -284,7 +284,10 @@ spec:
                 format: int64
                 type: integer
             required:
+            - dataSourceID
+            - datasetRef
             - location
+            - params
             - projectRef
             type: object
           status:

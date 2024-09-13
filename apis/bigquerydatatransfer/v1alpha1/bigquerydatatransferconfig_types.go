@@ -44,9 +44,11 @@ type BigQueryDataTransferConfigSpec struct {
 	// Data source ID. This cannot be changed once data transfer is created. The
 	//  full list of available data source IDs can be returned through an API call:
 	//  https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list
+	// +required
 	DataSourceID *string `json:"dataSourceID,omitempty"`
 
 	// The BigQuery target dataset id.
+	// +required
 	DatasetRef *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
@@ -75,6 +77,7 @@ type BigQueryDataTransferConfigSpec struct {
 	//  bq tab in the 'Setting up a data transfer' section for each data source.
 	//  For example the parameters for Cloud Storage transfers are listed here:
 	//  https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
+	// +required
 	Params map[string]string `json:"params,omitempty"`
 
 	Parent `json:",inline"`
