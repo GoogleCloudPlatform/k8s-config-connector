@@ -42,6 +42,9 @@ func (s *GlobalForwardingRulesV1) Get(ctx context.Context, req *pb.GetGlobalForw
 
 	obj := &pb.ForwardingRule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -160,10 +163,13 @@ func (s *GlobalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLabe
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("SetLabels"),
+		OperationType: PtrTo("setLabels"),
 		User:          PtrTo("user@example.com"),
 		// SetLabels operation has EndTime in response
 		EndTime: PtrTo("2024-04-01T12:34:56.123456Z"),
+		// SetLabels operation finished super fast
+		Progress: PtrTo(int32(100)),
+		Status:   PtrTo(pb.Operation_DONE),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil

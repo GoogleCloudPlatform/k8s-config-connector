@@ -333,9 +333,11 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	if err != nil {
 		return fmt.Errorf("creating ComputeForwardingRule %s: %w", a.fullyQualifiedName(), err)
 	}
-	err = op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("waiting ComputeForwardingRule %s create failed: %w", a.fullyQualifiedName(), err)
+	if !op.Done() {
+		err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting ComputeForwardingRule %s create failed: %w", a.fullyQualifiedName(), err)
+		}
 	}
 	log.V(2).Info("successfully created ComputeForwardingRule", "name", a.fullyQualifiedName())
 	// Get the created resource
@@ -412,11 +414,14 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	if err != nil {
 		return fmt.Errorf("updating ComputeForwardingRule labels %s: %w", a.fullyQualifiedName(), err)
 	}
-	err = op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("waiting ComputeForwardingRule %s update labels failed: %w", a.fullyQualifiedName(), err)
+	if !op.Done() {
+		err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting ComputeForwardingRule %s update labels failed: %w", a.fullyQualifiedName(), err)
+		}
 	}
 	log.V(2).Info("successfully updated ComputeForwardingRule labels", "name", a.fullyQualifiedName())
+
 	// Get the updated resource
 	if a.id.location == "global" {
 		getReq := &computepb.GetGlobalForwardingRuleRequest{
@@ -457,9 +462,11 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeForwardingRule target %s: %w", a.fullyQualifiedName(), err)
 		}
-		err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("waiting ComputeForwardingRule %s update target failed: %w", a.fullyQualifiedName(), err)
+		if !op.Done() {
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting ComputeForwardingRule %s update target failed: %w", a.fullyQualifiedName(), err)
+			}
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule target", "name", a.fullyQualifiedName())
 	}
@@ -544,9 +551,11 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase
 	if err != nil {
 		return false, fmt.Errorf("deleting ComputeForwardingRule %s: %w", a.id.forwardingRule, err)
 	}
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.id.forwardingRule, err)
+	if !op.Done() {
+		err = op.Wait(ctx)
+		if err != nil {
+			return false, fmt.Errorf("waiting ComputeForwardingRule %s delete failed: %w", a.id.forwardingRule, err)
+		}
 	}
 	log.V(2).Info("successfully deleted ComputeForwardingRule", "name", a.id.forwardingRule)
 	return true, nil
