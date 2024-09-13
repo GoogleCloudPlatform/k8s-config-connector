@@ -764,6 +764,24 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					})
 
+					// Specific to BigQueryDataTransferConfig
+					addReplacement("nextRunTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("ownerInfo.email", "user@google.com")
+					addReplacement("userId", "0000000000000000000")
+					jsonMutators = append(jsonMutators, func(obj map[string]any) { // special handling because the field includes dot
+						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientId"); found {
+							if err := unstructured.SetNestedField(obj, "client-id", "params", "connector.authentication.oauth.clientId"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientSecret"); found {
+							if err := unstructured.SetNestedField(obj, "client-secret", "params", "connector.authentication.oauth.clientSecret"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						delete(obj, "state") // data transfer run state, which depends on timing
+					})
+
 					// Remove error details which can contain confidential information
 					jsonMutators = append(jsonMutators, func(obj map[string]any) {
 						response := obj["error"]

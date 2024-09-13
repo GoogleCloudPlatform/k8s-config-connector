@@ -1,0 +1,427 @@
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "dataSourceId": "salesforce",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "displayName": "example of big query data transfer config",
+  "params": {
+    "assets": "asset-a",
+    "connector.authentication.oauth.clientId": "client-id",
+    "connector.authentication.oauth.clientSecret": "client-secret",
+    "connector.authentication.oauth.myDomain": "MyDomainName"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataSourceId": "salesforce",
+  "datasetRegion": "us-central1",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "displayName": "example of big query data transfer config",
+  "encryptionConfiguration": {},
+  "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
+  "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "ownerInfo": {
+    "email": "user@google.com"
+  },
+  "params": {
+    "assets": "asset-a",
+    "connector.authentication.oauth.clientId": "client-id",
+    "connector.authentication.oauth.clientSecret": "client-secret",
+    "connector.authentication.oauth.myDomain": "MyDomainName"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userId": "0000000000000000000"
+}
+
+---
+
+GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataSourceId": "salesforce",
+  "datasetRegion": "us-central1",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "displayName": "example of big query data transfer config",
+  "emailPreferences": {},
+  "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
+  "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "ownerInfo": {
+    "email": "user@google.com"
+  },
+  "params": {
+    "assets": "asset-a",
+    "connector.authentication.oauth.clientId": "client-id",
+    "connector.authentication.oauth.clientSecret": "client-secret",
+    "connector.authentication.oauth.myDomain": "MyDomainName"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userId": "0000000000000000000"
+}
+
+---
+
+PATCH https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint&updateMask=disabled%2CdisplayName%2Cparams
+Content-Type: application/json
+x-goog-request-params: transfer_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
+
+{
+  "dataSourceId": "salesforce",
+  "datasetRegion": "us-central1",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "disabled": true,
+  "displayName": "updated example of big query data transfer config",
+  "emailPreferences": {},
+  "name": "projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}",
+  "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "ownerInfo": {
+    "email": "user@google.com"
+  },
+  "params": {
+    "assets": "asset-b",
+    "connector.authentication.oauth.clientId": "client-id",
+    "connector.authentication.oauth.clientSecret": "client-secret",
+    "connector.authentication.oauth.myDomain": "MyDomainName2"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userId": "0000000000000000000"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataSourceId": "salesforce",
+  "datasetRegion": "us-central1",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "disabled": true,
+  "displayName": "updated example of big query data transfer config",
+  "emailPreferences": {},
+  "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
+  "ownerInfo": {
+    "email": "user@google.com"
+  },
+  "params": {
+    "assets": "asset-b",
+    "connector.authentication.oauth.clientId": "client-id",
+    "connector.authentication.oauth.clientSecret": "client-secret",
+    "connector.authentication.oauth.myDomain": "MyDomainName2"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userId": "0000000000000000000"
+}
+
+---
+
+GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataSourceId": "salesforce",
+  "datasetRegion": "us-central1",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "disabled": true,
+  "displayName": "updated example of big query data transfer config",
+  "emailPreferences": {},
+  "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
+  "ownerInfo": {
+    "email": "user@google.com"
+  },
+  "params": {
+    "assets": "asset-b",
+    "connector.authentication.oauth.clientId": "client-id",
+    "connector.authentication.oauth.clientSecret": "client-secret",
+    "connector.authentication.oauth.myDomain": "MyDomainName2"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userId": "0000000000000000000"
+}
+
+---
+
+DELETE https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    },
+    {
+      "role": "WRITER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
