@@ -81,19 +81,13 @@ type model struct {
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
 	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building {{.KCCService}} client: %w", err)
+		return nil, fmt.Errorf("building {{.ProtoResource}} client: %w", err)
 	}
 	return gcpClient, err
 }
@@ -113,9 +107,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// TODO(user): Use the proper function to validate and resolve dependent KCC resources. 
-	// i.e. ResolveProject, ResolveNetwork. etc  
-	// TODO(kcc): ops.WithProjectRef, ops.WithNetworkRef 
 	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
@@ -185,7 +176,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 	// TODO(user): write the gcp "GET" operation.
 	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.FullyQualifiedName()}
-	{{.ProtoResource}}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
+	{{.ProtoResource | ToLower }}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -193,7 +184,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.FullyQualifiedName(), err)
 	}
 
-	a.actual = {{.ProtoResource}}pb
+	a.actual = {{.ProtoResource | ToLower }}pb
 	return true, nil
 }
 
@@ -220,7 +211,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if err != nil {
 		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
 	}
-	// TODO(user): Adjust the response, depending on the LRO or not.
 	created, err := op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id.FullyQualifiedName(), err)
@@ -268,7 +258,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if err != nil {
 		return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
 	}
-	// TODO(user): Adjust the response, depending on the LRO or not.
 	updated, err := op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id.FullyQualifiedName(), err)
@@ -319,7 +308,6 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
-	// TODO(user): Adjust the response, depending on the LRO or not.
 	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
