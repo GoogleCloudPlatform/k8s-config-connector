@@ -34,6 +34,10 @@ const (
 	directControllerRelPath = "pkg/controller/direct"
 )
 
+var funcMap = template.FuncMap{
+	"ToLower": strings.ToLower,
+}
+
 func Scaffold(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
 	var errs []error
 	if err := generateController(service, kind, cArgs); err != nil {
@@ -53,7 +57,7 @@ func Scaffold(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
 }
 
 func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
-	tmpl, err := template.New(cArgs.Kind).Parse(ccTemplate.ControllerTemplate)
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
 	if err != nil {
 		return fmt.Errorf("parse controller template: %s", err)
 	}
