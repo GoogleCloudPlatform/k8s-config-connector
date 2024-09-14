@@ -182,10 +182,10 @@ spec:
                         type: string
                     type: object
                   description:
-                    description: User provided description.
+                    description: The description for the connection.
                     type: string
                   friendlyName:
-                    description: User provided display name for the connection.
+                    description: The display name for the connection.
                     type: string
                   hasCredential:
                     description: Output only. True, if credential is configured for

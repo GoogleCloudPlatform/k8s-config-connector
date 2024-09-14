@@ -105,10 +105,10 @@ type BigQueryConnectionConnectionStatus struct {
 type BigQueryConnectionConnectionObservedState struct {
 	CloudResource *CloudResourcePropertiesStatus `json:"cloudResource,omitempty"`
 
-	// User provided display name for the connection.
+	// The display name for the connection.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 
-	// User provided description.
+	// The description for the connection.
 	Description *string `json:"description,omitempty"`
 
 	/*

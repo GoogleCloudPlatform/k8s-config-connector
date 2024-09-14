@@ -16,7 +16,6 @@ package bigqueryconnection
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"reflect"
 
@@ -61,16 +60,10 @@ type model struct {
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
 	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building bigqueryconnection client: %w", err)
@@ -104,7 +97,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	desiredServiceID := direct.ValueOf(obj.Spec.ResourceID)
 	if desiredServiceID != "" {
 		if _, err := uuid.Parse(desiredServiceID); err != nil {
-			return nil, fmt.Errorf("spec.resourceID shall be in a UUID format, got %s ", desiredServiceID)
+			return nil, fmt.Errorf("spec.resourceID should be in a UUID format, got %s ", desiredServiceID)
 		}
 	}
 
@@ -166,22 +159,20 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 	log.V(2).Info("getting BigQueryConnectionConnection", "name", a.id.AsExternalRef())
 
-	fqn, err := a.id.FullyQualifiedName()
-	// Cannot retrieve the Connection without ServiceGeneratedID, expecting to create a new Connection.
-	if errors.As(err, &ErrNoServiceGeneratedID{}) {
+	if a.id.serviceGeneratedID == "" {
+		// Cannot retrieve the Connection without ServiceGeneratedID, expecting to create a new Connection.
 		return false, nil
 	}
-
-	req := &bigqueryconnectionpb.GetConnectionRequest{Name: fqn}
-	Connectionpb, err := a.gcpClient.GetConnection(ctx, req)
+	req := &bigqueryconnectionpb.GetConnectionRequest{Name: a.id.FullyQualifiedName()}
+	connectionpb, err := a.gcpClient.GetConnection(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting BigQueryConnectionConnection %q: %w", fqn, err)
+		return false, fmt.Errorf("getting BigQueryConnectionConnection %q: %w", a.id.FullyQualifiedName(), err)
 	}
 
-	a.actual = Connectionpb
+	a.actual = connectionpb
 	return true, nil
 }
 
@@ -240,10 +231,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
-	fqn, err := a.id.FullyQualifiedName()
-	if err != nil {
-		return err
-	}
+	fqn := a.id.FullyQualifiedName()
 	req := &bigqueryconnectionpb.UpdateConnectionRequest{
 		Name:       fqn,
 		Connection: resource,
@@ -290,16 +278,10 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting Connection", "name", a.id.AsExternalRef())
 
-	fqn, err := a.id.FullyQualifiedName()
-	if err != nil {
-		return false, err
-	}
+	fqn := a.id.FullyQualifiedName()
 	req := &bigqueryconnectionpb.DeleteConnectionRequest{Name: fqn}
-	err = a.gcpClient.DeleteConnection(ctx, req)
-	if err != nil {
-		//	if !strings.Contains(err.Error(), "Error 404: Not found") {
+	if err := a.gcpClient.DeleteConnection(ctx, req); err != nil {
 		return false, fmt.Errorf("deleting Connection %s: %w", fqn, err)
-		//	}
 	}
 	log.V(2).Info("successfully deleted Connection", "name", fqn)
 	return true, nil

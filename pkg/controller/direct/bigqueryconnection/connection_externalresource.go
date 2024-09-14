@@ -17,17 +17,7 @@ package bigqueryconnection
 import (
 	"fmt"
 	"strings"
-
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1alpha1"
 )
-
-type ErrNoServiceGeneratedID struct {
-}
-
-func (e ErrNoServiceGeneratedID) Error() string {
-	return fmt.Sprintf("ConfigConnector requires a GCP service-generated ID for %s. If not given, it will create a new resource",
-		krm.BigQueryConnectionConnectionGVK)
-}
 
 // The Identifier for ConfigConnector to track the BigQueryConnectionConnection resource from the GCP service.
 type BigQueryConnectionConnectionIdentity struct {
@@ -45,11 +35,8 @@ func (p *parent) String() string {
 }
 
 // FullyQualifiedName returns both parent and resource ID in the full url format.
-func (c *BigQueryConnectionConnectionIdentity) FullyQualifiedName() (string, error) {
-	if c.serviceGeneratedID == "" {
-		return "", &ErrNoServiceGeneratedID{}
-	}
-	return fmt.Sprintf("%s/connections/%s", c.Parent, c.serviceGeneratedID), nil
+func (c *BigQueryConnectionConnectionIdentity) FullyQualifiedName() string {
+	return fmt.Sprintf("%s/connections/%s", c.Parent, c.serviceGeneratedID)
 }
 
 // AsExternalRef builds a externalRef from a BigQueryConnectionConnection
@@ -78,7 +65,6 @@ func asID(externalRef string) (*BigQueryConnectionConnectionIdentity, error) {
 
 // BuildID builds the ID for ConfigConnector to track the BigQueryConnectionConnection resource from the GCP service.
 func BuildIDWithServiceGeneratedID(project, location, serviceGeneratedID string) *BigQueryConnectionConnectionIdentity {
-	// TODO(user): Build resource identity from resource components, i.e. project, location, resource id
 	return &BigQueryConnectionConnectionIdentity{
 		Parent:             &parent{Project: project, Location: location},
 		serviceGeneratedID: serviceGeneratedID,
