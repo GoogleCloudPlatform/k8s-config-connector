@@ -288,11 +288,6 @@ func (in *BigQueryConnectionConnectionStatus) DeepCopyInto(out *BigQueryConnecti
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceGeneratedID != nil {
-		in, out := &in.ServiceGeneratedID, &out.ServiceGeneratedID
-		*out = new(string)
-		**out = **in
-	}
 	if in.ObservedState != nil {
 		in, out := &in.ObservedState, &out.ObservedState
 		*out = new(BigQueryConnectionConnectionObservedState)

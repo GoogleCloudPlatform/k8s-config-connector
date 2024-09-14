@@ -108,29 +108,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		}
 	}
 
-	// Get actual service-generated ID from status
-	actualServiceID := direct.ValueOf(obj.Status.ServiceGeneratedID)
-	if actualServiceID != "" {
-		if _, err := uuid.Parse(actualServiceID); err != nil {
-			return nil, fmt.Errorf("invalid UUID format of service-generated ID in status: %s", actualServiceID)
-		}
-	}
-
-	// Service generated ID shall not be reset in the same BigQueryConnectionConnection.
-	// TODO: what if multiple BigQueryConnectionConnection points to the same GCP Connection?
-	if desiredServiceID != "" && actualServiceID != "" && desiredServiceID != actualServiceID {
-		return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already acquired the Connection %s",
-			desiredServiceID, direct.ValueOf(obj.Status.ServiceGeneratedID))
-	}
-	if desiredServiceID == "" && actualServiceID != "" {
-		desiredServiceID = actualServiceID
-	}
-
+	// Get externalReference
 	var id *BigQueryConnectionConnectionIdentity
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildIDWithServiceGeneratedID(projectID, location, desiredServiceID)
-	} else {
+	if externalRef != "" {
 		id, err = asID(externalRef)
 		if err != nil {
 			return nil, err
@@ -144,6 +125,15 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 			return nil, fmt.Errorf("BigQueryConnectionConnection %s/%s has spec.location changed, expect %s, got %s",
 				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
 		}
+
+		if desiredServiceID != "" && id.serviceGeneratedID != desiredServiceID {
+			// Service generated ID shall not be reset in the same BigQueryConnectionConnection.
+			// TODO: what if multiple BigQueryConnectionConnection points to the same GCP Connection?
+			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already acquired the Connection %s",
+				desiredServiceID, id.serviceGeneratedID)
+		}
+	} else {
+		id = BuildIDWithServiceGeneratedID(projectID, location, desiredServiceID)
 	}
 
 	// Get bigqueryconnection GCP client
@@ -221,7 +211,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	status := &krm.BigQueryConnectionConnectionStatus{}
 	status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, created)
 	id := ParseNameFromGCP(created.Name)
-	status.ServiceGeneratedID = &id
 	a.id.serviceGeneratedID = id
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

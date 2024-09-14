@@ -33,4 +33,3 @@ status:
       serviceAccountID: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com
     description: updated connection for cloud resource
     friendlyName: cloud-resource-connection-updated
-  serviceGeneratedID: 71389360-831c-431d-8975-837aee2153be
