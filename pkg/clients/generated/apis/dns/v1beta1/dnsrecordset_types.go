@@ -124,11 +124,11 @@ type RecordsetRoutingPolicy struct {
 }
 
 type RecordsetRrdatasRefs struct {
-	/* Allowed value: The `address` field of a `ComputeAddress` resource. */
+	/* Allowed values: The `address` field of a `ComputeAddress` resource. The `dnsResourceRecord.data` field of a `CertificateManagerDnsAuthorization` resource. */
 	// +optional
 	External *string `json:"external,omitempty"`
 
-	/* Kind of the referent. Allowed values: ComputeAddress */
+	/* Kind of the referent. Allowed values: ComputeAddress,CertificateManagerDnsAuthorization */
 	// +optional
 	Kind *string `json:"kind,omitempty"`
 
@@ -165,10 +165,10 @@ type DNSRecordSetSpec struct {
 
 	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.rrdatasRefs` instead. */
 	// +optional
-	Rrdatas []string `json:"rrdatas,omitempty"`
+	Rrdatas *string `json:"rrdatas,omitempty"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs *RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
 
 	/* The time-to-live of this record set (seconds). */
 	// +optional

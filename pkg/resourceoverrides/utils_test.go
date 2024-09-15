@@ -3331,7 +3331,7 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 		originalCRD        *apiextensions.CustomResourceDefinition
 		parentPath         []string
 		referenceFieldName string
-		supportedKinds     []string
+		supportedKinds     []MultiKindRef
 		expectedCRD        *apiextensions.CustomResourceDefinition
 		hasError           bool
 	}{
@@ -3460,7 +3460,7 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 				},
 			},
 			referenceFieldName: "topLevelRef",
-			supportedKinds:     []string{"ReferenceKind"},
+			supportedKinds:     []MultiKindRef{{Kind: "ReferenceKind"}},
 			expectedCRD: &apiextensions.CustomResourceDefinition{
 				Spec: apiextensions.CustomResourceDefinitionSpec{
 					Versions: []apiextensions.CustomResourceDefinitionVersion{
@@ -3668,7 +3668,7 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 			},
 			parentPath:         []string{"topLevelArray", "secondLevelObject"},
 			referenceFieldName: "nestedRef",
-			supportedKinds:     []string{"ReferenceKind"},
+			supportedKinds:     []MultiKindRef{{Kind: "ReferenceKind"}},
 			expectedCRD: &apiextensions.CustomResourceDefinition{
 				Spec: apiextensions.CustomResourceDefinitionSpec{
 					Versions: []apiextensions.CustomResourceDefinitionVersion{
@@ -3796,7 +3796,7 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 			},
 			parentPath:         []string{"topLevelArray"},
 			referenceFieldName: "nestedArrayRefs",
-			supportedKinds:     []string{"ReferenceKind"},
+			supportedKinds:     []MultiKindRef{{Kind: "ReferenceKind"}},
 			expectedCRD: &apiextensions.CustomResourceDefinition{
 				Spec: apiextensions.CustomResourceDefinitionSpec{
 					Versions: []apiextensions.CustomResourceDefinitionVersion{

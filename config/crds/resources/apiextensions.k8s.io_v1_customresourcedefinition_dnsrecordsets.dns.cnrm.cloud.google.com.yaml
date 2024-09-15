@@ -871,44 +871,41 @@ spec:
                 description: DEPRECATED. Although this field is still available, there
                   is limited support. We recommend that you use `spec.rrdatasRefs`
                   instead.
-                items:
-                  type: string
-                type: array
+                type: string
               rrdatasRefs:
-                items:
-                  oneOf:
-                  - not:
-                      required:
-                      - external
-                    required:
-                    - name
-                    - kind
-                  - not:
-                      anyOf:
-                      - required:
-                        - name
-                      - required:
-                        - namespace
-                      - required:
-                        - kind
+                oneOf:
+                - not:
                     required:
                     - external
-                  properties:
-                    external:
-                      description: 'Allowed value: The `address` field of a `ComputeAddress`
-                        resource.'
-                      type: string
-                    kind:
-                      description: 'Kind of the referent. Allowed values: ComputeAddress'
-                      type: string
-                    name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                      type: string
-                    namespace:
-                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                      type: string
-                  type: object
-                type: array
+                  required:
+                  - name
+                  - kind
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                    - required:
+                      - kind
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed values: The `address` field of a `ComputeAddress`
+                      resource. The `dnsResourceRecord.data` field of a `CertificateManagerDnsAuthorization`
+                      resource.'
+                    type: string
+                  kind:
+                    description: 'Kind of the referent. Allowed values: ComputeAddress,CertificateManagerDnsAuthorization'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               ttl:
                 description: The time-to-live of this record set (seconds).
                 type: integer

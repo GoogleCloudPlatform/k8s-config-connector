@@ -15,10 +15,11 @@
 apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
 kind: CertificateManagerDNSAuthorization
 metadata:
-  name: certificatemanagerdnsauthorization-sample
+  name: dnsrecordset-dep-cname
 spec:
   description: sample dns authorization
-  domain: subdomain.hashicorptest.com
+  domain: www.example.com
+  location: global
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: ${PROJECT_ID?}

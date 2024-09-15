@@ -67,6 +67,11 @@ spec:
                   single domain and its wildcard, e.g. authorization for "example.com" can
                   be used to issue certificates for "example.com" and "*.example.com".
                 type: string
+              location:
+                default: global
+                description: Immutable. The Certificate Manager location. If not specified,
+                  "global" is used.
+                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -98,6 +103,17 @@ spec:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
+                type: string
+              type:
+                description: |-
+                  Immutable. type of DNS authorization. If unset during the resource creation, FIXED_RECORD will
+                  be used for global resources, and PER_PROJECT_RECORD will be used for other locations.
+
+                  FIXED_RECORD DNS authorization uses DNS-01 validation method
+
+                  PER_PROJECT_RECORD DNS authorization allows for independent management
+                  of Google-managed certificates with DNS authorization across multiple
+                  projects. Possible values: ["FIXED_RECORD", "PER_PROJECT_RECORD"].
                 type: string
             required:
             - domain
@@ -209,6 +225,10 @@ spec:
                   single domain and its wildcard, e.g. authorization for "example.com" can
                   be used to issue certificates for "example.com" and "*.example.com".
                 type: string
+              location:
+                description: Immutable. The Certificate Manager location. If not specified,
+                  "global" is used.
+                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -240,6 +260,17 @@ spec:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
+                type: string
+              type:
+                description: |-
+                  Immutable. type of DNS authorization. If unset during the resource creation, FIXED_RECORD will
+                  be used for global resources, and PER_PROJECT_RECORD will be used for other locations.
+
+                  FIXED_RECORD DNS authorization uses DNS-01 validation method
+
+                  PER_PROJECT_RECORD DNS authorization allows for independent management
+                  of Google-managed certificates with DNS authorization across multiple
+                  projects. Possible values: ["FIXED_RECORD", "PER_PROJECT_RECORD"].
                 type: string
             required:
             - domain

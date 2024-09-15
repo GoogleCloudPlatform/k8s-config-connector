@@ -45,12 +45,27 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	be used to issue certificates for "example.com" and "*.example.com". */
 	Domain string `json:"domain"`
 
+	/* Immutable. The Certificate Manager location. If not specified, "global" is used. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. type of DNS authorization. If unset during the resource creation, FIXED_RECORD will
+	be used for global resources, and PER_PROJECT_RECORD will be used for other locations.
+
+	FIXED_RECORD DNS authorization uses DNS-01 validation method
+
+	PER_PROJECT_RECORD DNS authorization allows for independent management
+	of Google-managed certificates with DNS authorization across multiple
+	projects. Possible values: ["FIXED_RECORD", "PER_PROJECT_RECORD"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type DnsauthorizationDnsResourceRecordStatus struct {

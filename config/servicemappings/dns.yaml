@@ -112,6 +112,13 @@ spec:
           version: v1beta1
           group: compute.cnrm.cloud.google.com
         targetField: address
+      - tfField: rrdatas
+        key: rrdatasRefs
+        gvk:
+          kind: CertificateManagerDNSAuthorization
+          version: v1beta1
+          group: certificatemanager.cnrm.cloud.google.com
+        targetField: dnsResourceRecord.data
       - tfField: routing_policy.geo.rrdatas
         key: rrdatasRefs
         gvk:

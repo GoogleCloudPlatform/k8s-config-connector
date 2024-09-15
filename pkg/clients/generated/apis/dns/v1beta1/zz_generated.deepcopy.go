@@ -402,15 +402,13 @@ func (in *DNSRecordSetSpec) DeepCopyInto(out *DNSRecordSetSpec) {
 	}
 	if in.Rrdatas != nil {
 		in, out := &in.Rrdatas, &out.Rrdatas
-		*out = make([]string, len(*in))
-		copy(*out, *in)
+		*out = new(string)
+		**out = **in
 	}
 	if in.RrdatasRefs != nil {
 		in, out := &in.RrdatasRefs, &out.RrdatasRefs
-		*out = make([]RecordsetRrdatasRefs, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(RecordsetRrdatasRefs)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Ttl != nil {
 		in, out := &in.Ttl, &out.Ttl

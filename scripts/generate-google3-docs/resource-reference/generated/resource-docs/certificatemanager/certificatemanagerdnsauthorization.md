@@ -65,11 +65,13 @@
 ```yaml
 description: string
 domain: string
+location: string
 projectRef:
   external: string
   name: string
   namespace: string
 resourceID: string
+type: string
 ```
 
 <table class="properties responsive">
@@ -99,6 +101,16 @@ resourceID: string
             <p>{% verbatim %}Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
 single domain and its wildcard, e.g. authorization for "example.com" can
 be used to issue certificates for "example.com" and "*.example.com".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>location</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The Certificate Manager location. If not specified, "global" is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -151,6 +163,23 @@ be used to issue certificates for "example.com" and "*.example.com".{% endverbat
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>type</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. type of DNS authorization. If unset during the resource creation, FIXED_RECORD will
+be used for global resources, and PER_PROJECT_RECORD will be used for other locations.
+
+FIXED_RECORD DNS authorization uses DNS-01 validation method
+
+PER_PROJECT_RECORD DNS authorization allows for independent management
+of Google-managed certificates with DNS authorization across multiple
+projects. Possible values: ["FIXED_RECORD", "PER_PROJECT_RECORD"].{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -169,7 +198,11 @@ dnsResourceRecord:
 - data: string
   name: string
   type: string
+effectiveLabels:
+  string: string
 observedGeneration: integer
+terraformLabels:
+  string: string
 ```
 
 <table class="properties responsive">
@@ -267,10 +300,25 @@ E.g. '_acme-challenge.example.com'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
+        <td><code>effectiveLabels</code></td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>terraformLabels</code></td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}The combination of labels configured directly on the resource
+ and default labels configured on the provider.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -301,6 +349,7 @@ metadata:
 spec:
   description: sample dns authorization
   domain: subdomain.hashicorptest.com
+  location: global
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: ${PROJECT_ID?}

@@ -615,9 +615,19 @@ func (in *CertificateManagerDNSAuthorizationSpec) DeepCopyInto(out *CertificateM
 		*out = new(string)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
+		*out = new(string)
+		**out = **in
+	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
 		*out = new(string)
 		**out = **in
 	}
