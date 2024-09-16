@@ -68,7 +68,6 @@ for file in *.yaml; do
             break
         fi
     done
-    
     if [ "$excluded" = true ]; then
         echo "Skipping $file as its CRD conversion is excluded for now"
         continue
