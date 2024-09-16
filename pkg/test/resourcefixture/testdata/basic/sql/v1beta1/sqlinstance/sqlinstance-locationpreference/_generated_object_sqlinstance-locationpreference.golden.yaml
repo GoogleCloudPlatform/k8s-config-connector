@@ -17,9 +17,10 @@ spec:
   databaseVersion: POSTGRES_16
   region: us-central1
   settings:
+    availabilityType: REGIONAL
     locationPreference:
-      secondaryZone: us-central1-f
-      zone: us-central1-c
+      secondaryZone: us-central1-c
+      zone: us-central1-b
     tier: db-custom-1-3840
 status:
   conditions:

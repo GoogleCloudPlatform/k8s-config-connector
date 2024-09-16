@@ -43,7 +43,6 @@ User-Agent: kcc/controller-manager
     "edition": "ENTERPRISE",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "secondaryZone": "us-central1-b",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -198,7 +197,6 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "secondaryZone": "us-central1-b",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -334,7 +332,6 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "secondaryZone": "us-central1-b",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -366,7 +363,7 @@ User-Agent: kcc/controller-manager
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "availabilityType": "ZONAL",
+    "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
@@ -386,8 +383,8 @@ User-Agent: kcc/controller-manager
     "edition": "ENTERPRISE",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "secondaryZone": "us-central1-f",
-      "zone": "us-central1-c"
+      "secondaryZone": "us-central1-c",
+      "zone": "us-central1-b"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
@@ -517,7 +514,7 @@ X-Xss-Protection: 0
   "settings": {
     "activationPolicy": "ALWAYS",
     "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
+    "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
@@ -545,8 +542,8 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "secondaryZone": "us-central1-f",
-      "zone": "us-central1-c"
+      "secondaryZone": "us-central1-c",
+      "zone": "us-central1-b"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
