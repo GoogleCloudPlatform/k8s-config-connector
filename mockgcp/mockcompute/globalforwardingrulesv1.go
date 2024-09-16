@@ -165,7 +165,8 @@ func (s *GlobalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLabe
 		// SetLabels operation has EndTime in response
 		EndTime: PtrTo("2024-04-01T12:34:56.123456Z"),
 	}
-	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+	// Compared with realGCP log, setLabels requests started with operation DONE(progress 100)
+	return s.startGlobalLRODone(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }

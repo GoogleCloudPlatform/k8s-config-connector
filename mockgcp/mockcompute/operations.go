@@ -77,7 +77,7 @@ func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.O
 	return op, nil
 }
 
-func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn string, callback func() (proto.Message, error)) (*pb.Operation, error) {
+func (s *computeOperations) startLRO(ctx context.Context, op *pb.Operation, fqn string, callback func() (proto.Message, error), startProgress int32, startStatus pb.Operation_Status) (*pb.Operation, error) {
 	log := klog.FromContext(ctx)
 
 	now := time.Now()
@@ -91,12 +91,12 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	op.InsertTime = PtrTo(formatTime(now))
 	op.Id = PtrTo(uint64(nanos))
 
-	op.Progress = PtrTo(int32(0))
+	op.Progress = PtrTo(startProgress)
 
 	op.Kind = PtrTo("compute#operation")
 	op.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + fqn)
 
-	op.Status = PtrTo(pb.Operation_RUNNING)
+	op.Status = PtrTo(startStatus)
 
 	log.Info("storing operation", "fqn", fqn)
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
@@ -139,7 +139,20 @@ func (s *computeOperations) startRegionalLRO(ctx context.Context, projectID stri
 
 	op.Name = PtrTo(name)
 	op.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", projectID, region))
-	return s.startLRO0(ctx, op, fqn, callback)
+	return s.startLRO(ctx, op, fqn, callback, 0, pb.Operation_RUNNING)
+}
+
+func (s *computeOperations) startRegionalLRODone(ctx context.Context, projectID string, region string, op *pb.Operation, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	fqn := s.regionalOperationFQN(projectID, region, name)
+
+	op.Name = PtrTo(name)
+	op.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", projectID, region))
+	return s.startLRO(ctx, op, fqn, callback, 100, pb.Operation_DONE)
 }
 
 func (s *computeOperations) startGlobalLRO(ctx context.Context, projectID string, op *pb.Operation, callback func() (proto.Message, error)) (*pb.Operation, error) {
@@ -151,7 +164,19 @@ func (s *computeOperations) startGlobalLRO(ctx context.Context, projectID string
 	fqn := s.globalOperationFQN(projectID, name)
 
 	op.Name = PtrTo(name)
-	return s.startLRO0(ctx, op, fqn, callback)
+	return s.startLRO(ctx, op, fqn, callback, 0, pb.Operation_RUNNING)
+}
+
+func (s *computeOperations) startGlobalLRODone(ctx context.Context, projectID string, op *pb.Operation, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	fqn := s.globalOperationFQN(projectID, name)
+
+	op.Name = PtrTo(name)
+	return s.startLRO(ctx, op, fqn, callback, 100, pb.Operation_DONE)
 }
 
 // Gets the latest state of a long-running operation.  Clients can use this

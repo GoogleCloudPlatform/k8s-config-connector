@@ -167,7 +167,9 @@ func (s *RegionalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLa
 		// SetLabels operation has EndTime in response
 		EndTime: PtrTo("2024-04-01T12:34:56.123456Z"),
 	}
-	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+
+	// Compared with realGCP log, setLabels requests started with operation DONE(progress 100)
+	return s.startRegionalLRODone(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
