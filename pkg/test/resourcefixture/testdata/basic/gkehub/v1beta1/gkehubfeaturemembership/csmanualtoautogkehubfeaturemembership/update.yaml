@@ -28,4 +28,4 @@ spec:
   configmanagement:
     configSync:
       sourceFormat: unstructured
-    management: "MANAGEMENT_MANUAL"
+    management: "MANAGEMENT_AUTOMATIC"
