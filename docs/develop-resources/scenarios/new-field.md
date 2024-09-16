@@ -36,7 +36,7 @@ The apis directory the contains the existing API types of the resource.
 
 ## 2. Resolve resource reference
 
-If the newly added fields contain resource references, you should have a second PR to update the resource reference, following [4.2 resolve resource references](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/4-add-controller.md#42-resolve-resource-references)  (TODO: update the link)
+If the newly added fields contain resource references, you should have a second PR to update the resource reference, following [4.2 resolve resource references](../guides/4-add-controller.md#42-resolve-resource-references)  (TODO: update the link)
 
 Add a new test suite with `dependencies.yaml` to cover the referenced fields.
 

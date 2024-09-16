@@ -92,7 +92,7 @@ According to the above principles, you shall decide how to process the following
 
 * Add the parent field and mark as required
 
-    * See detailed [requirements and example](https://github.com/yuwenma/k8s-config-connector/blob/CR-validation/docs/develop-resources/api-validations.md#rule-3-parent)  (TODO: update link)
+    * See detailed [requirements and example](../api-conventions/validations.md#rule-3-parent)  (TODO: update link)
 
 * Replace any field that is a resource reference to `<resource>Ref `and add the resource to `./apis/refs` if not exist.` `
 
@@ -100,7 +100,7 @@ According to the above principles, you shall decide how to process the following
 
 * Add **non** output-only fields to `spec`, excluding imperative fields.
 
-* Add other CR validations according to the [Direct Resource API Validation Guide](https://github.com/yuwenma/k8s-config-connector/blob/CR-validation/docs/develop-resources/api-validations.md) (TODO: update link)
+* Add other CR validations according to the [Direct Resource API Validation Guide](../api-conventions/validations.md)
 
 * (Only for TF/DCL Beta) Existing `spec` and `status` fields should still be there, except the [output-only spec](https://paste.googleplex.com/4694303066030080) should be removed. 
 

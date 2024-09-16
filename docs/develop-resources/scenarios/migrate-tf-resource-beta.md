@@ -2,7 +2,7 @@
 
 ## Add MockGCP tests
  
-Follow [Step 1](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/1-add-mockgcp-tests.md)
+Follow [Step 1](../guides/1-add-mockgcp-tests.md)
 
 1. The 1st PR should set the `create.yaml `and  `update.yaml `fields the same value for both test suites, with `_http.log `telling the matching HTTP request/response, and `_generated_object_<resource>.golden.yaml` telling the output-only fields.
 
@@ -17,7 +17,7 @@ Follow [Step 1](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide
 
 ## Add the backward compatible API
 
-Follow [Step 2](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/2-define-apis.md)
+Follow [Step 2](../guides/2-define-apis.md)
 
 The PR shall contain the types and deepcopy codes. It shall make modifications to make sure the CRDs are the same, because Beta resource has to be backward compatible. 
 
@@ -35,13 +35,13 @@ Note: *Do not use* `excluded_resources`, we want the presubmit to validate the e
 
 ## Add the backward compatible mapper
 
-Follow [Step 3](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/3-add-mapper.md)
+Follow [Step 3](../guides/3-add-mapper.md)
 
 The PR adds the Direct mapper. You can do this together with the previous step or the next step if no additional manual changes are needed. Using  `/*NOTYET .. */` to comment out new functions, same as the last step.
 
 ## Add the direct controller 
 
-Follow [Step 4](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/4-add-controller.md)
+Follow [Step 4](../guides/4-add-controller.md)
 
 * Use the `KCC_USE_DIRECT_RECONCILERS` flag [exampe](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/dev/tasks/run-e2e#L27). 
 

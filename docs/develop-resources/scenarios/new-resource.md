@@ -14,7 +14,7 @@ Different than other scenarios, developing a pure Direct resource requires you t
 
 1. A basic API from the auto-generated code, including all required fields (Step 2)
 2. A basic Direct controller (Step 3 and 4).
-3. Define `create.yaml` and `update.yaml` to run against the real GCP (Step 1 [record real gcp](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/1-add-mockgcp-tests.md#record-real-gcp-log)) (TODO update link)
+3. Define `create.yaml` and `update.yaml` to run against the real GCP (Step 1 [record real gcp](../guides/1-add-mockgcp-tests.md#record-real-gcp-log)) (TODO update link)
 
 ### PR reviews
 
