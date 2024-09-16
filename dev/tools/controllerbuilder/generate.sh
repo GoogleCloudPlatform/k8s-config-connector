@@ -178,5 +178,14 @@ go run . generate-types \
     --proto-resource DnsAuthorization \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1"
 
+# Workstations
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind WorkstationCluster \
+    --proto-resource WorkstationCluster
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
