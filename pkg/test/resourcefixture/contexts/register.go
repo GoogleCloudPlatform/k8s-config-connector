@@ -62,6 +62,10 @@ type ResourceContext struct {
 	IsDCLResource    bool
 	IsDirectResource bool
 
+	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
+	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	PostModifyDelay time.Duration
+
 	// Time to delay before recreating the resource as part of the drift detection test.
 	// The default wait time is 10 seconds. However, some resources appear to need to
 	// wait longer before recreating, so this value is customizable.
