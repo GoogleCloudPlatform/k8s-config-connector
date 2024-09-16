@@ -249,6 +249,11 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
+
+	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
+	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	time.Sleep(resourceContext.PostModifyDelay)
+
 	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, systemContext.HttpClient)
 	if err != nil {
 		t.Fatalf("[validateCreate] unexpected error when GET-ing '%v': %v", initialUnstruct.GetName(), err)
@@ -422,6 +427,10 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 		// Generation should have incremented at most once, only due to defaulted field sync-back.
 		t.Fatalf("unexpected generation increase %v", generationIncrease)
 	}
+
+	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
+	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	time.Sleep(resourceContext.PostModifyDelay)
 
 	// Check labels match on update
 	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)

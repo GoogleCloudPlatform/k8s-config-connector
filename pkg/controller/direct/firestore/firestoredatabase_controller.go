@@ -237,12 +237,18 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(resource.ConcurrencyMode, a.actual.ConcurrencyMode) {
-		newDb.ConcurrencyMode = resource.ConcurrencyMode
-		updateMask.Paths = append(updateMask.Paths, "concurrency_mode")
+		// Skip update if concurrency_mode is unspecified
+		if resource.ConcurrencyMode != firestorepb.Database_CONCURRENCY_MODE_UNSPECIFIED {
+			newDb.ConcurrencyMode = resource.ConcurrencyMode
+			updateMask.Paths = append(updateMask.Paths, "concurrency_mode")
+		}
 	}
 	if !reflect.DeepEqual(resource.PointInTimeRecoveryEnablement, a.actual.PointInTimeRecoveryEnablement) {
-		newDb.PointInTimeRecoveryEnablement = resource.PointInTimeRecoveryEnablement
-		updateMask.Paths = append(updateMask.Paths, "point_in_time_recovery_enablement")
+		// Skip update if point_in_time_recovery_enablement is unspecified
+		if resource.PointInTimeRecoveryEnablement != firestorepb.Database_POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED {
+			newDb.PointInTimeRecoveryEnablement = resource.PointInTimeRecoveryEnablement
+			updateMask.Paths = append(updateMask.Paths, "point_in_time_recovery_enablement")
+		}
 	}
 
 	if len(updateMask.Paths) == 0 {
