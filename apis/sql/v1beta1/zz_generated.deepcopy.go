@@ -980,7 +980,7 @@ func (in *SQLInstanceSpec) DeepCopyInto(out *SQLInstanceSpec) {
 	}
 	if in.MasterInstanceRef != nil {
 		in, out := &in.MasterInstanceRef, &out.MasterInstanceRef
-		*out = new(refsv1beta1.SQLInstanceRef)
+		*out = new(SQLInstanceRef)
 		**out = **in
 	}
 	if in.Region != nil {
