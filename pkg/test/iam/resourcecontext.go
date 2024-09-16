@@ -29,6 +29,12 @@ var (
 	// Resource kinds with customized binding roles for IAM integration test.
 	ResourceContexts = []IAMResourceContext{
 		{
+			Kind:              "CloudFunctionsFunction",
+			Name:              "httpsfunction",
+			CreateBindingRole: "roles/cloudfunctions.invoker",
+			UpdateBindingRole: "roles/cloudfunctions.invoker",
+		},
+		{
 			Kind:              "BigtableInstance",
 			CreateBindingRole: "roles/bigtable.viewer",
 			UpdateBindingRole: "roles/bigtable.user",
