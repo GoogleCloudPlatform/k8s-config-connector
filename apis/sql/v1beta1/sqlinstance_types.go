@@ -21,6 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
@@ -162,7 +163,7 @@ type InstanceIpConfiguration struct {
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
 
 	// +optional
-	PrivateNetworkRef *refsv1beta1.ComputeNetworkRef `json:"privateNetworkRef,omitempty"`
+	PrivateNetworkRef *computev1beta1.ComputeNetworkRef `json:"privateNetworkRef,omitempty"`
 
 	/* PSC settings for a Cloud SQL instance. */
 	// +optional

@@ -19,6 +19,7 @@ import (
 
 	api "google.golang.org/api/sqladmin/v1beta4"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -715,7 +716,7 @@ func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpCon
 	}
 
 	if in.PrivateNetwork != "" {
-		out.PrivateNetworkRef = &refs.ComputeNetworkRef{
+		out.PrivateNetworkRef = &computev1beta1.ComputeNetworkRef{
 			External: in.PrivateNetwork,
 		}
 	}

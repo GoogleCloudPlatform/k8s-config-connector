@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -89,12 +90,12 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		return nil, fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
 	}
 
-	computenetworkID, err := GetResourceID(computenetwork)
+	computenetworkID, err := refs.GetResourceID(computenetwork)
 	if err != nil {
 		return nil, err
 	}
 
-	computeNetworkProjectID, err := ResolveProjectID(ctx, reader, computenetwork)
+	computeNetworkProjectID, err := refs.ResolveProjectID(ctx, reader, computenetwork)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +161,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 		return nil, fmt.Errorf("error reading referenced ComputeSubnetwork %v: %w", key, err)
 	}
 
-	subnetID, err := GetResourceID(subnetObj)
+	subnetID, err := refs.GetResourceID(subnetObj)
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +171,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 		return nil, fmt.Errorf("cannot get region from references ComputeSubnetwork %v: %w", key, err)
 	}
 
-	projectID, err := ResolveProjectID(ctx, reader, subnetObj)
+	projectID, err := refs.ResolveProjectID(ctx, reader, subnetObj)
 	if err != nil {
 		return nil, err
 	}
