@@ -39,3 +39,13 @@ The apis directory the contains the existing API types of the resource.
 If the newly added fields contain resource references, you should have a second PR to update the resource reference, following [4.2 resolve resource references](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/4-add-controller.md#42-resolve-resource-references)  (TODO: update the link)
 
 Add a new test suite with `dependencies.yaml` to cover the referenced fields.
+
+
+## Add MockGCP coverage
+ 
+Follow [Step 1](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/1-add-mockgcp-tests.md)
+
+### PR Reviews
+
+* We require the PR to contain the real GCP record for `_generated_object_<resource>.golden.yaml` and `_http.log` 
+* We require the PR reflects the new field in the `create.yaml`, `update.yaml`(if mutable),  `_generated_object_<resource>.golden.yaml` and `_http.log`

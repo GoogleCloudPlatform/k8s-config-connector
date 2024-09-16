@@ -21,6 +21,7 @@ Different than other scenarios, developing a pure Direct resource requires you t
 * Code shall come from the auto-generate code.
 * Only the basic test suite is required, full and other test suites can comment out unimplemented fields.
 * `_http.log` and  `_generated_object_<resource>.golden.yaml` shall verify the basic controller is functioning.
+* We require the PR to contain the real GCP record for `_generated_object_<resource>.golden.yaml` and `_http.log` 
 
 ## Add MockGCP 
 
