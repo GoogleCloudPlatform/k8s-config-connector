@@ -67,7 +67,6 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
-	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
 	// labels will be added separately with setLabels
 	obj.Labels = nil
 	// If below values are not provided by user, it appears to default by GCP
@@ -103,6 +102,13 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 			return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 		}
 		obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name))
+	}
+
+	// output only field.
+	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
+	// output only field, this field is only used for internal load balancing.
+	if obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme == "INTERNAL" {
+		obj.ServiceName = PtrTo(fmt.Sprintf("%s.%s.il4.%s.lb.%s.internal", obj.GetServiceLabel(), name.Name, name.Region, name.Project.ID))
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
