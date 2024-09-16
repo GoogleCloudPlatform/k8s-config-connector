@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -222,8 +223,22 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		// Does not return status (at least for 404)
-		error.Status = ""
+		if error.Code == 404 {
+			// Transform the mock error message:
+			// i.e. "address \"projects/${projectId}/global/addresses/computeaddress-${uniqueId}\" not found"
+			// into the realGCP error message:
+			// i.e. "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found"
+			message := error.Message
+			resourceIdentifier := strings.Trim(strings.Fields(message)[1], "\"")
+			errorMessage := fmt.Sprintf("The resource '%s' was not found", resourceIdentifier)
+			for errIdx := range error.Errors {
+				error.Errors[errIdx].Message = errorMessage
+			}
+			error.Message = errorMessage
+
+			// Does not return status (at least for 404)
+			error.Status = ""
+		}
 	}
 
 	// Terraform uses the /beta/ endpoints, but we have protos only for v1.

@@ -236,11 +236,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "healthCheck \"projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "healthCheck \"projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}' was not found"
   }
 }
 
@@ -344,11 +344,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "backendService \"projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "backendService \"projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}' was not found"
   }
 }
 
@@ -456,11 +456,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "urlMap \"projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "urlMap \"projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}' was not found"
   }
 }
 
@@ -546,11 +546,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}' was not found"
   }
 }
 
@@ -638,11 +638,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}' was not found"
   }
 }
 
@@ -731,11 +731,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "forwardingRule \"projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "forwardingRule \"projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found"
   }
 }
 

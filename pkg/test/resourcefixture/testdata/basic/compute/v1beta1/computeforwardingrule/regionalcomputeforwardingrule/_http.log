@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}' was not found"
   }
 }
 
@@ -447,11 +447,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}' was not found"
   }
 }
 
@@ -542,11 +542,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "forwardingRule \"projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "forwardingRule \"projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found"
   }
 }
 
