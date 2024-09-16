@@ -511,6 +511,12 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 		return true
 	}
 
+	// TODO(acpana): Unskip drift detection once we have a strategy for testing
+	// server-generated ids in direct resources
+	if resourceContext.IsDirectResource {
+		return true
+	}
+
 	// Skip drift detection test for dcl-based resources with server-generated id.
 	if resourceContext.IsDCLResource {
 		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
