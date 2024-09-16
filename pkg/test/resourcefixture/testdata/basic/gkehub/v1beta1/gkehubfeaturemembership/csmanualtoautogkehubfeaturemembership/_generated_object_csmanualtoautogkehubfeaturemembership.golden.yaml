@@ -23,7 +23,7 @@ spec:
   membershipRef:
     name: gkehubmembership-basic-acm-${uniqueId}
   projectRef:
-    name: gkehubfm-${uniqueId}
+    external: projects/${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
