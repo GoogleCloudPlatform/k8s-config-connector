@@ -80,6 +80,9 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	if o.ResourceProtoName == "" {
 		return fmt.Errorf("`--proto-resource` is required")
 	}
+	if o.ResourceKindName == "" {
+		return fmt.Errorf("`--kind` is required")
+	}
 	o.ResourceProtoName = capitalizeFirstRune(o.ResourceProtoName)
 
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
@@ -127,9 +130,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	kind := o.ResourceKindName
-	if kind == "" {
-		kind = o.ResourceProtoName
-	}
 	if !scaffolder.TypeFileNotExist(kind) {
 		fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
 	} else {
