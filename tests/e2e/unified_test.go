@@ -229,9 +229,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
 					// Stop recording after tests finish and write to cassette
 					t.Cleanup(func() {
-						err := h.VCRRecorderDCL.Stop()
+						err := h.VCRRecorderNonTF.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
+							t.Errorf("[VCR] Failed stop non TF vcr recorder: %v", err)
 						}
 						err = h.VCRRecorderTF.Stop()
 						if err != nil {
@@ -487,6 +487,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -537,14 +538,28 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if n >= 2 {
 								kind := tokens[n-2]
 								switch kind {
-								case "subnetworks":
-									r.PathIDs[targetId] = "${subnetworkNumber}"
-								case "sslCertificates":
-									r.PathIDs[targetId] = "${sslCertificatesId}"
+								case "addresses":
+									r.PathIDs[targetId] = "${addressesId}"
+								case "backendServices":
+									r.PathIDs[targetId] = "${backendServicesId}"
 								case "forwardingRules":
 									r.PathIDs[targetId] = "${forwardingRulesId}"
+								case "healthChecks":
+									r.PathIDs[targetId] = "${healthChecksId}"
 								case "serviceAttachments":
 									r.PathIDs[targetId] = "${serviceAttachmentsId}"
+								case "sslCertificates":
+									r.PathIDs[targetId] = "${sslCertificatesId}"
+								case "subnetworks":
+									r.PathIDs[targetId] = "${subnetworkNumber}"
+								case "targetHttpsProxies":
+									r.PathIDs[targetId] = "${targetHttpsProxiesId}"
+								case "targetSslProxies":
+									r.PathIDs[targetId] = "${targetSslProxiesId}"
+								case "targetTcpProxies":
+									r.PathIDs[targetId] = "${targetTcpProxiesId}"
+								case "urlMaps":
+									r.PathIDs[targetId] = "${urlMapsId}"
 								}
 							}
 						}
@@ -609,6 +624,23 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to Firestore
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if _, found, _ := unstructured.NestedMap(obj, "response"); found {
+							// Only run this mutator for firestore database objects.
+							if val, found, err := unstructured.NestedString(obj, "response", "@type"); err == nil && found && val == "type.googleapis.com/google.firestore.admin.v1.Database" {
+								// Only run this mutator for firestore database objects that have a name set in the response.
+								if val, found, err := unstructured.NestedString(obj, "response", "name"); err == nil && found && val != "" {
+									// Set name field to use human-readable ID, instead of UID
+									// Note: This only works if firestore databases in all resource fixture test cases use the name "firestoredatabase-${uniqueId}"
+									if err := unstructured.SetNestedField(obj, "projects/${projectId}/databases/firestoredatabase-${uniqueId}", "response", "name"); err != nil {
+										t.Fatal(err)
+									}
+								}
+							}
+						}
+					})
 
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
@@ -1033,7 +1065,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 
 		return nil
 	}
-	h.VCRRecorderDCL.AddHook(hook, recorder.BeforeSaveHook)
+	h.VCRRecorderNonTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderOauth.AddHook(hook, recorder.BeforeSaveHook)
 
@@ -1073,7 +1105,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		}
 		return true
 	}
-	h.VCRRecorderDCL.SetMatcher(matcher)
+	h.VCRRecorderNonTF.SetMatcher(matcher)
 	h.VCRRecorderTF.SetMatcher(matcher)
 	h.VCRRecorderOauth.SetMatcher(matcher)
 }

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.121.0
+    cnrm.cloud.google.com/version: 1.122.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -106,10 +106,8 @@ spec:
                               - external
                             properties:
                               external:
-                                description: 'The GCP Service Account Email used for
-                                  auth when secretType is gcpServiceAccount. Allowed
-                                  value: The `email` field of an `IAMServiceAccount`
-                                  resource.'
+                                description: The `email` field of an `IAMServiceAccount`
+                                  resource.
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -203,10 +201,8 @@ spec:
                               - external
                             properties:
                               external:
-                                description: 'The GCP Service Account Email used for
-                                  auth when secretType is gcpServiceAccount. Allowed
-                                  value: The `email` field of an `IAMServiceAccount`
-                                  resource.'
+                                description: The `email` field of an `IAMServiceAccount`
+                                  resource.
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -246,7 +242,9 @@ spec:
                         type: string
                     type: object
                   hierarchyController:
-                    description: Hierarchy Controller configuration for the cluster.
+                    description: 'Hierarchy Controller is no longer available.
+                      Use https://github.com/kubernetes-sigs/hierarchical-namespaces
+                      instead.'
                     properties:
                       enableHierarchicalResourceQuota:
                         description: Whether hierarchical resource quota is enabled

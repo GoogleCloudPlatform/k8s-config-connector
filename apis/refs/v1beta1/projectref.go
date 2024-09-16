@@ -29,7 +29,7 @@ import (
 
 // The Project that this resource belongs to.
 type ProjectRef struct {
-	/* The `projectID` field of a project, when not managed by KCC. */
+	/* The `projectID` field of a project, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `Project` resource. */
 	Name string `json:"name,omitempty"`

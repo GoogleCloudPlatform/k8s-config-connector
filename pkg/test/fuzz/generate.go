@@ -132,6 +132,8 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			msg.Set(field, protoreflect.ValueOfInt32(randStream.Int31()))
 		case protoreflect.Int64Kind:
 			msg.Set(field, protoreflect.ValueOfInt64(randStream.Int63()))
+		case protoreflect.Uint64Kind:
+			msg.Set(field, protoreflect.ValueOfUint64(randStream.Uint64()))
 		case protoreflect.StringKind:
 			s := randomString(randStream)
 			msg.Set(field, protoreflect.ValueOfString(s))
@@ -317,6 +319,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 			protoreflect.DoubleKind,
 			protoreflect.Int32Kind,
 			protoreflect.Int64Kind,
+			protoreflect.Uint64Kind,
 			protoreflect.StringKind,
 			protoreflect.EnumKind:
 			setter := func(v protoreflect.Value) {

@@ -17,10 +17,10 @@ kind: BigQueryConnectionConnection
 metadata:
   name: bigqueryconnectionconnection-${uniqueId}
 spec:
+  resourceID: 71389360-831c-431d-8975-837aee2153be
   friendlyName: "cloud-resource-connection"
   description: "test connection for cloud resource"
   location: us-central1
   projectRef:
     external: ${projectId}
-  cloudResource:
-    serviceAccountId: ""
+  cloudResource: {}

@@ -225,7 +225,7 @@ spec:
                 properties:
                   external:
                     description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                      when not managed by KCC.
+                      when not managed by Config Connector.
                     type: string
                   name:
                     description: The `name` field of a `ComputeSubnetwork` resource.

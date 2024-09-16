@@ -1,26 +1,28 @@
 # v1.122.0
 
-** This version is not yet released; this document is gathering release notes for the future release **
+* Special shout-outs to @600lyy, @acpana, @anhdle-sso, @barney-s, @CyberHippo, @gemmahou, @haiyanmeng, @hankfreund, @himanikh, @jasonvigil, @jingyih, @justinsb, @maqiuyujoyce, @marko7460, @xiaoweim, @yuwenma, @ziyue-101 for their contributions to this release.
 
-* ...
+## Direct Cloud Reconciler:
 
-* Special shout-outs to ... for their
-  contributions to this release.
-TODO: list contributors with `git log v1.121.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
-
-## Resources promoted from alpha to beta:
-
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState.*`
-
-* `PlaceholderKind`
+* `RedisCluster` (v1alpha1)
+* `SQLInstance`
 
 ## New Resources:
 
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* Added support for `RedisCluster` (v1alpha1) resource.
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* `ContainerCluster`
+  * The `spec.nodeConfig.taint` can be updated.
+
+* `ContainerNodePool`
+  * The `spec.nodeConfig.taint` can be updated.
+
+* `SQLInstance`
+  * Add the `spec.cloneSource`.
+
+* `RunJob`
+  * Add the `spec.template.template.volumes[].cloudSqlInstance`
+
 

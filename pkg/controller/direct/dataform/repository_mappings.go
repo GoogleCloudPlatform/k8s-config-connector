@@ -67,6 +67,7 @@ func DataformRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformR
 	if in.ServiceAccountRef != nil {
 		out.ServiceAccount = in.ServiceAccountRef.External
 	}
+	out.SetAuthenticatedUserAdmin = in.SetAuthenticatedUserAdmin
 
 	return out
 }
@@ -87,7 +88,9 @@ func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Rep
 	if inSshConfig := in.GetSshAuthenticationConfig(); inSshConfig != nil {
 		out.SSHAuthenticationConfig = &krm.SSHAuthenticationConfig{}
 		if inSshConfig.GetUserPrivateKeySecretVersion() != "" {
-			out.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef.External = inSshConfig.GetUserPrivateKeySecretVersion()
+			out.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef = &refs.SecretManagerSecretVersionRef{
+				External: inSshConfig.GetUserPrivateKeySecretVersion(),
+			}
 		}
 
 		out.SSHAuthenticationConfig.HostPublicKey = inSshConfig.HostPublicKey

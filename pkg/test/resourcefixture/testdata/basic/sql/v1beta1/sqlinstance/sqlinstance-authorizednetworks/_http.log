@@ -44,7 +44,7 @@ User-Agent: kcc/controller-manager
     "ipConfiguration": {
       "authorizedNetworks": [
         {
-          "expirationTime": "2099-01-01T00:00:00+00:00",
+          "expirationTime": "2099-01-01T00:00:00Z",
           "kind": "sql#aclEntry",
           "name": "all",
           "value": "0.0.0.0/0"
@@ -52,6 +52,7 @@ User-Agent: kcc/controller-manager
       ]
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -393,13 +394,13 @@ User-Agent: kcc/controller-manager
     "ipConfiguration": {
       "authorizedNetworks": [
         {
-          "expirationTime": "2099-01-01T00:00:00+00:00",
+          "expirationTime": "2099-01-01T00:00:00Z",
           "kind": "sql#aclEntry",
           "name": "all",
           "value": "0.0.0.0/0"
         },
         {
-          "expirationTime": "2100-01-01T00:00:00+00:00",
+          "expirationTime": "2100-01-01T00:00:00Z",
           "kind": "sql#aclEntry",
           "name": "my-network",
           "value": "1.2.3.0/24"
@@ -407,6 +408,7 @@ User-Agent: kcc/controller-manager
       ]
     },
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",

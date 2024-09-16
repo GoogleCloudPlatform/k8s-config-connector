@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com
 spec:
   group: bigqueryconnection.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: BigQueryConnectionConnection
+    listKind: BigQueryConnectionConnectionList
     plural: bigqueryconnectionconnections
     shortNames:
     - gcpbigqueryconnectionconnection
@@ -43,48 +42,42 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: BigQueryConnectionConnection is the Schema for the BigQueryConnectionConnection
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BigQueryConnectionConnectionSpec defines the desired state
+              to connect BigQuery to external resources
             properties:
               cloudResource:
-                description: Container for connection properties for delegation of
-                  access to GCP resources.
-                properties:
-                  serviceAccountId:
-                    description: The account ID of the service created for the purpose
-                      of this connection.
-                    type: string
+                description: Use Cloud Resource properties.
                 type: object
               description:
-                description: A descriptive description for the connection.
+                description: User provided description.
                 type: string
               friendlyName:
-                description: A descriptive name for the connection.
+                description: User provided display name for the connection.
                 type: string
               location:
-                description: |-
-                  Immutable. The geographic location where the connection should reside.
-                  Cloud SQL instance must be in the same location as the connection
-                  with following exceptions: Cloud SQL us-central1 maps to BigQuery US, Cloud SQL europe-west1 maps to BigQuery EU.
-                  Examples: US, EU, asia-northeast1, us-central1, europe-west1.
-                  Spanner Connections same as spanner region
-                  AWS allowed regions are aws-us-east-1
-                  Azure allowed regions are azure-eastus2.
+                description: Immutable.
                 type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -101,29 +94,37 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The connectionId of the resource.
-                  Used for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The BigQuery ConnectionID. This is a server-generated
+                  ID in the UUID format. If not provided, ConfigConnector will create
+                  a new Connection and store the UUID in `status.serviceGeneratedID`
+                  field.
                 type: string
             required:
             - location
             - projectRef
             type: object
           status:
+            description: BigQueryConnectionConnectionStatus defines the config connector
+              machine state of BigQueryConnectionConnection
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -147,13 +148,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              hasCredential:
-                description: True if the connection has credential assigned.
-                type: boolean
-              name:
-                description: |-
-                  The resource name of the connection in the form of:
-                  "projects/{project_id}/locations/{location_id}/connections/{connectionId}".
+              externalRef:
+                description: A unique specifier for the BigQueryConnectionConnection
+                  resource in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -161,31 +158,43 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               observedState:
-                description: The observed state of the underlying GCP resource.
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
                 properties:
                   cloudResource:
-                    description: Container for connection properties for delegation
-                      of access to GCP resources.
                     properties:
-                      serviceAccountId:
-                        description: The account ID of the service created for the
-                          purpose of this connection.
+                      serviceAccountID:
+                        description: |-
+                          Output only. The account ID of the service created for the purpose of this
+                           connection.
+
+                           The service account does not have any permissions associated with it
+                           when it is created. After creation, customers delegate permissions
+                           to the service account. When the connection is used in the context of an
+                           operation in BigQuery, the service account will be used to connect to the
+                           desired resources in GCP.
+
+                           The account ID is in the form of:
+                             <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
                         type: string
                     type: object
+                  description:
+                    description: The description for the connection.
+                    type: string
+                  friendlyName:
+                    description: The display name for the connection.
+                    type: string
+                  hasCredential:
+                    description: Output only. True, if credential is configured for
+                      this connection.
+                    type: boolean
                 type: object
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

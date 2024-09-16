@@ -40,9 +40,7 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
-	single domain and its wildcard, e.g. authorization for "example.com" can
-	be used to issue certificates for "example.com" and "*.example.com". */
+	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a single domain and its wildcard, e.g. authorization for "example.com" can be used to issue certificates for "example.com" and "*.example.com". */
 	Domain string `json:"domain"`
 
 	/* The project that this resource belongs to. */
@@ -58,8 +56,7 @@ type DnsauthorizationDnsResourceRecordStatus struct {
 	// +optional
 	Data *string `json:"data,omitempty"`
 
-	/* Fully qualified name of the DNS Resource Record.
-	E.g. '_acme-challenge.example.com'. */
+	/* Fully qualified name of the DNS Resource Record. E.g. '_acme-challenge.example.com'. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
@@ -72,9 +69,7 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerDNSAuthorization's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The structure describing the DNS Resource Record that needs to be added
-	to DNS configuration for the authorization to be usable by
-	certificate. */
+	/* The structure describing the DNS Resource Record that needs to be added to DNS configuration for the authorization to be usable by certificate. */
 	// +optional
 	DnsResourceRecord []DnsauthorizationDnsResourceRecordStatus `json:"dnsResourceRecord,omitempty"`
 

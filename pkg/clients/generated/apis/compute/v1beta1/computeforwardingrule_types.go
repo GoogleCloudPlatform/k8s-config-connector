@@ -36,12 +36,10 @@ import (
 )
 
 type ForwardingruleFilterLabels struct {
-	/* Immutable. Name of the metadata label. The length must be between
-	1 and 1024 characters, inclusive. */
+	/* Immutable. Name of the metadata label. The length must be between 1 and 1024 characters, inclusive. */
 	Name string `json:"name"`
 
-	/* Immutable. The value that the label must match. The value has a maximum
-	length of 1024 characters. */
+	/* Immutable. The value that the label must match. The value has a maximum length of 1024 characters. */
 	Value string `json:"value"`
 }
 
@@ -138,13 +136,11 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	AllowPscGlobalAccess *bool `json:"allowPscGlobalAccess,omitempty"`
 
-	/* A ComputeBackendService to receive the matched traffic. This is
-	used only for internal load balancing. */
+	/* A ComputeBackendService to receive the matched traffic. This is used only for internal load balancing. */
 	// +optional
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 
-	/* Immutable. An optional description of this resource. Provide this property when
-	you create the resource. */
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -234,10 +230,7 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	MetadataFilters []ForwardingruleMetadataFilters `json:"metadataFilters,omitempty"`
 
-	/* This field is not used for external load balancing. For internal
-	load balancing, this field identifies the network that the load
-	balanced IP should belong to for this forwarding rule. If this
-	field is not specified, the default network will be used. */
+	/* This field is not used for external load balancing. For internal load balancing, this field identifies the network that the load balanced IP should belong to for this forwarding rule. If this field is not specified, the default network will be used. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -269,7 +262,6 @@ type ComputeForwardingRuleSpec struct {
 	[port specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications)
 	for details.
 
-
 	Only packets addressed to ports in the specified range will be forwarded to
 	the backends configured with this forwarding rule.
 
@@ -290,7 +282,6 @@ type ComputeForwardingRuleSpec struct {
 	* If 'IPProtocol' is one of TCP, UDP, or SCTP.
 	* By internal TCP/UDP load balancers, backend service-based network load
 	balancers, internal protocol forwarding and when protocol is not L3_DEFAULT.
-
 
 	You can specify a list of up to five ports by number, separated by commas.
 	The ports can be contiguous or discontiguous. Only packets addressed to
@@ -348,10 +339,7 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* The target resource to receive the matched traffic. The forwarded
-	traffic must be of a type appropriate to the target object. For
-	INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
-	are valid. */
+	/* The target resource to receive the matched traffic. The forwarded traffic must be of a type appropriate to the target object. For INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets are valid. */
 	// +optional
 	Target *ForwardingruleTarget `json:"target,omitempty"`
 }
@@ -368,8 +356,11 @@ type ComputeForwardingRuleStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* The fingerprint used for optimistic locking of this resource.  Used
-	internally during updates. */
+	/* A unique Config Connector specifier for the resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* The fingerprint used for optimistic locking of this resource.  Used internally during updates. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 

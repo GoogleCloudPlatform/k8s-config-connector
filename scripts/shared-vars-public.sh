@@ -68,6 +68,7 @@ SUPPORTED_SERVICES=(
   edgecontainer.googleapis.com
   eventarc.googleapis.com
   file.googleapis.com
+  firestore.googleapis.com
   gkeconnect.googleapis.com
   gkehub.googleapis.com
   gkemulticloud.googleapis.com

@@ -28,6 +28,7 @@ func EnsureFinalizer(o metav1.Object, finalizer string) (found bool) {
 	return false
 }
 
+// EnsureFinalizers adds the specified finalizers, returning true if the finalizers were already present (i.e. no changes)
 func EnsureFinalizers(o metav1.Object, finalizers ...string) (found bool) {
 	found = true
 	for _, f := range finalizers {

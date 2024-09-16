@@ -4,11 +4,11 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 4
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -18,7 +18,6 @@ spec:
   config: regional-us-west1
   displayName: Spanner Instance Sample
   numNodes: 3
-  processingUnits: 3000
   resourceID: spannerinstance-sample-${uniqueId}
 status:
   conditions:
@@ -27,5 +26,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 4
+  observedGeneration: 3
   state: READY

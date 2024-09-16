@@ -1,10 +1,10 @@
 apiVersion: v1
 data:
-  cnrm.controller: gcr.io/gke-release/cnrm/controller:4fd3fd6
-  cnrm.deletiondefender: gcr.io/gke-release/cnrm/deletiondefender:4fd3fd6
-  cnrm.recorder: gcr.io/gke-release/cnrm/recorder:4fd3fd6
-  cnrm.unmanageddetector: gcr.io/gke-release/cnrm/unmanageddetector:4fd3fd6
-  cnrm.webhook: gcr.io/gke-release/cnrm/webhook:4fd3fd6
+  cnrm.controller: gcr.io/gke-release/cnrm/controller:e373e18
+  cnrm.deletiondefender: gcr.io/gke-release/cnrm/deletiondefender:e373e18
+  cnrm.recorder: gcr.io/gke-release/cnrm/recorder:e373e18
+  cnrm.unmanageddetector: gcr.io/gke-release/cnrm/unmanageddetector:e373e18
+  cnrm.webhook: gcr.io/gke-release/cnrm/webhook:e373e18
   prom-to-sd: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
 kind: ConfigMap
 metadata:

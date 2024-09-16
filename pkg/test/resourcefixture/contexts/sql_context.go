@@ -38,6 +38,13 @@ func init() {
 		ResourceKind:  "SQLInstance",
 	}
 
+	resourceContextMap["sqlinstance-locationpreference"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
 	resourceContextMap["sqlinstance-mysql"] = ResourceContext{
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
@@ -81,6 +88,13 @@ func init() {
 	}
 
 	resourceContextMap["sqlinstance-sqlserver-minimal"] = ResourceContext{
+		// SQL instances need a bit of additional time before attempting to recreate with
+		// the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-ssl"] = ResourceContext{
 		// SQL instances need a bit of additional time before attempting to recreate with
 		// the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,

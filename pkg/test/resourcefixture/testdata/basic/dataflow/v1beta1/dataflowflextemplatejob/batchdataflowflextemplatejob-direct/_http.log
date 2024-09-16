@@ -1,0 +1,1041 @@
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "name": "storagebucket-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private, max-age=0, must-revalidate, no-transform
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project_id=${projectId}&location=us-central1
+
+{
+  "launchParameter": {
+    "containerSpecGcsPath": "gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion",
+    "environment": {},
+    "jobName": "dataflowflextemplatejob-${uniqueId}",
+    "parameters": {
+      "inputFileFormat": "csv",
+      "inputFileSpec": "gs://config-connector-samples/dataflowflextemplate/numbertest.csv",
+      "outputBucket": "gs://storagebucket-${uniqueId}",
+      "outputFileFormat": "avro",
+      "schema": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc"
+    }
+  },
+  "location": "us-central1",
+  "projectId": "${projectId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "job": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentStateTime": "1970-01-01T00:00:00Z",
+    "id": "${jobID}",
+    "location": "us-central1",
+    "name": "dataflowflextemplatejob-${uniqueId}",
+    "projectId": "${projectId}",
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project_id=${projectId}&location=us-central1&job_id=${jobID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": 11,
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow"
+  },
+  "id": "000000000000000000000",
+  "labels": {
+    "goog-dataflow-provided-template-name": "file_format_conversion",
+    "goog-dataflow-provided-template-type": "flex"
+  },
+  "location": "us-central1",
+  "name": "dataflowflextemplatejob-${uniqueId}",
+  "pipelineDescription": {
+    "removed": "simplicity"
+  },
+  "projectId": "${projectId}",
+  "startTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project_id=${projectId}&location=us-central1&job_id=${jobID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": 9,
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "experiments": [
+      "auto_google_template_runner_v2",
+      "auto_high_core_runner_v2",
+      "auto_runner_v2_min_sdk=2.54.0",
+      "configure_shuffle_service_addresses_in_control_plane",
+      "delayed_launch",
+      "disable_baggins_exp",
+      "disable_primeflex",
+      "disable_runner_v2_reason=java_job_google_template",
+      "ek_regions=",
+      "enable_always_on_exception_sampling",
+      "enable_async_job_creation",
+      "enable_billing_v_1_5",
+      "enable_cloud_permissions_checking",
+      "enable_cmek_org_policy_check",
+      "enable_compute_default_service_account_org_policy",
+      "enable_data_sampling_telemetry",
+      "enable_dataprep_new_billing",
+      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_memory_sampler",
+      "enable_oom_sampler",
+      "enable_recommendations",
+      "enable_remote_image_ping",
+      "enable_secure_boot",
+      "enable_throttled_based_rescaling",
+      "enable_worker_cloud_monitoring_exporter",
+      "enable_worker_disk_cloud_monitoring",
+      "enable_worker_memory_cloud_monitoring",
+      "enable_zonal_outage_aware_routing",
+      "limit_preemptible_worker_pct",
+      "limit_resizing_by_cpu_util",
+      "min_sdk_version_to_reject_worker_in_different_region_than_service=2.44.0",
+      "override_controller_service_account",
+      "primeflex_slow_start_pct=5",
+      "primeflex_slow_start_seconds=3600",
+      "regional_physical_zone_separation_enabled",
+      "shuffle_mode=auto",
+      "shuffle_service_address_type=DIRECTPATH_WITH_CFE_FALLBACK",
+      "sideinput_io_metrics",
+      "use_dataflow_service_account_in_igm",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_job_admission_controller",
+      "use_multi_hop_delegation",
+      "use_templates_regional_bucket",
+      "use_worker_zone_chooser_by_default"
+    ],
+    "sdkPipelineOptions": {
+      "display_data": [],
+      "options": {
+        "apiRootUrl": "https://dataflow.googleapis.com/",
+        "appName": "FileFormatConversion",
+        "autoscalingAlgorithm": null,
+        "containsHeaders": false,
+        "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
+        "csvFileEncoding": "UTF-8",
+        "csvFormat": "Default",
+        "dataflowEndpoint": "",
+        "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
+        "dataflowWorkerJar": null,
+        "defaultEnvironmentConfig": null,
+        "defaultEnvironmentType": null,
+        "delimiter": ",",
+        "diskSizeGb": 0,
+        "enableCloudDebugger": false,
+        "enableStreamingEngine": false,
+        "environmentOptions": null,
+        "experiments": [
+          "disable_runner_v2_reason=java_job_google_template",
+          "enable_always_on_exception_sampling"
+        ],
+        "filesToStage": [
+          "/template/file-format-conversion/file-format-conversion.jar"
+        ],
+        "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsPerformanceMetrics": false,
+        "gcsUploadBufferSizeBytes": null,
+        "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "inputFileFormat": "csv",
+        "inputFileSpec": "gs://config-connector-samples/dataflowflextemplate/numbertest.csv",
+        "jobName": "dataflowflextemplatejob-${uniqueId}",
+        "labels": {
+          "goog-dataflow-provided-template-name": "file_format_conversion",
+          "goog-dataflow-provided-template-type": "flex"
+        },
+        "logDetailedCsvConversionErrors": false,
+        "maxNumWorkers": 0,
+        "network": null,
+        "numShards": 0,
+        "numWorkers": 0,
+        "numberOfWorkerHarnessThreads": 0,
+        "optionsId": 0,
+        "outputBucket": "gs://storagebucket-${uniqueId}",
+        "outputFileFormat": "avro",
+        "outputFilePrefix": "output",
+        "overrideWindmillBinary": null,
+        "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
+        "pipelineUrl": "${pipelineUrl}",
+        "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
+        "region": "us-central1",
+        "resourceHints": [],
+        "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
+        "saveProfilesToGcs": null,
+        "schema": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc",
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "stableUniqueNames": "WARNING",
+        "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
+        "stagingLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging",
+        "streaming": false,
+        "subnetwork": null,
+        "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
+        "userAgent": "Apache_Beam_SDK_for_Java/2.41.0(JRE_11_environment)",
+        "workerDiskType": null,
+        "workerHarnessContainerImage": null,
+        "workerMachineType": null,
+        "workerRegion": null,
+        "zone": null
+      }
+    },
+    "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "shuffleMode": 2,
+    "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
+    "userAgent": {
+      "removed": "simplicity"
+    },
+    "version": {
+      "removed": "simplicity"
+    },
+    "workerPools": []
+  },
+  "id": "000000000000000000000",
+  "jobMetadata": {
+    "removed": "simplicity"
+  },
+  "labels": {
+    "goog-dataflow-provided-template-name": "file_format_conversion",
+    "goog-dataflow-provided-template-type": "flex"
+  },
+  "location": "us-central1",
+  "name": "dataflowflextemplatejob-${uniqueId}",
+  "pipelineDescription": {
+    "removed": "simplicity"
+  },
+  "projectId": "${projectId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "steps": [],
+  "type": 1
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project_id=${projectId}&location=us-central1&job_id=${jobID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": 2,
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "experiments": [
+      "auto_google_template_runner_v2",
+      "auto_high_core_runner_v2",
+      "auto_runner_v2_min_sdk=2.54.0",
+      "configure_shuffle_service_addresses_in_control_plane",
+      "delayed_launch",
+      "disable_baggins_exp",
+      "disable_primeflex",
+      "disable_runner_v2_reason=java_job_google_template",
+      "ek_regions=",
+      "enable_always_on_exception_sampling",
+      "enable_async_job_creation",
+      "enable_billing_v_1_5",
+      "enable_cloud_permissions_checking",
+      "enable_cmek_org_policy_check",
+      "enable_compute_default_service_account_org_policy",
+      "enable_data_sampling_telemetry",
+      "enable_dataprep_new_billing",
+      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_memory_sampler",
+      "enable_oom_sampler",
+      "enable_recommendations",
+      "enable_remote_image_ping",
+      "enable_secure_boot",
+      "enable_throttled_based_rescaling",
+      "enable_worker_cloud_monitoring_exporter",
+      "enable_worker_disk_cloud_monitoring",
+      "enable_worker_memory_cloud_monitoring",
+      "enable_zonal_outage_aware_routing",
+      "limit_preemptible_worker_pct",
+      "limit_resizing_by_cpu_util",
+      "min_sdk_version_to_reject_worker_in_different_region_than_service=2.44.0",
+      "override_controller_service_account",
+      "primeflex_slow_start_pct=5",
+      "primeflex_slow_start_seconds=3600",
+      "regional_physical_zone_separation_enabled",
+      "shuffle_mode=auto",
+      "shuffle_service_address_type=DIRECTPATH_WITH_CFE_FALLBACK",
+      "sideinput_io_metrics",
+      "use_dataflow_service_account_in_igm",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_job_admission_controller",
+      "use_multi_hop_delegation",
+      "use_templates_regional_bucket",
+      "use_worker_zone_chooser_by_default"
+    ],
+    "sdkPipelineOptions": {
+      "display_data": [],
+      "options": {
+        "apiRootUrl": "https://dataflow.googleapis.com/",
+        "appName": "FileFormatConversion",
+        "autoscalingAlgorithm": null,
+        "containsHeaders": false,
+        "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
+        "csvFileEncoding": "UTF-8",
+        "csvFormat": "Default",
+        "dataflowEndpoint": "",
+        "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
+        "dataflowWorkerJar": null,
+        "defaultEnvironmentConfig": null,
+        "defaultEnvironmentType": null,
+        "delimiter": ",",
+        "diskSizeGb": 0,
+        "enableCloudDebugger": false,
+        "enableStreamingEngine": false,
+        "environmentOptions": null,
+        "experiments": [
+          "disable_runner_v2_reason=java_job_google_template",
+          "enable_always_on_exception_sampling"
+        ],
+        "filesToStage": [
+          "/template/file-format-conversion/file-format-conversion.jar"
+        ],
+        "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsPerformanceMetrics": false,
+        "gcsUploadBufferSizeBytes": null,
+        "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "inputFileFormat": "csv",
+        "inputFileSpec": "gs://config-connector-samples/dataflowflextemplate/numbertest.csv",
+        "jobName": "dataflowflextemplatejob-${uniqueId}",
+        "labels": {
+          "goog-dataflow-provided-template-name": "file_format_conversion",
+          "goog-dataflow-provided-template-type": "flex"
+        },
+        "logDetailedCsvConversionErrors": false,
+        "maxNumWorkers": 0,
+        "network": null,
+        "numShards": 0,
+        "numWorkers": 0,
+        "numberOfWorkerHarnessThreads": 0,
+        "optionsId": 0,
+        "outputBucket": "gs://storagebucket-${uniqueId}",
+        "outputFileFormat": "avro",
+        "outputFilePrefix": "output",
+        "overrideWindmillBinary": null,
+        "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
+        "pipelineUrl": "${pipelineUrl}",
+        "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
+        "region": "us-central1",
+        "resourceHints": [],
+        "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
+        "saveProfilesToGcs": null,
+        "schema": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc",
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "stableUniqueNames": "WARNING",
+        "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
+        "stagingLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging",
+        "streaming": false,
+        "subnetwork": null,
+        "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
+        "userAgent": "Apache_Beam_SDK_for_Java/2.41.0(JRE_11_environment)",
+        "workerDiskType": null,
+        "workerHarnessContainerImage": null,
+        "workerMachineType": null,
+        "workerRegion": null,
+        "zone": null
+      }
+    },
+    "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "shuffleMode": 2,
+    "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
+    "userAgent": {
+      "removed": "simplicity"
+    },
+    "version": {
+      "removed": "simplicity"
+    },
+    "workerPools": []
+  },
+  "id": "000000000000000000000",
+  "jobMetadata": {
+    "removed": "simplicity"
+  },
+  "labels": {
+    "goog-dataflow-provided-template-name": "file_format_conversion",
+    "goog-dataflow-provided-template-type": "flex"
+  },
+  "location": "us-central1",
+  "name": "dataflowflextemplatejob-${uniqueId}",
+  "pipelineDescription": {
+    "removed": "simplicity"
+  },
+  "projectId": "${projectId}",
+  "stageStates": [],
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "steps": [],
+  "type": 1
+}
+
+---
+
+PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project_id=${projectId}&location=us-central1&job_id=${jobID}
+
+{
+  "requestedState": 5
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "type": 1
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project_id=${projectId}&location=us-central1&job_id=${jobID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": 10,
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "experiments": [
+      "auto_google_template_runner_v2",
+      "auto_high_core_runner_v2",
+      "auto_runner_v2_min_sdk=2.54.0",
+      "configure_shuffle_service_addresses_in_control_plane",
+      "delayed_launch",
+      "disable_baggins_exp",
+      "disable_primeflex",
+      "disable_runner_v2_reason=java_job_google_template",
+      "ek_regions=",
+      "enable_always_on_exception_sampling",
+      "enable_async_job_creation",
+      "enable_billing_v_1_5",
+      "enable_cloud_permissions_checking",
+      "enable_cmek_org_policy_check",
+      "enable_compute_default_service_account_org_policy",
+      "enable_data_sampling_telemetry",
+      "enable_dataprep_new_billing",
+      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_memory_sampler",
+      "enable_oom_sampler",
+      "enable_recommendations",
+      "enable_remote_image_ping",
+      "enable_secure_boot",
+      "enable_throttled_based_rescaling",
+      "enable_worker_cloud_monitoring_exporter",
+      "enable_worker_disk_cloud_monitoring",
+      "enable_worker_memory_cloud_monitoring",
+      "enable_zonal_outage_aware_routing",
+      "limit_preemptible_worker_pct",
+      "limit_resizing_by_cpu_util",
+      "min_sdk_version_to_reject_worker_in_different_region_than_service=2.44.0",
+      "override_controller_service_account",
+      "primeflex_slow_start_pct=5",
+      "primeflex_slow_start_seconds=3600",
+      "regional_physical_zone_separation_enabled",
+      "shuffle_mode=auto",
+      "shuffle_service_address_type=DIRECTPATH_WITH_CFE_FALLBACK",
+      "sideinput_io_metrics",
+      "use_dataflow_service_account_in_igm",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_job_admission_controller",
+      "use_multi_hop_delegation",
+      "use_templates_regional_bucket",
+      "use_worker_zone_chooser_by_default"
+    ],
+    "sdkPipelineOptions": {
+      "display_data": [],
+      "options": {
+        "apiRootUrl": "https://dataflow.googleapis.com/",
+        "appName": "FileFormatConversion",
+        "autoscalingAlgorithm": null,
+        "containsHeaders": false,
+        "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
+        "csvFileEncoding": "UTF-8",
+        "csvFormat": "Default",
+        "dataflowEndpoint": "",
+        "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
+        "dataflowWorkerJar": null,
+        "defaultEnvironmentConfig": null,
+        "defaultEnvironmentType": null,
+        "delimiter": ",",
+        "diskSizeGb": 0,
+        "enableCloudDebugger": false,
+        "enableStreamingEngine": false,
+        "environmentOptions": null,
+        "experiments": [
+          "disable_runner_v2_reason=java_job_google_template",
+          "enable_always_on_exception_sampling"
+        ],
+        "filesToStage": [
+          "/template/file-format-conversion/file-format-conversion.jar"
+        ],
+        "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsPerformanceMetrics": false,
+        "gcsUploadBufferSizeBytes": null,
+        "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "inputFileFormat": "csv",
+        "inputFileSpec": "gs://config-connector-samples/dataflowflextemplate/numbertest.csv",
+        "jobName": "dataflowflextemplatejob-${uniqueId}",
+        "labels": {
+          "goog-dataflow-provided-template-name": "file_format_conversion",
+          "goog-dataflow-provided-template-type": "flex"
+        },
+        "logDetailedCsvConversionErrors": false,
+        "maxNumWorkers": 0,
+        "network": null,
+        "numShards": 0,
+        "numWorkers": 0,
+        "numberOfWorkerHarnessThreads": 0,
+        "optionsId": 0,
+        "outputBucket": "gs://storagebucket-${uniqueId}",
+        "outputFileFormat": "avro",
+        "outputFilePrefix": "output",
+        "overrideWindmillBinary": null,
+        "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
+        "pipelineUrl": "${pipelineUrl}",
+        "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
+        "region": "us-central1",
+        "resourceHints": [],
+        "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
+        "saveProfilesToGcs": null,
+        "schema": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc",
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "stableUniqueNames": "WARNING",
+        "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
+        "stagingLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging",
+        "streaming": false,
+        "subnetwork": null,
+        "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
+        "userAgent": "Apache_Beam_SDK_for_Java/2.41.0(JRE_11_environment)",
+        "workerDiskType": null,
+        "workerHarnessContainerImage": null,
+        "workerMachineType": null,
+        "workerRegion": null,
+        "zone": null
+      }
+    },
+    "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "shuffleMode": 2,
+    "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
+    "userAgent": {
+      "removed": "simplicity"
+    },
+    "version": {
+      "removed": "simplicity"
+    },
+    "workerPools": []
+  },
+  "id": "000000000000000000000",
+  "jobMetadata": {
+    "removed": "simplicity"
+  },
+  "labels": {
+    "goog-dataflow-provided-template-name": "file_format_conversion",
+    "goog-dataflow-provided-template-type": "flex"
+  },
+  "location": "us-central1",
+  "name": "dataflowflextemplatejob-${uniqueId}",
+  "pipelineDescription": {
+    "removed": "simplicity"
+  },
+  "projectId": "${projectId}",
+  "requestedState": 5,
+  "stageStates": [],
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "steps": [],
+  "type": 1
+}
+
+---
+
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project_id=${projectId}&location=us-central1&job_id=${jobID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentState": 5,
+  "currentStateTime": "2024-04-01T12:34:56.123456Z",
+  "environment": {
+    "dataset": "bigquery.googleapis.com/cloud_dataflow",
+    "experiments": [
+      "auto_google_template_runner_v2",
+      "auto_high_core_runner_v2",
+      "auto_runner_v2_min_sdk=2.54.0",
+      "configure_shuffle_service_addresses_in_control_plane",
+      "delayed_launch",
+      "disable_baggins_exp",
+      "disable_primeflex",
+      "disable_runner_v2_reason=java_job_google_template",
+      "ek_regions=",
+      "enable_always_on_exception_sampling",
+      "enable_async_job_creation",
+      "enable_billing_v_1_5",
+      "enable_cloud_permissions_checking",
+      "enable_cmek_org_policy_check",
+      "enable_compute_default_service_account_org_policy",
+      "enable_data_sampling_telemetry",
+      "enable_dataprep_new_billing",
+      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_memory_sampler",
+      "enable_oom_sampler",
+      "enable_recommendations",
+      "enable_remote_image_ping",
+      "enable_secure_boot",
+      "enable_throttled_based_rescaling",
+      "enable_worker_cloud_monitoring_exporter",
+      "enable_worker_disk_cloud_monitoring",
+      "enable_worker_memory_cloud_monitoring",
+      "enable_zonal_outage_aware_routing",
+      "limit_preemptible_worker_pct",
+      "limit_resizing_by_cpu_util",
+      "min_sdk_version_to_reject_worker_in_different_region_than_service=2.44.0",
+      "override_controller_service_account",
+      "primeflex_slow_start_pct=5",
+      "primeflex_slow_start_seconds=3600",
+      "regional_physical_zone_separation_enabled",
+      "shuffle_mode=auto",
+      "shuffle_service_address_type=DIRECTPATH_WITH_CFE_FALLBACK",
+      "sideinput_io_metrics",
+      "use_dataflow_service_account_in_igm",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_job_admission_controller",
+      "use_multi_hop_delegation",
+      "use_templates_regional_bucket",
+      "use_worker_zone_chooser_by_default"
+    ],
+    "sdkPipelineOptions": {
+      "display_data": [],
+      "options": {
+        "apiRootUrl": "https://dataflow.googleapis.com/",
+        "appName": "FileFormatConversion",
+        "autoscalingAlgorithm": null,
+        "containsHeaders": false,
+        "credentialFactoryClass": "org.apache.beam.sdk.extensions.gcp.auth.GcpCredentialFactory",
+        "csvFileEncoding": "UTF-8",
+        "csvFormat": "Default",
+        "dataflowEndpoint": "",
+        "dataflowKmsKey": null,
+        "dataflowServiceOptions": null,
+        "dataflowWorkerJar": null,
+        "defaultEnvironmentConfig": null,
+        "defaultEnvironmentType": null,
+        "delimiter": ",",
+        "diskSizeGb": 0,
+        "enableCloudDebugger": false,
+        "enableStreamingEngine": false,
+        "environmentOptions": null,
+        "experiments": [
+          "disable_runner_v2_reason=java_job_google_template",
+          "enable_always_on_exception_sampling"
+        ],
+        "filesToStage": [
+          "/template/file-format-conversion/file-format-conversion.jar"
+        ],
+        "gcpTempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "gcsPerformanceMetrics": false,
+        "gcsUploadBufferSizeBytes": null,
+        "googleApiTrace": null,
+        "hotKeyLoggingEnabled": false,
+        "inputFileFormat": "csv",
+        "inputFileSpec": "gs://config-connector-samples/dataflowflextemplate/numbertest.csv",
+        "jobName": "dataflowflextemplatejob-${uniqueId}",
+        "labels": {
+          "goog-dataflow-provided-template-name": "file_format_conversion",
+          "goog-dataflow-provided-template-type": "flex"
+        },
+        "logDetailedCsvConversionErrors": false,
+        "maxNumWorkers": 0,
+        "network": null,
+        "numShards": 0,
+        "numWorkers": 0,
+        "numberOfWorkerHarnessThreads": 0,
+        "optionsId": 0,
+        "outputBucket": "gs://storagebucket-${uniqueId}",
+        "outputFileFormat": "avro",
+        "outputFilePrefix": "output",
+        "overrideWindmillBinary": null,
+        "pathValidatorClass": "org.apache.beam.sdk.extensions.gcp.storage.GcsPathValidator",
+        "pipelineUrl": "${pipelineUrl}",
+        "project": "${projectId}",
+        "recordJfrOnGcThrashing": false,
+        "region": "us-central1",
+        "resourceHints": [],
+        "runner": "org.apache.beam.runners.dataflow.DataflowRunner",
+        "saveProfilesToGcs": null,
+        "schema": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc",
+        "sdkContainerImage": null,
+        "sdkHarnessContainerImageOverrides": null,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "stableUniqueNames": "WARNING",
+        "stagerClass": "org.apache.beam.runners.dataflow.util.GcsStager",
+        "stagingLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging",
+        "streaming": false,
+        "subnetwork": null,
+        "tempLocation": "gs://dataflow-staging-us-central1-${projectNumber}/tmp",
+        "templateLocation": "gs://dataflow-staging-us-central1-${projectNumber}/staging/template_launches/${jobID}/job_object",
+        "userAgent": "Apache_Beam_SDK_for_Java/2.41.0(JRE_11_environment)",
+        "workerDiskType": null,
+        "workerHarnessContainerImage": null,
+        "workerMachineType": null,
+        "workerRegion": null,
+        "zone": null
+      }
+    },
+    "serviceAccountEmail": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "shuffleMode": 2,
+    "tempStoragePrefix": "storage.googleapis.com/dataflow-staging-us-central1-${projectNumber}/tmp",
+    "userAgent": {
+      "removed": "simplicity"
+    },
+    "version": {
+      "removed": "simplicity"
+    },
+    "workerPools": []
+  },
+  "id": "000000000000000000000",
+  "jobMetadata": {
+    "removed": "simplicity"
+  },
+  "labels": {
+    "goog-dataflow-provided-template-name": "file_format_conversion",
+    "goog-dataflow-provided-template-type": "flex"
+  },
+  "location": "us-central1",
+  "name": "dataflowflextemplatejob-${uniqueId}",
+  "pipelineDescription": {
+    "removed": "simplicity"
+  },
+  "projectId": "${projectId}",
+  "stageStates": [],
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "steps": [],
+  "type": 1
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private, max-age=0, must-revalidate, no-transform
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private, max-age=0, must-revalidate, no-transform
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+204 No Content
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin

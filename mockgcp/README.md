@@ -22,11 +22,11 @@ for tests, so we don't even need to start a real webserver (i.e. we don't even n
 
 ## Adding a new service
 
-To add a new service, the easiest way is to copy one of the existing CLs. Example CL: [mockGCP for cloudfunctions](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/869)
+To add a new service, the easiest way is to copy one of the existing PRs. Example PR: [mockGCP for cloudfunctions](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/869)
 
 Broadly the steps are:
 
-1. Add the proto to the Makefile and run `make gen-proto` (or just `make`, as it's the default target).
+1. Add the proto to the Makefile and run `make gen-proto` (or just `make`).
 
    All google services are located in [googleapis Github repo](https://github.com/googleapis/googleapis/tree/master/google),
    refer to your resource's API documentation to identify the service name, for example [privateca](https://cloud.google.com/certificate-authority-service/docs/reference/rest#service:-privateca.googleapis.com).
@@ -38,8 +38,8 @@ Broadly the steps are:
 
    * (Optional) If you determine that the proto file is not up to date, or if it doesn't exist at all, refer to the [Generating Proto](#generating-proto) section
    
-1. (Optional). If you're adding an API outside of googleapis/google/cloud,
-   you may need to add commands to rename the API o mockgcp in [fixup-third-party.sh](fixup-third-party.sh). Example:
+1. (Optional). If you're adding an API outside of `googleapis/google/cloud`,
+   you may need to add commands to rename the API to mockgcp in [fixup-third-party.sh](fixup-third-party.sh). Example:
    ```
    ...
    mv google/logging/ mockgcp/
@@ -51,8 +51,8 @@ Broadly the steps are:
 
 1. Add a subdirectory called `mock<servicename>`.
 
-   Copying one of the existing ones. `mockprivateca` is a reasonable basic one. Keep the files names.go and service.go,
-   rename the third one to `<resourcename>.go`. 
+   * Copying one of the existing ones. `mockprivateca` is a reasonable basic one. Note the files `names.go` and `service.go`,
+   rename the third one to `<resourcename>.go`. We have started collapsing the contents of the `names.go` files into the relevant `<resourcename>.go` files.
 1. Adjust your mock to use your protos (change the import paths), rename the types, etc.
 1. Implement the core CRUD methods in `<resourcename>.go`.
 
@@ -60,6 +60,8 @@ Broadly the steps are:
    some more CRUD methods.  In the log, you should see some errors indicating which method is not supported.
    For those methods, go into the service definition and implement a basic implementation - we have
    examples of most of the CRUD operations at this point.
+
+   Note that until you started using the mock package you defined, VSCode may highlight a warning that the package is not used. See later steps for where to use the new mock package.
 1. Register the mock service of your resource in the service.go file.
    [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/d10e4ac6241a454c995006ce2c83b5c4d20bb510/mockgcp/mockaiplatform/service.go#L58).
 1. Add the service handler of your resource in the service.go file.
@@ -69,7 +71,10 @@ Broadly the steps are:
    [harness.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/config/tests/samples/create/harness.go).
 1. Run the tests.
 
-   Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures  2>&1 | tee log`.
+   Example command: 
+   ```
+   E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures  2>&1 | tee log
+   ```
 
    You can also specify a single test to run to save time, for example, `TestAllInSeries/fixtures/privatecacapool`, or
    reduce the timeout from 3600s to 600s or any other reasonable value depends on your test.

@@ -545,7 +545,7 @@ storageBillingModel: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `projectID` field of a project, when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

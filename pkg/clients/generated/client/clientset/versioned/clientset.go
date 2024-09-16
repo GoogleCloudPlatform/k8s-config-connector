@@ -87,6 +87,7 @@ import (
 	firebasedatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasedatabase/v1alpha1"
 	firebasehostingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasehosting/v1alpha1"
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1"
+	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
@@ -123,7 +124,6 @@ import (
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
-	securesourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1beta1"
@@ -213,6 +213,7 @@ type Interface interface {
 	FirebasedatabaseV1alpha1() firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Interface
 	FirebasehostingV1alpha1() firebasehostingv1alpha1.FirebasehostingV1alpha1Interface
 	FirebasestorageV1alpha1() firebasestoragev1alpha1.FirebasestorageV1alpha1Interface
+	FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
 	GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
@@ -249,7 +250,6 @@ type Interface interface {
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
 	RunV1beta1() runv1beta1.RunV1beta1Interface
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
-	SecuresourcemanagerV1alpha1() securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Interface
 	SecuritycenterV1alpha1() securitycenterv1alpha1.SecuritycenterV1alpha1Interface
 	ServicedirectoryV1beta1() servicedirectoryv1beta1.ServicedirectoryV1beta1Interface
 	ServicenetworkingV1beta1() servicenetworkingv1beta1.ServicenetworkingV1beta1Interface
@@ -337,6 +337,7 @@ type Clientset struct {
 	firebasedatabaseV1alpha1     *firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Client
 	firebasehostingV1alpha1      *firebasehostingv1alpha1.FirebasehostingV1alpha1Client
 	firebasestorageV1alpha1      *firebasestoragev1alpha1.FirebasestorageV1alpha1Client
+	firestoreV1alpha1            *firestorev1alpha1.FirestoreV1alpha1Client
 	firestoreV1beta1             *firestorev1beta1.FirestoreV1beta1Client
 	gkebackupV1alpha1            *gkebackupv1alpha1.GkebackupV1alpha1Client
 	gkehubV1beta1                *gkehubv1beta1.GkehubV1beta1Client
@@ -373,7 +374,6 @@ type Clientset struct {
 	resourcemanagerV1beta1       *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
 	runV1beta1                   *runv1beta1.RunV1beta1Client
 	secretmanagerV1beta1         *secretmanagerv1beta1.SecretmanagerV1beta1Client
-	securesourcemanagerV1alpha1  *securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Client
 	securitycenterV1alpha1       *securitycenterv1alpha1.SecuritycenterV1alpha1Client
 	servicedirectoryV1beta1      *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
 	servicenetworkingV1beta1     *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
@@ -706,6 +706,11 @@ func (c *Clientset) FirebasestorageV1alpha1() firebasestoragev1alpha1.Firebasest
 	return c.firebasestorageV1alpha1
 }
 
+// FirestoreV1alpha1 retrieves the FirestoreV1alpha1Client
+func (c *Clientset) FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Interface {
+	return c.firestoreV1alpha1
+}
+
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client
 func (c *Clientset) FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface {
 	return c.firestoreV1beta1
@@ -884,11 +889,6 @@ func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 // SecretmanagerV1beta1 retrieves the SecretmanagerV1beta1Client
 func (c *Clientset) SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface {
 	return c.secretmanagerV1beta1
-}
-
-// SecuresourcemanagerV1alpha1 retrieves the SecuresourcemanagerV1alpha1Client
-func (c *Clientset) SecuresourcemanagerV1alpha1() securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Interface {
-	return c.securesourcemanagerV1alpha1
 }
 
 // SecuritycenterV1alpha1 retrieves the SecuritycenterV1alpha1Client
@@ -1283,6 +1283,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.firestoreV1alpha1, err = firestorev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.firestoreV1beta1, err = firestorev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1424,10 +1428,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.secretmanagerV1beta1, err = secretmanagerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
-	cs.securesourcemanagerV1alpha1, err = securesourcemanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1594,6 +1594,7 @@ func New(c rest.Interface) *Clientset {
 	cs.firebasedatabaseV1alpha1 = firebasedatabasev1alpha1.New(c)
 	cs.firebasehostingV1alpha1 = firebasehostingv1alpha1.New(c)
 	cs.firebasestorageV1alpha1 = firebasestoragev1alpha1.New(c)
+	cs.firestoreV1alpha1 = firestorev1alpha1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
 	cs.gkebackupV1alpha1 = gkebackupv1alpha1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
@@ -1630,7 +1631,6 @@ func New(c rest.Interface) *Clientset {
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
 	cs.runV1beta1 = runv1beta1.New(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
-	cs.securesourcemanagerV1alpha1 = securesourcemanagerv1alpha1.New(c)
 	cs.securitycenterV1alpha1 = securitycenterv1alpha1.New(c)
 	cs.servicedirectoryV1beta1 = servicedirectoryv1beta1.New(c)
 	cs.servicenetworkingV1beta1 = servicenetworkingv1beta1.New(c)

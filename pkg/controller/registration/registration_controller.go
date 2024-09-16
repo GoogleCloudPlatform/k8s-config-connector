@@ -52,6 +52,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
@@ -238,55 +239,72 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 			}
 		}
 
+		hasDirectController := registry.IsDirectByGK(gvk.GroupKind())
+		hasTerraformController := crd.Labels[crdgeneration.TF2CRDLabel] == "true"
+		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true"
+
+		var useDirectReconcilerPredicate predicate.Predicate
+		var useLegacyPredicate predicate.Predicate
+
+		// If we have a choice of controllers, construct predicates to choose between them
+		if hasDirectController && (hasTerraformController || hasDCLController) {
+			reconcileGate := registry.GetReconcileGate(gvk.GroupKind())
+			if reconcileGate != nil {
+				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
+				// run the direct reconciler only when the reconcile gate returns true.
+				useDirectReconcilerPredicate = kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
+				useLegacyPredicate = kccpredicate.NewInverseReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
+			}
+
+			if !hasTerraformController && !hasDCLController {
+				// We're always going to use the direct reconciler
+				useDirectReconcilerPredicate = nil
+				useLegacyPredicate = nil
+			}
+
+			if (hasTerraformController || hasDCLController) && useDirectReconcilerPredicate == nil {
+				logger.Error(fmt.Errorf("no predicate where we have multiple controllers"), "skipping direct controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+				hasDirectController = false
+			}
+		}
+
+		// register controllers for direct CRDs
+		if hasDirectController {
+			model, err := registry.GetModel(gvk.GroupKind())
+			if err != nil {
+				return nil, err
+			}
+			deps := directbase.Deps{
+				JitterGenerator:    r.jitterGenerator,
+				ReconcilePredicate: useDirectReconcilerPredicate,
+			}
+			if err := directbase.AddController(r.mgr, gvk, model, deps); err != nil {
+				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+		}
+
 		// register controllers for dcl-based CRDs
-		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
-			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator)
+		if hasDCLController {
+			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator, useLegacyPredicate)
 			if err != nil {
 				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 			return su, nil
 		}
 		// register controllers for tf-based CRDs
-		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; ok && val == "true" {
-			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, nil)
+		if hasTerraformController {
+			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, useLegacyPredicate)
 			if err != nil {
 				return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 			return su, nil
 		}
-		// register controllers for direct CRDs
-		if registry.IsDirectByGK(gvk.GroupKind()) {
-			model, err := registry.GetModel(gvk.GroupKind())
-			if err != nil {
-				return nil, err
-			}
-			deps := directbase.Deps{
-				JitterGenerator: r.jitterGenerator,
-			}
-			rg := registry.GetReconcileGate(gvk.GroupKind())
-			if rg != nil {
-				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
-				// run the direct reconciler only when the reconcile gate returns true.
-				rp := kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, rg)
-				deps.ReconcilePredicate = rp
-			}
-			if err := directbase.AddController(r.mgr, gvk, model, deps); err != nil {
-				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-			}
-			if rg != nil {
-				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
-				// run the terraform-based reconciler when the reconcile gate returns false.
-				irp := kccpredicate.NewInverseReconcilePredicate(r.mgr.GetClient(), gvk, rg)
-				su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, irp)
-				if err != nil {
-					return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-				}
-				return su, nil
-			}
-			return schemaUpdater, nil
+
+		if !hasDCLController && !hasTerraformController && !hasDirectController {
+			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+			return nil, nil
 		}
-		logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-		return nil, nil
+
 	}
 	return schemaUpdater, nil
 }

@@ -257,7 +257,7 @@ type DashboardPieChart struct {
 }
 
 type DashboardProjectRefs struct {
-	/* The `projectID` field of a project, when not managed by KCC. */
+	/* The `projectID` field of a project, when not managed by Config Connector. */
 	// +optional
 	External *string `json:"external,omitempty"`
 

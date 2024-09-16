@@ -10,6 +10,7 @@ Follow [Step 1](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide
 
 ### PR Reviews
 
+* We require the PR to contain the real GCP record for `_generated_object_<resource>.golden.yaml` and `_http.log` 
 * We require the 2nd PR git diff can show the mutable fileds in `update.yaml`.
 * We require the `_generated_object_<resource>.golden.yaml` reflecting the mutable fields are successfully updated.
 * We require the `dependencies.yaml` to cover all referenced fields, and the `_http.log` showing the Cloud requests. You need to implement those dependencies' MockGCP methods as well.

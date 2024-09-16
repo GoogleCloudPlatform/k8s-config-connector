@@ -25,7 +25,7 @@ E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr \
 Test name `service` is a common substring that can be used by many tests, regex
 `^service$` ensures that only the specified test will run.
 
-Three files will be generated: tf.yaml, dcl.yaml and oauth.yaml. Requests from
+Three files will be generated: tf.yaml, nontf.yaml and oauth.yaml. Requests from
 different http clients will be saved into different files.
 
 ## Replay Mode

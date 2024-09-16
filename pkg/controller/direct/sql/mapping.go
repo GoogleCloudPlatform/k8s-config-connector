@@ -309,20 +309,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	}
 
 	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
-
-	if in.Spec.Settings.LocationPreference != nil {
-		out.Settings.LocationPreference = &api.LocationPreference{}
-		if in.Spec.Settings.LocationPreference.FollowGaeApplication != nil {
-			// todo: deprecated
-			out.Settings.LocationPreference.FollowGaeApplication = *in.Spec.Settings.LocationPreference.FollowGaeApplication
-		}
-		if in.Spec.Settings.LocationPreference.SecondaryZone != nil {
-			out.Settings.LocationPreference.SecondaryZone = *in.Spec.Settings.LocationPreference.SecondaryZone
-		}
-		if in.Spec.Settings.LocationPreference.Zone != nil {
-			out.Settings.LocationPreference.Zone = *in.Spec.Settings.LocationPreference.Zone
-		}
-	}
+	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
 
 	if in.Spec.Settings.MaintenanceWindow != nil {
 		out.Settings.MaintenanceWindow = &api.MaintenanceWindow{}
@@ -474,6 +461,21 @@ func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
 
 	if inFixed.PscEnabled != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
+	}
+
+	return out
+}
+
+func InstanceLocationPreferenceKRMToGCP(in *krm.InstanceLocationPreference) *api.LocationPreference {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.LocationPreference{
+		Kind:                 "sql#locationPreference",
+		FollowGaeApplication: direct.ValueOf(in.FollowGaeApplication),
+		SecondaryZone:        direct.ValueOf(in.SecondaryZone),
+		Zone:                 direct.ValueOf(in.Zone),
 	}
 
 	return out
@@ -644,60 +646,8 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		}
 	}
 
-	if in.Settings.IpConfiguration != nil {
-		ic := &krm.InstanceIpConfiguration{}
-
-		if in.Settings.IpConfiguration.AllocatedIpRange != "" {
-			ic.AllocatedIpRange = &in.Settings.IpConfiguration.AllocatedIpRange
-		}
-
-		if in.Settings.IpConfiguration.AuthorizedNetworks != nil {
-			ans := []krm.InstanceAuthorizedNetworks{}
-			for _, an := range in.Settings.IpConfiguration.AuthorizedNetworks {
-				ans = append(ans, krm.InstanceAuthorizedNetworks{
-					ExpirationTime: &an.ExpirationTime,
-					Name:           &an.Name,
-					Value:          an.Value,
-				})
-			}
-			ic.AuthorizedNetworks = ans
-		}
-
-		ic.EnablePrivatePathForGoogleCloudServices = &in.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices
-
-		ic.Ipv4Enabled = &in.Settings.IpConfiguration.Ipv4Enabled
-
-		if in.Settings.IpConfiguration.PrivateNetwork != "" {
-			ic.PrivateNetworkRef = &refs.ComputeNetworkRef{
-				External: in.Settings.IpConfiguration.PrivateNetwork,
-			}
-		}
-
-		if in.Settings.IpConfiguration.PscConfig != nil {
-			out.Spec.Settings.IpConfiguration.PscConfig = []krm.InstancePscConfig{
-				{
-					AllowedConsumerProjects: in.Settings.IpConfiguration.PscConfig.AllowedConsumerProjects,
-					PscEnabled:              &in.Settings.IpConfiguration.PscConfig.PscEnabled,
-				},
-			}
-		}
-
-		ic.RequireSsl = &in.Settings.IpConfiguration.RequireSsl
-
-		if in.Settings.IpConfiguration.SslMode != "" {
-			ic.SslMode = &in.Settings.IpConfiguration.SslMode
-		}
-
-		out.Spec.Settings.IpConfiguration = ic
-	}
-
-	if in.Settings.LocationPreference != nil {
-		out.Spec.Settings.LocationPreference = &krm.InstanceLocationPreference{
-			FollowGaeApplication: &in.Settings.LocationPreference.FollowGaeApplication,
-			SecondaryZone:        &in.Settings.LocationPreference.SecondaryZone,
-			Zone:                 &in.Settings.LocationPreference.Zone,
-		}
-	}
+	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)
+	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
 
 	if in.Settings.MaintenanceWindow != nil {
 		out.Spec.Settings.MaintenanceWindow = &krm.InstanceMaintenanceWindow{
@@ -747,6 +697,71 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	}
 
 	return out, nil
+}
+
+func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceIpConfiguration{
+		AllocatedIpRange:                        direct.LazyPtr(in.AllocatedIpRange),
+		AuthorizedNetworks:                      InstanceAuthorizedNetworksGCPToKRM(in.AuthorizedNetworks),
+		EnablePrivatePathForGoogleCloudServices: direct.PtrTo(in.EnablePrivatePathForGoogleCloudServices),
+		Ipv4Enabled:                             direct.PtrTo(in.Ipv4Enabled),
+		PscConfig:                               InstancePscConfigGCPToKRM(in.PscConfig),
+		RequireSsl:                              direct.PtrTo(in.RequireSsl),
+		SslMode:                                 direct.LazyPtr(in.SslMode),
+	}
+
+	if in.PrivateNetwork != "" {
+		out.PrivateNetworkRef = &refs.ComputeNetworkRef{
+			External: in.PrivateNetwork,
+		}
+	}
+
+	return out
+}
+
+func InstanceAuthorizedNetworksGCPToKRM(in []*api.AclEntry) []krm.InstanceAuthorizedNetworks {
+	out := []krm.InstanceAuthorizedNetworks{}
+	for _, net := range in {
+		out = append(out, krm.InstanceAuthorizedNetworks{
+			ExpirationTime: direct.LazyPtr(net.ExpirationTime),
+			Name:           direct.LazyPtr(net.Name),
+			Value:          net.Value,
+		})
+	}
+	return out
+}
+
+func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := []krm.InstancePscConfig{
+		{
+			AllowedConsumerProjects: in.AllowedConsumerProjects,
+			PscEnabled:              direct.PtrTo(in.PscEnabled),
+		},
+	}
+
+	return out
+}
+
+func InstanceLocationPreferenceGCPToKRM(in *api.LocationPreference) *krm.InstanceLocationPreference {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceLocationPreference{
+		FollowGaeApplication: direct.LazyPtr(in.FollowGaeApplication),
+		SecondaryZone:        direct.LazyPtr(in.SecondaryZone),
+		Zone:                 direct.LazyPtr(in.Zone),
+	}
+
+	return out
 }
 
 func Convert_SQLInstance_API_v1_To_KRM_status(in *api.DatabaseInstance, out *krm.SQLInstanceStatus) error {

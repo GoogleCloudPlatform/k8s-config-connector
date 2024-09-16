@@ -4,7 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -21,13 +21,10 @@ spec:
       type: Delete
     condition:
       age: 7
-      withState: ANY
   location: US
-  publicAccessPrevention: inherited
   resourceID: storagebucket-sample-${uniqueId}
   softDeletePolicy:
     retentionDurationSeconds: 604800
-  storageClass: STANDARD
   versioning:
     enabled: false
 status:

@@ -142,6 +142,16 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 			obj.Spec.Target.TargetHTTPProxyRef.External = targetHTTPProxyRef.External
 		}
 
+		// Get target ComputeTargetHTTPSProxy
+		if obj.Spec.Target.TargetHTTPSProxyRef != nil {
+			targetHTTPSProxyRef, err := ResolveComputeTargetHTTPSProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPSProxyRef)
+			if err != nil {
+				return nil, err
+
+			}
+			obj.Spec.Target.TargetHTTPSProxyRef.External = targetHTTPSProxyRef.External
+		}
+
 		// Get target TargetVPNGateway
 		if obj.Spec.Target.TargetVPNGatewayRef != nil {
 			targetVPNGatewayRef, err := ResolveComputeTargetVPNGateway(ctx, reader, obj, obj.Spec.Target.TargetVPNGatewayRef)
@@ -150,6 +160,26 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 
 			}
 			obj.Spec.Target.TargetVPNGatewayRef.External = targetVPNGatewayRef.External
+		}
+
+		// Get target SSLProxy
+		if obj.Spec.Target.TargetSSLProxyRef != nil {
+			targetSSLProxyRef, err := ResolveComputeTargetSSLProxy(ctx, reader, obj, obj.Spec.Target.TargetSSLProxyRef)
+			if err != nil {
+				return nil, err
+
+			}
+			obj.Spec.Target.TargetSSLProxyRef.External = targetSSLProxyRef.External
+		}
+
+		// Get target TCPProxy
+		if obj.Spec.Target.TargetTCPProxyRef != nil {
+			targetTCPProxyRef, err := ResolveComputeTargetTCPProxy(ctx, reader, obj, obj.Spec.Target.TargetTCPProxyRef)
+			if err != nil {
+				return nil, err
+
+			}
+			obj.Spec.Target.TargetTCPProxyRef.External = targetTCPProxyRef.External
 		}
 	}
 

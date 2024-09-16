@@ -59,7 +59,7 @@ type Config struct {
 	// but UserProjectOverride is set to true, resource project will be used.
 	BillingProject string
 
-	// HTTPClient is the http client to use for DCL.
+	// HTTPClient is the http client to use by KCC.
 	// Currently only used in tests.
 	HTTPClient *http.Client
 

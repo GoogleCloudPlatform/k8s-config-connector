@@ -709,24 +709,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.LocationPreference != nil {
-		if actual.Settings.LocationPreference == nil {
-			// Add location preference
-			updateRequired = true
-		} else if (direct.ValueOf(desired.Spec.Settings.LocationPreference.FollowGaeApplication) != actual.Settings.LocationPreference.FollowGaeApplication) ||
-			(direct.ValueOf(desired.Spec.Settings.LocationPreference.SecondaryZone) != actual.Settings.LocationPreference.SecondaryZone) ||
-			(direct.ValueOf(desired.Spec.Settings.LocationPreference.Zone) != actual.Settings.LocationPreference.Zone) {
-			// Change location preference
-			updateRequired = true
-		}
-		merged.Settings.LocationPreference = &api.LocationPreference{
-			FollowGaeApplication: direct.ValueOf(desired.Spec.Settings.LocationPreference.FollowGaeApplication),
-			SecondaryZone:        direct.ValueOf(desired.Spec.Settings.LocationPreference.SecondaryZone),
-			Zone:                 direct.ValueOf(desired.Spec.Settings.LocationPreference.Zone),
-		}
-	} else if actual.Settings.LocationPreference != nil {
-		// Keep location preference
-		merged.Settings.LocationPreference = actual.Settings.LocationPreference
+	merged.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(desired.Spec.Settings.LocationPreference)
+	if !LocationPreferencesMatch(merged.Settings.LocationPreference, actual.Settings.LocationPreference) {
+		updateRequired = true
 	}
 
 	if desired.Spec.Settings.MaintenanceWindow != nil {
@@ -861,52 +846,39 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 }
 
 func IpConfigurationsMatch(desired *api.IpConfiguration, actual *api.IpConfiguration) bool {
-	if !PointersMatch(desired, actual) {
-		return false
-	}
-
 	if desired == nil && actual == nil {
 		return true
 	}
-
+	if !PointersMatch(desired, actual) {
+		return false
+	}
 	if desired.AllocatedIpRange != actual.AllocatedIpRange {
 		return false
 	}
-
 	if !AclEntryListsMatch(desired.AuthorizedNetworks, actual.AuthorizedNetworks) {
 		return false
 	}
-
 	if desired.EnablePrivatePathForGoogleCloudServices != actual.EnablePrivatePathForGoogleCloudServices {
 		return false
 	}
-
 	if desired.Ipv4Enabled != actual.Ipv4Enabled {
 		return false
 	}
-
 	if desired.PrivateNetwork != actual.PrivateNetwork {
 		return false
 	}
-
 	if !PscConfigsMatch(desired.PscConfig, actual.PscConfig) {
 		return false
 	}
-
 	if desired.RequireSsl != actual.RequireSsl {
 		return false
 	}
-
 	// Ignore ServerCaMode. It is not supported in KRM API.
-
 	if desired.SslMode != actual.SslMode {
 		return false
 	}
-
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
-
 	// Ignore NullFields. Assume it is set correctly in desired.
-
 	return true
 }
 
@@ -914,67 +886,75 @@ func AclEntryListsMatch(desired []*api.AclEntry, actual []*api.AclEntry) bool {
 	if len(desired) != len(actual) {
 		return false
 	}
-
 	for i := 0; i < len(desired); i++ {
 		if !AclEntriesMatch(desired[i], actual[i]) {
 			return false
 		}
 	}
-
 	return true
 }
 
 func AclEntriesMatch(desired *api.AclEntry, actual *api.AclEntry) bool {
-	if !PointersMatch(desired, actual) {
-		return false
-	}
-
 	if desired == nil && actual == nil {
 		return true
 	}
-
+	if !PointersMatch(desired, actual) {
+		return false
+	}
 	if desired.ExpirationTime != actual.ExpirationTime {
 		return false
 	}
-
 	// Ignore Kind. It is sometimes not set in API responses.
-
 	if desired.Name != actual.Name {
 		return false
 	}
-
 	if desired.Value != actual.Value {
 		return false
 	}
-
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
-
 	// Ignore NullFields. Assume it is set correctly in desired.
-
 	return true
 }
 
 func PscConfigsMatch(desired *api.PscConfig, actual *api.PscConfig) bool {
-	if !PointersMatch(desired, actual) {
-		return false
-	}
-
 	if desired == nil && actual == nil {
 		return true
 	}
-
+	if !PointersMatch(desired, actual) {
+		return false
+	}
 	if !reflect.DeepEqual(desired.AllowedConsumerProjects, actual.AllowedConsumerProjects) {
 		return false
 	}
-
 	if desired.PscEnabled != actual.PscEnabled {
 		return false
 	}
-
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
-
 	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
 
+func LocationPreferencesMatch(desired *api.LocationPreference, actual *api.LocationPreference) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.FollowGaeApplication != actual.FollowGaeApplication {
+		return false
+	}
+	if desired.Kind != actual.Kind {
+		return false
+	}
+	if desired.SecondaryZone != actual.SecondaryZone {
+		return false
+	}
+	if desired.Zone != actual.Zone {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
 	return true
 }
 

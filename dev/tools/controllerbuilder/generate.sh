@@ -110,8 +110,7 @@ go run . generate-mapper \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
 
-# BigQueryDatasetAccess
-
+# BigQueryDataset
 go run . generate-types  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.bigquery.v2 \
@@ -129,6 +128,47 @@ go run . generate-types \
     --kind BigQueryDataTransferConfig \
     --proto-resource TransferConfig
 
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.bigquery.datatransfer.v1 \
+    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
+# Firestore
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.firestore.admin.v1 \
+    --api-version firestore.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind FirestoreDatabase \
+    --proto-resource Database
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.firestore.admin.v1 \
+    --api-version firestore.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
+# Certificate Manager DNSAuthorization
+go run . generate-types \
+    --service google.cloud.certificatemanager.v1  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --output-api $REPO_ROOT/apis \
+    --kind CertificateManagerDNSAuthorization \
+    --proto-resource DnsAuthorization \
+    --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1"
+
+go run . generate-types \
+    --service google.cloud.certificatemanager.v1  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --output-api $REPO_ROOT/apis \
+    --kind CertificateManagerDNSAuthorization \
+    --proto-resource DnsAuthorization \
+    --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1"
 
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

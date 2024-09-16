@@ -145,6 +145,11 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 					}
 					requiredFieldsMap := map[string]bool{"observedGeneration": true, "conditions": true}
 					optionalFieldsMap := map[string]bool{"observedState": true}
+
+					// for direct resources, we will use the "externalRef" prop under the "status"
+					// to track the KCC full resource ID
+					optionalFieldsMap["externalRef"] = true
+
 					for k, _ := range statusProp.Properties {
 						foundInMaps := false
 						if _, ok := requiredFieldsMap[k]; ok {
@@ -156,7 +161,7 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 							delete(optionalFieldsMap, k)
 						}
 						if !foundInMaps {
-							t.Errorf("CRD has non-boilerplate field %v under 'status'", k)
+							t.Errorf("CRD has non-boilerplate field '%v' under 'status'", k)
 						}
 					}
 

@@ -3,36 +3,28 @@ kind: DataflowFlexTemplateJob
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"containerSpecGcsPath":"gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery","parameters":{"createDisposition":"CREATE_NEVER","inputSubscription":"projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}","outputTableSpec":"${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}","outputTopic":"projects/${projectId}/topics/pubsubtopic1-${uniqueId}","schemaPath":"gs://config-connector-samples/dataflowflextemplate/numbers.avsc"}}}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"containerSpecGcsPath":"gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery","parameters":{"createDisposition":"CREATE_NEVER","inputSubscription":"projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}","outputTableSpec":"${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}","outputTopic":"projects/${projectId}/topics/pubsubtopic0-${uniqueId}","schemaPath":"gs://config-connector-samples/dataflowflextemplate/numbers.avsc"}}}'
     cnrm.cloud.google.com/on-delete: cancel
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
     label-one: value-one
   name: dataflowflextemplatejob-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  additionalExperiments:
-  - disable_runner_v2_reason=java_job_google_template
-  - enable_always_on_exception_sampling
-  - enable_streaming_java_vmr
   containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
   parameters:
     createDisposition: CREATE_NEVER
     inputSubscription: projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}
     outputTableSpec: ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}
-    outputTopic: projects/${projectId}/topics/pubsubtopic1-${uniqueId}
+    outputTopic: projects/${projectId}/topics/pubsubtopic0-${uniqueId}
     schemaPath: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
   region: us-central1
-  serviceAccountEmailRef:
-    external: ${projectNumber}-compute@developer.gserviceaccount.com
-  stagingLocation: gs://dataflow-staging-us-central1-${projectNumber}/staging
-  tempLocation: gs://dataflow-staging-us-central1-${projectNumber}/tmp
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -41,6 +33,6 @@ status:
     status: "True"
     type: Ready
   jobId: ${jobID}
-  observedGeneration: 2
+  observedGeneration: 1
   state: JOB_STATE_RUNNING
   type: JOB_TYPE_STREAMING

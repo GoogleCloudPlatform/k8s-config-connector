@@ -92,13 +92,8 @@ func Init(ctx context.Context, config *config.ControllerConfig) error {
 }
 
 func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc) {
-	if singleton.registrations == nil {
-		singleton.registrations = make(map[schema.GroupKind]*registration)
-	}
-	singleton.registrations[gvk.GroupKind()] = &registration{
-		gvk:     gvk,
-		factory: modelFn,
-	}
+	rg := &predicate.OptInToDirectReconciliation{}
+	RegisterModelWithReconcileGate(gvk, modelFn, rg)
 }
 
 func RegisterModelWithReconcileGate(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc, rg predicate.ReconcileGate) {

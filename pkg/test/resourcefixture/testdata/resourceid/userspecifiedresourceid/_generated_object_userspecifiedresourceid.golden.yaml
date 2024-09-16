@@ -3,27 +3,17 @@ kind: BigQueryDataset
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: bigquerydataset-resourceid-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  access:
-  - role: OWNER
-    specialGroup: projectOwners
-  - role: OWNER
-    userByEmail: user@google.com
-  - role: READER
-    specialGroup: projectReaders
-  - role: WRITER
-    specialGroup: projectWriters
   friendlyName: bigquerydataset-sample-updated
-  location: US
   projectRef:
     external: ${projectId}
   resourceID: bigquerydataset_${uniqueId}
@@ -37,5 +27,5 @@ status:
   creationTime: "1970-01-01T00:00:00Z"
   etag: abcdef123456
   lastModifiedTime: "1970-01-01T00:00:00Z"
-  observedGeneration: 3
+  observedGeneration: 2
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_${uniqueId}

@@ -24,30 +24,62 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/updatetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template"
+	cctemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/spf13/cobra"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func buildAddCommand(baseOptions *options.GenerateOptions) *cobra.Command {
-	// TODO: Resource and kind name should be the same. Validation the uppercase/lowercase.
-	kind := ""
+type ControllerOptions struct {
+	Kind      string
+	ProtoName string
+}
 
+func buildAddCommand(baseOptions *options.GenerateOptions) *cobra.Command {
+	opts := ControllerOptions{}
 	addCmd := &cobra.Command{
 		Use:   "add",
 		Short: "add direct controller",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			// TODO(check kcc root)
-			cArgs := &template.ControllerArgs{
-				Service:     baseOptions.ServiceName,
-				Version:     baseOptions.APIVersion,
-				Kind:        kind,
-				KindToLower: strings.ToLower(kind),
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			if opts.Kind == "" {
+				return fmt.Errorf("--kind is required")
 			}
-			return scaffold.Scaffold(baseOptions.ServiceName, kind, cArgs)
+			if opts.ProtoName == "" {
+				return fmt.Errorf("--proto-resource is required")
+			}
+
+			if baseOptions.APIVersion == "" {
+				return fmt.Errorf("--api-version is required")
+			}
+			_, err := schema.ParseGroupVersion(baseOptions.APIVersion)
+			if err != nil {
+				return fmt.Errorf("unable to parse --api-version: %w", err)
+			}
+
+			if baseOptions.ServiceName == "" {
+				return fmt.Errorf("--service is required")
+			}
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			gv, _ := schema.ParseGroupVersion(baseOptions.APIVersion)
+			gcpTokens := strings.Split(baseOptions.ServiceName, ".")
+			version := gcpTokens[len(gcpTokens)-1]
+			if version[0] != 'v' {
+				return fmt.Errorf("--service does not contain GCP version")
+			}
+			serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
+			cArgs := &cctemplate.ControllerArgs{
+				KCCService:    serviceName,
+				KCCVersion:    gv.Version,
+				Kind:          opts.Kind,
+				ProtoResource: opts.ProtoName,
+				ProtoVersion:  version,
+			}
+			return scaffold.Scaffold(serviceName, opts.ProtoName, cArgs)
 		},
 	}
-	addCmd.PersistentFlags().StringVarP(&kind, "resourceInKind", "r", "", "the GCP resource name under the GCP service. should be in camel case ")
-
+	addCmd.Flags().StringVarP(&opts.ProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `bucket`. If `--kind` is not given, the `--proto-resource` value will also be used as the kind name with a capital letter `Storage`.")
+	addCmd.Flags().StringVarP(&opts.Kind, "kind", "k", "", "the KCC resource Kind. requires `--proto-resource`.")
 	return addCmd
 }
 

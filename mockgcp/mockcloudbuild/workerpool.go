@@ -79,6 +79,9 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 		result.UpdateTime = now
 		result.State = pb.WorkerPool_RUNNING
 		result.Etag = fields.ComputeWeakEtag(result)
+		if err := s.storage.Update(ctx, fqn, result); err != nil { // update resource object when LRO is done
+			return nil, err
+		}
 		return result, nil
 	})
 }
@@ -125,6 +128,9 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		result.UpdateTime = now
 		result.State = pb.WorkerPool_RUNNING
 		result.Etag = fields.ComputeWeakEtag(result)
+		if err := s.storage.Update(ctx, fqn, result); err != nil { // update resource object when LRO is done
+			return nil, err
+		}
 		return result, nil
 	})
 }

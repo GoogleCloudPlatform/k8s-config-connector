@@ -4,12 +4,13 @@
  
 Follow [Step 1](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/1-add-mockgcp-tests.md)
 
-1. The 1st PR should set the `create.yaml `and  `update.yaml `fields the same value for both test suites, with `_http.log `telling the matching HTTP request/response, and `_generated_object_<resource>.golden.yaml` telling the output-only fields.
+1. The 1st PR should set the `create.yaml `and  `update.yaml `fields the same value for both test suites, with `_http.log `telling the matching HTTP request/response, and `_generated_object_<resource>.golden.yaml` telling the output-only fields. It shall record against real GCP 
 
 2. The 2nd PR should have `update.yaml `fields update all mutable fields for both basic and full test suites, with  `_http.log` and` _generated_object_<resource>.golden.yaml `telling the corresponding git diff. 
 
 ### PR Reviews
 
+* We require the PR to contain the real GCP record for `_generated_object_<resource>.golden.yaml` and `_http.log` 
 * We require the 2nd PR git diff can show the mutable fileds in `update.yaml`.
 * We require the `_generated_object_<resource>.golden.yaml` reflecting the mutable fields are successfully updated.
 * We require the `dependencies.yaml` to cover all referenced fields, and the `_http.log` showing the Cloud requests. You need to implement those dependencies' MockGCP methods as well.

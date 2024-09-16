@@ -19,10 +19,10 @@ spec:
   settings:
     ipConfiguration:
       authorizedNetworks:
-      - expirationTime: "2099-01-01T00:00:00+00:00"
+      - expirationTime: "2099-01-01T00:00:00Z"
         name: all
         value: 0.0.0.0/0
-      - expirationTime: "2100-01-01T00:00:00+00:00"
+      - expirationTime: "2100-01-01T00:00:00Z"
         name: my-network
         value: 1.2.3.0/24
     locationPreference:
