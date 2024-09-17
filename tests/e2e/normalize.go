@@ -177,6 +177,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to BigQueryDataTransferConfig
 	visitor.replacePaths[".status.observedState.nextRunTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.ownerInfo.email"] = "user@google.com"
+	visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
