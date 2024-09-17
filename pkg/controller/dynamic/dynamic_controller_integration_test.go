@@ -523,10 +523,14 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		return isServerGenerated
+	} else if resourceContext.IsTFResource {
+		// Skip drift detection test for tf-based resources with server-generated id.
+		rc := testservicemapping.GetResourceConfig(t, smLoader, u)
+		return hasServerGeneratedId(*rc)
+	} else {
+		// Drift detection tests are enabled by default for direct resources.
+		return false
 	}
-	// Skip drift detection test for tf-based resources with server-generated id.
-	rc := testservicemapping.GetResourceConfig(t, smLoader, u)
-	return hasServerGeneratedId(*rc)
 }
 
 func hasServerGeneratedId(rc v1alpha1.ResourceConfig) bool {
