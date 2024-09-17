@@ -62,7 +62,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
@@ -95,7 +95,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
@@ -122,18 +122,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "34.173.112.228",
+  "address": "8.8.8.8",
   "addressType": "EXTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "name": "computeraddress-${uniqueId}",
-  "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
-  "status": "RESERVED"
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}"
 }
 
 ---
@@ -163,20 +164,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressesId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -197,23 +192,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "34.173.112.228",
+  "address": "8.8.8.8",
   "addressType": "EXTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "computeraddress-${uniqueId}",
-  "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
-  "status": "RESERVED"
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}"
 }
 
 ---
@@ -234,65 +225,203 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoCreateSubnetworks": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Default network for the project",
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west8/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/aet-uscentral1-vpcacmo56tx4ydtkd3nifvrvq-sbnt",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east7/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}"
-  ]
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -355,48 +484,10 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "8026323938261160435",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "insert",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "8026323938261160435",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -421,12 +512,10 @@ X-Xss-Protection: 0
   "description": "a regional target vpn gateway",
   "id": "000000000000000000000",
   "kind": "compute#targetVpnGateway",
-  "labelFingerprint": "abcdef0123A=",
   "name": "computetargetvpngateway-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}",
-  "status": "READY"
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
 
 ---
@@ -469,7 +558,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: project=${projectId}&region=us-central1
 
 {
-  "IPAddress": "34.173.112.228",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "ESP",
   "description": "A regional forwarding rule",
   "labels": {
@@ -563,7 +652,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "34.173.112.228",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "ESP",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A regional forwarding rule",
@@ -571,6 +660,11 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
   "networkTier": "PREMIUM",
@@ -677,7 +771,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "34.173.112.228",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "ESP",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A regional forwarding rule",
@@ -796,7 +890,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "34.173.112.228",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "ESP",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A regional forwarding rule",
@@ -908,12 +1002,10 @@ X-Xss-Protection: 0
   "description": "a regional target vpn gateway",
   "id": "000000000000000000000",
   "kind": "compute#targetVpnGateway",
-  "labelFingerprint": "abcdef0123A=",
   "name": "computetargetvpngateway-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}",
-  "status": "READY"
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
 
 ---
@@ -938,48 +1030,10 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "8026323938261160435",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "8026323938261160435",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -1000,23 +1054,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "34.173.112.228",
+  "address": "8.8.8.8",
   "addressType": "EXTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "computeraddress-${uniqueId}",
-  "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
-  "status": "RESERVED"
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}"
 }
 
 ---
@@ -1043,7 +1093,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
@@ -1076,7 +1126,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
