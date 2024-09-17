@@ -108,6 +108,12 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// Deprecated. Unique ID of the user on whose behalf transfer is done.
 	UserID *int64 `json:"userID,omitempty"`
+
+	// Service account email. If this field is set, the transfer config will be created with this service account's credentials.
+	//  It requires that the requesting user calling this API has permissions to act as this service account.
+	//  Note that not all data sources support service account credentials when creating a transfer config.
+	//  For the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts.
+	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
 
 type Parent struct {

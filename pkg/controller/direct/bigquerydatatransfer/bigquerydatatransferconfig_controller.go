@@ -123,6 +123,14 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		obj.Spec.EncryptionConfiguration.KmsKeyRef = kmsCryptoKeyRef
 	}
 
+	// Resolve ServiceAccount Ref
+	if obj.Spec.ServiceAccountRef != nil {
+		err := obj.Spec.ServiceAccountRef.Resolve(ctx, reader, obj)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	// Resolve Project Ref
 	projectRef, err := refv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
@@ -226,6 +234,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		Parent:         a.id.Parent(),
 		TransferConfig: resource,
 	}
+	if desired.Spec.ServiceAccountRef != nil { // special handling for service account field which is not present in GCP proto
+		req.ServiceAccountName = desired.Spec.ServiceAccountRef.External
+	}
 	created, err := a.gcpClient.CreateTransferConfig(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating BigQueryDataTransferConfig %s: %w", a.id.FullyQualifiedName(), err)
@@ -315,10 +326,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 
-	resource.Name = a.id.FullyQualifiedName() // need to pass service generated ID to GCP API
+	resource.Name = a.id.FullyQualifiedName() // need to pass service generated ID to GCP API to identify the GCP resource
 	req := &bigquerydatatransferpb.UpdateTransferConfigRequest{
 		TransferConfig: resource,
 		UpdateMask:     updateMask,
+	}
+	if a.desired.Spec.ServiceAccountRef != nil { // special handling for service account field which is not present in GCP proto
+		req.ServiceAccountName = a.desired.Spec.ServiceAccountRef.External
 	}
 	updated, err := a.gcpClient.UpdateTransferConfig(ctx, req)
 	if err != nil {
