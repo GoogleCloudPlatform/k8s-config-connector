@@ -124,15 +124,16 @@ func fetchLiveStateFromID(ctx context.Context, id string, resource *Resource, pr
 			return nil, err
 		}
 	}
-
 	// Given that some fields are input-only or may only be returned on creation,
 	// e.g. private key, we need to stick with the previously captured values.
 	state, err = presetFieldsForRead(resource, state, kubeClient, smLoader)
 	if err != nil {
 		return nil, err
 	}
+
 	state = SetBlueprintAttribution(state, resource, provider)
 	state, diagnostics := resource.TFResource.RefreshWithoutUpgrade(ctx, state, provider.Meta())
+
 	if err := NewErrorFromDiagnostics(diagnostics); err != nil {
 		return nil, fmt.Errorf("error reading underlying resource: %w", err)
 	}
@@ -232,10 +233,14 @@ func withImmutableFields(imported, config map[string]interface{}, schemas map[st
 		configVal := config[field]
 		if schema.ForceNew {
 			if configVal == nil {
-				// If no value is specified by the user, prefill with the zero value.
-				// This happens due to pruning of default zero values returned from
-				// the read.
-				ret[field] = getZeroValueForType(schema.Type)
+				if schema.Default == nil {
+					// If no value is specified by the user, prefill with the zero value.
+					// This happens due to pruning of default zero values returned from
+					// the read.
+					ret[field] = getZeroValueForType(schema.Type)
+				} else {
+					ret[field] = schema.Default
+				}
 			} else {
 				ret[field] = configVal
 			}
