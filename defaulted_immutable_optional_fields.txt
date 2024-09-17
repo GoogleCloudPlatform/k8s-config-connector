@@ -1,0 +1,676 @@
+=== RUN   TestImmutableOptionalFieldsWithDefault
+=== PAUSE TestImmutableOptionalFieldsWithDefault
+=== CONT  TestImmutableOptionalFieldsWithDefault
+2024/09/17 20:14:37 [INFO] Authenticating using configured Google JSON 'access_token'...
+2024/09/17 20:14:37 [INFO]   -- Scopes: [https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive.readonly]
+2024/09/17 20:14:37 [INFO] Authenticating using configured Google JSON 'access_token'...
+2024/09/17 20:14:37 [INFO]   -- Scopes: [https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive.readonly]
+2024/09/17 20:14:37 [DEBUG] Waiting for state to become: [success]
+2024/09/17 20:14:37 [INFO] error retrieving userinfo for your provider credentials. have you enabled the 'https://www.googleapis.com/auth/userinfo.email' scope? error: error retrieving userinfo for your provider credentials. have you enabled the 'https://www.googleapis.com/auth/userinfo.email' scope? error: googleapi: got HTTP response code 401 with body: {
+  "error": "invalid_request",
+  "error_description": "Invalid Credentials"
+}
+2024/09/17 20:14:37 [INFO] Terraform is using this identity: 
+=== RUN   TestImmutableOptionalFieldsWithDefault/bigqueryreservation.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/bigqueryreservation.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/dialogflowcx.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/dialogflowcx.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/logging.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/logging.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/datastream.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/datastream.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/firebasedatabase.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/firebasedatabase.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/firebasestorage.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/firebasestorage.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/cloudidentity.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/cloudidentity.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/containerattached.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/containerattached.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/firebasehosting.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/firebasehosting.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/cloudtasks.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/cloudtasks.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/apigee.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/apigee.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/cloudasset.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/cloudasset.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/mlengine.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/mlengine.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/sql.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/sql.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/bigquerydatapolicy.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/bigquerydatapolicy.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/iam.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/iam.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/datastore.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/datastore.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/servicedirectory.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/servicedirectory.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/gkebackup.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/gkebackup.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/alloydb.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/alloydb.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/memcache.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/memcache.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/run.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/run.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/spanner.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/spanner.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/firestore.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/firestore.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/kms.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/kms.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/redis.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/redis.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/apigateway.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/apigateway.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/bigqueryconnection.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/bigqueryconnection.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/healthcare.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/healthcare.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/orgpolicy.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/orgpolicy.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/cloudiot.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/cloudiot.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/resourcemanager.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/resourcemanager.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/servicenetworking.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/servicenetworking.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/sourcerepo.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/sourcerepo.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/edgenetwork.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/edgenetwork.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/vpcaccess.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/vpcaccess.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/identityplatform.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/identityplatform.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/notebooks.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/notebooks.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/workstations.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/workstations.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/cloudbuild.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/cloudbuild.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/appengine.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/appengine.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/monitoring.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/monitoring.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/deploymentmanager.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/deploymentmanager.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/tpu.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/tpu.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/oslogin.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/oslogin.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/edgecontainer.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/edgecontainer.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/secretmanager.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/secretmanager.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/containeranalysis.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/containeranalysis.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/firebase.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/firebase.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/dialogflow.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/dialogflow.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/bigtable.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/bigtable.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/cloudids.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/cloudids.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/dataflow.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/dataflow.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/networkservices.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/networkservices.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/beyondcorp.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/beyondcorp.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/filestore.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/filestore.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/pubsublite.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/pubsublite.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/vertexai.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/vertexai.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/documentai.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/documentai.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/serviceusage.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/serviceusage.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/bigquerydatatransfer.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/bigquerydatatransfer.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/cloudfunctions2.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/cloudfunctions2.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/dataform.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/dataform.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/workflows.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/workflows.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/certificatemanager.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/certificatemanager.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/pubsub.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/pubsub.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/securitycenter.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/securitycenter.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/essentialcontacts.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/essentialcontacts.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/bigqueryanalyticshub.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/bigqueryanalyticshub.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/networkmanagement.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/networkmanagement.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/tags.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/tags.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/storagetransfer.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/storagetransfer.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/datacatalog.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/datacatalog.cnrm.cloud.google.com
+=== RUN   TestImmutableOptionalFieldsWithDefault/osconfig.cnrm.cloud.google.com
+=== PAUSE TestImmutableOptionalFieldsWithDefault/osconfig.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/bigqueryreservation.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/osconfig.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/datacatalog.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/storagetransfer.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_storage_transfer_job================
+=== CONT  TestImmutableOptionalFieldsWithDefault/identityplatform.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/vpcaccess.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_vpc_access_connector================
+=== CONT  TestImmutableOptionalFieldsWithDefault/notebooks.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/firebasestorage.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/firebasedatabase.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/datastream.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/logging.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_logging_log_sink================
+    servicemapping_test.go:308: ------immutable and optional field "include_children" has default value false
+=== CONT  TestImmutableOptionalFieldsWithDefault/dialogflowcx.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/tags.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/cloudids.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/bigtable.cnrm.cloud.google.com
+=== NAME  TestImmutableOptionalFieldsWithDefault/cloudids.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_cloud_ids_endpoint================
+=== CONT  TestImmutableOptionalFieldsWithDefault/bigquerydatatransfer.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/cloudfunctions2.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/dataform.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/oslogin.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/serviceusage.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/tpu.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/edgenetwork.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+=== NAME  TestImmutableOptionalFieldsWithDefault/vpcaccess.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "max_throughput" has default value 300
+=== NAME  TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_access_context_manager_access_level================
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_container_cluster================
+=== NAME  TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_access_context_manager_access_policy================
+    servicemapping_test.go:293: ===google_access_context_manager_service_perimeter================
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "enable_tpu" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "perimeter_type" has default value PERIMETER_TYPE_REGULAR
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "ip_allocation_policy.stack_type" has default value IPV4
+    servicemapping_test.go:308: ------immutable and optional field "enable_multi_networking" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_access_context_manager_service_perimeter_resource================
+=== NAME  TestImmutableOptionalFieldsWithDefault/edgenetwork.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_edgenetwork_network================
+=== NAME  TestImmutableOptionalFieldsWithDefault/serviceusage.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_project_service================
+    servicemapping_test.go:293: ===google_project_service_identity================
+=== NAME  TestImmutableOptionalFieldsWithDefault/vpcaccess.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "min_throughput" has default value 200
+    servicemapping_test.go:308: ------immutable and optional field "machine_type" has default value e2-micro
+=== CONT  TestImmutableOptionalFieldsWithDefault/servicenetworking.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_service_networking_connection================
+=== CONT  TestImmutableOptionalFieldsWithDefault/resourcemanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_folder================
+    servicemapping_test.go:293: ===google_org_policy================
+    servicemapping_test.go:293: ===google_project================
+    servicemapping_test.go:293: ===google_resource_manager_lien================
+=== CONT  TestImmutableOptionalFieldsWithDefault/cloudiot.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/orgpolicy.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/healthcare.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/bigqueryconnection.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/apigateway.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/redis.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_redis_instance================
+    servicemapping_test.go:308: ------immutable and optional field "connect_mode" has default value DIRECT_PEERING
+    servicemapping_test.go:308: ------immutable and optional field "tier" has default value BASIC
+    servicemapping_test.go:308: ------immutable and optional field "transit_encryption_mode" has default value DISABLED
+=== CONT  TestImmutableOptionalFieldsWithDefault/kms.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_kms_crypto_key================
+    servicemapping_test.go:308: ------immutable and optional field "purpose" has default value ENCRYPT_DECRYPT
+    servicemapping_test.go:308: ------immutable and optional field "version_template.protection_level" has default value SOFTWARE
+    servicemapping_test.go:293: ===google_kms_key_ring================
+=== CONT  TestImmutableOptionalFieldsWithDefault/firestore.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_firestore_index================
+    servicemapping_test.go:308: ------immutable and optional field "database" has default value (default)
+    servicemapping_test.go:308: ------immutable and optional field "query_scope" has default value COLLECTION
+=== CONT  TestImmutableOptionalFieldsWithDefault/spanner.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_spanner_database================
+    servicemapping_test.go:293: ===google_spanner_instance================
+=== CONT  TestImmutableOptionalFieldsWithDefault/run.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_cloud_run_v2_job================
+    servicemapping_test.go:293: ===google_cloud_run_v2_service================
+=== CONT  TestImmutableOptionalFieldsWithDefault/memcache.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_memcache_instance================
+=== CONT  TestImmutableOptionalFieldsWithDefault/alloydb.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_alloydb_backup================
+    servicemapping_test.go:293: ===google_alloydb_cluster================
+    servicemapping_test.go:293: ===google_alloydb_instance================
+    servicemapping_test.go:293: ===google_alloydb_user================
+=== CONT  TestImmutableOptionalFieldsWithDefault/gkebackup.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/servicedirectory.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_service_directory_endpoint================
+    servicemapping_test.go:293: ===google_service_directory_namespace================
+    servicemapping_test.go:293: ===google_service_directory_service================
+=== CONT  TestImmutableOptionalFieldsWithDefault/datastore.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/iam.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_iam_access_boundary_policy================
+    servicemapping_test.go:293: ===google_iam_custom_role================
+    servicemapping_test.go:293: ===google_service_account================
+    servicemapping_test.go:293: ===google_service_account_key================
+    servicemapping_test.go:308: ------immutable and optional field "private_key_type" has default value TYPE_GOOGLE_CREDENTIALS_FILE
+    servicemapping_test.go:308: ------immutable and optional field "public_key_type" has default value TYPE_X509_PEM_FILE
+    servicemapping_test.go:308: ------immutable and optional field "key_algorithm" has default value KEY_ALG_RSA_2048
+=== CONT  TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_bigquery_dataset================
+    servicemapping_test.go:308: ------immutable and optional field "location" has default value US
+    servicemapping_test.go:293: ===google_bigquery_job================
+=== CONT  TestImmutableOptionalFieldsWithDefault/bigquerydatapolicy.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/sql.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_sql_database================
+    servicemapping_test.go:293: ===google_sql_database_instance================
+    servicemapping_test.go:308: ------immutable and optional field "settings.disk_type" has default value PD_SSD
+    servicemapping_test.go:293: ===google_sql_ssl_cert================
+    servicemapping_test.go:293: ===google_sql_user================
+=== CONT  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_address================
+    servicemapping_test.go:308: ------immutable and optional field "address_type" has default value EXTERNAL
+    servicemapping_test.go:293: ===google_compute_backend_bucket================
+    servicemapping_test.go:293: ===google_compute_backend_service================
+    servicemapping_test.go:308: ------immutable and optional field "load_balancing_scheme" has default value EXTERNAL
+    servicemapping_test.go:293: ===google_compute_disk================
+    servicemapping_test.go:308: ------immutable and optional field "type" has default value pd-standard
+    servicemapping_test.go:308: ------immutable and optional field "interface" has default value SCSI
+    servicemapping_test.go:293: ===google_compute_external_vpn_gateway================
+    servicemapping_test.go:293: ===google_compute_firewall================
+    servicemapping_test.go:293: ===google_compute_forwarding_rule================
+    servicemapping_test.go:308: ------immutable and optional field "load_balancing_scheme" has default value EXTERNAL
+    servicemapping_test.go:293: ===google_compute_global_address================
+    servicemapping_test.go:308: ------immutable and optional field "address_type" has default value EXTERNAL
+    servicemapping_test.go:293: ===google_compute_global_forwarding_rule================
+    servicemapping_test.go:308: ------immutable and optional field "load_balancing_scheme" has default value EXTERNAL
+    servicemapping_test.go:293: ===google_compute_ha_vpn_gateway================
+=== CONT  TestImmutableOptionalFieldsWithDefault/mlengine.cnrm.cloud.google.com
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "stack_type" has default value IPV4_ONLY
+    servicemapping_test.go:293: ===google_compute_health_check================
+=== CONT  TestImmutableOptionalFieldsWithDefault/cloudasset.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/apigee.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/cloudtasks.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/firebasehosting.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/containerattached.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/cloudidentity.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/documentai.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/vertexai.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/pubsublite.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/filestore.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/beyondcorp.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/networkservices.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/dataflow.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/securitycenter.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/networkmanagement.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/bigqueryanalyticshub.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/essentialcontacts.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/certificatemanager.cnrm.cloud.google.com
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigtable.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_bigtable_app_profile================
+=== CONT  TestImmutableOptionalFieldsWithDefault/pubsub.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/dialogflow.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/firebase.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/workflows.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/containeranalysis.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/secretmanager.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/edgecontainer.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/sourcerepo.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/monitoring.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/deploymentmanager.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/cloudbuild.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/workstations.cnrm.cloud.google.com
+=== CONT  TestImmutableOptionalFieldsWithDefault/appengine.cnrm.cloud.google.com
+=== NAME  TestImmutableOptionalFieldsWithDefault/edgenetwork.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "mtu" has default value 1500
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_pool.node_config.preemptible" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "query.priority" has default value INTERACTIVE
+=== NAME  TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_dns_managed_zone================
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "query.use_query_cache" has default value true
+    servicemapping_test.go:308: ------immutable and optional field "query.write_disposition" has default value WRITE_EMPTY
+=== NAME  TestImmutableOptionalFieldsWithDefault/containerattached.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_container_attached_cluster================
+=== NAME  TestImmutableOptionalFieldsWithDefault/pubsub.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_pubsub_schema================
+=== NAME  TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "visibility" has default value public
+=== NAME  TestImmutableOptionalFieldsWithDefault/monitoring.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_monitoring_alert_policy================
+=== NAME  TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_storage_bucket================
+=== NAME  TestImmutableOptionalFieldsWithDefault/secretmanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_secret_manager_secret================
+=== NAME  TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_storage_bucket_access_control================
+=== NAME  TestImmutableOptionalFieldsWithDefault/monitoring.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_monitoring_notification_channel================
+=== NAME  TestImmutableOptionalFieldsWithDefault/secretmanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_secret_manager_secret_version================
+    servicemapping_test.go:308: ------immutable and optional field "is_secret_data_base64" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_pool.node_config.spot" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/edgenetwork.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_edgenetwork_subnet================
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_pool.node_config.shielded_instance_config.enable_integrity_monitoring" has default value true
+=== NAME  TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_dns_policy================
+=== NAME  TestImmutableOptionalFieldsWithDefault/dataflow.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_dataflow_flex_template_job================
+=== NAME  TestImmutableOptionalFieldsWithDefault/certificatemanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_certificate_manager_certificate================
+    servicemapping_test.go:308: ------immutable and optional field "scope" has default value DEFAULT
+    servicemapping_test.go:293: ===google_certificate_manager_certificate_map================
+=== NAME  TestImmutableOptionalFieldsWithDefault/pubsublite.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_pubsub_lite_reservation================
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "query.create_disposition" has default value CREATE_NEVER
+=== NAME  TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_artifact_registry_repository================
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "location" has default value US
+    servicemapping_test.go:308: ------immutable and optional field "extract.print_header" has default value true
+=== NAME  TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "maven_config.version_policy" has default value VERSION_POLICY_UNSPECIFIED
+    servicemapping_test.go:308: ------immutable and optional field "mode" has default value STANDARD_REPOSITORY
+    servicemapping_test.go:308: ------immutable and optional field "remote_repository_config.docker_repository.public_repository" has default value DOCKER_HUB
+    servicemapping_test.go:308: ------immutable and optional field "remote_repository_config.maven_repository.public_repository" has default value MAVEN_CENTRAL
+=== NAME  TestImmutableOptionalFieldsWithDefault/vertexai.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_vertex_ai_dataset================
+    servicemapping_test.go:293: ===google_vertex_ai_endpoint================
+    servicemapping_test.go:293: ===google_vertex_ai_index================
+    servicemapping_test.go:308: ------immutable and optional field "index_update_method" has default value BATCH_UPDATE
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "extract.compression" has default value NONE
+    servicemapping_test.go:308: ------immutable and optional field "copy.write_disposition" has default value WRITE_EMPTY
+    servicemapping_test.go:308: ------immutable and optional field "copy.create_disposition" has default value CREATE_NEVER
+    servicemapping_test.go:308: ------immutable and optional field "load.allow_jagged_rows" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "load.encoding" has default value UTF-8
+    servicemapping_test.go:308: ------immutable and optional field "load.max_bad_records" has default value 0
+    servicemapping_test.go:308: ------immutable and optional field "load.skip_leading_rows" has default value 0
+    servicemapping_test.go:308: ------immutable and optional field "load.null_marker" has default value 
+    servicemapping_test.go:308: ------immutable and optional field "load.source_format" has default value CSV
+    servicemapping_test.go:308: ------immutable and optional field "load.allow_quoted_newlines" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "load.create_disposition" has default value CREATE_NEVER
+=== NAME  TestImmutableOptionalFieldsWithDefault/pubsub.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_pubsub_subscription================
+    servicemapping_test.go:293: ===google_pubsub_topic================
+=== NAME  TestImmutableOptionalFieldsWithDefault/sourcerepo.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_sourcerepo_repository================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_http_health_check================
+    servicemapping_test.go:293: ===google_compute_https_health_check================
+    servicemapping_test.go:293: ===google_compute_image================
+    servicemapping_test.go:308: ------immutable and optional field "raw_disk.container_type" has default value TAR
+    servicemapping_test.go:293: ===google_compute_instance================
+    servicemapping_test.go:308: ------immutable and optional field "scheduling.preemptible" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "scratch_disk.size" has default value 375
+    servicemapping_test.go:308: ------immutable and optional field "boot_disk.auto_delete" has default value true
+=== NAME  TestImmutableOptionalFieldsWithDefault/cloudidentity.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_cloud_identity_group================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "boot_disk.mode" has default value READ_WRITE
+=== NAME  TestImmutableOptionalFieldsWithDefault/cloudidentity.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "initial_group_config" has default value EMPTY
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_instance_from_template================
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigtable.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_bigtable_gc_policy================
+    servicemapping_test.go:293: ===google_bigtable_instance================
+    servicemapping_test.go:293: ===google_bigtable_table================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_instance_group================
+=== NAME  TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_storage_default_object_access_control================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_instance_template================
+=== NAME  TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_storage_notification================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "can_ip_forward" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/edgecontainer.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_edgecontainer_cluster================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "shielded_instance_config.enable_secure_boot" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "shielded_instance_config.enable_vtpm" has default value true
+    servicemapping_test.go:308: ------immutable and optional field "shielded_instance_config.enable_integrity_monitoring" has default value true
+=== NAME  TestImmutableOptionalFieldsWithDefault/edgecontainer.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_edgecontainer_node_pool================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "scheduling.preemptible" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/edgecontainer.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_edgecontainer_vpn_connection================
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_pool.node_config.shielded_instance_config.enable_secure_boot" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "scheduling.automatic_restart" has default value true
+    servicemapping_test.go:308: ------immutable and optional field "advanced_machine_features.enable_nested_virtualization" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "disk.auto_delete" has default value true
+=== NAME  TestImmutableOptionalFieldsWithDefault/dataflow.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_dataflow_job================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_interconnect_attachment================
+=== NAME  TestImmutableOptionalFieldsWithDefault/certificatemanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_certificate_manager_certificate_map_entry================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "encryption" has default value NONE
+=== NAME  TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "remote_repository_config.npm_repository.public_repository" has default value NPMJS
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_managed_ssl_certificate================
+    servicemapping_test.go:308: ------immutable and optional field "type" has default value MANAGED
+=== NAME  TestImmutableOptionalFieldsWithDefault/cloudbuild.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_cloudbuild_trigger================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_network================
+    servicemapping_test.go:308: ------immutable and optional field "auto_create_subnetworks" has default value true
+    servicemapping_test.go:293: ===google_compute_network_endpoint_group================
+    servicemapping_test.go:308: ------immutable and optional field "network_endpoint_type" has default value GCE_VM_IP_PORT
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "network" has default value default
+    servicemapping_test.go:308: ------immutable and optional field "enable_kubernetes_alpha" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "node_config.spot" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "node_config.preemptible" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "node_config.shielded_instance_config.enable_secure_boot" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "remote_repository_config.python_repository.public_repository" has default value PYPI
+=== NAME  TestImmutableOptionalFieldsWithDefault/certificatemanager.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_certificate_manager_dns_authorization================
+=== NAME  TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "load.ignore_unknown_values" has default value false
+    servicemapping_test.go:308: ------immutable and optional field "load.write_disposition" has default value WRITE_EMPTY
+    servicemapping_test.go:293: ===google_bigquery_table================
+    servicemapping_test.go:308: ------immutable and optional field "materialized_view.allow_non_incremental_definition" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/cloudbuild.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "location" has default value global
+=== NAME  TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_dns_record_set================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_network_firewall_policy================
+    servicemapping_test.go:293: ===google_compute_network_firewall_policy_association================
+    servicemapping_test.go:293: ===google_compute_network_peering================
+    servicemapping_test.go:308: ------immutable and optional field "export_subnet_routes_with_public_ip" has default value true
+    servicemapping_test.go:293: ===google_compute_node_group================
+    servicemapping_test.go:308: ------immutable and optional field "maintenance_policy" has default value DEFAULT
+    servicemapping_test.go:293: ===google_compute_node_template================
+    servicemapping_test.go:308: ------immutable and optional field "cpu_overcommit_type" has default value NONE
+    servicemapping_test.go:293: ===google_compute_project_metadata================
+    servicemapping_test.go:293: ===google_compute_region_backend_service================
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_config.shielded_instance_config.enable_integrity_monitoring" has default value true
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "load_balancing_scheme" has default value INTERNAL
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_container_node_pool================
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_region_disk================
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_config.spot" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "type" has default value pd-standard
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_config.shielded_instance_config.enable_secure_boot" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "interface" has default value SCSI
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_config.shielded_instance_config.enable_integrity_monitoring" has default value true
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_region_health_check================
+=== NAME  TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com
+    servicemapping_test.go:308: ------immutable and optional field "node_config.preemptible" has default value false
+=== NAME  TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com
+    servicemapping_test.go:293: ===google_compute_region_network_endpoint_group================
+    servicemapping_test.go:308: ------immutable and optional field "network_endpoint_type" has default value SERVERLESS
+    servicemapping_test.go:293: ===google_compute_region_ssl_certificate================
+    servicemapping_test.go:293: ===google_compute_region_target_http_proxy================
+    servicemapping_test.go:293: ===google_compute_region_target_https_proxy================
+    servicemapping_test.go:293: ===google_compute_region_url_map================
+    servicemapping_test.go:293: ===google_compute_reservation================
+    servicemapping_test.go:308: ------immutable and optional field "specific_reservation.instance_properties.local_ssds.interface" has default value SCSI
+    servicemapping_test.go:308: ------immutable and optional field "specific_reservation_required" has default value false
+    servicemapping_test.go:293: ===google_compute_resource_policy================
+    servicemapping_test.go:308: ------immutable and optional field "snapshot_schedule_policy.retention_policy.on_source_disk_delete" has default value KEEP_AUTO_SNAPSHOTS
+    servicemapping_test.go:293: ===google_compute_route================
+    servicemapping_test.go:308: ------immutable and optional field "priority" has default value 1000
+    servicemapping_test.go:293: ===google_compute_router================
+    servicemapping_test.go:293: ===google_compute_router_interface================
+    servicemapping_test.go:293: ===google_compute_router_nat================
+    servicemapping_test.go:293: ===google_compute_router_peer================
+    servicemapping_test.go:293: ===google_compute_security_policy================
+    servicemapping_test.go:293: ===google_compute_shared_vpc_host_project================
+    servicemapping_test.go:293: ===google_compute_shared_vpc_service_project================
+    servicemapping_test.go:293: ===google_compute_snapshot================
+    servicemapping_test.go:293: ===google_compute_ssl_certificate================
+    servicemapping_test.go:293: ===google_compute_ssl_policy================
+    servicemapping_test.go:293: ===google_compute_subnetwork================
+    servicemapping_test.go:293: ===google_compute_target_grpc_proxy================
+    servicemapping_test.go:293: ===google_compute_target_http_proxy================
+    servicemapping_test.go:293: ===google_compute_target_https_proxy================
+    servicemapping_test.go:293: ===google_compute_target_instance================
+    servicemapping_test.go:308: ------immutable and optional field "nat_policy" has default value NO_NAT
+    servicemapping_test.go:293: ===google_compute_target_pool================
+    servicemapping_test.go:308: ------immutable and optional field "session_affinity" has default value NONE
+    servicemapping_test.go:293: ===google_compute_target_ssl_proxy================
+    servicemapping_test.go:293: ===google_compute_target_tcp_proxy================
+    servicemapping_test.go:293: ===google_compute_url_map================
+    servicemapping_test.go:293: ===google_compute_vpn_gateway================
+    servicemapping_test.go:293: ===google_compute_vpn_tunnel================
+    servicemapping_test.go:308: ------immutable and optional field "ike_version" has default value 2
+--- PASS: TestImmutableOptionalFieldsWithDefault (0.11s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/bigqueryreservation.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/osconfig.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/datacatalog.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/storagetransfer.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/identityplatform.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/firebasestorage.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/datastream.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/notebooks.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/logging.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/firebasedatabase.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/dialogflowcx.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/tags.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/cloudids.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/bigquerydatatransfer.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/dataform.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/oslogin.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/cloudfunctions2.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/tpu.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/accesscontextmanager.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/serviceusage.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/vpcaccess.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/servicenetworking.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/resourcemanager.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/cloudiot.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/orgpolicy.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/healthcare.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/bigqueryconnection.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/apigateway.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/redis.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/kms.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/firestore.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/spanner.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/run.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/memcache.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/alloydb.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/gkebackup.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/servicedirectory.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/datastore.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/iam.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/bigquerydatapolicy.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/sql.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/mlengine.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/cloudtasks.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/cloudasset.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/apigee.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/firebasehosting.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/containerattached.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/dialogflow.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/firebase.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/workflows.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/appengine.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/deploymentmanager.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/filestore.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/containeranalysis.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/bigqueryanalyticshub.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/essentialcontacts.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/networkservices.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/beyondcorp.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/securitycenter.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/documentai.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/workstations.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/monitoring.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/secretmanager.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/edgenetwork.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/pubsublite.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/networkmanagement.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/vertexai.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/pubsub.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/sourcerepo.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/cloudidentity.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/bigtable.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/storage.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/edgecontainer.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/dataflow.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/artifactregistry.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/certificatemanager.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/bigquery.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/cloudbuild.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/dns.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/container.cnrm.cloud.google.com (0.00s)
+    --- PASS: TestImmutableOptionalFieldsWithDefault/compute.cnrm.cloud.google.com (0.00s)
+PASS
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/servicemapping	(cached)
