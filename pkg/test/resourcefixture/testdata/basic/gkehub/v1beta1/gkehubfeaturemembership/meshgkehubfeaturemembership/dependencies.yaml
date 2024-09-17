@@ -90,7 +90,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: gkehubmembership-mesh-${uniqueId}
 spec:
-  location: global
+  location: us-central1
   authority:
     issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}
   description: A sample GKE Hub membership

@@ -974,7 +974,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -992,14 +992,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}\" not found",
+    "message": "membership \"projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships?alt=json&membershipId=gkehubmembership-full-acm-${uniqueId}
+POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships?alt=json&membershipId=gkehubmembership-full-acm-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1017,7 +1017,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}"
+  "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}"
 }
 
 200 OK
@@ -1036,14 +1036,14 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}"
+    "target": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}"
+  "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1064,9 +1064,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}"
+    "target": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}",
+  "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership",
     "authority": {
@@ -1087,7 +1087,7 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}",
+    "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}",
     "state": {
       "code": "READY"
     },
@@ -1098,7 +1098,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1132,7 +1132,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}",
+  "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}",
   "state": {
     "code": "READY"
   },
@@ -1176,7 +1176,7 @@ User-Agent: kcc/controller-manager
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
         "configSync": {
           "git": {
@@ -1190,11 +1190,6 @@ User-Agent: kcc/controller-manager
             "syncWaitSecs": "20"
           },
           "sourceFormat": "hierarchy"
-        },
-        "hierarchyController": {
-          "enableHierarchicalResourceQuota": true,
-          "enablePodTreeLabels": true,
-          "enabled": true
         },
         "version": "1.18.1"
       }
@@ -1256,7 +1251,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {
         "configmanagement": {
           "configSync": {
             "git": {
@@ -1270,11 +1265,6 @@ X-Xss-Protection: 0
               "syncWaitSecs": "20"
             },
             "sourceFormat": "hierarchy"
-          },
-          "hierarchyController": {
-            "enableHierarchicalResourceQuota": true,
-            "enablePodTreeLabels": true,
-            "enabled": true
           },
           "version": "1.18.1"
         }
@@ -1310,7 +1300,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
         "configSync": {
           "git": {
@@ -1324,11 +1314,6 @@ X-Xss-Protection: 0
             "syncWaitSecs": "20"
           },
           "sourceFormat": "hierarchy"
-        },
-        "hierarchyController": {
-          "enableHierarchicalResourceQuota": true,
-          "enablePodTreeLabels": true,
-          "enabled": true
         },
         "version": "1.18.1"
       }
@@ -1350,7 +1335,7 @@ User-Agent: kcc/controller-manager
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
         "configSync": {
           "git": {
@@ -1365,7 +1350,6 @@ User-Agent: kcc/controller-manager
           },
           "sourceFormat": "hierarchy"
         },
-        "hierarchyController": {},
         "version": "1.18.2"
       }
     }
@@ -1427,7 +1411,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {
         "configmanagement": {
           "configSync": {
             "git": {
@@ -1442,7 +1426,6 @@ X-Xss-Protection: 0
             },
             "sourceFormat": "hierarchy"
           },
-          "hierarchyController": {},
           "version": "1.18.2"
         }
       }
@@ -1477,7 +1460,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
         "configSync": {
           "git": {
@@ -1492,7 +1475,6 @@ X-Xss-Protection: 0
           },
           "sourceFormat": "hierarchy"
         },
-        "hierarchyController": {},
         "version": "1.18.2"
       }
     }
@@ -1513,7 +1495,7 @@ User-Agent: kcc/controller-manager
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {}
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {}
   },
   "name": "projects/example-project-01/locations/global/features/configmanagement",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1572,7 +1554,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {}
+      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}": {}
     },
     "name": "projects/example-project-01/locations/global/features/configmanagement",
     "resourceState": {
@@ -1584,7 +1566,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1618,7 +1600,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}",
+  "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}",
   "state": {
     "code": "READY"
   },
@@ -1628,7 +1610,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
+DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1649,9 +1631,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}"
+    "target": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}",
+  "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership"
   }
@@ -1659,7 +1641,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1677,7 +1659,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}\" not found",
+    "message": "membership \"projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-acm-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }

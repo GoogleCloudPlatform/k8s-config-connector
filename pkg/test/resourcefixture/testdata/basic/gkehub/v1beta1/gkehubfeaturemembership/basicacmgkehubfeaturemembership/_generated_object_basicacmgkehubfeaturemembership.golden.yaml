@@ -25,15 +25,11 @@ spec:
         syncRev: HEAD
         syncWaitSecs: "20"
       sourceFormat: hierarchy
-    hierarchyController:
-      enableHierarchicalResourceQuota: true
-      enablePodTreeLabels: true
-      enabled: true
     version: 1.18.1
   featureRef:
     name: gkehubfeature-basic-acm-${uniqueId}
   location: global
-  membershipLocation: global
+  membershipLocation: us-central1
   membershipRef:
     name: gkehubmembership-basic-acm-${uniqueId}
   projectRef:
