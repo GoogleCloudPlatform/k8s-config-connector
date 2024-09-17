@@ -34,6 +34,7 @@ func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
 	out.OwnerInfo = UserInfo_FromProto(mapCtx, in.GetOwnerInfo())
+	out.UserID = direct.LazyPtr(in.GetUserId())
 	return out
 }
 func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigObservedState) *pb.TransferConfig {
@@ -47,6 +48,7 @@ func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
 	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
 	out.OwnerInfo = UserInfo_ToProto(mapCtx, in.OwnerInfo)
+	out.UserId = direct.ValueOf(in.UserID)
 	return out
 }
 func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigSpec {
@@ -64,7 +66,6 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ScheduleOptions = ScheduleOptions_FromProto(mapCtx, in.GetScheduleOptions())
 	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
-	out.UserID = direct.LazyPtr(in.GetUserId())
 	if in.GetNotificationPubsubTopic() != "" {
 		out.PubSubTopicRef = &refv1beta1.PubSubTopicRef{External: in.GetNotificationPubsubTopic()}
 	}
@@ -87,7 +88,6 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 	out.ScheduleOptions = ScheduleOptions_ToProto(mapCtx, in.ScheduleOptions)
 	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
 	out.Disabled = direct.ValueOf(in.Disabled)
-	out.UserId = direct.ValueOf(in.UserID)
 	if in.PubSubTopicRef != nil {
 		out.NotificationPubsubTopic = in.PubSubTopicRef.External
 	}

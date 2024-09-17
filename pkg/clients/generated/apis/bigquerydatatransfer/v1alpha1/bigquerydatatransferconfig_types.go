@@ -125,9 +125,9 @@ type BigQueryDataTransferConfigSpec struct {
 	// +optional
 	ScheduleOptions *ConfigScheduleOptions `json:"scheduleOptions,omitempty"`
 
-	/* Deprecated. Unique ID of the user on whose behalf transfer is done. */
+	/* Service account email. If this field is set, the transfer config will be created with this service account's credentials. It requires that the requesting user calling this API has permissions to act as this service account. Note that not all data sources support service account credentials when creating a transfer config. For the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts. */
 	// +optional
-	UserID *int64 `json:"userID,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type ConfigObservedStateStatus struct {
@@ -154,6 +154,10 @@ type ConfigObservedStateStatus struct {
 	/* Output only. Data transfer modification time. Ignored by server on input. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	/* Deprecated. Unique ID of the user on whose behalf transfer is done. */
+	// +optional
+	UserID *int64 `json:"userID,omitempty"`
 }
 
 type ConfigOwnerInfoStatus struct {

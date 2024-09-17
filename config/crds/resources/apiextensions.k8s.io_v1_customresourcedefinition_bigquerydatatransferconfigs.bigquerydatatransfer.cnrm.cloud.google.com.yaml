@@ -310,11 +310,6 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
-              userID:
-                description: Deprecated. Unique ID of the user on whose behalf transfer
-                  is done.
-                format: int64
-                type: integer
             required:
             - dataSourceID
             - datasetRef
@@ -400,6 +395,11 @@ spec:
                     description: Output only. Data transfer modification time. Ignored
                       by server on input.
                     type: string
+                  userID:
+                    description: Deprecated. Unique ID of the user on whose behalf
+                      transfer is done.
+                    format: int64
+                    type: integer
                 type: object
             type: object
         required:

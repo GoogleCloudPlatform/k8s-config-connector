@@ -147,9 +147,9 @@ func (in *BigQueryDataTransferConfigSpec) DeepCopyInto(out *BigQueryDataTransfer
 		*out = new(ConfigScheduleOptions)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.UserID != nil {
-		in, out := &in.UserID, &out.UserID
-		*out = new(int64)
+	if in.ServiceAccountRef != nil {
+		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -274,6 +274,11 @@ func (in *ConfigObservedStateStatus) DeepCopyInto(out *ConfigObservedStateStatus
 	if in.UpdateTime != nil {
 		in, out := &in.UpdateTime, &out.UpdateTime
 		*out = new(string)
+		**out = **in
+	}
+	if in.UserID != nil {
+		in, out := &in.UserID, &out.UserID
+		*out = new(int64)
 		**out = **in
 	}
 	return
