@@ -1,8 +1,8 @@
-# Add a new ConfigConnector resource
+# Add a new Config Connector resource
 
 *Understand the current status*
 
-* If the resource is not in [ConfigConnector API Reference](https://cloud.google.com/config-connector/docs/reference/overview), it could be an Alpha resource. Check if [the CRD](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/crds) exists with the latest release. If so, please go to [promote alpha to beta](./alpha-to-beta.md)   
+* If the resource is not in [Config Connector API Reference](https://cloud.google.com/config-connector/docs/reference/overview), it could be an Alpha resource. Check if [the CRD](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/crds) exists with the latest release. If so, please go to [promote alpha to beta](./alpha-to-beta.md)   
 
 * We are migrating from the TF/DCL based resources to the Direct approach. That means we are holding off new PR reviews if they are using the TF/DCL based approach. Please let us know if you encounter any problems or any specific reasons that can only use the TF/DCL based approach.
 
@@ -14,7 +14,7 @@ Different than other scenarios, developing a pure Direct resource requires you t
 
 1. A basic API from the auto-generated code, including all required fields (Step 2)
 2. A basic Direct controller (Step 3 and 4).
-3. Define `create.yaml` and `update.yaml` to run against the real GCP (Step 1 [record real gcp](../guides/1-add-mockgcp-tests.md#record-real-gcp-log)) (TODO update link)
+3. Define `create.yaml` and `update.yaml` to run against the real GCP (Step 1 [record real gcp](../guides/1-add-mockgcp-tests.md#record-real-gcp-log))
 
 ### PR reviews
 

@@ -11,7 +11,7 @@
   * This feature allows users to customize the client-side kube-apiserver request rate limit.
 
 * Continue moving towards Direct Actuation as our preferred mechanism.
-  * The default reconciler now uses Direct Actuation, if the ConfigConnector CRD does not have a `cnrm.cloud.google.com/tf2crd: "true"` or `cnrm.cloud.google.com/dcl2crd: "true"` label.
+  * The default reconciler now uses Direct Actuation, if the Config Connector CRD does not have a `cnrm.cloud.google.com/tf2crd: "true"` or `cnrm.cloud.google.com/dcl2crd: "true"` label.
 
 ## New Resources:
 

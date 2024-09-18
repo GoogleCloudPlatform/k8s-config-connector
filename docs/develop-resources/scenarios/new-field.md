@@ -32,7 +32,7 @@ The apis directory the contains the existing API types of the resource.
 
     1. Run 3.1 Generate the API and proto mapper to update the mapper files.
     2. Add the fields to `create.yaml `and `update.yaml `in corresponding test suites.
-    3. Modify the MockGCP when necessary. The new fields should show up in `_http.log `and   `_generated_object_&lt;resource>.golden.yaml` 
+    3. Modify the MockGCP when necessary. The new fields should show up in `_http.log `and   `_generated_object_<resource>.golden.yaml` 
 
 ## 2. Resolve resource reference
 

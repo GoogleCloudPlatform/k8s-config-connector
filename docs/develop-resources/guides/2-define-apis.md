@@ -1,6 +1,6 @@
 # 2. Define API
 
-ConfigConnector builds the API using the Google Cloud Client proto.   
+Config Connector builds the API using the Google Cloud Client proto.   
 
 ## 2.1 Build the Google Cloud Proto (one-off step)
 
@@ -17,7 +17,7 @@ cd $REPO_ROOT/dev/tools/proto-to-mapper
 make generate-pb
 ```
 
-## 2.2 Generate the ConfigConnector Types (repeat-run safe) 
+## 2.2 Generate the Config Connector Types (repeat-run safe) 
 
 Run the following command
 
@@ -48,7 +48,7 @@ The apis directory to where to write the result to. Shall always be   $REPO_ROO
 
 * `--kind`
 
-The ConfigConnector resource kind, camel case. Normally it should contain the service name for example `SpannerInstance`, `SQLInstance`.
+The Config Connector resource kind, camel case. Normally it should contain the service name for example `SpannerInstance`, `SQLInstance`.
 
 * `--proto-source`
 
@@ -56,7 +56,7 @@ The proto name of the resource, you can find them in [https://github.com/googlea
 
 * `--api-version`
 
-The ConfigConnector apiVersion value, shall be <code>&lt;service>.[cnrm.cloud.google.com/](http://cnrm.cloud.google.com/)&lt;version></code>, where the generated file will be placed under<code>$REPO_ROOT/apis/&lt;service>/&lt;version></code> (if the dir does not exist, the command will create one).  
+The Config Connector apiVersion value, shall be <code><service>.[cnrm.cloud.google.com/](http://cnrm.cloud.google.com/)<version></code>, where the generated file will be placed under<code>$REPO_ROOT/apis/<service>/<version></code> (if the dir does not exist, the command will create one).  
 
 
 ## 2.3 Generate CRD (repeat-run safe)
@@ -81,7 +81,7 @@ cd $REPO_ROOT
 
 For scenarios #1 and #2, we accept breaking changes. So it is fine if the CRD outcome in 2.3 is different from the already released CRDs.
 
-For scenarios #3, ConfigConnector has to be backward compatible. So we have to keep the CRD **existing** spec and status the same.
+For scenarios #3, Config Connector has to be backward compatible. So we have to keep the CRD **existing** spec and status the same.
 
 * The API field name must **not** change. You need to manually modify the field if it’s changed. 
 * The field go comment is the CRD’s field description, this can be modified.
