@@ -32,3 +32,5 @@ status:
     type: Ready
   jobId: ${jobID}
   observedGeneration: 1
+  state: JOB_STATE_RUNNING
+  type: JOB_TYPE_BATCH
