@@ -58,16 +58,10 @@ type model struct {
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
 	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building bigquerydatatransfer client: %w", err)
