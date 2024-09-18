@@ -37,7 +37,8 @@ func fixStaleExternalFormat(external string) string {
 }
 
 type ComputeNetworkRef struct {
-	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by Config Connector. */
+	// A reference to an externally managed Compute Network resource.
+	// Should be in the format `projects/<projectID>/global/networks/<network>`.
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeNetwork` resource. */
 	Name string `json:"name,omitempty"`
