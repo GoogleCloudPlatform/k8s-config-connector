@@ -40,6 +40,8 @@ cloud.google.com/go/bigquery v1.62.0 h1:SYEA2f7fKqbSRRBHb7g0iHTtZvtPSPYdXfmqsjps
 cloud.google.com/go/bigquery v1.62.0/go.mod h1:5ee+ZkF1x/ntgCsFQJAQTM3QkAZOecfCmvxhkJsWRSA=
 cloud.google.com/go/bigtable v1.31.0 h1:/uVLxGVRbK4mxK/iO89VqXcL/zoTSmkltVfIDYVBluQ=
 cloud.google.com/go/bigtable v1.31.0/go.mod h1:N/mwZO+4TSHOeyiE1JxO+sRPnW4bnR7WLn9AEaiJqew=
+cloud.google.com/go/certificatemanager v1.9.0 h1:dQQxtb+HnS9GbylmAImWkC9QR8zy/xwRiQrIaewbwgE=
+cloud.google.com/go/certificatemanager v1.9.0/go.mod h1:hQBpwtKNjUq+er6Rdg675N7lSsNGqMgt7Bt7Dbcm7d0=
 cloud.google.com/go/cloudbuild v1.17.0 h1:tMKv6Gh7jPH3TM3QBHkdPzls80kQbUSH9Q20Hn3QD40=
 cloud.google.com/go/cloudbuild v1.17.0/go.mod h1:/RbwgDlbQEwIKoWLIYnW72W3cWs+e83z7nU45xRKnj8=
 cloud.google.com/go/compute v1.28.0 h1:OPtBxMcheSS+DWfci803qvPly3d4w7Eu5ztKBcFfzwk=
