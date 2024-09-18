@@ -747,7 +747,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: project=${projectId}
 
 {
-  "IPAddress": "0.0.0.0",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "description": "A global forwarding rule",
   "ipVersion": "IPV4",
@@ -853,7 +853,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "0.0.0.0",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A global forwarding rule",
@@ -944,7 +944,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "0.0.0.0",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A global forwarding rule",
@@ -1111,7 +1111,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "0.0.0.0",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A global forwarding rule",
