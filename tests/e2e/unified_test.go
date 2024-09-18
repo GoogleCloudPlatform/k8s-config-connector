@@ -768,7 +768,12 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("nextRunTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("ownerInfo.email", "user@google.com")
 					addReplacement("userId", "0000000000000000000")
-					jsonMutators = append(jsonMutators, func(obj map[string]any) { // special handling because the field includes dot
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if _, found, err := unstructured.NestedString(obj, "destinationDatasetId"); err != nil || !found {
+							// This is a hack to only run this mutator for BigQueryDataTransferConfig objects.
+							return
+						}
+						// special handling because the field includes dot
 						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientId"); found {
 							if err := unstructured.SetNestedField(obj, "client-id", "params", "connector.authentication.oauth.clientId"); err != nil {
 								t.Fatal(err)

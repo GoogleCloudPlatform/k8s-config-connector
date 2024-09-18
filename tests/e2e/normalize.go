@@ -175,10 +175,12 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
 	// Specific to BigQueryDataTransferConfig
-	visitor.replacePaths[".status.observedState.nextRunTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.observedState.ownerInfo.email"] = "user@google.com"
-	visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
-	visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
+	if u.GetKind() == "BigQueryDataTransferConfig" {
+		visitor.replacePaths[".status.observedState.nextRunTime"] = "1970-01-01T00:00:00Z"
+		visitor.replacePaths[".status.observedState.ownerInfo.email"] = "user@google.com"
+		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
+		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
+	}
 
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
