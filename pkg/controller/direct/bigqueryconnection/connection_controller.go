@@ -82,8 +82,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-
-	connectionRef, err := krm.New(ctx, reader, u)
+	connectionRef, err := krm.New(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -148,13 +147,17 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
+	parent, err := a.id.Parent()
+	if err != nil {
+		return fmt.Errorf("get BigQueryConnectionConnection parent %s: %w", a.id.External, err)
+	}
 	req := &bigqueryconnectionpb.CreateConnectionRequest{
-		Parent:     a.id.Parent(),
+		Parent:     parent,
 		Connection: resource,
 	}
 	created, err := a.gcpClient.CreateConnection(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Connection %s: %w", *&a.id.External, err)
+		return fmt.Errorf("creating Connection %s: %w", *&created.Name, err)
 	}
 	log.V(2).Info("successfully created Connection", "name", created.Name)
 
@@ -220,7 +223,10 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent := a.id.Parent()
+	parent, err := a.id.Parent()
+	if err != nil {
+		return nil, fmt.Errorf("BigQueryConnectionConnection %s parent unset: %w", a.id.External, err)
+	}
 	if parent != "" {
 		tokens := strings.Split(parent, "/")
 		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {

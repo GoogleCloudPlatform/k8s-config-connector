@@ -21,18 +21,17 @@ import (
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/google/uuid"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	runtime "k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func New(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (*BigQueryConnectionConnectionRef, error) {
+// New builds a BigQueryConnectionConnectionRef from the ConfigConnector BigQueryConnectionConnection object.
+func New(ctx context.Context, reader client.Reader, obj *BigQueryConnectionConnection) (*BigQueryConnectionConnectionRef, error) {
 	id := &BigQueryConnectionConnectionRef{}
-	obj := &BigQueryConnectionConnection{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
-	}
 
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
@@ -54,7 +53,6 @@ func New(ctx context.Context, reader client.Reader, u *unstructured.Unstructured
 	}
 
 	// Get externalReference
-	// var id *BigQueryConnectionConnectionIdentity
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		tokens := strings.Split(externalRef, "/")
@@ -63,35 +61,36 @@ func New(ctx context.Context, reader client.Reader, u *unstructured.Unstructured
 			return nil, fmt.Errorf("externalRef should be projects/<project>/locations/<location>/connections/<Connection>, got %s", externalRef)
 		}
 		id.parent = "projects/" + tokens[1] + "/locations/" + tokens[3]
-		id.serviceGeneratedID = tokens[5]
 
+		// Validate spec parent and resourceID field if the resource is already reconcilied with a GCP Connection resource.
 		if tokens[1] != projectID {
-			return nil, fmt.Errorf("BigQueryConnectionConnection %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), tokens[1], projectID)
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s",
+				tokens[1], projectID)
 		}
 		if tokens[3] != location {
-			return nil, fmt.Errorf("BigQueryConnectionConnection %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), tokens[3], location)
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s",
+				tokens[3], location)
 		}
-
 		if desiredServiceID != "" && tokens[5] != desiredServiceID {
 			// Service generated ID shall not be reset in the same BigQueryConnectionConnection.
 			// TODO: what if multiple BigQueryConnectionConnection points to the same GCP Connection?
 			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already acquired the Connection %s",
 				desiredServiceID, tokens[5])
 		}
-	} else {
-		id.parent = "projects/" + projectID + "/locations/" + location
-		id.serviceGeneratedID = desiredServiceID
+		id.External = externalRef
+		return id, nil
 	}
-	if id.serviceGeneratedID != "" {
-		id.External = id.parent + "/connections/" + id.serviceGeneratedID
+	id.parent = "projects/" + projectID + "/locations/" + location
+	if desiredServiceID != "" {
+		id.External = id.parent + "/connections/" + desiredServiceID
 	}
 	return id, nil
 }
 
-var _ refsv1beta1.Resolver = &BigQueryConnectionConnectionRef{}
+var _ refsv1beta1.ExternalNormalizer = &BigQueryConnectionConnectionRef{}
 
+// BigQueryConnectionConnectionRef defines the resource reference to BigQueryConnectionConnection, which "External" field
+// holds the GCP identifier for the KRM object.
 type BigQueryConnectionConnectionRef struct {
 	// A reference to an externally managed BigQueryConnectionConnection resource.
 	// Should be in the format `projects/<projectID>/locations/<location>/connections/<connectionID>`.
@@ -102,34 +101,56 @@ type BigQueryConnectionConnectionRef struct {
 	// The `namespace` of a `BigQueryConnectionConnection` resource.
 	Namespace string `json:"namespace,omitempty"`
 
-	parent             string
-	serviceGeneratedID string
+	parent string
 }
 
-func (r *BigQueryConnectionConnectionRef) ValidateExternal() error {
-	if r.External == "" {
-		return fmt.Errorf("external not specified")
+func (r *BigQueryConnectionConnectionRef) Parent() (string, error) {
+	if r.parent != "" {
+		return r.parent, nil
 	}
-	r.External = strings.TrimPrefix(r.External, "/")
-	tokens := strings.Split(r.External, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-		return fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
+	if r.External != "" {
+		r.External = strings.TrimPrefix(r.External, "/")
+		tokens := strings.Split(r.External, "/")
+		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
+			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
+		}
+		r.parent = "projects/" + tokens[1] + "/locations/" + tokens[3]
+		return r.parent, nil
 	}
-	return nil
+	return "", fmt.Errorf("BigQueryConnectionConnectionRef not normalized to External form or not created from `New()`")
 }
 
-func (r *BigQueryConnectionConnectionRef) Resolve(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
+// NormalizeToExternalForm provision the "External" value.
+// If the "External" comes from the ConfigConnector object, it has to acquire or reconcile with the GCP resource already.
+func (r *BigQueryConnectionConnectionRef) NormalizeToExternalForm(ctx context.Context, reader client.Reader) error {
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external on %s reference", BigQueryConnectionConnectionGVK.Kind)
+	}
+	if r.External != "" {
+		r.External = strings.TrimPrefix(r.External, "/")
+		tokens := strings.Split(r.External, "/")
+		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
+			return fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
+		}
+		return nil
+	}
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(BigQueryConnectionConnectionGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return fmt.Errorf("reading referenced %s %s: %w", BigQueryConnectionConnectionGVK, key, err)
+	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+		return fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return "", fmt.Errorf("BigQueryConnectionConnection is not ready yet.")
+		return fmt.Errorf("BigQueryConnectionConnection is not ready yet.")
 	}
-	return actualExternalRef, nil
-}
-
-func (r *BigQueryConnectionConnectionRef) Parent() string {
-	return r.parent
+	r.External = actualExternalRef
+	return nil
 }
