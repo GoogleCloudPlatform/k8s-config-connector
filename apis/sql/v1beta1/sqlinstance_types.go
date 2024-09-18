@@ -21,6 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
@@ -162,7 +163,7 @@ type InstanceIpConfiguration struct {
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
 
 	// +optional
-	PrivateNetworkRef *refsv1beta1.ComputeNetworkRef `json:"privateNetworkRef,omitempty"`
+	PrivateNetworkRef *computev1beta1.ComputeNetworkRef `json:"privateNetworkRef,omitempty"`
 
 	/* PSC settings for a Cloud SQL instance. */
 	// +optional
@@ -460,7 +461,7 @@ type CloneSource struct {
 	PointInTime *string `json:"pointInTime,omitempty"`
 
 	/* The source SQLInstance to clone */
-	SQLInstanceRef refsv1beta1.SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
+	SQLInstanceRef SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type SQLInstanceSpec struct {
@@ -484,7 +485,7 @@ type SQLInstanceSpec struct {
 	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 
 	// +optional
-	MasterInstanceRef *refsv1beta1.SQLInstanceRef `json:"masterInstanceRef,omitempty"`
+	MasterInstanceRef *SQLInstanceRef `json:"masterInstanceRef,omitempty"`
 
 	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
 	// +optional

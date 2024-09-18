@@ -5,7 +5,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -930,7 +930,7 @@ func (in *NetworkConnectivityServiceConnectionPolicySpec) DeepCopyInto(out *Netw
 	}
 	if in.Network != nil {
 		in, out := &in.Network, &out.Network
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.PscConfig != nil {
@@ -1268,7 +1268,7 @@ func (in *PscConfig) DeepCopyInto(out *PscConfig) {
 	}
 	if in.Subnetworks != nil {
 		in, out := &in.Subnetworks, &out.Subnetworks
-		*out = make([]v1beta1.ComputeSubnetworkRef, len(*in))
+		*out = make([]computev1beta1.ComputeSubnetworkRef, len(*in))
 		copy(*out, *in)
 	}
 }

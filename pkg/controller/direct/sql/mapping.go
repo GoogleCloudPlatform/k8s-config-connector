@@ -19,8 +19,10 @@ import (
 
 	api "google.golang.org/api/sqladmin/v1beta4"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -507,7 +509,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	}
 
 	if in.MasterInstanceName != "" {
-		out.Spec.MasterInstanceRef = &refs.SQLInstanceRef{
+		out.Spec.MasterInstanceRef = &sqlv1beta1.SQLInstanceRef{
 			External: in.MasterInstanceName,
 		}
 	}
@@ -715,7 +717,7 @@ func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpCon
 	}
 
 	if in.PrivateNetwork != "" {
-		out.PrivateNetworkRef = &refs.ComputeNetworkRef{
+		out.PrivateNetworkRef = &computev1beta1.ComputeNetworkRef{
 			External: in.PrivateNetwork,
 		}
 	}

@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -27,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*refs.ComputeNetworkRef, error) {
+func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeNetworkRef) (*computev1beta1.ComputeNetworkRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -73,11 +74,11 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 
 	// targetField: self_link
 	// See compute servicemappings for details
-	return &refs.ComputeNetworkRef{
+	return &computev1beta1.ComputeNetworkRef{
 		External: fmt.Sprintf("projects/%s/global/networks/%s", projectID, resourceID)}, nil
 }
 
-func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeSubnetworkRef) (*refs.ComputeSubnetworkRef, error) {
+func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeSubnetworkRef) (*computev1beta1.ComputeSubnetworkRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -115,11 +116,11 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeSubnetwork.GetKind(), computeSubnetwork.GetNamespace())
 	}
-	return &refs.ComputeSubnetworkRef{
+	return &computev1beta1.ComputeSubnetworkRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeAddressRef) (*refs.ComputeAddressRef, error) {
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeAddressRef) (*computev1beta1.ComputeAddressRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -161,11 +162,11 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 	if err != nil || address == "" {
 		return nil, fmt.Errorf("cannot get address for referenced %s %v (status.observedState.address is empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
 	}
-	return &refs.ComputeAddressRef{
+	return &computev1beta1.ComputeAddressRef{
 		External: address}, nil
 }
 
-func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeBackendServiceRef) (*refs.ComputeBackendServiceRef, error) {
+func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeBackendServiceRef) (*computev1beta1.ComputeBackendServiceRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -204,11 +205,11 @@ func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeBackendService.GetKind(), computeBackendService.GetNamespace())
 	}
-	return &refs.ComputeBackendServiceRef{
+	return &computev1beta1.ComputeBackendServiceRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeServiceAttachmentRef) (*refs.ComputeServiceAttachmentRef, error) {
+func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeServiceAttachmentRef) (*computev1beta1.ComputeServiceAttachmentRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -247,11 +248,11 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeServiceAttachment.GetKind(), computeServiceAttachment.GetNamespace())
 	}
-	return &refs.ComputeServiceAttachmentRef{
+	return &computev1beta1.ComputeServiceAttachmentRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetGrpcProxyRef) (*refs.ComputeTargetGrpcProxyRef, error) {
+func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeTargetGrpcProxyRef) (*computev1beta1.ComputeTargetGrpcProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -290,11 +291,11 @@ func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, sr
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeTargetGrpcProxy.GetKind(), computeTargetGrpcProxy.GetNamespace())
 	}
-	return &refs.ComputeTargetGrpcProxyRef{
+	return &computev1beta1.ComputeTargetGrpcProxyRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetHTTPProxyRef) (*refs.ComputeTargetHTTPProxyRef, error) {
+func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeTargetHTTPProxyRef) (*computev1beta1.ComputeTargetHTTPProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -333,11 +334,11 @@ func ResolveComputeTargetHTTPProxy(ctx context.Context, reader client.Reader, sr
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeTargetHTTPProxy.GetKind(), computeTargetHTTPProxy.GetNamespace())
 	}
-	return &refs.ComputeTargetHTTPProxyRef{
+	return &computev1beta1.ComputeTargetHTTPProxyRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetHTTPSProxyRef) (*refs.ComputeTargetHTTPSProxyRef, error) {
+func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeTargetHTTPSProxyRef) (*computev1beta1.ComputeTargetHTTPSProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -376,11 +377,11 @@ func ResolveComputeTargetHTTPSProxy(ctx context.Context, reader client.Reader, s
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeTargetHTTPSProxy.GetKind(), computeTargetHTTPSProxy.GetNamespace())
 	}
-	return &refs.ComputeTargetHTTPSProxyRef{
+	return &computev1beta1.ComputeTargetHTTPSProxyRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetSSLProxyRef) (*refs.ComputeTargetSSLProxyRef, error) {
+func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeTargetSSLProxyRef) (*computev1beta1.ComputeTargetSSLProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -419,11 +420,11 @@ func ResolveComputeTargetSSLProxy(ctx context.Context, reader client.Reader, src
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeTargetSSLProxy.GetKind(), computeTargetSSLProxy.GetNamespace())
 	}
-	return &refs.ComputeTargetSSLProxyRef{
+	return &computev1beta1.ComputeTargetSSLProxyRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetTCPProxyRef) (*refs.ComputeTargetTCPProxyRef, error) {
+func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeTargetTCPProxyRef) (*computev1beta1.ComputeTargetTCPProxyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -462,11 +463,11 @@ func ResolveComputeTargetTCPProxy(ctx context.Context, reader client.Reader, src
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeTargetTCPProxy.GetKind(), computeTargetTCPProxy.GetNamespace())
 	}
-	return &refs.ComputeTargetTCPProxyRef{
+	return &computev1beta1.ComputeTargetTCPProxyRef{
 		External: selfLink}, nil
 }
 
-func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeTargetVPNGatewayRef) (*refs.ComputeTargetVPNGatewayRef, error) {
+func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeTargetVPNGatewayRef) (*computev1beta1.ComputeTargetVPNGatewayRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -505,7 +506,7 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 	if err != nil || selfLink == "" {
 		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeTargetVPNGateway.GetKind(), computeTargetVPNGateway.GetNamespace())
 	}
-	return &refs.ComputeTargetVPNGatewayRef{
+	return &computev1beta1.ComputeTargetVPNGatewayRef{
 		External: selfLink}, nil
 }
 

@@ -18,7 +18,7 @@ import (
 	"strconv"
 	"strings"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
@@ -52,16 +52,16 @@ func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *direct.MapContext, in
 	return out
 }
 
-func ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeBackendServiceRef {
+func ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx *direct.MapContext, in string) *computev1beta1.ComputeBackendServiceRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeBackendServiceRef{
+	return &computev1beta1.ComputeBackendServiceRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeBackendServiceRef) *string {
+func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeBackendServiceRef) *string {
 	if in == nil {
 		return nil
 	}
@@ -71,16 +71,16 @@ func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapCont
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeNetworkRef {
+func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *computev1beta1.ComputeNetworkRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeNetworkRef{
+	return &computev1beta1.ComputeNetworkRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeNetworkRef) *string {
+func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeNetworkRef) *string {
 	if in == nil {
 		return nil
 	}
@@ -90,16 +90,16 @@ func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in 
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeSubnetworkRef {
+func ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *computev1beta1.ComputeSubnetworkRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeSubnetworkRef{
+	return &computev1beta1.ComputeSubnetworkRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeSubnetworkRef) *string {
+func ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeSubnetworkRef) *string {
 	if in == nil {
 		return nil
 	}
@@ -166,31 +166,31 @@ func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *direct.MapContext, in st
 	}
 	out := &krm.ForwardingruleTarget{}
 	if strings.Contains(in, "serviceAttachments") {
-		out.ServiceAttachmentRef = &refs.ComputeServiceAttachmentRef{
+		out.ServiceAttachmentRef = &computev1beta1.ComputeServiceAttachmentRef{
 			External: in,
 		}
 	} else if strings.Contains(in, "targetGrpcProxies") {
-		out.TargetGRPCProxyRef = &refs.ComputeTargetGrpcProxyRef{
+		out.TargetGRPCProxyRef = &computev1beta1.ComputeTargetGrpcProxyRef{
 			External: in,
 		}
 	} else if strings.Contains(in, "targetHttpProxies") {
-		out.TargetHTTPProxyRef = &refs.ComputeTargetHTTPProxyRef{
+		out.TargetHTTPProxyRef = &computev1beta1.ComputeTargetHTTPProxyRef{
 			External: in,
 		}
 	} else if strings.Contains(in, "targetHttpsProxies") {
-		out.TargetHTTPSProxyRef = &refs.ComputeTargetHTTPSProxyRef{
+		out.TargetHTTPSProxyRef = &computev1beta1.ComputeTargetHTTPSProxyRef{
 			External: in,
 		}
 	} else if strings.Contains(in, "targetSslProxies") {
-		out.TargetSSLProxyRef = &refs.ComputeTargetSSLProxyRef{
+		out.TargetSSLProxyRef = &computev1beta1.ComputeTargetSSLProxyRef{
 			External: in,
 		}
 	} else if strings.Contains(in, "targetTcpProxies") {
-		out.TargetTCPProxyRef = &refs.ComputeTargetTCPProxyRef{
+		out.TargetTCPProxyRef = &computev1beta1.ComputeTargetTCPProxyRef{
 			External: in,
 		}
 	} else if strings.Contains(in, "targetVpnGateways") {
-		out.TargetVPNGatewayRef = &refs.ComputeTargetVPNGatewayRef{
+		out.TargetVPNGatewayRef = &computev1beta1.ComputeTargetVPNGatewayRef{
 			External: in,
 		}
 	}
