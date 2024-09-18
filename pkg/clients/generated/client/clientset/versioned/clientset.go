@@ -65,7 +65,7 @@ import (
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
-	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastore/v1alpha1"
@@ -191,7 +191,7 @@ type Interface interface {
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
-	DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface
+	DataformV1beta1() dataformv1beta1.DataformV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
 	DatastoreV1alpha1() datastorev1alpha1.DatastoreV1alpha1Interface
@@ -315,7 +315,7 @@ type Clientset struct {
 	datacatalogV1alpha1          *datacatalogv1alpha1.DatacatalogV1alpha1Client
 	datacatalogV1beta1           *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1              *dataflowv1beta1.DataflowV1beta1Client
-	dataformV1alpha1             *dataformv1alpha1.DataformV1alpha1Client
+	dataformV1beta1              *dataformv1beta1.DataformV1beta1Client
 	datafusionV1beta1            *datafusionv1beta1.DatafusionV1beta1Client
 	dataprocV1beta1              *dataprocv1beta1.DataprocV1beta1Client
 	datastoreV1alpha1            *datastorev1alpha1.DatastoreV1alpha1Client
@@ -596,9 +596,9 @@ func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return c.dataflowV1beta1
 }
 
-// DataformV1alpha1 retrieves the DataformV1alpha1Client
-func (c *Clientset) DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface {
-	return c.dataformV1alpha1
+// DataformV1beta1 retrieves the DataformV1beta1Client
+func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
+	return c.dataformV1beta1
 }
 
 // DatafusionV1beta1 retrieves the DatafusionV1beta1Client
@@ -1195,7 +1195,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.dataformV1alpha1, err = dataformv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.dataformV1beta1, err = dataformv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1572,7 +1572,7 @@ func New(c rest.Interface) *Clientset {
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
-	cs.dataformV1alpha1 = dataformv1alpha1.New(c)
+	cs.dataformV1beta1 = dataformv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
 	cs.datastoreV1alpha1 = datastorev1alpha1.New(c)

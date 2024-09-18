@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
