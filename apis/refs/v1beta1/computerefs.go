@@ -30,10 +30,8 @@ import (
 // fixStaleExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
 // This guarantees the backward compatibility for Compute Beta resources.
 func fixStaleExternalFormat(external string) string {
-	tokens := strings.SplitN(external, "/projects/", 2)
-	if len(tokens) == 2 {
-		external = strings.TrimPrefix(external, tokens[0])
-	}
+	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1/")
+	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1beta1/")
 	external = strings.TrimPrefix(external, "/")
 	return external
 }
