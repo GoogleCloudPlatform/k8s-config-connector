@@ -13,7 +13,7 @@ TODO: list contributors with `git log v1.122.0... | grep Merge | grep from | awk
 *When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
 output fields from GCP APIs are in `status.observedState.*`
 
-* `PlaceholderKind`
+* `DataformRepository` is now a v1beta1 resource.
 
 ## New Resources:
 
