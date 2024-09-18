@@ -1,0 +1,83 @@
+# Pub/Sub Topic Composition
+apiVersion: composition.google.com/v1alpha1
+kind: Composition
+metadata:
+  name: pubsub-topic-composition
+  namespace: config-control # Added namespace
+spec:
+  inputAPIGroup: crpubsubtopics.idp.mycompany.com
+  expanders:
+  - type: jinja2
+    name: pubsub-topic
+    template: |
+      apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+      kind: PubSubTopic
+      metadata:
+        name: example-topic-1
+        namespace: config-control
+        labels:
+          {{ crpubsubtopics.spec.labels | to_yaml }}
+      spec:
+        schemaSettings:
+          schemaRef:
+            name: {{ crpubsubtopics.spec.schemaSettings.schemaRef.name }}
+          encoding: {{ crpubsubtopics.spec.schemaSettings.encoding }}
+
+---
+# Pub/Sub Topic CRD
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: crpubsubtopics.idp.mycompany.com
+spec:
+  group: idp.mycompany.com
+  names:
+    kind: CRPubSubTopic
+    plural: crpubsubtopics
+    singular: crpubsubtopic
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              topicName:
+                type: string
+              labels:
+                type: object
+                additionalProperties:
+                  type: string
+              schemaSettings:
+                type: object
+                properties:
+                  schemaRef:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                  encoding:
+                    type: string
+        required:
+        - spec
+    served: true
+    storage: true
+
+---
+# Pub/Sub Topic CR
+apiVersion: idp.mycompany.com/v1
+kind: CRPubSubTopic
+metadata:
+  name: example-topic-1
+  namespace: config-control
+spec:
+  topicName: example-topic-1
+  labels:
+    env: production
+  schemaSettings:
+    schemaRef:
+      name: my-schema
+    encoding: JSON
