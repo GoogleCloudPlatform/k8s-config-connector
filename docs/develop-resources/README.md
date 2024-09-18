@@ -1,6 +1,6 @@
 # Developing the Direct Resource Guide 
 
-We are thrilled to introduce the new way to add a ConfigConnector resource: the direct resource guide!  
+We are thrilled to introduce the new way to add a Config Connector resource: the direct resource guide!  
 
 In the past few months, we have made a tremendous amount of efforts to make adding a new resource (or a new field) much faster and more manageable, we have changed some key resource reconciliation processs to be more reliable and Kubernetes-native. What's more, we have made a revolutionary change to the test driven development and PR review process to improve the test coverage for every single field. 
 

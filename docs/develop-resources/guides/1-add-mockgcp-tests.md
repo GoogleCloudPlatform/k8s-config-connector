@@ -4,10 +4,11 @@
 MockGCP test is required for the Direct resource development. 
 
 1. This is required no matter if the feature request is small or big. For example, both adding a single new field or adding an entire new resource require the MockGCP test coverage. If the MockGCP does not exist yet when adding a single field, developers should add the corresponding MockGCP coverage for the entire resource.  
-1. Each ConfigConnector `spec` field should be covered in both create and update(if applicable) cases. 
-1. MockGCP check is auto-enabled in Presubmit check and shall not be skipped. Code changes to a ConfigConnector resource must not merge if not covered by MockGCP check. 
+1. Each Config Connector `spec` field should be covered in both create and update(if applicable) cases. 
+1. MockGCP check is auto-enabled in Presubmit check and shall not be skipped. Code changes to a Config Connector resource must not merge if not covered by MockGCP check. 
 1. New PRs should give steady golden log output before they can merge in. Reasonable golden object and http log changes are okay and sometimes expected.
 1. MockGCP should be up-to-date when migrating resource from TF/DCL based controller to the Direct Controller
+1. Real GCP record should be uploaded to reflect and validate the change in scenarios like adding a new resource, migrating from TF or DCL based controller to the direct controller, adding a new field, etc. 
 
 ### Suggestion
 
