@@ -27,6 +27,17 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// fixStaleExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
+// This guarantees the backward compatibility for Compute Beta resources.
+func fixStaleExternalFormat(external string) string {
+	tokens := strings.SplitN(external, "/projects/", 2)
+	if len(tokens) == 2 {
+		external = strings.TrimPrefix(external, tokens[0])
+	}
+	external = strings.TrimPrefix(external, "/")
+	return external
+}
+
 type ComputeNetworkRef struct {
 	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
@@ -55,6 +66,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
 		}
 
+		ref.External = fixStaleExternalFormat(ref.External)
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
 			return &ComputeNetwork{
@@ -122,6 +134,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 		if ref.Name != "" {
 			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
 		}
+		ref.External = fixStaleExternalFormat(ref.External)
 
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
