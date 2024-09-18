@@ -318,6 +318,11 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	var err error
 	op := &gcp.Operation{}
 	if a.id.location == "global" {
+		// todo(yuhou): TF does not support networkTier field for global forwarding rule
+		// It will always use GCP's default value, which is "PREMIUM." Any value set by the user will be ignored and not sent to GCP.
+		// To align with the TF controller, I remove this field.
+		// Ideally, direct controller should support this field and validate that the value.
+		forwardingRule.NetworkTier = nil
 		req := &computepb.InsertGlobalForwardingRuleRequest{
 			ForwardingRuleResource: forwardingRule,
 			Project:                a.id.project,
