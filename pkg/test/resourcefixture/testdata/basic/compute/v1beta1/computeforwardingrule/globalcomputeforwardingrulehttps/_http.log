@@ -1172,10 +1172,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -1204,10 +1203,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "IPAddress": "8.8.8.8",
@@ -1251,10 +1249,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&operation=${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1285,10 +1281,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1315,15 +1310,14 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "80-80",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&resource=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1363,10 +1357,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1398,15 +1391,14 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "80-80",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&resource=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1446,10 +1438,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setTarget
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setTarget?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy2-${uniqueId}"
@@ -1483,10 +1474,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&operation=${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1517,10 +1506,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1552,15 +1540,14 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "80-80",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy2-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy2-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1590,10 +1577,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&operation=${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
