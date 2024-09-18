@@ -542,11 +542,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "forwardingRule \"projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "forwardingRule \"projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found"
   }
 }
 
@@ -668,6 +668,7 @@ X-Xss-Protection: 0
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
   "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
@@ -705,42 +706,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "SetLabels",
-  "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${forwardingRulesId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&operation=${operationID}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "SetLabels",
+  "operationType": "setLabels",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -786,6 +752,7 @@ X-Xss-Protection: 0
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
   "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
