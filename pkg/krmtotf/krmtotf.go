@@ -124,6 +124,25 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	if err != nil {
 		return nil, nil, fmt.Errorf("error running custom flatteners: %w", err)
 	}
+	// Set desired state with default values.
+	defaultingMap := map[string]map[string]string{
+		"CloudBuildTrigger": {
+			"location": "global",
+		},
+		"CloudIdentityGroup": {
+			"initialGroupConfig": "EMPTY",
+		},
+		"FirestoreIndex": {
+			"database": "(default)",
+		},
+	}
+	if defaults, ok := defaultingMap[r.Kind]; ok {
+		for field, value := range defaults {
+			if v, ok := config[field]; !ok || v == "" {
+				config[field] = value
+			}
+		}
+	}
 	state := InstanceStateToMap(r.TFResource, liveState)
 	config, err = withResourceCustomResolvers(config, state, r.Kind, r.TFResource)
 	if err != nil {
