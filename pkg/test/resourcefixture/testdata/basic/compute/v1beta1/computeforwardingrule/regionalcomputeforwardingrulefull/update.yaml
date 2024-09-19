@@ -16,11 +16,11 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: "value-two"
   name: computeregionalforwardingrule-${uniqueId}
 spec:
   description: "A regional forwarding rule"
-  allowGlobalAccess: true
+  allowGlobalAccess: false
   loadBalancingScheme: INTERNAL
   isMirroringCollector: true
   allPorts: true
@@ -36,7 +36,8 @@ spec:
     name: computebackendservice-${uniqueId}
   ipAddress:
     ip: "10.128.8.8"
-  serviceDirectoryRegistrations:
-    - namespace: "sd-namespace"
-      service: "sd-service"
+#  Patch operation is not allowed on Forwarding Rule that integrates with Service Directory Registrations
+#  serviceDirectoryRegistrations:
+#    - namespace: "sd-namespace"
+#      service: "sd-service"
   serviceLabel: "label"

@@ -1301,7 +1301,7 @@ x-goog-request-params: project=${projectId}&region=us-central1
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-1-${uniqueId}",
   "network": "projects/${projectId}/global/networks/computenetwork-2-${uniqueId}",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-2-${uniqueId}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-2-${uniqueId}"
 }
 
 200 OK

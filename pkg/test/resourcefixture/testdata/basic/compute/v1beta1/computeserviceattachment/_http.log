@@ -1104,7 +1104,7 @@ x-goog-request-params: project=example-project-01&region=us-west1
   "name": "computeforwardingrule-${uniqueId}",
   "network": "projects/example-project-01/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 200 OK

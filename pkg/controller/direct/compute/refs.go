@@ -73,8 +73,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		return nil, err
 	}
 
-	// targetField: self_link
-	// See compute servicemappings for details
+	// convert to format `projects/<projectID>/global/networks/<network>`
 	return &refs.ComputeNetworkRef{
 		External: fmt.Sprintf("projects/%s/global/networks/%s", projectID, resourceID)}, nil
 }
@@ -111,14 +110,26 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 	if err != nil {
 		return nil, err
 	}
-	// targetField: self_link
-	// See compute servicemappings for details
-	selfLink, _, err := unstructured.NestedString(computeSubnetwork.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
-		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeSubnetwork.GetKind(), computeSubnetwork.GetNamespace())
+
+	resourceID, err := refs.GetResourceID(computeSubnetwork)
+	if err != nil {
+		return nil, err
 	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, computeSubnetwork)
+	if err != nil {
+		return nil, err
+	}
+
+	region, _, _ := unstructured.NestedString(computeSubnetwork.Object, "spec", "region")
+	if region == "" {
+		return nil, fmt.Errorf("cannot get region from references ComputeSubnetwork %v: %w", key, err)
+	}
+
+	// convert to format `projects/<projectID>/regions/<region>/subnetworks/<subnetwork>`
 	return &refs.ComputeSubnetworkRef{
-		External: selfLink}, nil
+		External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, resourceID),
+	}, nil
 }
 
 func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeAddressRef) (*refs.ComputeAddressRef, error) {

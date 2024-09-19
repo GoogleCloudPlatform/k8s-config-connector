@@ -7,15 +7,15 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
+    label-one: value-two
   name: computeregionalforwardingrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
   allPorts: true
-  allowGlobalAccess: true
+  allowGlobalAccess: false
   backendServiceRef:
     name: computebackendservice-${uniqueId}
   description: A regional forwarding rule
@@ -29,9 +29,6 @@ spec:
   networkRef:
     name: customnetwork
   networkTier: PREMIUM
-  serviceDirectoryRegistrations:
-  - namespace: sd-namespace
-    service: sd-service
   serviceLabel: label
   subnetworkRef:
     name: customsubnetwork
@@ -45,5 +42,5 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   externalRef: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingrules/computeregionalforwardingrule-${uniqueId}
   labelFingerprint: abcdef0123A=
-  observedGeneration: 1
+  observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
