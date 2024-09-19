@@ -28,3 +28,6 @@ output fields from GCP APIs are in `status.observedState.*`
 * PlaceholderKind
   * Added `spec.placeholder` field.
 
+## Bug Fixes:
+
+* [fix: Enable TF-based reconciler for SQLInstances without clone source](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2731)
