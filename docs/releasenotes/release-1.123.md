@@ -8,6 +8,10 @@
   contributions to this release.
 TODO: list contributors with `git log v1.122.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
 
+## Direct Cloud Reconciler:
+
+* `BigQueryDataTransferConfig` (v1alpha1)
+
 ## Resources promoted from alpha to beta:
 
 *When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
