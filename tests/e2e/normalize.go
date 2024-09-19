@@ -174,6 +174,14 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
+	// Specific to BigQueryDataTransferConfig
+	if u.GetKind() == "BigQueryDataTransferConfig" {
+		visitor.replacePaths[".status.observedState.nextRunTime"] = "1970-01-01T00:00:00Z"
+		visitor.replacePaths[".status.observedState.ownerInfo.email"] = "user@google.com"
+		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
+		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
+	}
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
@@ -240,6 +248,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			if typeName == "notificationChannels" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${notificationChannelID}")
+				})
+			}
+			if typeName == "transferConfigs" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${transferConfigID}")
 				})
 			}
 		}

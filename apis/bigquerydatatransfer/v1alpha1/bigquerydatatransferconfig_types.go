@@ -25,7 +25,7 @@ var BigQueryDataTransferConfigGVK = GroupVersion.WithKind("BigQueryDataTransferC
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
 type EncryptionConfiguration struct {
 	// The KMS key used for encrypting BigQuery data.
-	KmsKeyRef refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
@@ -44,10 +44,12 @@ type BigQueryDataTransferConfigSpec struct {
 	// Data source ID. This cannot be changed once data transfer is created. The
 	//  full list of available data source IDs can be returned through an API call:
 	//  https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list
+	// +required
 	DataSourceID *string `json:"dataSourceID,omitempty"`
 
 	// The BigQuery target dataset id.
-	DatasetRef refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
+	// +required
+	DatasetRef *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
 	//  this transfer config.
@@ -69,12 +71,13 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// Pub/Sub topic where notifications will be sent after transfer runs
 	//  associated with this transfer config finish.
-	PubSubTopicRef refv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
+	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
 
 	// Parameters specific to each data source. For more information see the
 	//  bq tab in the 'Setting up a data transfer' section for each data source.
 	//  For example the parameters for Cloud Storage transfers are listed here:
 	//  https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
+	// +required
 	Params map[string]string `json:"params,omitempty"`
 
 	Parent `json:",inline"`
@@ -103,8 +106,11 @@ type BigQueryDataTransferConfigSpec struct {
 	// Options customizing the data transfer schedule.
 	ScheduleOptions *ScheduleOptions `json:"scheduleOptions,omitempty"`
 
-	// Deprecated. Unique ID of the user on whose behalf transfer is done.
-	UserID *int64 `json:"userID,omitempty"`
+	// Service account email. If this field is set, the transfer config will be created with this service account's credentials.
+	//  It requires that the requesting user calling this API has permissions to act as this service account.
+	//  Note that not all data sources support service account credentials when creating a transfer config.
+	//  For the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts.
+	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
 
 type Parent struct {
@@ -161,6 +167,9 @@ type BigQueryDataTransferConfigObservedState struct {
 
 	// Output only. Data transfer modification time. Ignored by server on input.
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Deprecated. Unique ID of the user on whose behalf transfer is done.
+	UserID *int64 `json:"userID,omitempty"`
 }
 
 // +genclient
