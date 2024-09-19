@@ -82,6 +82,18 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	// Resolve SQLInstanceRef
+	if obj.Spec.CloudSqlSpec != nil {
+		if obj.Spec.CloudSqlSpec.InstanceRef != nil {
+			instance, err := refs.ResolveSQLInsanceRef(ctx, reader, obj, obj.Spec.CloudSqlSpec.InstanceRef)
+			if err != nil {
+				return nil, err
+			}
+			obj.Spec.CloudSqlSpec.InstanceRef.External = instance.ConnectionName
+		}
+	}
+
 	connectionRef, err := krm.New(ctx, reader, obj)
 	if err != nil {
 		return nil, err

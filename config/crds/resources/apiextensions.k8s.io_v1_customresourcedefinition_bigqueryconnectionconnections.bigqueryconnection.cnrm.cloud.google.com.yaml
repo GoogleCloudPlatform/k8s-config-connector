@@ -64,6 +64,54 @@ spec:
               cloudResource:
                 description: Use Cloud Resource properties.
                 type: object
+              cloudSql:
+                description: Cloud SQL properties.
+                properties:
+                  credential:
+                    description: Input only. Cloud SQL credential.
+                    properties:
+                      password:
+                        description: The password for the credential.
+                        type: string
+                      username:
+                        description: The username for the credential.
+                        type: string
+                    type: object
+                  database:
+                    description: Database name.
+                    type: string
+                  instanceRef:
+                    description: Reference to the Cloud SQL instance ID.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
+                  type:
+                    description: Type of the Cloud SQL database.
+                    type: string
+                type: object
               description:
                 description: User provided description.
                 type: string
@@ -179,6 +227,17 @@ spec:
 
                            The account ID is in the form of:
                              <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
+                        type: string
+                    type: object
+                  cloudSql:
+                    properties:
+                      serviceAccountID:
+                        description: |-
+                          Output only. The account ID of the service used for the purpose of this connection.
+
+                           When the connection is used in the context of an operation in
+                           BigQuery, this service account will serve as the identity being used for
+                           connecting to the CloudSQL instance specified in this connection.
                         type: string
                     type: object
                   description:

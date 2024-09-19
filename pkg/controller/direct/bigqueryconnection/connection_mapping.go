@@ -36,6 +36,36 @@ func CloudResourcePropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clo
 	return out
 }
 
+func CloudSqlPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlPropertiesSpec) *pb.CloudSqlProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlProperties{}
+	// out.InstanceId = direct.ValueOf(in.InstanceID)
+	out.Database = direct.ValueOf(in.Database)
+	out.Type = direct.Enum_ToProto[pb.CloudSqlProperties_DatabaseType](mapCtx, in.Type)
+	out.Credential = CloudSqlCredential_ToProto(mapCtx, in.Credential)
+	if in.InstanceRef != nil {
+		if in.InstanceRef.External == "" {
+			mapCtx.Errorf("SQLInstance external reference was not pre-resolved")
+		}
+		out.InstanceId = in.InstanceRef.External
+	}
+	return out
+}
+
+func CloudSqlPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlProperties) *krm.CloudSqlPropertiesSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSqlPropertiesSpec{}
+	// out.InstanceID = direct.LazyPtr(in.InstanceId)
+	out.Database = direct.LazyPtr(in.Database)
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Credential = CloudSqlCredential_FromProto(mapCtx, in.GetCredential())
+	return out
+}
+
 func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.BigQueryConnectionConnectionObservedState {
 	if in == nil {
 		return nil
@@ -43,8 +73,12 @@ func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.Ma
 	out := &krm.BigQueryConnectionConnectionObservedState{}
 	out.FriendlyName = direct.LazyPtr(in.GetFriendlyName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.CloudResource = CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource())
-
+	if oneof := CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource()); oneof != nil {
+		out.CloudResource = oneof
+	}
+	if oneof := CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
+		out.CloudSql = oneof
+	}
 	out.HasCredential = direct.LazyPtr(in.GetHasCredential())
 	return out
 }
@@ -57,9 +91,13 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Name
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Properties = &pb.Connection_CloudResource{}
+	if oneof := CloudResourcePropertiesSpec_ToProto(mapCtx, in.CloudResourceSpec); oneof != nil {
+		out.Properties = &pb.Connection_CloudResource{}
+	}
+	if oneof := CloudSqlPropertiesSpec_ToProto(mapCtx, in.CloudSqlSpec); oneof != nil {
+		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
+	}
 
-	// MISSING: CloudSql
 	// MISSING: Aws
 	// MISSING: Azure
 	// MISSING: CloudSpanner
