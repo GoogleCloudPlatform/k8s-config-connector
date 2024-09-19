@@ -20,6 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-export ONLY_TEST_APIGROUPS=kms.cnrm.cloud.google.com
+export ONLY_TEST_APIGROUPS=bigquery.cnrm.cloud.google.com,bigqueryconnection.cnrm.cloud.google.com,bigquerydatatransfer.cnrm.cloud.google.com
 
 dev/ci/periodics/_create_project_and_run_e2e

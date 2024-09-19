@@ -20,6 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-export ONLY_TEST_APIGROUP=securesourcemanager.cnrm.cloud.google.com
+export ONLY_TEST_APIGROUPS=securesourcemanager.cnrm.cloud.google.com
 
 dev/ci/periodics/_create_project_and_run_e2e
