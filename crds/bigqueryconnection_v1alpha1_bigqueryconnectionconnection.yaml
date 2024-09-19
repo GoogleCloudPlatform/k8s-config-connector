@@ -1,10 +1,10 @@
-# Copyright 2024 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 0.0.0-dev
+    cnrm.cloud.google.com/version: 1.123.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34,7 +34,6 @@ spec:
     - gcpbigqueryconnectionconnection
     - gcpbigqueryconnectionconnections
     singular: bigqueryconnectionconnection
-  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -123,12 +122,11 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The BigQueryConnectionConnection name. If
-                  not given, the metadata.name will be used.
+                description: The BigQuery ConnectionID. This is a server-generated
+                  ID in the UUID format. If not provided, ConfigConnector will create
+                  a new Connection and store the UUID in `status.serviceGeneratedID`
+                  field.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - location
             - projectRef
@@ -196,6 +194,16 @@ spec:
                              <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
                         type: string
                     type: object
+                  description:
+                    description: The description for the connection.
+                    type: string
+                  friendlyName:
+                    description: The display name for the connection.
+                    type: string
+                  hasCredential:
+                    description: Output only. True, if credential is configured for
+                      this connection.
+                    type: boolean
                 type: object
             type: object
         type: object
@@ -203,3 +211,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
