@@ -248,37 +248,9 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
 	out.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(in.Spec.Settings.MaintenanceWindow)
 	out.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyKRMToGCP(in.Spec.Settings.PasswordValidationPolicy)
-
-	if in.Spec.Settings.PricingPlan != nil {
-		// todo: can only be PER_USE
-		out.Settings.PricingPlan = *in.Spec.Settings.PricingPlan
-	}
-
-	if in.Spec.Settings.ReplicationType != nil {
-		// todo: deprecated
-		out.Settings.ReplicationType = *in.Spec.Settings.ReplicationType
-	}
-
-	if in.Spec.Settings.SqlServerAuditConfig != nil {
-		// todo: requires sqlserver
-		out.Settings.SqlServerAuditConfig = &api.SqlServerAuditConfig{
-			Kind: "sql#sqlServerAuditConfig",
-		}
-
-		if in.Spec.Settings.SqlServerAuditConfig.BucketRef != nil {
-			// todo: required
-			out.Settings.SqlServerAuditConfig.Bucket = refs.auditLogBucket
-		}
-
-		if in.Spec.Settings.SqlServerAuditConfig.RetentionInterval != nil {
-			out.Settings.SqlServerAuditConfig.RetentionInterval = *in.Spec.Settings.SqlServerAuditConfig.RetentionInterval
-		}
-
-		if in.Spec.Settings.SqlServerAuditConfig.UploadInterval != nil {
-			out.Settings.SqlServerAuditConfig.UploadInterval = *in.Spec.Settings.SqlServerAuditConfig.UploadInterval
-		}
-	}
-
+	out.Settings.PricingPlan = direct.ValueOf(in.Spec.Settings.PricingPlan)
+	out.Settings.ReplicationType = direct.ValueOf(in.Spec.Settings.ReplicationType)
+	out.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigKRMToGCP(in.Spec.Settings.SqlServerAuditConfig, refs)
 	out.Settings.Tier = in.Spec.Settings.Tier
 
 	if in.Spec.Settings.TimeZone != nil {
@@ -500,6 +472,25 @@ func InstancePasswordValidationPolicyKRMToGCP(in *krm.InstancePasswordValidation
 	return out
 }
 
+func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig, refs *SQLInstanceInternalRefs) *api.SqlServerAuditConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.SqlServerAuditConfig{
+		Kind:              "sql#sqlServerAuditConfig",
+		RetentionInterval: direct.ValueOf(in.RetentionInterval),
+		UploadInterval:    direct.ValueOf(in.UploadInterval),
+	}
+
+	// todo: embed refs in krm object external fields, remove this
+	if in.BucketRef != nil {
+		out.Bucket = refs.auditLogBucket
+	}
+
+	return out
+}
+
 func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	out := &krm.SQLInstance{}
 
@@ -649,25 +640,9 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
 	out.Spec.Settings.MaintenanceWindow = InstanceMaintenanceWindowGCPToKRM(in.Settings.MaintenanceWindow)
 	out.Spec.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyGCPToKRM(in.Settings.PasswordValidationPolicy)
-
-	if in.Settings.PricingPlan != "" {
-		out.Spec.Settings.PricingPlan = &in.Settings.PricingPlan
-	}
-
-	if in.Settings.ReplicationType != "" {
-		out.Spec.Settings.ReplicationType = &in.Settings.ReplicationType
-	}
-
-	if in.Settings.SqlServerAuditConfig != nil {
-		out.Spec.Settings.SqlServerAuditConfig = &krm.InstanceSqlServerAuditConfig{
-			BucketRef: &refs.StorageBucketRef{
-				External: in.Settings.SqlServerAuditConfig.Bucket,
-			},
-			RetentionInterval: &in.Settings.SqlServerAuditConfig.RetentionInterval,
-			UploadInterval:    &in.Settings.SqlServerAuditConfig.UploadInterval,
-		}
-	}
-
+	out.Spec.Settings.PricingPlan = direct.LazyPtr(in.Settings.PricingPlan)
+	out.Spec.Settings.ReplicationType = direct.LazyPtr(in.Settings.ReplicationType)
+	out.Spec.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigGCPToKRM(in.Settings.SqlServerAuditConfig)
 	out.Spec.Settings.Tier = in.Settings.Tier
 
 	if in.Settings.TimeZone != "" {
@@ -830,6 +805,25 @@ func InstancePasswordValidationPolicyGCPToKRM(in *api.PasswordValidationPolicy) 
 		MinLength:                 direct.PtrTo(in.MinLength),
 		PasswordChangeInterval:    direct.LazyPtr(in.PasswordChangeInterval),
 		ReuseInterval:             direct.PtrTo(in.ReuseInterval),
+	}
+
+	return out
+}
+
+func InstanceSqlServerAuditConfigGCPToKRM(in *api.SqlServerAuditConfig) *krm.InstanceSqlServerAuditConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceSqlServerAuditConfig{
+		RetentionInterval: direct.LazyPtr(in.RetentionInterval),
+		UploadInterval:    direct.LazyPtr(in.UploadInterval),
+	}
+
+	if in.Bucket != "" {
+		out.BucketRef = &refs.StorageBucketRef{
+			External: in.Bucket,
+		}
 	}
 
 	return out

@@ -523,67 +523,24 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.PricingPlan != nil {
-		if actual.Settings.PricingPlan == "" {
-			// Add pricing plan
-			updateRequired = true
-		} else if direct.ValueOf(desired.Spec.Settings.PricingPlan) != actual.Settings.PricingPlan {
-			// Change pricing plan
-			updateRequired = true
-		}
-		merged.Settings.PricingPlan = direct.ValueOf(desired.Spec.Settings.PricingPlan)
-	} else if actual.Settings.PricingPlan != "" {
-		// Keep pricing plan
-		merged.Settings.PricingPlan = actual.Settings.PricingPlan
-	}
-
-	if desired.Spec.Settings.ReplicationType != nil {
-		if actual.Settings.ReplicationType == "" {
-			// Add replication type
-			updateRequired = true
-		} else if direct.ValueOf(desired.Spec.Settings.ReplicationType) != actual.Settings.ReplicationType {
-			// Change replication type
-			updateRequired = true
-		}
-		merged.Settings.ReplicationType = direct.ValueOf(desired.Spec.Settings.ReplicationType)
-	} else if actual.Settings.ReplicationType != "" {
-		// Keep replication type
-		merged.Settings.ReplicationType = actual.Settings.ReplicationType
-	}
-
-	if desired.Spec.Settings.SqlServerAuditConfig != nil {
-		if actual.Settings.SqlServerAuditConfig == nil {
-			// Add sql server audit config
-			updateRequired = true
-		} else if (refs.auditLogBucket != actual.Settings.SqlServerAuditConfig.Bucket) ||
-			(direct.ValueOf(desired.Spec.Settings.SqlServerAuditConfig.RetentionInterval) != actual.Settings.SqlServerAuditConfig.RetentionInterval) ||
-			(direct.ValueOf(desired.Spec.Settings.SqlServerAuditConfig.UploadInterval) != actual.Settings.SqlServerAuditConfig.UploadInterval) {
-			// Change sql server audit config
-			updateRequired = true
-		}
-		merged.Settings.SqlServerAuditConfig = &api.SqlServerAuditConfig{
-			Bucket:            refs.auditLogBucket,
-			RetentionInterval: direct.ValueOf(desired.Spec.Settings.SqlServerAuditConfig.RetentionInterval),
-			UploadInterval:    direct.ValueOf(desired.Spec.Settings.SqlServerAuditConfig.UploadInterval),
-			Kind:              "sql#sqlServerAuditConfig",
-		}
-	} else if actual.Settings.SqlServerAuditConfig != nil {
-		// Remove sql server audit config
+	merged.Settings.PricingPlan = direct.ValueOf(desired.Spec.Settings.PricingPlan)
+	if merged.Settings.PricingPlan != actual.Settings.PricingPlan {
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.Tier != "" {
-		if actual.Settings.Tier == "" {
-			// Add tier
-			updateRequired = true
-		} else if desired.Spec.Settings.Tier != actual.Settings.Tier {
-			// Change tier
-			updateRequired = true
-		}
-		merged.Settings.Tier = desired.Spec.Settings.Tier
-	} else {
-		// Keep tier
-		merged.Settings.Tier = actual.Settings.Tier
+	merged.Settings.ReplicationType = direct.ValueOf(desired.Spec.Settings.ReplicationType)
+	if merged.Settings.ReplicationType != actual.Settings.ReplicationType {
+		updateRequired = true
+	}
+
+	merged.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigKRMToGCP(desired.Spec.Settings.SqlServerAuditConfig, refs)
+	if !SqlServerAuditConfigsMatch(merged.Settings.SqlServerAuditConfig, actual.Settings.SqlServerAuditConfig) {
+		updateRequired = true
+	}
+
+	merged.Settings.Tier = desired.Spec.Settings.Tier
+	if merged.Settings.Tier != actual.Settings.Tier {
+		updateRequired = true
 	}
 
 	if desired.Spec.Settings.TimeZone != nil {
@@ -826,6 +783,28 @@ func PasswordValidationPoliciesMatch(desired *api.PasswordValidationPolicy, actu
 		return false
 	}
 	if desired.ReuseInterval != actual.ReuseInterval {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func SqlServerAuditConfigsMatch(desired *api.SqlServerAuditConfig, actual *api.SqlServerAuditConfig) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.Bucket != actual.Bucket {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
+	if desired.RetentionInterval != actual.RetentionInterval {
+		return false
+	}
+	if desired.UploadInterval != actual.UploadInterval {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
