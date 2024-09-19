@@ -105,6 +105,13 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					v := randomString(randStream)
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
+			case "string->message":
+				if field.FullName() == "google.protobuf.Struct.fields" && field.MapValue().Message().FullName() == "google.protobuf.Value" {
+					// currently this is converted to "map[string]string" in "BigQueryDataTransferConfig"
+					// TODO: fill in random strings
+				} else {
+					t.Fatalf("unhandled case for map kind %q: %v", mapType, field)
+				}
 
 			default:
 				t.Fatalf("unhandled map kind %q: %v", mapType, field)
