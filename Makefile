@@ -232,7 +232,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs generate-go-client
+ready-pr: lint manifests resource-docs generate-go-client ensure
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl
@@ -335,14 +335,14 @@ clean-release-manifests:
 # make sure to connect to a k8s cluster first
 .PHONY: deploy-kcc-manifests-standard
 deploy-kcc-manifests-standard: config-connector-manifests-standard
-	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml 
+	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml
 
 .PHONY: deploy-kcc-manifests-autopilot
 deploy-kcc-manifests-autopilot: config-connector-manifests-autopilot
-	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml 
+	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: powertool-tests
-powertool-tests:	
+powertool-tests:
 	cd scripts/github-actions/ && ./powertool-test.sh
 
 .PHONY: e2e-scenario-tests
