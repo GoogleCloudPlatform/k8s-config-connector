@@ -12,9 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-namespace: cnrm-system
 resources:
-  - ../withworkloadidentity
-patches:
-  - path: hostnetwork_patch.yaml
+- ../release-bundle/install-bundle-workload-identity/0-cnrm-system.yaml
 
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: cnrm-resource-stats-recorder
+    namespace: cnrm-system
+  path: recorder_sidecar_patch.yaml
+- target:
+    group: apps
+    version: v1
+    kind: StatefulSet
+    name: cnrm-controller-manager
+    namespace: cnrm-system
+  path: manager_sidecar_patch.yaml

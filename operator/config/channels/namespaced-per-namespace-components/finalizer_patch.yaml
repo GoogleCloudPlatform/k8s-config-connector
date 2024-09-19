@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-namespace: cnrm-system
-resources:
-  - ../withworkloadidentity
-patches:
-  - path: hostnetwork_patch.yaml
-
+# When a KCC managed namespace is deleted the RoleBindings in the namespace are deleted. As a result the KCC controllers
+# are unable to clean up the KCC resources in the namespace. This finalizer prevents the RoleBinding deletion from
+# occurring. The operator can then wait for the KCC controllers to delete all resources before removing this finalizer.
+- op: add
+  path: /metadata/finalizers
+  value:
+  - configconnector.cnrm.cloud.google.com/finalizer
