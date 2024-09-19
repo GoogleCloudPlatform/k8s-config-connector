@@ -62,6 +62,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md">AlloyDBUser</a></td>
 </tr>
 <tr>
+  <td><a href="/api-keys/docs/">{{api_keys_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apikeys/apikeyskey.md">APIKeysKey</a></td>
+</tr>
+<tr>
   <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
 </tr>
@@ -637,7 +641,6 @@ issues for {{product_name_short}}.
   <td><a href="/monitoring/docs/">{{monitoring_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/monitoring/monitoringservicelevelobjective.md">MonitoringServiceLevelObjective</a></td>
 </tr>
-</tr>
 <tr>
   <td><a href="/monitoring/docs/">{{monitoring_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/monitoring/monitoringuptimecheckconfig.md">MonitoringUptimeCheckConfig</a></td>
@@ -801,6 +804,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/storage-transfer/docs/">{{transfer_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/storagetransfer/storagetransferjob.md">StorageTransferJob</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/tags/tags-overview">{{tags_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/tags/tagstagkey.md">TagsTagKey</a></td>
 </tr>
 <tr>
   <td><a href="/traffic-director/docs/">{{td_name}}</a></td>

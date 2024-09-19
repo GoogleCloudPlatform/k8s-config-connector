@@ -39,6 +39,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvironment.md
   - title: "ApigeeOrganization"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeorganization.md
+- title: "API Keys"
+  section:
+  - title: "APIKeysKey"
+    path: /config-connector/docs/reference/resource-docs/apikeys/apikeyskey.md
 - title: "ArtifactRegistry"
   section:
   - title: "ArtifactRegistryRepository"
@@ -533,6 +537,10 @@ toc:
   section:
   - title: "StorageTransferJob"
     path: /config-connector/docs/reference/resource-docs/storagetransfer/storagetransferjob.md
+- title: "Tags"
+  section:
+  - title: "TagsTagKey"
+    path: /config-connector/docs/reference/resource-docs/tags/tagstagkey.md
 - title: "Vertex AI"
   section:
   - title: "VertexAIDataset"
