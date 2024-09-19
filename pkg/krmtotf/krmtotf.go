@@ -130,7 +130,7 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 			"location": "global",
 		},
 		"CloudIdentityGroup": {
-			"initialGroupConfig": "EMPTY",
+			"initial_group_config": "EMPTY",
 		},
 		"FirestoreIndex": {
 			"database": "(default)",
