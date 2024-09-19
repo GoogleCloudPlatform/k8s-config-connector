@@ -36,7 +36,8 @@ spec:
     name: computebackendservice-${uniqueId}
   ipAddress:
     ip: "10.128.8.8"
-  serviceDirectoryRegistrations:
-    - namespace: "sd-namespace"
-      service: "sd-service"
+#  Patch operation is not allowed on Forwarding Rule that integrates with Service Directory Registrations
+#  serviceDirectoryRegistrations:
+#    - namespace: "sd-namespace"
+#      service: "sd-service"
   serviceLabel: "label"

@@ -49,18 +49,18 @@ metadata:
   name: computebackendservice-2-${uniqueId}
 spec:
   location: "us-central1"
----
-apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
-kind: ServiceDirectoryNamespace
-metadata:
-  name: sd-namespace
-spec:
-  location: us-central1
----
-apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
-kind: ServiceDirectoryService
-metadata:
-  name: sd-service
-spec:
-  namespaceRef:
-    name: sd-namespace
+#---
+#apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+#kind: ServiceDirectoryNamespace
+#metadata:
+#  name: sd-namespace
+#spec:
+#  location: us-central1
+#---
+#apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+#kind: ServiceDirectoryService
+#metadata:
+#  name: sd-service
+#spec:
+#  namespaceRef:
+#    name: sd-namespace
