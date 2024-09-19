@@ -149,10 +149,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Settings.BackupConfiguration = backupConfig
 	}
 
-	if in.Spec.Settings.Collation != nil {
-		// todo: requires sqlserver
-		out.Settings.Collation = *in.Spec.Settings.Collation
-	}
+	out.Settings.Collation = direct.ValueOf(in.Spec.Settings.Collation)
 
 	if in.Spec.Settings.ConnectorEnforcement != nil {
 		out.Settings.ConnectorEnforcement = *in.Spec.Settings.ConnectorEnforcement
@@ -252,11 +249,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	out.Settings.ReplicationType = direct.ValueOf(in.Spec.Settings.ReplicationType)
 	out.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigKRMToGCP(in.Spec.Settings.SqlServerAuditConfig, refs)
 	out.Settings.Tier = in.Spec.Settings.Tier
-
-	if in.Spec.Settings.TimeZone != nil {
-		// todo: requires sqlserver
-		out.Settings.TimeZone = *in.Spec.Settings.TimeZone
-	}
+	out.Settings.TimeZone = direct.ValueOf(in.Spec.Settings.TimeZone)
 
 	if in.Labels != nil {
 		out.Settings.UserLabels = make(map[string]string)
@@ -578,9 +571,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		out.Spec.Settings.BackupConfiguration = bc
 	}
 
-	if in.Settings.Collation != "" {
-		out.Spec.Settings.Collation = &in.Settings.Collation
-	}
+	out.Spec.Settings.Collation = direct.LazyPtr(in.Settings.Collation)
 
 	if in.Settings.ConnectorEnforcement != "" {
 		out.Spec.Settings.ConnectorEnforcement = &in.Settings.ConnectorEnforcement
@@ -644,10 +635,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	out.Spec.Settings.ReplicationType = direct.LazyPtr(in.Settings.ReplicationType)
 	out.Spec.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigGCPToKRM(in.Settings.SqlServerAuditConfig)
 	out.Spec.Settings.Tier = in.Settings.Tier
-
-	if in.Settings.TimeZone != "" {
-		out.Spec.Settings.TimeZone = &in.Settings.TimeZone
-	}
+	out.Spec.Settings.TimeZone = direct.LazyPtr(in.Settings.TimeZone)
 
 	if in.Settings.UserLabels != nil {
 		out.Labels = in.Settings.UserLabels

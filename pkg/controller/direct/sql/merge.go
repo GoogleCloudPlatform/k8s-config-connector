@@ -321,15 +321,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		}
 	}
 
-	if desired.Spec.Settings.Collation != nil {
-		if direct.ValueOf(desired.Spec.Settings.Collation) != actual.Settings.Collation {
-			// Change collation
-			updateRequired = true
-		}
-		merged.Settings.Collation = direct.ValueOf(desired.Spec.Settings.Collation)
-	} else {
-		// Keep collation
-		merged.Settings.Collation = actual.Settings.Collation
+	merged.Settings.Collation = direct.ValueOf(desired.Spec.Settings.Collation)
+	if merged.Settings.Collation != actual.Settings.Collation {
+		updateRequired = true
 	}
 
 	if desired.Spec.Settings.ConnectorEnforcement != nil {
@@ -543,18 +537,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.TimeZone != nil {
-		if actual.Settings.TimeZone == "" {
-			// Add time zone
-			updateRequired = true
-		} else if direct.ValueOf(desired.Spec.Settings.TimeZone) != actual.Settings.TimeZone {
-			// Change time zone
-			updateRequired = true
-		}
-		merged.Settings.TimeZone = direct.ValueOf(desired.Spec.Settings.TimeZone)
-	} else {
-		// Keep time zone
-		merged.Settings.TimeZone = actual.Settings.TimeZone
+	merged.Settings.TimeZone = direct.ValueOf(desired.Spec.Settings.TimeZone)
+	if merged.Settings.TimeZone != actual.Settings.TimeZone {
+		updateRequired = true
 	}
 
 	if !reflect.DeepEqual(desired.Labels, actual.Settings.UserLabels) {
