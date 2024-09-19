@@ -16,6 +16,9 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
   name: gkehubfeature-${uniqueId}
+  annotations:
+   # Abondon the feature resource as it is global within a project and we would hit issues when running two tests in parallel.
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   labels:
     label-one: value-one
 spec:
