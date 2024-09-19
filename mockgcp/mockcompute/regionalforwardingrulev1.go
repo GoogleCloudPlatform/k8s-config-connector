@@ -68,6 +68,8 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
 	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
+	// labels will be added separately with setLabels
+	obj.Labels = nil
 	// If below values are not provided by user, it appears to default by GCP
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
