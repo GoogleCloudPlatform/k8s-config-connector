@@ -166,7 +166,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &created.Name
+
+	tokens := strings.Split(created.Name, "/")
+	parent, err = a.id.Parent()
+	if err != nil {
+		return err
+	}
+	externalRef := parent + "/connections/" + tokens[5]
+	status.ExternalRef = &externalRef
 	return setStatus(u, status)
 }
 
