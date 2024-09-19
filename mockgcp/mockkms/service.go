@@ -50,11 +50,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterKeyManagementServiceServer(grpcServer, &kmsServer{MockService: s})
+        pb.RegisterAutokeyAdminServer(grpcServer, &autokeyAdminServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterKeyManagementServiceHandler,
+		pb.RegisterAutokeyHandler,
 		// TODO: Any LROs on this API?
 		//	s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)

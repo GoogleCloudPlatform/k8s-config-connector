@@ -1,0 +1,1290 @@
+syntax = "proto2";
+package mockgcp.cloud.kms.v1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/kms/apiv1/kmspb;kmspb";
+
+service FoldersServer {
+
+  // Returns the AutokeyConfig for a folder.
+  rpc GetAutokeyConfigFolder(GetAutokeyConfigFolderRequest) returns (AutokeyConfig) {
+    option (google.api.http) = {
+      get: "/v1/{name=folders/*/autokeyConfig}"
+    };
+  };
+
+  // Updates the AutokeyConfig for a folder. The caller must have both `cloudkms.autokeyConfigs.update` permission on the parent folder and `cloudkms.cryptoKeys.setIamPolicy` permission on the provided key project. A KeyHandle creation in the folder's descendant projects will use this configuration to determine where to create the resulting CryptoKey.
+  rpc UpdateAutokeyConfigFolder(UpdateAutokeyConfigFolderRequest) returns (AutokeyConfig) {
+    option (google.api.http) = {
+      patch: "/v1/{name=folders/*/autokeyConfig}"
+      body: "folder"
+    };
+  };
+}
+
+service ProjectsServer {
+
+  // Returns the effective Cloud KMS Autokey configuration for a given project.
+  rpc ShowEffectiveAutokeyConfigProject(ShowEffectiveAutokeyConfigProjectRequest) returns (ShowEffectiveAutokeyConfigResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*}:showEffectiveAutokeyConfig"
+    };
+  };
+}
+
+service ProjectsLocationsServer {
+
+  // Generate random bytes using the Cloud KMS randomness source in the provided location.
+  rpc GenerateRandomBytesProjectsLocation(GenerateRandomBytesProjectsLocationRequest) returns (GenerateRandomBytesResponse) {
+    option (google.api.http) = {
+      post: "/v1/{location=projects/*/locations/*}:generateRandomBytes"
+      body: "projects_location"
+    };
+  };
+
+  // Gets information about a location.
+  rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*}"
+    };
+  };
+
+  // Returns the EkmConfig singleton resource for a given project and location.
+  rpc GetEkmConfigProjectsLocation(GetEkmConfigProjectsLocationRequest) returns (EkmConfig) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/ekmConfig}"
+    };
+  };
+
+  // Lists information about the supported locations for this service.
+  rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*}/locations"
+    };
+  };
+
+  // Updates the EkmConfig singleton resource for a given project and location.
+  rpc UpdateEkmConfigProjectsLocation(UpdateEkmConfigProjectsLocationRequest) returns (EkmConfig) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/ekmConfig}"
+      body: "projects_location"
+    };
+  };
+}
+
+service ProjectsLocationsEkmConfigServer {
+}
+
+service ProjectsLocationsEkmConnectionsServer {
+
+  // Creates a new EkmConnection in a given Project and Location.
+  rpc CreateProjectsLocationsEkmConnection(CreateProjectsLocationsEkmConnectionRequest) returns (EkmConnection) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/ekmConnections"
+      body: "projects_locations_ekm_connection"
+    };
+  };
+
+  // Returns metadata for a given EkmConnection.
+  rpc GetProjectsLocationsEkmConnection(GetProjectsLocationsEkmConnectionRequest) returns (EkmConnection) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/ekmConnections/*}"
+    };
+  };
+
+  // Lists EkmConnections.
+  rpc ListProjectsLocationsEkmConnections(ListProjectsLocationsEkmConnectionsRequest) returns (ListEkmConnectionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/ekmConnections"
+    };
+  };
+
+  // Updates an EkmConnection's metadata.
+  rpc PatchProjectsLocationsEkmConnection(PatchProjectsLocationsEkmConnectionRequest) returns (EkmConnection) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/ekmConnections/*}"
+      body: "projects_locations_ekm_connection"
+    };
+  };
+
+  // Verifies that Cloud KMS can successfully connect to the external key manager specified by an EkmConnection. If there is an error connecting to the EKM, this method returns a FAILED_PRECONDITION status containing structured information as described at https://cloud.google.com/kms/docs/reference/ekm_errors.
+  rpc VerifyConnectivityProjectsLocationsEkmConnection(VerifyConnectivityProjectsLocationsEkmConnectionRequest) returns (VerifyConnectivityResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/ekmConnections/*}:verifyConnectivity"
+    };
+  };
+}
+
+service ProjectsLocationsKeyHandlesServer {
+
+  // Creates a new KeyHandle, triggering the provisioning of a new CryptoKey for CMEK use with the given resource type in the configured key project and the same location. GetOperation should be used to resolve the resulting long-running operation and get the resulting KeyHandle and CryptoKey.
+  rpc CreateProjectsLocationsKeyHandle(CreateProjectsLocationsKeyHandleRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/keyHandles"
+      body: "projects_locations_key_handle"
+    };
+  };
+
+  // Returns the KeyHandle.
+  rpc GetProjectsLocationsKeyHandle(GetProjectsLocationsKeyHandleRequest) returns (KeyHandle) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/keyHandles/*}"
+    };
+  };
+
+  // Lists KeyHandles.
+  rpc ListProjectsLocationsKeyHandles(ListProjectsLocationsKeyHandlesRequest) returns (ListKeyHandlesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/keyHandles"
+    };
+  };
+}
+
+service ProjectsLocationsKeyRingsServer {
+
+  // Create a new KeyRing in a given Project and Location.
+  rpc CreateProjectsLocationsKeyRing(CreateProjectsLocationsKeyRingRequest) returns (KeyRing) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/keyRings"
+      body: "projects_locations_key_ring"
+    };
+  };
+
+  // Returns metadata for a given KeyRing.
+  rpc GetProjectsLocationsKeyRing(GetProjectsLocationsKeyRingRequest) returns (KeyRing) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/keyRings/*}"
+    };
+  };
+
+  // Lists KeyRings.
+  rpc ListProjectsLocationsKeyRings(ListProjectsLocationsKeyRingsRequest) returns (ListKeyRingsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/keyRings"
+    };
+  };
+}
+
+service ProjectsLocationsKeyRingsCryptoKeysServer {
+
+  // Create a new CryptoKey within a KeyRing. CryptoKey.purpose and CryptoKey.version_template.algorithm are required.
+  rpc CreateProjectsLocationsKeyRingsCryptoKey(CreateProjectsLocationsKeyRingsCryptoKeyRequest) returns (CryptoKey) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys"
+      body: "projects_locations_key_rings_crypto_key"
+    };
+  };
+
+  // Decrypts data that was protected by Encrypt. The CryptoKey.purpose must be ENCRYPT_DECRYPT.
+  rpc DecryptProjectsLocationsKeyRingsCryptoKey(DecryptProjectsLocationsKeyRingsCryptoKeyRequest) returns (DecryptResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:decrypt"
+      body: "projects_locations_key_rings_crypto_key"
+    };
+  };
+
+  // Encrypts data, so that it can only be recovered by a call to Decrypt. The CryptoKey.purpose must be ENCRYPT_DECRYPT.
+  rpc EncryptProjectsLocationsKeyRingsCryptoKey(EncryptProjectsLocationsKeyRingsCryptoKeyRequest) returns (EncryptResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/.*}:encrypt"
+      body: "projects_locations_key_rings_crypto_key"
+    };
+  };
+
+  // Returns metadata for a given CryptoKey, as well as its primary CryptoKeyVersion.
+  rpc GetProjectsLocationsKeyRingsCryptoKey(GetProjectsLocationsKeyRingsCryptoKeyRequest) returns (CryptoKey) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}"
+    };
+  };
+
+  // Lists CryptoKeys.
+  rpc ListProjectsLocationsKeyRingsCryptoKeys(ListProjectsLocationsKeyRingsCryptoKeysRequest) returns (ListCryptoKeysResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys"
+    };
+  };
+
+  // Update a CryptoKey.
+  rpc PatchProjectsLocationsKeyRingsCryptoKey(PatchProjectsLocationsKeyRingsCryptoKeyRequest) returns (CryptoKey) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}"
+      body: "projects_locations_key_rings_crypto_key"
+    };
+  };
+
+  // Update the version of a CryptoKey that will be used in Encrypt. Returns an error if called on a key whose purpose is not ENCRYPT_DECRYPT.
+  rpc UpdatePrimaryVersionProjectsLocationsKeyRingsCryptoKey(UpdatePrimaryVersionProjectsLocationsKeyRingsCryptoKeyRequest) returns (CryptoKey) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:updatePrimaryVersion"
+      body: "projects_locations_key_rings_crypto_key"
+    };
+  };
+}
+
+service ProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionsServer {
+
+  // Decrypts data that was encrypted with a public key retrieved from GetPublicKey corresponding to a CryptoKeyVersion with CryptoKey.purpose ASYMMETRIC_DECRYPT.
+  rpc AsymmetricDecryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(AsymmetricDecryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (AsymmetricDecryptResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricDecrypt"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Signs data using a CryptoKeyVersion with CryptoKey.purpose ASYMMETRIC_SIGN, producing a signature that can be verified with the public key retrieved from GetPublicKey.
+  rpc AsymmetricSignProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(AsymmetricSignProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (AsymmetricSignResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricSign"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Create a new CryptoKeyVersion in a CryptoKey. The server will assign the next sequential id. If unset, state will be set to ENABLED.
+  rpc CreateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(CreateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (CryptoKeyVersion) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Schedule a CryptoKeyVersion for destruction. Upon calling this method, CryptoKeyVersion.state will be set to DESTROY_SCHEDULED, and destroy_time will be set to the time destroy_scheduled_duration in the future. At that time, the state will automatically change to DESTROYED, and the key material will be irrevocably destroyed. Before the destroy_time is reached, RestoreCryptoKeyVersion may be called to reverse the process.
+  rpc DestroyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(DestroyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (CryptoKeyVersion) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:destroy"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Returns metadata for a given CryptoKeyVersion.
+  rpc GetProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(GetProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (CryptoKeyVersion) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}"
+    };
+  };
+
+  // Returns the public key for the given CryptoKeyVersion. The CryptoKey.purpose must be ASYMMETRIC_SIGN or ASYMMETRIC_DECRYPT.
+  rpc GetPublicKeyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(GetPublicKeyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (PublicKey) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}/publicKey"
+    };
+  };
+
+  // Import wrapped key material into a CryptoKeyVersion. All requests must specify a CryptoKey. If a CryptoKeyVersion is additionally specified in the request, key material will be reimported into that version. Otherwise, a new version will be created, and will be assigned the next sequential id within the CryptoKey.
+  rpc ImportProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(ImportProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (CryptoKeyVersion) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions:import"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Lists CryptoKeyVersions.
+  rpc ListProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersions(ListProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionsRequest) returns (ListCryptoKeyVersionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions"
+    };
+  };
+
+  // Signs data using a CryptoKeyVersion with CryptoKey.purpose MAC, producing a tag that can be verified by another source with the same key.
+  rpc MacSignProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(MacSignProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (MacSignResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:macSign"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Verifies MAC tag using a CryptoKeyVersion with CryptoKey.purpose MAC, and returns a response that indicates whether or not the verification was successful.
+  rpc MacVerifyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(MacVerifyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (MacVerifyResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:macVerify"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Update a CryptoKeyVersion's metadata. state may be changed between ENABLED and DISABLED using this method. See DestroyCryptoKeyVersion and RestoreCryptoKeyVersion to move between other states.
+  rpc PatchProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(PatchProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (CryptoKeyVersion) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Decrypts data that was originally encrypted using a raw cryptographic mechanism. The CryptoKey.purpose must be RAW_ENCRYPT_DECRYPT.
+  rpc RawDecryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(RawDecryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (RawDecryptResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:rawDecrypt"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Encrypts data using portable cryptographic primitives. Most users should choose Encrypt and Decrypt rather than their raw counterparts. The CryptoKey.purpose must be RAW_ENCRYPT_DECRYPT.
+  rpc RawEncryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(RawEncryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (RawEncryptResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:rawEncrypt"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Restore a CryptoKeyVersion in the DESTROY_SCHEDULED state. Upon restoration of the CryptoKeyVersion, state will be set to DISABLED, and destroy_time will be cleared.
+  rpc RestoreProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(RestoreProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (CryptoKeyVersion) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:restore"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+}
+
+service ProjectsLocationsKeyRingsImportJobsServer {
+
+  // Create a new ImportJob within a KeyRing. ImportJob.import_method is required.
+  rpc CreateProjectsLocationsKeyRingsImportJob(CreateProjectsLocationsKeyRingsImportJobRequest) returns (ImportJob) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/keyRings/*}/importJobs"
+      body: "projects_locations_key_rings_import_job"
+    };
+  };
+
+  // Returns metadata for a given ImportJob.
+  rpc GetProjectsLocationsKeyRingsImportJob(GetProjectsLocationsKeyRingsImportJobRequest) returns (ImportJob) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/keyRings/*/importJobs/*}"
+    };
+  };
+
+  // Lists ImportJobs.
+  rpc ListProjectsLocationsKeyRingsImportJobs(ListProjectsLocationsKeyRingsImportJobsRequest) returns (ListImportJobsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/keyRings/*}/importJobs"
+    };
+  };
+}
+
+  // Request message for KeyManagementService.AsymmetricDecrypt.
+message AsymmetricDecryptRequest {
+  // Required. The data encrypted with the named CryptoKeyVersion's public key using OAEP.
+  optional bytes ciphertext = 1 [json_name="ciphertext"];
+  // Optional. An optional CRC32C checksum of the AsymmetricDecryptRequest.ciphertext. If specified, KeyManagementService will verify the integrity of the received AsymmetricDecryptRequest.ciphertext using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(AsymmetricDecryptRequest.ciphertext) is equal to AsymmetricDecryptRequest.ciphertext_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 ciphertext_crc32c = 2 [json_name="ciphertextCrc32c"];
+}
+
+  // Response message for KeyManagementService.AsymmetricDecrypt.
+message AsymmetricDecryptResponse {
+  // The decrypted data originally encrypted with the matching public key.
+  optional bytes plaintext = 1 [json_name="plaintext"];
+  // Integrity verification field. A CRC32C checksum of the returned AsymmetricDecryptResponse.plaintext. An integrity check of AsymmetricDecryptResponse.plaintext can be performed by computing the CRC32C checksum of AsymmetricDecryptResponse.plaintext and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 plaintext_crc32c = 2 [json_name="plaintextCrc32c"];
+  // The ProtectionLevel of the CryptoKeyVersion used in decryption.
+  optional string protection_level = 3 [json_name="protectionLevel"];
+  // Integrity verification field. A flag indicating whether AsymmetricDecryptRequest.ciphertext_crc32c was received by KeyManagementService and used for the integrity verification of the ciphertext. A false value of this field indicates either that AsymmetricDecryptRequest.ciphertext_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set AsymmetricDecryptRequest.ciphertext_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_ciphertext_crc32c = 4 [json_name="verifiedCiphertextCrc32c"];
+}
+
+  // Request message for KeyManagementService.AsymmetricSign.
+message AsymmetricSignRequest {
+  // Optional. The data to sign. It can't be supplied if AsymmetricSignRequest.digest is supplied.
+  optional bytes data = 1 [json_name="data"];
+  // Optional. An optional CRC32C checksum of the AsymmetricSignRequest.data. If specified, KeyManagementService will verify the integrity of the received AsymmetricSignRequest.data using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(AsymmetricSignRequest.data) is equal to AsymmetricSignRequest.data_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 data_crc32c = 2 [json_name="dataCrc32c"];
+  // Optional. The digest of the data to sign. The digest must be produced with the same digest algorithm as specified by the key version's algorithm. This field may not be supplied if AsymmetricSignRequest.data is supplied.
+  optional Digest digest = 3 [json_name="digest"];
+  // Optional. An optional CRC32C checksum of the AsymmetricSignRequest.digest. If specified, KeyManagementService will verify the integrity of the received AsymmetricSignRequest.digest using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(AsymmetricSignRequest.digest) is equal to AsymmetricSignRequest.digest_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 digest_crc32c = 4 [json_name="digestCrc32c"];
+}
+
+  // Response message for KeyManagementService.AsymmetricSign.
+message AsymmetricSignResponse {
+  // The resource name of the CryptoKeyVersion used for signing. Check this field to verify that the intended resource was used for signing.
+  optional string name = 1 [json_name="name"];
+  // The ProtectionLevel of the CryptoKeyVersion used for signing.
+  optional string protection_level = 2 [json_name="protectionLevel"];
+  // The created signature.
+  optional bytes signature = 3 [json_name="signature"];
+  // Integrity verification field. A CRC32C checksum of the returned AsymmetricSignResponse.signature. An integrity check of AsymmetricSignResponse.signature can be performed by computing the CRC32C checksum of AsymmetricSignResponse.signature and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 signature_crc32c = 4 [json_name="signatureCrc32c"];
+  // Integrity verification field. A flag indicating whether AsymmetricSignRequest.data_crc32c was received by KeyManagementService and used for the integrity verification of the data. A false value of this field indicates either that AsymmetricSignRequest.data_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set AsymmetricSignRequest.data_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_data_crc32c = 5 [json_name="verifiedDataCrc32c"];
+  // Integrity verification field. A flag indicating whether AsymmetricSignRequest.digest_crc32c was received by KeyManagementService and used for the integrity verification of the digest. A false value of this field indicates either that AsymmetricSignRequest.digest_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set AsymmetricSignRequest.digest_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_digest_crc32c = 6 [json_name="verifiedDigestCrc32c"];
+}
+
+  // Specifies the audit configuration for a service. The configuration determines which permission types are logged, and what identities, if any, are exempted from logging. An AuditConfig must have one or more AuditLogConfigs. If there are AuditConfigs for both `allServices` and a specific service, the union of the two AuditConfigs is used for that service: the log_types specified in each AuditConfig are enabled, and the exempted_members in each AuditLogConfig are exempted. Example Policy with multiple AuditConfigs: { "audit_configs": [ { "service": "allServices", "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" }, { "log_type": "ADMIN_READ" } ] }, { "service": "sampleservice.googleapis.com", "audit_log_configs": [ { "log_type": "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [ "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts `jose@example.com` from DATA_READ logging, and `aliya@example.com` from DATA_WRITE logging.
+message AuditConfig {
+  // The configuration for logging of each type of permission.
+  repeated AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
+  // Specifies a service that will be enabled for audit logging. For example, `storage.googleapis.com`, `cloudsql.googleapis.com`. `allServices` is a special value that covers all services.
+  optional string service = 2 [json_name="service"];
+}
+
+  // Provides the configuration for logging a type of permissions. Example: { "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting jose@example.com from DATA_READ logging.
+message AuditLogConfig {
+  // Specifies the identities that do not cause logging for this type of permission. Follows the same format of Binding.members.
+  repeated string exempted_members = 1 [json_name="exemptedMembers"];
+  // The log type that this config enables.
+  optional string log_type = 2 [json_name="logType"];
+}
+
+  // Cloud KMS Autokey configuration for a folder.
+message AutokeyConfig {
+  // Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new CryptoKey when a KeyHandle is created. On UpdateAutokeyConfig, the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on this key project. Once configured, for Cloud KMS Autokey to function properly, this key project must have the Cloud KMS API activated and the Cloud KMS Service Agent for this key project must be granted the `cloudkms.admin` role (or pertinent permissions). A request with an empty key project field will clear the configuration.
+  optional string key_project = 1 [json_name="keyProject"];
+  // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+  optional string name = 2 [json_name="name"];
+  // Output only. The state for the AutokeyConfig.
+  optional string state = 3 [json_name="state"];
+}
+
+  // Associates `members`, or principals, with a `role`.
+message Binding {
+  // The condition that is associated with this binding. If the condition evaluates to `true`, then this binding applies to the current request. If the condition evaluates to `false`, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+  optional Expr condition = 1 [json_name="condition"];
+  // Specifies the principals requesting access for a Google Cloud resource. `members` can have the following values: * `allUsers`: A special identifier that represents anyone who is on the internet; with or without a Google account. * `allAuthenticatedUsers`: A special identifier that represents anyone who is authenticated with a Google account or a service account. Does not include identities that come from external identity providers (IdPs) through identity federation. * `user:{emailid}`: An email address that represents a specific Google account. For example, `alice@example.com` . * `serviceAccount:{emailid}`: An email address that represents a Google service account. For example, `my-other-app@appspot.gserviceaccount.com`. * `serviceAccount:{projectid}.svc.id.goog[{namespace}/{kubernetes-sa}]`: An identifier for a [Kubernetes service account](https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts). For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`. * `group:{emailid}`: An email address that represents a Google group. For example, `admins@example.com`. * `domain:{domain}`: The G Suite domain (primary) that represents all the users of that domain. For example, `google.com` or `example.com`. * `principal://iam.googleapis.com/locations/global/workforcePools/{pool_id}/subject/{subject_attribute_value}`: A single identity in a workforce identity pool. * `principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/group/{group_id}`: All workforce identities in a group. * `principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/attribute.{attribute_name}/{attribute_value}`: All workforce identities with a specific attribute value. * `principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/*`: All identities in a workforce identity pool. * `principal://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/subject/{subject_attribute_value}`: A single identity in a workload identity pool. * `principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/group/{group_id}`: A workload identity pool group. * `principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/attribute.{attribute_name}/{attribute_value}`: All identities in a workload identity pool with a certain attribute. * `principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/*`: All identities in a workload identity pool. * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a user that has been recently deleted. For example, `alice@example.com?uid=123456789012345678901`. If the user is recovered, this value reverts to `user:{emailid}` and the recovered user retains the role in the binding. * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, `my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901`. If the service account is undeleted, this value reverts to `serviceAccount:{emailid}` and the undeleted service account retains the role in the binding. * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, `admins@example.com?uid=123456789012345678901`. If the group is recovered, this value reverts to `group:{emailid}` and the recovered group retains the role in the binding. * `deleted:principal://iam.googleapis.com/locations/global/workforcePools/{pool_id}/subject/{subject_attribute_value}`: Deleted single identity in a workforce identity pool. For example, `deleted:principal://iam.googleapis.com/locations/global/workforcePools/my-pool-id/subject/my-subject-attribute-value`.
+  repeated string members = 2 [json_name="members"];
+  // Role that is assigned to the list of `members`, or principals. For example, `roles/viewer`, `roles/editor`, or `roles/owner`. For an overview of the IAM roles and permissions, see the [IAM documentation](https://cloud.google.com/iam/docs/roles-overview). For a list of the available pre-defined roles, see [here](https://cloud.google.com/iam/docs/understanding-roles).
+  optional string role = 3 [json_name="role"];
+}
+
+  // A Certificate represents an X.509 certificate used to authenticate HTTPS connections to EKM replicas.
+message Certificate {
+  // Output only. The issuer distinguished name in RFC 2253 format. Only present if parsed is true.
+  optional string issuer = 1 [json_name="issuer"];
+  // Output only. The certificate is not valid after this time. Only present if parsed is true.
+  optional .google.protobuf.Timestamp not_after_time = 2 [json_name="notAfterTime"];
+  // Output only. The certificate is not valid before this time. Only present if parsed is true.
+  optional .google.protobuf.Timestamp not_before_time = 3 [json_name="notBeforeTime"];
+  // Output only. True if the certificate was parsed successfully.
+  optional bool parsed = 4 [json_name="parsed"];
+  // Required. The raw certificate bytes in DER format.
+  optional bytes raw_der = 5 [json_name="rawDer"];
+  // Output only. The certificate serial number as a hex string. Only present if parsed is true.
+  optional string serial_number = 6 [json_name="serialNumber"];
+  // Output only. The SHA-256 certificate fingerprint as a hex string. Only present if parsed is true.
+  optional string sha256_fingerprint = 7 [json_name="sha256Fingerprint"];
+  // Output only. The subject distinguished name in RFC 2253 format. Only present if parsed is true.
+  optional string subject = 8 [json_name="subject"];
+  // Output only. The subject Alternative DNS names. Only present if parsed is true.
+  repeated string subject_alternative_dns_names = 9 [json_name="subjectAlternativeDnsNames"];
+}
+
+  // Certificate chains needed to verify the attestation. Certificates in chains are PEM-encoded and are ordered based on https://tools.ietf.org/html/rfc5246#section-7.4.2.
+message CertificateChains {
+  // Cavium certificate chain corresponding to the attestation.
+  repeated string cavium_certs = 1 [json_name="caviumCerts"];
+  // Google card certificate chain corresponding to the attestation.
+  repeated string google_card_certs = 2 [json_name="googleCardCerts"];
+  // Google partition certificate chain corresponding to the attestation.
+  repeated string google_partition_certs = 3 [json_name="googlePartitionCerts"];
+}
+
+  // A CryptoKey represents a logical key that can be used for cryptographic operations. A CryptoKey is made up of zero or more versions, which represent the actual key material used in cryptographic operations.
+message CryptoKey {
+  // Output only. The time at which this CryptoKey was created.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Immutable. The resource name of the backend environment where the key material for all CryptoKeyVersions associated with this CryptoKey reside and where all related cryptographic operations are performed. Only applicable if CryptoKeyVersions have a ProtectionLevel of EXTERNAL_VPC, with the resource name in the format `projects/*/locations/*/ekmConnections/*`. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future.
+  optional string crypto_key_backend = 2 [json_name="cryptoKeyBackend"];
+  // Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED. If not specified at creation time, the default duration is 30 days.
+  optional .google.protobuf.Duration destroy_scheduled_duration = 3 [json_name="destroyScheduledDuration"];
+  // Immutable. Whether this key may contain imported versions only.
+  optional bool import_only = 4 [json_name="importOnly"];
+  // Optional. The policy used for Key Access Justifications Policy Enforcement. If this field is present and this key is enrolled in Key Access Justifications Policy Enforcement, the policy will be evaluated in encrypt, decrypt, and sign operations, and the operation will fail if rejected by the policy. The policy is defined by specifying zero or more allowed justification codes. https://cloud.google.com/assured-workloads/key-access-justifications/docs/justification-codes By default, this field is absent, and all justification codes are allowed.
+  optional KeyAccessJustificationsPolicy key_access_justifications_policy = 5 [json_name="keyAccessJustificationsPolicy"];
+  // Labels with user-defined metadata. For more information, see [Labeling Keys](https://cloud.google.com/kms/docs/labeling-keys).
+  map<string, string> labels = 6 [json_name="labels"];
+  // Output only. The resource name for this CryptoKey in the format `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+  optional string name = 7 [json_name="name"];
+  // At next_rotation_time, the Key Management Service will automatically: 1. Create a new version of this CryptoKey. 2. Mark the new version as primary. Key rotations performed manually via CreateCryptoKeyVersion and UpdateCryptoKeyPrimaryVersion do not affect next_rotation_time. Keys with purpose ENCRYPT_DECRYPT support automatic rotation. For other keys, this field must be omitted.
+  optional .google.protobuf.Timestamp next_rotation_time = 8 [json_name="nextRotationTime"];
+  // Output only. A copy of the "primary" CryptoKeyVersion that will be used by Encrypt when this CryptoKey is given in EncryptRequest.name. The CryptoKey's primary version can be updated via UpdateCryptoKeyPrimaryVersion. Keys with purpose ENCRYPT_DECRYPT may have a primary. For other keys, this field will be omitted.
+  optional CryptoKeyVersion primary = 9 [json_name="primary"];
+  // Immutable. The immutable purpose of this CryptoKey.
+  optional string purpose = 10 [json_name="purpose"];
+  // next_rotation_time will be advanced by this period when the service automatically rotates a key. Must be at least 24 hours and at most 876,000 hours. If rotation_period is set, next_rotation_time must also be set. Keys with purpose ENCRYPT_DECRYPT support automatic rotation. For other keys, this field must be omitted.
+  optional .google.protobuf.Duration rotation_period = 11 [json_name="rotationPeriod"];
+  // A template describing settings for new CryptoKeyVersion instances. The properties of new CryptoKeyVersion instances created by either CreateCryptoKeyVersion or auto-rotation are controlled by this template.
+  optional CryptoKeyVersionTemplate version_template = 12 [json_name="versionTemplate"];
+}
+
+  // A CryptoKeyVersion represents an individual cryptographic key, and the associated key material. An ENABLED version can be used for cryptographic operations. For security reasons, the raw cryptographic key material represented by a CryptoKeyVersion can never be viewed or exported. It can only be used to encrypt, decrypt, or sign data when an authorized user or application invokes Cloud KMS.
+message CryptoKeyVersion {
+  // Output only. The CryptoKeyVersionAlgorithm that this CryptoKeyVersion supports.
+  optional string algorithm = 1 [json_name="algorithm"];
+  // Output only. Statement that was generated and signed by the HSM at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google. Only provided for key versions with protection_level HSM.
+  optional KeyOperationAttestation attestation = 2 [json_name="attestation"];
+  // Output only. The time at which this CryptoKeyVersion was created.
+  optional .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  // Output only. The time this CryptoKeyVersion's key material was destroyed. Only present if state is DESTROYED.
+  optional .google.protobuf.Timestamp destroy_event_time = 4 [json_name="destroyEventTime"];
+  // Output only. The time this CryptoKeyVersion's key material is scheduled for destruction. Only present if state is DESTROY_SCHEDULED.
+  optional .google.protobuf.Timestamp destroy_time = 5 [json_name="destroyTime"];
+  // Output only. The root cause of the most recent external destruction failure. Only present if state is EXTERNAL_DESTRUCTION_FAILED.
+  optional string external_destruction_failure_reason = 6 [json_name="externalDestructionFailureReason"];
+  // ExternalProtectionLevelOptions stores a group of additional fields for configuring a CryptoKeyVersion that are specific to the EXTERNAL protection level and EXTERNAL_VPC protection levels.
+  optional ExternalProtectionLevelOptions external_protection_level_options = 7 [json_name="externalProtectionLevelOptions"];
+  // Output only. The time this CryptoKeyVersion's key material was generated.
+  optional .google.protobuf.Timestamp generate_time = 8 [json_name="generateTime"];
+  // Output only. The root cause of the most recent generation failure. Only present if state is GENERATION_FAILED.
+  optional string generation_failure_reason = 9 [json_name="generationFailureReason"];
+  // Output only. The root cause of the most recent import failure. Only present if state is IMPORT_FAILED.
+  optional string import_failure_reason = 10 [json_name="importFailureReason"];
+  // Output only. The name of the ImportJob used in the most recent import of this CryptoKeyVersion. Only present if the underlying key material was imported.
+  optional string import_job = 11 [json_name="importJob"];
+  // Output only. The time at which this CryptoKeyVersion's key material was most recently imported.
+  optional .google.protobuf.Timestamp import_time = 12 [json_name="importTime"];
+  // Output only. The resource name for this CryptoKeyVersion in the format `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`.
+  optional string name = 13 [json_name="name"];
+  // Output only. The ProtectionLevel describing how crypto operations are performed with this CryptoKeyVersion.
+  optional string protection_level = 14 [json_name="protectionLevel"];
+  // Output only. Whether or not this key version is eligible for reimport, by being specified as a target in ImportCryptoKeyVersionRequest.crypto_key_version.
+  optional bool reimport_eligible = 15 [json_name="reimportEligible"];
+  // The current state of the CryptoKeyVersion.
+  optional string state = 16 [json_name="state"];
+}
+
+  // A CryptoKeyVersionTemplate specifies the properties to use when creating a new CryptoKeyVersion, either manually with CreateCryptoKeyVersion or automatically as a result of auto-rotation.
+message CryptoKeyVersionTemplate {
+  // Required. Algorithm to use when creating a CryptoKeyVersion based on this template. For backwards compatibility, GOOGLE_SYMMETRIC_ENCRYPTION is implied if both this field is omitted and CryptoKey.purpose is ENCRYPT_DECRYPT.
+  optional string algorithm = 1 [json_name="algorithm"];
+  // ProtectionLevel to use when creating a CryptoKeyVersion based on this template. Immutable. Defaults to SOFTWARE.
+  optional string protection_level = 2 [json_name="protectionLevel"];
+}
+
+  // Request message for KeyManagementService.Decrypt.
+message DecryptRequest {
+  // Optional. Optional data that must match the data originally supplied in EncryptRequest.additional_authenticated_data.
+  optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
+  // Optional. An optional CRC32C checksum of the DecryptRequest.additional_authenticated_data. If specified, KeyManagementService will verify the integrity of the received DecryptRequest.additional_authenticated_data using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(DecryptRequest.additional_authenticated_data) is equal to DecryptRequest.additional_authenticated_data_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 additional_authenticated_data_crc32c = 2 [json_name="additionalAuthenticatedDataCrc32c"];
+  // Required. The encrypted data originally returned in EncryptResponse.ciphertext.
+  optional bytes ciphertext = 3 [json_name="ciphertext"];
+  // Optional. An optional CRC32C checksum of the DecryptRequest.ciphertext. If specified, KeyManagementService will verify the integrity of the received DecryptRequest.ciphertext using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(DecryptRequest.ciphertext) is equal to DecryptRequest.ciphertext_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 ciphertext_crc32c = 4 [json_name="ciphertextCrc32c"];
+}
+
+  // Response message for KeyManagementService.Decrypt.
+message DecryptResponse {
+  // The decrypted data originally supplied in EncryptRequest.plaintext.
+  optional bytes plaintext = 1 [json_name="plaintext"];
+  // Integrity verification field. A CRC32C checksum of the returned DecryptResponse.plaintext. An integrity check of DecryptResponse.plaintext can be performed by computing the CRC32C checksum of DecryptResponse.plaintext and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: receiving this response message indicates that KeyManagementService is able to successfully decrypt the ciphertext. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 plaintext_crc32c = 2 [json_name="plaintextCrc32c"];
+  // The ProtectionLevel of the CryptoKeyVersion used in decryption.
+  optional string protection_level = 3 [json_name="protectionLevel"];
+  // Whether the Decryption was performed using the primary key version.
+  optional bool used_primary = 4 [json_name="usedPrimary"];
+}
+
+  // Request message for KeyManagementService.DestroyCryptoKeyVersion.
+message DestroyCryptoKeyVersionRequest {
+}
+
+  // A Digest holds a cryptographic message digest.
+message Digest {
+  // A message digest produced with the SHA-256 algorithm.
+  optional bytes sha256 = 1 [json_name="sha256"];
+  // A message digest produced with the SHA-384 algorithm.
+  optional bytes sha384 = 2 [json_name="sha384"];
+  // A message digest produced with the SHA-512 algorithm.
+  optional bytes sha512 = 3 [json_name="sha512"];
+}
+
+  // An EkmConfig is a singleton resource that represents configuration parameters that apply to all CryptoKeys and CryptoKeyVersions with a ProtectionLevel of EXTERNAL_VPC in a given project and location.
+message EkmConfig {
+  // Optional. Resource name of the default EkmConnection. Setting this field to the empty string removes the default.
+  optional string default_ekm_connection = 1 [json_name="defaultEkmConnection"];
+  // Output only. The resource name for the EkmConfig in the format `projects/*/locations/*/ekmConfig`.
+  optional string name = 2 [json_name="name"];
+}
+
+  // An EkmConnection represents an individual EKM connection. It can be used for creating CryptoKeys and CryptoKeyVersions with a ProtectionLevel of EXTERNAL_VPC, as well as performing cryptographic operations using keys created within the EkmConnection.
+message EkmConnection {
+  // Output only. The time at which the EkmConnection was created.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Optional. Identifies the EKM Crypto Space that this EkmConnection maps to. Note: This field is required if KeyManagementMode is CLOUD_KMS.
+  optional string crypto_space_path = 2 [json_name="cryptoSpacePath"];
+  // Optional. Etag of the currently stored EkmConnection.
+  optional string etag = 3 [json_name="etag"];
+  // Optional. Describes who can perform control plane operations on the EKM. If unset, this defaults to MANUAL.
+  optional string key_management_mode = 4 [json_name="keyManagementMode"];
+  // Output only. The resource name for the EkmConnection in the format `projects/*/locations/*/ekmConnections/*`.
+  optional string name = 5 [json_name="name"];
+  // Optional. A list of ServiceResolvers where the EKM can be reached. There should be one ServiceResolver per EKM replica. Currently, only a single ServiceResolver is supported.
+  repeated ServiceResolver service_resolvers = 6 [json_name="serviceResolvers"];
+}
+
+  // Request message for KeyManagementService.Encrypt.
+message EncryptRequest {
+  // Optional. Optional data that, if specified, must also be provided during decryption through DecryptRequest.additional_authenticated_data. The maximum size depends on the key version's protection_level. For SOFTWARE, EXTERNAL, and EXTERNAL_VPC keys the AAD must be no larger than 64KiB. For HSM keys, the combined length of the plaintext and additional_authenticated_data fields must be no larger than 8KiB.
+  optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
+  // Optional. An optional CRC32C checksum of the EncryptRequest.additional_authenticated_data. If specified, KeyManagementService will verify the integrity of the received EncryptRequest.additional_authenticated_data using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(EncryptRequest.additional_authenticated_data) is equal to EncryptRequest.additional_authenticated_data_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 additional_authenticated_data_crc32c = 2 [json_name="additionalAuthenticatedDataCrc32c"];
+  // Required. The data to encrypt. Must be no larger than 64KiB. The maximum size depends on the key version's protection_level. For SOFTWARE, EXTERNAL, and EXTERNAL_VPC keys, the plaintext must be no larger than 64KiB. For HSM keys, the combined length of the plaintext and additional_authenticated_data fields must be no larger than 8KiB.
+  optional bytes plaintext = 3 [json_name="plaintext"];
+  // Optional. An optional CRC32C checksum of the EncryptRequest.plaintext. If specified, KeyManagementService will verify the integrity of the received EncryptRequest.plaintext using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(EncryptRequest.plaintext) is equal to EncryptRequest.plaintext_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 plaintext_crc32c = 4 [json_name="plaintextCrc32c"];
+}
+
+  // Response message for KeyManagementService.Encrypt.
+message EncryptResponse {
+  // The encrypted data.
+  optional bytes ciphertext = 1 [json_name="ciphertext"];
+  // Integrity verification field. A CRC32C checksum of the returned EncryptResponse.ciphertext. An integrity check of EncryptResponse.ciphertext can be performed by computing the CRC32C checksum of EncryptResponse.ciphertext and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 ciphertext_crc32c = 2 [json_name="ciphertextCrc32c"];
+  // The resource name of the CryptoKeyVersion used in encryption. Check this field to verify that the intended resource was used for encryption.
+  optional string name = 3 [json_name="name"];
+  // The ProtectionLevel of the CryptoKeyVersion used in encryption.
+  optional string protection_level = 4 [json_name="protectionLevel"];
+  // Integrity verification field. A flag indicating whether EncryptRequest.additional_authenticated_data_crc32c was received by KeyManagementService and used for the integrity verification of the AAD. A false value of this field indicates either that EncryptRequest.additional_authenticated_data_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set EncryptRequest.additional_authenticated_data_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_additional_authenticated_data_crc32c = 5 [json_name="verifiedAdditionalAuthenticatedDataCrc32c"];
+  // Integrity verification field. A flag indicating whether EncryptRequest.plaintext_crc32c was received by KeyManagementService and used for the integrity verification of the plaintext. A false value of this field indicates either that EncryptRequest.plaintext_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set EncryptRequest.plaintext_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_plaintext_crc32c = 6 [json_name="verifiedPlaintextCrc32c"];
+}
+
+  // Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
+message Expr {
+  // Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
+  optional string description = 1 [json_name="description"];
+  // Textual representation of an expression in Common Expression Language syntax.
+  optional string expression = 2 [json_name="expression"];
+  // Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
+  optional string location = 3 [json_name="location"];
+  // Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
+  optional string title = 4 [json_name="title"];
+}
+
+  // ExternalProtectionLevelOptions stores a group of additional fields for configuring a CryptoKeyVersion that are specific to the EXTERNAL protection level and EXTERNAL_VPC protection levels.
+message ExternalProtectionLevelOptions {
+  // The path to the external key material on the EKM when using EkmConnection e.g., "v0/my/key". Set this field instead of external_key_uri when using an EkmConnection.
+  optional string ekm_connection_key_path = 1 [json_name="ekmConnectionKeyPath"];
+  // The URI for an external resource that this CryptoKeyVersion represents.
+  optional string external_key_uri = 2 [json_name="externalKeyUri"];
+}
+
+  // Request message for KeyManagementService.GenerateRandomBytes.
+message GenerateRandomBytesRequest {
+  // The length in bytes of the amount of randomness to retrieve. Minimum 8 bytes, maximum 1024 bytes.
+  optional int32 length_bytes = 1 [json_name="lengthBytes"];
+  // The ProtectionLevel to use when generating the random data. Currently, only HSM protection level is supported.
+  optional string protection_level = 2 [json_name="protectionLevel"];
+}
+
+  // Response message for KeyManagementService.GenerateRandomBytes.
+message GenerateRandomBytesResponse {
+  // The generated data.
+  optional bytes data = 1 [json_name="data"];
+  // Integrity verification field. A CRC32C checksum of the returned GenerateRandomBytesResponse.data. An integrity check of GenerateRandomBytesResponse.data can be performed by computing the CRC32C checksum of GenerateRandomBytesResponse.data and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 data_crc32c = 2 [json_name="dataCrc32c"];
+}
+
+  // Request message for KeyManagementService.ImportCryptoKeyVersion.
+message ImportCryptoKeyVersionRequest {
+  // Required. The algorithm of the key being imported. This does not need to match the version_template of the CryptoKey this version imports into.
+  optional string algorithm = 1 [json_name="algorithm"];
+  // Optional. The optional name of an existing CryptoKeyVersion to target for an import operation. If this field is not present, a new CryptoKeyVersion containing the supplied key material is created. If this field is present, the supplied key material is imported into the existing CryptoKeyVersion. To import into an existing CryptoKeyVersion, the CryptoKeyVersion must be a child of ImportCryptoKeyVersionRequest.parent, have been previously created via ImportCryptoKeyVersion, and be in DESTROYED or IMPORT_FAILED state. The key material and algorithm must match the previous CryptoKeyVersion exactly if the CryptoKeyVersion has ever contained key material.
+  optional string crypto_key_version = 2 [json_name="cryptoKeyVersion"];
+  // Required. The name of the ImportJob that was used to wrap this key material.
+  optional string import_job = 3 [json_name="importJob"];
+  // Optional. This field has the same meaning as wrapped_key. Prefer to use that field in new work. Either that field or this field (but not both) must be specified.
+  optional bytes rsa_aes_wrapped_key = 4 [json_name="rsaAesWrappedKey"];
+  // Optional. The wrapped key material to import. Before wrapping, key material must be formatted. If importing symmetric key material, the expected key material format is plain bytes. If importing asymmetric key material, the expected key material format is PKCS#8-encoded DER (the PrivateKeyInfo structure from RFC 5208). When wrapping with import methods (RSA_OAEP_3072_SHA1_AES_256 or RSA_OAEP_4096_SHA1_AES_256 or RSA_OAEP_3072_SHA256_AES_256 or RSA_OAEP_4096_SHA256_AES_256), this field must contain the concatenation of: 1. An ephemeral AES-256 wrapping key wrapped with the public_key using RSAES-OAEP with SHA-1/SHA-256, MGF1 with SHA-1/SHA-256, and an empty label. 2. The formatted key to be imported, wrapped with the ephemeral AES-256 key using AES-KWP (RFC 5649). This format is the same as the format produced by PKCS#11 mechanism CKM_RSA_AES_KEY_WRAP. When wrapping with import methods (RSA_OAEP_3072_SHA256 or RSA_OAEP_4096_SHA256), this field must contain the formatted key to be imported, wrapped with the public_key using RSAES-OAEP with SHA-256, MGF1 with SHA-256, and an empty label.
+  optional bytes wrapped_key = 5 [json_name="wrappedKey"];
+}
+
+  // An ImportJob can be used to create CryptoKeys and CryptoKeyVersions using pre-existing key material, generated outside of Cloud KMS. When an ImportJob is created, Cloud KMS will generate a "wrapping key", which is a public/private key pair. You use the wrapping key to encrypt (also known as wrap) the pre-existing key material to protect it during the import process. The nature of the wrapping key depends on the choice of import_method. When the wrapping key generation is complete, the state will be set to ACTIVE and the public_key can be fetched. The fetched public key can then be used to wrap your pre-existing key material. Once the key material is wrapped, it can be imported into a new CryptoKeyVersion in an existing CryptoKey by calling ImportCryptoKeyVersion. Multiple CryptoKeyVersions can be imported with a single ImportJob. Cloud KMS uses the private key portion of the wrapping key to unwrap the key material. Only Cloud KMS has access to the private key. An ImportJob expires 3 days after it is created. Once expired, Cloud KMS will no longer be able to import or unwrap any key material that was wrapped with the ImportJob's public key. For more information, see [Importing a key](https://cloud.google.com/kms/docs/importing-a-key).
+message ImportJob {
+  // Output only. Statement that was generated and signed by the key creator (for example, an HSM) at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google. Only present if the chosen ImportMethod is one with a protection level of HSM.
+  optional KeyOperationAttestation attestation = 1 [json_name="attestation"];
+  // Output only. The time at which this ImportJob was created.
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Output only. The time this ImportJob expired. Only present if state is EXPIRED.
+  optional .google.protobuf.Timestamp expire_event_time = 3 [json_name="expireEventTime"];
+  // Output only. The time at which this ImportJob is scheduled for expiration and can no longer be used to import key material.
+  optional .google.protobuf.Timestamp expire_time = 4 [json_name="expireTime"];
+  // Output only. The time this ImportJob's key material was generated.
+  optional .google.protobuf.Timestamp generate_time = 5 [json_name="generateTime"];
+  // Required. Immutable. The wrapping method to be used for incoming key material.
+  optional string import_method = 6 [json_name="importMethod"];
+  // Output only. The resource name for this ImportJob in the format `projects/*/locations/*/keyRings/*/importJobs/*`.
+  optional string name = 7 [json_name="name"];
+  // Required. Immutable. The protection level of the ImportJob. This must match the protection_level of the version_template on the CryptoKey you attempt to import into.
+  optional string protection_level = 8 [json_name="protectionLevel"];
+  // Output only. The public key with which to wrap key material prior to import. Only returned if state is ACTIVE.
+  optional WrappingPublicKey public_key = 9 [json_name="publicKey"];
+  // Output only. The current state of the ImportJob, indicating if it can be used.
+  optional string state = 10 [json_name="state"];
+}
+
+  // A KeyAccessJustificationsPolicy specifies zero or more allowed AccessReason values for encrypt, decrypt, and sign operations on a CryptoKey.
+message KeyAccessJustificationsPolicy {
+  // The list of allowed reasons for access to a CryptoKey. Zero allowed access reasons means all encrypt, decrypt, and sign operations for the CryptoKey associated with this policy will fail.
+  repeated string allowed_access_reasons = 1 [json_name="allowedAccessReasons"];
+}
+
+  // Resource-oriented representation of a request to Cloud KMS Autokey and the resulting provisioning of a CryptoKey.
+message KeyHandle {
+  // Output only. Name of a CryptoKey that has been provisioned for Customer Managed Encryption Key (CMEK) use in the KeyHandle project and location for the requested resource type. The CryptoKey project will reflect the value configured in the AutokeyConfig on the resource project's ancestor folder at the time of the KeyHandle creation. If more than one ancestor folder has a configured AutokeyConfig, the nearest of these configurations is used.
+  optional string kms_key = 1 [json_name="kmsKey"];
+  // Identifier. Name of the KeyHandle resource, e.g. `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
+  optional string name = 2 [json_name="name"];
+  // Required. Indicates the resource type that the resulting CryptoKey is meant to protect, e.g. `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource types.
+  optional string resource_type_selector = 3 [json_name="resourceTypeSelector"];
+}
+
+  // Contains an HSM-generated attestation about a key operation. For more information, see [Verifying attestations] (https://cloud.google.com/kms/docs/attest-key).
+message KeyOperationAttestation {
+  // Output only. The certificate chains needed to validate the attestation
+  optional CertificateChains cert_chains = 1 [json_name="certChains"];
+  // Output only. The attestation data provided by the HSM when the key operation was performed.
+  optional bytes content = 2 [json_name="content"];
+  // Output only. The format of the attestation data.
+  optional string format = 3 [json_name="format"];
+}
+
+  // A KeyRing is a toplevel logical grouping of CryptoKeys.
+message KeyRing {
+  // Output only. The time at which this KeyRing was created.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. The resource name for the KeyRing in the format `projects/*/locations/*/keyRings/*`.
+  optional string name = 2 [json_name="name"];
+}
+
+  // Response message for KeyManagementService.ListCryptoKeyVersions.
+message ListCryptoKeyVersionsResponse {
+  // The list of CryptoKeyVersions.
+  repeated CryptoKeyVersion crypto_key_versions = 1 [json_name="cryptoKeyVersions"];
+  // A token to retrieve next page of results. Pass this value in ListCryptoKeyVersionsRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  // The total number of CryptoKeyVersions that matched the query.
+  optional int32 total_size = 3 [json_name="totalSize"];
+}
+
+  // Response message for KeyManagementService.ListCryptoKeys.
+message ListCryptoKeysResponse {
+  // The list of CryptoKeys.
+  repeated CryptoKey crypto_keys = 1 [json_name="cryptoKeys"];
+  // A token to retrieve next page of results. Pass this value in ListCryptoKeysRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  // The total number of CryptoKeys that matched the query.
+  optional int32 total_size = 3 [json_name="totalSize"];
+}
+
+  // Response message for EkmService.ListEkmConnections.
+message ListEkmConnectionsResponse {
+  // The list of EkmConnections.
+  repeated EkmConnection ekm_connections = 1 [json_name="ekmConnections"];
+  // A token to retrieve next page of results. Pass this value in ListEkmConnectionsRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  // The total number of EkmConnections that matched the query.
+  optional int32 total_size = 3 [json_name="totalSize"];
+}
+
+  // Response message for KeyManagementService.ListImportJobs.
+message ListImportJobsResponse {
+  // The list of ImportJobs.
+  repeated ImportJob import_jobs = 1 [json_name="importJobs"];
+  // A token to retrieve next page of results. Pass this value in ListImportJobsRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  // The total number of ImportJobs that matched the query.
+  optional int32 total_size = 3 [json_name="totalSize"];
+}
+
+  // Response message for Autokey.ListKeyHandles.
+message ListKeyHandlesResponse {
+  // Resulting KeyHandles.
+  repeated KeyHandle key_handles = 1 [json_name="keyHandles"];
+  // A token to retrieve next page of results. Pass this value in ListKeyHandlesRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+  // Response message for KeyManagementService.ListKeyRings.
+message ListKeyRingsResponse {
+  // The list of KeyRings.
+  repeated KeyRing key_rings = 1 [json_name="keyRings"];
+  // A token to retrieve next page of results. Pass this value in ListKeyRingsRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  // The total number of KeyRings that matched the query.
+  optional int32 total_size = 3 [json_name="totalSize"];
+}
+
+  // The response message for Locations.ListLocations.
+message ListLocationsResponse {
+  // A list of locations that matches the specified filter in the request.
+  repeated Location locations = 1 [json_name="locations"];
+  // The standard List next-page token.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+  // A resource that represents a Google Cloud location.
+message Location {
+  // The friendly name for this location, typically a nearby city name. For example, "Tokyo".
+  optional string display_name = 1 [json_name="displayName"];
+  // Cross-service attributes for the location. For example {"cloud.googleapis.com/region": "us-east1"}
+  map<string, string> labels = 2 [json_name="labels"];
+  // The canonical id for this location. For example: `"us-east1"`.
+  optional string location_id = 3 [json_name="locationId"];
+  // Service-specific metadata. For example the available capacity at the given location.
+  map<string, .google.protobuf.Any> metadata = 4 [json_name="metadata"];
+  // Resource name for the location, which may vary between implementations. For example: `"projects/example-project/locations/us-east1"`
+  optional string name = 5 [json_name="name"];
+}
+
+  // Cloud KMS metadata for the given google.cloud.location.Location.
+message LocationMetadata {
+  // Indicates whether CryptoKeys with protection_level EXTERNAL can be created in this location.
+  optional bool ekm_available = 1 [json_name="ekmAvailable"];
+  // Indicates whether CryptoKeys with protection_level HSM can be created in this location.
+  optional bool hsm_available = 2 [json_name="hsmAvailable"];
+}
+
+  // Request message for KeyManagementService.MacSign.
+message MacSignRequest {
+  // Required. The data to sign. The MAC tag is computed over this data field based on the specific algorithm.
+  optional bytes data = 1 [json_name="data"];
+  // Optional. An optional CRC32C checksum of the MacSignRequest.data. If specified, KeyManagementService will verify the integrity of the received MacSignRequest.data using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(MacSignRequest.data) is equal to MacSignRequest.data_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 data_crc32c = 2 [json_name="dataCrc32c"];
+}
+
+  // Response message for KeyManagementService.MacSign.
+message MacSignResponse {
+  // The created signature.
+  optional bytes mac = 1 [json_name="mac"];
+  // Integrity verification field. A CRC32C checksum of the returned MacSignResponse.mac. An integrity check of MacSignResponse.mac can be performed by computing the CRC32C checksum of MacSignResponse.mac and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 mac_crc32c = 2 [json_name="macCrc32c"];
+  // The resource name of the CryptoKeyVersion used for signing. Check this field to verify that the intended resource was used for signing.
+  optional string name = 3 [json_name="name"];
+  // The ProtectionLevel of the CryptoKeyVersion used for signing.
+  optional string protection_level = 4 [json_name="protectionLevel"];
+  // Integrity verification field. A flag indicating whether MacSignRequest.data_crc32c was received by KeyManagementService and used for the integrity verification of the data. A false value of this field indicates either that MacSignRequest.data_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set MacSignRequest.data_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_data_crc32c = 5 [json_name="verifiedDataCrc32c"];
+}
+
+  // Request message for KeyManagementService.MacVerify.
+message MacVerifyRequest {
+  // Required. The data used previously as a MacSignRequest.data to generate the MAC tag.
+  optional bytes data = 1 [json_name="data"];
+  // Optional. An optional CRC32C checksum of the MacVerifyRequest.data. If specified, KeyManagementService will verify the integrity of the received MacVerifyRequest.data using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(MacVerifyRequest.data) is equal to MacVerifyRequest.data_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 data_crc32c = 2 [json_name="dataCrc32c"];
+  // Required. The signature to verify.
+  optional bytes mac = 3 [json_name="mac"];
+  // Optional. An optional CRC32C checksum of the MacVerifyRequest.mac. If specified, KeyManagementService will verify the integrity of the received MacVerifyRequest.mac using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(MacVerifyRequest.tag) is equal to MacVerifyRequest.mac_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 mac_crc32c = 4 [json_name="macCrc32c"];
+}
+
+  // Response message for KeyManagementService.MacVerify.
+message MacVerifyResponse {
+  // The resource name of the CryptoKeyVersion used for verification. Check this field to verify that the intended resource was used for verification.
+  optional string name = 1 [json_name="name"];
+  // The ProtectionLevel of the CryptoKeyVersion used for verification.
+  optional string protection_level = 2 [json_name="protectionLevel"];
+  // This field indicates whether or not the verification operation for MacVerifyRequest.mac over MacVerifyRequest.data was successful.
+  optional bool success = 3 [json_name="success"];
+  // Integrity verification field. A flag indicating whether MacVerifyRequest.data_crc32c was received by KeyManagementService and used for the integrity verification of the data. A false value of this field indicates either that MacVerifyRequest.data_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set MacVerifyRequest.data_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_data_crc32c = 4 [json_name="verifiedDataCrc32c"];
+  // Integrity verification field. A flag indicating whether MacVerifyRequest.mac_crc32c was received by KeyManagementService and used for the integrity verification of the data. A false value of this field indicates either that MacVerifyRequest.mac_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set MacVerifyRequest.mac_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_mac_crc32c = 5 [json_name="verifiedMacCrc32c"];
+  // Integrity verification field. This value is used for the integrity verification of [MacVerifyResponse.success]. If the value of this field contradicts the value of [MacVerifyResponse.success], discard the response and perform a limited number of retries.
+  optional bool verified_success_integrity = 6 [json_name="verifiedSuccessIntegrity"];
+}
+
+  // An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). **JSON example:** ``` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } ``` **YAML example:** ``` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 ``` For a description of IAM and its features, see the [IAM documentation](https://cloud.google.com/iam/docs/).
+message Policy {
+  // Specifies cloud audit logging configuration for this policy.
+  repeated AuditConfig audit_configs = 1 [json_name="auditConfigs"];
+  // Associates a list of `members`, or principals, with a `role`. Optionally, may specify a `condition` that determines how and when the `bindings` are applied. Each of the `bindings` must contain at least one principal. The `bindings` in a `Policy` can refer to up to 1,500 principals; up to 250 of these principals can be Google groups. Each occurrence of a principal counts towards these limits. For example, if the `bindings` grant 50 different roles to `user:alice@example.com`, and not to any other principal, then you can add another 1,450 principals to the `bindings` in the `Policy`.
+  repeated Binding bindings = 2 [json_name="bindings"];
+  // `etag` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. It is strongly suggested that systems make use of the `etag` in the read-modify-write cycle to perform policy updates in order to avoid race conditions: An `etag` is returned in the response to `getIamPolicy`, and systems are expected to put that etag in the request to `setIamPolicy` to ensure that their change will be applied to the same version of the policy. **Important:** If you use IAM Conditions, you must include the `etag` field whenever you call `setIamPolicy`. If you omit this field, then IAM allows you to overwrite a version `3` policy with a version `1` policy, and all of the conditions in the version `3` policy are lost.
+  optional bytes etag = 3 [json_name="etag"];
+  // Specifies the format of the policy. Valid values are `0`, `1`, and `3`. Requests that specify an invalid value are rejected. Any operation that affects conditional role bindings must specify version `3`. This requirement applies to the following operations: * Getting a policy that includes a conditional role binding * Adding a conditional role binding to a policy * Changing a conditional role binding in a policy * Removing any role binding, with or without a condition, from a policy that includes conditions **Important:** If you use IAM Conditions, you must include the `etag` field whenever you call `setIamPolicy`. If you omit this field, then IAM allows you to overwrite a version `3` policy with a version `1` policy, and all of the conditions in the version `3` policy are lost. If a policy does not include any conditions, operations on that policy may specify any valid version or leave the field unset. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+  optional int32 version = 4 [json_name="version"];
+}
+
+  // The public keys for a given CryptoKeyVersion. Obtained via GetPublicKey.
+message PublicKey {
+  // The Algorithm associated with this key.
+  optional string algorithm = 1 [json_name="algorithm"];
+  // The name of the CryptoKeyVersion public key. Provided here for verification. NOTE: This field is in Beta.
+  optional string name = 2 [json_name="name"];
+  // The public key, encoded in PEM format. For more information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13).
+  optional string pem = 3 [json_name="pem"];
+  // Integrity verification field. A CRC32C checksum of the returned PublicKey.pem. An integrity check of PublicKey.pem can be performed by computing the CRC32C checksum of PublicKey.pem and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type. NOTE: This field is in Beta.
+  optional int64 pem_crc32c = 4 [json_name="pemCrc32c"];
+  // The ProtectionLevel of the CryptoKeyVersion public key.
+  optional string protection_level = 5 [json_name="protectionLevel"];
+}
+
+  // Request message for KeyManagementService.RawDecrypt.
+message RawDecryptRequest {
+  // Optional. Optional data that must match the data originally supplied in RawEncryptRequest.additional_authenticated_data.
+  optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
+  // Optional. An optional CRC32C checksum of the RawDecryptRequest.additional_authenticated_data. If specified, KeyManagementService will verify the integrity of the received additional_authenticated_data using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(additional_authenticated_data) is equal to additional_authenticated_data_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 additional_authenticated_data_crc32c = 2 [json_name="additionalAuthenticatedDataCrc32c"];
+  // Required. The encrypted data originally returned in RawEncryptResponse.ciphertext.
+  optional bytes ciphertext = 3 [json_name="ciphertext"];
+  // Optional. An optional CRC32C checksum of the RawDecryptRequest.ciphertext. If specified, KeyManagementService will verify the integrity of the received ciphertext using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(ciphertext) is equal to ciphertext_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 ciphertext_crc32c = 4 [json_name="ciphertextCrc32c"];
+  // Required. The initialization vector (IV) used during encryption, which must match the data originally provided in RawEncryptResponse.initialization_vector.
+  optional bytes initialization_vector = 5 [json_name="initializationVector"];
+  // Optional. An optional CRC32C checksum of the RawDecryptRequest.initialization_vector. If specified, KeyManagementService will verify the integrity of the received initialization_vector using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(initialization_vector) is equal to initialization_vector_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 initialization_vector_crc32c = 6 [json_name="initializationVectorCrc32c"];
+  // The length of the authentication tag that is appended to the end of the ciphertext. If unspecified (0), the default value for the key's algorithm will be used (for AES-GCM, the default value is 16).
+  optional int32 tag_length = 7 [json_name="tagLength"];
+}
+
+  // Response message for KeyManagementService.RawDecrypt.
+message RawDecryptResponse {
+  // The decrypted data.
+  optional bytes plaintext = 1 [json_name="plaintext"];
+  // Integrity verification field. A CRC32C checksum of the returned RawDecryptResponse.plaintext. An integrity check of plaintext can be performed by computing the CRC32C checksum of plaintext and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: receiving this response message indicates that KeyManagementService is able to successfully decrypt the ciphertext. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 plaintext_crc32c = 2 [json_name="plaintextCrc32c"];
+  // The ProtectionLevel of the CryptoKeyVersion used in decryption.
+  optional string protection_level = 3 [json_name="protectionLevel"];
+  // Integrity verification field. A flag indicating whether RawDecryptRequest.additional_authenticated_data_crc32c was received by KeyManagementService and used for the integrity verification of additional_authenticated_data. A false value of this field indicates either that // RawDecryptRequest.additional_authenticated_data_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set RawDecryptRequest.additional_authenticated_data_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_additional_authenticated_data_crc32c = 4 [json_name="verifiedAdditionalAuthenticatedDataCrc32c"];
+  // Integrity verification field. A flag indicating whether RawDecryptRequest.ciphertext_crc32c was received by KeyManagementService and used for the integrity verification of the ciphertext. A false value of this field indicates either that RawDecryptRequest.ciphertext_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set RawDecryptRequest.ciphertext_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_ciphertext_crc32c = 5 [json_name="verifiedCiphertextCrc32c"];
+  // Integrity verification field. A flag indicating whether RawDecryptRequest.initialization_vector_crc32c was received by KeyManagementService and used for the integrity verification of initialization_vector. A false value of this field indicates either that RawDecryptRequest.initialization_vector_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set RawDecryptRequest.initialization_vector_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_initialization_vector_crc32c = 6 [json_name="verifiedInitializationVectorCrc32c"];
+}
+
+  // Request message for KeyManagementService.RawEncrypt.
+message RawEncryptRequest {
+  // Optional. Optional data that, if specified, must also be provided during decryption through RawDecryptRequest.additional_authenticated_data. This field may only be used in conjunction with an algorithm that accepts additional authenticated data (for example, AES-GCM). The maximum size depends on the key version's protection_level. For SOFTWARE keys, the plaintext must be no larger than 64KiB. For HSM keys, the combined length of the plaintext and additional_authenticated_data fields must be no larger than 8KiB.
+  optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
+  // Optional. An optional CRC32C checksum of the RawEncryptRequest.additional_authenticated_data. If specified, KeyManagementService will verify the integrity of the received additional_authenticated_data using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(additional_authenticated_data) is equal to additional_authenticated_data_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 additional_authenticated_data_crc32c = 2 [json_name="additionalAuthenticatedDataCrc32c"];
+  // Optional. A customer-supplied initialization vector that will be used for encryption. If it is not provided for AES-CBC and AES-CTR, one will be generated. It will be returned in RawEncryptResponse.initialization_vector.
+  optional bytes initialization_vector = 3 [json_name="initializationVector"];
+  // Optional. An optional CRC32C checksum of the RawEncryptRequest.initialization_vector. If specified, KeyManagementService will verify the integrity of the received initialization_vector using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(initialization_vector) is equal to initialization_vector_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 initialization_vector_crc32c = 4 [json_name="initializationVectorCrc32c"];
+  // Required. The data to encrypt. Must be no larger than 64KiB. The maximum size depends on the key version's protection_level. For SOFTWARE keys, the plaintext must be no larger than 64KiB. For HSM keys, the combined length of the plaintext and additional_authenticated_data fields must be no larger than 8KiB.
+  optional bytes plaintext = 5 [json_name="plaintext"];
+  // Optional. An optional CRC32C checksum of the RawEncryptRequest.plaintext. If specified, KeyManagementService will verify the integrity of the received plaintext using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(plaintext) is equal to plaintext_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 plaintext_crc32c = 6 [json_name="plaintextCrc32c"];
+}
+
+  // Response message for KeyManagementService.RawEncrypt.
+message RawEncryptResponse {
+  // The encrypted data. In the case of AES-GCM, the authentication tag is the tag_length bytes at the end of this field.
+  optional bytes ciphertext = 1 [json_name="ciphertext"];
+  // Integrity verification field. A CRC32C checksum of the returned RawEncryptResponse.ciphertext. An integrity check of ciphertext can be performed by computing the CRC32C checksum of ciphertext and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 ciphertext_crc32c = 2 [json_name="ciphertextCrc32c"];
+  // The initialization vector (IV) generated by the service during encryption. This value must be stored and provided in RawDecryptRequest.initialization_vector at decryption time.
+  optional bytes initialization_vector = 3 [json_name="initializationVector"];
+  // Integrity verification field. A CRC32C checksum of the returned RawEncryptResponse.initialization_vector. An integrity check of initialization_vector can be performed by computing the CRC32C checksum of initialization_vector and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 initialization_vector_crc32c = 4 [json_name="initializationVectorCrc32c"];
+  // The resource name of the CryptoKeyVersion used in encryption. Check this field to verify that the intended resource was used for encryption.
+  optional string name = 5 [json_name="name"];
+  // The ProtectionLevel of the CryptoKeyVersion used in encryption.
+  optional string protection_level = 6 [json_name="protectionLevel"];
+  // The length of the authentication tag that is appended to the end of the ciphertext.
+  optional int32 tag_length = 7 [json_name="tagLength"];
+  // Integrity verification field. A flag indicating whether RawEncryptRequest.additional_authenticated_data_crc32c was received by KeyManagementService and used for the integrity verification of additional_authenticated_data. A false value of this field indicates either that // RawEncryptRequest.additional_authenticated_data_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set RawEncryptRequest.additional_authenticated_data_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_additional_authenticated_data_crc32c = 8 [json_name="verifiedAdditionalAuthenticatedDataCrc32c"];
+  // Integrity verification field. A flag indicating whether RawEncryptRequest.initialization_vector_crc32c was received by KeyManagementService and used for the integrity verification of initialization_vector. A false value of this field indicates either that RawEncryptRequest.initialization_vector_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set RawEncryptRequest.initialization_vector_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_initialization_vector_crc32c = 9 [json_name="verifiedInitializationVectorCrc32c"];
+  // Integrity verification field. A flag indicating whether RawEncryptRequest.plaintext_crc32c was received by KeyManagementService and used for the integrity verification of the plaintext. A false value of this field indicates either that RawEncryptRequest.plaintext_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set RawEncryptRequest.plaintext_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_plaintext_crc32c = 10 [json_name="verifiedPlaintextCrc32c"];
+}
+
+  // Request message for KeyManagementService.RestoreCryptoKeyVersion.
+message RestoreCryptoKeyVersionRequest {
+}
+
+  // A ServiceResolver represents an EKM replica that can be reached within an EkmConnection.
+message ServiceResolver {
+  // Optional. The filter applied to the endpoints of the resolved service. If no filter is specified, all endpoints will be considered. An endpoint will be chosen arbitrarily from the filtered list for each request. For endpoint filter syntax and examples, see https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
+  optional string endpoint_filter = 1 [json_name="endpointFilter"];
+  // Required. The hostname of the EKM replica used at TLS and HTTP layers.
+  optional string hostname = 2 [json_name="hostname"];
+  // Required. A list of leaf server certificates used to authenticate HTTPS connections to the EKM replica. Currently, a maximum of 10 Certificate is supported.
+  repeated Certificate server_certificates = 3 [json_name="serverCertificates"];
+  // Required. The resource name of the Service Directory service pointing to an EKM replica, in the format `projects/*/locations/*/namespaces/*/services/*`.
+  optional string service_directory_service = 4 [json_name="serviceDirectoryService"];
+}
+
+  // Request message for `SetIamPolicy` method.
+message SetIamPolicyRequest {
+  // REQUIRED: The complete policy to be applied to the `resource`. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Google Cloud services (such as Projects) might reject them.
+  optional Policy policy = 1 [json_name="policy"];
+  // OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only the fields in the mask will be modified. If no mask is provided, the following default mask is used: `paths: "bindings, etag"`
+  optional string update_mask = 2 [json_name="updateMask"];
+}
+
+  // Response message for ShowEffectiveAutokeyConfig.
+message ShowEffectiveAutokeyConfigResponse {
+  // Name of the key project configured in the resource project's folder ancestry.
+  optional string key_project = 1 [json_name="keyProject"];
+}
+
+  // The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+message Status {
+  // The status code, which should be an enum value of google.rpc.Code.
+  optional int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  optional string message = 3 [json_name="message"];
+}
+
+  // Request message for `TestIamPermissions` method.
+message TestIamPermissionsRequest {
+  // The set of permissions to check for the `resource`. Permissions with wildcards (such as `*` or `storage.*`) are not allowed. For more information see [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
+  repeated string permissions = 1 [json_name="permissions"];
+}
+
+  // Response message for `TestIamPermissions` method.
+message TestIamPermissionsResponse {
+  // A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
+  repeated string permissions = 1 [json_name="permissions"];
+}
+
+  // Request message for KeyManagementService.UpdateCryptoKeyPrimaryVersion.
+message UpdateCryptoKeyPrimaryVersionRequest {
+  // Required. The id of the child CryptoKeyVersion to use as primary.
+  optional string crypto_key_version_id = 1 [json_name="cryptoKeyVersionId"];
+}
+
+  // Response message for EkmService.VerifyConnectivity.
+message VerifyConnectivityResponse {
+}
+
+  // The public key component of the wrapping key. For details of the type of key this public key corresponds to, see the ImportMethod.
+message WrappingPublicKey {
+  // The public key, encoded in PEM format. For more information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13).
+  optional string pem = 1 [json_name="pem"];
+}
+
+message GetAutokeyConfigFolderRequest {
+  optional string name = 1;
+}
+
+message UpdateAutokeyConfigFolderRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional AutokeyConfig folder = 3;
+}
+
+message ShowEffectiveAutokeyConfigProjectRequest {
+  optional string parent = 1;
+}
+
+message GenerateRandomBytesProjectsLocationRequest {
+  optional string location = 1;
+  optional GenerateRandomBytesRequest projects_location = 2;
+}
+
+message GetProjectsLocationRequest {
+  optional string name = 1;
+}
+
+message GetEkmConfigProjectsLocationRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsRequest {
+  optional string filter = 1;
+  optional string name = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+}
+
+message UpdateEkmConfigProjectsLocationRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional EkmConfig projects_location = 3;
+}
+
+message CreateProjectsLocationsEkmConnectionRequest {
+  optional string ekm_connection_id = 1;
+  optional string parent = 2;
+  optional EkmConnection projects_locations_ekm_connection = 3;
+}
+
+message GetProjectsLocationsEkmConnectionRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsEkmConnectionsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+}
+
+message PatchProjectsLocationsEkmConnectionRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional EkmConnection projects_locations_ekm_connection = 3;
+}
+
+message VerifyConnectivityProjectsLocationsEkmConnectionRequest {
+  optional string name = 1;
+}
+
+message CreateProjectsLocationsKeyHandleRequest {
+  optional string key_handle_id = 1;
+  optional string parent = 2;
+  optional KeyHandle projects_locations_key_handle = 3;
+}
+
+message GetProjectsLocationsKeyHandleRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsKeyHandlesRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string parent = 4;
+}
+
+message CreateProjectsLocationsKeyRingRequest {
+  optional string key_ring_id = 1;
+  optional string parent = 2;
+  optional KeyRing projects_locations_key_ring = 3;
+}
+
+message GetProjectsLocationsKeyRingRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsKeyRingsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+}
+
+message CreateProjectsLocationsKeyRingsCryptoKeyRequest {
+  optional string crypto_key_id = 1;
+  optional string parent = 2;
+  optional bool skip_initial_version_creation = 3;
+  optional CryptoKey projects_locations_key_rings_crypto_key = 4;
+}
+
+message DecryptProjectsLocationsKeyRingsCryptoKeyRequest {
+  optional string name = 1;
+  optional DecryptRequest projects_locations_key_rings_crypto_key = 2;
+}
+
+message EncryptProjectsLocationsKeyRingsCryptoKeyRequest {
+  optional string name = 1;
+  optional EncryptRequest projects_locations_key_rings_crypto_key = 2;
+}
+
+message GetProjectsLocationsKeyRingsCryptoKeyRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsKeyRingsCryptoKeysRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+  optional string version_view = 6;
+}
+
+message PatchProjectsLocationsKeyRingsCryptoKeyRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional CryptoKey projects_locations_key_rings_crypto_key = 3;
+}
+
+message UpdatePrimaryVersionProjectsLocationsKeyRingsCryptoKeyRequest {
+  optional string name = 1;
+  optional UpdateCryptoKeyPrimaryVersionRequest projects_locations_key_rings_crypto_key = 2;
+}
+
+message AsymmetricDecryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional AsymmetricDecryptRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message AsymmetricSignProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional AsymmetricSignRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message CreateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string parent = 1;
+  optional CryptoKeyVersion projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message DestroyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional DestroyCryptoKeyVersionRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message GetProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+}
+
+message GetPublicKeyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+}
+
+message ImportProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string parent = 1;
+  optional ImportCryptoKeyVersionRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message ListProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+  optional string view = 6;
+}
+
+message MacSignProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional MacSignRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message MacVerifyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional MacVerifyRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message PatchProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional CryptoKeyVersion projects_locations_key_rings_crypto_keys_crypto_key_version = 3;
+}
+
+message RawDecryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional RawDecryptRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message RawEncryptProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional RawEncryptRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message RestoreProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional RestoreCryptoKeyVersionRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message CreateProjectsLocationsKeyRingsImportJobRequest {
+  optional string import_job_id = 1;
+  optional string parent = 2;
+  optional ImportJob projects_locations_key_rings_import_job = 3;
+}
+
+message GetProjectsLocationsKeyRingsImportJobRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsKeyRingsImportJobsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+}
