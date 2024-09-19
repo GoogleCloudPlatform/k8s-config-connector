@@ -296,11 +296,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Service account projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com does not exist.",
+        "message": "Unknown service account",
         "reason": "notFound"
       }
     ],
-    "message": "Service account projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com does not exist.",
+    "message": "Unknown service account",
     "status": "NOT_FOUND"
   }
 }
