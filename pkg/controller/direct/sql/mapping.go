@@ -90,24 +90,9 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		}
 	}
 
-	if in.Spec.Settings.AdvancedMachineFeatures != nil {
-		// todo: requires sqlserver
-		// todo: requires >= 6 cpu cores
-		out.Settings.AdvancedMachineFeatures = &api.AdvancedMachineFeatures{}
-		if in.Spec.Settings.AdvancedMachineFeatures.ThreadsPerCore != nil {
-			out.Settings.AdvancedMachineFeatures.ThreadsPerCore = *in.Spec.Settings.AdvancedMachineFeatures.ThreadsPerCore
-		}
-	}
-
-	if in.Spec.Settings.AuthorizedGaeApplications != nil {
-		// todo: deprecated
-		out.Settings.AuthorizedGaeApplications = in.Spec.Settings.AuthorizedGaeApplications
-	}
-
-	if in.Spec.Settings.AvailabilityType != nil {
-		out.Settings.AvailabilityType = *in.Spec.Settings.AvailabilityType
-	}
-
+	out.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesKRMToGCP(in.Spec.Settings.AdvancedMachineFeatures)
+	out.Settings.AuthorizedGaeApplications = in.Spec.Settings.AuthorizedGaeApplications
+	out.Settings.AvailabilityType = direct.ValueOf(in.Spec.Settings.AvailabilityType)
 	out.Settings.BackupConfiguration = InstanceBackupConfigurationKRMToGCP(in.Spec.Settings.BackupConfiguration)
 	out.Settings.Collation = direct.ValueOf(in.Spec.Settings.Collation)
 	out.Settings.ConnectorEnforcement = direct.ValueOf(in.Spec.Settings.ConnectorEnforcement)
@@ -216,6 +201,18 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 	}
 	if in.VerifyServerCertificate != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
+	}
+
+	return out
+}
+
+func InstanceAdvancedMachineFeaturesKRMToGCP(in *krm.InstanceAdvancedMachineFeatures) *api.AdvancedMachineFeatures {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.AdvancedMachineFeatures{
+		ThreadsPerCore: direct.ValueOf(in.ThreadsPerCore),
 	}
 
 	return out
@@ -555,20 +552,9 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		}
 	}
 
-	if in.Settings.AdvancedMachineFeatures != nil {
-		out.Spec.Settings.AdvancedMachineFeatures = &krm.InstanceAdvancedMachineFeatures{
-			ThreadsPerCore: &in.Settings.AdvancedMachineFeatures.ThreadsPerCore,
-		}
-	}
-
-	if in.Settings.AuthorizedGaeApplications != nil {
-		out.Spec.Settings.AuthorizedGaeApplications = in.Settings.AuthorizedGaeApplications
-	}
-
-	if in.Settings.AvailabilityType != "" {
-		out.Spec.Settings.AvailabilityType = &in.Settings.AvailabilityType
-	}
-
+	out.Spec.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesGCPToKRM(in.Settings.AdvancedMachineFeatures)
+	out.Spec.Settings.AuthorizedGaeApplications = in.Settings.AuthorizedGaeApplications
+	out.Spec.Settings.AvailabilityType = direct.LazyPtr(in.Settings.AvailabilityType)
 	out.Spec.Settings.BackupConfiguration = InstanceBackupConfigurationGCPToKRM(in.Settings.BackupConfiguration)
 	out.Spec.Settings.Collation = direct.LazyPtr(in.Settings.Collation)
 	out.Spec.Settings.ConnectorEnforcement = direct.LazyPtr(in.Settings.ConnectorEnforcement)
@@ -653,6 +639,18 @@ func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration
 	}
 
 	// Note: Password is not exported.
+
+	return out
+}
+
+func InstanceAdvancedMachineFeaturesGCPToKRM(in *api.AdvancedMachineFeatures) *krm.InstanceAdvancedMachineFeatures {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceAdvancedMachineFeatures{
+		ThreadsPerCore: direct.LazyPtr(in.ThreadsPerCore),
+	}
 
 	return out
 }

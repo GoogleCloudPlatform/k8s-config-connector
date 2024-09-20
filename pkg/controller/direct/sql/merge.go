@@ -160,44 +160,19 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.AdvancedMachineFeatures != nil {
-		if actual.Settings.AdvancedMachineFeatures == nil {
-			// Add advanced machine features
-			updateRequired = true
-		} else if desired.Spec.Settings.AdvancedMachineFeatures.ThreadsPerCore != &actual.Settings.AdvancedMachineFeatures.ThreadsPerCore {
-			// Change advanced machine features
-			updateRequired = true
-		}
-		merged.Settings.AdvancedMachineFeatures.ThreadsPerCore = direct.ValueOf(desired.Spec.Settings.AdvancedMachineFeatures.ThreadsPerCore)
-	} else if actual.Settings.AdvancedMachineFeatures != nil {
-		// Remove advanced machine features
+	merged.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesKRMToGCP(desired.Spec.Settings.AdvancedMachineFeatures)
+	if !AdvancedMachineFeaturesMatch(merged.Settings.AdvancedMachineFeatures, actual.Settings.AdvancedMachineFeatures) {
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.AuthorizedGaeApplications != nil {
-		if actual.Settings.AuthorizedGaeApplications == nil {
-			// Add authorized gae applications
-			updateRequired = true
-		} else if len(desired.Spec.Settings.AuthorizedGaeApplications) != len(actual.Settings.AuthorizedGaeApplications) {
-			// todo: fix this
-			// Change authorized gae applications
-			updateRequired = true
-		}
-		merged.Settings.AuthorizedGaeApplications = desired.Spec.Settings.AuthorizedGaeApplications
-	} else if len(actual.Settings.AuthorizedGaeApplications) > 0 {
-		// Remove authorized gae applications
+	merged.Settings.AuthorizedGaeApplications = desired.Spec.Settings.AuthorizedGaeApplications
+	if !reflect.DeepEqual(merged.Settings.AuthorizedGaeApplications, actual.Settings.AuthorizedGaeApplications) {
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.AvailabilityType != nil {
-		if direct.ValueOf(desired.Spec.Settings.AvailabilityType) != actual.Settings.AvailabilityType {
-			// Change availability type
-			updateRequired = true
-		}
-		merged.Settings.AvailabilityType = direct.ValueOf(desired.Spec.Settings.AvailabilityType)
-	} else {
-		// Keep availability type
-		merged.Settings.AvailabilityType = actual.Settings.AvailabilityType
+	merged.Settings.AvailabilityType = direct.ValueOf(desired.Spec.Settings.AvailabilityType)
+	if merged.Settings.AvailabilityType != actual.Settings.AvailabilityType {
+		updateRequired = true
 	}
 
 	merged.Settings.BackupConfiguration = InstanceBackupConfigurationKRMToGCP(desired.Spec.Settings.BackupConfiguration)
@@ -385,6 +360,21 @@ func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, act
 		return false
 	}
 	if desired.VerifyServerCertificate != actual.VerifyServerCertificate {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func AdvancedMachineFeaturesMatch(desired *api.AdvancedMachineFeatures, actual *api.AdvancedMachineFeatures) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.ThreadsPerCore != actual.ThreadsPerCore {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
