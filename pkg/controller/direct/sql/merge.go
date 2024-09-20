@@ -353,24 +353,8 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.DatabaseFlags != nil {
-		if actual.Settings.DatabaseFlags == nil {
-			// Add database flags
-			updateRequired = true
-		} else if len(desired.Spec.Settings.DatabaseFlags) != len(actual.Settings.DatabaseFlags) {
-			// todo: fix this
-			// Change database flags
-			updateRequired = true
-		}
-		merged.Settings.DatabaseFlags = []*api.DatabaseFlags{}
-		for _, flag := range desired.Spec.Settings.DatabaseFlags {
-			merged.Settings.DatabaseFlags = append(merged.Settings.DatabaseFlags, &api.DatabaseFlags{
-				Name:  flag.Name,
-				Value: flag.Value,
-			})
-		}
-	} else if actual.Settings.DatabaseFlags != nil {
-		// Remove database flags
+	merged.Settings.DatabaseFlags = InstanceDatabaseFlagsKRMToGCP(desired.Spec.Settings.DatabaseFlags)
+	if !DatabaseFlagListsMatch(merged.Settings.DatabaseFlags, actual.Settings.DatabaseFlags) {
 		updateRequired = true
 	}
 
@@ -544,6 +528,36 @@ func DataCacheConfigsMatch(desired *api.DataCacheConfig, actual *api.DataCacheCo
 		return false
 	}
 	if desired.DataCacheEnabled != actual.DataCacheEnabled {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func DatabaseFlagListsMatch(desired []*api.DatabaseFlags, actual []*api.DatabaseFlags) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+	for i := 0; i < len(desired); i++ {
+		if !DatabaseFlagsMatch(desired[i], actual[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func DatabaseFlagsMatch(desired *api.DatabaseFlags, actual *api.DatabaseFlags) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.Name != actual.Name {
+		return false
+	}
+	if desired.Value != actual.Value {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.

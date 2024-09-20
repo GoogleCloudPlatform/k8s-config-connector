@@ -161,18 +161,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	}
 
 	out.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(in.Spec.Settings.DataCacheConfig)
-
-	if in.Spec.Settings.DatabaseFlags != nil {
-		dbFlags := []*api.DatabaseFlags{}
-		for _, dbFlag := range in.Spec.Settings.DatabaseFlags {
-			dbFlags = append(dbFlags, &api.DatabaseFlags{
-				Name:  dbFlag.Name,
-				Value: dbFlag.Value,
-			})
-		}
-		out.Settings.DatabaseFlags = dbFlags
-	}
-
+	out.Settings.DatabaseFlags = InstanceDatabaseFlagsKRMToGCP(in.Spec.Settings.DatabaseFlags)
 	out.Settings.DeletionProtectionEnabled = direct.ValueOf(in.Spec.Settings.DeletionProtectionEnabled)
 	out.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(in.Spec.Settings.DenyMaintenancePeriod)
 	out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
@@ -293,6 +282,17 @@ func InstanceDataCacheConfigKRMToGCP(in *krm.InstanceDataCacheConfig) *api.DataC
 		out.ForceSendFields = append(out.ForceSendFields, "DataCacheEnabled")
 	}
 
+	return out
+}
+
+func InstanceDatabaseFlagsKRMToGCP(in []krm.InstanceDatabaseFlags) []*api.DatabaseFlags {
+	out := []*api.DatabaseFlags{}
+	for _, flag := range in {
+		out = append(out, &api.DatabaseFlags{
+			Name:  flag.Name,
+			Value: flag.Value,
+		})
+	}
 	return out
 }
 
@@ -595,18 +595,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	out.Spec.Settings.CrashSafeReplication = &in.Settings.CrashSafeReplicationEnabled
 
 	out.Spec.Settings.DataCacheConfig = InstanceDataCacheConfigGCPToKRM(in.Settings.DataCacheConfig)
-
-	if in.Settings.DatabaseFlags != nil {
-		dbFlags := []krm.InstanceDatabaseFlags{}
-		for _, dbFlag := range in.Settings.DatabaseFlags {
-			dbFlags = append(dbFlags, krm.InstanceDatabaseFlags{
-				Name:  dbFlag.Name,
-				Value: dbFlag.Value,
-			})
-		}
-		out.Spec.Settings.DatabaseFlags = dbFlags
-	}
-
+	out.Spec.Settings.DatabaseFlags = InstanceDatabaseFlagsGCPToKRM(in.Settings.DatabaseFlags)
 	out.Spec.Settings.DeletionProtectionEnabled = direct.PtrTo(in.Settings.DeletionProtectionEnabled)
 	out.Spec.Settings.DenyMaintenancePeriod = InstanceDenyMaintenancePeriodsGCPToKRM(in.Settings.DenyMaintenancePeriods)
 	out.Spec.Settings.DiskAutoresize = in.Settings.StorageAutoResize
@@ -698,6 +687,17 @@ func InstanceDataCacheConfigGCPToKRM(in *api.DataCacheConfig) *krm.InstanceDataC
 		DataCacheEnabled: direct.PtrTo(in.DataCacheEnabled),
 	}
 
+	return out
+}
+
+func InstanceDatabaseFlagsGCPToKRM(in []*api.DatabaseFlags) []krm.InstanceDatabaseFlags {
+	out := []krm.InstanceDatabaseFlags{}
+	for _, flag := range in {
+		out = append(out, krm.InstanceDatabaseFlags{
+			Name:  flag.Name,
+			Value: flag.Value,
+		})
+	}
 	return out
 }
 
