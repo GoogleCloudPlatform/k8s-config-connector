@@ -215,32 +215,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Settings.Edition = *in.Spec.Settings.Edition
 	}
 
-	if in.Spec.Settings.InsightsConfig != nil {
-		insightsConfig := &api.InsightsConfig{}
-
-		if in.Spec.Settings.InsightsConfig.QueryInsightsEnabled != nil {
-			insightsConfig.QueryInsightsEnabled = *in.Spec.Settings.InsightsConfig.QueryInsightsEnabled
-		}
-
-		if in.Spec.Settings.InsightsConfig.QueryPlansPerMinute != nil {
-			insightsConfig.QueryPlansPerMinute = *in.Spec.Settings.InsightsConfig.QueryPlansPerMinute
-		}
-
-		if in.Spec.Settings.InsightsConfig.QueryStringLength != nil {
-			insightsConfig.QueryStringLength = *in.Spec.Settings.InsightsConfig.QueryStringLength
-		}
-
-		if in.Spec.Settings.InsightsConfig.RecordApplicationTags != nil {
-			insightsConfig.RecordApplicationTags = *in.Spec.Settings.InsightsConfig.RecordApplicationTags
-		}
-
-		if in.Spec.Settings.InsightsConfig.RecordClientAddress != nil {
-			insightsConfig.RecordClientAddress = *in.Spec.Settings.InsightsConfig.RecordClientAddress
-		}
-
-		out.Settings.InsightsConfig = insightsConfig
-	}
-
+	out.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(in.Spec.Settings.InsightsConfig)
 	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
 	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
 	out.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(in.Spec.Settings.MaintenanceWindow)
@@ -327,6 +302,38 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 	}
 	if in.VerifyServerCertificate != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
+	}
+
+	return out
+}
+
+func InstanceInsightsConfigKRMToGCP(in *krm.InstanceInsightsConfig) *api.InsightsConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.InsightsConfig{
+		QueryInsightsEnabled:  direct.ValueOf(in.QueryInsightsEnabled),
+		QueryPlansPerMinute:   direct.ValueOf(in.QueryPlansPerMinute),
+		QueryStringLength:     direct.ValueOf(in.QueryStringLength),
+		RecordApplicationTags: direct.ValueOf(in.RecordApplicationTags),
+		RecordClientAddress:   direct.ValueOf(in.RecordClientAddress),
+	}
+
+	if in.QueryInsightsEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "QueryInsightsEnabled")
+	}
+	if in.QueryPlansPerMinute != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "QueryPlansPerMinute")
+	}
+	if in.QueryStringLength != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "QueryStringLength")
+	}
+	if in.RecordApplicationTags != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "RecordApplicationTags")
+	}
+	if in.RecordClientAddress != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "RecordClientAddress")
 	}
 
 	return out
@@ -617,16 +624,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		out.Spec.Settings.Edition = &in.Settings.Edition
 	}
 
-	if in.Settings.InsightsConfig != nil {
-		out.Spec.Settings.InsightsConfig = &krm.InstanceInsightsConfig{
-			QueryInsightsEnabled:  &in.Settings.InsightsConfig.QueryInsightsEnabled,
-			QueryPlansPerMinute:   &in.Settings.InsightsConfig.QueryPlansPerMinute,
-			QueryStringLength:     &in.Settings.InsightsConfig.QueryStringLength,
-			RecordApplicationTags: &in.Settings.InsightsConfig.RecordApplicationTags,
-			RecordClientAddress:   &in.Settings.InsightsConfig.RecordClientAddress,
-		}
-	}
-
+	out.Spec.Settings.InsightsConfig = InstanceInsightsConfigGCPToKRM(in.Settings.InsightsConfig)
 	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)
 	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
 	out.Spec.Settings.MaintenanceWindow = InstanceMaintenanceWindowGCPToKRM(in.Settings.MaintenanceWindow)
@@ -697,6 +695,22 @@ func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration
 	}
 
 	// Note: Password is not exported.
+
+	return out
+}
+
+func InstanceInsightsConfigGCPToKRM(in *api.InsightsConfig) *krm.InstanceInsightsConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceInsightsConfig{
+		QueryInsightsEnabled:  direct.PtrTo(in.QueryInsightsEnabled),
+		QueryPlansPerMinute:   direct.PtrTo(in.QueryPlansPerMinute),
+		QueryStringLength:     direct.PtrTo(in.QueryStringLength),
+		RecordApplicationTags: direct.PtrTo(in.RecordApplicationTags),
+		RecordClientAddress:   direct.PtrTo(in.RecordClientAddress),
+	}
 
 	return out
 }

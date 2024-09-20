@@ -473,28 +473,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		merged.Settings.Edition = actual.Settings.Edition
 	}
 
-	if desired.Spec.Settings.InsightsConfig != nil {
-		if actual.Settings.InsightsConfig == nil {
-			// Add insights config
-			updateRequired = true
-		} else if (direct.ValueOf(desired.Spec.Settings.InsightsConfig.QueryInsightsEnabled) != actual.Settings.InsightsConfig.QueryInsightsEnabled) ||
-			(direct.ValueOf(desired.Spec.Settings.InsightsConfig.QueryPlansPerMinute) != actual.Settings.InsightsConfig.QueryPlansPerMinute) ||
-			(direct.ValueOf(desired.Spec.Settings.InsightsConfig.QueryStringLength) != actual.Settings.InsightsConfig.QueryStringLength) ||
-			(direct.ValueOf(desired.Spec.Settings.InsightsConfig.RecordApplicationTags) != actual.Settings.InsightsConfig.RecordApplicationTags) ||
-			(direct.ValueOf(desired.Spec.Settings.InsightsConfig.RecordClientAddress) != actual.Settings.InsightsConfig.RecordClientAddress) {
-			// Change insights config
-			updateRequired = true
-		}
-		merged.Settings.InsightsConfig = &api.InsightsConfig{
-			QueryInsightsEnabled:  direct.ValueOf(desired.Spec.Settings.InsightsConfig.QueryInsightsEnabled),
-			QueryPlansPerMinute:   direct.ValueOf(desired.Spec.Settings.InsightsConfig.QueryPlansPerMinute),
-			QueryStringLength:     direct.ValueOf(desired.Spec.Settings.InsightsConfig.QueryStringLength),
-			RecordApplicationTags: direct.ValueOf(desired.Spec.Settings.InsightsConfig.RecordApplicationTags),
-			RecordClientAddress:   direct.ValueOf(desired.Spec.Settings.InsightsConfig.RecordClientAddress),
-		}
-	} else if actual.Settings.InsightsConfig != nil {
-		// Keep insights config
-		merged.Settings.InsightsConfig = actual.Settings.InsightsConfig
+	merged.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(desired.Spec.Settings.InsightsConfig)
+	if !InsightsConfigsMatch(merged.Settings.InsightsConfig, actual.Settings.InsightsConfig) {
+		updateRequired = true
 	}
 
 	merged.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(desired.Spec.Settings.IpConfiguration, refs)
@@ -604,6 +585,33 @@ func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, act
 		return false
 	}
 	if desired.VerifyServerCertificate != actual.VerifyServerCertificate {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func InsightsConfigsMatch(desired *api.InsightsConfig, actual *api.InsightsConfig) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.QueryInsightsEnabled != actual.QueryInsightsEnabled {
+		return false
+	}
+	if desired.QueryPlansPerMinute != actual.QueryPlansPerMinute {
+		return false
+	}
+	if desired.QueryStringLength != actual.QueryStringLength {
+		return false
+	}
+	if desired.RecordApplicationTags != actual.RecordApplicationTags {
+		return false
+	}
+	if desired.RecordClientAddress != actual.RecordClientAddress {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
