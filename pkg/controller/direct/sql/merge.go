@@ -385,25 +385,8 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		merged.Settings.DeletionProtectionEnabled = actual.Settings.DeletionProtectionEnabled
 	}
 
-	if desired.Spec.Settings.DenyMaintenancePeriod != nil {
-		if actual.Settings.DenyMaintenancePeriods == nil {
-			// Add deny maintenance period
-			updateRequired = true
-		} else if (len(actual.Settings.DenyMaintenancePeriods) == 1) && ((desired.Spec.Settings.DenyMaintenancePeriod.EndDate != actual.Settings.DenyMaintenancePeriods[0].EndDate) ||
-			(desired.Spec.Settings.DenyMaintenancePeriod.StartDate != actual.Settings.DenyMaintenancePeriods[0].StartDate) ||
-			(desired.Spec.Settings.DenyMaintenancePeriod.Time != actual.Settings.DenyMaintenancePeriods[0].Time)) {
-			// Change deny maintenance period
-			updateRequired = true
-		}
-		merged.Settings.DenyMaintenancePeriods = []*api.DenyMaintenancePeriod{
-			{
-				EndDate:   desired.Spec.Settings.DenyMaintenancePeriod.EndDate,
-				StartDate: desired.Spec.Settings.DenyMaintenancePeriod.StartDate,
-				Time:      desired.Spec.Settings.DenyMaintenancePeriod.Time,
-			},
-		}
-	} else if actual.Settings.DenyMaintenancePeriods != nil {
-		// Remove deny maintenance period
+	merged.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(desired.Spec.Settings.DenyMaintenancePeriod)
+	if !DenyMaintenancePeriodListsMatch(merged.Settings.DenyMaintenancePeriods, actual.Settings.DenyMaintenancePeriods) {
 		updateRequired = true
 	}
 
@@ -564,6 +547,39 @@ func DataCacheConfigsMatch(desired *api.DataCacheConfig, actual *api.DataCacheCo
 		return false
 	}
 	if desired.DataCacheEnabled != actual.DataCacheEnabled {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func DenyMaintenancePeriodListsMatch(desired []*api.DenyMaintenancePeriod, actual []*api.DenyMaintenancePeriod) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+	for i := 0; i < len(desired); i++ {
+		if !DenyMaintenancePeriodsMatch(desired[i], actual[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func DenyMaintenancePeriodsMatch(desired *api.DenyMaintenancePeriod, actual *api.DenyMaintenancePeriod) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.EndDate != actual.EndDate {
+		return false
+	}
+	if desired.StartDate != actual.StartDate {
+		return false
+	}
+	if desired.Time != actual.Time {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.

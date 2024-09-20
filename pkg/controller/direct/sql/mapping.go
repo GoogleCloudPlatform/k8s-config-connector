@@ -177,17 +177,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Settings.DeletionProtectionEnabled = *in.Spec.Settings.DeletionProtectionEnabled
 	}
 
-	if in.Spec.Settings.DenyMaintenancePeriod != nil {
-		// todo: handle multiple periods (?)
-		out.Settings.DenyMaintenancePeriods = []*api.DenyMaintenancePeriod{
-			{
-				EndDate:   in.Spec.Settings.DenyMaintenancePeriod.EndDate,
-				StartDate: in.Spec.Settings.DenyMaintenancePeriod.StartDate,
-				Time:      in.Spec.Settings.DenyMaintenancePeriod.Time,
-			},
-		}
-	}
-
+	out.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(in.Spec.Settings.DenyMaintenancePeriod)
 	out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
 	out.Settings.StorageAutoResizeLimit = direct.ValueOf(in.Spec.Settings.DiskAutoresizeLimit)
 	out.Settings.DataDiskSizeGb = direct.ValueOf(in.Spec.Settings.DiskSize)
@@ -301,6 +291,25 @@ func InstanceDataCacheConfigKRMToGCP(in *krm.InstanceDataCacheConfig) *api.DataC
 
 	if in.DataCacheEnabled != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "DataCacheEnabled")
+	}
+
+	return out
+}
+
+func InstanceDenyMaintenancePeriodsKRMToGCP(in *krm.InstanceDenyMaintenancePeriod) []*api.DenyMaintenancePeriod {
+	if in == nil {
+		return nil
+	}
+
+	// Note:  For some reason, the KRM API allows for only a single *InstanceDenyMaintenancePeriod. However,
+	// in the GCP proto there is a list of []*api.DenyMaintenancePeriod. Though, in the GCP UI there is only
+	// an option to specify a single deny maintenance period. For now, we'll only allow for specifying one.
+	out := []*api.DenyMaintenancePeriod{
+		{
+			EndDate:   in.EndDate,
+			StartDate: in.StartDate,
+			Time:      in.Time,
+		},
 	}
 
 	return out
@@ -600,15 +609,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 
 	out.Spec.Settings.DeletionProtectionEnabled = &in.Settings.DeletionProtectionEnabled
 
-	// todo: handle multiple periods (?)
-	if in.Settings.DenyMaintenancePeriods != nil && len(in.Settings.DenyMaintenancePeriods) >= 1 {
-		out.Spec.Settings.DenyMaintenancePeriod = &krm.InstanceDenyMaintenancePeriod{
-			EndDate:   in.Settings.DenyMaintenancePeriods[0].EndDate,
-			StartDate: in.Settings.DenyMaintenancePeriods[0].StartDate,
-			Time:      in.Settings.DenyMaintenancePeriods[0].Time,
-		}
-	}
-
+	out.Spec.Settings.DenyMaintenancePeriod = InstanceDenyMaintenancePeriodsGCPToKRM(in.Settings.DenyMaintenancePeriods)
 	out.Spec.Settings.DiskAutoresize = in.Settings.StorageAutoResize
 	out.Spec.Settings.DiskAutoresizeLimit = direct.LazyPtr(in.Settings.StorageAutoResizeLimit)
 	out.Spec.Settings.DiskSize = direct.LazyPtr(in.Settings.DataDiskSizeGb)
@@ -696,6 +697,23 @@ func InstanceDataCacheConfigGCPToKRM(in *api.DataCacheConfig) *krm.InstanceDataC
 
 	out := &krm.InstanceDataCacheConfig{
 		DataCacheEnabled: direct.PtrTo(in.DataCacheEnabled),
+	}
+
+	return out
+}
+
+func InstanceDenyMaintenancePeriodsGCPToKRM(in []*api.DenyMaintenancePeriod) *krm.InstanceDenyMaintenancePeriod {
+	if in == nil || len(in) < 1 {
+		return nil
+	}
+
+	// Note:  For some reason, the KRM API allows for only a single *InstanceDenyMaintenancePeriod. However,
+	// in the GCP proto there is a list of []*api.DenyMaintenancePeriod. Though, in the GCP UI there is only
+	// an option to specify a single deny maintenance period. For now, we'll only allow for specifying one.
+	out := &krm.InstanceDenyMaintenancePeriod{
+		EndDate:   in[0].EndDate,
+		StartDate: in[0].StartDate,
+		Time:      in[0].Time,
 	}
 
 	return out
