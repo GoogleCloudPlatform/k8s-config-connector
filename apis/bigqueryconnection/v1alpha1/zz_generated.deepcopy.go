@@ -273,8 +273,8 @@ func (in *BigQueryConnectionConnectionSpec) DeepCopyInto(out *BigQueryConnection
 		*out = new(string)
 		**out = **in
 	}
-	if in.CloudSqlSpec != nil {
-		in, out := &in.CloudSqlSpec, &out.CloudSqlSpec
+	if in.CloudSQLSpec != nil {
+		in, out := &in.CloudSQLSpec, &out.CloudSQLSpec
 		*out = new(CloudSqlPropertiesSpec)
 		(*in).DeepCopyInto(*out)
 	}

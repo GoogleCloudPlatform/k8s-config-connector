@@ -17,6 +17,7 @@ package bigqueryconnection
 import (
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -59,7 +60,9 @@ func CloudSqlPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudSql
 		return nil
 	}
 	out := &krm.CloudSqlPropertiesSpec{}
-	// out.InstanceID = direct.LazyPtr(in.InstanceId)
+	out.InstanceRef = &refs.SQLInstanceRef{
+		External: in.InstanceId,
+	}
 	out.Database = direct.LazyPtr(in.Database)
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Credential = CloudSqlCredential_FromProto(mapCtx, in.GetCredential())
@@ -94,7 +97,7 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	if oneof := CloudResourcePropertiesSpec_ToProto(mapCtx, in.CloudResourceSpec); oneof != nil {
 		out.Properties = &pb.Connection_CloudResource{}
 	}
-	if oneof := CloudSqlPropertiesSpec_ToProto(mapCtx, in.CloudSqlSpec); oneof != nil {
+	if oneof := CloudSqlPropertiesSpec_ToProto(mapCtx, in.CloudSQLSpec); oneof != nil {
 		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
 	}
 

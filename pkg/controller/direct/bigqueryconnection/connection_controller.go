@@ -84,13 +84,13 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Resolve SQLInstanceRef
-	if obj.Spec.CloudSqlSpec != nil {
-		if obj.Spec.CloudSqlSpec.InstanceRef != nil {
-			instance, err := refs.ResolveSQLInsanceRef(ctx, reader, obj, obj.Spec.CloudSqlSpec.InstanceRef)
+	if obj.Spec.CloudSQLSpec != nil {
+		if obj.Spec.CloudSQLSpec.InstanceRef != nil {
+			instance, err := refs.ResolveSQLInstanceRef(ctx, reader, obj, obj.Spec.CloudSQLSpec.InstanceRef)
 			if err != nil {
 				return nil, err
 			}
-			obj.Spec.CloudSqlSpec.InstanceRef.External = instance.ConnectionName
+			obj.Spec.CloudSQLSpec.InstanceRef.External = instance.ConnectionName()
 		}
 	}
 

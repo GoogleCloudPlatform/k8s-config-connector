@@ -39,14 +39,17 @@ type SQLInstance struct {
 	ProjectID       string
 	Location        string
 	SQLInstanceName string
-	ConnectionName  string
 }
 
 func (s *SQLInstance) String() string {
 	return "projects/" + s.ProjectID + "locations/" + s.Location + "/instances/" + s.SQLInstanceName
 }
 
-func ResolveSQLInsanceRef(ctx context.Context, reader client.Reader, obj client.Object, ref *SQLInstanceRef) (*SQLInstance, error) {
+func (s *SQLInstance) ConnectionName() string {
+	return s.ProjectID + ":" + s.Location + ":" + s.SQLInstanceName
+}
+
+func ResolveSQLInstanceRef(ctx context.Context, reader client.Reader, obj client.Object, ref *SQLInstanceRef) (*SQLInstance, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -66,7 +69,6 @@ func ResolveSQLInsanceRef(ctx context.Context, reader client.Reader, obj client.
 				ProjectID:       tokens[1],
 				Location:        tokens[3],
 				SQLInstanceName: tokens[5],
-				ConnectionName:  tokens[1] + ":" + tokens[3] + ":" + tokens[5],
 			}, nil
 		}
 		return nil, fmt.Errorf("format of sqlinstance external=%q was not known (use projects/<projectId>/locations/[Location]/instances/<instanceName>)", ref.External)
@@ -106,11 +108,6 @@ func ResolveSQLInsanceRef(ctx context.Context, reader client.Reader, obj client.
 		return nil, fmt.Errorf("reading spec.region from SQLInstance %s/%s: %w", sqlinstance.GetNamespace(), sqlinstance.GetName(), err)
 	}
 
-	connection, _, err := unstructured.NestedString(sqlinstance.Object, "status", "connectionName")
-	if err != nil {
-		return nil, fmt.Errorf("reading status.connectionName from SQLInstance %s/%s: %w", sqlinstance.GetNamespace(), sqlinstance.GetName(), err)
-	}
-
 	projectID, err := ResolveProjectID(ctx, reader, sqlinstance)
 	if err != nil {
 		return nil, err
@@ -120,6 +117,5 @@ func ResolveSQLInsanceRef(ctx context.Context, reader client.Reader, obj client.
 		ProjectID:       projectID,
 		Location:        location,
 		SQLInstanceName: resourceID,
-		ConnectionName:  connection,
 	}, nil
 }

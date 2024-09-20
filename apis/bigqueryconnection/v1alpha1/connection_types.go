@@ -49,7 +49,7 @@ type BigQueryConnectionConnectionSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// Cloud SQL properties.
-	CloudSqlSpec *CloudSqlPropertiesSpec `json:"cloudSql,omitempty"`
+	CloudSQLSpec *CloudSqlPropertiesSpec `json:"cloudSql,omitempty"`
 
 	/* NOTYET
 	// Amazon Web Services (AWS) properties.
@@ -149,13 +149,13 @@ type CloudSqlPropertiesSpec struct {
 	// Type of the Cloud SQL database.
 	Type *string `json:"type,omitempty"`
 
-	// Input only. Cloud SQL credential.
+	// Cloud SQL credential.
 	Credential *CloudSqlCredential `json:"credential,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlProperties
 type CloudSqlPropertiesStatus struct {
-	// Output only. The account ID of the service used for the purpose of this connection.
+	// The account ID of the service used for the purpose of this connection.
 	//
 	//  When the connection is used in the context of an operation in
 	//  BigQuery, this service account will serve as the identity being used for
@@ -165,7 +165,7 @@ type CloudSqlPropertiesStatus struct {
 
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudResourceProperties
 type CloudResourcePropertiesStatus struct {
-	// Output only. The account ID of the service created for the purpose of this
+	//  The account ID of the service created for the purpose of this
 	//  connection.
 	//
 	//  The service account does not have any permissions associated with it

@@ -68,7 +68,7 @@ spec:
                 description: Cloud SQL properties.
                 properties:
                   credential:
-                    description: Input only. Cloud SQL credential.
+                    description: Cloud SQL credential.
                     properties:
                       password:
                         description: The password for the credential.
@@ -215,8 +215,8 @@ spec:
                   cloudResource:
                     properties:
                       serviceAccountID:
-                        description: |-
-                          Output only. The account ID of the service created for the purpose of this
+                        description: |2-
+                           The account ID of the service created for the purpose of this
                            connection.
 
                            The service account does not have any permissions associated with it
@@ -233,7 +233,7 @@ spec:
                     properties:
                       serviceAccountID:
                         description: |-
-                          Output only. The account ID of the service used for the purpose of this connection.
+                          The account ID of the service used for the purpose of this connection.
 
                            When the connection is used in the context of an operation in
                            BigQuery, this service account will serve as the identity being used for
