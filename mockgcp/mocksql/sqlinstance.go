@@ -674,6 +674,9 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	if settings := req.GetBody().GetSettings(); settings != nil {
+		if settings.Edition != pb.Settings_EDITION_UNSPECIFIED {
+			obj.Settings.Edition = settings.Edition
+		}
 		if settings.Tier != "" {
 			obj.Settings.Tier = settings.Tier
 		}
@@ -681,9 +684,9 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	if body := req.GetBody(); body != nil {
 		if body.DatabaseVersion != pb.SqlDatabaseVersion_SQL_DATABASE_VERSION_UNSPECIFIED {
 			obj.DatabaseVersion = body.DatabaseVersion
-			if err := setDatabaseVersionDefaults(obj); err != nil {
-				return nil, err
-			}
+		}
+		if err := setDatabaseVersionDefaults(obj); err != nil {
+			return nil, err
 		}
 	}
 

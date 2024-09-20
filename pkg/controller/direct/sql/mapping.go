@@ -160,13 +160,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Settings.CrashSafeReplicationEnabled = *in.Spec.Settings.CrashSafeReplication
 	}
 
-	if in.Spec.Settings.DataCacheConfig != nil {
-		// todo: requires ENTERPRISE_PLUS edition
-		// todo: requires mysql or postgres
-		out.Settings.DataCacheConfig = &api.DataCacheConfig{
-			DataCacheEnabled: *in.Spec.Settings.DataCacheConfig.DataCacheEnabled,
-		}
-	}
+	out.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(in.Spec.Settings.DataCacheConfig)
 
 	if in.Spec.Settings.DatabaseFlags != nil {
 		dbFlags := []*api.DatabaseFlags{}
@@ -211,10 +205,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Settings.DataDiskType = *in.Spec.Settings.DiskType
 	}
 
-	if in.Spec.Settings.Edition != nil {
-		out.Settings.Edition = *in.Spec.Settings.Edition
-	}
-
+	out.Settings.Edition = direct.ValueOf(in.Spec.Settings.Edition)
 	out.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(in.Spec.Settings.InsightsConfig)
 	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
 	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
@@ -302,6 +293,22 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 	}
 	if in.VerifyServerCertificate != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
+	}
+
+	return out
+}
+
+func InstanceDataCacheConfigKRMToGCP(in *krm.InstanceDataCacheConfig) *api.DataCacheConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.DataCacheConfig{
+		DataCacheEnabled: direct.ValueOf(in.DataCacheEnabled),
+	}
+
+	if in.DataCacheEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "DataCacheEnabled")
 	}
 
 	return out
@@ -586,6 +593,8 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 
 	out.Spec.Settings.CrashSafeReplication = &in.Settings.CrashSafeReplicationEnabled
 
+	out.Spec.Settings.DataCacheConfig = InstanceDataCacheConfigGCPToKRM(in.Settings.DataCacheConfig)
+
 	if in.Settings.DatabaseFlags != nil {
 		dbFlags := []krm.InstanceDatabaseFlags{}
 		for _, dbFlag := range in.Settings.DatabaseFlags {
@@ -620,10 +629,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		out.Spec.Settings.DiskType = &in.Settings.DataDiskType
 	}
 
-	if in.Settings.Edition != "" {
-		out.Spec.Settings.Edition = &in.Settings.Edition
-	}
-
+	out.Spec.Settings.Edition = direct.LazyPtr(in.Settings.Edition)
 	out.Spec.Settings.InsightsConfig = InstanceInsightsConfigGCPToKRM(in.Settings.InsightsConfig)
 	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)
 	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
@@ -695,6 +701,18 @@ func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration
 	}
 
 	// Note: Password is not exported.
+
+	return out
+}
+
+func InstanceDataCacheConfigGCPToKRM(in *api.DataCacheConfig) *krm.InstanceDataCacheConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceDataCacheConfig{
+		DataCacheEnabled: direct.PtrTo(in.DataCacheEnabled),
+	}
 
 	return out
 }

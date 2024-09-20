@@ -348,19 +348,8 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		merged.Settings.CrashSafeReplicationEnabled = actual.Settings.CrashSafeReplicationEnabled
 	}
 
-	if desired.Spec.Settings.DataCacheConfig != nil {
-		if actual.Settings.DataCacheConfig == nil {
-			// Add data cache config
-			updateRequired = true
-		} else if direct.ValueOf(desired.Spec.Settings.DataCacheConfig.DataCacheEnabled) != actual.Settings.DataCacheConfig.DataCacheEnabled {
-			// Change data cache config
-			updateRequired = true
-		}
-		merged.Settings.DataCacheConfig = &api.DataCacheConfig{
-			DataCacheEnabled: direct.ValueOf(desired.Spec.Settings.DataCacheConfig.DataCacheEnabled),
-		}
-	} else if actual.Settings.DataCacheConfig != nil {
-		// Remove data cache config
+	merged.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(desired.Spec.Settings.DataCacheConfig)
+	if !DataCacheConfigsMatch(merged.Settings.DataCacheConfig, actual.Settings.DataCacheConfig) {
 		updateRequired = true
 	}
 
@@ -462,15 +451,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		merged.Settings.DataDiskType = actual.Settings.DataDiskType
 	}
 
-	if desired.Spec.Settings.Edition != nil {
-		if direct.ValueOf(desired.Spec.Settings.Edition) != actual.Settings.Edition {
-			// Change edition
-			updateRequired = true
-		}
-		merged.Settings.Edition = direct.ValueOf(desired.Spec.Settings.Edition)
-	} else {
-		// Keep edition
-		merged.Settings.Edition = actual.Settings.Edition
+	merged.Settings.Edition = direct.ValueOf(desired.Spec.Settings.Edition)
+	if merged.Settings.Edition != actual.Settings.Edition {
+		updateRequired = true
 	}
 
 	merged.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(desired.Spec.Settings.InsightsConfig)
@@ -585,6 +568,21 @@ func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, act
 		return false
 	}
 	if desired.VerifyServerCertificate != actual.VerifyServerCertificate {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func DataCacheConfigsMatch(desired *api.DataCacheConfig, actual *api.DataCacheConfig) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.DataCacheEnabled != actual.DataCacheEnabled {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
