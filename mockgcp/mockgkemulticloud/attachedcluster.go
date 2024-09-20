@@ -17,6 +17,7 @@ package mockgkemulticloud
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -26,6 +27,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkemulticloud/v1"
 )
 
@@ -45,7 +47,7 @@ func (s *GKEMulticloudV1) GetAttachedCluster(ctx context.Context, req *pb.GetAtt
 	obj := &pb.AttachedCluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "cluster not found")
 		}
 		return nil, err
 	}
@@ -65,6 +67,28 @@ func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.Cre
 
 	obj := proto.Clone(req.AttachedCluster).(*pb.AttachedCluster)
 	obj.Name = fqn
+
+	if obj.GetBinaryAuthorization() == nil {
+		obj.BinaryAuthorization = &pb.BinaryAuthorization{
+			EvaluationMode: pb.BinaryAuthorization_DISABLED,
+		}
+	}
+	if obj.GetMonitoringConfig() == nil {
+		obj.MonitoringConfig = &pb.MonitoringConfig{
+			ManagedPrometheusConfig: &pb.ManagedPrometheusConfig{},
+		}
+	}
+	obj.Fleet.Membership = obj.Fleet.Project + "/locations/global/memberships/" + req.AttachedClusterId
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.Etag = fields.ComputeWeakEtag(obj)
+	ver, err := trimPlatformVersion(req.GetAttachedCluster().GetPlatformVersion())
+	if err != nil {
+		return nil, err
+	}
+	obj.KubernetesVersion = ver
+	obj.State = pb.AttachedCluster_RUNNING
+	obj.Uid = "111111111111111111111"
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -130,6 +154,11 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 		case "monitoring_config.managed_prometheus_config.enabled":
 			obj.MonitoringConfig = req.GetAttachedCluster().GetMonitoringConfig()
 		case "platformVersion":
+			ver, err := trimPlatformVersion(req.GetAttachedCluster().GetPlatformVersion())
+			if err != nil {
+				return nil, err
+			}
+			obj.KubernetesVersion = ver
 			obj.PlatformVersion = req.GetAttachedCluster().GetPlatformVersion()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
@@ -177,4 +206,12 @@ func (s *GKEMulticloudV1) DeleteAttachedCluster(ctx context.Context, req *pb.Del
 		opMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func trimPlatformVersion(platformVersion string) (string, error) {
+	tokens := strings.Split(platformVersion, ".")
+	if len(tokens) < 2 {
+		return "", status.Errorf(codes.InvalidArgument, "platform_version %q is not valid", platformVersion)
+	}
+	return tokens[0] + "." + tokens[1], nil
 }
