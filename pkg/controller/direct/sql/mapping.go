@@ -77,19 +77,8 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	}
 
 	out.Settings = &api.Settings{}
-
-	if in.Spec.Settings.ActivationPolicy != nil {
-		out.Settings.ActivationPolicy = *in.Spec.Settings.ActivationPolicy
-	}
-
-	if in.Spec.Settings.ActiveDirectoryConfig != nil {
-		// todo: requires sqlserver
-		// todo: requires private network
-		out.Settings.ActiveDirectoryConfig = &api.SqlActiveDirectoryConfig{
-			Domain: in.Spec.Settings.ActiveDirectoryConfig.Domain,
-		}
-	}
-
+	out.Settings.ActivationPolicy = direct.ValueOf(in.Spec.Settings.ActivationPolicy)
+	out.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigKRMToGCP(in.Spec.Settings.ActiveDirectoryConfig)
 	out.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesKRMToGCP(in.Spec.Settings.AdvancedMachineFeatures)
 	out.Settings.AuthorizedGaeApplications = in.Spec.Settings.AuthorizedGaeApplications
 	out.Settings.AvailabilityType = direct.ValueOf(in.Spec.Settings.AvailabilityType)
@@ -201,6 +190,19 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 	}
 	if in.VerifyServerCertificate != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
+	}
+
+	return out
+}
+
+func InstanceActiveDirectoryConfigKRMToGCP(in *krm.InstanceActiveDirectoryConfig) *api.SqlActiveDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.SqlActiveDirectoryConfig{
+		Domain: in.Domain,
+		Kind:   "sql#activeDirectoryConfig",
 	}
 
 	return out
@@ -542,16 +544,8 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		Value: &in.RootPassword,
 	}
 
-	if in.Settings.ActivationPolicy != "" {
-		out.Spec.Settings.ActivationPolicy = &in.Settings.ActivationPolicy
-	}
-
-	if in.Settings.ActiveDirectoryConfig != nil {
-		out.Spec.Settings.ActiveDirectoryConfig = &krm.InstanceActiveDirectoryConfig{
-			Domain: in.Settings.ActiveDirectoryConfig.Domain,
-		}
-	}
-
+	out.Spec.Settings.ActivationPolicy = direct.LazyPtr(in.Settings.ActivationPolicy)
+	out.Spec.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigGCPToKRM(in.Settings.ActiveDirectoryConfig)
 	out.Spec.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesGCPToKRM(in.Settings.AdvancedMachineFeatures)
 	out.Spec.Settings.AuthorizedGaeApplications = in.Settings.AuthorizedGaeApplications
 	out.Spec.Settings.AvailabilityType = direct.LazyPtr(in.Settings.AvailabilityType)
@@ -639,6 +633,18 @@ func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration
 	}
 
 	// Note: Password is not exported.
+
+	return out
+}
+
+func InstanceActiveDirectoryConfigGCPToKRM(in *api.SqlActiveDirectoryConfig) *krm.InstanceActiveDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceActiveDirectoryConfig{
+		Domain: in.Domain,
+	}
 
 	return out
 }

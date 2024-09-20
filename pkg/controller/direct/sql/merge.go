@@ -135,28 +135,13 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		SettingsVersion: actual.Settings.SettingsVersion,
 	}
 
-	if desired.Spec.Settings.ActivationPolicy != nil {
-		if direct.ValueOf(desired.Spec.Settings.ActivationPolicy) != actual.Settings.ActivationPolicy {
-			// Change activation policy
-			updateRequired = true
-		}
-		merged.Settings.ActivationPolicy = direct.ValueOf(desired.Spec.Settings.ActivationPolicy)
-	} else {
-		// Keep activation policy
-		merged.Settings.ActivationPolicy = actual.Settings.ActivationPolicy
+	merged.Settings.ActivationPolicy = direct.ValueOf(desired.Spec.Settings.ActivationPolicy)
+	if merged.Settings.ActivationPolicy != actual.Settings.ActivationPolicy {
+		updateRequired = true
 	}
 
-	if desired.Spec.Settings.ActiveDirectoryConfig != nil {
-		if actual.Settings.ActiveDirectoryConfig == nil {
-			// Add active directory config
-			updateRequired = true
-		} else if desired.Spec.Settings.ActiveDirectoryConfig.Domain != actual.Settings.ActiveDirectoryConfig.Domain {
-			// Change active directory config
-			updateRequired = true
-		}
-		merged.Settings.ActiveDirectoryConfig.Domain = desired.Spec.Settings.ActiveDirectoryConfig.Domain
-	} else if actual.Settings.ActiveDirectoryConfig != nil {
-		// Remove active directory config
+	merged.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigKRMToGCP(desired.Spec.Settings.ActiveDirectoryConfig)
+	if !ActiveDirectoryConfigsMatch(merged.Settings.ActiveDirectoryConfig, actual.Settings.ActiveDirectoryConfig) {
 		updateRequired = true
 	}
 
@@ -362,6 +347,22 @@ func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, act
 	if desired.VerifyServerCertificate != actual.VerifyServerCertificate {
 		return false
 	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func ActiveDirectoryConfigsMatch(desired *api.SqlActiveDirectoryConfig, actual *api.SqlActiveDirectoryConfig) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.Domain != actual.Domain {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return true
