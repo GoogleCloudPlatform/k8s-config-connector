@@ -151,9 +151,31 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 	}
 }
 
+type charRange struct {
+	first, last rune
+}
+
+// choose returns a random unicode character from the given range, using the
+// given randomness source.
+func (r *charRange) choose(rand *rand.Rand) rune {
+	count := int64(r.last - r.first)
+	return r.first + rune(rand.Int63n(count))
+}
+
+var unicodeRanges = []charRange{
+	{' ', '~'},           // ASCII characters
+	{'\u00a0', '\u02af'}, // Multi-byte encoded characters
+	{'\u4e00', '\u9fff'}, // Common CJK (even longer encodings)
+}
+
 func randomString(randStream *rand.Rand) string {
-	// TODO: This is not a good random string!
-	return fmt.Sprintf("%x", randStream.Int63())
+	// up to 20 characters long
+	n := randStream.Intn(20)
+	runes := make([]rune, n)
+	for i := range runes {
+		runes[i] = unicodeRanges[randStream.Intn(len(unicodeRanges))].choose(randStream)
+	}
+	return string(runes)
 }
 
 func randomBytes(randStream *rand.Rand) []byte {
