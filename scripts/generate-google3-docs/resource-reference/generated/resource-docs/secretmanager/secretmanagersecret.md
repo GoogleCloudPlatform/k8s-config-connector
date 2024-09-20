@@ -131,7 +131,7 @@ topics:
     namespace: string
 ttl: string
 versionAliases:
-  string: integer
+  string: string
 ```
 
 <table class="properties responsive">
@@ -522,7 +522,7 @@ versionAliases:
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">map (key: string, value: integer)</code></p>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>{% verbatim %}Optional. Mapping from version alias to version name.
 
  A version alias is a string with a maximum length of 63 characters and can
@@ -553,6 +553,7 @@ conditions:
   status: string
   type: string
 externalRef: string
+name: string
 observedGeneration: integer
 observedState: {}
 ```
@@ -618,6 +619,13 @@ observedState: {}
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A unique specifier for the SecretManagerSecret resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}[DEPRECATED] Please read from `.status.externalRef` instead. Config Connector will remove the `.status.name` in v1 Version.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

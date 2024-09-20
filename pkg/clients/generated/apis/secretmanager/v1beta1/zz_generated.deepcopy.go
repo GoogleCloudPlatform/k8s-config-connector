@@ -170,7 +170,7 @@ func (in *SecretManagerSecretSpec) DeepCopyInto(out *SecretManagerSecretSpec) {
 	}
 	if in.VersionAliases != nil {
 		in, out := &in.VersionAliases, &out.VersionAliases
-		*out = make(map[string]int64, len(*in))
+		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val
 		}
@@ -198,6 +198,11 @@ func (in *SecretManagerSecretStatus) DeepCopyInto(out *SecretManagerSecretStatus
 	}
 	if in.ExternalRef != nil {
 		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
 		*out = new(string)
 		**out = **in
 	}

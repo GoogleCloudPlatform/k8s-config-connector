@@ -66,7 +66,7 @@ type SecretManagerSecretSpec struct {
 
 	// Input only. The TTL for the
 	//  [Secret][google.cloud.secretmanager.v1.Secret].
-	Ttl *string `json:"ttl,omitempty"`
+	TTL *string `json:"ttl,omitempty"`
 
 	// Optional. Rotation policy attached to the
 	//  [Secret][google.cloud.secretmanager.v1.Secret]. May be excluded if there is
@@ -84,7 +84,7 @@ type SecretManagerSecretSpec struct {
 	//  Version-Alias pairs will be viewable via GetSecret and modifiable via
 	//  UpdateSecret. Access by alias is only be supported on
 	//  GetSecretVersion and AccessSecretVersion.
-	VersionAliases map[string]int64 `json:"versionAliases,omitempty"`
+	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 
 	// Optional. Custom metadata about the secret.
 	//
@@ -162,6 +162,9 @@ type SecretManagerSecretStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *SecretManagerSecretObservedState `json:"observedState,omitempty"`
+
+	// [DEPRECATED] Please read from `.status.externalRef` instead. Config Connector will remove the `.status.name` in v1 Version.
+	Name string `json:"name,omitempty"`
 }
 
 // SecretManagerSecretSpec defines the desired state of SecretManagerSecret

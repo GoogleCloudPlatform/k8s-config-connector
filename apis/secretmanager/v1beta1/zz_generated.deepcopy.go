@@ -327,8 +327,8 @@ func (in *SecretManagerSecretSpec) DeepCopyInto(out *SecretManagerSecretSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Ttl != nil {
-		in, out := &in.Ttl, &out.Ttl
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
 		*out = new(string)
 		**out = **in
 	}
@@ -339,7 +339,7 @@ func (in *SecretManagerSecretSpec) DeepCopyInto(out *SecretManagerSecretSpec) {
 	}
 	if in.VersionAliases != nil {
 		in, out := &in.VersionAliases, &out.VersionAliases
-		*out = make(map[string]int64, len(*in))
+		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val
 		}

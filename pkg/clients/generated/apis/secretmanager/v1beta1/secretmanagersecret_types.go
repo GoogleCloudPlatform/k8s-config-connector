@@ -192,7 +192,7 @@ type SecretManagerSecretSpec struct {
 	UpdateSecret. Access by alias is only be supported on
 	GetSecretVersion and AccessSecretVersion. */
 	// +optional
-	VersionAliases map[string]int64 `json:"versionAliases,omitempty"`
+	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 }
 
 type SecretObservedStateStatus struct {
@@ -205,6 +205,10 @@ type SecretManagerSecretStatus struct {
 	/* A unique specifier for the SecretManagerSecret resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* [DEPRECATED] Please read from `.status.externalRef` instead. Config Connector will remove the `.status.name` in v1 Version. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
