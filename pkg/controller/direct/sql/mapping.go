@@ -108,47 +108,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Settings.AvailabilityType = *in.Spec.Settings.AvailabilityType
 	}
 
-	if in.Spec.Settings.BackupConfiguration != nil {
-		backupConfig := &api.BackupConfiguration{}
-
-		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings != nil {
-			retentionSettings := &api.BackupRetentionSettings{
-				RetainedBackups: in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups,
-			}
-			if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit != nil {
-				retentionSettings.RetentionUnit = *in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit
-			}
-			backupConfig.BackupRetentionSettings = retentionSettings
-		}
-
-		if in.Spec.Settings.BackupConfiguration.BinaryLogEnabled != nil {
-			// todo: requires mysql
-			backupConfig.BinaryLogEnabled = *in.Spec.Settings.BackupConfiguration.BinaryLogEnabled
-		}
-
-		if in.Spec.Settings.BackupConfiguration.Enabled != nil {
-			backupConfig.Enabled = *in.Spec.Settings.BackupConfiguration.Enabled
-		}
-
-		if in.Spec.Settings.BackupConfiguration.Location != nil {
-			backupConfig.Location = *in.Spec.Settings.BackupConfiguration.Location
-		}
-
-		if in.Spec.Settings.BackupConfiguration.PointInTimeRecoveryEnabled != nil {
-			backupConfig.PointInTimeRecoveryEnabled = *in.Spec.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
-		}
-
-		if in.Spec.Settings.BackupConfiguration.StartTime != nil {
-			backupConfig.StartTime = *in.Spec.Settings.BackupConfiguration.StartTime
-		}
-
-		if in.Spec.Settings.BackupConfiguration.TransactionLogRetentionDays != nil {
-			backupConfig.TransactionLogRetentionDays = *in.Spec.Settings.BackupConfiguration.TransactionLogRetentionDays
-		}
-
-		out.Settings.BackupConfiguration = backupConfig
-	}
-
+	out.Settings.BackupConfiguration = InstanceBackupConfigurationKRMToGCP(in.Spec.Settings.BackupConfiguration)
 	out.Settings.Collation = direct.ValueOf(in.Spec.Settings.Collation)
 	out.Settings.ConnectorEnforcement = direct.ValueOf(in.Spec.Settings.ConnectorEnforcement)
 	out.Settings.CrashSafeReplicationEnabled = direct.ValueOf(in.Spec.Settings.CrashSafeReplication)
@@ -256,6 +216,57 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 	}
 	if in.VerifyServerCertificate != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
+	}
+
+	return out
+}
+
+func InstanceBackupConfigurationKRMToGCP(in *krm.InstanceBackupConfiguration) *api.BackupConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.BackupConfiguration{
+		BackupRetentionSettings:    InstanceBackupRetentionSettingsKRMToGCP(in.BackupRetentionSettings),
+		BinaryLogEnabled:           direct.ValueOf(in.BinaryLogEnabled),
+		Enabled:                    direct.ValueOf(in.Enabled),
+		Kind:                       "sql#backupConfiguration",
+		Location:                   direct.ValueOf(in.Location),
+		PointInTimeRecoveryEnabled: direct.ValueOf(in.PointInTimeRecoveryEnabled),
+		// ReplicationLogArchivingEnabled is not supported in KRM API.
+		StartTime:                   direct.ValueOf(in.StartTime),
+		TransactionLogRetentionDays: direct.ValueOf(in.TransactionLogRetentionDays),
+		// TransactionalLogStorageState is not supported in KRM API.
+	}
+
+	if in.BinaryLogEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "BinaryLogEnabled")
+	}
+	if in.Enabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "Enabled")
+	}
+	if in.PointInTimeRecoveryEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "PointInTimeRecoveryEnabled")
+	}
+	if in.TransactionLogRetentionDays != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "TransactionLogRetentionDays")
+	}
+
+	return out
+}
+
+func InstanceBackupRetentionSettingsKRMToGCP(in *krm.InstanceBackupRetentionSettings) *api.BackupRetentionSettings {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.BackupRetentionSettings{
+		RetainedBackups: in.RetainedBackups,
+		RetentionUnit:   direct.ValueOf(in.RetentionUnit),
+	}
+
+	if in.RetainedBackups == 0 {
+		out.ForceSendFields = append(out.ForceSendFields, "RetainedBackups")
 	}
 
 	return out
@@ -558,26 +569,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		out.Spec.Settings.AvailabilityType = &in.Settings.AvailabilityType
 	}
 
-	if in.Settings.BackupConfiguration != nil {
-		bc := &krm.InstanceBackupConfiguration{}
-
-		if in.Settings.BackupConfiguration.BackupRetentionSettings != nil {
-			bc.BackupRetentionSettings = &krm.InstanceBackupRetentionSettings{
-				RetainedBackups: in.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups,
-				RetentionUnit:   &in.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit,
-			}
-		}
-
-		bc.BinaryLogEnabled = &in.Settings.BackupConfiguration.BinaryLogEnabled
-		bc.Enabled = &in.Settings.BackupConfiguration.Enabled
-		bc.Location = &in.Settings.BackupConfiguration.Location
-		bc.PointInTimeRecoveryEnabled = &in.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
-		bc.StartTime = &in.Settings.BackupConfiguration.StartTime
-		bc.TransactionLogRetentionDays = &in.Settings.BackupConfiguration.TransactionLogRetentionDays
-
-		out.Spec.Settings.BackupConfiguration = bc
-	}
-
+	out.Spec.Settings.BackupConfiguration = InstanceBackupConfigurationGCPToKRM(in.Settings.BackupConfiguration)
 	out.Spec.Settings.Collation = direct.LazyPtr(in.Settings.Collation)
 	out.Spec.Settings.ConnectorEnforcement = direct.LazyPtr(in.Settings.ConnectorEnforcement)
 	out.Spec.Settings.CrashSafeReplication = direct.LazyPtr(in.Settings.CrashSafeReplicationEnabled)
@@ -661,6 +653,38 @@ func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration
 	}
 
 	// Note: Password is not exported.
+
+	return out
+}
+
+func InstanceBackupConfigurationGCPToKRM(in *api.BackupConfiguration) *krm.InstanceBackupConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceBackupConfiguration{
+		BackupRetentionSettings:    InstanceBackupRetentionSettingsGCPToKRM(in.BackupRetentionSettings),
+		BinaryLogEnabled:           direct.PtrTo(in.BinaryLogEnabled),
+		Enabled:                    direct.PtrTo(in.Enabled),
+		Location:                   direct.LazyPtr(in.Location),
+		PointInTimeRecoveryEnabled: direct.PtrTo(in.PointInTimeRecoveryEnabled),
+		// ReplicationLogArchivingEnabled is not supported in KRM API.
+		StartTime:                   direct.LazyPtr(in.StartTime),
+		TransactionLogRetentionDays: direct.PtrTo(in.TransactionLogRetentionDays),
+		// TransactionalLogStorageState is not supported in KRM API.
+	}
+
+	return out
+}
+func InstanceBackupRetentionSettingsGCPToKRM(in *api.BackupRetentionSettings) *krm.InstanceBackupRetentionSettings {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceBackupRetentionSettings{
+		RetainedBackups: in.RetainedBackups,
+		RetentionUnit:   direct.LazyPtr(in.RetentionUnit),
+	}
 
 	return out
 }

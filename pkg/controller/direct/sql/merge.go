@@ -200,125 +200,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		merged.Settings.AvailabilityType = actual.Settings.AvailabilityType
 	}
 
-	existingBackupConfig := actual.Settings.BackupConfiguration != nil
-
-	if desired.Spec.Settings.BackupConfiguration != nil {
-		existingRetentionSettings := existingBackupConfig && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil
-
-		if !existingBackupConfig {
-			// Add backup configuration
-			updateRequired = true
-		}
-
-		merged.Settings.BackupConfiguration = &api.BackupConfiguration{
-			Kind: "sql#backupConfiguration",
-		}
-
-		if desired.Spec.Settings.BackupConfiguration.BackupRetentionSettings != nil {
-			if !existingRetentionSettings {
-				// Add retention settings
-				updateRequired = true
-			} else if (desired.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups != actual.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups) ||
-				(direct.ValueOf(desired.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit) != actual.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit) {
-				// Change retention settings
-				updateRequired = true
-			}
-			merged.Settings.BackupConfiguration.BackupRetentionSettings = &api.BackupRetentionSettings{
-				RetainedBackups: desired.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups,
-				RetentionUnit:   direct.ValueOf(desired.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit),
-			}
-		} else if existingRetentionSettings {
-			// Keep same retention settings
-			merged.Settings.BackupConfiguration.BackupRetentionSettings = actual.Settings.BackupConfiguration.BackupRetentionSettings
-		}
-
-		if desired.Spec.Settings.BackupConfiguration.BinaryLogEnabled != nil {
-			if existingBackupConfig {
-				if direct.ValueOf(desired.Spec.Settings.BackupConfiguration.BinaryLogEnabled) != actual.Settings.BackupConfiguration.BinaryLogEnabled {
-					// Change binary log enabled
-					updateRequired = true
-				}
-			}
-			merged.Settings.BackupConfiguration.BinaryLogEnabled = direct.ValueOf(desired.Spec.Settings.BackupConfiguration.BinaryLogEnabled)
-		} else if existingBackupConfig {
-			// Keep same binary log enabled
-			merged.Settings.BackupConfiguration.BinaryLogEnabled = actual.Settings.BackupConfiguration.BinaryLogEnabled
-		}
-
-		if desired.Spec.Settings.BackupConfiguration.Enabled != nil {
-			if existingBackupConfig {
-				if direct.ValueOf(desired.Spec.Settings.BackupConfiguration.Enabled) != actual.Settings.BackupConfiguration.Enabled {
-					// Change enabled
-					updateRequired = true
-				}
-			}
-			merged.Settings.BackupConfiguration.Enabled = direct.ValueOf(desired.Spec.Settings.BackupConfiguration.Enabled)
-		} else if existingBackupConfig {
-			// Keep same enabled
-			merged.Settings.BackupConfiguration.Enabled = actual.Settings.BackupConfiguration.Enabled
-		}
-
-		if desired.Spec.Settings.BackupConfiguration.Location != nil {
-			if existingBackupConfig {
-				if direct.ValueOf(desired.Spec.Settings.BackupConfiguration.Location) != actual.Settings.BackupConfiguration.Location {
-					// Change location
-					updateRequired = true
-				}
-			}
-			merged.Settings.BackupConfiguration.Location = direct.ValueOf(desired.Spec.Settings.BackupConfiguration.Location)
-		} else if existingBackupConfig {
-			// Keep same location
-			merged.Settings.BackupConfiguration.Location = actual.Settings.BackupConfiguration.Location
-		}
-
-		if desired.Spec.Settings.BackupConfiguration.PointInTimeRecoveryEnabled != nil {
-			if existingBackupConfig {
-				if direct.ValueOf(desired.Spec.Settings.BackupConfiguration.PointInTimeRecoveryEnabled) != actual.Settings.BackupConfiguration.PointInTimeRecoveryEnabled {
-					// Change point in time recovery enabled
-					updateRequired = true
-				}
-			}
-			merged.Settings.BackupConfiguration.PointInTimeRecoveryEnabled = direct.ValueOf(desired.Spec.Settings.BackupConfiguration.PointInTimeRecoveryEnabled)
-		} else if existingBackupConfig {
-			// Keep same point in time recovery enabled
-			merged.Settings.BackupConfiguration.PointInTimeRecoveryEnabled = actual.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
-		}
-
-		if desired.Spec.Settings.BackupConfiguration.StartTime != nil {
-			if existingBackupConfig {
-				if direct.ValueOf(desired.Spec.Settings.BackupConfiguration.StartTime) != actual.Settings.BackupConfiguration.StartTime {
-					// Change start time
-					updateRequired = true
-				}
-			}
-			merged.Settings.BackupConfiguration.StartTime = direct.ValueOf(desired.Spec.Settings.BackupConfiguration.StartTime)
-		} else if existingBackupConfig {
-			// Keep same start time
-			merged.Settings.BackupConfiguration.StartTime = actual.Settings.BackupConfiguration.StartTime
-		}
-
-		if desired.Spec.Settings.BackupConfiguration.TransactionLogRetentionDays != nil {
-			if existingBackupConfig {
-				if direct.ValueOf(desired.Spec.Settings.BackupConfiguration.TransactionLogRetentionDays) != actual.Settings.BackupConfiguration.TransactionLogRetentionDays {
-					// Change transaction log retention days
-					updateRequired = true
-				}
-			}
-			merged.Settings.BackupConfiguration.TransactionLogRetentionDays = direct.ValueOf(desired.Spec.Settings.BackupConfiguration.TransactionLogRetentionDays)
-		} else if existingBackupConfig {
-			// Keep same transaction log retention days
-			merged.Settings.BackupConfiguration.TransactionLogRetentionDays = actual.Settings.BackupConfiguration.TransactionLogRetentionDays
-		}
-	} else if existingBackupConfig {
-		// Keep same backup configuration
-		merged.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
-	}
-	if merged.Settings.BackupConfiguration != nil {
-		merged.Settings.BackupConfiguration.ForceSendFields = []string{
-			"BinaryLogEnabled",
-			"Enabled",
-			"PointInTimeRecoveryEnabled",
-		}
+	merged.Settings.BackupConfiguration = InstanceBackupConfigurationKRMToGCP(desired.Spec.Settings.BackupConfiguration)
+	if !BackupConfigurationsMatch(merged.Settings.BackupConfiguration, actual.Settings.BackupConfiguration) {
+		updateRequired = true
 	}
 
 	merged.Settings.Collation = direct.ValueOf(desired.Spec.Settings.Collation)
@@ -501,6 +385,60 @@ func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, act
 		return false
 	}
 	if desired.VerifyServerCertificate != actual.VerifyServerCertificate {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func BackupConfigurationsMatch(desired *api.BackupConfiguration, actual *api.BackupConfiguration) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if !BackupRetentionSettingsMatch(desired.BackupRetentionSettings, actual.BackupRetentionSettings) {
+		return false
+	}
+	if desired.BinaryLogEnabled != actual.BinaryLogEnabled {
+		return false
+	}
+	if desired.Enabled != actual.Enabled {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
+	if desired.Location != actual.Location {
+		return false
+	}
+	if desired.PointInTimeRecoveryEnabled != actual.PointInTimeRecoveryEnabled {
+		return false
+	}
+	// Ignore ReplicationLogArchivingEnabled. It is not supported in KRM API.
+	if desired.StartTime != actual.StartTime {
+		return false
+	}
+	if desired.TransactionLogRetentionDays != actual.TransactionLogRetentionDays {
+		return false
+	}
+	// Ignore TransactionalLogStorageState. It is not supported in KRM API.
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func BackupRetentionSettingsMatch(desired *api.BackupRetentionSettings, actual *api.BackupRetentionSettings) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.RetainedBackups != actual.RetainedBackups {
+		return false
+	}
+	if desired.RetentionUnit != actual.RetentionUnit {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
