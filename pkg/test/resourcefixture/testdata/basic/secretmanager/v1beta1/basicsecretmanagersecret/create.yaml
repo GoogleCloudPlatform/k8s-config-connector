@@ -25,6 +25,3 @@ spec:
     userManaged:
       replicas:
       - location: us-central1
-  topics:
-    - topicRef:
-        name: topic-${uniqueId}

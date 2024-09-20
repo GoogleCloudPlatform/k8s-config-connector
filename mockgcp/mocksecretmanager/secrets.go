@@ -97,6 +97,59 @@ func (s *SecretsV1) GetSecret(ctx context.Context, req *pb.GetSecretRequest) (*p
 	return &secret, nil
 }
 
+// ProtoClone is a type-safe wrapper around proto.Clone
+func ProtoClone[T proto.Message](t T) T {
+	return proto.Clone(t).(T)
+}
+
+// Update metadata for a given [Secret][google.cloud.secretmanager.v1.Secret].
+func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretRequest) (*pb.Secret, error) {
+	name, err := s.parseSecretName(req.Secret.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+	existing := &pb.Secret{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	updated := ProtoClone(existing)
+	updated.Name = name.String()
+
+	// Required. The update mask applies to the resource.
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask is required")
+	}
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "topics":
+			updated.Topics = req.Secret.GetTopics()
+		case "customer_managed_encryption":
+			updated.CustomerManagedEncryption = req.Secret.GetCustomerManagedEncryption()
+		case "rotation":
+			updated.Rotation = req.Secret.GetRotation()
+		case "annotations":
+			updated.Annotations = req.Secret.GetAnnotations()
+		case "labels":
+			updated.Labels = req.Secret.GetLabels()
+		case "version_aliases":
+			updated.VersionAliases = req.Secret.GetVersionAliases()
+		case "expiration":
+			updated.Expiration = req.Secret.GetExpiration()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+	return updated, nil
+}
+
 // Deletes a [Secret][google.cloud.secretmanager.v1.Secret].
 func (s *SecretsV1) DeleteSecret(ctx context.Context, req *pb.DeleteSecretRequest) (*emptypb.Empty, error) {
 	name, err := s.parseSecretName(req.Name)
