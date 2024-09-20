@@ -14,192 +14,16 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "",
-  "billingEnabled": false,
-  "name": "projects/${projectId}/billingInfo",
-  "projectId": "${projectId}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
   "name": "${projectId}",
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
   "parent": {
-    "id": "123450001",
-    "type": "organization"
+    "id": "${testFolderId}",
+    "type": "folder"
   },
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -221,8 +45,8 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "",
-  "billingEnabled": false,
+  "billingAccountName": "billingAccounts/00E7A7-4928AF-F1C514",
+  "billingEnabled": true,
   "name": "projects/${projectId}/billingInfo",
   "projectId": "${projectId}"
 }
@@ -247,7 +71,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127' was not found",
+    "message": "cluster not found",
     "status": "NOT_FOUND"
   }
 }
@@ -307,15 +131,15 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "target": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-west1/operations/${operationID}"
 }
 
 ---
 
-GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectNumber}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -336,10 +160,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "target": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-west1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.AttachedCluster",
     "annotations": {
@@ -356,11 +180,15 @@ X-Xss-Protection: 0
     "binaryAuthorization": {
       "evaluationMode": "PROJECT_SINGLETON_POLICY_ENFORCE"
     },
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Test attached cluster",
     "distribution": "eks",
+    "etag": "abcdef0123A=",
     "fleet": {
+      "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
       "project": "projects/${projectNumber}"
     },
+    "kubernetesVersion": "1.28",
     "loggingConfig": {
       "componentConfig": {
         "enableComponents": [
@@ -368,12 +196,17 @@ X-Xss-Protection: 0
         ]
       }
     },
-    "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "monitoringConfig": {
+      "managedPrometheusConfig": {}
+    },
+    "name": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "oidcConfig": {
       "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
     },
     "platformVersion": "1.27.0-gke.2",
-    "state": "RUNNING"
+    "state": "RUNNING",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -409,11 +242,15 @@ X-Xss-Protection: 0
   "binaryAuthorization": {
     "evaluationMode": "PROJECT_SINGLETON_POLICY_ENFORCE"
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test attached cluster",
   "distribution": "eks",
+  "etag": "abcdef0123A=",
   "fleet": {
+    "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
     "project": "projects/${projectNumber}"
   },
+  "kubernetesVersion": "1.28",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -421,11 +258,17 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+  "monitoringConfig": {
+    "managedPrometheusConfig": {}
+  },
+  "name": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
   "oidcConfig": {
     "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
   },
-  "platformVersion": "1.27.0-gke.2"
+  "platformVersion": "1.27.0-gke.2",
+  "state": "RUNNING",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -455,6 +298,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "description": "Test attached cluster update",
   "fleet": {
+    "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
     "project": "projects/${projectNumber}"
   },
   "loggingConfig": {
@@ -491,15 +335,15 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "target": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-west1/operations/${operationID}"
 }
 
 ---
 
-GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectNumber}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -520,10 +364,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "target": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-west1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.AttachedCluster",
     "annotations": {
@@ -544,11 +388,15 @@ X-Xss-Protection: 0
     "binaryAuthorization": {
       "evaluationMode": "DISABLED"
     },
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Test attached cluster update",
     "distribution": "eks",
+    "etag": "abcdef0123A=",
     "fleet": {
+      "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
       "project": "projects/${projectNumber}"
     },
+    "kubernetesVersion": "1.28",
     "loggingConfig": {
       "componentConfig": {
         "enableComponents": [
@@ -562,11 +410,14 @@ X-Xss-Protection: 0
         "enabled": true
       }
     },
-    "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "name": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "oidcConfig": {
       "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
     },
-    "platformVersion": "1.28.0-gke.2"
+    "platformVersion": "1.28.0-gke.2",
+    "state": "RUNNING",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -606,11 +457,15 @@ X-Xss-Protection: 0
   "binaryAuthorization": {
     "evaluationMode": "DISABLED"
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test attached cluster update",
   "distribution": "eks",
+  "etag": "abcdef0123A=",
   "fleet": {
+    "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
     "project": "projects/${projectNumber}"
   },
+  "kubernetesVersion": "1.28",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -624,11 +479,14 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+  "name": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
   "oidcConfig": {
     "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
   },
-  "platformVersion": "1.28.0-gke.2"
+  "platformVersion": "1.28.0-gke.2",
+  "state": "RUNNING",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -652,15 +510,15 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "target": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-west1/operations/${operationID}"
 }
 
 ---
 
-GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+GET https://us-west1-gkemulticloud.googleapis.com/v1/projects/${projectNumber}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -681,10 +539,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
+    "target": "projects/${projectNumber}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-west1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

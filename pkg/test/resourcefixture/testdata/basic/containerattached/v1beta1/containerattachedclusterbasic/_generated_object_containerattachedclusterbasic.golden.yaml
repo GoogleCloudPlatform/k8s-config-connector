@@ -34,4 +34,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  kubernetesVersion: "1.28"
   observedGeneration: 2
+  state: RUNNING
+  uid: "12345678"
+  updateTime: "1970-01-01T00:00:00Z"
