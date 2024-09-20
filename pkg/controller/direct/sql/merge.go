@@ -374,15 +374,9 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.DeletionProtectionEnabled != nil {
-		if direct.ValueOf(desired.Spec.Settings.DeletionProtectionEnabled) != actual.Settings.DeletionProtectionEnabled {
-			// Change deletion protection enabled
-			updateRequired = true
-		}
-		merged.Settings.DeletionProtectionEnabled = direct.ValueOf(desired.Spec.Settings.DeletionProtectionEnabled)
-	} else {
-		// Keep deletion protection enabled
-		merged.Settings.DeletionProtectionEnabled = actual.Settings.DeletionProtectionEnabled
+	merged.Settings.DeletionProtectionEnabled = direct.ValueOf(desired.Spec.Settings.DeletionProtectionEnabled)
+	if merged.Settings.DeletionProtectionEnabled != actual.Settings.DeletionProtectionEnabled {
+		updateRequired = true
 	}
 
 	merged.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(desired.Spec.Settings.DenyMaintenancePeriod)
@@ -470,7 +464,10 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 	}
 	merged.Settings.UserLabels = desired.Labels
 
-	// todo: Remove this after switching over to use InstanceSettingsKRMToGCP
+	// todo: Remove these after switching over to use InstanceSettingsKRMToGCP
+	if desired.Spec.Settings.DeletionProtectionEnabled != nil {
+		merged.Settings.ForceSendFields = append(merged.ForceSendFields, "DeletionProtectionEnabled")
+	}
 	if desired.Spec.Settings.DiskAutoresize != nil {
 		merged.Settings.ForceSendFields = append(merged.ForceSendFields, "StorageAutoResize")
 	}

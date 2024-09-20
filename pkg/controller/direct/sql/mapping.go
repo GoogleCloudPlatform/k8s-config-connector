@@ -173,10 +173,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Settings.DatabaseFlags = dbFlags
 	}
 
-	if in.Spec.Settings.DeletionProtectionEnabled != nil {
-		out.Settings.DeletionProtectionEnabled = *in.Spec.Settings.DeletionProtectionEnabled
-	}
-
+	out.Settings.DeletionProtectionEnabled = direct.ValueOf(in.Spec.Settings.DeletionProtectionEnabled)
 	out.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(in.Spec.Settings.DenyMaintenancePeriod)
 	out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
 	out.Settings.StorageAutoResizeLimit = direct.ValueOf(in.Spec.Settings.DiskAutoresizeLimit)
@@ -202,6 +199,9 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	}
 
 	// TODO: Move to InstanceSettingsKRMToGCP
+	if in.Spec.Settings.DeletionProtectionEnabled != nil {
+		out.Settings.ForceSendFields = append(out.ForceSendFields, "DeletionProtectionEnabled")
+	}
 	if in.Spec.Settings.DiskAutoresize != nil {
 		out.Settings.ForceSendFields = append(out.ForceSendFields, "StorageAutoResize")
 	}
@@ -607,8 +607,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		out.Spec.Settings.DatabaseFlags = dbFlags
 	}
 
-	out.Spec.Settings.DeletionProtectionEnabled = &in.Settings.DeletionProtectionEnabled
-
+	out.Spec.Settings.DeletionProtectionEnabled = direct.PtrTo(in.Settings.DeletionProtectionEnabled)
 	out.Spec.Settings.DenyMaintenancePeriod = InstanceDenyMaintenancePeriodsGCPToKRM(in.Settings.DenyMaintenancePeriods)
 	out.Spec.Settings.DiskAutoresize = in.Settings.StorageAutoResize
 	out.Spec.Settings.DiskAutoresizeLimit = direct.LazyPtr(in.Settings.StorageAutoResizeLimit)
