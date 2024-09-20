@@ -150,16 +150,8 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	}
 
 	out.Settings.Collation = direct.ValueOf(in.Spec.Settings.Collation)
-
-	if in.Spec.Settings.ConnectorEnforcement != nil {
-		out.Settings.ConnectorEnforcement = *in.Spec.Settings.ConnectorEnforcement
-	}
-
-	if in.Spec.Settings.CrashSafeReplication != nil {
-		// todo: deprecated
-		out.Settings.CrashSafeReplicationEnabled = *in.Spec.Settings.CrashSafeReplication
-	}
-
+	out.Settings.ConnectorEnforcement = direct.ValueOf(in.Spec.Settings.ConnectorEnforcement)
+	out.Settings.CrashSafeReplicationEnabled = direct.ValueOf(in.Spec.Settings.CrashSafeReplication)
 	out.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(in.Spec.Settings.DataCacheConfig)
 	out.Settings.DatabaseFlags = InstanceDatabaseFlagsKRMToGCP(in.Spec.Settings.DatabaseFlags)
 	out.Settings.DeletionProtectionEnabled = direct.ValueOf(in.Spec.Settings.DeletionProtectionEnabled)
@@ -587,13 +579,8 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	}
 
 	out.Spec.Settings.Collation = direct.LazyPtr(in.Settings.Collation)
-
-	if in.Settings.ConnectorEnforcement != "" {
-		out.Spec.Settings.ConnectorEnforcement = &in.Settings.ConnectorEnforcement
-	}
-
-	out.Spec.Settings.CrashSafeReplication = &in.Settings.CrashSafeReplicationEnabled
-
+	out.Spec.Settings.ConnectorEnforcement = direct.LazyPtr(in.Settings.ConnectorEnforcement)
+	out.Spec.Settings.CrashSafeReplication = direct.LazyPtr(in.Settings.CrashSafeReplicationEnabled)
 	out.Spec.Settings.DataCacheConfig = InstanceDataCacheConfigGCPToKRM(in.Settings.DataCacheConfig)
 	out.Spec.Settings.DatabaseFlags = InstanceDatabaseFlagsGCPToKRM(in.Settings.DatabaseFlags)
 	out.Spec.Settings.DeletionProtectionEnabled = direct.PtrTo(in.Settings.DeletionProtectionEnabled)

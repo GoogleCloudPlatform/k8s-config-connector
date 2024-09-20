@@ -326,26 +326,14 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.ConnectorEnforcement != nil {
-		if direct.ValueOf(desired.Spec.Settings.ConnectorEnforcement) != actual.Settings.ConnectorEnforcement {
-			// Change connector enforcement
-			updateRequired = true
-		}
-		merged.Settings.ConnectorEnforcement = direct.ValueOf(desired.Spec.Settings.ConnectorEnforcement)
-	} else {
-		// Keep connector enforcement
-		merged.Settings.ConnectorEnforcement = actual.Settings.ConnectorEnforcement
+	merged.Settings.ConnectorEnforcement = direct.ValueOf(desired.Spec.Settings.ConnectorEnforcement)
+	if merged.Settings.ConnectorEnforcement != actual.Settings.ConnectorEnforcement {
+		updateRequired = true
 	}
 
-	if desired.Spec.Settings.CrashSafeReplication != nil {
-		if direct.ValueOf(desired.Spec.Settings.CrashSafeReplication) != actual.Settings.CrashSafeReplicationEnabled {
-			// Change crash safe replication
-			updateRequired = true
-		}
-		merged.Settings.CrashSafeReplicationEnabled = direct.ValueOf(desired.Spec.Settings.CrashSafeReplication)
-	} else {
-		// Keep crash safe replication
-		merged.Settings.CrashSafeReplicationEnabled = actual.Settings.CrashSafeReplicationEnabled
+	merged.Settings.CrashSafeReplicationEnabled = direct.ValueOf(desired.Spec.Settings.CrashSafeReplication)
+	if merged.Settings.CrashSafeReplicationEnabled != actual.Settings.CrashSafeReplicationEnabled {
+		updateRequired = true
 	}
 
 	merged.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(desired.Spec.Settings.DataCacheConfig)
