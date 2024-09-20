@@ -120,7 +120,9 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 
 	// output only field. This field is only used for internal load balancing.
 	if obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme == "INTERNAL" {
-		obj.ServiceName = PtrTo(fmt.Sprintf("%s.%s.il4.global.lb.%s.internal", obj.GetServiceLabel(), name.Name, name.Project.ID))
+		if obj.ServiceLabel != nil {
+			obj.ServiceName = PtrTo(fmt.Sprintf("%s.%s.il4.global.lb.%s.internal", obj.GetServiceLabel(), name.Name, name.Project.ID))
+		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
