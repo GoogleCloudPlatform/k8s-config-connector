@@ -47,6 +47,9 @@ func convertKRMtoAPI_ConfigManagement(r *krm.FeaturemembershipConfigmanagement) 
 	if r.Version != nil {
 		apiObj.Version = *r.Version
 	}
+	if r.Management != nil {
+		apiObj.Management = *r.Management
+	}
 	return &apiObj, nil
 
 }
