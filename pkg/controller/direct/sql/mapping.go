@@ -188,23 +188,10 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		}
 	}
 
-	if in.Spec.Settings.DiskAutoresize != nil {
-		out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
-	}
-
-	if in.Spec.Settings.DiskAutoresizeLimit != nil {
-		// todo: requires DiskAutoresize == true
-		out.Settings.StorageAutoResizeLimit = *in.Spec.Settings.DiskAutoresizeLimit
-	}
-
-	if in.Spec.Settings.DiskSize != nil {
-		out.Settings.DataDiskSizeGb = *in.Spec.Settings.DiskSize
-	}
-
-	if in.Spec.Settings.DiskType != nil {
-		out.Settings.DataDiskType = *in.Spec.Settings.DiskType
-	}
-
+	out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
+	out.Settings.StorageAutoResizeLimit = direct.ValueOf(in.Spec.Settings.DiskAutoresizeLimit)
+	out.Settings.DataDiskSizeGb = direct.ValueOf(in.Spec.Settings.DiskSize)
+	out.Settings.DataDiskType = direct.ValueOf(in.Spec.Settings.DiskType)
 	out.Settings.Edition = direct.ValueOf(in.Spec.Settings.Edition)
 	out.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(in.Spec.Settings.InsightsConfig)
 	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
@@ -222,6 +209,11 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		for k, v := range in.Labels {
 			out.Settings.UserLabels[k] = v
 		}
+	}
+
+	// TODO: Move to InstanceSettingsKRMToGCP
+	if in.Spec.Settings.DiskAutoresize != nil {
+		out.Settings.ForceSendFields = append(out.ForceSendFields, "StorageAutoResize")
 	}
 
 	return out, nil
@@ -618,17 +610,9 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	}
 
 	out.Spec.Settings.DiskAutoresize = in.Settings.StorageAutoResize
-
-	if in.Settings.StorageAutoResizeLimit != 0 {
-		out.Spec.Settings.DiskAutoresizeLimit = &in.Settings.StorageAutoResizeLimit
-	}
-
-	out.Spec.Settings.DiskSize = &in.Settings.DataDiskSizeGb
-
-	if in.Settings.DataDiskType != "" {
-		out.Spec.Settings.DiskType = &in.Settings.DataDiskType
-	}
-
+	out.Spec.Settings.DiskAutoresizeLimit = direct.LazyPtr(in.Settings.StorageAutoResizeLimit)
+	out.Spec.Settings.DiskSize = direct.LazyPtr(in.Settings.DataDiskSizeGb)
+	out.Spec.Settings.DiskType = direct.LazyPtr(in.Settings.DataDiskType)
 	out.Spec.Settings.Edition = direct.LazyPtr(in.Settings.Edition)
 	out.Spec.Settings.InsightsConfig = InstanceInsightsConfigGCPToKRM(in.Settings.InsightsConfig)
 	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)

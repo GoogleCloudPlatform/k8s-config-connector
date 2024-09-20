@@ -407,48 +407,24 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 
-	if desired.Spec.Settings.DiskAutoresize != nil {
-		if direct.ValueOf(desired.Spec.Settings.DiskAutoresize) != direct.ValueOf(actual.Settings.StorageAutoResize) {
-			// Change disk autoresize
-			updateRequired = true
-		}
-		merged.Settings.StorageAutoResize = desired.Spec.Settings.DiskAutoresize
-	} else {
-		// Keep disk autoresize
-		merged.Settings.StorageAutoResize = actual.Settings.StorageAutoResize
+	merged.Settings.StorageAutoResize = desired.Spec.Settings.DiskAutoresize
+	if merged.Settings.StorageAutoResize != actual.Settings.StorageAutoResize {
+		updateRequired = true
 	}
 
-	if desired.Spec.Settings.DiskAutoresizeLimit != nil {
-		if direct.ValueOf(desired.Spec.Settings.DiskAutoresizeLimit) != actual.Settings.StorageAutoResizeLimit {
-			// Change disk autoresize limit
-			updateRequired = true
-		}
-		merged.Settings.StorageAutoResizeLimit = direct.ValueOf(desired.Spec.Settings.DiskAutoresizeLimit)
-	} else {
-		// Keep disk autoresize limit
-		merged.Settings.StorageAutoResizeLimit = actual.Settings.StorageAutoResizeLimit
+	merged.Settings.StorageAutoResizeLimit = direct.ValueOf(desired.Spec.Settings.DiskAutoresizeLimit)
+	if merged.Settings.StorageAutoResizeLimit != actual.Settings.StorageAutoResizeLimit {
+		updateRequired = true
 	}
 
-	if desired.Spec.Settings.DiskSize != nil {
-		if direct.ValueOf(desired.Spec.Settings.DiskSize) != actual.Settings.DataDiskSizeGb {
-			// Change disk size
-			updateRequired = true
-		}
-		merged.Settings.DataDiskSizeGb = direct.ValueOf(desired.Spec.Settings.DiskSize)
-	} else {
-		// Keep disk size
-		merged.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
+	merged.Settings.DataDiskSizeGb = direct.ValueOf(desired.Spec.Settings.DiskSize)
+	if merged.Settings.DataDiskSizeGb != actual.Settings.DataDiskSizeGb {
+		updateRequired = true
 	}
 
-	if desired.Spec.Settings.DiskType != nil {
-		if direct.ValueOf(desired.Spec.Settings.DiskType) != actual.Settings.DataDiskType {
-			// Change disk type
-			updateRequired = true
-		}
-		merged.Settings.DataDiskType = direct.ValueOf(desired.Spec.Settings.DiskType)
-	} else {
-		// Keep disk type
-		merged.Settings.DataDiskType = actual.Settings.DataDiskType
+	merged.Settings.DataDiskType = direct.ValueOf(desired.Spec.Settings.DiskType)
+	if merged.Settings.DataDiskType != actual.Settings.DataDiskType {
+		updateRequired = true
 	}
 
 	merged.Settings.Edition = direct.ValueOf(desired.Spec.Settings.Edition)
@@ -510,6 +486,11 @@ func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstan
 		updateRequired = true
 	}
 	merged.Settings.UserLabels = desired.Labels
+
+	// todo: Remove this after switching over to use InstanceSettingsKRMToGCP
+	if desired.Spec.Settings.DiskAutoresize != nil {
+		merged.Settings.ForceSendFields = append(merged.ForceSendFields, "StorageAutoResize")
+	}
 
 	return merged, updateRequired, nil
 }
