@@ -17,25 +17,7 @@ package v1beta1
 type google_protobuf_Struct struct {
 }
 
-type google_protobuf_StringValue struct {
-}
-
-type google_protobuf_BoolValue struct {
-}
-
-type google_protobuf_DoubleValue struct {
-}
-
-type google_protobuf_Int32Value struct {
-}
-
-type google_protobuf_BytesValue struct {
-}
-
 type google_protobuf_Value struct {
-}
-
-type google_protobuf_UInt64Value struct {
 }
 
 type LinkedDatasetMetadata struct {
