@@ -50,6 +50,7 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
+		./apis/google/apps/cloudidentity/groups/v1beta1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
@@ -161,5 +162,9 @@ generate-protos-from-openapi:
 	wget -O temp/apigee-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/apigee/v1/apigee-api.json
 	mkdir -p apis/mockgcp/cloud/apigee/v1/
 	cd tools/gapic; go run . --proto-package mockgcp.cloud.apigee.v1 ../../temp/apigee-v1.json > ../../apis/mockgcp/cloud/apigee/v1/service.proto
+
+	wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json
+	mkdir -p apis/google/apps/cloudidentity/groups/v1beta1/
+	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.groups.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/groups/v1beta1//service.proto
 
 	rm -r temp
