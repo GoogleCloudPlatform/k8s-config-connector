@@ -585,6 +585,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	backupConfiguration := settings.BackupConfiguration
 	if backupConfiguration == nil {
 		backupConfiguration = &pb.BackupConfiguration{}
+		settings.BackupConfiguration = backupConfiguration
 	} else {
 		if isPostgres(obj) {
 			setDefaultBool(&backupConfiguration.ReplicationLogArchivingEnabled, false)
@@ -597,7 +598,6 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		}
 	}
 	backupConfiguration.Kind = "sql#backupConfiguration"
-	settings.BackupConfiguration = backupConfiguration
 
 	backupRetentionSettings := backupConfiguration.BackupRetentionSettings
 	if backupRetentionSettings == nil {

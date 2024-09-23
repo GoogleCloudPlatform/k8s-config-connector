@@ -41,7 +41,8 @@ User-Agent: kcc/controller-manager
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "binaryLogEnabled": true,
-      "enabled": true
+      "enabled": true,
+      "kind": "sql#backupConfiguration"
     },
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",

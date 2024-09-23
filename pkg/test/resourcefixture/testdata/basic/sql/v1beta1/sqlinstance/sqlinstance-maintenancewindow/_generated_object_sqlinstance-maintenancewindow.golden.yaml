@@ -11,7 +11,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: postgresbasic-${uniqueId}
+  name: sqlinstance-maintenancewindow-${uniqueId}
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_15
@@ -31,13 +31,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:postgresbasic-${uniqueId}
+  connectionName: ${projectId}:us-central1:sqlinstance-maintenancewindow-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
   publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----

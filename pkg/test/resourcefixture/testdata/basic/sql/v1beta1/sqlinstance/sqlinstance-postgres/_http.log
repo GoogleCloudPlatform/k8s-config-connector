@@ -561,6 +561,7 @@ User-Agent: kcc/controller-manager
         "retentionUnit": "COUNT"
       },
       "enabled": true,
+      "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
       "startTime": "12:00",
       "transactionLogRetentionDays": 3
@@ -954,14 +955,12 @@ User-Agent: kcc/controller-manager
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
       "startTime": "12:00",
       "transactionLogRetentionDays": 3
     },
-    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -992,7 +991,6 @@ User-Agent: kcc/controller-manager
       "sslMode": "ENCRYPTED_ONLY"
     },
     "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": false,
     "tier": "db-custom-1-3840",

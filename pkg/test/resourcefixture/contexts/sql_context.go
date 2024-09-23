@@ -17,7 +17,42 @@ package contexts
 import "time"
 
 func init() {
+	resourceContextMap["sqlinstance-activationpolicy"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-activedirectoryconfig"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-auditconfig"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
 	resourceContextMap["sqlinstance-authorizednetworks"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-backupconfiguration-binarylog"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-backupconfiguration-pitr"] = ResourceContext{
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
@@ -31,7 +66,49 @@ func init() {
 		ResourceKind:  "SQLInstance",
 	}
 
+	resourceContextMap["sqlinstance-connectorenforcement"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-databaseflags"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-datacacheconfig"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-deletionprotection"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-denymaintenanceperiod"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
 	resourceContextMap["sqlinstance-encryptionkey"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-insightsconfig"] = ResourceContext{
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
@@ -46,6 +123,13 @@ func init() {
 	}
 
 	resourceContextMap["sqlinstance-maintenancewindow"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-multithreading"] = ResourceContext{
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
@@ -94,6 +178,13 @@ func init() {
 		ResourceKind:  "SQLInstance",
 	}
 
+	resourceContextMap["sqlinstance-privatenetwork-backwardcompatible"] = ResourceContext{
+		// SQL instances appear to need a bit of additional time before attempting to recreate
+		// with the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
 	resourceContextMap["sqlinstance-replica"] = ResourceContext{
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
@@ -116,6 +207,13 @@ func init() {
 	}
 
 	resourceContextMap["sqlinstance-ssl"] = ResourceContext{
+		// SQL instances need a bit of additional time before attempting to recreate with
+		// the exact same name. Otherwise, the GCP API returns "unknown error".
+		RecreateDelay: time.Second * 60,
+		ResourceKind:  "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-storage"] = ResourceContext{
 		// SQL instances need a bit of additional time before attempting to recreate with
 		// the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,

@@ -1,4 +1,4 @@
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 404 Not Found
@@ -34,7 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
-  "name": "postgresbasic-${uniqueId}",
+  "name": "sqlinstance-maintenancewindow-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
@@ -79,8 +79,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "targetId": "sqlinstance-maintenancewindow-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -110,15 +110,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "postgresbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "targetId": "sqlinstance-maintenancewindow-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -134,7 +134,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresbasic-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-maintenancewindow-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_15_7",
   "databaseVersion": "POSTGRES_15",
@@ -160,17 +160,17 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "postgresbasic-${uniqueId}",
+  "name": "sqlinstance-maintenancewindow-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresbasic-${uniqueId}",
+    "instance": "sqlinstance-maintenancewindow-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -236,7 +236,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -255,7 +255,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "postgresbasic-${uniqueId}",
+      "instance": "sqlinstance-maintenancewindow-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
       "project": "${projectId}"
@@ -266,7 +266,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -282,7 +282,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresbasic-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-maintenancewindow-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_15_7",
   "databaseVersion": "POSTGRES_15",
@@ -308,17 +308,17 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "postgresbasic-${uniqueId}",
+  "name": "sqlinstance-maintenancewindow-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresbasic-${uniqueId}",
+    "instance": "sqlinstance-maintenancewindow-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -384,7 +384,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}?alt=json&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 
@@ -392,26 +392,11 @@ User-Agent: kcc/controller-manager
   "databaseVersion": "POSTGRES_15",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "postgresbasic-${uniqueId}",
+  "name": "sqlinstance-maintenancewindow-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 7,
-        "retentionUnit": "COUNT"
-      },
-      "binaryLogEnabled": false,
-      "enabled": false,
-      "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": false,
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
-    "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "locationPreference": {
@@ -425,7 +410,6 @@ User-Agent: kcc/controller-manager
       "updateTrack": "stable"
     },
     "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
     "tier": "db-custom-1-3840",
@@ -454,8 +438,8 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "targetId": "sqlinstance-maintenancewindow-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -485,15 +469,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "postgresbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "targetId": "sqlinstance-maintenancewindow-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -509,7 +493,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresbasic-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-maintenancewindow-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_15_7",
   "databaseVersion": "POSTGRES_15",
@@ -535,17 +519,17 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "postgresbasic-${uniqueId}",
+  "name": "sqlinstance-maintenancewindow-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresbasic-${uniqueId}",
+    "instance": "sqlinstance-maintenancewindow-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -561,8 +545,6 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -613,7 +595,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -634,8 +616,8 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresbasic-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresbasic-${uniqueId}",
+  "targetId": "sqlinstance-maintenancewindow-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-maintenancewindow-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }

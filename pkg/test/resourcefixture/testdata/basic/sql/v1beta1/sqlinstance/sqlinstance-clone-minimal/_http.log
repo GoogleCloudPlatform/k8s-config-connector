@@ -41,6 +41,7 @@ User-Agent: kcc/controller-manager
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "enabled": true,
+      "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true
     },
     "dataDiskType": "PD_SSD",

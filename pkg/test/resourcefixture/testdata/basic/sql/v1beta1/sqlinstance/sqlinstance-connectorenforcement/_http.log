@@ -380,19 +380,6 @@ User-Agent: kcc/controller-manager
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 7,
-        "retentionUnit": "COUNT"
-      },
-      "binaryLogEnabled": false,
-      "enabled": false,
-      "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": false,
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
     "connectorEnforcement": "REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
@@ -536,8 +523,6 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
