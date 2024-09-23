@@ -33,4 +33,3 @@ spec:
   access:
     - role: OWNER
       specialGroup: projectOwners
-  storageBillingModel: LOGICAL
