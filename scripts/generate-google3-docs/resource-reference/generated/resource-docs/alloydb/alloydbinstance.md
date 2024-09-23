@@ -88,6 +88,7 @@ machineConfig:
 networkConfig:
   authorizedExternalNetworks:
   - cidrRange: string
+  enableOutboundPublicIp: boolean
   enablePublicIp: boolean
 readPoolConfig:
   nodeCount: integer
@@ -322,6 +323,16 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
+            <p><code>networkConfig.enableOutboundPublicIp</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enabling outbound public ip for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>networkConfig.enablePublicIp</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -378,6 +389,8 @@ createTime: string
 ipAddress: string
 name: string
 observedGeneration: integer
+outboundPublicIpAddresses:
+- string
 publicIpAddress: string
 reconciling: boolean
 state: string
@@ -467,6 +480,22 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>outboundPublicIpAddresses</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The outbound public IP addresses for the instance. This is available ONLY when
+networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
+for outbound connections.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>outboundPublicIpAddresses[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

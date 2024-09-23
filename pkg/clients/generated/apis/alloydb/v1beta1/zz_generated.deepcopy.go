@@ -578,6 +578,11 @@ func (in *AlloyDBInstanceStatus) DeepCopyInto(out *AlloyDBInstanceStatus) {
 		*out = new(int64)
 		**out = **in
 	}
+	if in.OutboundPublicIpAddresses != nil {
+		in, out := &in.OutboundPublicIpAddresses, &out.OutboundPublicIpAddresses
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	if in.PublicIpAddress != nil {
 		in, out := &in.PublicIpAddress, &out.PublicIpAddress
 		*out = new(string)
@@ -1408,6 +1413,11 @@ func (in *InstanceNetworkConfig) DeepCopyInto(out *InstanceNetworkConfig) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.EnableOutboundPublicIp != nil {
+		in, out := &in.EnableOutboundPublicIp, &out.EnableOutboundPublicIp
+		*out = new(bool)
+		**out = **in
 	}
 	if in.EnablePublicIp != nil {
 		in, out := &in.EnablePublicIp, &out.EnablePublicIp
