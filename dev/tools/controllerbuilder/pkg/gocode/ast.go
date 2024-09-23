@@ -145,9 +145,7 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 			case *ast.Ident:
 				// type alias
 			case *ast.InterfaceType:
-				if n.Name.String() == "ExternalNormalizer" {
-					// skip this for now
-				}
+				// always skip, nothing to generate for interface
 			default:
 				errs = append(errs, fmt.Errorf("unhandled type spec in %q: %T, %+v", n.Name, n.Type, n.Type))
 			}
