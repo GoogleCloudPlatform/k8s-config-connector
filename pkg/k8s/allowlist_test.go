@@ -31,6 +31,7 @@ import (
 // TODO(yuwenma): This is a temp fix. We should use a more generic approach.
 var SkipServiceLoaderList = []string{
 	"CloudBuildWorkerPool",
+	"SecretManagerSecret",
 }
 
 func TestSupportsStateIntoSpecMerge(t *testing.T) {

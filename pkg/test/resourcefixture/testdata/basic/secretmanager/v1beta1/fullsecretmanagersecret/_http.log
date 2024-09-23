@@ -680,7 +680,11 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     {
       "name": "projects/${projectId}/topics/topic-${uniqueId}"
     }
-  ]
+  ],
+  "versionAliases": {
+    "bar": "222",
+    "foo": "111"
+  }
 }
 
 200 OK
@@ -718,7 +722,11 @@ X-Xss-Protection: 0
     {
       "name": "projects/${projectId}/topics/topic-${uniqueId}"
     }
-  ]
+  ],
+  "versionAliases": {
+    "bar": "222",
+    "foo": "111"
+  }
 }
 
 ---
@@ -762,7 +770,11 @@ X-Xss-Protection: 0
     {
       "name": "projects/${projectId}/topics/topic-${uniqueId}"
     }
-  ]
+  ],
+  "versionAliases": {
+    "bar": "222",
+    "foo": "111"
+  }
 }
 
 ---
@@ -793,7 +805,11 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     {
       "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
     }
-  ]
+  ],
+  "versionAliases": {
+    "bar": "222",
+    "foo": "111"
+  }
 }
 
 200 OK
@@ -832,7 +848,11 @@ X-Xss-Protection: 0
     {
       "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
     }
-  ]
+  ],
+  "versionAliases": {
+    "bar": "222",
+    "foo": "111"
+  }
 }
 
 ---
@@ -877,7 +897,11 @@ X-Xss-Protection: 0
     {
       "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
     }
-  ]
+  ],
+  "versionAliases": {
+    "bar": "222",
+    "foo": "111"
+  }
 }
 
 ---

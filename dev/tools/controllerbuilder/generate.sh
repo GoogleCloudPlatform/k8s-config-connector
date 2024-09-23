@@ -33,6 +33,14 @@ go run . generate-types \
     --kind DataflowFlexTemplateJob \
     --proto-resource FlexTemplateRuntimeEnvironment
 
+go run main.go generate-types \
+     --service google.cloud.secretmanager.v1  \
+     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+     --output-api ${APIS_DIR} \
+     --kind SecretManagerSecret  \ 
+     --proto-resource Secret \
+     --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
+
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.dataflow.v1beta3 \

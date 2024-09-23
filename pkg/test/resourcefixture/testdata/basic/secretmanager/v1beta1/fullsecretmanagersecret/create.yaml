@@ -38,5 +38,6 @@ spec:
   rotation:
     nextRotationTime: "2025-10-02T15:01:23Z"
     rotationPeriod: "3600s"
-  # versionAliases:
-  #  "boo": "boo"
+  versionAliases:
+    "foo": "111"
+    "bar": "222"
