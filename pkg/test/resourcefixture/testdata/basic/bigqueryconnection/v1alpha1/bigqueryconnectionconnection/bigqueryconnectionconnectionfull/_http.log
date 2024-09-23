@@ -17,7 +17,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be",
+    "message": "Not found: Connection projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be",
     "status": "NOT_FOUND"
   }
 }
@@ -54,7 +54,7 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
@@ -83,7 +83,7 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
@@ -118,7 +118,7 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
@@ -147,7 +147,7 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---

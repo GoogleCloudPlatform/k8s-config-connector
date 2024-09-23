@@ -16,13 +16,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.122.0
+    cnrm.cloud.google.com/version: 1.123.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com
 spec:
   group: bigquerydatatransfer.cnrm.cloud.google.com
@@ -30,10 +28,8 @@ spec:
     categories:
     - gcp
     kind: BigQueryDataTransferConfig
+    listKind: BigQueryDataTransferConfigList
     plural: bigquerydatatransferconfigs
-    shortNames:
-    - gcpbigquerydatatransferconfig
-    - gcpbigquerydatatransferconfigs
     singular: bigquerydatatransferconfig
   scope: Namespaced
   versions:
@@ -56,70 +52,43 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: BigQueryDataTransferConfig is the Schema for the BigQueryDataTransferConfig
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BigQueryDataTransferConfigSpec defines the desired state
+              of BigQueryDataTransferConfig
             properties:
               dataRefreshWindowDays:
-                description: |-
-                  The number of days to look back to automatically refresh the data.
-                  For example, if dataRefreshWindowDays = 10, then every day BigQuery
-                  reingests data for [today-10, today-1], rather than ingesting data for
-                  just [today-1]. Only valid if the data source supports the feature.
-                  Set the value to 0 to use the default value.
+                description: The number of days to look back to automatically refresh
+                  the data. For example, if `data_refresh_window_days = 10`, then
+                  every day BigQuery reingests data for [today-10, today-1], rather
+                  than ingesting data for just [today-1]. Only valid if the data source
+                  supports the feature. Set the value to 0 to use the default value.
+                format: int32
                 type: integer
-              dataSourceId:
-                description: Immutable. The data source id. Cannot be changed once
-                  the transfer config is created.
+              dataSourceID:
+                description: 'Immutable. Data source ID. This cannot be changed once
+                  data transfer is created. The full list of available data source
+                  IDs can be returned through an API call: https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list'
                 type: string
-              destinationDatasetId:
+                x-kubernetes-validations:
+                - message: DataSourceID field is immutable
+                  rule: self == oldSelf
+              datasetRef:
                 description: The BigQuery target dataset id.
-                type: string
-              disabled:
-                description: When set to true, no runs are scheduled for a given transfer.
-                type: boolean
-              displayName:
-                description: The user specified display name for the transfer config.
-                type: string
-              emailPreferences:
-                description: |-
-                  Email notifications will be sent according to these preferences to the
-                  email address of the user who owns this transfer config.
-                properties:
-                  enableFailureEmail:
-                    description: If true, email notifications will be sent on transfer
-                      run failures.
-                    type: boolean
-                required:
-                - enableFailureEmail
-                type: object
-              location:
-                description: |-
-                  Immutable. The geographic location where the transfer config should reside.
-                  Examples: US, EU, asia-northeast1. The default value is US.
-                type: string
-              notificationPubsubTopic:
-                description: |-
-                  Pub/Sub topic where notifications will be sent after transfer runs
-                  associated with this transfer config finish.
-                type: string
-              params:
-                additionalProperties:
-                  type: string
-                type: object
-              projectRef:
-                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -136,7 +105,216 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: If provided must be in the format `projects/[project_id]/datasets/[dataset_id]`.
+                    type: string
+                  name:
+                    description: The `metadata.name` field of a `BigQueryDataset`
+                      resource.
+                    type: string
+                  namespace:
+                    description: The `metadata.namespace` field of a `BigQueryDataset`
+                      resource.
+                    type: string
+                type: object
+              disabled:
+                description: Is this config disabled. When set to true, no runs will
+                  be scheduled for this transfer config.
+                type: boolean
+              displayName:
+                description: User specified display name for the data transfer.
+                type: string
+              emailPreferences:
+                description: Email notifications will be sent according to these preferences
+                  to the email address of the user who owns this transfer config.
+                properties:
+                  enableFailureEmail:
+                    description: If true, email notifications will be sent on transfer
+                      run failures.
+                    type: boolean
+                type: object
+              encryptionConfiguration:
+                description: The encryption configuration part. Currently, it is only
+                  used for the optional KMS key name. The BigQuery service account
+                  of your project must be granted permissions to use the key. Read
+                  methods will return the key name applied in effect. Write methods
+                  will apply the key if it is present, or otherwise try to apply project
+                  default keys if it is absent.
+                properties:
+                  kmsKeyRef:
+                    description: The KMS key used for encrypting BigQuery data.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                type: object
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              params:
+                additionalProperties:
+                  type: string
+                description: 'Parameters specific to each data source. For more information
+                  see the bq tab in the ''Setting up a data transfer'' section for
+                  each data source. For example the parameters for Cloud Storage transfers
+                  are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq'
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pubSubTopicRef:
+                description: Pub/Sub topic where notifications will be sent after
+                  transfer runs associated with this transfer config finish.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                    type: string
+                  name:
+                    description: The `metadata.name` field of a `PubSubTopic` resource.
+                    type: string
+                  namespace:
+                    description: The `metadata.namespace` field of a `PubSubTopic`
+                      resource.
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. The BigQueryDataTransferConfig name. If not
+                  given, the metadata.name will be used.
+                type: string
+                x-kubernetes-validations:
+                - message: ResourceID field is immutable
+                  rule: self == oldSelf
+              schedule:
+                description: |-
+                  Data transfer schedule.
+                   If the data source does not support a custom schedule, this should be
+                   empty. If it is empty, the default value for the data source will be used.
+                   The specified times are in UTC.
+                   Examples of valid format:
+                   `1st,3rd monday of month 15:30`,
+                   `every wed,fri of jan,jun 13:15`, and
+                   `first sunday of quarter 00:00`.
+                   See more explanation about the format here:
+                   https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+
+                   NOTE: The minimum interval time between recurring transfers depends on the
+                   data source; refer to the documentation for your data source.
+                type: string
+              scheduleOptions:
+                description: Options customizing the data transfer schedule.
+                properties:
+                  disableAutoScheduling:
+                    description: If true, automatic scheduling of data transfer runs
+                      for this configuration will be disabled. The runs can be started
+                      on ad-hoc basis using StartManualTransferRuns API. When automatic
+                      scheduling is disabled, the TransferConfig.schedule field will
+                      be ignored.
+                    type: boolean
+                  endTime:
+                    description: Defines time to stop scheduling transfer runs. A
+                      transfer run cannot be scheduled at or after the end time. The
+                      end time can be changed at any moment. The time when a data
+                      transfer can be triggered manually is not limited by this option.
+                    type: string
+                  startTime:
+                    description: Specifies time to start scheduling transfer runs.
+                      The first run will be scheduled at or after the start time according
+                      to a recurrence pattern defined in the schedule string. The
+                      start time can be changed at any moment. The time when a data
+                      transfer can be triggered manually is not limited by this option.
+                    type: string
+                type: object
+              serviceAccountRef:
+                description: Service account email. If this field is set, the transfer
+                  config will be created with this service account's credentials.
+                  It requires that the requesting user calling this API has permissions
+                  to act as this service account. Note that not all data sources support
+                  service account credentials when creating a transfer config. For
+                  the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -145,119 +323,20 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
-              resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
-                type: string
-              schedule:
-                description: |-
-                  Data transfer schedule. If the data source does not support a custom
-                  schedule, this should be empty. If it is empty, the default value for
-                  the data source will be used. The specified times are in UTC. Examples
-                  of valid format: 1st,3rd monday of month 15:30, every wed,fri of jan,
-                  jun 13:15, and first sunday of quarter 00:00. See more explanation
-                  about the format here:
-                  https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
-                  NOTE: the granularity should be at least 8 hours, or less frequent.
-                type: string
-              scheduleOptions:
-                description: Options customizing the data transfer schedule.
-                properties:
-                  disableAutoScheduling:
-                    description: |-
-                      If true, automatic scheduling of data transfer runs for this
-                      configuration will be disabled. The runs can be started on ad-hoc
-                      basis using transferConfigs.startManualRuns API. When automatic
-                      scheduling is disabled, the TransferConfig.schedule field will
-                      be ignored.
-                    type: boolean
-                  endTime:
-                    description: |-
-                      Defines time to stop scheduling transfer runs. A transfer run cannot be
-                      scheduled at or after the end time. The end time can be changed at any
-                      moment. The time when a data transfer can be triggered manually is not
-                      limited by this option.
-                    type: string
-                  startTime:
-                    description: |-
-                      Specifies time to start scheduling transfer runs. The first run will be
-                      scheduled at or after the start time according to a recurrence pattern
-                      defined in the schedule string. The start time can be changed at any
-                      moment. The time when a data transfer can be triggered manually is not
-                      limited by this option.
-                    type: string
-                type: object
-              sensitiveParams:
-                description: |-
-                  Different parameters are configured primarily using the the 'params' field on this
-                  resource. This block contains the parameters which contain secrets or passwords so that they can be marked
-                  sensitive and hidden from plan output. The name of the field, eg: secret_access_key, will be the key
-                  in the 'params' map in the api request.
-
-                  Credentials may not be specified in both locations and will cause an error. Changing from one location
-                  to a different credential configuration in the config will require an apply to update state.
-                properties:
-                  secretAccessKey:
-                    description: The Secret Access Key of the AWS account transferring
-                      data from.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
-                    properties:
-                      value:
-                        description: Value of the field. Cannot be used if 'valueFrom'
-                          is specified.
-                        type: string
-                      valueFrom:
-                        description: Source for the field's value. Cannot be used
-                          if 'value' is specified.
-                        properties:
-                          secretKeyRef:
-                            description: Reference to a value with the given key in
-                              the given Secret in the resource's namespace.
-                            properties:
-                              key:
-                                description: Key that identifies the value to be extracted.
-                                type: string
-                              name:
-                                description: Name of the Secret to extract a value
-                                  from.
-                                type: string
-                            required:
-                            - name
-                            - key
-                            type: object
-                        type: object
-                    type: object
-                required:
-                - secretAccessKey
-                type: object
-              serviceAccountName:
-                description: |-
-                  Service account email. If this field is set, transfer config will
-                  be created with this service account credentials. It requires that
-                  requesting user calling this API has permissions to act as this service account.
-                type: string
             required:
-            - dataSourceId
-            - displayName
+            - dataSourceID
+            - datasetRef
+            - location
             - params
             - projectRef
             type: object
           status:
+            description: BigQueryDataTransferConfigStatus defines the config connector
+              machine state of BigQueryDataTransferConfig
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -281,13 +360,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: |-
-                  The resource name of the transfer config. Transfer config names have the
-                  form projects/{projectId}/locations/{location}/transferConfigs/{configId}
-                  or projects/{projectId}/transferConfigs/{configId},
-                  where configId is usually a uuid, but this is not required.
-                  The name is ignored when creating a transfer config.
+              externalRef:
+                description: A unique specifier for the BigQueryDataTransferConfig
+                  resource in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -295,7 +370,50 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  datasetRegion:
+                    description: Output only. Region in which BigQuery dataset is
+                      located.
+                    type: string
+                  name:
+                    description: Identifier. The resource name of the transfer config.
+                      Transfer config names have the form either `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`
+                      or `projects/{project_id}/transferConfigs/{config_id}`, where
+                      `config_id` is usually a UUID, even though it is not guaranteed
+                      or required. The name is ignored when creating a transfer config.
+                    type: string
+                  nextRunTime:
+                    description: Output only. Next time when data transfer will run.
+                    type: string
+                  ownerInfo:
+                    description: Output only. Information about the user whose credentials
+                      are used to transfer data. Populated only for `transferConfigs.get`
+                      requests. In case the user information is not available, this
+                      field will not be populated.
+                    properties:
+                      email:
+                        description: E-mail address of the user.
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. State of the most recently updated transfer
+                      run.
+                    type: string
+                  updateTime:
+                    description: Output only. Data transfer modification time. Ignored
+                      by server on input.
+                    type: string
+                  userID:
+                    description: Deprecated. Unique ID of the user on whose behalf
+                      transfer is done.
+                    format: int64
+                    type: integer
+                type: object
             type: object
         required:
         - spec
@@ -308,5 +426,5 @@ status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: null
+  storedVersions: null

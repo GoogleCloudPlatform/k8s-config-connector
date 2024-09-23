@@ -350,6 +350,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 			ProjectNumber: found.ProjectNumber,
 		}
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
+		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")
 		h.Project = project
 	} else if os.Getenv("E2E_GCP_TARGET") == "vcr" && os.Getenv("VCR_MODE") == "replay" {
 		h.gcpAccessToken = "dummytoken"

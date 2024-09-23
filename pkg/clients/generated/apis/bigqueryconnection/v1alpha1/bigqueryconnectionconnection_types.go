@@ -38,10 +38,42 @@ import (
 type ConnectionCloudResource struct {
 }
 
+type ConnectionCloudSql struct {
+	/* Cloud SQL credential. */
+	// +optional
+	Credential *ConnectionCredential `json:"credential,omitempty"`
+
+	/* Database name. */
+	// +optional
+	Database *string `json:"database,omitempty"`
+
+	/* Reference to the Cloud SQL instance ID. */
+	// +optional
+	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+
+	/* Type of the Cloud SQL database. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type ConnectionCredential struct {
+	/* The password for the credential. */
+	// +optional
+	Password *string `json:"password,omitempty"`
+
+	/* The username for the credential. */
+	// +optional
+	Username *string `json:"username,omitempty"`
+}
+
 type BigQueryConnectionConnectionSpec struct {
 	/* Use Cloud Resource properties. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
+
+	/* Cloud SQL properties. */
+	// +optional
+	CloudSql *ConnectionCloudSql `json:"cloudSql,omitempty"`
 
 	/* User provided description. */
 	// +optional
@@ -63,7 +95,7 @@ type BigQueryConnectionConnectionSpec struct {
 }
 
 type ConnectionCloudResourceStatus struct {
-	/* Output only. The account ID of the service created for the purpose of this
+	/* The account ID of the service created for the purpose of this
 	connection.
 
 	The service account does not have any permissions associated with it
@@ -78,9 +110,22 @@ type ConnectionCloudResourceStatus struct {
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
 
+type ConnectionCloudSqlStatus struct {
+	/* The account ID of the service used for the purpose of this connection.
+
+	When the connection is used in the context of an operation in
+	BigQuery, this service account will serve as the identity being used for
+	connecting to the CloudSQL instance specified in this connection. */
+	// +optional
+	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+}
+
 type ConnectionObservedStateStatus struct {
 	// +optional
 	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`
+
+	// +optional
+	CloudSql *ConnectionCloudSqlStatus `json:"cloudSql,omitempty"`
 
 	/* The description for the connection. */
 	// +optional

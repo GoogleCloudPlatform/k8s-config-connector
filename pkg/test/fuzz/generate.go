@@ -55,7 +55,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		// Generate a "reasonable" timestamp; huge values are out of range of golang time types
 		seconds := (1900 * 365 * 24 * 60 * 60) + randStream.Intn(400*365*24*60*60)
 		nanos := randStream.Intn(1000000000)
-		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt32(int32(seconds)))
+		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt64(int64(seconds)))
 		msg.Set(descriptor.Fields().ByName("nanos"), protoreflect.ValueOfInt32(int32(nanos)))
 		return
 	}
@@ -104,6 +104,13 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					k := randomString(randStream)
 					v := randomString(randStream)
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
+				}
+			case "string->message":
+				if field.FullName() == "google.protobuf.Struct.fields" && field.MapValue().Message().FullName() == "google.protobuf.Value" {
+					// currently this is converted to "map[string]string" in "BigQueryDataTransferConfig"
+					// TODO: fill in random strings
+				} else {
+					t.Fatalf("unhandled case for map kind %q: %v", mapType, field)
 				}
 
 			default:

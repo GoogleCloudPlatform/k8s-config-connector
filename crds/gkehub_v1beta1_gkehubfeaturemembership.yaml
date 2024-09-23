@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.122.0
+    cnrm.cloud.google.com/version: 1.123.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -242,9 +242,8 @@ spec:
                         type: string
                     type: object
                   hierarchyController:
-                    description: 'Hierarchy Controller is no longer available.
-                      Use https://github.com/kubernetes-sigs/hierarchical-namespaces
-                      instead.'
+                    description: Hierarchy Controller is no longer available. Use
+                      https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
                     properties:
                       enableHierarchicalResourceQuota:
                         description: Whether hierarchical resource quota is enabled

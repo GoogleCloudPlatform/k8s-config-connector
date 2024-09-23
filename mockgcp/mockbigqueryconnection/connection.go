@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 
@@ -155,11 +156,11 @@ type connectionName struct {
 }
 
 func (n *connectionName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/connections/" + n.ResourceID
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/connections/" + n.ResourceID
 }
 
 // parseConnectionName parses a string into a connectionName.
-// The expected form is projects/<projectID>/locations/<location>/connections/<connectionID>
+// The expected form is projects/<projectNum>/locations/<location>/connections/<connectionID>
 func (s *MockService) parseConnectionName(name string) (*connectionName, error) {
 	tokens := strings.Split(name, "/")
 

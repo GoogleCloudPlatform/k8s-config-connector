@@ -82,6 +82,18 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	// Resolve SQLInstanceRef
+	if obj.Spec.CloudSQLSpec != nil {
+		if obj.Spec.CloudSQLSpec.InstanceRef != nil {
+			instance, err := refs.ResolveSQLInstanceRef(ctx, reader, obj, obj.Spec.CloudSQLSpec.InstanceRef)
+			if err != nil {
+				return nil, err
+			}
+			obj.Spec.CloudSQLSpec.InstanceRef.External = instance.ConnectionName()
+		}
+	}
+
 	connectionRef, err := krm.New(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -166,7 +178,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &created.Name
+
+	tokens := strings.Split(created.Name, "/")
+	parent, err = a.id.Parent()
+	if err != nil {
+		return err
+	}
+	externalRef := parent + "/connections/" + tokens[5]
+	status.ExternalRef = &externalRef
 	return setStatus(u, status)
 }
 

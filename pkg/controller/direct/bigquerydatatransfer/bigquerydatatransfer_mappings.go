@@ -101,7 +101,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 	}
 	out := &krm.EncryptionConfiguration{}
 	if in.GetKmsKeyName() != nil {
-		out.KmsKeyRef = &refv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName().String()}
+		out.KmsKeyRef = &refv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName().GetValue()}
 	}
 	return out
 }
@@ -111,7 +111,7 @@ func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.Encrypti
 	}
 	out := &pb.EncryptionConfiguration{}
 	if in.KmsKeyRef != nil {
-		out.KmsKeyName = &wrapperspb.StringValue{Value: in.KmsKeyRef.External}
+		out.KmsKeyName = wrapperspb.String(in.KmsKeyRef.External)
 	}
 	return out
 }

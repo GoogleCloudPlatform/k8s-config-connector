@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.122.0
+    cnrm.cloud.google.com/version: 1.123.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -131,7 +131,7 @@ spec:
                 properties:
                   external:
                     description: The `projectID` field of a project, when not managed
-                      by KCC.
+                      by Config Connector.
                     type: string
                   kind:
                     description: The kind of the Project resource; optional but must
@@ -170,8 +170,8 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The compute network selflink of form "projects/<project>/global/networks/<network>",
-                            when not managed by Config Connector.
+                          description: A reference to an externally managed Compute
+                            Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
                           type: string
                         name:
                           description: The `name` field of a `ComputeNetwork` resource.

@@ -141,7 +141,7 @@ func StringTimestamp_FromProto(mapCtx *MapContext, ts *timestamppb.Timestamp) *s
 	if ts == nil {
 		return nil
 	}
-	formatted := ts.AsTime().Format(time.RFC3339)
+	formatted := ts.AsTime().Format(time.RFC3339Nano)
 	return &formatted
 }
 
@@ -149,7 +149,7 @@ func StringTimestamp_ToProto(mapCtx *MapContext, s *string) *timestamppb.Timesta
 	if s == nil {
 		return nil
 	}
-	t, err := time.Parse(time.RFC3339, *s)
+	t, err := time.Parse(time.RFC3339Nano, *s)
 	if err != nil {
 		mapCtx.Errorf("invalid timestamp %q", *s)
 	}
