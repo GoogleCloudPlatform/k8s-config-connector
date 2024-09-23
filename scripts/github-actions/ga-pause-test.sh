@@ -27,4 +27,4 @@ cd ${REPO_ROOT}/
 echo "Running mock e2e pause tests..."
 E2E_KUBE_TARGET=envtest \
 	RUN_E2E=1 GOLDEN_REQUEST_CHECKS=1 E2E_GCP_TARGET=mock \
-	go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestPauseInSeries 2>&1
+	go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run TestPauseInSeries 2>&1
