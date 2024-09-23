@@ -49,10 +49,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
     "verb": "create"
   },
@@ -82,6 +84,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
     "verb": "create"
   },
@@ -123,7 +127,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "sample dns authorization",
   "dnsResourceRecord": {
-    "data": "authorize.certificatemanager.goog.",
+    "data": "094b7de6-b3b5-4dae-bac5-210dafb7eaad.7.authorize.certificatemanager.goog.",
     "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
     "type": "CNAME"
   },
@@ -165,10 +169,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
     "verb": "update"
   },
@@ -198,6 +204,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
     "verb": "update"
   },
@@ -239,7 +247,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "updated sample dns authorization",
   "dnsResourceRecord": {
-    "data": "authorize.certificatemanager.goog.",
+    "data": "094b7de6-b3b5-4dae-bac5-210dafb7eaad.7.authorize.certificatemanager.goog.",
     "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
     "type": "CNAME"
   },
@@ -272,10 +280,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
     "verb": "delete"
   },
@@ -305,6 +315,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
     "verb": "delete"
   },
