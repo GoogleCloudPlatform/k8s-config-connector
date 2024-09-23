@@ -83,15 +83,15 @@ func (r *autokeyAdminServer) ShowEffectiveAutokeyConfig(ctx context.Context, req
 }
 
 type autokeyConfigName struct {
-	folder    string 
+	folder string
 }
 
 func (a *autokeyConfigName) String() string {
-	return "folders/" + a.folder + "/autokeyConfig";
+	return "folders/" + a.folder + "/autokeyConfig"
 }
 
 // parseAutokeyConfigName parses a string into an AutoKeyConfig name.
-// The expected form is `folders/{FOLDER_NUMBER}/autokeyConfig`. 
+// The expected form is `folders/{FOLDER_NUMBER}/autokeyConfig`.
 func (r *autokeyAdminServer) parseAutokeyConfigName(name string) (*autokeyConfigName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 3 && tokens[0] == "folders" && tokens[2] == "autokeyConfig" {
@@ -104,4 +104,3 @@ func (r *autokeyAdminServer) parseAutokeyConfigName(name string) (*autokeyConfig
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
