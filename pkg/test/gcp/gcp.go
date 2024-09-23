@@ -55,6 +55,7 @@ var (
 	TestFolderID                            = EnvVar{Key: "TEST_FOLDER_ID"}
 	TestFolder2ID                           = EnvVar{Key: "TEST_FOLDER_2_ID"}
 	TestOrgID                               = EnvVar{Key: "TEST_ORG_ID"}
+	IsolatedTestOrgName                     = EnvVar{Key: "ISOLATED_TEST_ORG_NAME"}
 	TestDependentOrgProjectID               = EnvVar{Key: "TEST_DEPENDENT_ORG_PROJECT_ID"}
 	TestDependentFolderProjectID            = EnvVar{Key: "TEST_DEPENDENT_FOLDER_PROJECT_ID"}
 	TestDependentNoNetworkProjectID         = EnvVar{Key: "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID"} // A dependent project with default network disabled
@@ -74,7 +75,6 @@ var (
 
 const (
 	TestDependentFolder2ProjectID             = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
-	IsolatedTestOrgName                       = "ISOLATED_TEST_ORG_NAME"
 	CloudFunctionsTestProject                 = "CLOUD_FUNCTIONS_TEST_PROJECT"
 	InterconnectTestProject                   = "INTERCONNECT_TEST_PROJECT"
 	HighCPUQuotaTestProject                   = "HIGH_CPU_QUOTA_TEST_PROJECT"
@@ -84,7 +84,6 @@ const (
 
 var (
 	testDependentFolder2ProjectID = os.Getenv(TestDependentFolder2ProjectID)
-	isolatedTestOrgName           = os.Getenv(IsolatedTestOrgName)
 	cloudFunctionsTestProject     = os.Getenv(CloudFunctionsTestProject)
 	interconnectTestProject       = os.Getenv(InterconnectTestProject)
 	highCPUQuotaTestProject       = os.Getenv(HighCPUQuotaTestProject)
@@ -164,10 +163,6 @@ func FindDefaultServiceAccount() (string, error) {
 
 func GetDependentFolder2ProjectID(_ *testing.T) string {
 	return testDependentFolder2ProjectID
-}
-
-func GetIsolatedTestOrgName(_ *testing.T) string {
-	return isolatedTestOrgName
 }
 
 func GetCloudFunctionsTestProject(_ *testing.T) string {
