@@ -18,8 +18,14 @@ MockGCP test is required for the Direct resource development.
 
 Follow [this guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/mockgcp/README.md) to write a mock gcp server.
 
+## 1.2 Add the test suite
 
-## 1.2 Verify the MockGCP server
+Create a directory for your resource [pkg/test/resourcefixture/testdata/basic](pkg/test/resourcefixture/testdata/basic), following the naming convention as other directories. The bottommost directory name is the test suite name. You can create as many directory as your test needs. 
+
+Just to add the `create.yaml`,  `update.yaml` and `dependencies.yaml` (if applicable) to each bottommost directory.
+These three files are all Kubernetes config files, excep that `create.yaml` and `update.yaml` only holds the target CR object, and the `dependencies.yaml` holds all the dependent objects. Your test suite is done. 
+
+## 1.3 Verify the MockGCP server
 
 To write a new MockGCP server or to validate an existing one for the Direct resource, you should record the real GCP log and compare it with your MockGCP log, and make sure they are as likely as each other.
 
