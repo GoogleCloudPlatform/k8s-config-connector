@@ -570,6 +570,7 @@ spec:
     cpuCount: 2
   networkConfig:
     enablePublicIp: true
+    enableOutboundPublicIp: true
     authorizedExternalNetworks:
     - cidrRange: 8.8.8.8/30
     - cidrRange: 8.8.4.4/30
