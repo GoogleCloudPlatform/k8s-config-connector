@@ -8,17 +8,17 @@
 
 # Basic Rules
 
-Config Connector should assign the `status.externalRef` value when it firstly acquires or creates the GCP resource.  
+* Config Connector should assign the `status.externalRef` value when it initially acquires or creates the GCP resource.
 
-Config Connector should use `status.externalRef` as the GCP identifier to retrieve, update and delete (if applicable) the resource.
+* Config Connector should use `status.externalRef` as the GCP identifier to retrieve, update and delete (if applicable) the resource.
 
-Config Connector should validate the `spec` corresponding identifiers (i.e. `spec.projectRef` `spec.location`, `spec.resourceID`) based on `status.externalRef`.
+* Config Connector should validate the `spec` corresponding identifiers (i.e. `spec.projectRef` `spec.location`, `spec.resourceID`) based on `status.externalRef`.
 
-The `status.externalRef` value can be used as [the resource reference `<kind>Ref.External`](./resource-reference.md#api-rule)
+* The `status.externalRef` value can be used as [the resource reference `<kind>Ref.External`](./resource-reference.md#api-rule)
 
-Config Connector shall not write the Direct resources' resource ID back to the `spec.resourceID` field. Only users should configure the `spec` fields.[^1]
+* Config Connector shall not write the Direct resources' resource ID back to the `spec.resourceID` field. Only users should configure the `spec` fields.[^1]
 
-![alt text](./image/externalref-reconcile.png)
+![reconcile diagram](./image/externalref-reconcile.png)
 
 
 # API definition
@@ -26,12 +26,12 @@ Config Connector shall not write the Direct resources' resource ID back to the `
 ```
 type <Kind>Status struct {
    /* A unique specifier for the <Kind> workerpool resource in GCP.*/
-   ExternLRef *string json:"externalRef,omitempty"
+   ExternalRef *string json:"externalRef,omitempty"
    ...
 }
 ```
 
-## `status.externalRef `format
+## `status.externalRef` format
 
 The `status.externalRef`  shall use the [cloud asset inventory](https://cloud.google.com/asset-inventory/docs/resource-name-format) as reference to build its value. The service domain can be omitted.
 
@@ -46,10 +46,9 @@ The `status.externalRef`  shall use the [cloud asset inventory](https://cloud.go
 
 ### Backward compatibiltiy for TF/DCL based reconcilers
 
-The existing TF-based and DCL-based reconciliation treats the `spec.resourceID` as the single Source of True to identify a GCP resource. It writes back the `spec.resourceID` after reconciliation. Here are [the known problems](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2765). Config Connector will keep the bahvior of these resources, until they are migrated to the Direct reconciler.
+The existing TF-based and DCL-based reconciliation treats the `spec.resourceID` as the single Source of Truth to identify a GCP resource. It writes back the `spec.resourceID` after reconciliation. Here are [the known problems](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2765). Config Connector will keep the bahavior of these resources, until they are migrated to the Direct reconciler.
 
 <!-- Footnotes themselves at the bottom. -->
-## Notes
 
 [^1]:
     Existing Terraform-based or DCL-based resources still have Config Connector written back to the `spec.resourceID` field for backward compatibility reasons.   
