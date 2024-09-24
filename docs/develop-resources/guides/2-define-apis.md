@@ -96,7 +96,7 @@ According to the above principles, you shall decide how to process the following
 
 * Replace any field that is a resource reference to `<resource>Ref `and add the resource to `./apis/refs` if not exist.` `
 
-    * See [direct resource reference validation rules](https://github.com/yuwenma/k8s-config-connector/blob/resource-ref/docs/develop-resources/resource-reference.md)  (TODO: update link). This validation shall consider the actual resource field’ usage and can be done in follow-up PRs 
+    * See [direct resource reference validation rules](../api-conventions/resource-reference.md)  (TODO: update link). This validation shall consider the actual resource field’ usage and can be done in follow-up PRs 
 
 * Add **non** output-only fields to `spec`, excluding imperative fields.
 

@@ -43,7 +43,7 @@ Add a new test suite with `dependencies.yaml` to cover the referenced fields.
 
 ## Add MockGCP coverage
  
-Follow [Step 1](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/1-add-mockgcp-tests.md)
+Follow [Step 1](../guides/1-add-mockgcp-tests.md)
 
 ### PR Reviews
 
