@@ -145,9 +145,8 @@ generate-protos-from-openapi:
 	mkdir -p apis/mockgcp/cloud/ids/v1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.ids.v1 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
 
-
-	wget -O temp/ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/cloudkms/v1/cloudkms-api.json
-	mkdir -p apis/mockgcp/cloud/cloudkms/v1/
+	wget -O temp/kms-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/cloudkms/v1/cloudkms-api.json
+	mkdir -p apis/mockgcp/cloud/kms/v1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.kms.v1 ../../temp/kms-api-v1.json > ../../apis/mockgcp/cloud/kms/v1/service.proto
 
 	rm -r temp
