@@ -84,6 +84,32 @@ func Slice_FromProto[T, U any](mapCtx *MapContext, in []*T, mapper func(mapCtx *
 	return outSlice
 }
 
+func SliceOfPointers_ToProto[T, U any](mapCtx *MapContext, in []*T, mapper func(mapCtx *MapContext, in *T) *U) []*U {
+	if in == nil {
+		return nil
+	}
+
+	outSlice := make([]*U, 0, len(in))
+	for _, inItem := range in {
+		outItem := mapper(mapCtx, inItem)
+		outSlice = append(outSlice, outItem)
+	}
+	return outSlice
+}
+
+func SliceOfPointers_FromProto[T, U any](mapCtx *MapContext, in []*T, mapper func(mapCtx *MapContext, in *T) *U) []*U {
+	if in == nil {
+		return nil
+	}
+
+	outSlice := make([]*U, 0, len(in))
+	for _, inItem := range in {
+		outItem := mapper(mapCtx, inItem)
+		outSlice = append(outSlice, outItem)
+	}
+	return outSlice
+}
+
 func Enum_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) U {
 	var defaultU U
 	descriptor := defaultU.Descriptor()
