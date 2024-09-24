@@ -17,6 +17,7 @@ package generatemapper
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
@@ -36,8 +37,16 @@ type GenerateMapperOptions struct {
 	OutputMapperDirectory string
 }
 
-func (o *GenerateMapperOptions) InitDefaults() {
-
+func (o *GenerateMapperOptions) InitDefaults() error {
+	root, err := options.RepoRoot()
+	if err != nil {
+		return nil
+	}
+	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
+	o.APIGoPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
+	o.APIDirectory = root + "/apis/"
+	o.OutputMapperDirectory = root + "/pkg/controller/direct/"
+	return nil
 }
 
 func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
@@ -51,7 +60,10 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		GenerateOptions: baseOptions,
 	}
 
-	opt.InitDefaults()
+	if err := opt.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
+	}
 
 	cmd := &cobra.Command{
 		Use:   "generate-mapper",
