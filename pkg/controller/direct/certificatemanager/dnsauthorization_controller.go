@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	certificatemanagerpb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -44,7 +45,18 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.CertificateManagerDNSAuthorizationGVK, NewModel)
+	rg := &DNSAuthorizationReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.CertificateManagerDNSAuthorizationGVK, NewModel, rg)
+}
+
+type DNSAuthorizationReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
+
+var _ kccpredicate.ReconcileGate = &DNSAuthorizationReconcileGate{}
+
+func (r *DNSAuthorizationReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	return r.optIn.ShouldReconcile(o)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -98,9 +110,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	// TODO: Add location when field is added
 	// location := obj.Spec.Location
 	location := "global"
-
-	// Set label managed-by-cnrm: true
-	obj.ObjectMeta.Labels["managed-by-cnrm"] = "true"
 
 	var id *CertificateManagerDNSAuthorizationIdentity
 	// TODO: Add ExternalRef when field is added
