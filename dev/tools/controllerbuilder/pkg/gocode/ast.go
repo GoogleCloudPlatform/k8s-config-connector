@@ -144,6 +144,8 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 				}
 			case *ast.Ident:
 				// type alias
+			case *ast.InterfaceType:
+				// always skip, nothing to generate for interface
 			default:
 				errs = append(errs, fmt.Errorf("unhandled type spec in %q: %T, %+v", n.Name, n.Type, n.Type))
 			}
@@ -155,9 +157,8 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 			// A CommentGroup contains a list of comments
 			// Do not truncate comments when we encounter the group
 		default:
-			if n != nil {
-				comments = nil
-			}
+			// n != nil
+			comments = nil
 		}
 
 		return true
