@@ -157,8 +157,8 @@ func (in *WorkstationClusterObservedState) DeepCopyInto(out *WorkstationClusterO
 		*out = new(string)
 		**out = **in
 	}
-	if in.ControlPlaneIp != nil {
-		in, out := &in.ControlPlaneIp, &out.ControlPlaneIp
+	if in.ControlPlaneIP != nil {
+		in, out := &in.ControlPlaneIP, &out.ControlPlaneIP
 		*out = new(string)
 		**out = **in
 	}
@@ -167,8 +167,8 @@ func (in *WorkstationClusterObservedState) DeepCopyInto(out *WorkstationClusterO
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceAttachmentUri != nil {
-		in, out := &in.ServiceAttachmentUri, &out.ServiceAttachmentUri
+	if in.ServiceAttachmentURI != nil {
+		in, out := &in.ServiceAttachmentURI, &out.ServiceAttachmentURI
 		*out = new(string)
 		**out = **in
 	}
@@ -292,7 +292,7 @@ func (in *WorkstationCluster_PrivateClusterConfig) DeepCopyInto(out *Workstation
 	}
 	if in.AllowedProjects != nil {
 		in, out := &in.AllowedProjects, &out.AllowedProjects
-		*out = make([]string, len(*in))
+		*out = make([]v1beta1.ProjectRef, len(*in))
 		copy(*out, *in)
 	}
 }

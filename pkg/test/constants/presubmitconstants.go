@@ -86,6 +86,7 @@ var (
 		"sql":                  {"sqluser"},
 		"storage":              {"storagenotification"},
 		"storagetransfer":      {"storagetransferjob"},
+		"workstations":         {"workstationcluster-minimal"},
 		"vpcaccess":            {"subnetconnector"},
 		"vertexai":             {"vertexaidatasetbasic"},
 	}

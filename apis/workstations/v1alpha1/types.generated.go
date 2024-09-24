@@ -96,7 +96,7 @@ type WorkstationCluster_PrivateClusterConfig struct {
 	ClusterHostname *string `json:"clusterHostname,omitempty"`
 
 	// Output only. Service attachment URI for the workstation cluster. The
-	//  service attachemnt is created when private endpoint is enabled. To access
+	//  service attachment is created when private endpoint is enabled. To access
 	//  workstations in the workstation cluster, configure access to the managed
 	//  service using [Private Service
 	//  Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).

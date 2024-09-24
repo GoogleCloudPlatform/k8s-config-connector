@@ -108,8 +108,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The compute network selflink of form "projects/<project>/global/networks/<network>",
-                      when not managed by Config Connector.
+                    description: A reference to an externally managed Compute Network
+                      resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
                     type: string
                   name:
                     description: The `name` field of a `ComputeNetwork` resource.
@@ -127,7 +127,40 @@ spec:
                       the workstation cluster's project and the VPC host project (if
                       different) are allowed.
                     items:
-                      type: string
+                      description: The Project that this resource belongs to.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                        - kind
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                          - required:
+                            - kind
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The `projectID` field of a project, when not
+                            managed by Config Connector.
+                          type: string
+                        kind:
+                          description: The kind of the Project resource; optional
+                            but must be `Project` if provided.
+                          type: string
+                        name:
+                          description: The `name` field of a `Project` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` field of a `Project` resource.
+                          type: string
+                      type: object
                     type: array
                   enablePrivateEndpoint:
                     description: Immutable. Whether Workstations endpoint is private.
@@ -262,7 +295,7 @@ spec:
                       new DNS zone mapping this domain name to an internal IP address
                       and a forwarding rule mapping that address to the service attachment.
                     type: string
-                  controlPlaneIp:
+                  controlPlaneIP:
                     description: Output only. The private IP address of the control
                       plane for this workstation cluster. Workstation VMs need access
                       to this IP address to work with the service, so make sure that
@@ -310,7 +343,7 @@ spec:
                     type: boolean
                   serviceAttachmentUri:
                     description: Output only. Service attachment URI for the workstation
-                      cluster. The service attachemnt is created when private endpoint
+                      cluster. The service attachment is created when private endpoint
                       is enabled. To access workstations in the workstation cluster,
                       configure access to the managed service using [Private Service
                       Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).

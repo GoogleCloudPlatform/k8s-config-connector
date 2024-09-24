@@ -54,8 +54,8 @@ func WorkstationClusterLabels_ToProto(mapCtx *direct.MapContext, in []krm.Workst
 		return nil
 	}
 	out := make(map[string]string)
-	for _, a := range in {
-		out[a.Key] = a.Value
+	for _, l := range in {
+		out[l.Key] = l.Value
 	}
 	return out
 }
@@ -80,7 +80,18 @@ func WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.WorkstationCluster_PrivateClusterConfig{
 		EnablePrivateEndpoint: direct.ValueOf(in.EnablePrivateEndpoint),
-		AllowedProjects:       in.AllowedProjects,
+		AllowedProjects:       WorkstationClusterAllowedProjects_ToProto(mapCtx, in.AllowedProjects),
+	}
+	return out
+}
+
+func WorkstationClusterAllowedProjects_ToProto(mapCtx *direct.MapContext, in []refs.ProjectRef) []string {
+	if in == nil {
+		return nil
+	}
+	var out []string
+	for _, p := range in {
+		out = append(out, p.External)
 	}
 	return out
 }
@@ -152,7 +163,20 @@ func WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx *direct.MapContext
 	}
 	out := &krm.WorkstationCluster_PrivateClusterConfig{
 		EnablePrivateEndpoint: direct.LazyPtr(in.GetEnablePrivateEndpoint()),
-		AllowedProjects:       in.AllowedProjects,
+		AllowedProjects:       WorkstationClusterAllowedProjects_FromProto(mapCtx, in.AllowedProjects),
+	}
+	return out
+}
+
+func WorkstationClusterAllowedProjects_FromProto(mapCtx *direct.MapContext, in []string) []refs.ProjectRef {
+	if in == nil {
+		return nil
+	}
+	var out []refs.ProjectRef
+	for _, p := range in {
+		out = append(out, refs.ProjectRef{
+			External: p,
+		})
 	}
 	return out
 }
@@ -168,9 +192,9 @@ func WorkstationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 		UpdateTime:           direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime()),
 		DeleteTime:           direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime()),
 		Etag:                 direct.LazyPtr(in.GetEtag()),
-		ControlPlaneIp:       direct.LazyPtr(in.GetControlPlaneIp()),
+		ControlPlaneIP:       direct.LazyPtr(in.GetControlPlaneIp()),
 		ClusterHostname:      WorkstationClusterClusterHostname_FromProto(mapCtx, in.PrivateClusterConfig),
-		ServiceAttachmentUri: WorkstationClusterServiceAttachmentUri_FromProto(mapCtx, in.PrivateClusterConfig),
+		ServiceAttachmentURI: WorkstationClusterServiceAttachmentUri_FromProto(mapCtx, in.PrivateClusterConfig),
 		Degraded:             direct.LazyPtr(in.GetDegraded()),
 		GCPConditions:        WorkstationClusterGCPConditions_FromProto(mapCtx, in.GetConditions()),
 	}

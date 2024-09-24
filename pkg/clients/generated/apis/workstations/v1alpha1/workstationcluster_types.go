@@ -35,6 +35,24 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type WorkstationclusterAllowedProjects struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* The `name` field of a `Project` resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The `namespace` field of a `Project` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type WorkstationclusterAnnotations struct {
 	/* Key for the annotation. */
 	// +optional
@@ -58,7 +76,7 @@ type WorkstationclusterLabels struct {
 type WorkstationclusterPrivateClusterConfig struct {
 	/* Optional. Additional projects that are allowed to attach to the workstation cluster's service attachment. By default, the workstation cluster's project and the VPC host project (if different) are allowed. */
 	// +optional
-	AllowedProjects []string `json:"allowedProjects,omitempty"`
+	AllowedProjects []WorkstationclusterAllowedProjects `json:"allowedProjects,omitempty"`
 
 	/* Immutable. Whether Workstations endpoint is private. */
 	// +optional
@@ -119,7 +137,7 @@ type WorkstationclusterObservedStateStatus struct {
 
 	/* Output only. The private IP address of the control plane for this workstation cluster. Workstation VMs need access to this IP address to work with the service, so make sure that your firewall rules allow egress from the workstation VMs to this address. */
 	// +optional
-	ControlPlaneIp *string `json:"controlPlaneIp,omitempty"`
+	ControlPlaneIP *string `json:"controlPlaneIP,omitempty"`
 
 	/* Output only. Time when this workstation cluster was created. */
 	// +optional
@@ -145,7 +163,7 @@ type WorkstationclusterObservedStateStatus struct {
 	// +optional
 	Reconciling *bool `json:"reconciling,omitempty"`
 
-	/* Output only. Service attachment URI for the workstation cluster. The service attachemnt is created when private endpoint is enabled. To access workstations in the workstation cluster, configure access to the managed service using [Private Service Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services). */
+	/* Output only. Service attachment URI for the workstation cluster. The service attachment is created when private endpoint is enabled. To access workstations in the workstation cluster, configure access to the managed service using [Private Service Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services). */
 	// +optional
 	ServiceAttachmentUri *string `json:"serviceAttachmentUri,omitempty"`
 

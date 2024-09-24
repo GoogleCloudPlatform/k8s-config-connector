@@ -91,7 +91,7 @@ type WorkstationCluster_PrivateClusterConfig struct {
 	// Optional. Additional projects that are allowed to attach to the
 	//  workstation cluster's service attachment. By default, the workstation
 	//  cluster's project and the VPC host project (if different) are allowed.
-	AllowedProjects []string `json:"allowedProjects,omitempty"`
+	AllowedProjects []refs.ProjectRef `json:"allowedProjects,omitempty"`
 }
 
 // WorkstationClusterStatus defines the config connector machine state of WorkstationCluster
@@ -139,7 +139,7 @@ type WorkstationClusterObservedState struct {
 	//  workstation cluster. Workstation VMs need access to this IP address to work
 	//  with the service, so make sure that your firewall rules allow egress from
 	//  the workstation VMs to this address.
-	ControlPlaneIp *string `json:"controlPlaneIp,omitempty"`
+	ControlPlaneIP *string `json:"controlPlaneIP,omitempty"`
 
 	// Output only. Hostname for the workstation cluster. This field will be
 	//  populated only when private endpoint is enabled. To access workstations
@@ -149,11 +149,11 @@ type WorkstationClusterObservedState struct {
 	ClusterHostname *string `json:"clusterHostname,omitempty"`
 
 	// Output only. Service attachment URI for the workstation cluster. The
-	//  service attachemnt is created when private endpoint is enabled. To access
+	//  service attachment is created when private endpoint is enabled. To access
 	//  workstations in the workstation cluster, configure access to the managed
 	//  service using [Private Service
 	//  Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).
-	ServiceAttachmentUri *string `json:"serviceAttachmentUri,omitempty"`
+	ServiceAttachmentURI *string `json:"serviceAttachmentUri,omitempty"`
 
 	// Output only. Whether this workstation cluster is in degraded mode, in which
 	//  case it may require user action to restore full functionality. Details can

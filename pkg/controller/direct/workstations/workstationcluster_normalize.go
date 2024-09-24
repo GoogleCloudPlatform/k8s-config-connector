@@ -38,5 +38,18 @@ func NormalizeWorkstationCluster(ctx context.Context, kube client.Reader, obj *k
 		}
 		obj.Spec.SubnetworkRef.External = subnet.External
 	}
+	if obj.Spec.PrivateClusterConfig != nil && obj.Spec.PrivateClusterConfig.AllowedProjects != nil {
+		var resolvedProjects []refs.ProjectRef
+		for _, projectRef := range obj.Spec.PrivateClusterConfig.AllowedProjects {
+			resolvedProject, err := refs.ResolveProject(ctx, kube, obj, &projectRef)
+			if err != nil {
+				return err
+			}
+			resolvedProjects = append(resolvedProjects, refs.ProjectRef{
+				External: resolvedProject.ProjectID,
+			})
+		}
+		obj.Spec.PrivateClusterConfig.AllowedProjects = resolvedProjects
+	}
 	return nil
 }
