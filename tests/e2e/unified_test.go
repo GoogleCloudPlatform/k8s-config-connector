@@ -530,6 +530,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
+					addReplacement("pscConnectionId", "111111111111")
 
 					// Extract resource targetID numbers from compute operations
 					for _, event := range events {
@@ -546,6 +547,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									r.PathIDs[targetId] = "${addressesId}"
 								case "backendServices":
 									r.PathIDs[targetId] = "${backendServicesId}"
+								case "firewallPolicies":
+									r.PathIDs[targetId] = "${firewallPolicyId}"
 								case "forwardingRules":
 									r.PathIDs[targetId] = "${forwardingRulesId}"
 								case "healthChecks":
@@ -835,9 +838,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					if testgcp.TestFolderID.Get() != "" {
 						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
 					}
-					if testgcp.TestOrgID.Get() != "" {
-						normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
-						normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
+					if organizationID := testgcp.TestOrgID.Get(); organizationID != "" {
+						normalizers = append(normalizers, ReplaceString("organizations/"+organizationID, "organizations/${organizationID}"))
+						normalizers = append(normalizers, ReplaceString(organizationID+"/", "${organizationID}/"))
+						normalizers = append(normalizers, ReplaceString("organizations%2F"+organizationID, "organizations%2F${organizationID}"))
 					}
 					for k, v := range r.PathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
