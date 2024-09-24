@@ -42,6 +42,7 @@ SUPPORTED_SERVICES=(
   artifactregistry.googleapis.com
   bigquery.googleapis.com
   bigqueryconnection.googleapis.com
+  bigquerydatatransfer.googleapis.com
   bigtableadmin.googleapis.com
   billingbudgets.googleapis.com
   binaryauthorization.googleapis.com
