@@ -304,6 +304,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "notification_pubsub_topic")
 	}
 	if desired.Params != nil && !reflect.DeepEqual(desired.Params, actual.Params) {
+		// TODO: sensitive fields maybe masked by the service, leading to constant diff.
 		resource.Params = desired.Params
 		updateMask.Paths = append(updateMask.Paths, "params")
 	}
