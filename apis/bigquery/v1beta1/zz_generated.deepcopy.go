@@ -100,7 +100,7 @@ func (in *AvroOptions) DeepCopyInto(out *AvroOptions) {
 	*out = *in
 	if in.UseAvroLogicalTypes != nil {
 		in, out := &in.UseAvroLogicalTypes, &out.UseAvroLogicalTypes
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -413,12 +413,12 @@ func (in *BigtableColumn) DeepCopyInto(out *BigtableColumn) {
 	*out = *in
 	if in.QualifierEncoded != nil {
 		in, out := &in.QualifierEncoded, &out.QualifierEncoded
-		*out = new(google_protobuf_BytesValue)
+		*out = new(byte)
 		**out = **in
 	}
 	if in.QualifierString != nil {
 		in, out := &in.QualifierString, &out.QualifierString
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.FieldName != nil {
@@ -438,7 +438,7 @@ func (in *BigtableColumn) DeepCopyInto(out *BigtableColumn) {
 	}
 	if in.OnlyReadLatest != nil {
 		in, out := &in.OnlyReadLatest, &out.OnlyReadLatest
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -480,7 +480,7 @@ func (in *BigtableColumnFamily) DeepCopyInto(out *BigtableColumnFamily) {
 	}
 	if in.OnlyReadLatest != nil {
 		in, out := &in.OnlyReadLatest, &out.OnlyReadLatest
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -507,17 +507,17 @@ func (in *BigtableOptions) DeepCopyInto(out *BigtableOptions) {
 	}
 	if in.IgnoreUnspecifiedColumnFamilies != nil {
 		in, out := &in.IgnoreUnspecifiedColumnFamilies, &out.IgnoreUnspecifiedColumnFamilies
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ReadRowkeyAsString != nil {
 		in, out := &in.ReadRowkeyAsString, &out.ReadRowkeyAsString
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.OutputColumnFamiliesAsJson != nil {
 		in, out := &in.OutputColumnFamiliesAsJson, &out.OutputColumnFamiliesAsJson
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -667,17 +667,17 @@ func (in *CsvOptions) DeepCopyInto(out *CsvOptions) {
 	}
 	if in.Quote != nil {
 		in, out := &in.Quote, &out.Quote
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.AllowQuotedNewlines != nil {
 		in, out := &in.AllowQuotedNewlines, &out.AllowQuotedNewlines
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.AllowJaggedRows != nil {
 		in, out := &in.AllowJaggedRows, &out.AllowJaggedRows
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Encoding != nil {
@@ -687,12 +687,12 @@ func (in *CsvOptions) DeepCopyInto(out *CsvOptions) {
 	}
 	if in.PreserveAsciiControlCharacters != nil {
 		in, out := &in.PreserveAsciiControlCharacters, &out.PreserveAsciiControlCharacters
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.NullMarker != nil {
 		in, out := &in.NullMarker, &out.NullMarker
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -797,12 +797,12 @@ func (in *Dataset) DeepCopyInto(out *Dataset) {
 	}
 	if in.FriendlyName != nil {
 		in, out := &in.FriendlyName, &out.FriendlyName
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.DefaultTableExpirationMs != nil {
@@ -851,12 +851,12 @@ func (in *Dataset) DeepCopyInto(out *Dataset) {
 	}
 	if in.SatisfiesPzs != nil {
 		in, out := &in.SatisfiesPzs, &out.SatisfiesPzs
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.SatisfiesPzi != nil {
 		in, out := &in.SatisfiesPzi, &out.SatisfiesPzi
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -886,12 +886,12 @@ func (in *Dataset) DeepCopyInto(out *Dataset) {
 	}
 	if in.IsCaseInsensitive != nil {
 		in, out := &in.IsCaseInsensitive, &out.IsCaseInsensitive
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DefaultCollation != nil {
 		in, out := &in.DefaultCollation, &out.DefaultCollation
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.DefaultRoundingMode != nil {
@@ -1037,12 +1037,12 @@ func (in *DestinationTableProperties) DeepCopyInto(out *DestinationTableProperti
 	*out = *in
 	if in.FriendlyName != nil {
 		in, out := &in.FriendlyName, &out.FriendlyName
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -1234,7 +1234,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.WaitRatioAvg != nil {
 		in, out := &in.WaitRatioAvg, &out.WaitRatioAvg
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WaitMsAvg != nil {
@@ -1244,7 +1244,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.WaitRatioMax != nil {
 		in, out := &in.WaitRatioMax, &out.WaitRatioMax
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WaitMsMax != nil {
@@ -1254,7 +1254,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.ReadRatioAvg != nil {
 		in, out := &in.ReadRatioAvg, &out.ReadRatioAvg
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ReadMsAvg != nil {
@@ -1264,7 +1264,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.ReadRatioMax != nil {
 		in, out := &in.ReadRatioMax, &out.ReadRatioMax
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ReadMsMax != nil {
@@ -1274,7 +1274,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.ComputeRatioAvg != nil {
 		in, out := &in.ComputeRatioAvg, &out.ComputeRatioAvg
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ComputeMsAvg != nil {
@@ -1284,7 +1284,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.ComputeRatioMax != nil {
 		in, out := &in.ComputeRatioMax, &out.ComputeRatioMax
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ComputeMsMax != nil {
@@ -1294,7 +1294,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.WriteRatioAvg != nil {
 		in, out := &in.WriteRatioAvg, &out.WriteRatioAvg
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WriteMsAvg != nil {
@@ -1304,7 +1304,7 @@ func (in *ExplainQueryStage) DeepCopyInto(out *ExplainQueryStage) {
 	}
 	if in.WriteRatioMax != nil {
 		in, out := &in.WriteRatioMax, &out.WriteRatioMax
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WriteMsMax != nil {
@@ -1510,17 +1510,17 @@ func (in *ExternalDataConfiguration) DeepCopyInto(out *ExternalDataConfiguration
 	}
 	if in.MaxBadRecords != nil {
 		in, out := &in.MaxBadRecords, &out.MaxBadRecords
-		*out = new(google_protobuf_Int32Value)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Autodetect != nil {
 		in, out := &in.Autodetect, &out.Autodetect
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.IgnoreUnknownValues != nil {
 		in, out := &in.IgnoreUnknownValues, &out.IgnoreUnknownValues
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Compression != nil {
@@ -1585,7 +1585,7 @@ func (in *ExternalDataConfiguration) DeepCopyInto(out *ExternalDataConfiguration
 	}
 	if in.ReferenceFileSchemaUri != nil {
 		in, out := &in.ReferenceFileSchemaUri, &out.ReferenceFileSchemaUri
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.MetadataCacheMode != nil {
@@ -1847,7 +1847,7 @@ func (in *HivePartitioningOptions) DeepCopyInto(out *HivePartitioningOptions) {
 	}
 	if in.RequirePartitionFilter != nil {
 		in, out := &in.RequirePartitionFilter, &out.RequirePartitionFilter
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Fields != nil {
@@ -1907,7 +1907,7 @@ func (in *InputDataChange) DeepCopyInto(out *InputDataChange) {
 	*out = *in
 	if in.RecordsReadDiffPercentage != nil {
 		in, out := &in.RecordsReadDiffPercentage, &out.RecordsReadDiffPercentage
-		*out = new(float32)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -2022,7 +2022,7 @@ func (in *JobConfiguration) DeepCopyInto(out *JobConfiguration) {
 	}
 	if in.DryRun != nil {
 		in, out := &in.DryRun, &out.DryRun
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.JobTimeoutMs != nil {
@@ -2069,7 +2069,7 @@ func (in *JobConfigurationExtract) DeepCopyInto(out *JobConfigurationExtract) {
 	}
 	if in.PrintHeader != nil {
 		in, out := &in.PrintHeader, &out.PrintHeader
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.FieldDelimiter != nil {
@@ -2089,7 +2089,7 @@ func (in *JobConfigurationExtract) DeepCopyInto(out *JobConfigurationExtract) {
 	}
 	if in.UseAvroLogicalTypes != nil {
 		in, out := &in.UseAvroLogicalTypes, &out.UseAvroLogicalTypes
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ModelExtractOptions != nil {
@@ -2169,7 +2169,7 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.NullMarker != nil {
 		in, out := &in.NullMarker, &out.NullMarker
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.FieldDelimiter != nil {
@@ -2179,7 +2179,7 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.SkipLeadingRows != nil {
 		in, out := &in.SkipLeadingRows, &out.SkipLeadingRows
-		*out = new(google_protobuf_Int32Value)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Encoding != nil {
@@ -2189,17 +2189,17 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.Quote != nil {
 		in, out := &in.Quote, &out.Quote
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.MaxBadRecords != nil {
 		in, out := &in.MaxBadRecords, &out.MaxBadRecords
-		*out = new(google_protobuf_Int32Value)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.AllowQuotedNewlines != nil {
 		in, out := &in.AllowQuotedNewlines, &out.AllowQuotedNewlines
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.SourceFormat != nil {
@@ -2209,12 +2209,12 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.AllowJaggedRows != nil {
 		in, out := &in.AllowJaggedRows, &out.AllowJaggedRows
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.IgnoreUnknownValues != nil {
 		in, out := &in.IgnoreUnknownValues, &out.IgnoreUnknownValues
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ProjectionFields != nil {
@@ -2224,7 +2224,7 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.Autodetect != nil {
 		in, out := &in.Autodetect, &out.Autodetect
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.SchemaUpdateOptions != nil {
@@ -2254,12 +2254,12 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.UseAvroLogicalTypes != nil {
 		in, out := &in.UseAvroLogicalTypes, &out.UseAvroLogicalTypes
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ReferenceFileSchemaUri != nil {
 		in, out := &in.ReferenceFileSchemaUri, &out.ReferenceFileSchemaUri
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.HivePartitioningOptions != nil {
@@ -2284,7 +2284,7 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.PreserveAsciiControlCharacters != nil {
 		in, out := &in.PreserveAsciiControlCharacters, &out.PreserveAsciiControlCharacters
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ConnectionProperties != nil {
@@ -2296,7 +2296,7 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.CreateSession != nil {
 		in, out := &in.CreateSession, &out.CreateSession
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ColumnNameCharacterMap != nil {
@@ -2306,7 +2306,7 @@ func (in *JobConfigurationLoad) DeepCopyInto(out *JobConfigurationLoad) {
 	}
 	if in.CopyFilesOnly != nil {
 		in, out := &in.CopyFilesOnly, &out.CopyFilesOnly
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -2363,17 +2363,17 @@ func (in *JobConfigurationQuery) DeepCopyInto(out *JobConfigurationQuery) {
 	}
 	if in.AllowLargeResults != nil {
 		in, out := &in.AllowLargeResults, &out.AllowLargeResults
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.UseQueryCache != nil {
 		in, out := &in.UseQueryCache, &out.UseQueryCache
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.FlattenResults != nil {
 		in, out := &in.FlattenResults, &out.FlattenResults
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.MaximumBytesBilled != nil {
@@ -2383,7 +2383,7 @@ func (in *JobConfigurationQuery) DeepCopyInto(out *JobConfigurationQuery) {
 	}
 	if in.UseLegacySql != nil {
 		in, out := &in.UseLegacySql, &out.UseLegacySql
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ParameterMode != nil {
@@ -2442,12 +2442,12 @@ func (in *JobConfigurationQuery) DeepCopyInto(out *JobConfigurationQuery) {
 	}
 	if in.CreateSession != nil {
 		in, out := &in.CreateSession, &out.CreateSession
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Continuous != nil {
 		in, out := &in.Continuous, &out.Continuous
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -2596,7 +2596,7 @@ func (in *JobReference) DeepCopyInto(out *JobReference) {
 	}
 	if in.Location != nil {
 		in, out := &in.Location, &out.Location
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.LocationAlternative != nil {
@@ -2641,7 +2641,7 @@ func (in *JobStatistics) DeepCopyInto(out *JobStatistics) {
 	}
 	if in.CompletionRatio != nil {
 		in, out := &in.CompletionRatio, &out.CompletionRatio
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.QuotaDeferments != nil {
@@ -2780,7 +2780,7 @@ func (in *JobStatistics2) DeepCopyInto(out *JobStatistics2) {
 	}
 	if in.BillingTier != nil {
 		in, out := &in.BillingTier, &out.BillingTier
-		*out = new(google_protobuf_Int32Value)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.TotalSlotMs != nil {
@@ -2790,7 +2790,7 @@ func (in *JobStatistics2) DeepCopyInto(out *JobStatistics2) {
 	}
 	if in.CacheHit != nil {
 		in, out := &in.CacheHit, &out.CacheHit
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ReferencedTables != nil {
@@ -3201,7 +3201,7 @@ func (in *ListFormatDataset) DeepCopyInto(out *ListFormatDataset) {
 	}
 	if in.FriendlyName != nil {
 		in, out := &in.FriendlyName, &out.FriendlyName
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -3306,7 +3306,7 @@ func (in *ListFormatTable) DeepCopyInto(out *ListFormatTable) {
 	}
 	if in.FriendlyName != nil {
 		in, out := &in.FriendlyName, &out.FriendlyName
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -3353,7 +3353,7 @@ func (in *ListFormatTable) DeepCopyInto(out *ListFormatTable) {
 	}
 	if in.RequirePartitionFilter != nil {
 		in, out := &in.RequirePartitionFilter, &out.RequirePartitionFilter
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -3373,7 +3373,7 @@ func (in *ListFormatView) DeepCopyInto(out *ListFormatView) {
 	*out = *in
 	if in.UseLegacySql != nil {
 		in, out := &in.UseLegacySql, &out.UseLegacySql
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.PrivacyPolicy != nil {
@@ -3483,17 +3483,17 @@ func (in *MaterializedViewDefinition) DeepCopyInto(out *MaterializedViewDefiniti
 	}
 	if in.EnableRefresh != nil {
 		in, out := &in.EnableRefresh, &out.EnableRefresh
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.RefreshIntervalMs != nil {
 		in, out := &in.RefreshIntervalMs, &out.RefreshIntervalMs
-		*out = new(google_protobuf_UInt64Value)
+		*out = new(uint64)
 		**out = **in
 	}
 	if in.AllowNonIncrementalDefinition != nil {
 		in, out := &in.AllowNonIncrementalDefinition, &out.AllowNonIncrementalDefinition
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -3783,37 +3783,37 @@ func (in *Model_AggregateClassificationMetrics) DeepCopyInto(out *Model_Aggregat
 	*out = *in
 	if in.Precision != nil {
 		in, out := &in.Precision, &out.Precision
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Recall != nil {
 		in, out := &in.Recall, &out.Recall
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Accuracy != nil {
 		in, out := &in.Accuracy, &out.Accuracy
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Threshold != nil {
 		in, out := &in.Threshold, &out.Threshold
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.F1Score != nil {
 		in, out := &in.F1Score, &out.F1Score
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogLoss != nil {
 		in, out := &in.LogLoss, &out.LogLoss
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RocAuc != nil {
 		in, out := &in.RocAuc, &out.RocAuc
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -3833,17 +3833,17 @@ func (in *Model_ArimaFittingMetrics) DeepCopyInto(out *Model_ArimaFittingMetrics
 	*out = *in
 	if in.LogLikelihood != nil {
 		in, out := &in.LogLikelihood, &out.LogLikelihood
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Aic != nil {
 		in, out := &in.Aic, &out.Aic
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Variance != nil {
 		in, out := &in.Variance, &out.Variance
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -3895,7 +3895,7 @@ func (in *Model_ArimaForecastingMetrics_ArimaSingleModelForecastingMetrics) Deep
 	}
 	if in.HasDrift != nil {
 		in, out := &in.HasDrift, &out.HasDrift
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.TimeSeriesID != nil {
@@ -3915,17 +3915,17 @@ func (in *Model_ArimaForecastingMetrics_ArimaSingleModelForecastingMetrics) Deep
 	}
 	if in.HasHolidayEffect != nil {
 		in, out := &in.HasHolidayEffect, &out.HasHolidayEffect
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.HasSpikesAndDips != nil {
 		in, out := &in.HasSpikesAndDips, &out.HasSpikesAndDips
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.HasStepChanges != nil {
 		in, out := &in.HasStepChanges, &out.HasStepChanges
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -4012,7 +4012,7 @@ func (in *Model_BinaryClassificationMetrics_BinaryConfusionMatrix) DeepCopyInto(
 	*out = *in
 	if in.PositiveClassThreshold != nil {
 		in, out := &in.PositiveClassThreshold, &out.PositiveClassThreshold
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TruePositives != nil {
@@ -4037,22 +4037,22 @@ func (in *Model_BinaryClassificationMetrics_BinaryConfusionMatrix) DeepCopyInto(
 	}
 	if in.Precision != nil {
 		in, out := &in.Precision, &out.Precision
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Recall != nil {
 		in, out := &in.Recall, &out.Recall
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.F1Score != nil {
 		in, out := &in.F1Score, &out.F1Score
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Accuracy != nil {
 		in, out := &in.Accuracy, &out.Accuracy
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -4102,12 +4102,12 @@ func (in *Model_ClusteringMetrics) DeepCopyInto(out *Model_ClusteringMetrics) {
 	*out = *in
 	if in.DaviesBouldinIndex != nil {
 		in, out := &in.DaviesBouldinIndex, &out.DaviesBouldinIndex
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MeanSquaredDistance != nil {
 		in, out := &in.MeanSquaredDistance, &out.MeanSquaredDistance
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Clusters != nil {
@@ -4171,7 +4171,7 @@ func (in *Model_ClusteringMetrics_Cluster_FeatureValue) DeepCopyInto(out *Model_
 	}
 	if in.NumericalValue != nil {
 		in, out := &in.NumericalValue, &out.NumericalValue
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CategoricalValue != nil {
@@ -4273,7 +4273,7 @@ func (in *Model_DimensionalityReductionMetrics) DeepCopyInto(out *Model_Dimensio
 	*out = *in
 	if in.TotalExplainedVarianceRatio != nil {
 		in, out := &in.TotalExplainedVarianceRatio, &out.TotalExplainedVarianceRatio
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -4284,76 +4284,6 @@ func (in *Model_DimensionalityReductionMetrics) DeepCopy() *Model_Dimensionality
 		return nil
 	}
 	out := new(Model_DimensionalityReductionMetrics)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *Model_DoubleHparamSearchSpace) DeepCopyInto(out *Model_DoubleHparamSearchSpace) {
-	*out = *in
-	if in.Range != nil {
-		in, out := &in.Range, &out.Range
-		*out = new(Model_DoubleHparamSearchSpace_DoubleRange)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.Candidates != nil {
-		in, out := &in.Candidates, &out.Candidates
-		*out = new(Model_DoubleHparamSearchSpace_DoubleCandidates)
-		(*in).DeepCopyInto(*out)
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new Model_DoubleHparamSearchSpace.
-func (in *Model_DoubleHparamSearchSpace) DeepCopy() *Model_DoubleHparamSearchSpace {
-	if in == nil {
-		return nil
-	}
-	out := new(Model_DoubleHparamSearchSpace)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *Model_DoubleHparamSearchSpace_DoubleCandidates) DeepCopyInto(out *Model_DoubleHparamSearchSpace_DoubleCandidates) {
-	*out = *in
-	if in.Candidates != nil {
-		in, out := &in.Candidates, &out.Candidates
-		*out = make([]google_protobuf_DoubleValue, len(*in))
-		copy(*out, *in)
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new Model_DoubleHparamSearchSpace_DoubleCandidates.
-func (in *Model_DoubleHparamSearchSpace_DoubleCandidates) DeepCopy() *Model_DoubleHparamSearchSpace_DoubleCandidates {
-	if in == nil {
-		return nil
-	}
-	out := new(Model_DoubleHparamSearchSpace_DoubleCandidates)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *Model_DoubleHparamSearchSpace_DoubleRange) DeepCopyInto(out *Model_DoubleHparamSearchSpace_DoubleRange) {
-	*out = *in
-	if in.Min != nil {
-		in, out := &in.Min, &out.Min
-		*out = new(google_protobuf_DoubleValue)
-		**out = **in
-	}
-	if in.Max != nil {
-		in, out := &in.Max, &out.Max
-		*out = new(google_protobuf_DoubleValue)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new Model_DoubleHparamSearchSpace_DoubleRange.
-func (in *Model_DoubleHparamSearchSpace_DoubleRange) DeepCopy() *Model_DoubleHparamSearchSpace_DoubleRange {
-	if in == nil {
-		return nil
-	}
-	out := new(Model_DoubleHparamSearchSpace_DoubleRange)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -4445,7 +4375,7 @@ func (in *Model_GlobalExplanation_Explanation) DeepCopyInto(out *Model_GlobalExp
 	}
 	if in.Attribution != nil {
 		in, out := &in.Attribution, &out.Attribution
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -4465,17 +4395,17 @@ func (in *Model_HparamSearchSpaces) DeepCopyInto(out *Model_HparamSearchSpaces) 
 	*out = *in
 	if in.LearnRate != nil {
 		in, out := &in.LearnRate, &out.LearnRate
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.L1Reg != nil {
 		in, out := &in.L1Reg, &out.L1Reg
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.L2Reg != nil {
 		in, out := &in.L2Reg, &out.L2Reg
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.NumClusters != nil {
@@ -4500,7 +4430,7 @@ func (in *Model_HparamSearchSpaces) DeepCopyInto(out *Model_HparamSearchSpaces) 
 	}
 	if in.Dropout != nil {
 		in, out := &in.Dropout, &out.Dropout
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.MaxTreeDepth != nil {
@@ -4510,17 +4440,17 @@ func (in *Model_HparamSearchSpaces) DeepCopyInto(out *Model_HparamSearchSpaces) 
 	}
 	if in.Subsample != nil {
 		in, out := &in.Subsample, &out.Subsample
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.MinSplitLoss != nil {
 		in, out := &in.MinSplitLoss, &out.MinSplitLoss
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.WalsAlpha != nil {
 		in, out := &in.WalsAlpha, &out.WalsAlpha
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.BoosterType != nil {
@@ -4550,17 +4480,17 @@ func (in *Model_HparamSearchSpaces) DeepCopyInto(out *Model_HparamSearchSpaces) 
 	}
 	if in.ColsampleBytree != nil {
 		in, out := &in.ColsampleBytree, &out.ColsampleBytree
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ColsampleBylevel != nil {
 		in, out := &in.ColsampleBylevel, &out.ColsampleBylevel
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ColsampleBynode != nil {
 		in, out := &in.ColsampleBynode, &out.ColsampleBynode
-		*out = new(Model_DoubleHparamSearchSpace)
+		*out = new(Model_float64HparamSearchSpace)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ActivationFn != nil {
@@ -4640,12 +4570,12 @@ func (in *Model_HparamTuningTrial) DeepCopyInto(out *Model_HparamTuningTrial) {
 	}
 	if in.TrainingLoss != nil {
 		in, out := &in.TrainingLoss, &out.TrainingLoss
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.EvalLoss != nil {
 		in, out := &in.EvalLoss, &out.EvalLoss
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HparamTuningEvaluationMetrics != nil {
@@ -4839,7 +4769,7 @@ func (in *Model_MultiClassClassificationMetrics_ConfusionMatrix) DeepCopyInto(ou
 	*out = *in
 	if in.ConfidenceThreshold != nil {
 		in, out := &in.ConfidenceThreshold, &out.ConfidenceThreshold
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Rows != nil {
@@ -4933,22 +4863,22 @@ func (in *Model_RankingMetrics) DeepCopyInto(out *Model_RankingMetrics) {
 	*out = *in
 	if in.MeanAveragePrecision != nil {
 		in, out := &in.MeanAveragePrecision, &out.MeanAveragePrecision
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MeanSquaredError != nil {
 		in, out := &in.MeanSquaredError, &out.MeanSquaredError
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NormalizedDiscountedCumulativeGain != nil {
 		in, out := &in.NormalizedDiscountedCumulativeGain, &out.NormalizedDiscountedCumulativeGain
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AverageRank != nil {
 		in, out := &in.AverageRank, &out.AverageRank
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -4968,27 +4898,27 @@ func (in *Model_RegressionMetrics) DeepCopyInto(out *Model_RegressionMetrics) {
 	*out = *in
 	if in.MeanAbsoluteError != nil {
 		in, out := &in.MeanAbsoluteError, &out.MeanAbsoluteError
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MeanSquaredError != nil {
 		in, out := &in.MeanSquaredError, &out.MeanSquaredError
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MeanSquaredLogError != nil {
 		in, out := &in.MeanSquaredLogError, &out.MeanSquaredLogError
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MedianAbsoluteError != nil {
 		in, out := &in.MedianAbsoluteError, &out.MedianAbsoluteError
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RSquared != nil {
 		in, out := &in.RSquared, &out.RSquared
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -5107,7 +5037,7 @@ func (in *Model_TrainingRun_IterationResult) DeepCopyInto(out *Model_TrainingRun
 	*out = *in
 	if in.Index != nil {
 		in, out := &in.Index, &out.Index
-		*out = new(google_protobuf_Int32Value)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.DurationMs != nil {
@@ -5117,12 +5047,12 @@ func (in *Model_TrainingRun_IterationResult) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.TrainingLoss != nil {
 		in, out := &in.TrainingLoss, &out.TrainingLoss
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.EvalLoss != nil {
 		in, out := &in.EvalLoss, &out.EvalLoss
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LearnRate != nil {
@@ -5203,7 +5133,7 @@ func (in *Model_TrainingRun_IterationResult_ArimaResult_ArimaCoefficients) DeepC
 	}
 	if in.InterceptCoefficient != nil {
 		in, out := &in.InterceptCoefficient, &out.InterceptCoefficient
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -5238,7 +5168,7 @@ func (in *Model_TrainingRun_IterationResult_ArimaResult_ArimaModelInfo) DeepCopy
 	}
 	if in.HasDrift != nil {
 		in, out := &in.HasDrift, &out.HasDrift
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.TimeSeriesID != nil {
@@ -5258,17 +5188,17 @@ func (in *Model_TrainingRun_IterationResult_ArimaResult_ArimaModelInfo) DeepCopy
 	}
 	if in.HasHolidayEffect != nil {
 		in, out := &in.HasHolidayEffect, &out.HasHolidayEffect
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.HasSpikesAndDips != nil {
 		in, out := &in.HasSpikesAndDips, &out.HasSpikesAndDips
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.HasStepChanges != nil {
 		in, out := &in.HasStepChanges, &out.HasStepChanges
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -5293,7 +5223,7 @@ func (in *Model_TrainingRun_IterationResult_ClusterInfo) DeepCopyInto(out *Model
 	}
 	if in.ClusterRadius != nil {
 		in, out := &in.ClusterRadius, &out.ClusterRadius
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterSize != nil {
@@ -5323,17 +5253,17 @@ func (in *Model_TrainingRun_IterationResult_PrincipalComponentInfo) DeepCopyInto
 	}
 	if in.ExplainedVariance != nil {
 		in, out := &in.ExplainedVariance, &out.ExplainedVariance
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ExplainedVarianceRatio != nil {
 		in, out := &in.ExplainedVarianceRatio, &out.ExplainedVarianceRatio
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CumulativeExplainedVarianceRatio != nil {
 		in, out := &in.CumulativeExplainedVarianceRatio, &out.CumulativeExplainedVarianceRatio
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -5368,27 +5298,27 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.L1Regularization != nil {
 		in, out := &in.L1Regularization, &out.L1Regularization
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.L2Regularization != nil {
 		in, out := &in.L2Regularization, &out.L2Regularization
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MinRelativeProgress != nil {
 		in, out := &in.MinRelativeProgress, &out.MinRelativeProgress
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WarmStart != nil {
 		in, out := &in.WarmStart, &out.WarmStart
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.EarlyStop != nil {
 		in, out := &in.EarlyStop, &out.EarlyStop
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.InputLabelColumns != nil {
@@ -5463,7 +5393,7 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.Dropout != nil {
 		in, out := &in.Dropout, &out.Dropout
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxTreeDepth != nil {
@@ -5478,7 +5408,7 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.MinSplitLoss != nil {
 		in, out := &in.MinSplitLoss, &out.MinSplitLoss
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BoosterType != nil {
@@ -5508,17 +5438,17 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.ColsampleBytree != nil {
 		in, out := &in.ColsampleBytree, &out.ColsampleBytree
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ColsampleBylevel != nil {
 		in, out := &in.ColsampleBylevel, &out.ColsampleBylevel
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ColsampleBynode != nil {
 		in, out := &in.ColsampleBynode, &out.ColsampleBynode
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NumFactors != nil {
@@ -5533,7 +5463,7 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.WalsAlpha != nil {
 		in, out := &in.WalsAlpha, &out.WalsAlpha
-		*out = new(google_protobuf_DoubleValue)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.KmeansInitializationMethod != nil {
@@ -5558,7 +5488,7 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.AutoArima != nil {
 		in, out := &in.AutoArima, &out.AutoArima
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.NonSeasonalOrder != nil {
@@ -5573,12 +5503,12 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.CalculatePValues != nil {
 		in, out := &in.CalculatePValues, &out.CalculatePValues
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.IncludeDrift != nil {
 		in, out := &in.IncludeDrift, &out.IncludeDrift
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.HolidayRegion != nil {
@@ -5633,22 +5563,22 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.DecomposeTimeSeries != nil {
 		in, out := &in.DecomposeTimeSeries, &out.DecomposeTimeSeries
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.CleanSpikesAndDips != nil {
 		in, out := &in.CleanSpikesAndDips, &out.CleanSpikesAndDips
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.AdjustStepChanges != nil {
 		in, out := &in.AdjustStepChanges, &out.AdjustStepChanges
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.EnableGlobalExplain != nil {
 		in, out := &in.EnableGlobalExplain, &out.EnableGlobalExplain
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.SampledShapleyNumPaths != nil {
@@ -5708,12 +5638,12 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.ApproxGlobalFeatureContrib != nil {
 		in, out := &in.ApproxGlobalFeatureContrib, &out.ApproxGlobalFeatureContrib
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.FitIntercept != nil {
 		in, out := &in.FitIntercept, &out.FitIntercept
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.NumPrincipalComponents != nil {
@@ -5728,7 +5658,7 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.ScaleFeatures != nil {
 		in, out := &in.ScaleFeatures, &out.ScaleFeatures
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.PcaSolver != nil {
@@ -5738,7 +5668,7 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.AutoClassWeights != nil {
 		in, out := &in.AutoClassWeights, &out.AutoClassWeights
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ActivationFn != nil {
@@ -5758,7 +5688,7 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopyInto(out *Model_TrainingRun
 	}
 	if in.StandardizeFeatures != nil {
 		in, out := &in.StandardizeFeatures, &out.StandardizeFeatures
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.L1RegActivation != nil {
@@ -5789,16 +5719,86 @@ func (in *Model_TrainingRun_TrainingOptions) DeepCopy() *Model_TrainingRun_Train
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *Model_float64HparamSearchSpace) DeepCopyInto(out *Model_float64HparamSearchSpace) {
+	*out = *in
+	if in.Range != nil {
+		in, out := &in.Range, &out.Range
+		*out = new(Model_float64HparamSearchSpace_float64Range)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Candidates != nil {
+		in, out := &in.Candidates, &out.Candidates
+		*out = new(Model_float64HparamSearchSpace_float64Candidates)
+		(*in).DeepCopyInto(*out)
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new Model_float64HparamSearchSpace.
+func (in *Model_float64HparamSearchSpace) DeepCopy() *Model_float64HparamSearchSpace {
+	if in == nil {
+		return nil
+	}
+	out := new(Model_float64HparamSearchSpace)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *Model_float64HparamSearchSpace_float64Candidates) DeepCopyInto(out *Model_float64HparamSearchSpace_float64Candidates) {
+	*out = *in
+	if in.Candidates != nil {
+		in, out := &in.Candidates, &out.Candidates
+		*out = make([]float64, len(*in))
+		copy(*out, *in)
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new Model_float64HparamSearchSpace_float64Candidates.
+func (in *Model_float64HparamSearchSpace_float64Candidates) DeepCopy() *Model_float64HparamSearchSpace_float64Candidates {
+	if in == nil {
+		return nil
+	}
+	out := new(Model_float64HparamSearchSpace_float64Candidates)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *Model_float64HparamSearchSpace_float64Range) DeepCopyInto(out *Model_float64HparamSearchSpace_float64Range) {
+	*out = *in
+	if in.Min != nil {
+		in, out := &in.Min, &out.Min
+		*out = new(float64)
+		**out = **in
+	}
+	if in.Max != nil {
+		in, out := &in.Max, &out.Max
+		*out = new(float64)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new Model_float64HparamSearchSpace_float64Range.
+func (in *Model_float64HparamSearchSpace_float64Range) DeepCopy() *Model_float64HparamSearchSpace_float64Range {
+	if in == nil {
+		return nil
+	}
+	out := new(Model_float64HparamSearchSpace_float64Range)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ParquetOptions) DeepCopyInto(out *ParquetOptions) {
 	*out = *in
 	if in.EnumAsString != nil {
 		in, out := &in.EnumAsString, &out.EnumAsString
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.EnableListInference != nil {
 		in, out := &in.EnableListInference, &out.EnableListInference
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.MapTargetType != nil {
@@ -6108,7 +6108,7 @@ func (in *QueryParameterValue) DeepCopyInto(out *QueryParameterValue) {
 	*out = *in
 	if in.Value != nil {
 		in, out := &in.Value, &out.Value
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.ArrayValues != nil {
@@ -6407,7 +6407,7 @@ func (in *Routine) DeepCopyInto(out *Routine) {
 	}
 	if in.StrictMode != nil {
 		in, out := &in.StrictMode, &out.StrictMode
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.RemoteFunctionOptions != nil {
@@ -6492,7 +6492,7 @@ func (in *Routine_Argument) DeepCopyInto(out *Routine_Argument) {
 	}
 	if in.IsAggregate != nil {
 		in, out := &in.IsAggregate, &out.IsAggregate
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -7277,12 +7277,12 @@ func (in *Table) DeepCopyInto(out *Table) {
 	}
 	if in.FriendlyName != nil {
 		in, out := &in.FriendlyName, &out.FriendlyName
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -7314,7 +7314,7 @@ func (in *Table) DeepCopyInto(out *Table) {
 	}
 	if in.RequirePartitionFilter != nil {
 		in, out := &in.RequirePartitionFilter, &out.RequirePartitionFilter
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.PartitionDefinition != nil {
@@ -7339,7 +7339,7 @@ func (in *Table) DeepCopyInto(out *Table) {
 	}
 	if in.NumRows != nil {
 		in, out := &in.NumRows, &out.NumRows
-		*out = new(google_protobuf_UInt64Value)
+		*out = new(uint64)
 		**out = **in
 	}
 	if in.CreationTime != nil {
@@ -7409,7 +7409,7 @@ func (in *Table) DeepCopyInto(out *Table) {
 	}
 	if in.DefaultCollation != nil {
 		in, out := &in.DefaultCollation, &out.DefaultCollation
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.DefaultRoundingMode != nil {
@@ -7572,7 +7572,7 @@ func (in *TableFieldSchema) DeepCopyInto(out *TableFieldSchema) {
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.PolicyTags != nil {
@@ -7609,12 +7609,12 @@ func (in *TableFieldSchema) DeepCopyInto(out *TableFieldSchema) {
 	}
 	if in.Collation != nil {
 		in, out := &in.Collation, &out.Collation
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.DefaultValueExpression != nil {
 		in, out := &in.DefaultValueExpression, &out.DefaultValueExpression
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.RangeElementType != nil {
@@ -7706,7 +7706,7 @@ func (in *TableList) DeepCopyInto(out *TableList) {
 	}
 	if in.TotalItems != nil {
 		in, out := &in.TotalItems, &out.TotalItems
-		*out = new(google_protobuf_Int32Value)
+		*out = new(int32)
 		**out = **in
 	}
 }
@@ -7873,7 +7873,7 @@ func (in *TimePartitioning) DeepCopyInto(out *TimePartitioning) {
 	}
 	if in.Field != nil {
 		in, out := &in.Field, &out.Field
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -7923,12 +7923,12 @@ func (in *UserDefinedFunctionResource) DeepCopyInto(out *UserDefinedFunctionReso
 	*out = *in
 	if in.ResourceUri != nil {
 		in, out := &in.ResourceUri, &out.ResourceUri
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 	if in.InlineCode != nil {
 		in, out := &in.InlineCode, &out.InlineCode
-		*out = new(google_protobuf_StringValue)
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -7987,7 +7987,7 @@ func (in *ViewDefinition) DeepCopyInto(out *ViewDefinition) {
 	}
 	if in.UseLegacySql != nil {
 		in, out := &in.UseLegacySql, &out.UseLegacySql
-		*out = new(google_protobuf_BoolValue)
+		*out = new(bool)
 		**out = **in
 	}
 	if in.UseExplicitColumnNames != nil {

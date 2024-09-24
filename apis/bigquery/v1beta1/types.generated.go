@@ -14,7 +14,9 @@
 
 package v1beta1
 
-import refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+)
 
 // +kcc:proto=google.cloud.bigquery.v2.Access
 type Access struct {
@@ -103,7 +105,7 @@ type AvroOptions struct {
 	// Optional. If sourceFormat is set to "AVRO", indicates whether to interpret
 	//  logical types as the corresponding BigQuery data type (for example,
 	//  TIMESTAMP), instead of using the raw type (for example, INTEGER).
-	UseAvroLogicalTypes *google_protobuf_BoolValue `json:"useAvroLogicalTypes,omitempty"`
+	UseAvroLogicalTypes *bool `json:"useAvroLogicalTypes,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.BiEngineReason
@@ -164,10 +166,10 @@ type BigtableColumn struct {
 	//  The column field name is the same as the column qualifier. However, if the
 	//  qualifier is not a valid BigQuery field identifier i.e. does not match
 	//  [a-zA-Z][a-zA-Z0-9_]*, a valid identifier must be provided as field_name.
-	QualifierEncoded *google_protobuf_BytesValue `json:"qualifierEncoded,omitempty"`
+	QualifierEncoded *byte `json:"qualifierEncoded,omitempty"`
 
 	// Qualifier string.
-	QualifierString *google_protobuf_StringValue `json:"qualifierString,omitempty"`
+	QualifierString *string `json:"qualifierString,omitempty"`
 
 	// Optional. If the qualifier is not a valid BigQuery field identifier i.e.
 	//  does not match [a-zA-Z][a-zA-Z0-9_]*,  a valid identifier must be provided
@@ -205,7 +207,7 @@ type BigtableColumn struct {
 	//  'onlyReadLatest' can also be set at the column family level. However, the
 	//  setting at this level takes precedence if 'onlyReadLatest' is set at both
 	//  levels.
-	OnlyReadLatest *google_protobuf_BoolValue `json:"onlyReadLatest,omitempty"`
+	OnlyReadLatest *bool `json:"onlyReadLatest,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.BigtableColumnFamily
@@ -252,7 +254,7 @@ type BigtableColumnFamily struct {
 	//  This can be overridden for a specific column by listing that column in
 	//  'columns' and specifying a different setting
 	//  for that column.
-	OnlyReadLatest *google_protobuf_BoolValue `json:"onlyReadLatest,omitempty"`
+	OnlyReadLatest *bool `json:"onlyReadLatest,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.BigtableOptions
@@ -273,18 +275,18 @@ type BigtableOptions struct {
 	//  specified in columnFamilies list are not exposed in the table schema.
 	//  Otherwise, they are read with BYTES type values.
 	//  The default value is false.
-	IgnoreUnspecifiedColumnFamilies *google_protobuf_BoolValue `json:"ignoreUnspecifiedColumnFamilies,omitempty"`
+	IgnoreUnspecifiedColumnFamilies *bool `json:"ignoreUnspecifiedColumnFamilies,omitempty"`
 
 	// Optional. If field is true, then the rowkey column families will be read
 	//  and converted to string. Otherwise they are read with BYTES type values and
 	//  users need to manually cast them with CAST if necessary.
 	//  The default value is false.
-	ReadRowkeyAsString *google_protobuf_BoolValue `json:"readRowkeyAsString,omitempty"`
+	ReadRowkeyAsString *bool `json:"readRowkeyAsString,omitempty"`
 
 	// Optional. If field is true, then each column family will be read as a
 	//  single JSON column. Otherwise they are read as a repeated cell structure
 	//  containing timestamp/value tuples. The default value is false.
-	OutputColumnFamiliesAsJson *google_protobuf_BoolValue `json:"outputColumnFamiliesAsJson,omitempty"`
+	OutputColumnFamiliesAsJson *bool `json:"outputColumnFamiliesAsJson,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.CloneDefinition
@@ -369,7 +371,7 @@ type CsvOptions struct {
 	//  BigQuery converts the string to ISO-8859-1 encoding, and then uses the
 	//  first byte of the encoded string to split the data in its raw, binary
 	//  state.
-	//  The default value is a double-quote (").
+	//  The default value is a float64-quote (").
 	//  If your data does not contain quoted sections,
 	//  set the property value to an empty string.
 	//  If your data contains quoted newline characters, you must also set the
@@ -377,11 +379,11 @@ type CsvOptions struct {
 	//  To include the specific quote character within a quoted value, precede it
 	//  with an additional matching quote character. For example, if you want to
 	//  escape the default character  ' " ', use ' "" '.
-	Quote *google_protobuf_StringValue `json:"quote,omitempty"`
+	Quote *string `json:"quote,omitempty"`
 
 	// Optional. Indicates if BigQuery should allow quoted data sections that
 	//  contain newline characters in a CSV file. The default value is false.
-	AllowQuotedNewlines *google_protobuf_BoolValue `json:"allowQuotedNewlines,omitempty"`
+	AllowQuotedNewlines *bool `json:"allowQuotedNewlines,omitempty"`
 
 	// Optional. Indicates if BigQuery should accept rows that are missing
 	//  trailing optional columns. If true, BigQuery treats missing trailing
@@ -389,7 +391,7 @@ type CsvOptions struct {
 	//  If false, records with missing trailing columns are treated as bad records,
 	//  and if there are too many bad records, an invalid error is returned in the
 	//  job result. The default value is false.
-	AllowJaggedRows *google_protobuf_BoolValue `json:"allowJaggedRows,omitempty"`
+	AllowJaggedRows *bool `json:"allowJaggedRows,omitempty"`
 
 	// Optional. The character encoding of the data.
 	//  The supported values are UTF-8, ISO-8859-1, UTF-16BE, UTF-16LE, UTF-32BE,
@@ -400,7 +402,7 @@ type CsvOptions struct {
 
 	// Optional. Indicates if the embedded ASCII control characters (the first 32
 	//  characters in the ASCII-table, from '\x00' to '\x1F') are preserved.
-	PreserveAsciiControlCharacters *google_protobuf_BoolValue `json:"preserveAsciiControlCharacters,omitempty"`
+	PreserveAsciiControlCharacters *bool `json:"preserveAsciiControlCharacters,omitempty"`
 
 	// Optional. Specifies a string that represents a null value in a CSV file.
 	//  For example, if you specify "\N", BigQuery interprets "\N" as a null value
@@ -409,7 +411,7 @@ type CsvOptions struct {
 	//  value, BigQuery throws an error if an empty string is present for all data
 	//  types except for STRING and BYTE. For STRING and BYTE columns, BigQuery
 	//  interprets the empty string as an empty value.
-	NullMarker *google_protobuf_StringValue `json:"nullMarker,omitempty"`
+	NullMarker *string `json:"nullMarker,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.DataFormatOptions
@@ -453,10 +455,10 @@ type Dataset struct {
 	DatasetReference *DatasetReference `json:"datasetReference,omitempty"`
 
 	// Optional. A descriptive name for the dataset.
-	FriendlyName *google_protobuf_StringValue `json:"friendlyName,omitempty"`
+	FriendlyName *string `json:"friendlyName,omitempty"`
 
 	// Optional. A user-friendly description of the dataset.
-	Description *google_protobuf_StringValue `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 
 	// Optional. The default lifetime of all tables in the dataset, in
 	//  milliseconds. The minimum lifetime value is 3600000 milliseconds (one
@@ -526,10 +528,10 @@ type Dataset struct {
 	DefaultEncryptionConfiguration *EncryptionConfiguration `json:"defaultEncryptionConfiguration,omitempty"`
 
 	// Output only. Reserved for future use.
-	SatisfiesPzs *google_protobuf_BoolValue `json:"satisfiesPzs,omitempty"`
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 
 	// Output only. Reserved for future use.
-	SatisfiesPzi *google_protobuf_BoolValue `json:"satisfiesPzi,omitempty"`
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 
 	// Output only. Same as `type` in `ListFormatDataset`.
 	//  The type of the dataset, one of:
@@ -563,7 +565,7 @@ type Dataset struct {
 	//  otherwise FALSE. By default, this is FALSE, which means the dataset and its
 	//  table names are case-sensitive. This field does not affect routine
 	//  references.
-	IsCaseInsensitive *google_protobuf_BoolValue `json:"isCaseInsensitive,omitempty"`
+	IsCaseInsensitive *bool `json:"isCaseInsensitive,omitempty"`
 
 	// Optional. Defines the default collation specification of future tables
 	//  created in the dataset. If a table is created in this dataset without
@@ -575,7 +577,7 @@ type Dataset struct {
 	//
 	//  * 'und:ci': undetermined locale, case insensitive.
 	//  * '': empty string. Default to case-sensitive behavior.
-	DefaultCollation *google_protobuf_StringValue `json:"defaultCollation,omitempty"`
+	DefaultCollation *string `json:"defaultCollation,omitempty"`
 
 	// Optional. Defines the default rounding mode specification of new tables
 	//  created within this dataset. During table creation, if this field is
@@ -670,13 +672,13 @@ type DatasetReference struct {
 type DestinationTableProperties struct {
 	// Optional. Friendly name for the destination table. If the table already
 	//  exists, it should be same as the existing friendly name.
-	FriendlyName *google_protobuf_StringValue `json:"friendlyName,omitempty"`
+	FriendlyName *string `json:"friendlyName,omitempty"`
 
 	// Optional. The description for the destination table.
 	//  This will only be used if the destination table is newly created.
 	//  If the table already exists and a value different than the current
 	//  description is provided, the job will fail.
-	Description *google_protobuf_StringValue `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 
 	// Optional. The labels associated with this table. You can use these to
 	//  organize and group your tables. This will only be used if the destination
@@ -810,50 +812,50 @@ type ExplainQueryStage struct {
 
 	// Relative amount of time the average shard spent waiting to be
 	//  scheduled.
-	WaitRatioAvg *google_protobuf_DoubleValue `json:"waitRatioAvg,omitempty"`
+	WaitRatioAvg *float64 `json:"waitRatioAvg,omitempty"`
 
 	// Milliseconds the average shard spent waiting to be scheduled.
 	WaitMsAvg *int64 `json:"waitMsAvg,omitempty"`
 
 	// Relative amount of time the slowest shard spent waiting to be
 	//  scheduled.
-	WaitRatioMax *google_protobuf_DoubleValue `json:"waitRatioMax,omitempty"`
+	WaitRatioMax *float64 `json:"waitRatioMax,omitempty"`
 
 	// Milliseconds the slowest shard spent waiting to be scheduled.
 	WaitMsMax *int64 `json:"waitMsMax,omitempty"`
 
 	// Relative amount of time the average shard spent reading input.
-	ReadRatioAvg *google_protobuf_DoubleValue `json:"readRatioAvg,omitempty"`
+	ReadRatioAvg *float64 `json:"readRatioAvg,omitempty"`
 
 	// Milliseconds the average shard spent reading input.
 	ReadMsAvg *int64 `json:"readMsAvg,omitempty"`
 
 	// Relative amount of time the slowest shard spent reading input.
-	ReadRatioMax *google_protobuf_DoubleValue `json:"readRatioMax,omitempty"`
+	ReadRatioMax *float64 `json:"readRatioMax,omitempty"`
 
 	// Milliseconds the slowest shard spent reading input.
 	ReadMsMax *int64 `json:"readMsMax,omitempty"`
 
 	// Relative amount of time the average shard spent on CPU-bound tasks.
-	ComputeRatioAvg *google_protobuf_DoubleValue `json:"computeRatioAvg,omitempty"`
+	ComputeRatioAvg *float64 `json:"computeRatioAvg,omitempty"`
 
 	// Milliseconds the average shard spent on CPU-bound tasks.
 	ComputeMsAvg *int64 `json:"computeMsAvg,omitempty"`
 
 	// Relative amount of time the slowest shard spent on CPU-bound tasks.
-	ComputeRatioMax *google_protobuf_DoubleValue `json:"computeRatioMax,omitempty"`
+	ComputeRatioMax *float64 `json:"computeRatioMax,omitempty"`
 
 	// Milliseconds the slowest shard spent on CPU-bound tasks.
 	ComputeMsMax *int64 `json:"computeMsMax,omitempty"`
 
 	// Relative amount of time the average shard spent on writing output.
-	WriteRatioAvg *google_protobuf_DoubleValue `json:"writeRatioAvg,omitempty"`
+	WriteRatioAvg *float64 `json:"writeRatioAvg,omitempty"`
 
 	// Milliseconds the average shard spent on writing output.
 	WriteMsAvg *int64 `json:"writeMsAvg,omitempty"`
 
 	// Relative amount of time the slowest shard spent on writing output.
-	WriteRatioMax *google_protobuf_DoubleValue `json:"writeRatioMax,omitempty"`
+	WriteRatioMax *float64 `json:"writeRatioMax,omitempty"`
 
 	// Milliseconds the slowest shard spent on writing output.
 	WriteMsMax *int64 `json:"writeMsMax,omitempty"`
@@ -985,11 +987,11 @@ type ExternalDataConfiguration struct {
 	//  error is returned in the job result. The default value is 0, which requires
 	//  that all records are valid. This setting is ignored for Google Cloud
 	//  Bigtable, Google Cloud Datastore backups, Avro, ORC and Parquet formats.
-	MaxBadRecords *google_protobuf_Int32Value `json:"maxBadRecords,omitempty"`
+	MaxBadRecords *int32 `json:"maxBadRecords,omitempty"`
 
 	// Try to detect schema and format options automatically.
 	//  Any option specified explicitly will be honored.
-	Autodetect *google_protobuf_BoolValue `json:"autodetect,omitempty"`
+	Autodetect *bool `json:"autodetect,omitempty"`
 
 	// Optional. Indicates if BigQuery should allow extra values that are not
 	//  represented in the table schema.
@@ -1007,7 +1009,7 @@ type ExternalDataConfiguration struct {
 	//    Avro: This setting is ignored.
 	//    ORC: This setting is ignored.
 	//    Parquet: This setting is ignored.
-	IgnoreUnknownValues *google_protobuf_BoolValue `json:"ignoreUnknownValues,omitempty"`
+	IgnoreUnknownValues *bool `json:"ignoreUnknownValues,omitempty"`
 
 	// Optional. The compression type of the data source.
 	//  Possible values include GZIP and NONE. The default value is NONE.
@@ -1091,7 +1093,7 @@ type ExternalDataConfiguration struct {
 	// Optional. When creating an external table, the user can provide a reference
 	//  file with the table schema. This is enabled for the following formats:
 	//  AVRO, PARQUET, ORC.
-	ReferenceFileSchemaUri *google_protobuf_StringValue `json:"referenceFileSchemaUri,omitempty"`
+	ReferenceFileSchemaUri *string `json:"referenceFileSchemaUri,omitempty"`
 
 	// Optional. Metadata Cache Mode for the table. Set this to enable caching of
 	//  metadata from external data source.
@@ -1255,7 +1257,7 @@ type HivePartitioningOptions struct {
 	//
 	//  Hive-partitioned loads with require_partition_filter explicitly set to
 	//  true will fail.
-	RequirePartitionFilter *google_protobuf_BoolValue `json:"requirePartitionFilter,omitempty"`
+	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 
 	// Output only. For permanent external tables, this field is populated with
 	//  the hive partition keys in the order they were inferred. The types of the
@@ -1287,7 +1289,7 @@ type IndexUnusedReason struct {
 // +kcc:proto=google.cloud.bigquery.v2.InputDataChange
 type InputDataChange struct {
 	// Output only. Records read difference percentage compared to a previous run.
-	RecordsReadDiffPercentage *float32 `json:"recordsReadDiffPercentage,omitempty"`
+	RecordsReadDiffPercentage *float64 `json:"recordsReadDiffPercentage,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Job
@@ -1353,7 +1355,7 @@ type JobConfiguration struct {
 	//  a mostly empty response with some processing statistics, while an invalid
 	//  query will return the same error it would if it wasn't a dry run. Behavior
 	//  of non-query jobs is undefined.
-	DryRun *google_protobuf_BoolValue `json:"dryRun,omitempty"`
+	DryRun *bool `json:"dryRun,omitempty"`
 
 	// Optional. Job timeout in milliseconds. If this time limit is exceeded,
 	//  BigQuery will attempt to stop a longer job, but may not always succeed in
@@ -1386,7 +1388,7 @@ type JobConfigurationExtract struct {
 
 	// Optional. Whether to print out a header row in the results.
 	//  Default is true. Not applicable when extracting models.
-	PrintHeader *google_protobuf_BoolValue `json:"printHeader,omitempty"`
+	PrintHeader *bool `json:"printHeader,omitempty"`
 
 	// Optional. When extracting data in CSV format, this defines the
 	//  delimiter to use between fields in the exported data.
@@ -1409,7 +1411,7 @@ type JobConfigurationExtract struct {
 
 	// Whether to use logical types when extracting to AVRO format. Not applicable
 	//  when extracting models.
-	UseAvroLogicalTypes *google_protobuf_BoolValue `json:"useAvroLogicalTypes,omitempty"`
+	UseAvroLogicalTypes *bool `json:"useAvroLogicalTypes,omitempty"`
 
 	// Optional. Model extract options only applicable when extracting models.
 	ModelExtractOptions *JobConfigurationExtract_ModelExtractOptions `json:"modelExtractOptions,omitempty"`
@@ -1496,7 +1498,7 @@ type JobConfigurationLoad struct {
 	//  value, BigQuery throws an error if an empty string is present for all data
 	//  types except for STRING and BYTE. For STRING and BYTE columns, BigQuery
 	//  interprets the empty string as an empty value.
-	NullMarker *google_protobuf_StringValue `json:"nullMarker,omitempty"`
+	NullMarker *string `json:"nullMarker,omitempty"`
 
 	// Optional. The separator character for fields in a CSV file. The separator
 	//  is interpreted as a single byte. For files encoded in ISO-8859-1, any
@@ -1522,7 +1524,7 @@ type JobConfigurationLoad struct {
 	//  * skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect
 	//    headers in row N. If headers are not detected, row N is just skipped.
 	//    Otherwise row N is used to extract column names for the detected schema.
-	SkipLeadingRows *google_protobuf_Int32Value `json:"skipLeadingRows,omitempty"`
+	SkipLeadingRows *int32 `json:"skipLeadingRows,omitempty"`
 
 	// Optional. The character encoding of the data.
 	//  The supported values are UTF-8, ISO-8859-1, UTF-16BE, UTF-16LE, UTF-32BE,
@@ -1545,7 +1547,7 @@ type JobConfigurationLoad struct {
 	//  BigQuery converts the string to ISO-8859-1 encoding, and then uses the
 	//  first byte of the encoded string to split the data in its raw, binary
 	//  state.
-	//  The default value is a double-quote ('"').
+	//  The default value is a float64-quote ('"').
 	//  If your data does not contain quoted sections, set the property value to an
 	//  empty string.
 	//  If your data contains quoted newline characters, you must also set the
@@ -1554,18 +1556,18 @@ type JobConfigurationLoad struct {
 	//  with an additional matching quote character. For example, if you want to
 	//  escape the default character  ' " ', use ' "" '.
 	//  @default "
-	Quote *google_protobuf_StringValue `json:"quote,omitempty"`
+	Quote *string `json:"quote,omitempty"`
 
 	// Optional. The maximum number of bad records that BigQuery can ignore when
 	//  running the job. If the number of bad records exceeds this value, an
 	//  invalid error is returned in the job result.
 	//  The default value is 0, which requires that all records are valid.
 	//  This is only supported for CSV and NEWLINE_DELIMITED_JSON file formats.
-	MaxBadRecords *google_protobuf_Int32Value `json:"maxBadRecords,omitempty"`
+	MaxBadRecords *int32 `json:"maxBadRecords,omitempty"`
 
 	// Indicates if BigQuery should allow quoted data sections that contain
 	//  newline characters in a CSV file. The default value is false.
-	AllowQuotedNewlines *google_protobuf_BoolValue `json:"allowQuotedNewlines,omitempty"`
+	AllowQuotedNewlines *bool `json:"allowQuotedNewlines,omitempty"`
 
 	// Optional. The format of the data files.
 	//  For CSV files, specify "CSV". For datastore backups,
@@ -1582,7 +1584,7 @@ type JobConfigurationLoad struct {
 	//  job result.
 	//  The default value is false.
 	//  Only applicable to CSV, ignored for other formats.
-	AllowJaggedRows *google_protobuf_BoolValue `json:"allowJaggedRows,omitempty"`
+	AllowJaggedRows *bool `json:"allowJaggedRows,omitempty"`
 
 	// Optional. Indicates if BigQuery should allow extra values that are not
 	//  represented in the table schema.
@@ -1596,7 +1598,7 @@ type JobConfigurationLoad struct {
 	//    JSON: Named values that don't match any column names in the table schema
 	//    Avro, Parquet, ORC: Fields in the file schema that don't exist in the
 	//    table schema.
-	IgnoreUnknownValues *google_protobuf_BoolValue `json:"ignoreUnknownValues,omitempty"`
+	IgnoreUnknownValues *bool `json:"ignoreUnknownValues,omitempty"`
 
 	// If sourceFormat is set to "DATASTORE_BACKUP", indicates which entity
 	//  properties to load into BigQuery from a Cloud Datastore backup. Property
@@ -1608,7 +1610,7 @@ type JobConfigurationLoad struct {
 
 	// Optional. Indicates if we should automatically infer the options and
 	//  schema for CSV and JSON sources.
-	Autodetect *google_protobuf_BoolValue `json:"autodetect,omitempty"`
+	Autodetect *bool `json:"autodetect,omitempty"`
 
 	// Allows the schema of the destination table to be updated as a side effect
 	//  of the load job if a schema is autodetected or supplied in the job
@@ -1642,12 +1644,12 @@ type JobConfigurationLoad struct {
 	// Optional. If sourceFormat is set to "AVRO", indicates whether to interpret
 	//  logical types as the corresponding BigQuery data type (for example,
 	//  TIMESTAMP), instead of using the raw type (for example, INTEGER).
-	UseAvroLogicalTypes *google_protobuf_BoolValue `json:"useAvroLogicalTypes,omitempty"`
+	UseAvroLogicalTypes *bool `json:"useAvroLogicalTypes,omitempty"`
 
 	// Optional. The user can provide a reference file with the reader schema.
 	//  This file is only loaded if it is part of source URIs, but is not loaded
 	//  otherwise. It is enabled for the following formats: AVRO, PARQUET, ORC.
-	ReferenceFileSchemaUri *google_protobuf_StringValue `json:"referenceFileSchemaUri,omitempty"`
+	ReferenceFileSchemaUri *string `json:"referenceFileSchemaUri,omitempty"`
 
 	// Optional. When set, configures hive partitioning support.
 	//  Not all storage formats support hive partitioning -- requesting hive
@@ -1696,7 +1698,7 @@ type JobConfigurationLoad struct {
 	//  embedded ASCII control characters (the first 32 characters in the
 	//  ASCII-table, from
 	//  '\x00' to '\x1F') are preserved.
-	PreserveAsciiControlCharacters *google_protobuf_BoolValue `json:"preserveAsciiControlCharacters,omitempty"`
+	PreserveAsciiControlCharacters *bool `json:"preserveAsciiControlCharacters,omitempty"`
 
 	// Optional. Connection properties which can modify the load job behavior.
 	//  Currently, only the 'session_id' connection property is supported, and is
@@ -1712,7 +1714,7 @@ type JobConfigurationLoad struct {
 	//  The new session's location will be set to `Job.JobReference.location` if it
 	//  is present, otherwise it's set to the default location based on existing
 	//  routing logic.
-	CreateSession *google_protobuf_BoolValue `json:"createSession,omitempty"`
+	CreateSession *bool `json:"createSession,omitempty"`
 
 	// Optional. Character map supported for column names in CSV/Parquet loads.
 	//  Defaults to STRICT and can be overridden by Project Config Service. Using
@@ -1732,7 +1734,7 @@ type JobConfigurationLoad struct {
 	//    schema does not have flexible column names. The table's columns do not
 	//    have type parameters other than precision and scale.
 	//  * No options other than the above are specified.
-	CopyFilesOnly *google_protobuf_BoolValue `json:"copyFilesOnly,omitempty"`
+	CopyFilesOnly *bool `json:"copyFilesOnly,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.JobConfigurationQuery
@@ -1798,21 +1800,21 @@ type JobConfigurationQuery struct {
 	//  For GoogleSQL queries, this flag is ignored and large results are
 	//  always allowed.  However, you must still set destinationTable when result
 	//  size exceeds the allowed maximum response size.
-	AllowLargeResults *google_protobuf_BoolValue `json:"allowLargeResults,omitempty"`
+	AllowLargeResults *bool `json:"allowLargeResults,omitempty"`
 
 	// Optional. Whether to look for the result in the query cache. The query
 	//  cache is a best-effort cache that will be flushed whenever tables in the
 	//  query are modified. Moreover, the query cache is only available when a
 	//  query does not have a destination table specified. The default value is
 	//  true.
-	UseQueryCache *google_protobuf_BoolValue `json:"useQueryCache,omitempty"`
+	UseQueryCache *bool `json:"useQueryCache,omitempty"`
 
 	// Optional. If true and query uses legacy SQL dialect, flattens all nested
 	//  and repeated fields in the query results.
 	//  allowLargeResults must be true if this is set to false.
 	//  For GoogleSQL queries, this flag is ignored and results are never
 	//  flattened.
-	FlattenResults *google_protobuf_BoolValue `json:"flattenResults,omitempty"`
+	FlattenResults *bool `json:"flattenResults,omitempty"`
 
 	// Limits the bytes billed for this job. Queries that will have
 	//  bytes billed beyond this limit will fail (without incurring a charge).
@@ -1826,7 +1828,7 @@ type JobConfigurationQuery struct {
 	//
 	//  When useLegacySql is set to false, the value of flattenResults is ignored;
 	//  query will be run as if flattenResults is false.
-	UseLegacySql *google_protobuf_BoolValue `json:"useLegacySql,omitempty"`
+	UseLegacySql *bool `json:"useLegacySql,omitempty"`
 
 	// GoogleSQL only. Set to POSITIONAL to use positional (?) query parameters
 	//  or to NAMED to use named (@myparam) query parameters in this query.
@@ -1883,12 +1885,12 @@ type JobConfigurationQuery struct {
 	//  The new session's location will be set to `Job.JobReference.location` if it
 	//  is present, otherwise it's set to the default location based on existing
 	//  routing logic.
-	CreateSession *google_protobuf_BoolValue `json:"createSession,omitempty"`
+	CreateSession *bool `json:"createSession,omitempty"`
 
 	// Optional. Whether to run the query as continuous or a regular query.
 	//  Continuous query is currently in experimental stage and not ready for
 	//  general usage.
-	Continuous *google_protobuf_BoolValue `json:"continuous,omitempty"`
+	Continuous *bool `json:"continuous,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.JobConfigurationTableCopy
@@ -1981,7 +1983,7 @@ type JobReference struct {
 	//
 	//  For more information about BigQuery locations, see:
 	//  https://cloud.google.com/bigquery/docs/locations
-	Location *google_protobuf_StringValue `json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 
 	// This field should not be used.
 	LocationAlternative []string `json:"locationAlternative,omitempty"`
@@ -2007,7 +2009,7 @@ type JobStatistics struct {
 
 	// Output only. [TrustedTester] Job progress (0.0 -> 1.0) for LOAD and
 	//  EXTRACT jobs.
-	CompletionRatio *google_protobuf_DoubleValue `json:"completionRatio,omitempty"`
+	CompletionRatio *float64 `json:"completionRatio,omitempty"`
 
 	// Output only. Quotas which delayed this job's start time.
 	QuotaDeferments []string `json:"quotaDeferments,omitempty"`
@@ -2116,13 +2118,13 @@ type JobStatistics2 struct {
 	//  queries within this limit are billed at the standard on-demand rates.
 	//  On-demand queries that exceed this limit will fail with a
 	//  billingTierLimitExceeded error.
-	BillingTier *google_protobuf_Int32Value `json:"billingTier,omitempty"`
+	BillingTier *int32 `json:"billingTier,omitempty"`
 
 	// Output only. Slot-milliseconds for the job.
 	TotalSlotMs *int64 `json:"totalSlotMs,omitempty"`
 
 	// Output only. Whether the query result was fetched from the query cache.
-	CacheHit *google_protobuf_BoolValue `json:"cacheHit,omitempty"`
+	CacheHit *bool `json:"cacheHit,omitempty"`
 
 	// Output only. Referenced tables for the job. Queries that reference more
 	//  than 50 tables will not have a complete list.
@@ -2461,7 +2463,7 @@ type ListFormatDataset struct {
 
 	// An alternate name for the dataset.  The friendly name is purely
 	//  decorative in nature.
-	FriendlyName *google_protobuf_StringValue `json:"friendlyName,omitempty"`
+	FriendlyName *string `json:"friendlyName,omitempty"`
 
 	// The geographic location where the dataset resides.
 	Location *string `json:"location,omitempty"`
@@ -2516,7 +2518,7 @@ type ListFormatTable struct {
 	TableReference *TableReference `json:"tableReference,omitempty"`
 
 	// The user-friendly name for this table.
-	FriendlyName *google_protobuf_StringValue `json:"friendlyName,omitempty"`
+	FriendlyName *string `json:"friendlyName,omitempty"`
 
 	// The type of table.
 	Type *string `json:"type,omitempty"`
@@ -2548,14 +2550,14 @@ type ListFormatTable struct {
 
 	// Optional. If set to true, queries including this table must specify a
 	//  partition filter. This filter is used for partition elimination.
-	RequirePartitionFilter *google_protobuf_BoolValue `json:"requirePartitionFilter,omitempty"`
+	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.ListFormatView
 type ListFormatView struct {
 	// True if view is defined in legacy SQL dialect,
 	//  false if in GoogleSQL.
-	UseLegacySql *google_protobuf_BoolValue `json:"useLegacySql,omitempty"`
+	UseLegacySql *bool `json:"useLegacySql,omitempty"`
 
 	// Specifics the privacy policy for the view.
 	PrivacyPolicy *PrivacyPolicy `json:"privacyPolicy,omitempty"`
@@ -2619,15 +2621,15 @@ type MaterializedViewDefinition struct {
 
 	// Optional. Enable automatic refresh of the materialized view when the base
 	//  table is updated. The default value is "true".
-	EnableRefresh *google_protobuf_BoolValue `json:"enableRefresh,omitempty"`
+	EnableRefresh *bool `json:"enableRefresh,omitempty"`
 
 	// Optional. The maximum frequency at which this materialized view will be
 	//  refreshed. The default value is "1800000" (30 minutes).
-	RefreshIntervalMs *google_protobuf_UInt64Value `json:"refreshIntervalMs,omitempty"`
+	RefreshIntervalMs *uint64 `json:"refreshIntervalMs,omitempty"`
 
 	// Optional. This option declares the intention to construct a materialized
 	//  view that isn't refreshed incrementally.
-	AllowNonIncrementalDefinition *google_protobuf_BoolValue `json:"allowNonIncrementalDefinition,omitempty"`
+	AllowNonIncrementalDefinition *bool `json:"allowNonIncrementalDefinition,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.MaterializedViewStatistics
@@ -2781,44 +2783,44 @@ type Model_AggregateClassificationMetrics struct {
 	// Precision is the fraction of actual positive predictions that had
 	//  positive actual labels. For multiclass this is a macro-averaged
 	//  metric treating each class as a binary classifier.
-	Precision *google_protobuf_DoubleValue `json:"precision,omitempty"`
+	Precision *float64 `json:"precision,omitempty"`
 
 	// Recall is the fraction of actual positive labels that were given a
 	//  positive prediction. For multiclass this is a macro-averaged metric.
-	Recall *google_protobuf_DoubleValue `json:"recall,omitempty"`
+	Recall *float64 `json:"recall,omitempty"`
 
 	// Accuracy is the fraction of predictions given the correct label. For
 	//  multiclass this is a micro-averaged metric.
-	Accuracy *google_protobuf_DoubleValue `json:"accuracy,omitempty"`
+	Accuracy *float64 `json:"accuracy,omitempty"`
 
 	// Threshold at which the metrics are computed. For binary
 	//  classification models this is the positive class threshold.
 	//  For multi-class classfication models this is the confidence
 	//  threshold.
-	Threshold *google_protobuf_DoubleValue `json:"threshold,omitempty"`
+	Threshold *float64 `json:"threshold,omitempty"`
 
 	// The F1 score is an average of recall and precision. For multiclass
 	//  this is a macro-averaged metric.
-	F1Score *google_protobuf_DoubleValue `json:"f1Score,omitempty"`
+	F1Score *float64 `json:"f1Score,omitempty"`
 
 	// Logarithmic Loss. For multiclass this is a macro-averaged metric.
-	LogLoss *google_protobuf_DoubleValue `json:"logLoss,omitempty"`
+	LogLoss *float64 `json:"logLoss,omitempty"`
 
 	// Area Under a ROC Curve. For multiclass this is a macro-averaged
 	//  metric.
-	RocAuc *google_protobuf_DoubleValue `json:"rocAuc,omitempty"`
+	RocAuc *float64 `json:"rocAuc,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.ArimaFittingMetrics
 type Model_ArimaFittingMetrics struct {
 	// Log-likelihood.
-	LogLikelihood *google_protobuf_DoubleValue `json:"logLikelihood,omitempty"`
+	LogLikelihood *float64 `json:"logLikelihood,omitempty"`
 
 	// AIC.
-	Aic *google_protobuf_DoubleValue `json:"aic,omitempty"`
+	Aic *float64 `json:"aic,omitempty"`
 
 	// Variance.
-	Variance *google_protobuf_DoubleValue `json:"variance,omitempty"`
+	Variance *float64 `json:"variance,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.ArimaForecastingMetrics
@@ -2838,7 +2840,7 @@ type Model_ArimaForecastingMetrics_ArimaSingleModelForecastingMetrics struct {
 
 	// Is arima model fitted with drift or not. It is always false when d
 	//  is not 1.
-	HasDrift *google_protobuf_BoolValue `json:"hasDrift,omitempty"`
+	HasDrift *bool `json:"hasDrift,omitempty"`
 
 	// The time_series_id value for this time series. It will be one of
 	//  the unique values from the time_series_id_column specified during
@@ -2859,13 +2861,13 @@ type Model_ArimaForecastingMetrics_ArimaSingleModelForecastingMetrics struct {
 	SeasonalPeriods []string `json:"seasonalPeriods,omitempty"`
 
 	// If true, holiday_effect is a part of time series decomposition result.
-	HasHolidayEffect *google_protobuf_BoolValue `json:"hasHolidayEffect,omitempty"`
+	HasHolidayEffect *bool `json:"hasHolidayEffect,omitempty"`
 
 	// If true, spikes_and_dips is a part of time series decomposition result.
-	HasSpikesAndDips *google_protobuf_BoolValue `json:"hasSpikesAndDips,omitempty"`
+	HasSpikesAndDips *bool `json:"hasSpikesAndDips,omitempty"`
 
 	// If true, step_changes is a part of time series decomposition result.
-	HasStepChanges *google_protobuf_BoolValue `json:"hasStepChanges,omitempty"`
+	HasStepChanges *bool `json:"hasStepChanges,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.ArimaOrder
@@ -2898,7 +2900,7 @@ type Model_BinaryClassificationMetrics struct {
 // +kcc:proto=google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix
 type Model_BinaryClassificationMetrics_BinaryConfusionMatrix struct {
 	// Threshold value used when computing each of the following metric.
-	PositiveClassThreshold *google_protobuf_DoubleValue `json:"positiveClassThreshold,omitempty"`
+	PositiveClassThreshold *float64 `json:"positiveClassThreshold,omitempty"`
 
 	// Number of true samples predicted as true.
 	TruePositives *int64 `json:"truePositives,omitempty"`
@@ -2914,17 +2916,17 @@ type Model_BinaryClassificationMetrics_BinaryConfusionMatrix struct {
 
 	// The fraction of actual positive predictions that had positive actual
 	//  labels.
-	Precision *google_protobuf_DoubleValue `json:"precision,omitempty"`
+	Precision *float64 `json:"precision,omitempty"`
 
 	// The fraction of actual positive labels that were given a positive
 	//  prediction.
-	Recall *google_protobuf_DoubleValue `json:"recall,omitempty"`
+	Recall *float64 `json:"recall,omitempty"`
 
 	// The equally weighted average of recall and precision.
-	F1Score *google_protobuf_DoubleValue `json:"f1Score,omitempty"`
+	F1Score *float64 `json:"f1Score,omitempty"`
 
 	// The fraction of predictions given the correct label.
-	Accuracy *google_protobuf_DoubleValue `json:"accuracy,omitempty"`
+	Accuracy *float64 `json:"accuracy,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.BoostedTreeOptionEnums
@@ -2938,10 +2940,10 @@ type Model_CategoryEncodingMethod struct {
 // +kcc:proto=google.cloud.bigquery.v2.Model.ClusteringMetrics
 type Model_ClusteringMetrics struct {
 	// Davies-Bouldin index.
-	DaviesBouldinIndex *google_protobuf_DoubleValue `json:"daviesBouldinIndex,omitempty"`
+	DaviesBouldinIndex *float64 `json:"daviesBouldinIndex,omitempty"`
 
 	// Mean of squared distances between each sample to its cluster centroid.
-	MeanSquaredDistance *google_protobuf_DoubleValue `json:"meanSquaredDistance,omitempty"`
+	MeanSquaredDistance *float64 `json:"meanSquaredDistance,omitempty"`
 
 	// Information for all clusters.
 	Clusters []Model_ClusteringMetrics_Cluster `json:"clusters,omitempty"`
@@ -2966,7 +2968,7 @@ type Model_ClusteringMetrics_Cluster_FeatureValue struct {
 
 	// The numerical feature value. This is the centroid value for this
 	//  feature.
-	NumericalValue *google_protobuf_DoubleValue `json:"numericalValue,omitempty"`
+	NumericalValue *float64 `json:"numericalValue,omitempty"`
 
 	// The categorical feature value.
 	CategoricalValue *Model_ClusteringMetrics_Cluster_FeatureValue_CategoricalValue `json:"categoricalValue,omitempty"`
@@ -3007,31 +3009,31 @@ type Model_DataSplitResult struct {
 type Model_DimensionalityReductionMetrics struct {
 	// Total percentage of variance explained by the selected principal
 	//  components.
-	TotalExplainedVarianceRatio *google_protobuf_DoubleValue `json:"totalExplainedVarianceRatio,omitempty"`
+	TotalExplainedVarianceRatio *float64 `json:"totalExplainedVarianceRatio,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.v2.Model.DoubleHparamSearchSpace
-type Model_DoubleHparamSearchSpace struct {
-	// Range of the double hyperparameter.
-	Range *Model_DoubleHparamSearchSpace_DoubleRange `json:"range,omitempty"`
+// +kcc:proto=google.cloud.bigquery.v2.Model.float64HparamSearchSpace
+type Model_float64HparamSearchSpace struct {
+	// Range of the float64 hyperparameter.
+	Range *Model_float64HparamSearchSpace_float64Range `json:"range,omitempty"`
 
-	// Candidates of the double hyperparameter.
-	Candidates *Model_DoubleHparamSearchSpace_DoubleCandidates `json:"candidates,omitempty"`
+	// Candidates of the float64 hyperparameter.
+	Candidates *Model_float64HparamSearchSpace_float64Candidates `json:"candidates,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.v2.Model.DoubleHparamSearchSpace.DoubleCandidates
-type Model_DoubleHparamSearchSpace_DoubleCandidates struct {
-	// Candidates for the double parameter in increasing order.
-	Candidates []google_protobuf_DoubleValue `json:"candidates,omitempty"`
+// +kcc:proto=google.cloud.bigquery.v2.Model.float64HparamSearchSpace.float64Candidates
+type Model_float64HparamSearchSpace_float64Candidates struct {
+	// Candidates for the float64 parameter in increasing order.
+	Candidates []float64 `json:"candidates,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.v2.Model.DoubleHparamSearchSpace.DoubleRange
-type Model_DoubleHparamSearchSpace_DoubleRange struct {
-	// Min value of the double parameter.
-	Min *google_protobuf_DoubleValue `json:"min,omitempty"`
+// +kcc:proto=google.cloud.bigquery.v2.Model.float64HparamSearchSpace.float64Range
+type Model_float64HparamSearchSpace_float64Range struct {
+	// Min value of the float64 parameter.
+	Min *float64 `json:"min,omitempty"`
 
-	// Max value of the double parameter.
-	Max *google_protobuf_DoubleValue `json:"max,omitempty"`
+	// Max value of the float64 parameter.
+	Max *float64 `json:"max,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.EvaluationMetrics
@@ -3080,19 +3082,19 @@ type Model_GlobalExplanation_Explanation struct {
 	FeatureName *string `json:"featureName,omitempty"`
 
 	// Attribution of feature.
-	Attribution *google_protobuf_DoubleValue `json:"attribution,omitempty"`
+	Attribution *float64 `json:"attribution,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.HparamSearchSpaces
 type Model_HparamSearchSpaces struct {
 	// Learning rate of training jobs.
-	LearnRate *Model_DoubleHparamSearchSpace `json:"learnRate,omitempty"`
+	LearnRate *Model_float64HparamSearchSpace `json:"learnRate,omitempty"`
 
 	// L1 regularization coefficient.
-	L1Reg *Model_DoubleHparamSearchSpace `json:"l1Reg,omitempty"`
+	L1Reg *Model_float64HparamSearchSpace `json:"l1Reg,omitempty"`
 
 	// L2 regularization coefficient.
-	L2Reg *Model_DoubleHparamSearchSpace `json:"l2Reg,omitempty"`
+	L2Reg *Model_float64HparamSearchSpace `json:"l2Reg,omitempty"`
 
 	// Number of clusters for k-means.
 	NumClusters *Model_IntHparamSearchSpace `json:"numClusters,omitempty"`
@@ -3108,21 +3110,21 @@ type Model_HparamSearchSpaces struct {
 
 	// Dropout probability for dnn model training and boosted tree models
 	//  using dart booster.
-	Dropout *Model_DoubleHparamSearchSpace `json:"dropout,omitempty"`
+	Dropout *Model_float64HparamSearchSpace `json:"dropout,omitempty"`
 
 	// Maximum depth of a tree for boosted tree models.
 	MaxTreeDepth *Model_IntHparamSearchSpace `json:"maxTreeDepth,omitempty"`
 
 	// Subsample the training data to grow tree to prevent overfitting for
 	//  boosted tree models.
-	Subsample *Model_DoubleHparamSearchSpace `json:"subsample,omitempty"`
+	Subsample *Model_float64HparamSearchSpace `json:"subsample,omitempty"`
 
 	// Minimum split loss for boosted tree models.
-	MinSplitLoss *Model_DoubleHparamSearchSpace `json:"minSplitLoss,omitempty"`
+	MinSplitLoss *Model_float64HparamSearchSpace `json:"minSplitLoss,omitempty"`
 
 	// Hyperparameter for matrix factoration when implicit feedback type is
 	//  specified.
-	WalsAlpha *Model_DoubleHparamSearchSpace `json:"walsAlpha,omitempty"`
+	WalsAlpha *Model_float64HparamSearchSpace `json:"walsAlpha,omitempty"`
 
 	// Booster type for boosted tree models.
 	BoosterType *Model_StringHparamSearchSpace `json:"boosterType,omitempty"`
@@ -3141,13 +3143,13 @@ type Model_HparamSearchSpaces struct {
 
 	// Subsample ratio of columns when constructing each tree for boosted tree
 	//  models.
-	ColsampleBytree *Model_DoubleHparamSearchSpace `json:"colsampleBytree,omitempty"`
+	ColsampleBytree *Model_float64HparamSearchSpace `json:"colsampleBytree,omitempty"`
 
 	// Subsample ratio of columns for each level for boosted tree models.
-	ColsampleBylevel *Model_DoubleHparamSearchSpace `json:"colsampleBylevel,omitempty"`
+	ColsampleBylevel *Model_float64HparamSearchSpace `json:"colsampleBylevel,omitempty"`
 
 	// Subsample ratio of columns for each node(split) for boosted tree models.
-	ColsampleBynode *Model_DoubleHparamSearchSpace `json:"colsampleBynode,omitempty"`
+	ColsampleBynode *Model_float64HparamSearchSpace `json:"colsampleBynode,omitempty"`
 
 	// Activation functions of neural network models.
 	ActivationFn *Model_StringHparamSearchSpace `json:"activationFn,omitempty"`
@@ -3185,10 +3187,10 @@ type Model_HparamTuningTrial struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 
 	// Loss computed on the training data at the end of trial.
-	TrainingLoss *google_protobuf_DoubleValue `json:"trainingLoss,omitempty"`
+	TrainingLoss *float64 `json:"trainingLoss,omitempty"`
 
 	// Loss computed on the eval data at the end of trial.
-	EvalLoss *google_protobuf_DoubleValue `json:"evalLoss,omitempty"`
+	EvalLoss *float64 `json:"evalLoss,omitempty"`
 
 	// Hyperparameter tuning evaluation metrics of this trial calculated on the
 	//  eval data. Unlike evaluation_metrics, only the fields corresponding to
@@ -3253,7 +3255,7 @@ type Model_MultiClassClassificationMetrics struct {
 type Model_MultiClassClassificationMetrics_ConfusionMatrix struct {
 	// Confidence threshold used when computing the entries of the
 	//  confusion matrix.
-	ConfidenceThreshold *google_protobuf_DoubleValue `json:"confidenceThreshold,omitempty"`
+	ConfidenceThreshold *float64 `json:"confidenceThreshold,omitempty"`
 
 	// One row per actual label.
 	Rows []Model_MultiClassClassificationMetrics_ConfusionMatrix_Row `json:"rows,omitempty"`
@@ -3287,40 +3289,40 @@ type Model_PcaSolverOptionEnums struct {
 type Model_RankingMetrics struct {
 	// Calculates a precision per user for all the items by ranking them and
 	//  then averages all the precisions across all the users.
-	MeanAveragePrecision *google_protobuf_DoubleValue `json:"meanAveragePrecision,omitempty"`
+	MeanAveragePrecision *float64 `json:"meanAveragePrecision,omitempty"`
 
 	// Similar to the mean squared error computed in regression and explicit
 	//  recommendation models except instead of computing the rating directly,
 	//  the output from evaluate is computed against a preference which is 1 or 0
 	//  depending on if the rating exists or not.
-	MeanSquaredError *google_protobuf_DoubleValue `json:"meanSquaredError,omitempty"`
+	MeanSquaredError *float64 `json:"meanSquaredError,omitempty"`
 
 	// A metric to determine the goodness of a ranking calculated from the
 	//  predicted confidence by comparing it to an ideal rank measured by the
 	//  original ratings.
-	NormalizedDiscountedCumulativeGain *google_protobuf_DoubleValue `json:"normalizedDiscountedCumulativeGain,omitempty"`
+	NormalizedDiscountedCumulativeGain *float64 `json:"normalizedDiscountedCumulativeGain,omitempty"`
 
 	// Determines the goodness of a ranking by computing the percentile rank
 	//  from the predicted confidence and dividing it by the original rank.
-	AverageRank *google_protobuf_DoubleValue `json:"averageRank,omitempty"`
+	AverageRank *float64 `json:"averageRank,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.RegressionMetrics
 type Model_RegressionMetrics struct {
 	// Mean absolute error.
-	MeanAbsoluteError *google_protobuf_DoubleValue `json:"meanAbsoluteError,omitempty"`
+	MeanAbsoluteError *float64 `json:"meanAbsoluteError,omitempty"`
 
 	// Mean squared error.
-	MeanSquaredError *google_protobuf_DoubleValue `json:"meanSquaredError,omitempty"`
+	MeanSquaredError *float64 `json:"meanSquaredError,omitempty"`
 
 	// Mean squared log error.
-	MeanSquaredLogError *google_protobuf_DoubleValue `json:"meanSquaredLogError,omitempty"`
+	MeanSquaredLogError *float64 `json:"meanSquaredLogError,omitempty"`
 
 	// Median absolute error.
-	MedianAbsoluteError *google_protobuf_DoubleValue `json:"medianAbsoluteError,omitempty"`
+	MedianAbsoluteError *float64 `json:"medianAbsoluteError,omitempty"`
 
 	// R^2 score. This corresponds to r2_score in ML.EVALUATE.
-	RSquared *google_protobuf_DoubleValue `json:"rSquared,omitempty"`
+	RSquared *float64 `json:"rSquared,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.SeasonalPeriod
@@ -3376,16 +3378,16 @@ type Model_TrainingRun struct {
 // +kcc:proto=google.cloud.bigquery.v2.Model.TrainingRun.IterationResult
 type Model_TrainingRun_IterationResult struct {
 	// Index of the iteration, 0 based.
-	Index *google_protobuf_Int32Value `json:"index,omitempty"`
+	Index *int32 `json:"index,omitempty"`
 
 	// Time taken to run the iteration in milliseconds.
 	DurationMs *int64 `json:"durationMs,omitempty"`
 
 	// Loss computed on the training data at the end of iteration.
-	TrainingLoss *google_protobuf_DoubleValue `json:"trainingLoss,omitempty"`
+	TrainingLoss *float64 `json:"trainingLoss,omitempty"`
 
 	// Loss computed on the eval data at the end of iteration.
-	EvalLoss *google_protobuf_DoubleValue `json:"evalLoss,omitempty"`
+	EvalLoss *float64 `json:"evalLoss,omitempty"`
 
 	// Learn rate used for this iteration.
 	LearnRate *float64 `json:"learnRate,omitempty"`
@@ -3413,14 +3415,14 @@ type Model_TrainingRun_IterationResult_ArimaResult struct {
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ArimaResult.ArimaCoefficients
 type Model_TrainingRun_IterationResult_ArimaResult_ArimaCoefficients struct {
-	// Auto-regressive coefficients, an array of double.
+	// Auto-regressive coefficients, an array of float64.
 	AutoRegressiveCoefficients []float64 `json:"autoRegressiveCoefficients,omitempty"`
 
-	// Moving-average coefficients, an array of double.
+	// Moving-average coefficients, an array of float64.
 	MovingAverageCoefficients []float64 `json:"movingAverageCoefficients,omitempty"`
 
-	// Intercept coefficient, just a double not an array.
-	InterceptCoefficient *google_protobuf_DoubleValue `json:"interceptCoefficient,omitempty"`
+	// Intercept coefficient, just a float64 not an array.
+	InterceptCoefficient *float64 `json:"interceptCoefficient,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ArimaResult.ArimaModelInfo
@@ -3436,7 +3438,7 @@ type Model_TrainingRun_IterationResult_ArimaResult_ArimaModelInfo struct {
 
 	// Whether Arima model fitted with drift or not. It is always false
 	//  when d is not 1.
-	HasDrift *google_protobuf_BoolValue `json:"hasDrift,omitempty"`
+	HasDrift *bool `json:"hasDrift,omitempty"`
 
 	// The time_series_id value for this time series. It will be one of
 	//  the unique values from the time_series_id_column specified during
@@ -3458,15 +3460,15 @@ type Model_TrainingRun_IterationResult_ArimaResult_ArimaModelInfo struct {
 
 	// If true, holiday_effect is a part of time series decomposition
 	//  result.
-	HasHolidayEffect *google_protobuf_BoolValue `json:"hasHolidayEffect,omitempty"`
+	HasHolidayEffect *bool `json:"hasHolidayEffect,omitempty"`
 
 	// If true, spikes_and_dips is a part of time series decomposition
 	//  result.
-	HasSpikesAndDips *google_protobuf_BoolValue `json:"hasSpikesAndDips,omitempty"`
+	HasSpikesAndDips *bool `json:"hasSpikesAndDips,omitempty"`
 
 	// If true, step_changes is a part of time series decomposition
 	//  result.
-	HasStepChanges *google_protobuf_BoolValue `json:"hasStepChanges,omitempty"`
+	HasStepChanges *bool `json:"hasStepChanges,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo
@@ -3476,7 +3478,7 @@ type Model_TrainingRun_IterationResult_ClusterInfo struct {
 
 	// Cluster radius, the average distance from centroid
 	//  to each point assigned to the cluster.
-	ClusterRadius *google_protobuf_DoubleValue `json:"clusterRadius,omitempty"`
+	ClusterRadius *float64 `json:"clusterRadius,omitempty"`
 
 	// Cluster size, the total number of points assigned to the cluster.
 	ClusterSize *int64 `json:"clusterSize,omitempty"`
@@ -3489,14 +3491,14 @@ type Model_TrainingRun_IterationResult_PrincipalComponentInfo struct {
 
 	// Explained variance by this principal component, which is simply the
 	//  eigenvalue.
-	ExplainedVariance *google_protobuf_DoubleValue `json:"explainedVariance,omitempty"`
+	ExplainedVariance *float64 `json:"explainedVariance,omitempty"`
 
 	// Explained_variance over the total explained variance.
-	ExplainedVarianceRatio *google_protobuf_DoubleValue `json:"explainedVarianceRatio,omitempty"`
+	ExplainedVarianceRatio *float64 `json:"explainedVarianceRatio,omitempty"`
 
 	// The explained_variance is pre-ordered in the descending order to
 	//  compute the cumulative explained variance ratio.
-	CumulativeExplainedVarianceRatio *google_protobuf_DoubleValue `json:"cumulativeExplainedVarianceRatio,omitempty"`
+	CumulativeExplainedVarianceRatio *float64 `json:"cumulativeExplainedVarianceRatio,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions
@@ -3512,23 +3514,23 @@ type Model_TrainingRun_TrainingOptions struct {
 	LearnRate *float64 `json:"learnRate,omitempty"`
 
 	// L1 regularization coefficient.
-	L1Regularization *google_protobuf_DoubleValue `json:"l1Regularization,omitempty"`
+	L1Regularization *float64 `json:"l1Regularization,omitempty"`
 
 	// L2 regularization coefficient.
-	L2Regularization *google_protobuf_DoubleValue `json:"l2Regularization,omitempty"`
+	L2Regularization *float64 `json:"l2Regularization,omitempty"`
 
 	// When early_stop is true, stops training when accuracy improvement is
 	//  less than 'min_relative_progress'. Used only for iterative training
 	//  algorithms.
-	MinRelativeProgress *google_protobuf_DoubleValue `json:"minRelativeProgress,omitempty"`
+	MinRelativeProgress *float64 `json:"minRelativeProgress,omitempty"`
 
 	// Whether to train a model from the last checkpoint.
-	WarmStart *google_protobuf_BoolValue `json:"warmStart,omitempty"`
+	WarmStart *bool `json:"warmStart,omitempty"`
 
 	// Whether to stop early when the loss doesn't improve significantly
 	//  any more (compared to min_relative_progress). Used only for iterative
 	//  training algorithms.
-	EarlyStop *google_protobuf_BoolValue `json:"earlyStop,omitempty"`
+	EarlyStop *bool `json:"earlyStop,omitempty"`
 
 	// Name of input label columns in training data.
 	InputLabelColumns []string `json:"inputLabelColumns,omitempty"`
@@ -3537,7 +3539,7 @@ type Model_TrainingRun_TrainingOptions struct {
 	DataSplitMethod *string `json:"dataSplitMethod,omitempty"`
 
 	// The fraction of evaluation data over the whole input data. The rest
-	//  of data will be used as training data. The format should be double.
+	//  of data will be used as training data. The format should be float64.
 	//  Accurate to two decimal places.
 	//  Default value is 0.2.
 	DataSplitEvalFraction *float64 `json:"dataSplitEvalFraction,omitempty"`
@@ -3561,7 +3563,7 @@ type Model_TrainingRun_TrainingOptions struct {
 	//  strategy.
 	InitialLearnRate *float64 `json:"initialLearnRate,omitempty"`
 
-	// TODO: map type string double for label_class_weights
+	// TODO: map type string float64 for label_class_weights
 
 	// User column specified for matrix factorization models.
 	UserColumn *string `json:"userColumn,omitempty"`
@@ -3589,7 +3591,7 @@ type Model_TrainingRun_TrainingOptions struct {
 	BatchSize *int64 `json:"batchSize,omitempty"`
 
 	// Dropout probability for dnn models.
-	Dropout *google_protobuf_DoubleValue `json:"dropout,omitempty"`
+	Dropout *float64 `json:"dropout,omitempty"`
 
 	// Maximum depth of a tree for boosted tree models.
 	MaxTreeDepth *int64 `json:"maxTreeDepth,omitempty"`
@@ -3599,7 +3601,7 @@ type Model_TrainingRun_TrainingOptions struct {
 	Subsample *float64 `json:"subsample,omitempty"`
 
 	// Minimum split loss for boosted tree models.
-	MinSplitLoss *google_protobuf_DoubleValue `json:"minSplitLoss,omitempty"`
+	MinSplitLoss *float64 `json:"minSplitLoss,omitempty"`
 
 	// Booster type for boosted tree models.
 	BoosterType *string `json:"boosterType,omitempty"`
@@ -3621,14 +3623,14 @@ type Model_TrainingRun_TrainingOptions struct {
 
 	// Subsample ratio of columns when constructing each tree for boosted tree
 	//  models.
-	ColsampleBytree *google_protobuf_DoubleValue `json:"colsampleBytree,omitempty"`
+	ColsampleBytree *float64 `json:"colsampleBytree,omitempty"`
 
 	// Subsample ratio of columns for each level for boosted tree models.
-	ColsampleBylevel *google_protobuf_DoubleValue `json:"colsampleBylevel,omitempty"`
+	ColsampleBylevel *float64 `json:"colsampleBylevel,omitempty"`
 
 	// Subsample ratio of columns for each node(split) for boosted tree
 	//  models.
-	ColsampleBynode *google_protobuf_DoubleValue `json:"colsampleBynode,omitempty"`
+	ColsampleBynode *float64 `json:"colsampleBynode,omitempty"`
 
 	// Num factors specified for matrix factorization models.
 	NumFactors *int64 `json:"numFactors,omitempty"`
@@ -3639,7 +3641,7 @@ type Model_TrainingRun_TrainingOptions struct {
 
 	// Hyperparameter for matrix factoration when implicit feedback type is
 	//  specified.
-	WalsAlpha *google_protobuf_DoubleValue `json:"walsAlpha,omitempty"`
+	WalsAlpha *float64 `json:"walsAlpha,omitempty"`
 
 	// The method used to initialize the centroids for kmeans algorithm.
 	KmeansInitializationMethod *string `json:"kmeansInitializationMethod,omitempty"`
@@ -3655,7 +3657,7 @@ type Model_TrainingRun_TrainingOptions struct {
 	TimeSeriesDataColumn *string `json:"timeSeriesDataColumn,omitempty"`
 
 	// Whether to enable auto ARIMA or not.
-	AutoArima *google_protobuf_BoolValue `json:"autoArima,omitempty"`
+	AutoArima *bool `json:"autoArima,omitempty"`
 
 	// A specification of the non-seasonal part of the ARIMA model: the three
 	//  components (p, d, q) are the AR order, the degree of differencing, and
@@ -3667,10 +3669,10 @@ type Model_TrainingRun_TrainingOptions struct {
 
 	// Whether or not p-value test should be computed for this model. Only
 	//  available for linear and logistic regression models.
-	CalculatePValues *google_protobuf_BoolValue `json:"calculatePValues,omitempty"`
+	CalculatePValues *bool `json:"calculatePValues,omitempty"`
 
 	// Include drift when fitting an ARIMA model.
-	IncludeDrift *google_protobuf_BoolValue `json:"includeDrift,omitempty"`
+	IncludeDrift *bool `json:"includeDrift,omitempty"`
 
 	// The geographical region based on which the holidays are considered in
 	//  time series modeling. If a valid value is specified, then holiday
@@ -3705,17 +3707,17 @@ type Model_TrainingRun_TrainingOptions struct {
 	HparamTuningObjectives []string `json:"hparamTuningObjectives,omitempty"`
 
 	// If true, perform decompose time series and save the results.
-	DecomposeTimeSeries *google_protobuf_BoolValue `json:"decomposeTimeSeries,omitempty"`
+	DecomposeTimeSeries *bool `json:"decomposeTimeSeries,omitempty"`
 
 	// If true, clean spikes and dips in the input time series.
-	CleanSpikesAndDips *google_protobuf_BoolValue `json:"cleanSpikesAndDips,omitempty"`
+	CleanSpikesAndDips *bool `json:"cleanSpikesAndDips,omitempty"`
 
 	// If true, detect step changes and make data adjustment in the input time
 	//  series.
-	AdjustStepChanges *google_protobuf_BoolValue `json:"adjustStepChanges,omitempty"`
+	AdjustStepChanges *bool `json:"adjustStepChanges,omitempty"`
 
 	// If true, enable global explanation during training.
-	EnableGlobalExplain *google_protobuf_BoolValue `json:"enableGlobalExplain,omitempty"`
+	EnableGlobalExplain *bool `json:"enableGlobalExplain,omitempty"`
 
 	// Number of paths for the sampled Shapley explain method.
 	SampledShapleyNumPaths *int64 `json:"sampledShapleyNumPaths,omitempty"`
@@ -3776,10 +3778,10 @@ type Model_TrainingRun_TrainingOptions struct {
 
 	// Whether to use approximate feature contribution method in XGBoost model
 	//  explanation for global explain.
-	ApproxGlobalFeatureContrib *google_protobuf_BoolValue `json:"approxGlobalFeatureContrib,omitempty"`
+	ApproxGlobalFeatureContrib *bool `json:"approxGlobalFeatureContrib,omitempty"`
 
 	// Whether the model should include intercept during model training.
-	FitIntercept *google_protobuf_BoolValue `json:"fitIntercept,omitempty"`
+	FitIntercept *bool `json:"fitIntercept,omitempty"`
 
 	// Number of principal components to keep in the PCA model. Must be <= the
 	//  number of features.
@@ -3791,14 +3793,14 @@ type Model_TrainingRun_TrainingOptions struct {
 
 	// If true, scale the feature values by dividing the feature standard
 	//  deviation. Currently only apply to PCA.
-	ScaleFeatures *google_protobuf_BoolValue `json:"scaleFeatures,omitempty"`
+	ScaleFeatures *bool `json:"scaleFeatures,omitempty"`
 
 	// The solver for PCA.
 	PcaSolver *string `json:"pcaSolver,omitempty"`
 
 	// Whether to calculate class weights automatically based on the
 	//  popularity of each label.
-	AutoClassWeights *google_protobuf_BoolValue `json:"autoClassWeights,omitempty"`
+	AutoClassWeights *bool `json:"autoClassWeights,omitempty"`
 
 	// Activation function of the neural nets.
 	ActivationFn *string `json:"activationFn,omitempty"`
@@ -3810,7 +3812,7 @@ type Model_TrainingRun_TrainingOptions struct {
 	BudgetHours *float64 `json:"budgetHours,omitempty"`
 
 	// Whether to standardize numerical features. Default to true.
-	StandardizeFeatures *google_protobuf_BoolValue `json:"standardizeFeatures,omitempty"`
+	StandardizeFeatures *bool `json:"standardizeFeatures,omitempty"`
 
 	// L1 regularization coefficient to activations.
 	L1RegActivation *float64 `json:"l1RegActivation,omitempty"`
@@ -3841,11 +3843,11 @@ type ModelReference struct {
 type ParquetOptions struct {
 	// Optional. Indicates whether to infer Parquet ENUM logical type as STRING
 	//  instead of BYTES by default.
-	EnumAsString *google_protobuf_BoolValue `json:"enumAsString,omitempty"`
+	EnumAsString *bool `json:"enumAsString,omitempty"`
 
 	// Optional. Indicates whether to use schema inference specifically for
 	//  Parquet LIST logical type.
-	EnableListInference *google_protobuf_BoolValue `json:"enableListInference,omitempty"`
+	EnableListInference *bool `json:"enableListInference,omitempty"`
 
 	// Optional. Indicates how to represent a Parquet map if present.
 	MapTargetType *string `json:"mapTargetType,omitempty"`
@@ -3973,7 +3975,7 @@ type QueryParameterType struct {
 // +kcc:proto=google.cloud.bigquery.v2.QueryParameterValue
 type QueryParameterValue struct {
 	// Optional. The value of this value, if a simple scalar type.
-	Value *google_protobuf_StringValue `json:"value,omitempty"`
+	Value *string `json:"value,omitempty"`
 
 	// Optional. The array values, if this is an array type.
 	ArrayValues []QueryParameterValue `json:"arrayValues,omitempty"`
@@ -4195,7 +4197,7 @@ type Routine struct {
 	//  validation.
 	//
 	//  Default value is `TRUE`.
-	StrictMode *google_protobuf_BoolValue `json:"strictMode,omitempty"`
+	StrictMode *bool `json:"strictMode,omitempty"`
 
 	// Optional. Remote function specific options.
 	RemoteFunctionOptions *Routine_RemoteFunctionOptions `json:"remoteFunctionOptions,omitempty"`
@@ -4231,7 +4233,7 @@ type Routine_Argument struct {
 	//  For AGGREGATE_FUNCTION, if set to false, it is equivalent to adding "NOT
 	//  AGGREGATE" clause in DDL; Otherwise, it is equivalent to omitting "NOT
 	//  AGGREGATE" clause in DDL.
-	IsAggregate *google_protobuf_BoolValue `json:"isAggregate,omitempty"`
+	IsAggregate *bool `json:"isAggregate,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.Routine.RemoteFunctionOptions
@@ -4659,10 +4661,10 @@ type Table struct {
 	TableReference *TableReference `json:"tableReference,omitempty"`
 
 	// Optional. A descriptive name for this table.
-	FriendlyName *google_protobuf_StringValue `json:"friendlyName,omitempty"`
+	FriendlyName *string `json:"friendlyName,omitempty"`
 
 	// Optional. A user-friendly description of this table.
-	Description *google_protobuf_StringValue `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 
 	// The labels associated with this table. You can use these to organize and
 	//  group your tables. Label keys and values can be no longer than 63
@@ -4689,7 +4691,7 @@ type Table struct {
 	// Optional. If set to true, queries over this table require
 	//  a partition filter that can be used for partition elimination to be
 	//  specified.
-	RequirePartitionFilter *google_protobuf_BoolValue `json:"requirePartitionFilter,omitempty"`
+	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 
 	// Optional. The partition information for all table formats, including
 	//  managed partitioned tables, hive partitioned tables, iceberg partitioned,
@@ -4712,7 +4714,7 @@ type Table struct {
 
 	// Output only. The number of rows of data in this table, excluding any data
 	//  in the streaming buffer.
-	NumRows *google_protobuf_UInt64Value `json:"numRows,omitempty"`
+	NumRows *uint64 `json:"numRows,omitempty"`
 
 	// Output only. The time when this table was created, in milliseconds since
 	//  the epoch.
@@ -4786,7 +4788,7 @@ type Table struct {
 	//
 	//  * 'und:ci': undetermined locale, case insensitive.
 	//  * '': empty string. Default to case-sensitive behavior.
-	DefaultCollation *google_protobuf_StringValue `json:"defaultCollation,omitempty"`
+	DefaultCollation *string `json:"defaultCollation,omitempty"`
 
 	// Optional. Defines the default rounding mode specification of new decimal
 	//  fields (NUMERIC OR BIGNUMERIC) in the table. During table creation or
@@ -4924,7 +4926,7 @@ type TableFieldSchema struct {
 	Fields []TableFieldSchema `json:"fields,omitempty"`
 
 	// Optional. The field description. The maximum length is 1,024 characters.
-	Description *google_protobuf_StringValue `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 
 	// Optional. The policy tags attached to this field, used for field-level
 	//  access control. If not set, defaults to empty policy_tags.
@@ -4994,11 +4996,11 @@ type TableFieldSchema struct {
 	//
 	//  * 'und:ci': undetermined locale, case insensitive.
 	//  * '': empty string. Default to case-sensitive behavior.
-	Collation *google_protobuf_StringValue `json:"collation,omitempty"`
+	Collation *string `json:"collation,omitempty"`
 
 	// Optional. A SQL expression to specify the [default value]
 	//  (https://cloud.google.com/bigquery/docs/default-values) for this field.
-	DefaultValueExpression *google_protobuf_StringValue `json:"defaultValueExpression,omitempty"`
+	DefaultValueExpression *string `json:"defaultValueExpression,omitempty"`
 
 	// Optional. The subtype of the RANGE, if the type of this field is RANGE. If
 	//  the type is RANGE, this field is required. Values for the field element
@@ -5045,7 +5047,7 @@ type TableList struct {
 	Tables []ListFormatTable `json:"tables,omitempty"`
 
 	// The total number of tables in the dataset.
-	TotalItems *google_protobuf_Int32Value `json:"totalItems,omitempty"`
+	TotalItems *int32 `json:"totalItems,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.TableMetadataCacheUsage
@@ -5137,7 +5139,7 @@ type TimePartitioning struct {
 	//  The field must be a top-level TIMESTAMP or DATE field. Its mode must be
 	//  NULLABLE or REQUIRED.
 	//  A wrapper is used here because an empty string is an invalid value.
-	Field *google_protobuf_StringValue `json:"field,omitempty"`
+	Field *string `json:"field,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.TransformColumn
@@ -5156,12 +5158,12 @@ type TransformColumn struct {
 type UserDefinedFunctionResource struct {
 	// [Pick one] A code resource to load from a Google Cloud Storage URI
 	//  (gs://bucket/path).
-	ResourceUri *google_protobuf_StringValue `json:"resourceUri,omitempty"`
+	ResourceUri *string `json:"resourceUri,omitempty"`
 
 	// [Pick one] An inline resource that contains code for a user-defined
 	//  function (UDF). Providing a inline code resource is equivalent to providing
 	//  a URI for a file containing the same code.
-	InlineCode *google_protobuf_StringValue `json:"inlineCode,omitempty"`
+	InlineCode *string `json:"inlineCode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.VectorSearchStatistics
@@ -5190,7 +5192,7 @@ type ViewDefinition struct {
 	//
 	//  Queries and views that reference this view must use the same flag value.
 	//  A wrapper is used here because the default value is True.
-	UseLegacySql *google_protobuf_BoolValue `json:"useLegacySql,omitempty"`
+	UseLegacySql *bool `json:"useLegacySql,omitempty"`
 
 	// True if the column names are explicitly specified. For example by using the
 	//  'CREATE VIEW v(c1, c2) AS ...' syntax.

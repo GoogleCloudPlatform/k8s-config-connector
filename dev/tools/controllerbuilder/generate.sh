@@ -127,6 +127,14 @@ go run . generate-types  \
     --kind BigQueryDataset \
     --proto-resource Dataset
 
+# go run . generate-mapper \
+#     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+#     --service google.cloud.bigquery.v2 \
+#     --api-version bigquery.cnrm.cloud.google.com/v1beta1 \
+#     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+#     --output-dir ${OUTPUT_MAPPER} \
+#     --api-dir ${APIS_DIR}
+
 # BigQueryDataTransferConfig
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
