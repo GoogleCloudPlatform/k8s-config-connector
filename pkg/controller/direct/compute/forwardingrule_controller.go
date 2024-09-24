@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	"k8s.io/klog/v2"
 
@@ -30,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -38,11 +40,30 @@ import (
 const ctrlName = "forwardingrule-controller"
 
 func init() {
-	registry.RegisterModel(krm.ComputeForwardingRuleGVK, NewForwardingRuleModel)
+	rg := &ForwardingRUleReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.ComputeForwardingRuleGVK, NewForwardingRuleModel, rg)
 }
 
 func NewForwardingRuleModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &forwardingRuleModel{config: config}, nil
+}
+
+type ForwardingRUleReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
+
+var _ kccpredicate.ReconcileGate = &ForwardingRUleReconcileGate{}
+
+func (r *ForwardingRUleReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
+	obj := &krm.ComputeForwardingRule{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
+		return false
+	}
+	// Run the direct reconciler only when spec.Target.GoogleAPIBundle is specified
+	return obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIBundle != nil
 }
 
 type forwardingRuleModel struct {
@@ -110,7 +131,7 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 		obj.Spec.BackendServiceRef.External = backendServiceRef.External
 	}
 
-	// Get ip address, ip address is optional
+	// Get compute address, address is optional
 	if obj.Spec.IpAddress != nil && obj.Spec.IpAddress.AddressRef != nil {
 		computeAddressRef, err := ResolveComputeAddress(ctx, reader, obj, obj.Spec.IpAddress.AddressRef)
 		if err != nil {
@@ -295,6 +316,15 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
 	forwardingRule.Labels = desired.Labels
 
+	// API restriction: Cannot set labels during creation(by POST). But it can be set later by PATCH SetLabels.
+	// API error message: Labels are invalid in Private Service Connect Forwarding Rule.
+	// See GH issue for details: https://github.com/hashicorp/terraform-provider-google/issues/16255
+	target := direct.ValueOf(forwardingRule.Target)
+	// Remove labels for psc forwarding rule
+	if target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/") {
+		forwardingRule.Labels = nil
+	}
+
 	// Create forwarding rule(labels are not set during Insert)
 	var err error
 	op := &gcp.Operation{}
@@ -331,6 +361,10 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	}
 
 	// Set labels for the created forwarding rule
+	// Add labels back for psc forwarding rule
+	if target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/") {
+		forwardingRule.Labels = desired.Labels
+	}
 	if forwardingRule.Labels != nil {
 		op, err := a.setLabels(ctx, created.LabelFingerprint, forwardingRule.Labels)
 		if err != nil {
