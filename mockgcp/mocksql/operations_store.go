@@ -40,8 +40,13 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 
 	switch obj := obj.(type) {
 	case *pb.DatabaseInstance:
-		op.TargetId = obj.Name
-		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", op.TargetProject, op.TargetId)
+		if op.OperationType == pb.Operation_CREATE_REPLICA {
+			op.TargetId = obj.MasterInstanceName
+			op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", op.TargetProject, op.TargetId)
+		} else {
+			op.TargetId = obj.Name
+			op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", op.TargetProject, op.TargetId)
+		}
 	case *pb.User:
 		op.TargetId = obj.Instance
 		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", obj.Project, obj.Instance)
@@ -85,6 +90,7 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 		}
 
 		finished.Status = pb.Operation_DONE
+		finished.StartTime = timestamppb.New(time.Now())
 		finished.EndTime = timestamppb.New(time.Now())
 
 		if err != nil {

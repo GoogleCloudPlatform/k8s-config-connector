@@ -561,6 +561,7 @@ User-Agent: kcc/controller-manager
         "retentionUnit": "COUNT"
       },
       "enabled": true,
+      "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
       "startTime": "12:00",
       "transactionLogRetentionDays": 3
@@ -651,6 +652,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlinstance-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
@@ -953,14 +955,12 @@ User-Agent: kcc/controller-manager
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
       "startTime": "12:00",
       "transactionLogRetentionDays": 3
     },
-    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -991,7 +991,6 @@ User-Agent: kcc/controller-manager
       "sslMode": "ENCRYPTED_ONLY"
     },
     "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": false,
     "tier": "db-custom-1-3840",
@@ -1049,6 +1048,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlinstance-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",

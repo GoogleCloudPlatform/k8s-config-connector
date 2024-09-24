@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,19 +15,21 @@
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
-  labels:
-    label-one: "value-one"
-    label-two: "value-two"
-  name: sqlinstance-sample-${uniqueId}
+  name: sqlinstance-maintenancewindow-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
 spec:
+  databaseVersion: POSTGRES_15
   region: us-central1
-  databaseVersion: SQLSERVER_2017_EXPRESS
   settings:
-    diskAutoresize: false
-    diskSize: 20
+    # Location preference is not actually a required field. However, setting it for tests
+    # helps with with normalizing the GCP responses, because otherwise GCP chooses a zone
+    # preference based on availability. Therefore it could potentially vary if not
+    # explicity specified.
+    locationPreference:
+      zone: us-central1-a
+    maintenanceWindow:
+      day: 3
+      hour: 12
+      updateTrack: stable
     tier: db-custom-1-3840
-    sqlServerAuditConfig:
-      bucketRef:
-        name: storagebucket-${uniqueId}
-  rootPassword:
-    value: "1234"
