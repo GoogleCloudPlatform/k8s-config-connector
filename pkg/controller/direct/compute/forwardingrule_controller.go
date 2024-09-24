@@ -40,7 +40,7 @@ import (
 const ctrlName = "forwardingrule-controller"
 
 func init() {
-	rg := &ForwardingRUleReconcileGate{}
+	rg := &ForwardingRuleReconcileGate{}
 	registry.RegisterModelWithReconcileGate(krm.ComputeForwardingRuleGVK, NewForwardingRuleModel, rg)
 }
 
@@ -48,13 +48,13 @@ func NewForwardingRuleModel(ctx context.Context, config *config.ControllerConfig
 	return &forwardingRuleModel{config: config}, nil
 }
 
-type ForwardingRUleReconcileGate struct {
+type ForwardingRuleReconcileGate struct {
 	optIn kccpredicate.OptInToDirectReconciliation
 }
 
-var _ kccpredicate.ReconcileGate = &ForwardingRUleReconcileGate{}
+var _ kccpredicate.ReconcileGate = &ForwardingRuleReconcileGate{}
 
-func (r *ForwardingRUleReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+func (r *ForwardingRuleReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
 	if r.optIn.ShouldReconcile(o) {
 		return true
 	}
@@ -62,8 +62,8 @@ func (r *ForwardingRUleReconcileGate) ShouldReconcile(o *unstructured.Unstructur
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
 		return false
 	}
-	// Run the direct reconciler only when spec.Target.GoogleAPIBundle is specified
-	return obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIBundle != nil
+	// Run the direct reconciler only when spec.Target.GoogleAPIsBundle is specified
+	return obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil
 }
 
 type forwardingRuleModel struct {
