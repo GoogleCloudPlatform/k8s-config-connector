@@ -15,7 +15,7 @@
 apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
 kind: BigQueryAnalyticsHubDataExchange
 metadata:
-  name: bigqueryanalyticshubdataexchange-${uniqueId}
+  name: bigqueryanalyticshubdataexchange${uniqueId}
 spec:
   description: example data exchange
   displayName: my_data_exchange

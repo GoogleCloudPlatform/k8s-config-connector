@@ -36,59 +36,73 @@ import (
 )
 
 type BigQueryAnalyticsHubDataExchangeSpec struct {
-	/* Description of the data exchange. */
+	/* Optional. Description of the data exchange. The description must not contain Unicode non-characters as well as C0 and C1 control codes except tabs (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default value is an empty string. Max length: 2000 bytes. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Human-readable display name of the data exchange. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), and must not start or end with spaces. */
-	DisplayName string `json:"displayName"`
+	/* Optional. Type of discovery on the discovery page for all the listings under this exchange. Updating this field also updates (overwrites) the discovery_type field for all the listings under this exchange. */
+	// +optional
+	DiscoveryType *string `json:"discoveryType,omitempty"`
 
-	/* Documentation describing the data exchange. */
+	/* Required. Human-readable display name of the data exchange. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), ampersands (&) and must not start or end with spaces. Default value is an empty string. Max length: 63 bytes. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Optional. Documentation describing the data exchange. */
 	// +optional
 	Documentation *string `json:"documentation,omitempty"`
 
-	/* Base64 encoded image representing the data exchange. */
+	/* Optional. Base64 encoded image representing the data exchange. Max Size: 3.0MiB Expected image dimensions are 512x512 pixels, however the API only performs validation on size of the encoded data. Note: For byte fields, the content of the fields are base64-encoded (which increases the size of the data by 33-36%) when using JSON on the wire. */
 	// +optional
 	Icon *string `json:"icon,omitempty"`
 
 	/* Immutable. The name of the location this data exchange. */
 	Location string `json:"location"`
 
-	/* Email or URL of the primary point of contact of the data exchange. */
+	/* Output only. The resource name of the data exchange. e.g. `projects/myproject/locations/US/dataExchanges/123`. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Optional. Email or URL of the primary point of contact of the data exchange. Max Length: 1000 bytes. */
 	// +optional
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The dataExchangeId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. The BigQueryAnalyticsHubDataExchange name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type DataexchangeObservedStateStatus struct {
+	/* Number of listings contained in the data exchange. */
+	// +optional
+	ListingCount *int64 `json:"listingCount,omitempty"`
 }
 
 type BigQueryAnalyticsHubDataExchangeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryAnalyticsHubDataExchange's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Number of listings contained in the data exchange. */
+	/* A unique specifier for the BigQueryAnalyticsHubDataExchange resource in GCP. */
 	// +optional
-	ListingCount *int64 `json:"listingCount,omitempty"`
-
-	/* The resource name of the data exchange, for example:
-	"projects/myproject/locations/US/dataExchanges/123". */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *DataexchangeObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshubdataexchange;gcpbigqueryanalyticshubdataexchanges
+// +kubebuilder:resource:categories=gcp,shortName=
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
