@@ -314,14 +314,15 @@ spec:
                 items:
                   properties:
                     data:
-                      description: Data of the DNS Resource Record.
+                      description: Output only. Data of the DNS Resource Record.
                       type: string
                     name:
-                      description: Fully qualified name of the DNS Resource Record.
-                        E.g. '_acme-challenge.example.com'.
+                      description: Output only. Fully qualified name of the DNS Resource
+                        Record. e.g. `_acme-challenge.example.com`
                       type: string
                     type:
-                      description: Type of the DNS Resource Record.
+                      description: Output only. Type of the DNS Resource Record. Currently
+                        always set to "CNAME".
                       type: string
                   type: object
                 type: array
