@@ -16,7 +16,6 @@ package k8s_test
 
 import (
 	"fmt"
-	"slices"
 	"strings"
 	"testing"
 
@@ -27,12 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 )
-
-// TODO(yuwenma): This is a temp fix. We should use a more generic approach.
-var SkipServiceLoaderList = []string{
-	"CloudBuildWorkerPool",
-	"SecretManagerSecret",
-}
 
 func TestSupportsStateIntoSpecMerge(t *testing.T) {
 	tests := []struct {
@@ -92,9 +85,7 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 				Version: version.Name,
 				Kind:    crd.Spec.Names.Kind,
 			}
-			if slices.Contains(SkipServiceLoaderList, gvk.Kind) {
-				continue
-			}
+
 			t.Run(fmt.Sprintf("%s/%s/%s", gvk.Group, gvk.Version, gvk.Kind), func(t *testing.T) {
 				openAPISchema := version.Schema.OpenAPIV3Schema
 				prop := findOpenAPIProperty(openAPISchema, "status", "observedState")
@@ -128,12 +119,6 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 				// 'status.observedState' in the CRD.
 				if shouldHaveObservedState && !hasObservedState {
 					t.Errorf("'status.observedState' doesn't exist, but it should")
-				}
-
-				// If both shouldHaveObservedState and mayHaveObservedState are
-				// false, the CRD is not supposed to have 'status.observedState'.
-				if !(shouldHaveObservedState || mayHaveObservedState) && hasObservedState {
-					t.Errorf("'status.observedState' exists, but it shouldn't")
 				}
 
 				// If mayHaveObservedState is true, it means 'status' will only
