@@ -82,6 +82,9 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 	if obj.NetworkTier == nil {
 		obj.NetworkTier = PtrTo("PREMIUM")
 	}
+	if *obj.LoadBalancingScheme == "" {
+		obj.LoadBalancingScheme = nil
+	}
 	if isPSCForwardingRule(obj) {
 		var num uint64 = 111111111111
 		obj.PscConnectionId = &num
@@ -158,7 +161,7 @@ func (s *GlobalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteGlob
 
 	var opType *string
 	if isPSCForwardingRule(deleted) {
-		opType = PtrTo("deletePSCServiceEndpoint")
+		opType = PtrTo("deletePscForwardingRule")
 	} else {
 		opType = PtrTo("delete")
 	}

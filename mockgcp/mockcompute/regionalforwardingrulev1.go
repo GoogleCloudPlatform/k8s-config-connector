@@ -82,6 +82,9 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	if obj.NetworkTier == nil {
 		obj.NetworkTier = PtrTo("PREMIUM")
 	}
+	if *obj.LoadBalancingScheme == "" {
+		obj.LoadBalancingScheme = nil
+	}
 
 	// pattern: \d+(?:-\d+)?
 	if obj.PortRange != nil {
