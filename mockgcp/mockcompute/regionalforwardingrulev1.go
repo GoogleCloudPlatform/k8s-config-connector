@@ -211,7 +211,7 @@ func (s *RegionalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTa
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("setTarget"),
+		OperationType: PtrTo("SetTarget"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {

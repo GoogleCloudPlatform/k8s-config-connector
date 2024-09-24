@@ -234,7 +234,7 @@ func (s *GlobalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTarg
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("setTarget"),
+		OperationType: PtrTo("SetTarget"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
