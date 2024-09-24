@@ -1,9 +1,8 @@
-apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecret
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryNamespace
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -11,15 +10,14 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
-  name: secretmanagersecret-${uniqueId}
+    label-one: value-two
+  name: servicedirectory-namespace-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  replication:
-    userManaged:
-      replicas:
-      - location: us-central1
-  resourceID: secretmanagersecret-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: servicedirectory-namespace-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -27,5 +25,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}
+  name: projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}
   observedGeneration: 2
