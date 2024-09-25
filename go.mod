@@ -22,6 +22,7 @@ require (
 	cloud.google.com/go/resourcemanager v1.10.0
 	cloud.google.com/go/securesourcemanager v1.1.1
 	cloud.google.com/go/security v1.18.0
+	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
@@ -60,10 +61,10 @@ require (
 	golang.org/x/oauth2 v0.22.0
 	golang.org/x/sync v0.8.0
 	golang.org/x/time v0.6.0
-	google.golang.org/api v0.194.0
+	google.golang.org/api v0.196.0
 	google.golang.org/genproto v0.0.0-20240903143218-8af14fe29dc1
-	google.golang.org/genproto/googleapis/api v0.0.0-20240827150818-7e3bb234dfed
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240827150818-7e3bb234dfed
+	google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1
 	google.golang.org/grpc v1.66.0
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
@@ -85,7 +86,7 @@ require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.16.0 // indirect
 	cloud.google.com/go v0.115.1 // indirect
-	cloud.google.com/go/auth v0.9.1 // indirect
+	cloud.google.com/go/auth v0.9.3 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
 	cloud.google.com/go/bigtable v1.31.0 // indirect
 	cloud.google.com/go/compute/metadata v0.5.0 // indirect

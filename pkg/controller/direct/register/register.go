@@ -32,4 +32,5 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/redis/cluster"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
 )

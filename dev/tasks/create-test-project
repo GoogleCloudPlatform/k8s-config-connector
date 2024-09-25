@@ -61,4 +61,5 @@ gcloud services enable \
   monitoring.googleapis.com \
   redis.googleapis.com \
   servicenetworking.googleapis.com \
-  sqladmin.googleapis.com
+  sqladmin.googleapis.com \
+  workstations.googleapis.com

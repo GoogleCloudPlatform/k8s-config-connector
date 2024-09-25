@@ -89,6 +89,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/servicedirectory/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/sql/v1beta4/*.proto \
+		./third_party/googleapis/mockgcp/cloud/workstations/v1/*.proto \
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
