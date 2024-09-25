@@ -135,7 +135,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -148,11 +147,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20240527.01_12",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -307,9 +305,6 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}"
     }
   ],
@@ -319,6 +314,35 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE_USER",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
 200 OK
@@ -370,11 +394,12 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not Found",
+        "message": "database \"projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "Not Found"
+    "message": "database \"projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -389,6 +414,35 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "instance": "sqlinstance-sample-${uniqueId}",
   "name": "sqldatabase-sample-${uniqueId}"
 }
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE_DATABASE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -489,7 +543,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -502,11 +555,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20240527.01_12",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -662,6 +714,35 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE_USER",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "endTime": "2024-04-01T12:34:56.123456Z",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
@@ -700,9 +781,7 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "passwordPolicy": {
-        "status": {}
-      },
+      "password": "password",
       "project": "${projectId}"
     }
   ],
@@ -734,7 +813,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -747,11 +825,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20240527.01_12",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -906,9 +983,7 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "passwordPolicy": {
-        "status": {}
-      },
+      "password": "password",
       "project": "${projectId}"
     }
   ],
@@ -940,7 +1015,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -953,11 +1027,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20240527.01_12",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1128,15 +1201,15 @@ X-Xss-Protection: 0
   "creationTime": "123456789",
   "hasCredential": true,
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/8d196667-d2ce-4a7b-a853-e02db0ea3efa"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/8d196667-d2ce-4a7b-a853-e02db0ea3efa?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F8d196667-d2ce-4a7b-a853-e02db0ea3efa
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -1159,15 +1232,15 @@ X-Xss-Protection: 0
   "creationTime": "123456789",
   "hasCredential": true,
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/8d196667-d2ce-4a7b-a853-e02db0ea3efa"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/8d196667-d2ce-4a7b-a853-e02db0ea3efa?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F8d196667-d2ce-4a7b-a853-e02db0ea3efa
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -1206,9 +1279,7 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "passwordPolicy": {
-        "status": {}
-      },
+      "password": "password",
       "project": "${projectId}"
     }
   ],
@@ -1240,7 +1311,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -1253,11 +1323,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20240527.01_12",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1405,6 +1474,35 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE_USER",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "endTime": "2024-04-01T12:34:56.123456Z",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
@@ -1465,6 +1563,35 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE_DATABASE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "endTime": "2024-04-01T12:34:56.123456Z",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
@@ -1474,7 +1601,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -1504,7 +1631,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -1517,11 +1643,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20240527.01_12",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
