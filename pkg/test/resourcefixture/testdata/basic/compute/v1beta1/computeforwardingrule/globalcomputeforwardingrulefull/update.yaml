@@ -25,7 +25,7 @@ spec:
     targetHTTPProxyRef:
       name: computetargethttpproxy-2-${uniqueId}
   # The 'ports', 'port_range', and 'allPorts' fields are mutually exclusive.
-  portRange: "80"
+  portRange: "90"
   loadBalancingScheme: INTERNAL_SELF_MANAGED
   ipAddress:
     ip: "0.0.0.0"
