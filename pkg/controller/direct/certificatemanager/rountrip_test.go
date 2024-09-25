@@ -47,6 +47,9 @@ func FuzzDNSAuthorizationSpec(f *testing.F) {
 		unimplementedFields.Insert(".dns_resource_record", ".type")
 		unimplementedFields.Insert(".dns_resource_record", ".data")
 
+		// Labels comes from KRM metadata instead of spec
+		unimplementedFields.Insert(".labels")
+
 		// Remove any output only or known-unimplemented fields
 		clearFields := &fuzz.ClearFields{
 			Paths: unimplementedFields.Union(outputFields),
@@ -54,7 +57,6 @@ func FuzzDNSAuthorizationSpec(f *testing.F) {
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 		r := &fuzz.ReplaceFields{}
 		r.Func = func(path string, val protoreflect.Value) (protoreflect.Value, bool) {
-			// TODO: Any values that must follow a pattern
 			return protoreflect.Value{}, false
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, r)

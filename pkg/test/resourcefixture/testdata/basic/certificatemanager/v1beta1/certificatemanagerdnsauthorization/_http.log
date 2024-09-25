@@ -34,7 +34,8 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
   "domain": "${uniqueId}.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -133,7 +134,8 @@ X-Xss-Protection: 0
   "domain": "${uniqueId}.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
   "type": 1,
@@ -152,7 +154,8 @@ x-goog-request-params: dns_authorization.name=projects%2F${projectId}%2Flocation
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one-updated",
-    "label-two": "value-two"
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}"
 }
@@ -253,7 +256,8 @@ X-Xss-Protection: 0
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one-updated",
-    "label-two": "value-two"
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
   "type": 1,

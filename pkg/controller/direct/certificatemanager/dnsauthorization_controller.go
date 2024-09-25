@@ -196,6 +196,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	for k, v := range a.desired.GetObjectMeta().GetLabels() {
 		resource.Labels[k] = v
 	}
+	resource.Labels["managed-by-cnrm"] = "true"
 
 	req := &certificatemanagerpb.CreateDnsAuthorizationRequest{
 		Parent:             a.id.Parent.String(),
@@ -236,6 +237,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
+	if len(updateMask.Paths) == 0 {
+		return nil
+	}
+
 	desired := a.desired.DeepCopy()
 	resource := CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -246,6 +251,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	for k, v := range a.desired.GetObjectMeta().GetLabels() {
 		resource.Labels[k] = v
 	}
+	resource.Labels["managed-by-cnrm"] = "true"
 
 	req := &certificatemanagerpb.UpdateDnsAuthorizationRequest{
 		UpdateMask:       updateMask,

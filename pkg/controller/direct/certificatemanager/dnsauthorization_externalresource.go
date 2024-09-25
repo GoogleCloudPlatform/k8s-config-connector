@@ -21,7 +21,7 @@ import (
 
 // The Identifier for ConfigConnector to track the CertificateManagerDNSAuthorization resource from the GCP service.
 type CertificateManagerDNSAuthorizationIdentity struct {
-	Parent           parent
+	Parent           *parent
 	DnsAuthorization string
 }
 
@@ -54,22 +54,20 @@ func asID(externalRef string) (*CertificateManagerDNSAuthorizationIdentity, erro
 	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
 	tokens := strings.Split(path, "/")
 
-	// TODO(user): Confirm the format of your resources, and verify it like the example below
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "DnsAuthorizations" {
-		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/DnsAuthorizations/<DnsAuthorization>, got %s",
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "dnsAuthorizations" {
+		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/dnsAuthorizations/<DnsAuthorization>, got %s",
 			serviceDomain, externalRef)
 	}
 	return &CertificateManagerDNSAuthorizationIdentity{
-		Parent:           parent{Project: tokens[1], Location: tokens[3]},
+		Parent:           &parent{Project: tokens[1], Location: tokens[3]},
 		DnsAuthorization: tokens[5],
 	}, nil
 }
 
 // BuildID builds the ID for ConfigConnector to track the CertificateManagerDNSAuthorization resource from the GCP service.
 func BuildID(project, location, resourceID string) *CertificateManagerDNSAuthorizationIdentity {
-	// TODO(user): Build resource identity from resource components, i.e. project, location, resource id
 	return &CertificateManagerDNSAuthorizationIdentity{
-		Parent:           parent{Project: project, Location: location},
+		Parent:           &parent{Project: project, Location: location},
 		DnsAuthorization: resourceID,
 	}
 }

@@ -33,7 +33,8 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
   "description": "first sample dns for testing creating a certificate with dns-auth",
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -140,7 +141,8 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
   "description": "second sample dns for testing creating a certificate with dns-auth",
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -575,7 +577,8 @@ X-Xss-Protection: 0
   },
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
   "type": 1,
@@ -672,7 +675,8 @@ X-Xss-Protection: 0
   },
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
   "type": 1,
