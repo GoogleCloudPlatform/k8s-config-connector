@@ -81,7 +81,11 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 	obj.CreationTime = now.Unix()
 	obj.LastModifiedTime = now.Unix()
 
-	buildServiceAccountId := func() string {
+	// Bigqueryconnections supports two types of SA.
+	// Primary SA is attached with pre-defined IAM roles, while the delegation SA doesn't include any roles.
+	// see https://cloud.google.com/iam/docs/service-agents#bigquery-connection-delegation-service-agent.
+
+	buildDelegationServiceAccountId := func() string {
 		letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 		b := make([]rune, 4)
 		for i := range b {
@@ -90,10 +94,30 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 		return fmt.Sprintf("bqcx-%s-%s@gcp-sa-bigquery-condel.iam.gserviceaccount.com", req.GetParent(), string(b))
 	}
 
-	obj.Properties = &pb.Connection_CloudResource{
-		CloudResource: &pb.CloudResourceProperties{
-			ServiceAccountId: buildServiceAccountId(),
-		},
+	buildPrimaryServiceAccountId := func() string {
+		return fmt.Sprintf("service-%s@gcp-sa-bigqueryconnection.iam.gserviceaccount.com", req.GetParent())
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudResource); ok {
+		obj.Properties = &pb.Connection_CloudResource{
+			CloudResource: &pb.CloudResourceProperties{
+				ServiceAccountId: buildDelegationServiceAccountId(),
+			},
+		}
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudSql); ok {
+		obj.HasCredential = true
+		if sql := req.Connection.GetCloudSql(); sql != nil {
+			obj.Properties = &pb.Connection_CloudSql{
+				CloudSql: &pb.CloudSqlProperties{
+					InstanceId:       sql.InstanceId,
+					Database:         sql.Database,
+					Type:             sql.Type,
+					ServiceAccountId: buildPrimaryServiceAccountId(),
+				},
+			}
+		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
