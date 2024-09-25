@@ -157,6 +157,25 @@ func StringTimestamp_ToProto(mapCtx *MapContext, s *string) *timestamppb.Timesta
 	return ts
 }
 
+func StringDuration_FromProto(mapCtx *MapContext, d *durationpb.Duration) *string {
+	if d == nil {
+		return nil
+	}
+	s := d.AsDuration().String()
+	return &s
+}
+
+func StringDuration_ToProto(mapCtx *MapContext, s *string) *durationpb.Duration {
+	if s == nil {
+		return nil
+	}
+	td, err := time.ParseDuration(*s)
+	if err != nil {
+		mapCtx.Errorf("invalid duration %q", *s)
+	}
+	return durationpb.New(td)
+}
+
 func PtrTo[T any](t T) *T {
 	return &t
 }
