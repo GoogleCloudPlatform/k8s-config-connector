@@ -654,6 +654,11 @@ func (in *CertificateManagerDNSAuthorizationStatus) DeepCopyInto(out *Certificat
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int64)

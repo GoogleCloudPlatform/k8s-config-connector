@@ -189,6 +189,7 @@ dnsResourceRecord:
 - data: string
   name: string
   type: string
+externalRef: string
 observedGeneration: integer
 ```
 
@@ -281,6 +282,13 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. Type of the DNS Resource Record. Currently always set to "CNAME".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
