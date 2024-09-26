@@ -79,6 +79,7 @@ type forwardingRuleAdapter struct {
 	globalForwardingRulesClient *gcp.GlobalForwardingRulesClient
 	desired                     *krm.ComputeForwardingRule
 	actual                      *computepb.ForwardingRule
+	reader                      client.Reader
 }
 
 var _ directbase.Adapter = &forwardingRuleAdapter{}
@@ -99,109 +100,6 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 	projectID, err := refs.ResolveProjectID(ctx, reader, u)
 	if err != nil {
 		return nil, err
-	}
-
-	// Get network
-	if obj.Spec.NetworkRef != nil {
-		networkRef, err := ResolveComputeNetwork(ctx, reader, obj, obj.Spec.NetworkRef)
-		if err != nil {
-			return nil, err
-
-		}
-		obj.Spec.NetworkRef.External = networkRef.External
-	}
-
-	// Get subnetwork
-	if obj.Spec.SubnetworkRef != nil {
-		subnetworkRef, err := ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.SubnetworkRef)
-		if err != nil {
-			return nil, err
-
-		}
-		obj.Spec.SubnetworkRef.External = subnetworkRef.External
-	}
-
-	// Get backend service
-	if obj.Spec.BackendServiceRef != nil {
-		backendServiceRef, err := ResolveComputeBackendService(ctx, reader, obj, obj.Spec.BackendServiceRef)
-		if err != nil {
-			return nil, err
-
-		}
-		obj.Spec.BackendServiceRef.External = backendServiceRef.External
-	}
-
-	// Get compute address, address is optional
-	if obj.Spec.IpAddress != nil && obj.Spec.IpAddress.AddressRef != nil {
-		computeAddressRef, err := ResolveComputeAddress(ctx, reader, obj, obj.Spec.IpAddress.AddressRef)
-		if err != nil {
-			return nil, err
-
-		}
-		obj.Spec.IpAddress.AddressRef.External = computeAddressRef.External
-	}
-
-	// Get target, target is optional
-	if obj.Spec.Target != nil {
-		// Get target ServiceAttachment
-		if obj.Spec.Target.ServiceAttachmentRef != nil {
-			serviceAttachmentRef, err := ResolveComputeServiceAttachment(ctx, reader, obj, obj.Spec.Target.ServiceAttachmentRef)
-			if err != nil {
-				return nil, err
-
-			}
-			obj.Spec.Target.ServiceAttachmentRef.External = serviceAttachmentRef.External
-		}
-
-		// Get target ComputeTargetHTTPProxy
-		if obj.Spec.Target.TargetHTTPProxyRef != nil {
-			targetHTTPProxyRef, err := ResolveComputeTargetHTTPProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPProxyRef)
-			if err != nil {
-				return nil, err
-
-			}
-			obj.Spec.Target.TargetHTTPProxyRef.External = targetHTTPProxyRef.External
-		}
-
-		// Get target ComputeTargetHTTPSProxy
-		if obj.Spec.Target.TargetHTTPSProxyRef != nil {
-			targetHTTPSProxyRef, err := ResolveComputeTargetHTTPSProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPSProxyRef)
-			if err != nil {
-				return nil, err
-
-			}
-			obj.Spec.Target.TargetHTTPSProxyRef.External = targetHTTPSProxyRef.External
-		}
-
-		// Get target TargetVPNGateway
-		if obj.Spec.Target.TargetVPNGatewayRef != nil {
-			targetVPNGatewayRef, err := ResolveComputeTargetVPNGateway(ctx, reader, obj, obj.Spec.Target.TargetVPNGatewayRef)
-			if err != nil {
-				return nil, err
-
-			}
-			obj.Spec.Target.TargetVPNGatewayRef.External = targetVPNGatewayRef.External
-		}
-
-		// Get target SSLProxy
-		if obj.Spec.Target.TargetSSLProxyRef != nil {
-			targetSSLProxyRef, err := ResolveComputeTargetSSLProxy(ctx, reader, obj, obj.Spec.Target.TargetSSLProxyRef)
-			if err != nil {
-				return nil, err
-
-			}
-			obj.Spec.Target.TargetSSLProxyRef.External = targetSSLProxyRef.External
-		}
-
-		// Get target TCPProxy
-		if obj.Spec.Target.TargetTCPProxyRef != nil {
-			targetTCPProxyRef, err := ResolveComputeTargetTCPProxy(ctx, reader, obj, obj.Spec.Target.TargetTCPProxyRef)
-			if err != nil {
-				return nil, err
-
-			}
-			obj.Spec.Target.TargetTCPProxyRef.External = targetTCPProxyRef.External
-		}
 	}
 
 	// Get location
@@ -244,6 +142,7 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 	forwardingRuleAdapter := &forwardingRuleAdapter{
 		id:      id,
 		desired: obj,
+		reader:  reader,
 	}
 
 	// Get GCP client
@@ -295,12 +194,18 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
+	var err error
 
 	if a.id.project == "" {
 		return fmt.Errorf("project is empty")
 	}
 	if a.id.forwardingRule == "" {
 		return fmt.Errorf("resourceID is empty")
+	}
+
+	err = resolveDependencies(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
 	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
@@ -326,7 +231,6 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	}
 
 	// Create forwarding rule(labels are not set during Insert)
-	var err error
 	op := &gcp.Operation{}
 	if a.id.location == "global" {
 		req := &computepb.InsertGlobalForwardingRuleRequest{
@@ -396,9 +300,15 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 
 func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
+	var err error
 
 	if a.id.forwardingRule == "" {
 		return fmt.Errorf("resourceID is empty")
+	}
+
+	err = resolveDependencies(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
 	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
@@ -415,7 +325,6 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 
 	// Patch only support update on networkTier field, which KCC does not support yet.
 	// Use setTarget and setLabels to update target and labels fields.
-	var err error
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
 	if !reflect.DeepEqual(forwardingRule.Labels, a.actual.Labels) {
