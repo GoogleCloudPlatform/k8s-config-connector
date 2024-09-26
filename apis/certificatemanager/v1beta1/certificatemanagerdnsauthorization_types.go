@@ -40,7 +40,6 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	// +required
 	ProjectRef refs.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	/* Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used. */
 	// +optional
 	Location string `json:"location"`
@@ -66,11 +65,9 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* NOTYET
 	// A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
-	*/
 
 	/* NOTYET
 	// ObservedState is the state of the resource as most recently observed in GCP.

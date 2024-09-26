@@ -238,9 +238,6 @@ spec:
                   location of the DnsAuthorization. If not specified, "global" is
                   used.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -334,6 +331,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the CertificateManagerDNSAuthorization
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
