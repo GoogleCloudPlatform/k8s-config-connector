@@ -233,6 +233,14 @@ spec:
                 x-kubernetes-validations:
                 - message: Domain field is immutable
                   rule: self == oldSelf
+              location:
+                description: Immutable. Optional. Location represents the geographical
+                  location of the DnsAuthorization. If not specified, "global" is
+                  used.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:

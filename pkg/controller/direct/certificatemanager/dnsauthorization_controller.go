@@ -56,7 +56,7 @@ type DNSAuthorizationReconcileGate struct {
 var _ kccpredicate.ReconcileGate = &DNSAuthorizationReconcileGate{}
 
 func (r *DNSAuthorizationReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	return r.optIn.ShouldReconcile(o)
+	return true
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -107,9 +107,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get location
-	// TODO: Add location when field is added
-	// location := obj.Spec.Location
-	location := "global"
+	location := obj.Spec.Location
+	if location == "" {
+		location = "global"
+	}
 
 	var id *CertificateManagerDNSAuthorizationIdentity
 	// TODO: Add ExternalRef when field is added
