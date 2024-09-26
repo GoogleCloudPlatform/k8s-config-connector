@@ -9,19 +9,22 @@ metadata:
   name: bigquerydataset${uniqueId}
 spec:
   access:
+  - domain: google.com
+    role: READER
   - role: OWNER
     specialGroup: projectOwners
+  - role: OWNER
+    userByEmail: user@google.com
   defaultCollation: und:ci
   defaultEncryptionConfiguration:
     kmsKeyRef:
       external: projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
-  defaultPartitionExpirationMs: 3600000
-  defaultTableExpirationMs: 3600000
-  description: Fully Configured BigQuery Dataset
-  friendlyName: bigquerydataset-fullyconfigured
-  isCaseInsensitive: true
+  defaultPartitionExpirationMs: 3800000
+  defaultTableExpirationMs: 3800000
+  description: Fully Configured BigQuery Dataset updated
+  friendlyName: bigquerydataset-fullyconfigured-updated
   location: US
-  maxTimeTravelHours: "72"
+  maxTimeTravelHours: "96"
   projectRef:
     external: ${projectId}
   resourceID: bigquerydataset${uniqueId}

@@ -7,26 +7,30 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: bigquerydataset${uniqueId}
   namespace: ${uniqueId}
 spec:
   access:
+  - domain: google.com
+    role: READER
   - role: OWNER
     specialGroup: projectOwners
-  defaultCollation: und:ci
+  - role: OWNER
+    userByEmail: user@google.com
+  defaultCollation: ""
   defaultEncryptionConfiguration:
     kmsKeyRef:
       name: kmscryptokey-${uniqueId}
-  defaultPartitionExpirationMs: 3600000
-  defaultTableExpirationMs: 3600000
-  description: Fully Configured BigQuery Dataset
-  friendlyName: bigquerydataset-fullyconfigured
-  isCaseInsensitive: true
+  defaultPartitionExpirationMs: 3800000
+  defaultTableExpirationMs: 3800000
+  description: Fully Configured BigQuery Dataset updated
+  friendlyName: bigquerydataset-fullyconfigured-updated
+  isCaseInsensitive: false
   location: US
-  maxTimeTravelHours: "72"
+  maxTimeTravelHours: "96"
   projectRef:
     external: ${projectId}
   resourceID: bigquerydataset${uniqueId}
@@ -41,5 +45,5 @@ status:
   creationTime: "1970-01-01T00:00:00Z"
   etag: abcdef123456
   lastModifiedTime: "1970-01-01T00:00:00Z"
-  observedGeneration: 2
+  observedGeneration: 3
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}
