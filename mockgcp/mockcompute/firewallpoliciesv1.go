@@ -16,11 +16,12 @@ package mockcompute
 
 import (
 	"context"
+	"strconv"
+	"strings"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"strconv"
-	"strings"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
@@ -224,6 +225,247 @@ func (s *FirewallPoliciesV1) Delete(ctx context.Context, req *pb.DeleteFirewallP
 	}
 	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
 		return deleted, nil
+	})
+}
+
+func (s *FirewallPoliciesV1) GetRule(ctx context.Context, req *pb.GetRuleFirewallPolicyRequest) (*pb.FirewallPolicyRule, error) {
+	reqName := "locations/global/firewallPolicies/" + req.GetFirewallPolicy()
+	name, err := s.parseFirewallPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.FirewallPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if obj.Rules == nil {
+		// add default rule
+		obj.Rules = []*pb.FirewallPolicyRule{
+			{
+				Action:        PtrTo("goto_next"),
+				Description:   PtrTo("default egress rule ipv6"),
+				Direction:     PtrTo("EGRESS"),
+				EnableLogging: PtrTo(false),
+				Kind:          PtrTo("compute#firewallPolicyRule"),
+				Match: &pb.FirewallPolicyRuleMatcher{
+					DestIpRanges: []string{"::/0"},
+					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+						{
+							IpProtocol: PtrTo("all"),
+						},
+					},
+				},
+				Priority:       PtrTo(int32(2147483644)),
+				RuleTupleCount: PtrTo(int32(2)),
+			},
+			{
+				Action:        PtrTo("goto_next"),
+				Description:   PtrTo("default ingress rule ipv6"),
+				Direction:     PtrTo("INGRESS"),
+				EnableLogging: PtrTo(false),
+				Kind:          PtrTo("compute#firewallPolicyRule"),
+				Match: &pb.FirewallPolicyRuleMatcher{
+					SrcIpRanges: []string{"::/0"},
+					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+						{
+							IpProtocol: PtrTo("all"),
+						},
+					},
+				},
+				Priority:       PtrTo(int32(2147483645)),
+				RuleTupleCount: PtrTo(int32(2)),
+			},
+			{
+				Action:        PtrTo("goto_next"),
+				Description:   PtrTo("default egress rule"),
+				Direction:     PtrTo("EGRESS"),
+				EnableLogging: PtrTo(false),
+				Kind:          PtrTo("compute#firewallPolicyRule"),
+				Match: &pb.FirewallPolicyRuleMatcher{
+					DestIpRanges: []string{"0.0.0.0/0"},
+					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+						{
+							IpProtocol: PtrTo("all"),
+						},
+					},
+				},
+				Priority:       PtrTo(int32(2147483646)),
+				RuleTupleCount: PtrTo(int32(2)),
+			},
+			{
+				Action:        PtrTo("goto_next"),
+				Description:   PtrTo("default ingress rule"),
+				Direction:     PtrTo("INGRESS"),
+				EnableLogging: PtrTo(false),
+				Kind:          PtrTo("compute#firewallPolicyRule"),
+				Match: &pb.FirewallPolicyRuleMatcher{
+					SrcIpRanges: []string{"0.0.0.0/0"},
+					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+						{
+							IpProtocol: PtrTo("all"),
+						},
+					},
+				},
+				Priority:       PtrTo(int32(2147483647)),
+				RuleTupleCount: PtrTo(int32(2)),
+			},
+		}
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
+	}
+
+	var rule *pb.FirewallPolicyRule
+	rules := obj.GetRules()
+
+	for _, r := range rules {
+		if r.Priority != nil && *r.Priority == *req.Priority {
+			rule = r
+		}
+	}
+	if rule == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'priority': '%d'. The firewall policy does not contain a rule at priority %d.", int(*req.Priority), int(*req.Priority))
+	}
+
+	return rule, nil
+}
+
+func (s *FirewallPoliciesV1) AddRule(ctx context.Context, req *pb.AddRuleFirewallPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/firewallPolicies/" + req.GetFirewallPolicy()
+	name, err := s.parseFirewallPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.FirewallPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	r := req.GetFirewallPolicyRuleResource()
+	// RuleTupleCount is output only, calculation of the complexity of a single firewall policy rule.
+	// Manually set different ruleTupleCount to match the realGCP log
+	if r.TargetResources != nil {
+		r.RuleTupleCount = PtrTo(int32(4))
+	} else {
+		r.RuleTupleCount = PtrTo(int32(2))
+	}
+	r.Kind = PtrTo("compute#firewallPolicyRule")
+	if r.Description == nil {
+		r.Description = PtrTo("")
+	}
+
+	obj.Rules = []*pb.FirewallPolicyRule{r}
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addFirewallRuleToFirewallPolicy"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *FirewallPoliciesV1) PatchRule(ctx context.Context, req *pb.PatchRuleFirewallPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/firewallPolicies/" + req.GetFirewallPolicy()
+
+	name, err := s.parseFirewallPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.FirewallPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	rules := []*pb.FirewallPolicyRule{}
+	for _, rule := range obj.Rules {
+		if rule.Priority != nil && *rule.Priority == *req.Priority {
+			// update the rule
+			r := req.GetFirewallPolicyRuleResource()
+			r.Priority = PtrTo(*rule.Priority)
+			// RuleTupleCount is output only, calculation of the complexity of a single firewall policy rule.
+			// Manually set different ruleTupleCount to match the realGCP log
+			if r.TargetResources != nil {
+				r.RuleTupleCount = PtrTo(int32(4))
+			} else {
+				r.RuleTupleCount = PtrTo(int32(2))
+			}
+			r.Kind = PtrTo("compute#firewallPolicyRule")
+			if r.Description == nil {
+				r.Description = PtrTo("")
+			}
+			rules = append(rules, r)
+		} else {
+			rules = append(rules, rule)
+		}
+	}
+
+	obj.Rules = rules
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patchFirewallRuleInFirewallPolicy"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+func (s *FirewallPoliciesV1) RemoveRule(ctx context.Context, req *pb.RemoveRuleFirewallPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/firewallPolicies/" + req.GetFirewallPolicy()
+	name, err := s.parseFirewallPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.FirewallPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	rules := []*pb.FirewallPolicyRule{}
+	for _, rule := range obj.Rules {
+		if rule.Priority != nil && *rule.Priority == *req.Priority {
+			// remove the rule
+			continue
+		} else {
+			rules = append(rules, rule)
+		}
+	}
+
+	obj.Rules = rules
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("removeFirewallRuleFromFirewallPolicy"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return obj, nil
 	})
 }
 

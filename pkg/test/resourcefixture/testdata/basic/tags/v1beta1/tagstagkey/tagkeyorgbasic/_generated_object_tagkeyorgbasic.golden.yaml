@@ -14,7 +14,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   description: For keyname resources.
-  parent: organizations/123450001
+  parent: organizations/${organizationID}
   resourceID: ${uniqueId}
   shortName: keyname${uniqueId}
 status:
