@@ -316,6 +316,7 @@ kind: CertificateManagerDNSAuthorization
 metadata:
   name: certificatemanagerdnsauthorization-sample
 spec:
+  location: us-central1
   description: sample dns authorization
   domain: subdomain.hashicorptest.com
   projectRef:
