@@ -35,6 +35,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ConnectionAccessRole struct {
+	/* The user’s AWS IAM Role that trusts the Google-owned AWS IAM user Connection. */
+	// +optional
+	IamRoleID *string `json:"iamRoleID,omitempty"`
+}
+
+type ConnectionAws struct {
+	/* Authentication using Google owned service account to assume into customer's AWS IAM Role. */
+	// +optional
+	AccessRole *ConnectionAccessRole `json:"accessRole,omitempty"`
+}
+
 type ConnectionCloudResource struct {
 }
 
@@ -67,6 +79,10 @@ type ConnectionCredential struct {
 }
 
 type BigQueryConnectionConnectionSpec struct {
+	/* Amazon Web Services (AWS) properties. */
+	// +optional
+	Aws *ConnectionAws `json:"aws,omitempty"`
+
 	/* Use Cloud Resource properties. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
@@ -92,6 +108,17 @@ type BigQueryConnectionConnectionSpec struct {
 	/* The BigQuery ConnectionID. This is a server-generated ID in the UUID format. If not provided, ConfigConnector will create a new Connection and store the UUID in `status.serviceGeneratedID` field. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type ConnectionAccessRoleStatus struct {
+	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's AWS IAM Role. */
+	// +optional
+	Identity *string `json:"identity,omitempty"`
+}
+
+type ConnectionAwsStatus struct {
+	// +optional
+	AccessRole *ConnectionAccessRoleStatus `json:"accessRole,omitempty"`
 }
 
 type ConnectionCloudResourceStatus struct {
@@ -121,6 +148,9 @@ type ConnectionCloudSqlStatus struct {
 }
 
 type ConnectionObservedStateStatus struct {
+	// +optional
+	Aws *ConnectionAwsStatus `json:"aws,omitempty"`
+
 	// +optional
 	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`
 
