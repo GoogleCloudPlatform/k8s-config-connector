@@ -64,71 +64,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		out.Region = *in.Spec.Region
 	}
 
-	if in.Spec.ReplicaConfiguration != nil {
-		replicaConfiguration := &api.ReplicaConfiguration{
-			Kind: "sql#replicaConfiguration",
-		}
-
-		if in.Spec.ReplicaConfiguration.FailoverTarget != nil {
-			replicaConfiguration.FailoverTarget = *in.Spec.ReplicaConfiguration.FailoverTarget
-		}
-
-		// todo: requires mysql
-		if in.Spec.ReplicaConfiguration.CaCertificate != nil ||
-			in.Spec.ReplicaConfiguration.ClientCertificate != nil ||
-			in.Spec.ReplicaConfiguration.ClientKey != nil ||
-			in.Spec.ReplicaConfiguration.ConnectRetryInterval != nil ||
-			in.Spec.ReplicaConfiguration.DumpFilePath != nil ||
-			in.Spec.ReplicaConfiguration.MasterHeartbeatPeriod != nil ||
-			in.Spec.ReplicaConfiguration.Password != nil ||
-			in.Spec.ReplicaConfiguration.SslCipher != nil ||
-			in.Spec.ReplicaConfiguration.Username != nil ||
-			in.Spec.ReplicaConfiguration.VerifyServerCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
-		}
-
-		if in.Spec.ReplicaConfiguration.CaCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.CaCertificate = *in.Spec.ReplicaConfiguration.CaCertificate
-		}
-
-		if in.Spec.ReplicaConfiguration.ClientCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.ClientCertificate = *in.Spec.ReplicaConfiguration.ClientCertificate
-		}
-
-		if in.Spec.ReplicaConfiguration.ClientKey != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.ClientKey = *in.Spec.ReplicaConfiguration.ClientKey
-		}
-
-		if in.Spec.ReplicaConfiguration.ConnectRetryInterval != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval = *in.Spec.ReplicaConfiguration.ConnectRetryInterval
-		}
-
-		if in.Spec.ReplicaConfiguration.DumpFilePath != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.DumpFilePath = *in.Spec.ReplicaConfiguration.DumpFilePath
-		}
-
-		if in.Spec.ReplicaConfiguration.MasterHeartbeatPeriod != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod = *in.Spec.ReplicaConfiguration.MasterHeartbeatPeriod
-		}
-
-		if in.Spec.ReplicaConfiguration.Password != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.Password = refs.replicaPassword
-		}
-
-		if in.Spec.ReplicaConfiguration.SslCipher != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.SslCipher = *in.Spec.ReplicaConfiguration.SslCipher
-		}
-
-		if in.Spec.ReplicaConfiguration.Username != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.Username = *in.Spec.ReplicaConfiguration.Username
-		}
-
-		if in.Spec.ReplicaConfiguration.VerifyServerCertificate != nil {
-			replicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate = *in.Spec.ReplicaConfiguration.VerifyServerCertificate
-		}
-
-		out.ReplicaConfiguration = replicaConfiguration
-	}
+	out.ReplicaConfiguration = InstanceReplicaConfigurationKRMToGCP(in.Spec.ReplicaConfiguration, refs)
 
 	if in.Spec.ResourceID != nil {
 		out.Name = *in.Spec.ResourceID
@@ -141,253 +77,34 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	}
 
 	out.Settings = &api.Settings{}
-
-	if in.Spec.Settings.ActivationPolicy != nil {
-		out.Settings.ActivationPolicy = *in.Spec.Settings.ActivationPolicy
-	}
-
-	if in.Spec.Settings.ActiveDirectoryConfig != nil {
-		// todo: requires sqlserver
-		// todo: requires private network
-		out.Settings.ActiveDirectoryConfig = &api.SqlActiveDirectoryConfig{
-			Domain: in.Spec.Settings.ActiveDirectoryConfig.Domain,
-		}
-	}
-
-	if in.Spec.Settings.AdvancedMachineFeatures != nil {
-		// todo: requires sqlserver
-		// todo: requires >= 6 cpu cores
-		out.Settings.AdvancedMachineFeatures = &api.AdvancedMachineFeatures{}
-		if in.Spec.Settings.AdvancedMachineFeatures.ThreadsPerCore != nil {
-			out.Settings.AdvancedMachineFeatures.ThreadsPerCore = *in.Spec.Settings.AdvancedMachineFeatures.ThreadsPerCore
-		}
-	}
-
-	if in.Spec.Settings.AuthorizedGaeApplications != nil {
-		// todo: deprecated
-		out.Settings.AuthorizedGaeApplications = in.Spec.Settings.AuthorizedGaeApplications
-	}
-
-	if in.Spec.Settings.AvailabilityType != nil {
-		out.Settings.AvailabilityType = *in.Spec.Settings.AvailabilityType
-	}
-
-	if in.Spec.Settings.BackupConfiguration != nil {
-		backupConfig := &api.BackupConfiguration{}
-
-		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings != nil {
-			retentionSettings := &api.BackupRetentionSettings{
-				RetainedBackups: in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups,
-			}
-			if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit != nil {
-				retentionSettings.RetentionUnit = *in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit
-			}
-			backupConfig.BackupRetentionSettings = retentionSettings
-		}
-
-		if in.Spec.Settings.BackupConfiguration.BinaryLogEnabled != nil {
-			// todo: requires mysql
-			backupConfig.BinaryLogEnabled = *in.Spec.Settings.BackupConfiguration.BinaryLogEnabled
-		}
-
-		if in.Spec.Settings.BackupConfiguration.Enabled != nil {
-			backupConfig.Enabled = *in.Spec.Settings.BackupConfiguration.Enabled
-		}
-
-		if in.Spec.Settings.BackupConfiguration.Location != nil {
-			backupConfig.Location = *in.Spec.Settings.BackupConfiguration.Location
-		}
-
-		if in.Spec.Settings.BackupConfiguration.PointInTimeRecoveryEnabled != nil {
-			backupConfig.PointInTimeRecoveryEnabled = *in.Spec.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
-		}
-
-		if in.Spec.Settings.BackupConfiguration.StartTime != nil {
-			backupConfig.StartTime = *in.Spec.Settings.BackupConfiguration.StartTime
-		}
-
-		if in.Spec.Settings.BackupConfiguration.TransactionLogRetentionDays != nil {
-			backupConfig.TransactionLogRetentionDays = *in.Spec.Settings.BackupConfiguration.TransactionLogRetentionDays
-		}
-
-		out.Settings.BackupConfiguration = backupConfig
-	}
-
-	if in.Spec.Settings.Collation != nil {
-		// todo: requires sqlserver
-		out.Settings.Collation = *in.Spec.Settings.Collation
-	}
-
-	if in.Spec.Settings.ConnectorEnforcement != nil {
-		out.Settings.ConnectorEnforcement = *in.Spec.Settings.ConnectorEnforcement
-	}
-
-	if in.Spec.Settings.CrashSafeReplication != nil {
-		// todo: deprecated
-		out.Settings.CrashSafeReplicationEnabled = *in.Spec.Settings.CrashSafeReplication
-	}
-
-	if in.Spec.Settings.DataCacheConfig != nil {
-		// todo: requires ENTERPRISE_PLUS edition
-		// todo: requires mysql or postgres
-		out.Settings.DataCacheConfig = &api.DataCacheConfig{
-			DataCacheEnabled: *in.Spec.Settings.DataCacheConfig.DataCacheEnabled,
-		}
-	}
-
-	if in.Spec.Settings.DatabaseFlags != nil {
-		dbFlags := []*api.DatabaseFlags{}
-		for _, dbFlag := range in.Spec.Settings.DatabaseFlags {
-			dbFlags = append(dbFlags, &api.DatabaseFlags{
-				Name:  dbFlag.Name,
-				Value: dbFlag.Value,
-			})
-		}
-		out.Settings.DatabaseFlags = dbFlags
-	}
-
-	if in.Spec.Settings.DeletionProtectionEnabled != nil {
-		out.Settings.DeletionProtectionEnabled = *in.Spec.Settings.DeletionProtectionEnabled
-	}
-
-	if in.Spec.Settings.DenyMaintenancePeriod != nil {
-		// todo: handle multiple periods (?)
-		out.Settings.DenyMaintenancePeriods = []*api.DenyMaintenancePeriod{
-			{
-				EndDate:   in.Spec.Settings.DenyMaintenancePeriod.EndDate,
-				StartDate: in.Spec.Settings.DenyMaintenancePeriod.StartDate,
-				Time:      in.Spec.Settings.DenyMaintenancePeriod.Time,
-			},
-		}
-	}
-
-	if in.Spec.Settings.DiskAutoresize != nil {
-		out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
-	}
-
-	if in.Spec.Settings.DiskAutoresizeLimit != nil {
-		// todo: requires DiskAutoresize == true
-		out.Settings.StorageAutoResizeLimit = *in.Spec.Settings.DiskAutoresizeLimit
-	}
-
-	if in.Spec.Settings.DiskSize != nil {
-		out.Settings.DataDiskSizeGb = *in.Spec.Settings.DiskSize
-	}
-
-	if in.Spec.Settings.DiskType != nil {
-		out.Settings.DataDiskType = *in.Spec.Settings.DiskType
-	}
-
-	if in.Spec.Settings.Edition != nil {
-		out.Settings.Edition = *in.Spec.Settings.Edition
-	}
-
-	if in.Spec.Settings.InsightsConfig != nil {
-		insightsConfig := &api.InsightsConfig{}
-
-		if in.Spec.Settings.InsightsConfig.QueryInsightsEnabled != nil {
-			insightsConfig.QueryInsightsEnabled = *in.Spec.Settings.InsightsConfig.QueryInsightsEnabled
-		}
-
-		if in.Spec.Settings.InsightsConfig.QueryPlansPerMinute != nil {
-			insightsConfig.QueryPlansPerMinute = *in.Spec.Settings.InsightsConfig.QueryPlansPerMinute
-		}
-
-		if in.Spec.Settings.InsightsConfig.QueryStringLength != nil {
-			insightsConfig.QueryStringLength = *in.Spec.Settings.InsightsConfig.QueryStringLength
-		}
-
-		if in.Spec.Settings.InsightsConfig.RecordApplicationTags != nil {
-			insightsConfig.RecordApplicationTags = *in.Spec.Settings.InsightsConfig.RecordApplicationTags
-		}
-
-		if in.Spec.Settings.InsightsConfig.RecordClientAddress != nil {
-			insightsConfig.RecordClientAddress = *in.Spec.Settings.InsightsConfig.RecordClientAddress
-		}
-
-		out.Settings.InsightsConfig = insightsConfig
-	}
-
+	out.Settings.ActivationPolicy = direct.ValueOf(in.Spec.Settings.ActivationPolicy)
+	out.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigKRMToGCP(in.Spec.Settings.ActiveDirectoryConfig)
+	out.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesKRMToGCP(in.Spec.Settings.AdvancedMachineFeatures)
+	out.Settings.AuthorizedGaeApplications = in.Spec.Settings.AuthorizedGaeApplications
+	out.Settings.AvailabilityType = direct.ValueOf(in.Spec.Settings.AvailabilityType)
+	out.Settings.BackupConfiguration = InstanceBackupConfigurationKRMToGCP(in.Spec.Settings.BackupConfiguration)
+	out.Settings.Collation = direct.ValueOf(in.Spec.Settings.Collation)
+	out.Settings.ConnectorEnforcement = direct.ValueOf(in.Spec.Settings.ConnectorEnforcement)
+	out.Settings.CrashSafeReplicationEnabled = direct.ValueOf(in.Spec.Settings.CrashSafeReplication)
+	out.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(in.Spec.Settings.DataCacheConfig)
+	out.Settings.DatabaseFlags = InstanceDatabaseFlagsKRMToGCP(in.Spec.Settings.DatabaseFlags)
+	out.Settings.DeletionProtectionEnabled = direct.ValueOf(in.Spec.Settings.DeletionProtectionEnabled)
+	out.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(in.Spec.Settings.DenyMaintenancePeriod)
+	out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
+	out.Settings.StorageAutoResizeLimit = direct.ValueOf(in.Spec.Settings.DiskAutoresizeLimit)
+	out.Settings.DataDiskSizeGb = direct.ValueOf(in.Spec.Settings.DiskSize)
+	out.Settings.DataDiskType = direct.ValueOf(in.Spec.Settings.DiskType)
+	out.Settings.Edition = direct.ValueOf(in.Spec.Settings.Edition)
+	out.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(in.Spec.Settings.InsightsConfig)
 	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
 	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
-
-	if in.Spec.Settings.MaintenanceWindow != nil {
-		out.Settings.MaintenanceWindow = &api.MaintenanceWindow{}
-		if in.Spec.Settings.MaintenanceWindow.Day != nil {
-			out.Settings.MaintenanceWindow.Day = *in.Spec.Settings.MaintenanceWindow.Day
-		}
-		if in.Spec.Settings.MaintenanceWindow.Hour != nil {
-			out.Settings.MaintenanceWindow.Hour = *in.Spec.Settings.MaintenanceWindow.Hour
-		}
-		if in.Spec.Settings.MaintenanceWindow.UpdateTrack != nil {
-			out.Settings.MaintenanceWindow.UpdateTrack = *in.Spec.Settings.MaintenanceWindow.UpdateTrack
-		}
-	}
-
-	if in.Spec.Settings.PasswordValidationPolicy != nil {
-		policy := &api.PasswordValidationPolicy{
-			EnablePasswordPolicy: in.Spec.Settings.PasswordValidationPolicy.EnablePasswordPolicy,
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.Complexity != nil {
-			policy.Complexity = *in.Spec.Settings.PasswordValidationPolicy.Complexity
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.DisallowUsernameSubstring != nil {
-			policy.DisallowUsernameSubstring = *in.Spec.Settings.PasswordValidationPolicy.DisallowUsernameSubstring
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.MinLength != nil {
-			policy.MinLength = *in.Spec.Settings.PasswordValidationPolicy.MinLength
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.PasswordChangeInterval != nil {
-			policy.PasswordChangeInterval = *in.Spec.Settings.PasswordValidationPolicy.PasswordChangeInterval
-		}
-
-		if in.Spec.Settings.PasswordValidationPolicy.ReuseInterval != nil {
-			policy.ReuseInterval = *in.Spec.Settings.PasswordValidationPolicy.ReuseInterval
-		}
-
-		out.Settings.PasswordValidationPolicy = policy
-	}
-
-	if in.Spec.Settings.PricingPlan != nil {
-		// todo: can only be PER_USE
-		out.Settings.PricingPlan = *in.Spec.Settings.PricingPlan
-	}
-
-	if in.Spec.Settings.ReplicationType != nil {
-		// todo: deprecated
-		out.Settings.ReplicationType = *in.Spec.Settings.ReplicationType
-	}
-
-	if in.Spec.Settings.SqlServerAuditConfig != nil {
-		// todo: requires sqlserver
-		out.Settings.SqlServerAuditConfig = &api.SqlServerAuditConfig{
-			Kind: "sql#sqlServerAuditConfig",
-		}
-
-		if in.Spec.Settings.SqlServerAuditConfig.BucketRef != nil {
-			// todo: required
-			out.Settings.SqlServerAuditConfig.Bucket = refs.auditLogBucket
-		}
-
-		if in.Spec.Settings.SqlServerAuditConfig.RetentionInterval != nil {
-			out.Settings.SqlServerAuditConfig.RetentionInterval = *in.Spec.Settings.SqlServerAuditConfig.RetentionInterval
-		}
-
-		if in.Spec.Settings.SqlServerAuditConfig.UploadInterval != nil {
-			out.Settings.SqlServerAuditConfig.UploadInterval = *in.Spec.Settings.SqlServerAuditConfig.UploadInterval
-		}
-	}
-
+	out.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(in.Spec.Settings.MaintenanceWindow)
+	out.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyKRMToGCP(in.Spec.Settings.PasswordValidationPolicy)
+	out.Settings.PricingPlan = direct.ValueOf(in.Spec.Settings.PricingPlan)
+	out.Settings.ReplicationType = direct.ValueOf(in.Spec.Settings.ReplicationType)
+	out.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigKRMToGCP(in.Spec.Settings.SqlServerAuditConfig, refs)
 	out.Settings.Tier = in.Spec.Settings.Tier
-
-	if in.Spec.Settings.TimeZone != nil {
-		// todo: requires sqlserver
-		out.Settings.TimeZone = *in.Spec.Settings.TimeZone
-	}
+	out.Settings.TimeZone = direct.ValueOf(in.Spec.Settings.TimeZone)
 
 	if in.Labels != nil {
 		out.Settings.UserLabels = make(map[string]string)
@@ -396,7 +113,240 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		}
 	}
 
+	// TODO: Move to InstanceSettingsKRMToGCP
+	if in.Spec.Settings.DeletionProtectionEnabled != nil {
+		out.Settings.ForceSendFields = append(out.ForceSendFields, "DeletionProtectionEnabled")
+	}
+	if in.Spec.Settings.DiskAutoresize != nil {
+		out.Settings.ForceSendFields = append(out.ForceSendFields, "StorageAutoResize")
+	}
+
 	return out, nil
+}
+
+func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, refs *SQLInstanceInternalRefs) *api.ReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.ReplicaConfiguration{
+		Kind: "sql#replicaConfiguration",
+		// CascadableReplica is not supported in KRM API.
+		FailoverTarget:            direct.ValueOf(in.FailoverTarget),
+		MysqlReplicaConfiguration: InstanceMysqlReplicaConfigurationKRMToGCP(in, refs),
+	}
+
+	if in.FailoverTarget != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "FailoverTarget")
+	}
+
+	return out
+}
+
+func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, refs *SQLInstanceInternalRefs) *api.MySqlReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	// For some reason, the KRM API embeds all of the MySqlReplicaConfiguration fields into the
+	// InstanceReplicaConfiguration object (instead of using a separate object). Therefore, we
+	// need to check for each of the individual fields here.
+	if in.CaCertificate == nil &&
+		in.ClientCertificate == nil &&
+		in.ClientKey == nil &&
+		in.ConnectRetryInterval == nil &&
+		in.DumpFilePath == nil &&
+		in.MasterHeartbeatPeriod == nil &&
+		in.Password == nil &&
+		in.SslCipher == nil &&
+		in.Username == nil &&
+		in.VerifyServerCertificate == nil {
+		return nil
+	}
+
+	out := &api.MySqlReplicaConfiguration{
+		Kind:                    "sql#mysqlReplicaConfiguration",
+		CaCertificate:           direct.ValueOf(in.CaCertificate),
+		ClientCertificate:       direct.ValueOf(in.ClientCertificate),
+		ClientKey:               direct.ValueOf(in.ClientKey),
+		ConnectRetryInterval:    direct.ValueOf(in.ConnectRetryInterval),
+		DumpFilePath:            direct.ValueOf(in.DumpFilePath),
+		MasterHeartbeatPeriod:   direct.ValueOf(in.MasterHeartbeatPeriod),
+		SslCipher:               direct.ValueOf(in.SslCipher),
+		Username:                direct.ValueOf(in.Username),
+		VerifyServerCertificate: direct.ValueOf(in.VerifyServerCertificate),
+	}
+
+	// todo: embed refs in krm object external fields, remove this
+	if in.Password != nil {
+		out.Password = refs.replicaPassword
+	}
+
+	if in.ConnectRetryInterval != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ConnectRetryInterval")
+	}
+	if in.MasterHeartbeatPeriod != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "MasterHeartbeatPeriod")
+	}
+	if in.VerifyServerCertificate != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
+	}
+
+	return out
+}
+
+func InstanceActiveDirectoryConfigKRMToGCP(in *krm.InstanceActiveDirectoryConfig) *api.SqlActiveDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.SqlActiveDirectoryConfig{
+		Domain: in.Domain,
+		Kind:   "sql#activeDirectoryConfig",
+	}
+
+	return out
+}
+
+func InstanceAdvancedMachineFeaturesKRMToGCP(in *krm.InstanceAdvancedMachineFeatures) *api.AdvancedMachineFeatures {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.AdvancedMachineFeatures{
+		ThreadsPerCore: direct.ValueOf(in.ThreadsPerCore),
+	}
+
+	return out
+}
+
+func InstanceBackupConfigurationKRMToGCP(in *krm.InstanceBackupConfiguration) *api.BackupConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.BackupConfiguration{
+		BackupRetentionSettings:    InstanceBackupRetentionSettingsKRMToGCP(in.BackupRetentionSettings),
+		BinaryLogEnabled:           direct.ValueOf(in.BinaryLogEnabled),
+		Enabled:                    direct.ValueOf(in.Enabled),
+		Kind:                       "sql#backupConfiguration",
+		Location:                   direct.ValueOf(in.Location),
+		PointInTimeRecoveryEnabled: direct.ValueOf(in.PointInTimeRecoveryEnabled),
+		// ReplicationLogArchivingEnabled is not supported in KRM API.
+		StartTime:                   direct.ValueOf(in.StartTime),
+		TransactionLogRetentionDays: direct.ValueOf(in.TransactionLogRetentionDays),
+		// TransactionalLogStorageState is not supported in KRM API.
+	}
+
+	if in.BinaryLogEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "BinaryLogEnabled")
+	}
+	if in.Enabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "Enabled")
+	}
+	if in.PointInTimeRecoveryEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "PointInTimeRecoveryEnabled")
+	}
+	if in.TransactionLogRetentionDays != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "TransactionLogRetentionDays")
+	}
+
+	return out
+}
+
+func InstanceBackupRetentionSettingsKRMToGCP(in *krm.InstanceBackupRetentionSettings) *api.BackupRetentionSettings {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.BackupRetentionSettings{
+		RetainedBackups: in.RetainedBackups,
+		RetentionUnit:   direct.ValueOf(in.RetentionUnit),
+	}
+
+	if in.RetainedBackups == 0 {
+		out.ForceSendFields = append(out.ForceSendFields, "RetainedBackups")
+	}
+
+	return out
+}
+
+func InstanceDataCacheConfigKRMToGCP(in *krm.InstanceDataCacheConfig) *api.DataCacheConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.DataCacheConfig{
+		DataCacheEnabled: direct.ValueOf(in.DataCacheEnabled),
+	}
+
+	if in.DataCacheEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "DataCacheEnabled")
+	}
+
+	return out
+}
+
+func InstanceDatabaseFlagsKRMToGCP(in []krm.InstanceDatabaseFlags) []*api.DatabaseFlags {
+	out := []*api.DatabaseFlags{}
+	for _, flag := range in {
+		out = append(out, &api.DatabaseFlags{
+			Name:  flag.Name,
+			Value: flag.Value,
+		})
+	}
+	return out
+}
+
+func InstanceDenyMaintenancePeriodsKRMToGCP(in *krm.InstanceDenyMaintenancePeriod) []*api.DenyMaintenancePeriod {
+	if in == nil {
+		return nil
+	}
+
+	// Note:  For some reason, the KRM API allows for only a single *InstanceDenyMaintenancePeriod. However,
+	// in the GCP proto there is a list of []*api.DenyMaintenancePeriod. Though, in the GCP UI there is only
+	// an option to specify a single deny maintenance period. For now, we'll only allow for specifying one.
+	out := []*api.DenyMaintenancePeriod{
+		{
+			EndDate:   in.EndDate,
+			StartDate: in.StartDate,
+			Time:      in.Time,
+		},
+	}
+
+	return out
+}
+
+func InstanceInsightsConfigKRMToGCP(in *krm.InstanceInsightsConfig) *api.InsightsConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.InsightsConfig{
+		QueryInsightsEnabled:  direct.ValueOf(in.QueryInsightsEnabled),
+		QueryPlansPerMinute:   direct.ValueOf(in.QueryPlansPerMinute),
+		QueryStringLength:     direct.ValueOf(in.QueryStringLength),
+		RecordApplicationTags: direct.ValueOf(in.RecordApplicationTags),
+		RecordClientAddress:   direct.ValueOf(in.RecordClientAddress),
+	}
+
+	if in.QueryInsightsEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "QueryInsightsEnabled")
+	}
+	if in.QueryPlansPerMinute != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "QueryPlansPerMinute")
+	}
+	if in.QueryStringLength != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "QueryStringLength")
+	}
+	if in.RecordApplicationTags != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "RecordApplicationTags")
+	}
+	if in.RecordClientAddress != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "RecordClientAddress")
+	}
+
+	return out
 }
 
 func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration, refs *SQLInstanceInternalRefs) *api.IpConfiguration {
@@ -414,6 +364,7 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration, refs *SQLI
 		SslMode:                                 direct.ValueOf(in.SslMode),
 	}
 
+	// todo: embed refs in krm object external fields, remove this
 	if in.PrivateNetworkRef != nil {
 		out.PrivateNetwork = refs.privateNetwork
 	}
@@ -481,6 +432,75 @@ func InstanceLocationPreferenceKRMToGCP(in *krm.InstanceLocationPreference) *api
 	return out
 }
 
+func InstanceMaintenanceWindowKRMToGCP(in *krm.InstanceMaintenanceWindow) *api.MaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.MaintenanceWindow{
+		Kind:        "sql#maintenanceWindow",
+		Day:         direct.ValueOf(in.Day),
+		Hour:        direct.ValueOf(in.Hour),
+		UpdateTrack: direct.ValueOf(in.UpdateTrack),
+	}
+
+	if in.Hour != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "Hour")
+	}
+
+	return out
+}
+
+func InstancePasswordValidationPolicyKRMToGCP(in *krm.InstancePasswordValidationPolicy) *api.PasswordValidationPolicy {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.PasswordValidationPolicy{
+		Complexity: direct.ValueOf(in.Complexity),
+		// DisallowCompromisedCredentials is not supported in KRM API.
+		DisallowUsernameSubstring: direct.ValueOf(in.DisallowUsernameSubstring),
+		EnablePasswordPolicy:      in.EnablePasswordPolicy,
+		MinLength:                 direct.ValueOf(in.MinLength),
+		PasswordChangeInterval:    direct.ValueOf(in.PasswordChangeInterval),
+		ReuseInterval:             direct.ValueOf(in.ReuseInterval),
+	}
+
+	if in.DisallowUsernameSubstring != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "DisallowUsernameSubstring")
+	}
+	if !in.EnablePasswordPolicy {
+		out.ForceSendFields = append(out.ForceSendFields, "EnablePasswordPolicy")
+	}
+	if in.MinLength != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "MinLength")
+	}
+	if in.ReuseInterval != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ReuseInterval")
+	}
+
+	return out
+}
+
+func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig, refs *SQLInstanceInternalRefs) *api.SqlServerAuditConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.SqlServerAuditConfig{
+		Kind:              "sql#sqlServerAuditConfig",
+		RetentionInterval: direct.ValueOf(in.RetentionInterval),
+		UploadInterval:    direct.ValueOf(in.UploadInterval),
+	}
+
+	// todo: embed refs in krm object external fields, remove this
+	if in.BucketRef != nil {
+		out.Bucket = refs.auditLogBucket
+	}
+
+	return out
+}
+
 func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	out := &krm.SQLInstance{}
 
@@ -516,27 +536,7 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		out.Spec.Region = &in.Region
 	}
 
-	if in.ReplicaConfiguration != nil {
-		rc := &krm.InstanceReplicaConfiguration{}
-
-		rc.FailoverTarget = &in.ReplicaConfiguration.FailoverTarget
-
-		if in.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
-			rc.CaCertificate = &in.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate
-			rc.ClientKey = &in.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey
-			rc.ConnectRetryInterval = &in.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval
-			rc.DumpFilePath = &in.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath
-			rc.MasterHeartbeatPeriod = &in.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod
-			rc.Password = &krm.InstancePassword{
-				Value: &in.ReplicaConfiguration.MysqlReplicaConfiguration.Password,
-			}
-			rc.SslCipher = &in.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher
-			rc.Username = &in.ReplicaConfiguration.MysqlReplicaConfiguration.Username
-			rc.VerifyServerCertificate = &in.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate
-		}
-
-		out.Spec.ReplicaConfiguration = rc
-	}
+	out.Spec.ReplicaConfiguration = InstanceReplicaConfigurationGCPToKRM(in.ReplicaConfiguration)
 
 	out.Spec.ResourceID = &in.Name
 
@@ -544,159 +544,209 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		Value: &in.RootPassword,
 	}
 
-	if in.Settings.ActivationPolicy != "" {
-		out.Spec.Settings.ActivationPolicy = &in.Settings.ActivationPolicy
-	}
-
-	if in.Settings.ActiveDirectoryConfig != nil {
-		out.Spec.Settings.ActiveDirectoryConfig = &krm.InstanceActiveDirectoryConfig{
-			Domain: in.Settings.ActiveDirectoryConfig.Domain,
-		}
-	}
-
-	if in.Settings.AdvancedMachineFeatures != nil {
-		out.Spec.Settings.AdvancedMachineFeatures = &krm.InstanceAdvancedMachineFeatures{
-			ThreadsPerCore: &in.Settings.AdvancedMachineFeatures.ThreadsPerCore,
-		}
-	}
-
-	if in.Settings.AuthorizedGaeApplications != nil {
-		out.Spec.Settings.AuthorizedGaeApplications = in.Settings.AuthorizedGaeApplications
-	}
-
-	if in.Settings.AvailabilityType != "" {
-		out.Spec.Settings.AvailabilityType = &in.Settings.AvailabilityType
-	}
-
-	if in.Settings.BackupConfiguration != nil {
-		bc := &krm.InstanceBackupConfiguration{}
-
-		if in.Settings.BackupConfiguration.BackupRetentionSettings != nil {
-			bc.BackupRetentionSettings = &krm.InstanceBackupRetentionSettings{
-				RetainedBackups: in.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups,
-				RetentionUnit:   &in.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit,
-			}
-		}
-
-		bc.BinaryLogEnabled = &in.Settings.BackupConfiguration.BinaryLogEnabled
-		bc.Enabled = &in.Settings.BackupConfiguration.Enabled
-		bc.Location = &in.Settings.BackupConfiguration.Location
-		bc.PointInTimeRecoveryEnabled = &in.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
-		bc.StartTime = &in.Settings.BackupConfiguration.StartTime
-		bc.TransactionLogRetentionDays = &in.Settings.BackupConfiguration.TransactionLogRetentionDays
-
-		out.Spec.Settings.BackupConfiguration = bc
-	}
-
-	if in.Settings.Collation != "" {
-		out.Spec.Settings.Collation = &in.Settings.Collation
-	}
-
-	if in.Settings.ConnectorEnforcement != "" {
-		out.Spec.Settings.ConnectorEnforcement = &in.Settings.ConnectorEnforcement
-	}
-
-	out.Spec.Settings.CrashSafeReplication = &in.Settings.CrashSafeReplicationEnabled
-
-	if in.Settings.DatabaseFlags != nil {
-		dbFlags := []krm.InstanceDatabaseFlags{}
-		for _, dbFlag := range in.Settings.DatabaseFlags {
-			dbFlags = append(dbFlags, krm.InstanceDatabaseFlags{
-				Name:  dbFlag.Name,
-				Value: dbFlag.Value,
-			})
-		}
-		out.Spec.Settings.DatabaseFlags = dbFlags
-	}
-
-	out.Spec.Settings.DeletionProtectionEnabled = &in.Settings.DeletionProtectionEnabled
-
-	// todo: handle multiple periods (?)
-	if in.Settings.DenyMaintenancePeriods != nil && len(in.Settings.DenyMaintenancePeriods) >= 1 {
-		out.Spec.Settings.DenyMaintenancePeriod = &krm.InstanceDenyMaintenancePeriod{
-			EndDate:   in.Settings.DenyMaintenancePeriods[0].EndDate,
-			StartDate: in.Settings.DenyMaintenancePeriods[0].StartDate,
-			Time:      in.Settings.DenyMaintenancePeriods[0].Time,
-		}
-	}
-
+	out.Spec.Settings.ActivationPolicy = direct.LazyPtr(in.Settings.ActivationPolicy)
+	out.Spec.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigGCPToKRM(in.Settings.ActiveDirectoryConfig)
+	out.Spec.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesGCPToKRM(in.Settings.AdvancedMachineFeatures)
+	out.Spec.Settings.AuthorizedGaeApplications = in.Settings.AuthorizedGaeApplications
+	out.Spec.Settings.AvailabilityType = direct.LazyPtr(in.Settings.AvailabilityType)
+	out.Spec.Settings.BackupConfiguration = InstanceBackupConfigurationGCPToKRM(in.Settings.BackupConfiguration)
+	out.Spec.Settings.Collation = direct.LazyPtr(in.Settings.Collation)
+	out.Spec.Settings.ConnectorEnforcement = direct.LazyPtr(in.Settings.ConnectorEnforcement)
+	out.Spec.Settings.CrashSafeReplication = direct.LazyPtr(in.Settings.CrashSafeReplicationEnabled)
+	out.Spec.Settings.DataCacheConfig = InstanceDataCacheConfigGCPToKRM(in.Settings.DataCacheConfig)
+	out.Spec.Settings.DatabaseFlags = InstanceDatabaseFlagsGCPToKRM(in.Settings.DatabaseFlags)
+	out.Spec.Settings.DeletionProtectionEnabled = direct.PtrTo(in.Settings.DeletionProtectionEnabled)
+	out.Spec.Settings.DenyMaintenancePeriod = InstanceDenyMaintenancePeriodsGCPToKRM(in.Settings.DenyMaintenancePeriods)
 	out.Spec.Settings.DiskAutoresize = in.Settings.StorageAutoResize
-
-	if in.Settings.StorageAutoResizeLimit != 0 {
-		out.Spec.Settings.DiskAutoresizeLimit = &in.Settings.StorageAutoResizeLimit
-	}
-
-	out.Spec.Settings.DiskSize = &in.Settings.DataDiskSizeGb
-
-	if in.Settings.DataDiskType != "" {
-		out.Spec.Settings.DiskType = &in.Settings.DataDiskType
-	}
-
-	if in.Settings.Edition != "" {
-		out.Spec.Settings.Edition = &in.Settings.Edition
-	}
-
-	if in.Settings.InsightsConfig != nil {
-		out.Spec.Settings.InsightsConfig = &krm.InstanceInsightsConfig{
-			QueryInsightsEnabled:  &in.Settings.InsightsConfig.QueryInsightsEnabled,
-			QueryPlansPerMinute:   &in.Settings.InsightsConfig.QueryPlansPerMinute,
-			QueryStringLength:     &in.Settings.InsightsConfig.QueryStringLength,
-			RecordApplicationTags: &in.Settings.InsightsConfig.RecordApplicationTags,
-			RecordClientAddress:   &in.Settings.InsightsConfig.RecordClientAddress,
-		}
-	}
-
+	out.Spec.Settings.DiskAutoresizeLimit = direct.LazyPtr(in.Settings.StorageAutoResizeLimit)
+	out.Spec.Settings.DiskSize = direct.LazyPtr(in.Settings.DataDiskSizeGb)
+	out.Spec.Settings.DiskType = direct.LazyPtr(in.Settings.DataDiskType)
+	out.Spec.Settings.Edition = direct.LazyPtr(in.Settings.Edition)
+	out.Spec.Settings.InsightsConfig = InstanceInsightsConfigGCPToKRM(in.Settings.InsightsConfig)
 	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)
 	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
-
-	if in.Settings.MaintenanceWindow != nil {
-		out.Spec.Settings.MaintenanceWindow = &krm.InstanceMaintenanceWindow{
-			Day:         &in.Settings.MaintenanceWindow.Day,
-			Hour:        &in.Settings.MaintenanceWindow.Hour,
-			UpdateTrack: &in.Settings.MaintenanceWindow.UpdateTrack,
-		}
-	}
-
-	if in.Settings.PasswordValidationPolicy != nil {
-		out.Spec.Settings.PasswordValidationPolicy = &krm.InstancePasswordValidationPolicy{
-			EnablePasswordPolicy:      in.Settings.PasswordValidationPolicy.EnablePasswordPolicy,
-			Complexity:                &in.Settings.PasswordValidationPolicy.Complexity,
-			DisallowUsernameSubstring: &in.Settings.PasswordValidationPolicy.DisallowUsernameSubstring,
-			MinLength:                 &in.Settings.PasswordValidationPolicy.MinLength,
-			PasswordChangeInterval:    &in.Settings.PasswordValidationPolicy.PasswordChangeInterval,
-			ReuseInterval:             &in.Settings.PasswordValidationPolicy.ReuseInterval,
-		}
-	}
-
-	if in.Settings.PricingPlan != "" {
-		out.Spec.Settings.PricingPlan = &in.Settings.PricingPlan
-	}
-
-	if in.Settings.ReplicationType != "" {
-		out.Spec.Settings.ReplicationType = &in.Settings.ReplicationType
-	}
-
-	if in.Settings.SqlServerAuditConfig != nil {
-		out.Spec.Settings.SqlServerAuditConfig = &krm.InstanceSqlServerAuditConfig{
-			BucketRef: &refs.StorageBucketRef{
-				External: in.Settings.SqlServerAuditConfig.Bucket,
-			},
-			RetentionInterval: &in.Settings.SqlServerAuditConfig.RetentionInterval,
-			UploadInterval:    &in.Settings.SqlServerAuditConfig.UploadInterval,
-		}
-	}
-
+	out.Spec.Settings.MaintenanceWindow = InstanceMaintenanceWindowGCPToKRM(in.Settings.MaintenanceWindow)
+	out.Spec.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyGCPToKRM(in.Settings.PasswordValidationPolicy)
+	out.Spec.Settings.PricingPlan = direct.LazyPtr(in.Settings.PricingPlan)
+	out.Spec.Settings.ReplicationType = direct.LazyPtr(in.Settings.ReplicationType)
+	out.Spec.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigGCPToKRM(in.Settings.SqlServerAuditConfig)
 	out.Spec.Settings.Tier = in.Settings.Tier
-
-	if in.Settings.TimeZone != "" {
-		out.Spec.Settings.TimeZone = &in.Settings.TimeZone
-	}
+	out.Spec.Settings.TimeZone = direct.LazyPtr(in.Settings.TimeZone)
 
 	if in.Settings.UserLabels != nil {
 		out.Labels = in.Settings.UserLabels
 	}
 
 	return out, nil
+}
+
+func InstanceReplicaConfigurationGCPToKRM(in *api.ReplicaConfiguration) *krm.InstanceReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	irc := &krm.InstanceReplicaConfiguration{
+		// CascadableReplica is not supported in KRM API.
+		FailoverTarget: direct.PtrTo(in.FailoverTarget),
+	}
+
+	// For some reason, the KRM API embeds all of the MySqlReplicaConfiguration fields into the
+	// InstanceReplicaConfiguration object (instead of using a separate object). Therefore, we
+	// need to merge all of the fields here.
+	mrc := InstanceMysqlReplicaConfigurationGCPToKRM(in.MysqlReplicaConfiguration)
+	if mrc == nil {
+		mrc = &krm.InstanceReplicaConfiguration{}
+	}
+
+	out := &krm.InstanceReplicaConfiguration{
+		CaCertificate:           mrc.CaCertificate,
+		ClientCertificate:       mrc.ClientCertificate,
+		ClientKey:               mrc.ClientKey,
+		ConnectRetryInterval:    mrc.ConnectRetryInterval,
+		DumpFilePath:            mrc.DumpFilePath,
+		FailoverTarget:          irc.FailoverTarget,
+		MasterHeartbeatPeriod:   mrc.MasterHeartbeatPeriod,
+		Password:                mrc.Password,
+		SslCipher:               mrc.SslCipher,
+		Username:                mrc.Username,
+		VerifyServerCertificate: mrc.VerifyServerCertificate,
+	}
+
+	return out
+}
+
+func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration) *krm.InstanceReplicaConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceReplicaConfiguration{
+		CaCertificate:           direct.LazyPtr(in.CaCertificate),
+		ClientCertificate:       direct.LazyPtr(in.ClientCertificate),
+		ClientKey:               direct.LazyPtr(in.ClientKey),
+		ConnectRetryInterval:    direct.PtrTo(in.ConnectRetryInterval),
+		DumpFilePath:            direct.LazyPtr(in.DumpFilePath),
+		MasterHeartbeatPeriod:   direct.PtrTo(in.MasterHeartbeatPeriod),
+		SslCipher:               direct.LazyPtr(in.SslCipher),
+		Username:                direct.LazyPtr(in.Username),
+		VerifyServerCertificate: direct.PtrTo(in.VerifyServerCertificate),
+	}
+
+	// Note: Password is not exported.
+
+	return out
+}
+
+func InstanceActiveDirectoryConfigGCPToKRM(in *api.SqlActiveDirectoryConfig) *krm.InstanceActiveDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceActiveDirectoryConfig{
+		Domain: in.Domain,
+	}
+
+	return out
+}
+
+func InstanceAdvancedMachineFeaturesGCPToKRM(in *api.AdvancedMachineFeatures) *krm.InstanceAdvancedMachineFeatures {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceAdvancedMachineFeatures{
+		ThreadsPerCore: direct.LazyPtr(in.ThreadsPerCore),
+	}
+
+	return out
+}
+
+func InstanceBackupConfigurationGCPToKRM(in *api.BackupConfiguration) *krm.InstanceBackupConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceBackupConfiguration{
+		BackupRetentionSettings:    InstanceBackupRetentionSettingsGCPToKRM(in.BackupRetentionSettings),
+		BinaryLogEnabled:           direct.PtrTo(in.BinaryLogEnabled),
+		Enabled:                    direct.PtrTo(in.Enabled),
+		Location:                   direct.LazyPtr(in.Location),
+		PointInTimeRecoveryEnabled: direct.PtrTo(in.PointInTimeRecoveryEnabled),
+		// ReplicationLogArchivingEnabled is not supported in KRM API.
+		StartTime:                   direct.LazyPtr(in.StartTime),
+		TransactionLogRetentionDays: direct.PtrTo(in.TransactionLogRetentionDays),
+		// TransactionalLogStorageState is not supported in KRM API.
+	}
+
+	return out
+}
+func InstanceBackupRetentionSettingsGCPToKRM(in *api.BackupRetentionSettings) *krm.InstanceBackupRetentionSettings {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceBackupRetentionSettings{
+		RetainedBackups: in.RetainedBackups,
+		RetentionUnit:   direct.LazyPtr(in.RetentionUnit),
+	}
+
+	return out
+}
+
+func InstanceDataCacheConfigGCPToKRM(in *api.DataCacheConfig) *krm.InstanceDataCacheConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceDataCacheConfig{
+		DataCacheEnabled: direct.PtrTo(in.DataCacheEnabled),
+	}
+
+	return out
+}
+
+func InstanceDatabaseFlagsGCPToKRM(in []*api.DatabaseFlags) []krm.InstanceDatabaseFlags {
+	out := []krm.InstanceDatabaseFlags{}
+	for _, flag := range in {
+		out = append(out, krm.InstanceDatabaseFlags{
+			Name:  flag.Name,
+			Value: flag.Value,
+		})
+	}
+	return out
+}
+
+func InstanceDenyMaintenancePeriodsGCPToKRM(in []*api.DenyMaintenancePeriod) *krm.InstanceDenyMaintenancePeriod {
+	if in == nil || len(in) < 1 {
+		return nil
+	}
+
+	// Note:  For some reason, the KRM API allows for only a single *InstanceDenyMaintenancePeriod. However,
+	// in the GCP proto there is a list of []*api.DenyMaintenancePeriod. Though, in the GCP UI there is only
+	// an option to specify a single deny maintenance period. For now, we'll only allow for specifying one.
+	out := &krm.InstanceDenyMaintenancePeriod{
+		EndDate:   in[0].EndDate,
+		StartDate: in[0].StartDate,
+		Time:      in[0].Time,
+	}
+
+	return out
+}
+
+func InstanceInsightsConfigGCPToKRM(in *api.InsightsConfig) *krm.InstanceInsightsConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceInsightsConfig{
+		QueryInsightsEnabled:  direct.PtrTo(in.QueryInsightsEnabled),
+		QueryPlansPerMinute:   direct.PtrTo(in.QueryPlansPerMinute),
+		QueryStringLength:     direct.PtrTo(in.QueryStringLength),
+		RecordApplicationTags: direct.PtrTo(in.RecordApplicationTags),
+		RecordClientAddress:   direct.PtrTo(in.RecordClientAddress),
+	}
+
+	return out
 }
 
 func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpConfiguration {
@@ -759,6 +809,57 @@ func InstanceLocationPreferenceGCPToKRM(in *api.LocationPreference) *krm.Instanc
 		FollowGaeApplication: direct.LazyPtr(in.FollowGaeApplication),
 		SecondaryZone:        direct.LazyPtr(in.SecondaryZone),
 		Zone:                 direct.LazyPtr(in.Zone),
+	}
+
+	return out
+}
+
+func InstanceMaintenanceWindowGCPToKRM(in *api.MaintenanceWindow) *krm.InstanceMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceMaintenanceWindow{
+		Day:         direct.LazyPtr(in.Day),
+		Hour:        direct.PtrTo(in.Hour),
+		UpdateTrack: direct.LazyPtr(in.UpdateTrack),
+	}
+
+	return out
+}
+
+func InstancePasswordValidationPolicyGCPToKRM(in *api.PasswordValidationPolicy) *krm.InstancePasswordValidationPolicy {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstancePasswordValidationPolicy{
+		Complexity: direct.LazyPtr(in.Complexity),
+		// DisallowCompromisedCredentials is not supported in KRM API.
+		DisallowUsernameSubstring: direct.PtrTo(in.DisallowUsernameSubstring),
+		EnablePasswordPolicy:      in.EnablePasswordPolicy,
+		MinLength:                 direct.PtrTo(in.MinLength),
+		PasswordChangeInterval:    direct.LazyPtr(in.PasswordChangeInterval),
+		ReuseInterval:             direct.PtrTo(in.ReuseInterval),
+	}
+
+	return out
+}
+
+func InstanceSqlServerAuditConfigGCPToKRM(in *api.SqlServerAuditConfig) *krm.InstanceSqlServerAuditConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceSqlServerAuditConfig{
+		RetentionInterval: direct.LazyPtr(in.RetentionInterval),
+		UploadInterval:    direct.LazyPtr(in.UploadInterval),
+	}
+
+	if in.Bucket != "" {
+		out.BucketRef = &refs.StorageBucketRef{
+			External: in.Bucket,
+		}
 	}
 
 	return out

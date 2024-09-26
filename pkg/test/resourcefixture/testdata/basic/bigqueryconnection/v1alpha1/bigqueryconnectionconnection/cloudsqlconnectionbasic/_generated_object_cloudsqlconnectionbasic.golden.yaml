@@ -30,7 +30,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/connections/8d196667-d2ce-4a7b-a853-e02db0ea3efa
+  externalRef: projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be
   observedGeneration: 1
   observedState:
     cloudSql:

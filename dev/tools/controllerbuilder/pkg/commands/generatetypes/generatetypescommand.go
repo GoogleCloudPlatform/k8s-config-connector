@@ -17,6 +17,7 @@ package generatetypes
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"unicode"
 
@@ -37,7 +38,14 @@ type GenerateCRDOptions struct {
 	ResourceProtoName  string
 }
 
-func (o *GenerateCRDOptions) InitDefaults() {
+func (o *GenerateCRDOptions) InitDefaults() error {
+	root, err := options.RepoRoot()
+	if err != nil {
+		return nil
+	}
+	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
+	o.OutputAPIDirectory = root + "/apis/"
+	return nil
 }
 
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
@@ -51,7 +59,10 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		GenerateOptions: baseOptions,
 	}
 
-	opt.InitDefaults()
+	if err := opt.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
+	}
 
 	cmd := &cobra.Command{
 		Use:   "generate-types",

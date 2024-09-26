@@ -529,6 +529,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("fingerprint", "abcdef0123A=")
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
+					addReplacement("pscConnectionId", "111111111111")
 
 					// Extract resource targetID numbers from compute operations
 					for _, event := range events {
@@ -747,6 +748,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Specific to BigQueryConnectionConnection.
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
+					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//

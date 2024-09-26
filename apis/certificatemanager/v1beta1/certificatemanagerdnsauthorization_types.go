@@ -46,21 +46,6 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type DnsauthorizationDnsResourceRecordStatus struct {
-	/* Data of the DNS Resource Record. */
-	// +optional
-	Data *string `json:"data,omitempty"`
-
-	/* Fully qualified name of the DNS Resource Record.
-	E.g. '_acme-challenge.example.com'. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
-	/* Type of the DNS Resource Record. */
-	// +optional
-	Type *string `json:"type,omitempty"`
-}
-
 // CertificateManagerDNSAuthorizationStatus defines the config connector machine state of CertificateManagerDNSAuthorization
 type CertificateManagerDNSAuthorizationStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -70,7 +55,7 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	to DNS configuration for the authorization to be usable by
 	certificate. */
 	// +optional
-	DnsResourceRecord []DnsauthorizationDnsResourceRecordStatus `json:"dnsResourceRecord,omitempty"`
+	DnsResourceRecord []DnsAuthorization_DnsResourceRecord `json:"dnsResourceRecord,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional

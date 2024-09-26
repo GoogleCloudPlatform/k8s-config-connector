@@ -473,6 +473,8 @@ spec:
                   For INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
                   are valid.
                 properties:
+                  googleAPIBundle:
+                    type: string
                   serviceAttachmentRef:
                     oneOf:
                     - not:
