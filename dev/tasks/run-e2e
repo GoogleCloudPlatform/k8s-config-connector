@@ -24,7 +24,7 @@ echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
 if [[ -z "${KCC_USE_DIRECT_RECONCILERS:-}" ]]; then
-  KCC_USE_DIRECT_RECONCILERS=SQLInstance,ComputeForwardingRule,GKEHubFeatureMembership
+  KCC_USE_DIRECT_RECONCILERS=SQLInstance,ComputeForwardingRule,GKEHubFeatureMembership,CertificateManagerDNSAuthorization
 fi
 echo "Using direct controllers: $KCC_USE_DIRECT_RECONCILERS"
 export KCC_USE_DIRECT_RECONCILERS

@@ -255,21 +255,21 @@ observedGeneration: integer
         <td><code>dnsResourceRecord[].data</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Data of the DNS Resource Record.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Data of the DNS Resource Record.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>dnsResourceRecord[].name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Fully qualified name of the DNS Resource Record. E.g. '_acme-challenge.example.com'.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Fully qualified name of the DNS Resource Record. e.g. `_acme-challenge.example.com`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>dnsResourceRecord[].type</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of the DNS Resource Record.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Type of the DNS Resource Record. Currently always set to "CNAME".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
