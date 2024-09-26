@@ -18,7 +18,7 @@
 
 * Config Connector shall not write the Direct resources' resource ID back to the `spec.resourceID` field. Only users should configure the `spec` fields.[^1]
 
-![reconcile diagram](./image/externalref-reconcile.png)
+![reconcile diagram](../img/externalref-reconcile.png)
 
 
 # API definition

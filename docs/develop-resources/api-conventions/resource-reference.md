@@ -128,7 +128,7 @@ If `<Kind>Refs[].external` is used, Config Connector shall only validate the uni
 
 Config Connector does not (yet) have a good handle on the uniqueness of the Config Connector objects and their corresponding GCP resources. 
 
-If `<Kind>Refs[].name` is used, Config Connector shall **not** validate the uniqueness of the namespace/name value, but check the uniqueness of the GCP resources from the corresponding Config Connector objects from [externalRef field] (TODO: add link).
+If `<Kind>Refs[].name` is used, Config Connector shall **not** validate the uniqueness of the namespace/name value, but check the uniqueness of the GCP resources from the corresponding Config Connector objects from [externalRef field](external-reference.md).
 
 
 ## Rule 5: Ordering

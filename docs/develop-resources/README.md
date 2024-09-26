@@ -8,6 +8,10 @@ There are definitely more work need to be done, but we'd like to share the steps
 
 # Contents
 
+## Introduction
+
+* [Introduction](./guides/0-introduction.md)
+
 ## Key steps and Exit Criteria 
 
 * [1. Add MockGCP tests](./guides/1-add-mockgcp-tests.md)
@@ -17,6 +21,12 @@ There are definitely more work need to be done, but we'd like to share the steps
 * [5. Releases](./guides/5-releases.md)
 
 ## Develop by scenraios
+
+You may only need to add a new field, or to promote an Alpha resource to Beta rather than writing an entirely new resource. To figure out the most suitable scenario, you need to know the resources current status:
+- [ ] Check the latest [CRD](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/crds). If the resource exists but in Alpha, you won’t see it in  [Config Connector API Reference](https://cloud.google.com/config-connector/docs/reference/overview) until it is promoted to Beta. Please follow [promote alpha to beta](./scenarios/alpha-to-beta.md) guide.
+- [ ] If no CRD is found,  you do need to add a new resource, please file an issue first to let us know. We can help make sure the resource is not already taken care of by someone else.
+- [ ] We are migrating from the TF/DCL based resources to the Direct approach. That means we are holding off new PR reviews if they are using the TF/DCL based approach. Please let us know if you encounter any problems or any specific reasons that can only use the TF/DCL based approach.
+
 
 * [Add a new resource](./scenarios/new-resource.md)
 * [Add a new field](./scenarios/new-field.md)
