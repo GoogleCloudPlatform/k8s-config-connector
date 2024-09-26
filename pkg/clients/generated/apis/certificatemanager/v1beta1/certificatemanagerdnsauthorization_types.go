@@ -43,6 +43,10 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a single domain and its wildcard, e.g. authorization for "example.com" can be used to issue certificates for "example.com" and "*.example.com". */
 	Domain string `json:"domain"`
 
+	/* Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
