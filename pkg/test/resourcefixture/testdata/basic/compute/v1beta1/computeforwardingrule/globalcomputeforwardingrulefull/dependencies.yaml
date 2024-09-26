@@ -28,7 +28,7 @@ metadata:
 spec:
   checkIntervalSec: 10
   httpHealthCheck:
-    port: 80
+    port: 90
   location: global
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1

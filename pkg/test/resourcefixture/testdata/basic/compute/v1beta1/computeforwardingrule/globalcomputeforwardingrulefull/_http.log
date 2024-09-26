@@ -254,7 +254,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "checkIntervalSec": 10,
   "healthyThreshold": 2,
   "httpHealthCheck": {
-    "port": 80,
+    "port": 90,
     "proxyHeader": "NONE",
     "requestPath": "/"
   },
@@ -308,7 +308,7 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "healthyThreshold": 2,
   "httpHealthCheck": {
-    "port": 80,
+    "port": 90,
     "proxyHeader": "NONE",
     "requestPath": "/"
   },
@@ -771,7 +771,7 @@ x-goog-request-params: project=${projectId}
   "name": "computeglobalforwardingrule-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "portRange": "80",
+  "portRange": "90",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
 }
 
@@ -878,7 +878,7 @@ X-Xss-Protection: 0
   "name": "computeglobalforwardingrule-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "portRange": "80-80",
+  "portRange": "90-90",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
 }
@@ -974,7 +974,7 @@ X-Xss-Protection: 0
   "name": "computeglobalforwardingrule-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "portRange": "80-80",
+  "portRange": "90-90",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
 }
@@ -1141,7 +1141,7 @@ X-Xss-Protection: 0
   "name": "computeglobalforwardingrule-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "portRange": "80-80",
+  "portRange": "90-90",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}"
 }
@@ -1464,7 +1464,7 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "healthyThreshold": 2,
   "httpHealthCheck": {
-    "port": 80,
+    "port": 90,
     "proxyHeader": "NONE",
     "requestPath": "/"
   },
