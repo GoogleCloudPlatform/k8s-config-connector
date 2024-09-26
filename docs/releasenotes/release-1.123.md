@@ -12,7 +12,7 @@
   details about the Absent behavior can be found
   [here](https://cloud.google.com/config-connector/docs/concepts/ignore-unspecified-fields#absent).
 
-* You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` label on `DataflowFlexTemplateJob` resource to opt-in
+* You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on `DataflowFlexTemplateJob` resource to opt-in
 the Direct Cloud Reconciler, which provides an advanced status update solution for some timeout issues.
 
 

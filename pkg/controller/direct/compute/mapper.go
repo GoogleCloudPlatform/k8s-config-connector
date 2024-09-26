@@ -115,8 +115,8 @@ func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 
 	var out *string
-	if oneof := in.GoogleAPIBundle; oneof != nil {
-		out = in.GoogleAPIBundle
+	if oneof := in.GoogleAPIsBundle; oneof != nil {
+		out = in.GoogleAPIsBundle
 	}
 	if oneof := in.ServiceAttachmentRef; oneof != nil {
 		if oneof.External == "" {
