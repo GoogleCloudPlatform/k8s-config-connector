@@ -1234,7 +1234,10 @@ func TestDCLSchemaToJSONSchema(t *testing.T) {
 	smLoader := servicemappingloader.NewFromServiceMappings(test.FakeServiceMappingsWithHierarchicalResources())
 	serviceMetadataLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
 	dclSchemaLoader := testdclschemaloader.New(dclSchemaMap())
-	allSupportedGVKs := supportedgvks.All(smLoader, serviceMetadataLoader)
+	allSupportedGVKs, err := supportedgvks.All(smLoader, serviceMetadataLoader)
+	if err != nil {
+		t.Fatalf("error loading all supported GVKs: %v", err)
+	}
 	a := New(serviceMetadataLoader, dclSchemaLoader, allSupportedGVKs)
 	for _, tc := range tests {
 		tc := tc

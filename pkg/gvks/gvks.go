@@ -14,6 +14,8 @@
 package gvks
 
 import (
+	"fmt"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/externalonlygvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
@@ -23,18 +25,25 @@ import (
 
 // All returns GroupVersionKinds corresponding to GCP resources known to KCC,
 // including those unsupported by KCC but commonly referenced by KCC resources.
-func All(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader) []schema.GroupVersionKind {
-	gvks := supportedgvks.All(smLoader, serviceMetaLoader)
+func All(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader) ([]schema.GroupVersionKind, error) {
+	gvks, err := supportedgvks.All(smLoader, serviceMetaLoader)
+	if err != nil {
+		return gvks, fmt.Errorf("error loading all supported GVKs: %w", err)
+	}
 	gvks = append(gvks, externalonlygvks.All()...)
-	return gvks
+	return gvks, nil
 }
 
 func GVKForKind(kind string, smLoader *servicemappingloader.ServiceMappingLoader,
-	serviceMetaLoader metadata.ServiceMetadataLoader) (gvk schema.GroupVersionKind, found bool) {
-	for _, v := range All(smLoader, serviceMetaLoader) {
+	serviceMetaLoader metadata.ServiceMetadataLoader) (gvk schema.GroupVersionKind, found bool, err error) {
+	allGVKs, err := All(smLoader, serviceMetaLoader)
+	if err != nil {
+		return schema.GroupVersionKind{}, false, fmt.Errorf("error loading all supported GVKs: %w", err)
+	}
+	for _, v := range allGVKs {
 		if v.Kind == kind {
-			return v, true
+			return v, true, nil
 		}
 	}
-	return schema.GroupVersionKind{}, false
+	return schema.GroupVersionKind{}, false, nil
 }
