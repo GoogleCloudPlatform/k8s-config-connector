@@ -50,7 +50,7 @@ The apis directory to where to write the result to. Shall always be   $REPO_ROO
 
 The Config Connector resource kind, camel case. Normally it should contain the service name for example `SpannerInstance`, `SQLInstance`.
 
-* `--proto-source`
+* `--proto-resource`
 
 The proto name of the resource, you can find them in [https://github.com/googleapis/googleapis.git](https://github.com/googleapis/googleapis.git). For example, the SQLInstance is named `instance` under [https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4](https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4). The proto-source should be `instance` instead of `SQLInstance`
 
