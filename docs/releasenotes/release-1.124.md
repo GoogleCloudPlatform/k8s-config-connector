@@ -15,11 +15,14 @@ output fields from GCP APIs are in `status.observedState.*`
 
 * `PlaceholderKind`
 
+## Direct Cloud Reconciler:
+* CertificateManagerDNSAuthorization (v1beta1).
+
 ## New Resources:
 
 * Added support for `PlaceholderKind` (v1beta1) resource.
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* CertificateManagerDNSAuthorization
+  * Added `spec.Location` field.
