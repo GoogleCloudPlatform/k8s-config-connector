@@ -26,5 +26,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}
+  externalRef: //dataform.googleapis.com/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}
   observedGeneration: 2
