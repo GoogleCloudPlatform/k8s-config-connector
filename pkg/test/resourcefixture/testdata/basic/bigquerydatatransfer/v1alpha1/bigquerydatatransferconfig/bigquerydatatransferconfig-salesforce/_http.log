@@ -381,10 +381,6 @@ X-Xss-Protection: 0
       "specialGroup": "projectWriters"
     },
     {
-      "role": "WRITER",
-      "userByEmail": "user@google.com"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
