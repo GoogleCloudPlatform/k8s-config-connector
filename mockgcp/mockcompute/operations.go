@@ -41,6 +41,10 @@ func (s *computeOperations) globalOperationFQN(projectID string, name string) st
 	return "projects/" + projectID + "/global/operations/" + name
 }
 
+func (s *computeOperations) globalOrganizationOperationFQN(name string) string {
+	return "locations/global/operations/" + name
+}
+
 func (s *computeOperations) regionalOperationFQN(projectID string, region string, name string) string {
 	return "projects/" + projectID + "/regions/" + region + "/operations/" + name
 }
@@ -153,6 +157,18 @@ func (s *computeOperations) startGlobalLRO(ctx context.Context, projectID string
 
 	name := fmt.Sprintf("operation-%d-%s", millis, id)
 	fqn := s.globalOperationFQN(projectID, name)
+
+	op.Name = PtrTo(name)
+	return s.startLRO0(ctx, op, fqn, callback)
+}
+
+func (s *computeOperations) startGlobalOrganizationLRO(ctx context.Context, op *pb.Operation, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	fqn := s.globalOrganizationOperationFQN(name)
 
 	op.Name = PtrTo(name)
 	return s.startLRO0(ctx, op, fqn, callback)

@@ -29,6 +29,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
   "user": "user@example.com"
 }
 
