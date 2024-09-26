@@ -18,6 +18,11 @@ import "time"
 
 func init() {
 	resourceContextMap["sqlinstance-activationpolicy"] = ResourceContext{
+		// TODO: After switching to use direct controller, we can update the direct controller
+		// logic to support creating SQLInstances with `activationPolicy: "NEVER"`. Then, we
+		// can enable this test. The TF based controller does not support creating
+		// SQLInstances with `activationPolicy: "NEVER"`.
+		SkipDriftDetection: true,
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
@@ -46,6 +51,8 @@ func init() {
 	}
 
 	resourceContextMap["sqlinstance-backupconfiguration-binarylog"] = ResourceContext{
+		// TODO: Remove after switching to use direct controller.
+		SkipNoChange: true,
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
@@ -53,6 +60,8 @@ func init() {
 	}
 
 	resourceContextMap["sqlinstance-backupconfiguration-pitr"] = ResourceContext{
+		// TODO: Remove after switching to use direct controller.
+		SkipNoChange: true,
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
@@ -81,6 +90,8 @@ func init() {
 	}
 
 	resourceContextMap["sqlinstance-datacacheconfig"] = ResourceContext{
+		// TODO: Remove after switching to use direct controller.
+		SkipNoChange: true,
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
@@ -95,6 +106,8 @@ func init() {
 	}
 
 	resourceContextMap["sqlinstance-denymaintenanceperiod"] = ResourceContext{
+		// TODO: Remove after switching to use direct controller.
+		SkipNoChange: true,
 		// SQL instances appear to need a bit of additional time before attempting to recreate
 		// with the exact same name. Otherwise, the GCP API returns "unknown error".
 		RecreateDelay: time.Second * 60,
