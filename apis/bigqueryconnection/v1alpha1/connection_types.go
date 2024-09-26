@@ -51,10 +51,8 @@ type BigQueryConnectionConnectionSpec struct {
 	// Cloud SQL properties.
 	CloudSQLSpec *CloudSqlPropertiesSpec `json:"cloudSql,omitempty"`
 
-	/* NOTYET
 	// Amazon Web Services (AWS) properties.
-	Aws *AwsProperties `json:"aws,omitempty"`
-	*/
+	AwsSpec *AwsPropertiesSpec `json:"aws,omitempty"`
 
 	/* NOTYET
 	// Azure properties.
@@ -101,6 +99,8 @@ type BigQueryConnectionConnectionStatus struct {
 // BigQueryConnectionConnectionSpec defines the desired state of BigQueryConnectionConnection
 // +kcc:proto=google.cloud.bigquery.connection.v1.Connection
 type BigQueryConnectionConnectionObservedState struct {
+	Aws *AwsPropertiesStatus `json:"aws,omitempty"`
+
 	CloudResource *CloudResourcePropertiesStatus `json:"cloudResource,omitempty"`
 
 	CloudSql *CloudSqlPropertiesStatus `json:"cloudSql,omitempty"`
@@ -137,6 +137,18 @@ type BigQueryConnectionConnectionObservedState struct {
 	HasCredential *bool `json:"hasCredential,omitempty"`
 }
 
+type AwsPropertiesSpec struct {
+	// Authentication using Google owned service account to assume into
+	//  customer's AWS IAM Role.
+	AccessRole *AwsAccessRoleSpec `json:"accessRole,omitempty"`
+}
+
+type AwsAccessRoleSpec struct {
+	// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
+	//  Connection.
+	IamRoleID *string `json:"iamRoleID,omitempty"`
+}
+
 type CloudResourcePropertiesSpec struct{}
 
 type CloudSqlPropertiesSpec struct {
@@ -151,6 +163,18 @@ type CloudSqlPropertiesSpec struct {
 
 	// Cloud SQL credential.
 	Credential *CloudSqlCredential `json:"credential,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.AwsProperties
+type AwsPropertiesStatus struct {
+	AccessRole *AwsAccessRoleStatus `json:"accessRole,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.AwsAccessRole
+type AwsAccessRoleStatus struct {
+	// A unique Google-owned and Google-generated identity for the Connection.
+	//  This identity will be used to access the user's AWS IAM Role.
+	Identity *string `json:"identity,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlProperties
