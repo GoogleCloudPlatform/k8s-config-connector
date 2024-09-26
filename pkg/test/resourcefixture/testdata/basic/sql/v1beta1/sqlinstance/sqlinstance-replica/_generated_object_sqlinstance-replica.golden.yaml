@@ -3,12 +3,14 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: sqlinstance-replica-${uniqueId}
@@ -21,6 +23,7 @@ spec:
   region: us-central1
   replicaConfiguration:
     failoverTarget: true
+  resourceID: sqlinstance-replica-${uniqueId}
   settings:
     locationPreference:
       zone: us-central1-b
@@ -36,7 +39,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: READ_REPLICA_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 1
+  observedGeneration: 2
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-${uniqueId}
   serverCaCert:

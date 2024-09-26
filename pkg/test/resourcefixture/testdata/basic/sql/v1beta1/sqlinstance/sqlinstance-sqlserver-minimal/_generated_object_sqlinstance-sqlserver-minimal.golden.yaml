@@ -3,19 +3,22 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"rootPassword":{"valueFrom":{"secretKeyRef":{"key":"password","name":"secret-${uniqueId}"}}}}}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
-  name: sqlserverbasic-${uniqueId}
+  name: sqlinstance-sqlserver-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
   databaseVersion: SQLSERVER_2022_EXPRESS
   region: us-central1
+  resourceID: sqlinstance-sqlserver-minimal-${uniqueId}
   rootPassword:
     valueFrom:
       secretKeyRef:
@@ -32,13 +35,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlserverbasic-${uniqueId}
+  connectionName: ${projectId}:us-central1:sqlinstance-sqlserver-minimal-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 2
+  observedGeneration: 3
   publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sqlserver-minimal-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----

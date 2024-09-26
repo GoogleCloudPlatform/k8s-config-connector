@@ -138,7 +138,7 @@ Vary: X-Origin
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -169,7 +169,7 @@ X-Xss-Protection: 0
 
 POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
@@ -182,13 +182,11 @@ User-Agent: kcc/controller-manager
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
     "sqlServerAuditConfig": {
       "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig",
       "retentionInterval": "86400s",
       "uploadInterval": "60s"
     },
@@ -228,7 +226,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -258,125 +256,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-auditconfig-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
-  "databaseVersion": "SQLSERVER_2022_EXPRESS",
-  "etag": "abcdef0123A=",
-  "gceZone": "us-central1-a",
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "ipAddresses": [
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "PRIMARY"
-    }
-  ],
-  "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
-  "name": "sqlinstance-auditconfig-${uniqueId}",
-  "project": "${projectId}",
-  "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}",
-  "serverCaCert": {
-    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
-    "certSerialNumber": "0",
-    "commonName": "common-name",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-auditconfig-${uniqueId}",
-    "kind": "sql#sslCert",
-    "sha1Fingerprint": "12345678"
-  },
-  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-  "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 7,
-        "retentionUnit": "COUNT"
-      },
-      "enabled": false,
-      "kind": "sql#backupConfiguration",
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
-    "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
-    "dataDiskType": "PD_SSD",
-    "deletionProtectionEnabled": false,
-    "edition": "ENTERPRISE",
-    "ipConfiguration": {
-      "authorizedNetworks": [],
-      "ipv4Enabled": true,
-      "requireSsl": false,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-    },
-    "kind": "sql#settings",
-    "locationPreference": {
-      "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
-    },
-    "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "123",
-    "sqlServerAuditConfig": {
-      "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig",
-      "retentionInterval": "86400s",
-      "uploadInterval": "60s"
-    },
-    "storageAutoResize": true,
-    "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
-    "userLabels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    }
-  },
-  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "SQL Server 2022 Standard",
-      "majorVersion": "SQLSERVER_2022_STANDARD",
-      "name": "SQLSERVER_2022_STANDARD"
-    },
-    {
-      "displayName": "SQL Server 2022 Enterprise",
-      "majorVersion": "SQLSERVER_2022_ENTERPRISE",
-      "name": "SQLSERVER_2022_ENTERPRISE"
-    },
-    {
-      "displayName": "SQL Server 2022 Web",
-      "majorVersion": "SQLSERVER_2022_WEB",
-      "name": "SQLSERVER_2022_WEB"
-    }
-  ]
-}
-
----
-
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -433,7 +314,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -506,7 +387,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -514,7 +394,6 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
       "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig",
       "retentionInterval": "86400s",
       "uploadInterval": "60s"
     },
@@ -551,29 +430,39 @@ X-Xss-Protection: 0
 
 PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
-  "name": "sqlinstance-auditconfig-${uniqueId}",
-  "region": "us-central1",
-  "rootPassword": "1234!@#$asdf",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "binaryLogEnabled": false,
+      "enabled": false,
+      "pointInTimeRecoveryEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "requireSsl": false
+    },
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
       "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig",
       "retentionInterval": "604800s",
       "uploadInterval": "120s"
     },
@@ -613,7 +502,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -644,7 +533,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -700,6 +589,7 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "pointInTimeRecoveryEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -717,7 +607,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -725,7 +614,6 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
       "bucket": "gs://storagebucket-${uniqueId}",
-      "kind": "sql#sqlServerAuditConfig",
       "retentionInterval": "604800s",
       "uploadInterval": "120s"
     },
@@ -761,7 +649,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -781,6 +669,37 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
+  "targetId": "sqlinstance-auditconfig-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
   "targetId": "sqlinstance-auditconfig-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-${uniqueId}",
   "targetProject": "${projectId}",
