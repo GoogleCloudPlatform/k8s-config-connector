@@ -160,7 +160,16 @@ func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: Name
 	out.FriendlyName = direct.LazyPtr(in.GetFriendlyName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Aws
+
+	if oneof := AwsPropertiesSpec_FromProto(mapCtx, in.GetAws()); oneof != nil {
+		out.AwsSpec = oneof
+	}
+	if oneof := CloudSqlPropertiesSpec_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
+		out.CloudSQLSpec = oneof
+	}
+	if oneof := CloudResourcePropertiesSpec_FromProto(mapCtx, in.GetCloudResource()); oneof != nil {
+		out.CloudResourceSpec = oneof
+	}
 	// MISSING: Azure
 	// MISSING: CloudSpanner
 	// MISSING: Spark
@@ -181,6 +190,22 @@ func CloudResourceProperties_ToProto(mapCtx *direct.MapContext, in *krm.CloudRes
 	}
 	out := &pb.CloudResourceProperties{}
 	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	return out
+}
+func AwsPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AwsProperties) *krm.AwsPropertiesStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsPropertiesStatus{}
+	out.AccessRole = AwsAccessRoleStatus_FromProto(mapCtx, in.GetAccessRole())
+	return out
+}
+func AwsAccessRoleStatus_FromProto(mapCtx *direct.MapContext, in *pb.AwsAccessRole) *krm.AwsAccessRoleStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsAccessRoleStatus{}
+	out.Identity = direct.PtrTo(in.Identity)
 	return out
 }
 func CloudResourcePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.CloudResourceProperties) *krm.CloudResourcePropertiesStatus {

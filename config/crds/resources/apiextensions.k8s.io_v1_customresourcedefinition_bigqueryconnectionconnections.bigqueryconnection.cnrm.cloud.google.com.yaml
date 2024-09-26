@@ -61,6 +61,19 @@ spec:
             description: BigQueryConnectionConnectionSpec defines the desired state
               to connect BigQuery to external resources
             properties:
+              aws:
+                description: Amazon Web Services (AWS) properties.
+                properties:
+                  accessRole:
+                    description: Authentication using Google owned service account
+                      to assume into customer's AWS IAM Role.
+                    properties:
+                      iamRoleID:
+                        description: The user’s AWS IAM Role that trusts the Google-owned
+                          AWS IAM user Connection.
+                        type: string
+                    type: object
+                type: object
               cloudResource:
                 description: Use Cloud Resource properties.
                 type: object
@@ -212,6 +225,17 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  aws:
+                    properties:
+                      accessRole:
+                        properties:
+                          identity:
+                            description: A unique Google-owned and Google-generated
+                              identity for the Connection. This identity will be used
+                              to access the user's AWS IAM Role.
+                            type: string
+                        type: object
+                    type: object
                   cloudResource:
                     properties:
                       serviceAccountID:
