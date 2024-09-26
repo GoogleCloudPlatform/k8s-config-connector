@@ -24,6 +24,24 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
+# CloudIdentity
+go run . generate-types \
+     --service google.apps.cloudidentity.groups.v1beta1  \
+     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+     --output-api ${APIS_DIR} \
+     --kind CloudIdentityGroup  \
+     --proto-resource Group \
+     --api-version "cloudidentity.cnrm.cloud.google.com/v1beta1"
+
+go run . generate-mapper \
+   --service google.apps.cloudidentity.groups.v1beta1  \
+   --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+   --api-version "cloudidentity.cnrm.cloud.google.com/v1beta1" \
+   --api-go-package-path  ${APIS_DIR} \
+   --output-dir ${OUTPUT_MAPPER} \
+   --api-dir ${APIS_DIR}
+
+
 # DataFlow
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \

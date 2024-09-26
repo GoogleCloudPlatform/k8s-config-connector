@@ -10,6 +10,7 @@ generate-pb: install-protoc-linux
 	protoc --include_imports --include_source_info \
 		-I ./third_party/googleapis/ \
 		-I ../../../mockgcp/apis \
+		../../../mockgcp/apis/google/apps/cloudidentity/groups/*/*.proto \
 		../../../mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
 		./third_party/googleapis/google/api/*.proto \
 		./third_party/googleapis/google/api/*/*/*.proto \
