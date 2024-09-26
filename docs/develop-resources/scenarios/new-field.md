@@ -32,18 +32,18 @@ The apis directory the contains the existing API types of the resource.
 
     1. Run 3.1 Generate the API and proto mapper to update the mapper files.
     2. Add the fields to `create.yaml `and `update.yaml `in corresponding test suites.
-    3. Modify the MockGCP when necessary. The new fields should show up in `_http.log `and   `_generated_object_&lt;resource>.golden.yaml` 
+    3. Modify the MockGCP when necessary. The new fields should show up in `_http.log `and   `_generated_object_<resource>.golden.yaml` 
 
 ## 2. Resolve resource reference
 
-If the newly added fields contain resource references, you should have a second PR to update the resource reference, following [4.2 resolve resource references](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/4-add-controller.md#42-resolve-resource-references)  (TODO: update the link)
+If the newly added fields contain resource references, you should have a second PR to update the resource reference, following [4.2 resolve resource references](../guides/4-add-controller.md#42-resolve-resource-references)  (TODO: update the link)
 
 Add a new test suite with `dependencies.yaml` to cover the referenced fields.
 
 
 ## Add MockGCP coverage
  
-Follow [Step 1](https://github.com/yuwenma/k8s-config-connector/blob/scifi-guide/docs/develop-resources/guides/1-add-mockgcp-tests.md)
+Follow [Step 1](../guides/1-add-mockgcp-tests.md)
 
 ### PR Reviews
 

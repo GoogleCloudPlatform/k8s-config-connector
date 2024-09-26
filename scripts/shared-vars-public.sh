@@ -42,6 +42,7 @@ SUPPORTED_SERVICES=(
   artifactregistry.googleapis.com
   bigquery.googleapis.com
   bigqueryconnection.googleapis.com
+  bigquerydatatransfer.googleapis.com
   bigtableadmin.googleapis.com
   billingbudgets.googleapis.com
   binaryauthorization.googleapis.com
@@ -101,6 +102,7 @@ SUPPORTED_SERVICES=(
   sqladmin.googleapis.com
   storagetransfer.googleapis.com
   vpcaccess.googleapis.com
+  workstations.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new

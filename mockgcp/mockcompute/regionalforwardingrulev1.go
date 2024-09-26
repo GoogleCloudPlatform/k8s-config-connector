@@ -42,6 +42,9 @@ func (s *RegionalForwardingRulesV1) Get(ctx context.Context, req *pb.GetForwardi
 
 	obj := &pb.ForwardingRule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -64,6 +67,8 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
+	// labels will be added separately with setLabels
+	obj.Labels = nil
 	// If below values are not provided by user, it appears to default by GCP
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
@@ -76,6 +81,9 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	}
 	if obj.NetworkTier == nil {
 		obj.NetworkTier = PtrTo("PREMIUM")
+	}
+	if *obj.LoadBalancingScheme == "" {
+		obj.LoadBalancingScheme = nil
 	}
 
 	// pattern: \d+(?:-\d+)?
@@ -97,6 +105,15 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 			return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 		}
 		obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name))
+	}
+
+	// output only field.
+	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
+	// output only field, this field is only used for internal load balancing.
+	if obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme == "INTERNAL" {
+		if obj.ServiceLabel != nil {
+			obj.ServiceName = PtrTo(fmt.Sprintf("%s.%s.il4.%s.lb.%s.internal", obj.GetServiceLabel(), name.Name, name.Region, name.Project.ID))
+		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -161,10 +178,13 @@ func (s *RegionalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLa
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("SetLabels"),
+		OperationType: PtrTo("setLabels"),
 		User:          PtrTo("user@example.com"),
 		// SetLabels operation has EndTime in response
 		EndTime: PtrTo("2024-04-01T12:34:56.123456Z"),
+		// SetLabels operation finished super fast
+		Progress: PtrTo(int32(100)),
+		Status:   PtrTo(pb.Operation_DONE),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil

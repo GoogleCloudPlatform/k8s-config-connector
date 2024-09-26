@@ -7,12 +7,12 @@
 * Fix resource deletion of `AlloyDBInstance` and `EdgeContainerNodePool` when their "parent objects" no longer exist.
 
 * Initial support (alpha stability) for pausing actuation of resources onto Google Cloud. Operators
-  can set ConfigConnector's or ConfigConnectorContext's spec.actuationMode to `Paused`, depending
+  can set Config Connector's or Config ConnectorContext's spec.actuationMode to `Paused`, depending
   on whether to pause on the whole cluster or just a namespace.
   See the [pause feature docs](./../features/pause.md) for more information.
 
 * Initial support (alpha stability) for defaulting state-into-spec to absent (the recommended setting),
-  by setting `spec.stateIntoSpec: Absent` in the ConfigConnectorContext.
+  by setting `spec.stateIntoSpec: Absent` in the Config ConnectorContext.
 
 * Experimental "powertools" area of the CLI, containing experimental/dangerous functionality that should not be
   part of normal operation, but can sometimes nonetheless be useful.

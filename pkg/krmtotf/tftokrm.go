@@ -29,6 +29,7 @@ import (
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
@@ -233,7 +234,19 @@ func ResolveSpecAndStatusWithResourceID(resource *Resource, state *terraform.Ins
 func resolveDesiredStateInSpecAndObservedStateInStatus(resource *Resource, state *terraform.InstanceState) (
 	spec map[string]interface{}, status map[string]interface{}) {
 	spec = deepcopy.MapStringInterface(resource.Spec)
-	_, status = GetSpecAndStatusFromState(resource, state)
+	returnedSpec, status := GetSpecAndStatusFromState(resource, state)
+	// 'spec.additionalExperiments' in DataflowJob needs to be replaced by the
+	// returned value because the API also updated the field and we need to
+	// match the desired state with the live state.
+	if resource.Kind == "DataflowJob" {
+		if _, ok := spec["additionalExperiments"]; ok {
+			if _, ok := returnedSpec["additionalExperiments"]; !ok {
+				klog.Error("Kind", resource.Kind, "NamespacedName", resource.GetNamespacedName(), "The returned state doesn't contain additionalExperiments but it should")
+			} else {
+				spec["additionalExperiments"] = returnedSpec["additionalExperiments"]
+			}
+		}
+	}
 	return spec, status
 }
 

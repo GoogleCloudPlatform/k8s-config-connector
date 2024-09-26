@@ -116,11 +116,15 @@ func BigQueryConnectionConnectionObservedState_FromProto(mapCtx *direct.MapConte
 	// MISSING: Name
 	out.FriendlyName = direct.LazyPtr(in.GetFriendlyName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CloudSql
 	// MISSING: Aws
 	// MISSING: Azure
 	// MISSING: CloudSpanner
-	out.CloudResource = CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource())
+	if oneof := CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource()); oneof != nil {
+		out.CloudResource = CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource())
+	}
+	if oneof := CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
+		out.CloudSql = CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql())
+	}
 	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
 	out.HasCredential = direct.LazyPtr(in.GetHasCredential())
@@ -134,12 +138,14 @@ func BigQueryConnectionConnectionObservedState_ToProto(mapCtx *direct.MapContext
 	// MISSING: Name
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CloudSql
 	// MISSING: Aws
 	// MISSING: Azure
 	// MISSING: CloudSpanner
 	if oneof := CloudResourcePropertiesStatus_ToProto(mapCtx, in.CloudResource); oneof != nil {
 		out.Properties = &pb.Connection_CloudResource{CloudResource: oneof}
+	}
+	if oneof := CloudSqlPropertiesStatus_ToProto(mapCtx, in.CloudSql); oneof != nil {
+		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
 	}
 	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
@@ -154,8 +160,16 @@ func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: Name
 	out.FriendlyName = direct.LazyPtr(in.GetFriendlyName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CloudSql
-	// MISSING: Aws
+
+	if oneof := AwsPropertiesSpec_FromProto(mapCtx, in.GetAws()); oneof != nil {
+		out.AwsSpec = oneof
+	}
+	if oneof := CloudSqlPropertiesSpec_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
+		out.CloudSQLSpec = oneof
+	}
+	if oneof := CloudResourcePropertiesSpec_FromProto(mapCtx, in.GetCloudResource()); oneof != nil {
+		out.CloudResourceSpec = oneof
+	}
 	// MISSING: Azure
 	// MISSING: CloudSpanner
 	// MISSING: Spark
@@ -176,6 +190,22 @@ func CloudResourceProperties_ToProto(mapCtx *direct.MapContext, in *krm.CloudRes
 	}
 	out := &pb.CloudResourceProperties{}
 	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	return out
+}
+func AwsPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AwsProperties) *krm.AwsPropertiesStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsPropertiesStatus{}
+	out.AccessRole = AwsAccessRoleStatus_FromProto(mapCtx, in.GetAccessRole())
+	return out
+}
+func AwsAccessRoleStatus_FromProto(mapCtx *direct.MapContext, in *pb.AwsAccessRole) *krm.AwsAccessRoleStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsAccessRoleStatus{}
+	out.Identity = direct.PtrTo(in.Identity)
 	return out
 }
 func CloudResourcePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.CloudResourceProperties) *krm.CloudResourcePropertiesStatus {
@@ -259,6 +289,22 @@ func CloudSqlProperties_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlPrope
 	out.Database = direct.ValueOf(in.Database)
 	out.Type = direct.Enum_ToProto[pb.CloudSqlProperties_DatabaseType](mapCtx, in.Type)
 	out.Credential = CloudSqlCredential_ToProto(mapCtx, in.Credential)
+	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	return out
+}
+func CloudSqlPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlProperties) *krm.CloudSqlPropertiesStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSqlPropertiesStatus{}
+	out.ServiceAccountID = direct.LazyPtr(in.GetServiceAccountId())
+	return out
+}
+func CloudSqlPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlPropertiesStatus) *pb.CloudSqlProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlProperties{}
 	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
 	return out
 }

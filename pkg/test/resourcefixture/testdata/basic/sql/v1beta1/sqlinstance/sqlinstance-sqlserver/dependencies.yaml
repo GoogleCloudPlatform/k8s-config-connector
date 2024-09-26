@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: storage.cnrm.cloud.google.com/v1beta1
-kind: StorageBucket
+---
+apiVersion: v1
+kind: Secret
 metadata:
-  name: storagebucket-${uniqueId}
+  name: secret-${uniqueId}
+data:
+  password: MTIzNCFAIyRhc2Rm

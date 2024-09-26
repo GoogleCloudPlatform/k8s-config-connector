@@ -33,6 +33,14 @@ go run . generate-types \
     --kind DataflowFlexTemplateJob \
     --proto-resource FlexTemplateRuntimeEnvironment
 
+go run main.go generate-types \
+     --service google.cloud.secretmanager.v1  \
+     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+     --output-api ${APIS_DIR} \
+     --kind SecretManagerSecret  \ 
+     --proto-resource Secret \
+     --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
+
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.dataflow.v1beta3 \
@@ -110,6 +118,23 @@ go run . generate-mapper \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
 
+# BigQueryDataset
+go run . generate-types  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.bigquery.v2 \
+    --api-version bigquery.cnrm.cloud.google.com/v1beta1  \
+    --output-api ${APIS_DIR} \
+    --kind BigQueryDataset \
+    --proto-resource Dataset
+
+# go run . generate-mapper \
+#     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+#     --service google.cloud.bigquery.v2 \
+#     --api-version bigquery.cnrm.cloud.google.com/v1beta1 \
+#     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+#     --output-dir ${OUTPUT_MAPPER} \
+#     --api-dir ${APIS_DIR}
+
 # BigQueryDataTransferConfig
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -160,6 +185,23 @@ go run . generate-types \
     --kind CertificateManagerDNSAuthorization \
     --proto-resource DnsAuthorization \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1"
+
+# Workstations
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind WorkstationCluster \
+    --proto-resource WorkstationCluster
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
 
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

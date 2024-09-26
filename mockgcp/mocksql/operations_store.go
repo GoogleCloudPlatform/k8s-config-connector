@@ -40,11 +40,19 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 
 	switch obj := obj.(type) {
 	case *pb.DatabaseInstance:
-		op.TargetId = obj.Name
-		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", op.TargetProject, op.TargetId)
+		if op.OperationType == pb.Operation_CREATE_REPLICA {
+			op.TargetId = obj.MasterInstanceName
+			op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", op.TargetProject, op.TargetId)
+		} else {
+			op.TargetId = obj.Name
+			op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", op.TargetProject, op.TargetId)
+		}
 	case *pb.User:
 		op.TargetId = obj.Instance
 		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", obj.Project, obj.Instance)
+	case *pb.Database:
+		op.TargetId = obj.Instance
+		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/databases/%s", obj.Project, obj.Instance, obj.Name)
 	default:
 		klog.Fatalf("unhandled type %T", obj)
 	}
@@ -71,7 +79,7 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 	fqn := "projects/" + op.TargetProject + "/operations/" + op.Name
 	op.SelfLink = "https://sqladmin.googleapis.com/sql/v1beta4/" + fqn
 
-	log.Info("storing operation", "fqn", fqn)
+	log.Info("storing operation", "fqn", fqn, "operation", op.GetOperationType())
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
 	}
@@ -85,6 +93,7 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 		}
 
 		finished.Status = pb.Operation_DONE
+		finished.StartTime = timestamppb.New(time.Now())
 		finished.EndTime = timestamppb.New(time.Now())
 
 		if err != nil {

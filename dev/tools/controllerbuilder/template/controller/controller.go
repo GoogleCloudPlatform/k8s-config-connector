@@ -28,6 +28,20 @@ type ControllerArgs struct {
 }
 
 const ControllerTemplate = `
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package {{.KCCService}}
 
 import (
@@ -60,7 +74,7 @@ import (
 )
 
 const (
-	ctrlName = "{{.KCCService}}-controller"
+	ctrlName = "{{.KCCService}}-{{.ProtoResource | ToLower }}-controller"
     // TODO(user): Confirm service domain
 	serviceDomain = "//{{.KCCService}}.googleapis.com"
 )
@@ -196,7 +210,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	// TODO(user): Please add the Spec_ToProto mappers under the same package
 	resource := {{.Kind}}Spec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -218,8 +231,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
-	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
-	status := {{.Kind}}StatusObservedState_FromProto(mapCtx, created)
+	status.ObservedState = {{.Kind}}StatusObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -234,20 +246,22 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
-	// TODO(user): (Optional) Add GCP mutable fields.
-	// TODO(kcc): Autogen "func immutable()" for each field
-	// TODO(kcc): autogen updateMastk.path for mutable gcp fields. 
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
-	}
-
 	desired := a.desired.DeepCopy()
 	resource := {{.Kind}}Spec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
+	// TODO(user): Update the field if applicable.
+	updateMask := &fieldmaskpb.FieldMask{}
+	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
+		updateMask.Paths = append(updateMask.Paths, "display_name")
+	}
+	
+	if len(updateMask.Paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.FullyQualifiedName())
+		return nil
+	}
 	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
 	req := &{{.KCCService}}pb.Update{{.ProtoResource}}Request{
 		Name:       			a.id.FullyQualifiedName(),
@@ -265,8 +279,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
-	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
-	status := {{.Kind}}StatusObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = {{.Kind}}StatusObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

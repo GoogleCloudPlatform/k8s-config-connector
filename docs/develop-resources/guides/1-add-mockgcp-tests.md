@@ -4,10 +4,11 @@
 MockGCP test is required for the Direct resource development. 
 
 1. This is required no matter if the feature request is small or big. For example, both adding a single new field or adding an entire new resource require the MockGCP test coverage. If the MockGCP does not exist yet when adding a single field, developers should add the corresponding MockGCP coverage for the entire resource.  
-1. Each ConfigConnector `spec` field should be covered in both create and update(if applicable) cases. 
-1. MockGCP check is auto-enabled in Presubmit check and shall not be skipped. Code changes to a ConfigConnector resource must not merge if not covered by MockGCP check. 
+1. Each Config Connector `spec` field should be covered in both create and update(if applicable) cases. 
+1. MockGCP check is auto-enabled in Presubmit check and shall not be skipped. Code changes to a Config Connector resource must not merge if not covered by MockGCP check. 
 1. New PRs should give steady golden log output before they can merge in. Reasonable golden object and http log changes are okay and sometimes expected.
 1. MockGCP should be up-to-date when migrating resource from TF/DCL based controller to the Direct Controller
+1. Real GCP record should be uploaded to reflect and validate the change in scenarios like adding a new resource, migrating from TF or DCL based controller to the direct controller, adding a new field, etc. 
 
 ### Suggestion
 
@@ -17,8 +18,14 @@ MockGCP test is required for the Direct resource development.
 
 Follow [this guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/mockgcp/README.md) to write a mock gcp server.
 
+## 1.2 Add the test suite
 
-## 1.2 Verify the MockGCP server
+Create a directory for your resource [pkg/test/resourcefixture/testdata/basic](pkg/test/resourcefixture/testdata/basic), following the naming convention as other directories. The bottommost directory name is the test suite name. You can create as many directory as your test needs. 
+
+Just to add the `create.yaml`,  `update.yaml` and `dependencies.yaml` (if applicable) to each bottommost directory.
+These three files are all Kubernetes config files, excep that `create.yaml` and `update.yaml` only holds the target CR object, and the `dependencies.yaml` holds all the dependent objects. Your test suite is done. 
+
+## 1.3 Verify the MockGCP server
 
 To write a new MockGCP server or to validate an existing one for the Direct resource, you should record the real GCP log and compare it with your MockGCP log, and make sure they are as likely as each other.
 

@@ -4,7 +4,7 @@ Run the following command to generate a controller template
 
 ```
 cd dev/tools/controllerbuilder
-go run main.go add --service <YOUR_SERVICE> --api-version <VERSION> --resourceInKind <YOUR_RESOURCE>
+go run main.go add --service <YOUR_SERVICE> --api-version <VERSION> --kind <YOUR_RESOURCE> --proto-resource <PROTO_RESOURCE>
 ```
 
 Fix the generated code to make your SciFi running!
@@ -16,7 +16,7 @@ The controller template has implemented the model interface` find, create, updat
 
 ## 4.2 Resolve resource references
 
-Most ConfigConnector resource need references like `spec.projectRef. `You should add those references in `AdapterForObject` using functions `Resolve<RefResource>`
+Most Config Connector resource need references like `spec.projectRef. `You should add those references in `AdapterForObject` using functions `Resolve<RefResource>`
 
 if there is no previous reference method, You may need to add a new` Resolve<RefResource> `
 
@@ -25,7 +25,7 @@ Check  to make sure your validation is complete.
 
 ## 4.3 Register your controller
 
-To wire your controller in the ConfigConnector operator, you need to register the controller [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/register/register.go)
+To wire your controller in the Config Connector operator, you need to register the controller [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/register/register.go)
 
 
 ## 4.4 Verify your controller

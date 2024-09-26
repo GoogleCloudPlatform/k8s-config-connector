@@ -35,13 +35,61 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ConnectionAccessRole struct {
+	/* The user’s AWS IAM Role that trusts the Google-owned AWS IAM user Connection. */
+	// +optional
+	IamRoleID *string `json:"iamRoleID,omitempty"`
+}
+
+type ConnectionAws struct {
+	/* Authentication using Google owned service account to assume into customer's AWS IAM Role. */
+	// +optional
+	AccessRole *ConnectionAccessRole `json:"accessRole,omitempty"`
+}
+
 type ConnectionCloudResource struct {
 }
 
+type ConnectionCloudSql struct {
+	/* Cloud SQL credential. */
+	// +optional
+	Credential *ConnectionCredential `json:"credential,omitempty"`
+
+	/* Database name. */
+	// +optional
+	Database *string `json:"database,omitempty"`
+
+	/* Reference to the Cloud SQL instance ID. */
+	// +optional
+	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+
+	/* Type of the Cloud SQL database. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type ConnectionCredential struct {
+	/* The password for the credential. */
+	// +optional
+	Password *string `json:"password,omitempty"`
+
+	/* The username for the credential. */
+	// +optional
+	Username *string `json:"username,omitempty"`
+}
+
 type BigQueryConnectionConnectionSpec struct {
+	/* Amazon Web Services (AWS) properties. */
+	// +optional
+	Aws *ConnectionAws `json:"aws,omitempty"`
+
 	/* Use Cloud Resource properties. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
+
+	/* Cloud SQL properties. */
+	// +optional
+	CloudSql *ConnectionCloudSql `json:"cloudSql,omitempty"`
 
 	/* User provided description. */
 	// +optional
@@ -62,8 +110,19 @@ type BigQueryConnectionConnectionSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type ConnectionAccessRoleStatus struct {
+	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's AWS IAM Role. */
+	// +optional
+	Identity *string `json:"identity,omitempty"`
+}
+
+type ConnectionAwsStatus struct {
+	// +optional
+	AccessRole *ConnectionAccessRoleStatus `json:"accessRole,omitempty"`
+}
+
 type ConnectionCloudResourceStatus struct {
-	/* Output only. The account ID of the service created for the purpose of this
+	/* The account ID of the service created for the purpose of this
 	connection.
 
 	The service account does not have any permissions associated with it
@@ -78,9 +137,25 @@ type ConnectionCloudResourceStatus struct {
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
 
+type ConnectionCloudSqlStatus struct {
+	/* The account ID of the service used for the purpose of this connection.
+
+	When the connection is used in the context of an operation in
+	BigQuery, this service account will serve as the identity being used for
+	connecting to the CloudSQL instance specified in this connection. */
+	// +optional
+	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+}
+
 type ConnectionObservedStateStatus struct {
 	// +optional
+	Aws *ConnectionAwsStatus `json:"aws,omitempty"`
+
+	// +optional
 	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`
+
+	// +optional
+	CloudSql *ConnectionCloudSqlStatus `json:"cloudSql,omitempty"`
 
 	/* The description for the connection. */
 	// +optional

@@ -103,8 +103,8 @@ import (
 	fakedatacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1/fake"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
 	fakedataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1/fake"
-	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1"
-	fakedataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1/fake"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
+	fakedataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1/fake"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	fakedatafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1/fake"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
@@ -518,9 +518,9 @@ func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return &fakedataflowv1beta1.FakeDataflowV1beta1{Fake: &c.Fake}
 }
 
-// DataformV1alpha1 retrieves the DataformV1alpha1Client
-func (c *Clientset) DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface {
-	return &fakedataformv1alpha1.FakeDataformV1alpha1{Fake: &c.Fake}
+// DataformV1beta1 retrieves the DataformV1beta1Client
+func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
+	return &fakedataformv1beta1.FakeDataformV1beta1{Fake: &c.Fake}
 }
 
 // DatafusionV1beta1 retrieves the DatafusionV1beta1Client

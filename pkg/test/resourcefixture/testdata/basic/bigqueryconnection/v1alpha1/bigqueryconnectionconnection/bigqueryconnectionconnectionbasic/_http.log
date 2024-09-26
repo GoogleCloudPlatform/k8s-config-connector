@@ -24,7 +24,7 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
@@ -51,7 +51,7 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---

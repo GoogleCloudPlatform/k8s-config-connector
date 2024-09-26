@@ -52,15 +52,15 @@ type CertificateManagerDNSAuthorizationSpec struct {
 }
 
 type DnsauthorizationDnsResourceRecordStatus struct {
-	/* Data of the DNS Resource Record. */
+	/* Output only. Data of the DNS Resource Record. */
 	// +optional
 	Data *string `json:"data,omitempty"`
 
-	/* Fully qualified name of the DNS Resource Record. E.g. '_acme-challenge.example.com'. */
+	/* Output only. Fully qualified name of the DNS Resource Record. e.g. `_acme-challenge.example.com` */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* Type of the DNS Resource Record. */
+	/* Output only. Type of the DNS Resource Record. Currently always set to "CNAME". */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }

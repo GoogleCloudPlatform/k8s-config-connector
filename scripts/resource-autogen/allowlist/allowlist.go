@@ -170,7 +170,6 @@ var (
 		"vertex_ai/google_vertex_ai_metadata_store",
 		"vertex_ai/google_vertex_ai_tensorboard",
 		"workflows/google_workflows_workflow",
-		"workstations/google_workstations_workstation_cluster",
 	}
 	// betaAllowlist holds the list of the resources to be allowlisted as
 	// v1beta1 CRDs. The format is '[terraform_product_name]/[terraform_type_name]'.

@@ -248,21 +248,12 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 
 		// If we have a choice of controllers, construct predicates to choose between them
 		if hasDirectController && (hasTerraformController || hasDCLController) {
-			reconcileGate := registry.GetReconcileGate(gvk.GroupKind())
-			if reconcileGate != nil {
+			if reconcileGate := registry.GetReconcileGate(gvk.GroupKind()); reconcileGate != nil {
 				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
 				// run the direct reconciler only when the reconcile gate returns true.
 				useDirectReconcilerPredicate = kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
 				useLegacyPredicate = kccpredicate.NewInverseReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
-			}
-
-			if !hasTerraformController && !hasDCLController {
-				// We're always going to use the direct reconciler
-				useDirectReconcilerPredicate = nil
-				useLegacyPredicate = nil
-			}
-
-			if (hasTerraformController || hasDCLController) && useDirectReconcilerPredicate == nil {
+			} else {
 				logger.Error(fmt.Errorf("no predicate where we have multiple controllers"), "skipping direct controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 				hasDirectController = false
 			}
@@ -282,7 +273,6 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
-
 		// register controllers for dcl-based CRDs
 		if hasDCLController {
 			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator, useLegacyPredicate)

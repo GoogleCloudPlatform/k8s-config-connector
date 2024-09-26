@@ -100,6 +100,8 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 		case "operations":
 			r.OperationIDs[id] = true
 			r.PathIDs[id] = "${operationID}"
+		case "transferConfigs":
+			r.PathIDs[id] = "${transferConfigID}"
 		}
 		tokens = tokens[:n-2]
 	}

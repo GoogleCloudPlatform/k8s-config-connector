@@ -377,6 +377,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/dataflow/dataflowjob.md
   - title: "DataflowFlexTemplateJob"
     path: /config-connector/docs/reference/resource-docs/dataflow/dataflowflextemplatejob.md
+- title: "Dataform"
+  section:
+  - title: "DataformRepository"
+    path: /config-connector/docs/reference/resource-docs/dataform/dataformrepository.md
 - title: "Data Fusion"
   section:
   - title: "DataFusionInstance"

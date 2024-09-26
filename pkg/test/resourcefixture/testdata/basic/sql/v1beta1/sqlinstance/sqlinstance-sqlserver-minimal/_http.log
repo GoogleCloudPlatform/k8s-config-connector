@@ -103,6 +103,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlserverbasic-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
@@ -486,6 +487,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlserverbasic-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
@@ -620,21 +622,6 @@ User-Agent: kcc/controller-manager
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 7,
-        "retentionUnit": "COUNT"
-      },
-      "binaryLogEnabled": false,
-      "enabled": false,
-      "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": false,
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
-    "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "locationPreference": {
@@ -642,7 +629,6 @@ User-Agent: kcc/controller-manager
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
     "tier": "db-custom-2-7680",
@@ -700,6 +686,7 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlserverbasic-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}",
@@ -766,7 +753,6 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"

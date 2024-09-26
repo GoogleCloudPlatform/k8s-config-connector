@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 
@@ -80,7 +81,11 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 	obj.CreationTime = now.Unix()
 	obj.LastModifiedTime = now.Unix()
 
-	buildServiceAccountId := func() string {
+	// Bigqueryconnections supports two types of SA.
+	// Primary SA is attached with pre-defined IAM roles, while the delegation SA doesn't include any roles.
+	// see https://cloud.google.com/iam/docs/service-agents#bigquery-connection-delegation-service-agent.
+
+	buildDelegationServiceAccountId := func() string {
 		letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 		b := make([]rune, 4)
 		for i := range b {
@@ -89,10 +94,54 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 		return fmt.Sprintf("bqcx-%s-%s@gcp-sa-bigquery-condel.iam.gserviceaccount.com", req.GetParent(), string(b))
 	}
 
-	obj.Properties = &pb.Connection_CloudResource{
-		CloudResource: &pb.CloudResourceProperties{
-			ServiceAccountId: buildServiceAccountId(),
-		},
+	buildPrimaryServiceAccountId := func() string {
+		return fmt.Sprintf("service-%s@gcp-sa-bigqueryconnection.iam.gserviceaccount.com", req.GetParent())
+	}
+
+	buildAwsAccessRoleIdentity := func() string {
+		letterRunes := []rune("0123456789")
+		b := make([]rune, 21)
+		for i := range b {
+			b[i] = letterRunes[rand.Intn(len(letterRunes))]
+		}
+		return string(b)
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
+		if aws := req.Connection.GetAws(); aws != nil {
+			obj.Properties = &pb.Connection_Aws{
+				Aws: &pb.AwsProperties{
+					AuthenticationMethod: &pb.AwsProperties_AccessRole{
+						AccessRole: &pb.AwsAccessRole{
+							IamRoleId: aws.GetAccessRole().GetIamRoleId(),
+							Identity:  buildAwsAccessRoleIdentity(),
+						},
+					},
+				},
+			}
+		}
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudResource); ok {
+		obj.Properties = &pb.Connection_CloudResource{
+			CloudResource: &pb.CloudResourceProperties{
+				ServiceAccountId: buildDelegationServiceAccountId(),
+			},
+		}
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudSql); ok {
+		obj.HasCredential = true
+		if sql := req.Connection.GetCloudSql(); sql != nil {
+			obj.Properties = &pb.Connection_CloudSql{
+				CloudSql: &pb.CloudSqlProperties{
+					InstanceId:       sql.InstanceId,
+					Database:         sql.Database,
+					Type:             sql.Type,
+					ServiceAccountId: buildPrimaryServiceAccountId(),
+				},
+			}
+		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -127,6 +176,13 @@ func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConne
 		}
 	}
 	obj.LastModifiedTime = now.Unix()
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
+		if mod := req.Connection.GetAws(); mod != nil {
+			obj.GetAws().GetAccessRole().IamRoleId = mod.GetAccessRole().IamRoleId
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -155,11 +211,11 @@ type connectionName struct {
 }
 
 func (n *connectionName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/connections/" + n.ResourceID
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/connections/" + n.ResourceID
 }
 
 // parseConnectionName parses a string into a connectionName.
-// The expected form is projects/<projectID>/locations/<location>/connections/<connectionID>
+// The expected form is projects/<projectNum>/locations/<location>/connections/<connectionID>
 func (s *MockService) parseConnectionName(name string) (*connectionName, error) {
 	tokens := strings.Split(name, "/")
 

@@ -527,6 +527,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("labelFingerprint", "abcdef0123A=")
 					addReplacement("fingerprint", "abcdef0123A=")
+					// Matches the mock ip address of Compute forwarding rule
+					addReplacement("IPAddress", "8.8.8.8")
+					addReplacement("pscConnectionId", "111111111111")
+
 					// Extract resource targetID numbers from compute operations
 					for _, event := range events {
 						body := event.Response.ParseBody()
@@ -743,7 +747,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to BigQueryConnectionConnection.
+					addReplacement("aws.accessRole.identity", "048077221682493034546")
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
+					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -762,6 +768,29 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								}
 							}
 						}
+					})
+
+					// Specific to BigQueryDataTransferConfig
+					addReplacement("nextRunTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("ownerInfo.email", "user@google.com")
+					addReplacement("userId", "0000000000000000000")
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if _, found, err := unstructured.NestedString(obj, "destinationDatasetId"); err != nil || !found {
+							// This is a hack to only run this mutator for BigQueryDataTransferConfig objects.
+							return
+						}
+						// special handling because the field includes dot
+						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientId"); found {
+							if err := unstructured.SetNestedField(obj, "client-id", "params", "connector.authentication.oauth.clientId"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientSecret"); found {
+							if err := unstructured.SetNestedField(obj, "client-secret", "params", "connector.authentication.oauth.clientSecret"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						delete(obj, "state") // data transfer run state, which depends on timing
 					})
 
 					// Remove error details which can contain confidential information

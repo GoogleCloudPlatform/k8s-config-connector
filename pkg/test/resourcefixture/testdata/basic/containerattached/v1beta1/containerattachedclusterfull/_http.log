@@ -247,7 +247,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127' was not found",
+    "message": "cluster not found",
     "status": "NOT_FOUND"
   }
 }
@@ -356,11 +356,15 @@ X-Xss-Protection: 0
     "binaryAuthorization": {
       "evaluationMode": "PROJECT_SINGLETON_POLICY_ENFORCE"
     },
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Test attached cluster",
     "distribution": "eks",
+    "etag": "abcdef0123A=",
     "fleet": {
+      "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
       "project": "projects/${projectNumber}"
     },
+    "kubernetesVersion": "1.27",
     "loggingConfig": {
       "componentConfig": {
         "enableComponents": [
@@ -368,12 +372,17 @@ X-Xss-Protection: 0
         ]
       }
     },
+    "monitoringConfig": {
+      "managedPrometheusConfig": {}
+    },
     "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
     "oidcConfig": {
       "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
     },
     "platformVersion": "1.27.0-gke.2",
-    "state": "RUNNING"
+    "state": "RUNNING",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -409,11 +418,15 @@ X-Xss-Protection: 0
   "binaryAuthorization": {
     "evaluationMode": "PROJECT_SINGLETON_POLICY_ENFORCE"
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test attached cluster",
   "distribution": "eks",
+  "etag": "abcdef0123A=",
   "fleet": {
+    "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
     "project": "projects/${projectNumber}"
   },
+  "kubernetesVersion": "1.27",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -421,11 +434,17 @@ X-Xss-Protection: 0
       ]
     }
   },
+  "monitoringConfig": {
+    "managedPrometheusConfig": {}
+  },
   "name": "projects/${projectId}/locations/us-west1/attachedClusters/kcc-attached-cluster-127",
   "oidcConfig": {
     "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
   },
-  "platformVersion": "1.27.0-gke.2"
+  "platformVersion": "1.27.0-gke.2",
+  "state": "RUNNING",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -455,6 +474,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "description": "Test attached cluster update",
   "fleet": {
+    "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
     "project": "projects/${projectNumber}"
   },
   "loggingConfig": {
@@ -544,11 +564,15 @@ X-Xss-Protection: 0
     "binaryAuthorization": {
       "evaluationMode": "DISABLED"
     },
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Test attached cluster update",
     "distribution": "eks",
+    "etag": "abcdef0123A=",
     "fleet": {
+      "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
       "project": "projects/${projectNumber}"
     },
+    "kubernetesVersion": "1.28",
     "loggingConfig": {
       "componentConfig": {
         "enableComponents": [
@@ -566,7 +590,10 @@ X-Xss-Protection: 0
     "oidcConfig": {
       "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
     },
-    "platformVersion": "1.28.0-gke.2"
+    "platformVersion": "1.28.0-gke.2",
+    "state": "RUNNING",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -606,11 +633,15 @@ X-Xss-Protection: 0
   "binaryAuthorization": {
     "evaluationMode": "DISABLED"
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test attached cluster update",
   "distribution": "eks",
+  "etag": "abcdef0123A=",
   "fleet": {
+    "membership": "projects/${projectNumber}/locations/global/memberships/kcc-attached-cluster-127",
     "project": "projects/${projectNumber}"
   },
+  "kubernetesVersion": "1.28",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -628,7 +659,10 @@ X-Xss-Protection: 0
   "oidcConfig": {
     "issuerUrl": "https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F"
   },
-  "platformVersion": "1.28.0-gke.2"
+  "platformVersion": "1.28.0-gke.2",
+  "state": "RUNNING",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

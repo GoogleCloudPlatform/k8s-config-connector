@@ -37,7 +37,7 @@ func ComputeForwardingRuleSpec_IpAddress_ToProto(mapCtx *direct.MapContext, in *
 		}
 		out = direct.LazyPtr(oneof.External)
 	}
-	if in.Ip != nil {
+	if oneof := in.Ip; oneof != nil {
 		out = in.Ip
 	}
 	return out
@@ -115,6 +115,9 @@ func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 
 	var out *string
+	if oneof := in.GoogleAPIsBundle; oneof != nil {
+		out = in.GoogleAPIsBundle
+	}
 	if oneof := in.ServiceAttachmentRef; oneof != nil {
 		if oneof.External == "" {
 			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)

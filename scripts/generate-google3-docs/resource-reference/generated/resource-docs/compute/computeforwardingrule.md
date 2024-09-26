@@ -131,6 +131,7 @@ subnetworkRef:
   name: string
   namespace: string
 target:
+  googleAPIsBundle: string
   serviceAttachmentRef:
     external: string
     name: string
@@ -535,7 +536,7 @@ provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"].{% endverbatim %}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -805,6 +806,16 @@ subnetwork must be specified.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The target resource to receive the matched traffic. The forwarded traffic must be of a type appropriate to the target object. For INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets are valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.googleAPIsBundle</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

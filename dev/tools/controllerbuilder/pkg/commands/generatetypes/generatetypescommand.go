@@ -17,6 +17,7 @@ package generatetypes
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"unicode"
 
@@ -37,7 +38,14 @@ type GenerateCRDOptions struct {
 	ResourceProtoName  string
 }
 
-func (o *GenerateCRDOptions) InitDefaults() {
+func (o *GenerateCRDOptions) InitDefaults() error {
+	root, err := options.RepoRoot()
+	if err != nil {
+		return nil
+	}
+	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
+	o.OutputAPIDirectory = root + "/apis/"
+	return nil
 }
 
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
@@ -51,7 +59,10 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		GenerateOptions: baseOptions,
 	}
 
-	opt.InitDefaults()
+	if err := opt.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
+	}
 
 	cmd := &cobra.Command{
 		Use:   "generate-types",
@@ -77,6 +88,13 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	if o.GenerateOptions.ProtoSourcePath == "" {
 		return fmt.Errorf("`proto-source-path` is required")
 	}
+	if o.ResourceProtoName == "" {
+		return fmt.Errorf("`--proto-resource` is required")
+	}
+	if o.ResourceKindName == "" {
+		return fmt.Errorf("`--kind` is required")
+	}
+	o.ResourceProtoName = capitalizeFirstRune(o.ResourceProtoName)
 
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
 	if err != nil {
@@ -122,23 +140,23 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
-	if o.ResourceProtoName != "" {
-		kind := o.ResourceKindName
-		if kind == "" {
-			output := []rune{unicode.ToUpper(rune(o.ResourceProtoName[0]))}
-			for _, val := range o.ResourceProtoName[1:] {
-				output = append(output, val)
-			}
-			kind = string(output)
-		}
-		if !scaffolder.TypeFileNotExist(kind) {
-			fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
-		} else {
-			err := scaffolder.AddTypeFile(kind, o.ResourceProtoName)
-			if err != nil {
-				return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
-			}
+	kind := o.ResourceKindName
+	if !scaffolder.TypeFileNotExist(kind) {
+		fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
+	} else {
+		err := scaffolder.AddTypeFile(kind, o.ResourceProtoName)
+		if err != nil {
+			return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
 		}
 	}
 	return nil
+}
+
+func capitalizeFirstRune(s string) string {
+	if s == "" {
+		return s
+	}
+	runes := []rune(s)
+	runes[0] = unicode.ToUpper(runes[0])
+	return string(runes)
 }

@@ -49,6 +49,7 @@ var (
 		"container":            {"containernodepool"},
 		"containeranalysis":    {"containeranalysisnote"},
 		"dataflow":             {"streamingdataflowjobupdatetemplate"},
+		"dataform":             {"dataformrepository"},
 		"datafusion":           {"datafusioninstance"},
 		"dataproc":             {"dataproccluster"},
 		"dlp":                  {"cloudstoragepathstoredinfotype"},
@@ -85,6 +86,7 @@ var (
 		"sql":                  {"sqluser"},
 		"storage":              {"storagenotification"},
 		"storagetransfer":      {"storagetransferjob"},
+		"workstations":         {"workstationcluster-minimal"},
 		"vpcaccess":            {"subnetconnector"},
 		"vertexai":             {"vertexaidatasetbasic"},
 	}

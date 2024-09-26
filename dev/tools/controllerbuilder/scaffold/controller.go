@@ -59,7 +59,7 @@ func Scaffold(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
 func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
 	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
 	if err != nil {
-		return fmt.Errorf("parse controller template: %s", err)
+		return fmt.Errorf("parse controller template: %w", err)
 	}
 	// Apply the `service` and `resource` args to the controller and external resource templates
 	controllerOutput := &bytes.Buffer{}
@@ -86,9 +86,9 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 
 func generateControllerHelpers(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
 	// Generate externalresourece.go used for the controller
-	externalResourcetmpl, err := template.New(cArgs.Kind).Parse(ccTemplate.ExternalResourceTemplate)
+	externalResourcetmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ExternalResourceTemplate)
 	if err != nil {
-		return fmt.Errorf("parse external resource template: %s", externalResourcetmpl)
+		return fmt.Errorf("parse external resource template: %w", err)
 	}
 	externalResourceOutput := &bytes.Buffer{}
 	if err := externalResourcetmpl.Execute(externalResourceOutput, cArgs); err != nil {

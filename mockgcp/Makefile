@@ -65,6 +65,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/user_action_reference.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/connection/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/billing/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
@@ -87,7 +88,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/resourcemanager/v3/*.proto \
 		./third_party/googleapis/mockgcp/cloud/secretmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/security/privateca/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/servicedirectory/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/sql/v1beta4/*.proto \
+		./third_party/googleapis/mockgcp/cloud/workstations/v1/*.proto \
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
@@ -100,7 +103,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/pubsub/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
-		./third_party/googleapis/mockgrafeas/v1/*.proto
+		./third_party/googleapis/mockgrafeas/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto
 		
 
 .PHONY: generate-grpc-for-google-protos
@@ -142,5 +146,9 @@ generate-protos-from-openapi:
 	wget -O temp/ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/b49e3b908a8ed562e068736f1c42e992538ba6e0/ids/v1/ids-api.json
 	mkdir -p apis/mockgcp/cloud/ids/v1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.ids.v1 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
+
+	wget -O temp/kms-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/cloudkms/v1/cloudkms-api.json
+	mkdir -p apis/mockgcp/cloud/kms/v1/
+	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.kms.v1 ../../temp/kms-api-v1.json > ../../apis/mockgcp/cloud/kms/v1/service.proto
 
 	rm -r temp

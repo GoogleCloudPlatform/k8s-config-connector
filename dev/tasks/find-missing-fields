@@ -38,3 +38,7 @@ go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceMa
 go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerInstanceObservedState -fuzztime 60s
 
 go test -v ./pkg/controller/direct/dataform/ -fuzz=FuzzDataformRepositorySpec -fuzztime 60s
+
+go test -v ./pkg/controller/direct/bigquerydatatransfer/ -fuzz=FuzzBigQueryDataTransferConfigSpec -fuzztime 60s
+
+go test -v ./pkg/controller/direct/certificatemanager/ -fuzz=FuzzDNSAuthorizationSpec -fuzztime 60s

@@ -29,6 +29,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
@@ -298,11 +299,11 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	// First, handle database version updates
 	if a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion {
 		newVersionDb := &api.DatabaseInstance{
-			DatabaseVersion: *a.desired.Spec.DatabaseVersion,
+			DatabaseVersion: direct.ValueOf(a.desired.Spec.DatabaseVersion),
 		}
-		op, err := a.sqlInstancesClient.Patch(a.projectID, *a.desired.Spec.ResourceID, newVersionDb).Context(ctx).Do()
+		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newVersionDb).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s version failed: %w", *a.desired.Spec.ResourceID, err)
+			return fmt.Errorf("patching SQLInstance %s version failed: %w", a.resourceID, err)
 		}
 
 		pollingBackoff := gax.Backoff{
@@ -317,17 +318,17 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				break
 			}
 			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-				return fmt.Errorf("waiting for SQLInstance %s version patch failed: %w", *a.desired.Spec.ResourceID, err)
+				return fmt.Errorf("waiting for SQLInstance %s version patch failed: %w", a.resourceID, err)
 			}
 			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
 			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s version patch operation %s failed: %w", *a.desired.Spec.ResourceID, op.Name, err)
+				return fmt.Errorf("getting SQLInstance %s version patch operation %s failed: %w", a.resourceID, op.Name, err)
 			}
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", *a.desired.Spec.ResourceID, err)
+			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
 		}
 
 		log.V(2).Info("instance version updated", "op", op, "instance", updated)
@@ -335,7 +336,53 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		a.actual = updated
 	}
 
-	// Next, update rest of the fields
+	// Next, handle database edition updates
+	if a.desired.Spec.Settings.Edition != nil && *a.desired.Spec.Settings.Edition != a.actual.Settings.Edition {
+		newEditionDb := &api.DatabaseInstance{
+			Settings: &api.Settings{
+				Edition: direct.ValueOf(a.desired.Spec.Settings.Edition),
+				// ENTERPRISE_PLUS edition has limitations on the allowable set of tiers that can be used. Therefore, when
+				// modifying the edition, we should also allow modifications to the tier at the same time, so that the
+				// user can update from an invalid tier to a valid tier (when going from ENTERPRISE -> ENTERPRISE_PLUS).
+				Tier: a.desired.Spec.Settings.Tier,
+			},
+		}
+		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
+		}
+
+		pollingBackoff := gax.Backoff{
+			Initial:    time.Second,
+			Max:        time.Minute,
+			Multiplier: 2,
+		}
+		for {
+			log.V(2).Info("polling", "op", op)
+
+			if op.Status == "DONE" {
+				break
+			}
+			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
+				return fmt.Errorf("waiting for SQLInstance %s edition patch failed: %w", a.resourceID, err)
+			}
+			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+			if err != nil {
+				return fmt.Errorf("getting SQLInstance %s edition patch operation %s failed: %w", a.resourceID, op.Name, err)
+			}
+		}
+
+		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+		}
+
+		log.V(2).Info("instance edition updated", "op", op, "instance", updated)
+
+		a.actual = updated
+	}
+
+	// Finally, update rest of the fields
 	merged, diffDetected, err := MergeDesiredSQLInstanceWithActual(a.desired, a.refs, a.actual)
 	if err != nil {
 		return fmt.Errorf("diffing SQLInstances failed: %w", err)
