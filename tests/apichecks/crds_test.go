@@ -287,8 +287,6 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 
 	case "string", "boolean", "integer", "number":
 		// No child properties
-	case "":
-		// No child properties under a freeform-typed field.
 	default:
 		klog.Fatalf("unhandled props.Type %q in %+v", props.Type, props)
 	}

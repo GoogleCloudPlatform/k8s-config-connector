@@ -76,15 +76,6 @@ type RequesterJustificationConfig struct {
 	Unstructured *runtime.RawExtension `json:"unstructured,omitempty"`
 }
 
-//
-//// +kcc:proto=google.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.NotMandatory
-//type Entitlement_RequesterJustificationConfig_NotMandatory struct {
-//}
-//
-//// +kcc:proto=google.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.Unstructured
-//type Entitlement_RequesterJustificationConfig_Unstructured struct {
-//}
-
 // ManualApprovals represent the manual approval workflow where users who are
 // designated as approvers need to call the 'ApproveGrant'/'DenyGrant' APIs for
 // a grant. The workflow can consist of multiple serial steps where each step

@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"time"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -42,18 +42,6 @@ const (
 	ctrlName      = "privilegedaccessmanager-controller"
 	serviceDomain = "//privilegedaccessmanager.googleapis.com"
 )
-
-type ContainerType int
-
-const (
-	Project ContainerType = iota
-	Folder
-	Organization
-)
-
-func (c ContainerType) String() string {
-	return [...]string{"Project", "Folder", "Organization"}[c]
-}
 
 func init() {
 	registry.RegisterModel(krm.PrivilegedAccessManagerEntitlementGVK, NewModel)
@@ -98,100 +86,31 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	container, err := oneOfContainer(ctx, reader, obj,
+		obj.Spec.ProjectRef,
+		obj.Spec.FolderRef,
+		obj.Spec.OrganizationRef)
 	if err != nil {
-		return nil, err
-	}
-	folderRef, err := refs.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
-	if err != nil {
-		return nil, err
-	}
-	organizationRef, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
-	if err != nil {
-		return nil, err
-	}
-	if projectRef == nil && folderRef == nil && organizationRef == nil {
-		return nil, fmt.Errorf("one and only one of 'spec.projectRef', " +
-			"'spec.folderRef' and 'spec.organizationRef' should be set, but " +
-			"none of the three fields was set")
-	}
-	var containerType ContainerType
-	errMsg := fmt.Sprintf("one and only one of 'spec.projectRef', "+
-		"'spec.folderRef' and 'spec.organizationRef' should be set, but "+
-		"got projectRef: %+v, folderRef: %+v, and organizationRef: %+v",
-		obj.Spec.ProjectRef, obj.Spec.FolderRef, obj.Spec.OrganizationRef)
-	if projectRef != nil {
-		if folderRef != nil || organizationRef != nil {
-			return nil, fmt.Errorf(errMsg)
-		}
-		containerType = Project
-	} else if folderRef != nil {
-		if organizationRef != nil {
-			return nil, fmt.Errorf(errMsg)
-		}
-		containerType = Folder
-	} else {
-		containerType = Organization
+		return nil, fmt.Errorf("error resolving 'obj.Spec.ProjectRef', "+
+			"'obj.Spec.FolderRef' and 'obj.Spec.OrganizationRef': %w", err)
 	}
 
-	projectID := ""
-	if projectRef != nil {
-		projectID = projectRef.ProjectID
-		if projectID == "" {
-			return nil, fmt.Errorf("cannot resolve project: project ID is empty")
-		}
-	}
-	folderID := ""
-	if folderRef != nil {
-		folderID = folderRef.FolderID
-		if folderID == "" {
-			return nil, fmt.Errorf("cannot resolve folder: folder ID is empty")
-		}
-	}
-	organizationID := ""
-	if organizationRef != nil {
-		organizationID = organizationRef.OrganizationID
-		if organizationID == "" {
-			return nil, fmt.Errorf("cannot resolve organization: organization ID is empty")
-		}
-	}
 	// Get location
 	location := *obj.Spec.Location
 
 	var id *PrivilegedAccessManagerEntitlementIdentity
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		id = BuildID(projectID, folderID, organizationID, location, resourceID)
+		id = BuildID(container, location, resourceID)
 	} else {
 		id, err = asID(externalRef)
 		if err != nil {
 			return nil, err
 		}
 
-		var existingContainerType ContainerType
-		if id.Parent.Project != "" {
-			existingContainerType = Project
-		} else if id.Parent.Folder != "" {
-			existingContainerType = Folder
-		} else if id.Parent.Organization != "" {
-			existingContainerType = Organization
-		} else {
-			return nil, fmt.Errorf("status.externalRef doesn't have a parent")
-		}
-		if containerType != existingContainerType {
-			return nil, fmt.Errorf("cannot change container type from %v to %v", existingContainerType.String(), containerType.String())
-		}
-		if id.Parent.Project != projectID {
-			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
-		}
-		if id.Parent.Folder != folderID {
-			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has spec.folderRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Folder, folderID)
-		}
-		if id.Parent.Organization != organizationID {
-			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has spec.organizationRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Organization, organizationID)
+		if id.Parent.Container != container {
+			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has parent container changed, expected %s, got %s",
+				u.GetNamespace(), u.GetName(), id.Parent.Container, container)
 		}
 		if id.Parent.Location != location {
 			return nil, fmt.Errorf("PrivilegedAccessManagerEntitlement %s/%s has spec.location changed, expect %s, got %s",
@@ -203,56 +122,37 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 		}
 	}
 
-	gcpIAMAccessProjectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef)
+	container, err = oneOfContainer(ctx, reader, obj,
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef,
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef,
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error resolving 'obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef', "+
+			"'obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef' and "+
+			"'obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef': %w", err)
 	}
-	gcpIAMAccessFolderRef, err := refs.ResolveFolder(ctx, reader, obj, obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef)
-	if err != nil {
-		return nil, err
-	}
-	gcpIAMAccessOrganizationRef, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef)
-	if err != nil {
-		return nil, err
-	}
-
 	switch *obj.Spec.PrivilegedAccess.GcpIAMAccess.ResourceType {
 	case "cloudresourcemanager.googleapis.com/Project":
-		if gcpIAMAccessFolderRef != nil || gcpIAMAccessOrganizationRef != nil {
-			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.projectRef' " +
-				"should be configured because the corresponding resourceType is " +
-				"'cloudresourcemanager.googleapis.com/Project'")
+		if !strings.HasPrefix(container, "projects/") {
+			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.projectRef' "+
+				"should be configured because the corresponding resourceType is "+
+				"'cloudresourcemanager.googleapis.com/Project', but got resource %s", container)
 		}
-		if gcpIAMAccessProjectRef == nil || gcpIAMAccessProjectRef.ProjectID == "" {
-			return nil, fmt.Errorf("'spec.privilegedAccess.gcpIAMAccess.projectRef' " +
-				"should be non-empty because the corresponding resourceType is " +
-				"'cloudresourcemanager.googleapis.com/Project'")
-		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef.External = fmt.Sprintf("projects/%v", gcpIAMAccessProjectRef.ProjectID)
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef.External = container
 	case "cloudresourcemanager.googleapis.com/Folder":
-		if gcpIAMAccessProjectRef != nil || gcpIAMAccessOrganizationRef != nil {
-			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.folderRef' " +
-				"should be configured because the corresponding resourceType is " +
-				"'cloudresourcemanager.googleapis.com/Folder'")
+		if !strings.HasPrefix(container, "folders/") {
+			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.folderRef' "+
+				"should be configured because the corresponding resourceType is "+
+				"'cloudresourcemanager.googleapis.com/Folder', but got resource %s", container)
 		}
-		if gcpIAMAccessFolderRef == nil || gcpIAMAccessFolderRef.FolderID == "" {
-			return nil, fmt.Errorf("'spec.privilegedAccess.gcpIAMAccess.folderRef' " +
-				"should be non-empty because the corresponding resourceType is " +
-				"'cloudresourcemanager.googleapis.com/Folder'")
-		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef.External = fmt.Sprintf("folders/%v", gcpIAMAccessFolderRef.FolderID)
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef.External = container
 	case "cloudresourcemanager.googleapis.com/Organization":
-		if gcpIAMAccessProjectRef != nil || gcpIAMAccessFolderRef != nil {
-			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.organizationRef' " +
-				"should be configured because the corresponding resourceType is " +
-				"'cloudresourcemanager.googleapis.com/Organization'")
+		if !strings.HasPrefix(container, "organizations/") {
+			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.organizationRef' "+
+				"should be configured because the corresponding resourceType is "+
+				"'cloudresourcemanager.googleapis.com/Organization', but got resource %s", container)
 		}
-		if gcpIAMAccessOrganizationRef == nil || gcpIAMAccessOrganizationRef.OrganizationID == "" {
-			return nil, fmt.Errorf("'spec.privilegedAccess.gcpIAMAccess.organizationRef' " +
-				"should be non-empty because the corresponding resourceType is " +
-				"'cloudresourcemanager.googleapis.com/Organization'")
-		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef.External = fmt.Sprintf("organizations/%v", gcpIAMAccessOrganizationRef.OrganizationID)
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef.External = container
 	default:
 		return nil, fmt.Errorf("unrecoganizable resourceType: %v; must be one of "+
 			"'cloudresourcemanager.googleapis.com/Project', "+
@@ -280,6 +180,52 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
+}
+
+func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.PrivilegedAccessManagerEntitlement, projectRef *refs.ProjectRef, folderRef *refs.FolderRef, organizationRef *refs.OrganizationRef) (string, error) {
+	container := ""
+	if projectRef == nil && folderRef == nil && organizationRef == nil {
+		return "", fmt.Errorf("none of 'projectRef', 'folderRef' or 'organizationRef' was set")
+	}
+	if folderRef == nil && organizationRef == nil {
+		project, err := refs.ResolveProject(ctx, reader, obj, projectRef)
+		if err != nil {
+			return "", err
+		}
+		projectID := project.ProjectID
+		if projectID == "" {
+			return "", fmt.Errorf("cannot resolve project: project ID is empty")
+		}
+		container = fmt.Sprintf("projects/%s", projectID)
+	}
+	if projectRef == nil && organizationRef == nil {
+		folder, err := refs.ResolveFolder(ctx, reader, obj, folderRef)
+		if err != nil {
+			return "", err
+		}
+		folderID := folder.FolderID
+		if folderID == "" {
+			return "", fmt.Errorf("cannot resolve folder: folder ID is empty")
+		}
+		container = fmt.Sprintf("folders/%s", folderID)
+	}
+	if projectRef == nil && folderRef == nil {
+		organization, err := refs.ResolveOrganization(ctx, reader, obj, organizationRef)
+		if err != nil {
+			return "", err
+		}
+		organizationID := organization.OrganizationID
+		if organizationID == "" {
+			return "", fmt.Errorf("cannot resolve organization: organization ID is empty")
+		}
+		container = fmt.Sprintf("organizations/%s", organizationID)
+	}
+	if container == "" {
+		return "", fmt.Errorf("more than one of 'projectRef', 'folderRef' "+
+			"or 'organizationRef' was set: projectRef: %+v, folderRef: %+v, organizationRef: %+v",
+			projectRef, folderRef, organizationRef)
+	}
+	return container, nil
 }
 
 func (m *entitlementModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -372,14 +318,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(direct.SliceOfPointers_FromProto(mapCtx, a.actual.EligibleUsers, AccessControlEntry_FromProto), a.desired.Spec.EligibleUsers))
 		updateMask.Paths = append(updateMask.Paths, "eligible_users")
 	}
-
-	actualDuration := a.actual.MaxRequestDuration.AsDuration()
-	desiredDuration, err := time.ParseDuration(*a.desired.Spec.MaxRequestDuration)
-	if err != nil {
-		return fmt.Errorf("error generating update mask: error parsing 'spec.maxRequestDuration': %w", err)
-	}
-	if !reflect.DeepEqual(actualDuration, desiredDuration) {
-		log.V(2).Info("'spec.maxRequestDuration' field is updated (-old +new)", cmp.Diff(actualDuration, desiredDuration))
+	if !reflect.DeepEqual(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, a.desired.Spec.MaxRequestDuration).AsDuration()) {
+		log.V(2).Info("'spec.maxRequestDuration' field is updated (-old +new)", cmp.Diff(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, a.desired.Spec.MaxRequestDuration).AsDuration()))
 		updateMask.Paths = append(updateMask.Paths, "max_request_duration")
 	}
 	if !reflect.DeepEqual(PrivilegedAccess_FromProto(mapCtx, a.actual.PrivilegedAccess), a.desired.Spec.PrivilegedAccess) {
@@ -446,12 +386,12 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	if a.id.Parent.Project != "" {
-		obj.Spec.ProjectRef = &refs.ProjectRef{External: fmt.Sprintf("projects/%v", a.id.Parent.Project)}
-	} else if a.id.Parent.Folder != "" {
-		obj.Spec.FolderRef = &refs.FolderRef{External: fmt.Sprintf("folders/%v", a.id.Parent.Folder)}
+	if strings.HasPrefix(a.id.Parent.Container, "projects") {
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent.Container}
+	} else if strings.HasPrefix(a.id.Parent.Container, "folders") {
+		obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Parent.Container}
 	} else {
-		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: fmt.Sprintf("organizations/%v", a.id.Parent.Organization)}
+		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Parent.Container}
 	}
 
 	obj.Spec.Location = &a.id.Parent.Location

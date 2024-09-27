@@ -26,20 +26,12 @@ type PrivilegedAccessManagerEntitlementIdentity struct {
 }
 
 type parent struct {
-	Project      string
-	Folder       string
-	Organization string
-	Location     string
+	Container string
+	Location  string
 }
 
 func (p *parent) String() string {
-	if p.Project != "" {
-		return fmt.Sprintf("projects/%s/locations/%s", p.Project, p.Location)
-	} else if p.Folder != "" {
-		return fmt.Sprintf("folders/%s/locations/%s", p.Folder, p.Location)
-	} else {
-		return fmt.Sprintf("organizations/%s/locations/%s", p.Organization, p.Location)
-	}
+	return fmt.Sprintf("%s/locations/%s", p.Container, p.Location)
 }
 
 // FullyQualifiedName returns both parent and resource ID in the full url format.
@@ -70,24 +62,20 @@ func asID(externalRef string) (*PrivilegedAccessManagerEntitlementIdentity, erro
 			"%s/organizations/<organization>/locations/<location>/entitlements/<entitlement>,"+
 			"got %s", serviceDomain, serviceDomain, serviceDomain, externalRef)
 	}
-	p := parent{Location: tokens[3]}
-	if tokens[0] == "projects" {
-		p.Project = tokens[1]
-	} else if tokens[0] == "folders" {
-		p.Folder = tokens[1]
-	} else if tokens[0] == "organizations" {
-		p.Organization = tokens[1]
-	}
+
 	return &PrivilegedAccessManagerEntitlementIdentity{
-		Parent:      &p,
+		Parent: &parent{
+			Container: fmt.Sprintf("%s/%s", tokens[0], tokens[1]),
+			Location:  tokens[3],
+		},
 		Entitlement: tokens[5],
 	}, nil
 }
 
 // BuildID builds the ID for Config Connector to track the PrivilegedAccessManagerEntitlement resource from the GCP service.
-func BuildID(project, folder, organization, location, resourceID string) *PrivilegedAccessManagerEntitlementIdentity {
+func BuildID(container, location, resourceID string) *PrivilegedAccessManagerEntitlementIdentity {
 	return &PrivilegedAccessManagerEntitlementIdentity{
-		Parent:      &parent{Project: project, Folder: folder, Organization: organization, Location: location},
+		Parent:      &parent{Container: container, Location: location},
 		Entitlement: resourceID,
 	}
 }

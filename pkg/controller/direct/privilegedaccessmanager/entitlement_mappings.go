@@ -34,18 +34,19 @@ func GcpIamAccess_FromProto(mapCtx *direct.MapContext, in *pb.PrivilegedAccess_G
 	resourceType := in.GetResourceType()
 	out.ResourceType = direct.LazyPtr(resourceType)
 	resource := in.GetResource()
+	externalVal := strings.TrimPrefix(resource, "//cloudresourcemanager.googleapis.com/")
 	switch resourceType {
 	case "cloudresourcemanager.googleapis.com/Project":
 		out.ProjectRef = &refs.ProjectRef{
-			External: strings.TrimPrefix(resource, "//cloudresourcemanager.googleapis.com/"),
+			External: externalVal,
 		}
 	case "cloudresourcemanager.googleapis.com/Folder":
 		out.FolderRef = &refs.FolderRef{
-			External: strings.TrimPrefix(resource, "//cloudresourcemanager.googleapis.com/"),
+			External: externalVal,
 		}
 	case "cloudresourcemanager.googleapis.com/Organization":
 		out.OrganizationRef = &refs.OrganizationRef{
-			External: strings.TrimPrefix(resource, "//cloudresourcemanager.googleapis.com/"),
+			External: externalVal,
 		}
 	}
 	out.RoleBindings = direct.SliceOfPointers_FromProto(mapCtx, in.RoleBindings, RoleBinding_FromProto)
