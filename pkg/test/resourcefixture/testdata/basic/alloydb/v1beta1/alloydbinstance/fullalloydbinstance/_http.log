@@ -642,6 +642,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
         "cidrRange": "8.8.4.4/30"
       }
     ],
+    "enableOutboundPublicIp": true,
     "enablePublicIp": true
   }
 }
