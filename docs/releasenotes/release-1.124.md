@@ -15,6 +15,9 @@ output fields from GCP APIs are in `status.observedState.*`
 
 * `PlaceholderKind`
 
+## Direct Cloud Reconciler:
+* ComputeForwardingRule (v1beta1).
+
 ## New Resources:
 
 * Added support for `PlaceholderKind` (v1beta1) resource.
@@ -23,3 +26,5 @@ output fields from GCP APIs are in `status.observedState.*`
 
 * PlaceholderKind
   * Added `spec.placeholder` field.
+* ComputeForwardingRule
+  * Added `spec.target.googleApisBundle` field
