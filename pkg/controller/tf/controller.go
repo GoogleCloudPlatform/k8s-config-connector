@@ -34,7 +34,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
@@ -336,7 +335,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			fmt.Errorf("underlying resource no longer exists and can't be recreated without creating a brand new resource"))
 	}
 	config, secretVersions, err := krmtotf.KRMResourceToTFResourceConfigFull(
-		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true, label.GetDefaultLabels(),
+		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true,
 	)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
