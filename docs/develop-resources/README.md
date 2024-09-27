@@ -16,7 +16,7 @@ There are definitely more work need to be done, but we'd like to share the steps
 * [4. Add Controller](./guides/4-add-controller.md)
 * [5. Releases](./guides/5-releases.md)
 
-## Develop by scenraios
+## Develop by scenarios
 
 * [Add a new resource](./scenarios/new-resource.md)
 * [Add a new field](./scenarios/new-field.md)
