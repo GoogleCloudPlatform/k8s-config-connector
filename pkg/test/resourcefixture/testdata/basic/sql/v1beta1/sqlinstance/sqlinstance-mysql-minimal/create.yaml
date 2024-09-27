@@ -15,7 +15,7 @@
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
-  name: mysqlbasic-${uniqueId}
+  name: sqlinstance-mysql-minimal-${uniqueId}
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
 spec:

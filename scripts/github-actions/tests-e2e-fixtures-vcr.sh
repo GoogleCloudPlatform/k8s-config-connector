@@ -29,5 +29,4 @@ E2E_KUBE_TARGET=envtest \
 RUN_E2E=1 \
 E2E_GCP_TARGET=vcr \
 VCR_MODE=replay \
-KCC_USE_DIRECT_RECONCILERS="SQLInstance" \
   go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures 2>&1

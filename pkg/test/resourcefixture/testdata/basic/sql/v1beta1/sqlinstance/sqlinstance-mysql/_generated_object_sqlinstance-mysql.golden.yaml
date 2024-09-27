@@ -3,20 +3,24 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
-  name: sqlinstance-sample-${uniqueId}
+  name: sqlinstance-mysql-${uniqueId}
   namespace: ${uniqueId}
 spec:
   databaseVersion: MYSQL_5_7
   instanceType: CLOUD_SQL_INSTANCE
   region: us-central1
+  resourceID: sqlinstance-mysql-${uniqueId}
   settings:
     diskAutoresize: false
     diskSize: 20
@@ -28,13 +32,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-sample-${uniqueId}
+  connectionName: ${projectId}:us-central1:sqlinstance-mysql-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 2
+  observedGeneration: 3
   publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-mysql-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----

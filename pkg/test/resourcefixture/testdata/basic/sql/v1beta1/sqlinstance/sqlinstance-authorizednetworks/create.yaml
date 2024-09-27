@@ -15,7 +15,7 @@
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
-  name: postgresauthorizednetworks-${uniqueId}
+  name: sqlinstance-authorizednetworks-${uniqueId}
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
 spec:

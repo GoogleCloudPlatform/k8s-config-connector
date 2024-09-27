@@ -17,7 +17,9 @@ kind: SQLInstance
 metadata:
   labels:
     label-one: "value-one"
-  name: sqlinstance-sample-${uniqueId}
+  name: sqlinstance-mysql-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
 spec:
   region: us-central1
   databaseVersion: MYSQL_5_7
