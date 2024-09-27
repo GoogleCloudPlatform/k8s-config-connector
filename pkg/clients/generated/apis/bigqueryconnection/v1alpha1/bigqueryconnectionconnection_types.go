@@ -50,6 +50,52 @@ type ConnectionAws struct {
 type ConnectionCloudResource struct {
 }
 
+type ConnectionCloudSpanner struct {
+	/* Reference to a spanner database ID. */
+	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+
+	/* Optional. Cloud Spanner database role for fine-grained access control.
+	The Cloud Spanner admin should have provisioned the database role with
+	appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+	only use roles provided by their Cloud Spanner admins.
+
+	For more details, see [About fine-grained access control]
+	(https://cloud.google.com/spanner/docs/fgac-about).
+
+	REQUIRES: The database role name must start with a letter, and can only
+	contain letters, numbers, and underscores. */
+	// +optional
+	DatabaseRole *string `json:"databaseRole,omitempty"`
+
+	/* Allows setting max parallelism per query when executing on Spanner
+	independent compute resources. If unspecified, default values of
+	parallelism are chosen that are dependent on the Cloud Spanner instance
+	configuration.
+
+	REQUIRES: `use_parallelism` must be set.
+	REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+	set. */
+	// +optional
+	MaxParallelism *int32 `json:"maxParallelism,omitempty"`
+
+	/* If set, the request will be executed via Spanner independent compute
+	resources.
+	REQUIRES: `use_parallelism` must be set.
+
+	NOTE: `use_serverless_analytics` will be deprecated. Prefer
+	`use_data_boost` over `use_serverless_analytics`. */
+	// +optional
+	UseDataBoost *bool `json:"useDataBoost,omitempty"`
+
+	/* If parallelism should be used when reading from Cloud Spanner */
+	// +optional
+	UseParallelism *bool `json:"useParallelism,omitempty"`
+
+	/* If the serverless analytics service should be used to read data from Cloud Spanner. Note: `use_parallelism` must be set when using serverless analytics. */
+	// +optional
+	UseServerlessAnalytics *bool `json:"useServerlessAnalytics,omitempty"`
+}
+
 type ConnectionCloudSql struct {
 	/* Cloud SQL credential. */
 	// +optional
@@ -86,6 +132,10 @@ type BigQueryConnectionConnectionSpec struct {
 	/* Use Cloud Resource properties. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
+
+	/* Cloud Spanner properties. */
+	// +optional
+	CloudSpanner *ConnectionCloudSpanner `json:"cloudSpanner,omitempty"`
 
 	/* Cloud SQL properties. */
 	// +optional

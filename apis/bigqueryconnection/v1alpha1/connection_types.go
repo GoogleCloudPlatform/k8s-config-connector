@@ -60,11 +60,6 @@ type BigQueryConnectionConnectionSpec struct {
 	*/
 
 	/* NOTYET
-	// Cloud Spanner properties.
-	CloudSpanner *CloudSpannerProperties `json:"cloudSpanner,omitempty"`
-	*/
-
-	/* NOTYET
 	// Spark properties.
 	Spark *SparkProperties `json:"spark,omitempty"`
 	*/
@@ -78,6 +73,9 @@ type BigQueryConnectionConnectionSpec struct {
 
 	// Use Cloud Resource properties.
 	CloudResourceSpec *CloudResourcePropertiesSpec `json:"cloudResource,omitempty"`
+
+	// Cloud Spanner properties.
+	CloudSpannerSpec *CloudSpannerPropertiesSpec `json:"cloudSpanner,omitempty"`
 }
 
 // BigQueryConnectionConnectionStatus defines the config connector machine state of BigQueryConnectionConnection
@@ -163,6 +161,50 @@ type CloudSqlPropertiesSpec struct {
 
 	// Cloud SQL credential.
 	Credential *CloudSqlCredential `json:"credential,omitempty"`
+}
+
+type CloudSpannerPropertiesSpec struct {
+	// Reference to a spanner database ID.
+	// +required
+	DatabaseRef *refv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
+
+	// If parallelism should be used when reading from Cloud Spanner
+	UseParallelism *bool `json:"useParallelism,omitempty"`
+
+	// Allows setting max parallelism per query when executing on Spanner
+	//  independent compute resources. If unspecified, default values of
+	//  parallelism are chosen that are dependent on the Cloud Spanner instance
+	//  configuration.
+	//
+	//  REQUIRES: `use_parallelism` must be set.
+	//  REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+	//  set.
+	MaxParallelism *int32 `json:"maxParallelism,omitempty"`
+
+	// If the serverless analytics service should be used to read data from Cloud
+	//  Spanner.
+	//  Note: `use_parallelism` must be set when using serverless analytics.
+	UseServerlessAnalytics *bool `json:"useServerlessAnalytics,omitempty"`
+
+	// If set, the request will be executed via Spanner independent compute
+	//  resources.
+	//  REQUIRES: `use_parallelism` must be set.
+	//
+	//  NOTE: `use_serverless_analytics` will be deprecated. Prefer
+	//  `use_data_boost` over `use_serverless_analytics`.
+	UseDataBoost *bool `json:"useDataBoost,omitempty"`
+
+	// Optional. Cloud Spanner database role for fine-grained access control.
+	//  The Cloud Spanner admin should have provisioned the database role with
+	//  appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+	//  only use roles provided by their Cloud Spanner admins.
+	//
+	//  For more details, see [About fine-grained access control]
+	//  (https://cloud.google.com/spanner/docs/fgac-about).
+	//
+	//  REQUIRES: The database role name must start with a letter, and can only
+	//  contain letters, numbers, and underscores.
+	DatabaseRole *string `json:"databaseRole,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.connection.v1.AwsProperties

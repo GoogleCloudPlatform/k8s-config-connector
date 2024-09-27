@@ -170,8 +170,10 @@ func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *p
 	if oneof := CloudResourcePropertiesSpec_FromProto(mapCtx, in.GetCloudResource()); oneof != nil {
 		out.CloudResourceSpec = oneof
 	}
+	if oneof := CloudSpannerPropertiesSpec_FromProto(mapCtx, in.GetCloudSpanner()); oneof != nil {
+		out.CloudSpannerSpec = oneof
+	}
 	// MISSING: Azure
-	// MISSING: CloudSpanner
 	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
 	return out

@@ -144,6 +144,20 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 		}
 	}
 
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudSpanner); ok {
+		if spanner := req.Connection.GetCloudSpanner(); spanner != nil {
+			obj.Properties = &pb.Connection_CloudSpanner{
+				CloudSpanner: &pb.CloudSpannerProperties{
+					Database:       spanner.Database,
+					UseParallelism: spanner.UseParallelism,
+					UseDataBoost:   spanner.UseDataBoost,
+					MaxParallelism: spanner.MaxParallelism,
+					DatabaseRole:   spanner.DatabaseRole,
+				},
+			}
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -180,6 +194,16 @@ func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConne
 	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
 		if mod := req.Connection.GetAws(); mod != nil {
 			obj.GetAws().GetAccessRole().IamRoleId = mod.GetAccessRole().IamRoleId
+		}
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudSpanner); ok {
+		if mod := req.Connection.GetCloudSpanner(); mod != nil {
+			obj.GetCloudSpanner().Database = mod.Database
+			obj.GetCloudSpanner().UseDataBoost = mod.UseDataBoost
+			obj.GetCloudSpanner().UseParallelism = mod.UseParallelism
+			obj.GetCloudSpanner().MaxParallelism = mod.MaxParallelism
+			obj.GetCloudSpanner().DatabaseRole = mod.DatabaseRole
 		}
 	}
 

@@ -108,6 +108,39 @@ func CloudSqlPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudSql
 	return out
 }
 
+func CloudSpannerPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSpannerPropertiesSpec) *pb.CloudSpannerProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSpannerProperties{}
+	out.UseParallelism = direct.ValueOf(in.UseParallelism)
+	out.UseDataBoost = direct.ValueOf(in.UseDataBoost)
+	out.MaxParallelism = direct.ValueOf(in.MaxParallelism)
+	out.DatabaseRole = direct.ValueOf(in.DatabaseRole)
+	if in.DatabaseRef != nil {
+		if in.DatabaseRef.External == "" {
+			mapCtx.Errorf("SQLInstance external reference was not pre-resolved")
+		}
+		out.Database = in.DatabaseRef.External
+	}
+	return out
+}
+
+func CloudSpannerPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudSpannerProperties) *krm.CloudSpannerPropertiesSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSpannerPropertiesSpec{}
+	out.UseDataBoost = direct.LazyPtr(in.UseDataBoost)
+	out.UseParallelism = direct.LazyPtr(in.UseParallelism)
+	out.MaxParallelism = direct.LazyPtr(in.MaxParallelism)
+	out.DatabaseRole = direct.LazyPtr(in.DatabaseRole)
+	out.DatabaseRef = &refs.SpannerDatabaseRef{
+		External: in.Database,
+	}
+	return out
+}
+
 func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.BigQueryConnectionConnectionObservedState {
 	if in == nil {
 		return nil
@@ -147,9 +180,11 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	if oneof := CloudSqlPropertiesSpec_ToProto(mapCtx, in.CloudSQLSpec); oneof != nil {
 		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
 	}
+	if oneof := CloudSpannerPropertiesSpec_ToProto(mapCtx, in.CloudSpannerSpec); oneof != nil {
+		out.Properties = &pb.Connection_CloudSpanner{CloudSpanner: oneof}
+	}
 
 	// MISSING: Azure
-	// MISSING: CloudSpanner
 	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
 	return out
