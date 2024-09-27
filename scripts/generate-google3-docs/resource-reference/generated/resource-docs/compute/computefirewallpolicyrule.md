@@ -117,7 +117,7 @@ targetServiceAccounts:
     <tr>
         <td>
             <p><code>action</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -137,7 +137,7 @@ targetServiceAccounts:
     <tr>
         <td>
             <p><code>direction</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -167,7 +167,7 @@ targetServiceAccounts:
     <tr>
         <td>
             <p><code>firewallPolicyRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -181,9 +181,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The firewall policy of the resource.
-
-Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resource (format: `locations/global/firewallPolicies/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed ComputeFirewallPolicy resource. Should be in the format `locations/global/firewallPolicies/<firewallPolicy>`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -193,7 +191,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeFirewall olicy ` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -203,13 +201,13 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeFirewallPolicy ` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>match</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -319,7 +317,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     <tr>
         <td>
             <p><code>match.layer4Configs</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -329,7 +327,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     <tr>
         <td>
             <p><code>match.layer4Configs[]</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -339,7 +337,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     <tr>
         <td>
             <p><code>match.layer4Configs[].ipProtocol</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -469,7 +467,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     <tr>
         <td>
             <p><code>priority</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -503,7 +501,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -513,7 +511,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -523,7 +521,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -553,7 +551,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The Google Cloud resource name of an `IAMServiceAccount` resource (format: `projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com`).{% endverbatim %}</p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -580,6 +578,8 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
 </table>
 
 
+<p>* Field is required when parent field is specified</p>
+
 
 ### Status
 #### Schema
@@ -590,6 +590,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 kind: string
 observedGeneration: integer
 ruleTupleCount: integer
@@ -606,7 +607,7 @@ ruleTupleCount: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -649,6 +650,13 @@ ruleTupleCount: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type is the type of the condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique Config Connector specifier for the resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
