@@ -29,6 +29,14 @@ import (
 	"k8s.io/klog/v2"
 )
 
+// A go struct aware of which gopackage
+// it belongs to.
+// e.g. Listing (go struct) belongs to DataExchangeListing (go package)
+type GStruct struct {
+	PackageName string
+	*gocode.GoStruct
+}
+
 type MapperGenerator struct {
 	generatorBase
 	goPathForMessage OutputFunc
@@ -36,13 +44,13 @@ type MapperGenerator struct {
 	goPackages []*gocode.Package
 
 	typePairs           []typePair
-	precomputedMappings map[protoreflect.FullName]map[string]*gocode.GoStruct
+	precomputedMappings map[protoreflect.FullName]map[string]*GStruct
 }
 
 func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string) *MapperGenerator {
 	g := &MapperGenerator{
 		goPathForMessage:    goPathForMessage,
-		precomputedMappings: make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
+		precomputedMappings: make(map[protoreflect.FullName]map[string]*GStruct),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -65,6 +73,11 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 		// v.goPackages[annotation] = pkg
 		// }
 
+		// packageName will look like "/dataexchangelisting/v1alpha1"
+		packageName := strings.TrimPrefix(pkg.GoPackage, goPackage)
+		packageName = strings.TrimPrefix(packageName, "/")
+		// now packageName should look like "dataexchangelisting/v1alpha1"
+
 		// Populate the precomputedMappings
 		for _, s := range pkg.Structs {
 			if len(s.Comments) != 0 {
@@ -74,9 +87,12 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 						if strings.HasPrefix(line, "+kcc:proto=") {
 							protoName := protoreflect.FullName(strings.TrimPrefix(line, "+kcc:proto="))
 							if _, ok := v.precomputedMappings[protoName]; !ok {
-								v.precomputedMappings[protoName] = make(map[string]*gocode.GoStruct)
+								v.precomputedMappings[protoName] = make(map[string]*GStruct)
 							}
-							v.precomputedMappings[protoName][s.Name] = s
+							v.precomputedMappings[protoName][s.Name] = &GStruct{
+								PackageName: packageName,
+								GoStruct:    s,
+							}
 						}
 					}
 				}
@@ -101,7 +117,7 @@ func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
 	}
 }
 
-func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) map[string]*gocode.GoStruct {
+func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) map[string]*GStruct {
 	// Use precomputed mappings
 	if matches, found := v.precomputedMappings[msg.FullName()]; found {
 		return matches
@@ -114,9 +130,9 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	if _, visit := v.goPathForMessage(msg); !visit {
 		return
 	}
-	goTypes := v.findKRMStructsForProto(msg)
 
-	if goTypes == nil || len(goTypes) == 0 {
+	gTypes := v.findKRMStructsForProto(msg)
+	if len(gTypes) == 0 {
 		klog.Infof("no krm for %v", msg.FullName())
 		return
 	}
@@ -134,12 +150,13 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	}
 
-	for _, goType := range goTypes {
+	for _, gType := range gTypes {
 		v.typePairs = append(v.typePairs, typePair{
 			ProtoPackage:   msg.ParentFile().Package(),
 			ProtoGoPackage: protoGoPackage,
-			KRMType:        goType,
+			KRMType:        gType.GoStruct,
 			Proto:          msg,
+			Prefix:           gType.PackageName,
 		})
 	}
 
@@ -153,6 +170,7 @@ type typePair struct {
 	ProtoGoPackage string
 	KRMType        *gocode.GoStruct
 	Proto          protoreflect.MessageDescriptor
+	Prefix string
 }
 
 func lastGoComponent(goPackage string) string {
@@ -171,7 +189,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 
 		k := generatedFileKey{
 			GoPackage: goPackage,
-			FileName:  "mapper.generated.go",
+			FileName:  pair.Prefix + ".mapper.generated.go",
 		}
 		out := v.getOutputFile(k)
 		if out.contents.Len() == 0 {
@@ -184,7 +202,8 @@ func (v *MapperGenerator) GenerateMappers() error {
 				pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 			}
 
-			out.contents.WriteString(fmt.Sprintf("package %s\n\n", lastGoComponent(goPackage)))
+			pkgName := strings.Split(pair.Prefix, "/")[0]
+			out.contents.WriteString(fmt.Sprintf("package %s\n\n", pkgName))
 			out.contents.WriteString("import (\n")
 			out.contents.WriteString(fmt.Sprintf("\tpb %q\n", pbPackage))
 			out.contents.WriteString(fmt.Sprintf("\tkrm %q\n", krmPackage))
@@ -708,8 +727,6 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
 		return krmFieldName + "_FromProto"
-	case "google.protobuf.Duration":
-		return "direct.StringDuration_FromProto"
 	}
 	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -722,8 +739,6 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
 		return krmFieldName + "_ToProto"
-	case "google.protobuf.Duration":
-		return "direct.StringDuration_ToProto"
 	}
 	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
 	return ""

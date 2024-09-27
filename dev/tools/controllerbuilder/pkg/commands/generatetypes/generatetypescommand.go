@@ -106,7 +106,11 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return fmt.Errorf("loading proto: %w", err)
 	}
 
-	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version
+	kind := o.ResourceKindName
+	serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
+	kindLessGoPackage := strings.TrimPrefix(strings.ToLower(kind), serviceName)
+
+	goPackage := serviceName + "/" + kindLessGoPackage + "/" + gv.Version
 
 	if gv.Group == "" {
 		return fmt.Errorf("--api-version must be specified with --kind")
@@ -140,7 +144,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
-	kind := o.ResourceKindName
 	if !scaffolder.TypeFileNotExist(kind) {
 		fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
 	} else {
