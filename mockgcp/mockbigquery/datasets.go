@@ -53,7 +53,6 @@ func (s *datasetsServer) GetDataset(ctx context.Context, req *pb.GetDatasetReque
 		}
 		return nil, err
 	}
-
 	if obj.MaxTimeTravelHours == nil {
 		obj.MaxTimeTravelHours = &defaultMaxTimeTravelHours
 	}
