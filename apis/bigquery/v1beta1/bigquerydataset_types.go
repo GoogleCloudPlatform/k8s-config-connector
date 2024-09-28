@@ -95,7 +95,8 @@ type BigQueryDatasetSpec struct {
 	// The geographic location where the dataset should reside. See
 	//  https://cloud.google.com/bigquery/docs/locations for supported
 	//  locations.
-	Location *string `json:"location,omitempty"`
+	// +required
+	Location *string `json:"location"`
 
 	// Optional. Defines the time travel window in hours. The value can be from 48
 	//  to 168 hours (2 to 7 days). The default value is 168 hours if this is not

@@ -347,6 +347,8 @@ spec:
               storageBillingModel:
                 description: Optional. Updates storage_billing_model for the dataset.
                 type: string
+            required:
+            - location
             type: object
           status:
             description: BigQueryDatasetStatus defines the config connector machine
