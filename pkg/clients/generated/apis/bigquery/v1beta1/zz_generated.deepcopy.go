@@ -135,11 +135,6 @@ func (in *BigQueryDatasetSpec) DeepCopyInto(out *BigQueryDatasetSpec) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.MaxTimeTravelHours != nil {
 		in, out := &in.MaxTimeTravelHours, &out.MaxTimeTravelHours
 		*out = new(string)
@@ -188,6 +183,11 @@ func (in *BigQueryDatasetStatus) DeepCopyInto(out *BigQueryDatasetStatus) {
 	}
 	if in.Etag != nil {
 		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
 		*out = new(string)
 		**out = **in
 	}

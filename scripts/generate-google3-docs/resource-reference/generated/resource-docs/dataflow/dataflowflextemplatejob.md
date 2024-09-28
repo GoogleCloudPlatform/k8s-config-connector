@@ -649,6 +649,8 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   name: dataflowflextemplatejobdepstreaming
+spec:
+  location: us-central1
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable

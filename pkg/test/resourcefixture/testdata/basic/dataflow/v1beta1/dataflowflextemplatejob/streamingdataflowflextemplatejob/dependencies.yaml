@@ -18,6 +18,8 @@ metadata:
   name: bigquerydataset${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
+spec:
+  location: us-central1
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
