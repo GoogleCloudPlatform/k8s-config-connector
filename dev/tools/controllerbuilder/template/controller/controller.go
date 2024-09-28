@@ -231,7 +231,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
-	status.ObservedState = {{.Kind}}StatusObservedState_FromProto(mapCtx, created)
+	status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -279,7 +279,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
-	status.ObservedState = {{.Kind}}StatusObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
