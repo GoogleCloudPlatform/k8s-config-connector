@@ -1264,6 +1264,9 @@ metadata:
   name: bigquerytabledep
 spec:
   friendlyName: bigquerytable-dep
+  location: us-central1
+  projectRef:
+    external: ${PROJECT_ID?}
 ```
 
 

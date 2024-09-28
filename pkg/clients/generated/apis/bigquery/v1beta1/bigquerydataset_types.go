@@ -91,11 +91,13 @@ type DatasetAccess struct {
 }
 
 type DatasetDataset struct {
-	/* Required. A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters. */
-	DatasetId string `json:"datasetId"`
+	/* Required. A unique Id for this dataset, without the project name. The Id must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters. */
+	// +optional
+	DatasetId *string `json:"datasetId,omitempty"`
 
-	/* Required. The ID of the project containing this dataset. */
-	ProjectId string `json:"projectId"`
+	/* Required. The Id of the project containing this dataset. */
+	// +optional
+	ProjectId *string `json:"projectId,omitempty"`
 }
 
 type DatasetDefaultEncryptionConfiguration struct {
@@ -105,25 +107,31 @@ type DatasetDefaultEncryptionConfiguration struct {
 }
 
 type DatasetRoutine struct {
-	/* Required. The ID of the dataset containing this routine. */
-	DatasetId string `json:"datasetId"`
+	/* Required. The Id of the dataset containing this routine. */
+	// +optional
+	DatasetId *string `json:"datasetId,omitempty"`
 
-	/* Required. The ID of the project containing this routine. */
-	ProjectId string `json:"projectId"`
+	/* Required. The Id of the project containing this routine. */
+	// +optional
+	ProjectId *string `json:"projectId,omitempty"`
 
-	/* Required. The ID of the routine. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 256 characters. */
-	RoutineId string `json:"routineId"`
+	/* Required. The Id of the routine. The Id must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 256 characters. */
+	// +optional
+	RoutineId *string `json:"routineId,omitempty"`
 }
 
 type DatasetView struct {
-	/* Required. The ID of the dataset containing this table. */
-	DatasetId string `json:"datasetId"`
+	/* Required. The Id of the dataset containing this table. */
+	// +optional
+	DatasetId *string `json:"datasetId,omitempty"`
 
-	/* Required. The ID of the project containing this table. */
-	ProjectId string `json:"projectId"`
+	/* Required. The Id of the project containing this table. */
+	// +optional
+	ProjectId *string `json:"projectId,omitempty"`
 
-	/* Required. The ID of the table. The ID can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table ID with a partition decorator, such as `sample_table$20190123`. */
-	TableId string `json:"tableId"`
+	/* Required. The Id of the table. The Id can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table Id with a partition decorator, such as `sample_table$20190123`. */
+	// +optional
+	TableId *string `json:"tableId,omitempty"`
 }
 
 type BigQueryDatasetSpec struct {
@@ -179,14 +187,13 @@ type BigQueryDatasetSpec struct {
 	IsCaseInsensitive *bool `json:"isCaseInsensitive,omitempty"`
 
 	/* The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 
 	/* Optional. Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days). The default value is 168 hours if this is not set. */
 	// +optional
 	MaxTimeTravelHours *string `json:"maxTimeTravelHours,omitempty"`
 
-	/* The project that this resource belongs to. optional. */
+	/* The project that this resource belongs to. required */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
