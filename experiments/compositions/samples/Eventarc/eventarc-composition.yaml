@@ -1,0 +1,135 @@
+apiVersion: composition.google.com/v1alpha1
+kind: Context
+metadata:
+  name: context
+  namespace: config-control
+spec:
+  project: # Replace with your project ID
+
+---
+apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: gcs-bucket-getter
+  namespace: config-control
+spec:
+  valuesFrom:
+  - name: bucket
+    resourceRef:
+      group: storage.cnrm.cloud.google.com
+      version: v1beta1
+      kind: StorageBucket
+      resource: storagebuckets
+      name: # Replace with your bucket name
+    fieldRef:
+    - path: ".metadata.name"
+      as: name
+
+---
+apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: pubsub-topic-getter
+  namespace: config-control
+spec:
+  valuesFrom:
+  - name: topic
+    resourceRef:
+      group: pubsub.cnrm.cloud.google.com
+      version: v1beta1
+      kind: PubSubTopic
+      resource: pubsubtopics
+      name: # Replace with your topic name
+    fieldRef:
+    - path: ".metadata.name"
+      as: name
+
+---
+apiVersion: composition.google.com/v1alpha1
+kind: Composition
+metadata:
+  name: complete-eventarc-composition
+  namespace: config-control
+spec:
+  inputAPIGroup: eventarcconfigs.idp.mycompany.com
+  expanders:
+  # STAGE 2: Create the StorageBucket and PubSubTopic resources
+  - type: jinja2  # create-gcs-bucket
+    name: create-gcs-bucket
+    template: |
+      apiVersion: storage.cnrm.cloud.google.com/v1beta1
+      kind: StorageBucket
+      metadata:
+        name: {{ eventarcconfigs.spec.bucketName }}
+        namespace: {{ eventarcconfigs.spec.namespace }}
+      spec:
+        uniformBucketLevelAccess: true
+  - type: jinja2  # create-pubsub-topic
+    name: create-pubsub-topic
+    template: |
+      apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+      kind: PubSubTopic
+      metadata:
+        name: {{ eventarcconfigs.spec.topicName }}
+        namespace: {{ eventarcconfigs.spec.namespace }}
+
+  # STAGE 3: Wait for the StorageBucket and PubSubTopic to be ready
+  - type: getter  # get-gcs-bucket
+    version: v0.0.1
+    name: get-gcs-bucket
+    template: ""
+    configref:
+      name: gcs-bucket-getter
+      namespace: # YOUR NAMESPACE
+
+  - type: getter  # get-pubsub-topic
+    version: v0.0.1
+    name: get-pubsub-topic
+    template: ""
+    configref:
+      name: pubsub-topic-getter
+      namespace: # YOUR NAMESPACE
+
+  # STAGE 4: Create the EventarcTrigger and StorageNotification using extracted values
+  - type: jinja2
+    name: create-eventarc-trigger
+    template: |
+      apiVersion: eventarc.cnrm.cloud.google.com/v1beta1
+      kind: EventarcTrigger
+      metadata:
+        name: {{ eventarcconfigs.spec.triggerName }}
+        namespace: {{ context.spec.namespace }}
+      spec:
+        destination:
+          workflowRef:
+            external: "projects/{{ context.spec.project }}/locations/us-central1/workflows/{{eventarcconfigs.spec.workflowName}}"
+        location: us-central1
+        serviceAccountRef:
+          name: eventarctrigger-iam-gsa
+        transport:
+          pubsub:
+            topicRef:
+              name: {{ values.topic.name }}
+              namespace: config-control
+        matchingCriteria:
+        - attribute: "type"
+          value: "google.cloud.pubsub.topic.v1.messagePublished"
+        projectRef:
+          external: "projects/{{ context.spec.project }}"
+
+  - type: jinja2  # create-storage-notification
+    name: create-storage-notification
+    template: |
+      apiVersion: storage.cnrm.cloud.google.com/v1beta1
+      kind: StorageNotification
+      metadata:
+        name: bucket-notification
+        namespace: {{ eventarcconfigs.spec.namespace }}
+      spec:
+        bucketRef:
+          name: {{ values.bucket.name }}
+        topicRef:
+          name: {{ values.topic.name }}
+        eventTypes:
+        - "OBJECT_FINALIZE"
+        payloadFormat: JSON_API_V1
