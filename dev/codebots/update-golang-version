@@ -36,6 +36,11 @@ for f in $(git ls-files 'Dockerfile*' '**/Dockerfile*'); do
   sed -i -e "s/FROM golang:[0-9.]*/FROM golang:$GO_VERSION/g" $f
 done
 
+# Update golang setup script version
+cd ${REPO_ROOT}
+sed -i "s|^GO_VERSION=.*|GO_VERSION=\"$GO_VERSION\"|" scripts/environment-setup/golang-setup.sh
+echo "Updating scripts/environment-setup/golang-setup.sh to go version $GO_VERSION"
+
 # Ignore third_party changes
 cd ${REPO_ROOT}
 git checkout -- third_party/
