@@ -18,26 +18,23 @@ import (
 	"context"
 	"errors"
 	"io"
-	"io/ioutil"
-	"reflect"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
-
-	"github.com/google/go-cmp/cmp"
 )
-
-const hclStreamFile = "testdata/expected-hcl-stream.golden.yaml"
 
 func TestHCLStream(t *testing.T) {
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	hclStream := stream.NewHCLStream(newTestUnstructuredResourceStreamFromAsset(t, newTestAssetStream(t)), smLoader, tfProvider)
-	bytes := hclStreamToBytes(t, hclStream)
-	validateHCLBytesMatchesExpectedFile(t, bytes)
+	got := hclStreamToBytes(t, hclStream)
+
+	goldenFile := "testdata/expected-hcl-stream.golden.yaml"
+
+	test.CompareGoldenFile(t, goldenFile, string(got), test.IgnoreLeadingComments)
 }
 
 func hclStreamToBytes(t *testing.T, stream *stream.HCLStream) []byte {
@@ -51,23 +48,4 @@ func hclStreamToBytes(t *testing.T, stream *stream.HCLStream) []byte {
 		results = append(results, bytes...)
 	}
 	return results
-}
-
-func validateHCLBytesMatchesExpectedFile(t *testing.T, bytes []byte) {
-	if *update {
-		if err := ioutil.WriteFile(hclStreamFile, bytes, 0644); err != nil {
-			t.Fatalf("error writing file '%v': %v", hclStreamFile, err)
-		}
-	}
-	expectedBytes, err := ioutil.ReadFile(hclStreamFile)
-	if err != nil {
-		t.Fatalf("error reading file: %v", err)
-	}
-	actualValue := string(bytes)
-	// Trim the license header before comparison.
-	expectedValue := test.TrimLicenseHeaderFromYaml(string(expectedBytes))
-	if expectedValue != actualValue {
-		diff := cmp.Diff(expectedValue, actualValue)
-		t.Fatalf("mismatch between actual type and expected for type '%v', diff:\n%v", reflect.TypeOf(actualValue).Name(), diff)
-	}
 }
