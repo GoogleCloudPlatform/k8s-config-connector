@@ -74,7 +74,7 @@ import (
 )
 
 const (
-	ctrlName = "{{.KCCService}}-controller"
+	ctrlName = "{{.KCCService}}-{{.ProtoResource | ToLower }}-controller"
     // TODO(user): Confirm service domain
 	serviceDomain = "//{{.KCCService}}.googleapis.com"
 )

@@ -98,6 +98,30 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 		return fmt.Sprintf("service-%s@gcp-sa-bigqueryconnection.iam.gserviceaccount.com", req.GetParent())
 	}
 
+	buildAwsAccessRoleIdentity := func() string {
+		letterRunes := []rune("0123456789")
+		b := make([]rune, 21)
+		for i := range b {
+			b[i] = letterRunes[rand.Intn(len(letterRunes))]
+		}
+		return string(b)
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
+		if aws := req.Connection.GetAws(); aws != nil {
+			obj.Properties = &pb.Connection_Aws{
+				Aws: &pb.AwsProperties{
+					AuthenticationMethod: &pb.AwsProperties_AccessRole{
+						AccessRole: &pb.AwsAccessRole{
+							IamRoleId: aws.GetAccessRole().GetIamRoleId(),
+							Identity:  buildAwsAccessRoleIdentity(),
+						},
+					},
+				},
+			}
+		}
+	}
+
 	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudResource); ok {
 		obj.Properties = &pb.Connection_CloudResource{
 			CloudResource: &pb.CloudResourceProperties{
@@ -152,6 +176,13 @@ func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConne
 		}
 	}
 	obj.LastModifiedTime = now.Unix()
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
+		if mod := req.Connection.GetAws(); mod != nil {
+			obj.GetAws().GetAccessRole().IamRoleId = mod.GetAccessRole().IamRoleId
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

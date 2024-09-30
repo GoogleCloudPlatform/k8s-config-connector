@@ -29,7 +29,7 @@ spec:
   networkRef:
     name: default
   networkTier: PREMIUM
-  portRange: "80"
+  portRange: "90"
   target:
     targetHTTPProxyRef:
       name: computetargethttpproxy-2-${uniqueId}

@@ -3,12 +3,14 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: sqlinstance-activationpolicy-${uniqueId}
@@ -16,6 +18,7 @@ metadata:
 spec:
   databaseVersion: POSTGRES_15
   region: us-central1
+  resourceID: sqlinstance-activationpolicy-${uniqueId}
   settings:
     activationPolicy: NEVER
     locationPreference:
@@ -32,7 +35,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 2
+  observedGeneration: 3
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-${uniqueId}
   serverCaCert:

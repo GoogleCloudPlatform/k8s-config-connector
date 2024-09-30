@@ -133,7 +133,10 @@ func (h *Harness) WithObjects(initObjs ...*unstructured.Unstructured) {
 	if err != nil {
 		h.Fatalf("error getting new service mapping loader: %v", err)
 	}
-	supportedGVKs := supportedgvks.All(smLoader, dclmetadata.New())
+	supportedGVKs, err := supportedgvks.All(smLoader, dclmetadata.New())
+	if err != nil {
+		h.Fatalf("error loading all supported GVKs: %v", err)
+	}
 	for _, gvk := range supportedGVKs {
 		var resource string
 		switch gvk.Kind {

@@ -17,20 +17,24 @@ kind: BigQueryDataset
 metadata:
   name: bigquerydataset${uniqueId}
 spec:
-  description: "Fully Configured BigQuery Dataset"
-  friendlyName: bigquerydataset-fullyconfigured
-  defaultPartitionExpirationMs: 3600000
-  defaultTableExpirationMs: 3600000
-  defaultCollation: und:ci
+  description: "Fully Configured BigQuery Dataset updated"
+  friendlyName: bigquerydataset-fullyconfigured-updated
+  defaultPartitionExpirationMs: 3800000
+  defaultTableExpirationMs: 3800000
+  defaultCollation: ""
   defaultEncryptionConfiguration:
     kmsKeyRef:
       name: kmscryptokey-${uniqueId}
-  isCaseInsensitive: true
+  isCaseInsensitive: false
   location: US
-  maxTimeTravelHours: "72"
+  maxTimeTravelHours: "96"
   projectRef:
     external: ${projectId}
   access:
     - role: OWNER
       specialGroup: projectOwners
+    - role: READER
+      domain: google.com
+    - role: OWNER
+      userByEmail: bigquerydataset-dep@${projectId}.iam.gserviceaccount.co
   storageBillingModel: LOGICAL

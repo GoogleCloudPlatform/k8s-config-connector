@@ -1,5 +1,5 @@
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -30,11 +30,11 @@ X-Xss-Protection: 0
 
 POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_16",
-  "name": "postgresauthorizednetworks-${uniqueId}",
+  "name": "sqlinstance-authorizednetworks-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
@@ -45,14 +45,15 @@ User-Agent: kcc/controller-manager
       "authorizedNetworks": [
         {
           "expirationTime": "2099-01-01T00:00:00Z",
-          "kind": "sql#aclEntry",
           "name": "all",
           "value": "0.0.0.0/0"
         }
-      ]
+      ],
+      "enablePrivatePathForGoogleCloudServices": false,
+      "ipv4Enabled": true,
+      "requireSsl": false
     },
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -83,8 +84,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresauthorizednetworks-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
+  "targetId": "sqlinstance-authorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -92,7 +93,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -114,121 +115,16 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "postgresauthorizednetworks-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
+  "targetId": "sqlinstance-authorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresauthorizednetworks-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
-  "databaseVersion": "POSTGRES_16",
-  "etag": "abcdef0123A=",
-  "gceZone": "us-central1-a",
-  "geminiConfig": {
-    "activeQueryEnabled": false,
-    "entitled": false,
-    "googleVacuumMgmtEnabled": false,
-    "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": false
-  },
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "ipAddresses": [
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "PRIMARY"
-    },
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "OUTGOING"
-    }
-  ],
-  "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresauthorizednetworks-${uniqueId}",
-  "project": "${projectId}",
-  "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
-  "serverCaCert": {
-    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
-    "certSerialNumber": "0",
-    "commonName": "common-name",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresauthorizednetworks-${uniqueId}",
-    "kind": "sql#sslCert",
-    "sha1Fingerprint": "12345678"
-  },
-  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-  "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 7,
-        "retentionUnit": "COUNT"
-      },
-      "enabled": false,
-      "kind": "sql#backupConfiguration",
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
-    "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
-    "dataDiskType": "PD_SSD",
-    "deletionProtectionEnabled": false,
-    "edition": "ENTERPRISE",
-    "ipConfiguration": {
-      "authorizedNetworks": [],
-      "ipv4Enabled": true,
-      "requireSsl": false,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-    },
-    "kind": "sql#settings",
-    "locationPreference": {
-      "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
-    },
-    "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "123",
-    "storageAutoResize": true,
-    "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
-    "userLabels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    }
-  },
-  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}/users?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -246,7 +142,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "postgresauthorizednetworks-${uniqueId}",
+      "instance": "sqlinstance-authorizednetworks-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
       "project": "${projectId}"
@@ -257,8 +153,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -273,7 +169,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresauthorizednetworks-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-authorizednetworks-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_16_3",
   "databaseVersion": "POSTGRES_16",
@@ -299,17 +195,17 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresauthorizednetworks-${uniqueId}",
+  "name": "sqlinstance-authorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresauthorizednetworks-${uniqueId}",
+    "instance": "sqlinstance-authorizednetworks-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -336,13 +232,13 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -362,39 +258,48 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresauthorizednetworks-${uniqueId}",
-  "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "binaryLogEnabled": false,
+      "enabled": false,
+      "pointInTimeRecoveryEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [
         {
-          "expirationTime": "2099-01-01T00:00:00Z",
-          "kind": "sql#aclEntry",
-          "name": "all",
-          "value": "0.0.0.0/0"
-        },
-        {
           "expirationTime": "2100-01-01T00:00:00Z",
-          "kind": "sql#aclEntry",
           "name": "my-network",
           "value": "1.2.3.0/24"
+        },
+        {
+          "expirationTime": "2099-01-01T00:00:00Z",
+          "name": "all",
+          "value": "0.0.0.0/0"
         }
-      ]
+      ],
+      "enablePrivatePathForGoogleCloudServices": false,
+      "ipv4Enabled": true,
+      "requireSsl": false
     },
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -426,8 +331,8 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresauthorizednetworks-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
+  "targetId": "sqlinstance-authorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -435,7 +340,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -457,16 +362,16 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "postgresauthorizednetworks-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
+  "targetId": "sqlinstance-authorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -481,7 +386,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresauthorizednetworks-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-authorizednetworks-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_16_3",
   "databaseVersion": "POSTGRES_16",
@@ -507,17 +412,17 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresauthorizednetworks-${uniqueId}",
+  "name": "sqlinstance-authorizednetworks-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresauthorizednetworks-${uniqueId}",
+    "instance": "sqlinstance-authorizednetworks-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -533,6 +438,8 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "pointInTimeRecoveryEnabled": false,
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -544,13 +451,13 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -570,8 +477,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -591,8 +498,39 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresauthorizednetworks-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresauthorizednetworks-${uniqueId}",
+  "targetId": "sqlinstance-authorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-authorizednetworks-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-authorizednetworks-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }

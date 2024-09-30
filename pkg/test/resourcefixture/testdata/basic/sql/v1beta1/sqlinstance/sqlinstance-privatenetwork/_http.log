@@ -1334,8 +1334,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -1364,13 +1364,65 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork-${uniqueId}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connections": [
+    {
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+      "peering": "servicenetworking-googleapis-com",
+      "reservedPeeringRanges": [
+        "computeaddress-${uniqueId}"
+      ],
+      "service": "services/servicenetworking.googleapis.com"
+    }
+  ]
+}
+
+---
+
 POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_16",
-  "name": "postgresprivatenetwork-${uniqueId}",
+  "name": "sqlinstance-privatenetwork-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
@@ -1381,10 +1433,10 @@ User-Agent: kcc/controller-manager
       "allocatedIpRange": "computeaddress-${uniqueId}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "requireSsl": false
     },
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1415,8 +1467,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresprivatenetwork-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "targetId": "sqlinstance-privatenetwork-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -1424,7 +1476,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1446,120 +1498,16 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "postgresprivatenetwork-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "targetId": "sqlinstance-privatenetwork-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresprivatenetwork-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
-  "databaseVersion": "POSTGRES_16",
-  "etag": "abcdef0123A=",
-  "gceZone": "us-central1-a",
-  "geminiConfig": {
-    "activeQueryEnabled": false,
-    "entitled": false,
-    "googleVacuumMgmtEnabled": false,
-    "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": false
-  },
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "ipAddresses": [
-    {
-      "ipAddress": "10.1.2.3",
-      "type": "PRIVATE"
-    }
-  ],
-  "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresprivatenetwork-${uniqueId}",
-  "project": "${projectId}",
-  "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
-  "serverCaCert": {
-    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
-    "certSerialNumber": "0",
-    "commonName": "common-name",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresprivatenetwork-${uniqueId}",
-    "kind": "sql#sslCert",
-    "sha1Fingerprint": "12345678"
-  },
-  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-  "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 7,
-        "retentionUnit": "COUNT"
-      },
-      "enabled": false,
-      "kind": "sql#backupConfiguration",
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
-    "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
-    "dataDiskType": "PD_SSD",
-    "deletionProtectionEnabled": false,
-    "edition": "ENTERPRISE",
-    "ipConfiguration": {
-      "allocatedIpRange": "computeaddress-${uniqueId}",
-      "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": true,
-      "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-      "requireSsl": false,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-    },
-    "kind": "sql#settings",
-    "locationPreference": {
-      "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
-    },
-    "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "123",
-    "storageAutoResize": true,
-    "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
-    "userLabels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    }
-  },
-  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}/users?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1577,7 +1525,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "postgresprivatenetwork-${uniqueId}",
+      "instance": "sqlinstance-privatenetwork-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
       "project": "${projectId}"
@@ -1588,8 +1536,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1604,7 +1552,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresprivatenetwork-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-privatenetwork-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_16_3",
   "databaseVersion": "POSTGRES_16",
@@ -1626,17 +1574,17 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresprivatenetwork-${uniqueId}",
+  "name": "sqlinstance-privatenetwork-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresprivatenetwork-${uniqueId}",
+    "instance": "sqlinstance-privatenetwork-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -1666,13 +1614,12 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1692,29 +1639,38 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresprivatenetwork-${uniqueId}",
-  "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "binaryLogEnabled": false,
+      "enabled": false,
+      "pointInTimeRecoveryEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "allocatedIpRange": "computeaddress2-${uniqueId}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/computenetwork2-${uniqueId}"
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
+      "requireSsl": false
     },
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1746,8 +1702,8 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresprivatenetwork-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "targetId": "sqlinstance-privatenetwork-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -1755,7 +1711,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1777,16 +1733,16 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "postgresprivatenetwork-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "targetId": "sqlinstance-privatenetwork-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1801,7 +1757,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:postgresprivatenetwork-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-privatenetwork-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_16_3",
   "databaseVersion": "POSTGRES_16",
@@ -1823,17 +1779,17 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "postgresprivatenetwork-${uniqueId}",
+  "name": "sqlinstance-privatenetwork-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "postgresprivatenetwork-${uniqueId}",
+    "instance": "sqlinstance-privatenetwork-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -1849,6 +1805,8 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "pointInTimeRecoveryEnabled": false,
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -1863,13 +1821,12 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1889,8 +1846,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1910,8 +1867,39 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "postgresprivatenetwork-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgresprivatenetwork-${uniqueId}",
+  "targetId": "sqlinstance-privatenetwork-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-privatenetwork-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-privatenetwork-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -2388,7 +2376,101 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "connections": [
+    {
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+      "peering": "servicenetworking-googleapis-com",
+      "reservedPeeringRanges": [
+        "computeaddress-${uniqueId}"
+      ],
+      "service": "services/servicenetworking.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectNumber}/global/networks/${networkID}/removePeering?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "name": "servicenetworking-googleapis-com"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
 
 ---
 

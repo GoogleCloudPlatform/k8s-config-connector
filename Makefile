@@ -70,7 +70,6 @@ manifests: generate
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
 	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
-	go run ./scripts/generate-cnrm-cluster-roles/main.go
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
@@ -81,6 +80,10 @@ manifests: generate
 
 	# for direct controllers
 	dev/tasks/generate-crds
+
+	# Generating cnrm cluster roles is dependent on the existence of directory
+	# config/crds/resources with all the freshly generated CRDs.
+	go run ./scripts/generate-cnrm-cluster-roles/main.go
 
 # Format code
 .PHONY: fmt
@@ -356,7 +359,7 @@ TEST_TARGET ?= mock
 
 .PHONY: e2e-sample-tests
 e2e-sample-tests:
-	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="SQLInstance,ComputeForwardingRule" \ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
+	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="ComputeForwardingRule" \ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
 
 # orgnization ID for google.com
 ORG_ID ?= 433637338589

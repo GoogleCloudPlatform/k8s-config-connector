@@ -747,6 +747,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to BigQueryConnectionConnection.
+					addReplacement("aws.accessRole.identity", "048077221682493034546")
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
 

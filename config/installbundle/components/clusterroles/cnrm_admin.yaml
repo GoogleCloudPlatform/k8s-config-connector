@@ -1159,3 +1159,15 @@ rules:
   - update
   - patch
   - delete
+- apiGroups:
+  - workstations.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete

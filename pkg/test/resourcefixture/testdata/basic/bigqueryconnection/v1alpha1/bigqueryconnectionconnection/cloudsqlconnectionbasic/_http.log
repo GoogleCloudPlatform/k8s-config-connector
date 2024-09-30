@@ -1,5 +1,5 @@
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -30,7 +30,7 @@ X-Xss-Protection: 0
 
 POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "databaseVersion": "MYSQL_5_7",
@@ -42,7 +42,6 @@ User-Agent: kcc/controller-manager
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -82,7 +81,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -112,8 +111,98 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "items": [
+    {
+      "etag": "abcdef0123A=",
+      "host": "",
+      "instance": "sqlinstance-sample-${uniqueId}",
+      "kind": "sql#user",
+      "name": "root",
+      "project": "${projectId}"
+    }
+  ],
+  "kind": "sql#usersList"
+}
+
+---
+
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE_USER",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE_USER",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -191,7 +280,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -279,96 +367,6 @@ X-Xss-Protection: 0
       "name": "MYSQL_8_0_37"
     }
   ]
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "items": [
-    {
-      "etag": "abcdef0123A=",
-      "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
-      "kind": "sql#user",
-      "name": "root",
-      "project": "${projectId}"
-    }
-  ],
-  "kind": "sql#usersList"
-}
-
----
-
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE_USER",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE_USER",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
 }
 
 ---
@@ -599,7 +597,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -869,7 +866,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1071,7 +1067,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1367,7 +1362,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1609,7 +1603,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1687,7 +1681,6 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -1780,7 +1773,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -1800,6 +1793,37 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
   "targetId": "sqlinstance-sample-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "targetProject": "${projectId}",

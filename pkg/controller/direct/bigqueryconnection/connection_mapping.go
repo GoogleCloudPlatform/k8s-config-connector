@@ -21,6 +21,45 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AwsPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.AwsPropertiesSpec) *pb.AwsProperties {
+	if in == nil {
+		return nil
+	}
+	if in.AccessRole == nil {
+		return nil
+	}
+	out := &pb.AwsProperties{}
+	out.AuthenticationMethod = &pb.AwsProperties_AccessRole{AccessRole: AwsAccessRoleSpec_ToProto(mapCtx, in.AccessRole)}
+	return out
+}
+
+func AwsPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.AwsProperties) *krm.AwsPropertiesSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsPropertiesSpec{}
+	out.AccessRole = AwsAccessRoleSpec_FromProto(mapCtx, in.GetAccessRole())
+	return out
+}
+
+func AwsAccessRoleSpec_ToProto(mapCtx *direct.MapContext, in *krm.AwsAccessRoleSpec) *pb.AwsAccessRole {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsAccessRole{}
+	out.IamRoleId = direct.ValueOf(in.IamRoleID)
+	return out
+}
+
+func AwsAccessRoleSpec_FromProto(mapCtx *direct.MapContext, in *pb.AwsAccessRole) *krm.AwsAccessRoleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsAccessRoleSpec{}
+	out.IamRoleID = direct.PtrTo(in.IamRoleId)
+	return out
+}
+
 func CloudResourcePropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudResourcePropertiesSpec) *pb.CloudResourceProperties {
 	if in == nil {
 		return nil
@@ -76,6 +115,10 @@ func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.Ma
 	out := &krm.BigQueryConnectionConnectionObservedState{}
 	out.FriendlyName = direct.LazyPtr(in.GetFriendlyName())
 	out.Description = direct.LazyPtr(in.GetDescription())
+
+	if oneof := AwsPropertiesStatus_FromProto(mapCtx, in.GetAws()); oneof != nil {
+		out.Aws = oneof
+	}
 	if oneof := CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource()); oneof != nil {
 		out.CloudResource = oneof
 	}
@@ -94,6 +137,10 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Name
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
+
+	if oneof := AwsPropertiesSpec_ToProto(mapCtx, in.AwsSpec); oneof != nil {
+		out.Properties = &pb.Connection_Aws{Aws: oneof}
+	}
 	if oneof := CloudResourcePropertiesSpec_ToProto(mapCtx, in.CloudResourceSpec); oneof != nil {
 		out.Properties = &pb.Connection_CloudResource{}
 	}
@@ -101,7 +148,6 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
 	}
 
-	// MISSING: Aws
 	// MISSING: Azure
 	// MISSING: CloudSpanner
 	// MISSING: Spark
