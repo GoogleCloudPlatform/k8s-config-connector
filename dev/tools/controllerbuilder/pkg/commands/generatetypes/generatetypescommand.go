@@ -129,27 +129,60 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	resourceProtoFullName := o.ServiceName + "." + o.ResourceProtoName
-	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, resourceProtoFullName)
-	if err := typeGenerator.VisitProto(api); err != nil {
+	resources, err := parseResourcesToGenerate(o.ResourceKindName, o.ResourceProtoName)
+	if err != nil {
 		return err
 	}
 
+	// generate types file
+	var protoFQNs []string
+	for _, r := range resources {
+		protoFQNs = append(protoFQNs, o.ServiceName+"."+r.protoName)
+	}
+	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, protoFQNs)
+	if err := typeGenerator.VisitProto(api); err != nil {
+		return err
+	}
 	addCopyright := true
 	if err := typeGenerator.WriteFiles(addCopyright); err != nil {
 		return err
 	}
 
-	kind := o.ResourceKindName
-	if !scaffolder.TypeFileNotExist(kind) {
-		fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
-	} else {
-		err := scaffolder.AddTypeFile(kind, o.ResourceProtoName)
-		if err != nil {
-			return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
+	// add type template files
+	for _, r := range resources {
+		kind := r.kind
+		if !scaffolder.TypeFileNotExist(kind) {
+			fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
+		} else {
+			err := scaffolder.AddTypeFile(kind, r.protoName)
+			if err != nil {
+				return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
+			}
 		}
 	}
 	return nil
+}
+
+// resource represents a resource to be generated
+type resource struct {
+	kind      string
+	protoName string
+}
+
+func parseResourcesToGenerate(kindNames, protoNames string) ([]resource, error) {
+	kinds := strings.Split(kindNames, ",")
+	protos := strings.Split(protoNames, ",")
+	if len(kinds) != len(protos) {
+		return nil, fmt.Errorf("unexpected number of Kind and ProtoName provided, got %d Kinds but %d Proto names", len(kinds), len(protos))
+	}
+	resources := make([]resource, len(kinds))
+	for i := range kinds {
+		resources[i] = resource{
+			kind:      strings.TrimSpace(kinds[i]),
+			protoName: strings.TrimSpace(protos[i]),
+		}
+	}
+	return resources, nil
 }
 
 func capitalizeFirstRune(s string) string {
