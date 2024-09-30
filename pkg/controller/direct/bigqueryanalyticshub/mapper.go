@@ -40,8 +40,8 @@ func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
 	out.Documentation = direct.LazyPtr(in.GetDocumentation())
-	s := string(in.GetIcon())
-	out.Icon = &s
+	// s := string(in.GetIcon())
+	// out.Icon = &s // not yet
 	// MISSING: SharingEnvironmentConfig // not yet
 	out.DiscoveryType = direct.Enum_FromProto(mapCtx, in.GetDiscoveryType())
 	return out
@@ -57,7 +57,7 @@ func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	out.Description = direct.ValueOf(in.Description)
 	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
 	out.Documentation = direct.ValueOf(in.Documentation)
-	out.Icon = []byte(direct.ValueOf(in.Icon))
+	// out.Icon = []byte(direct.ValueOf(in.Icon)) // not yet
 	// MISSING: SharingEnvironmentConfig // not yet
 	dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
 	out.DiscoveryType = &dtype

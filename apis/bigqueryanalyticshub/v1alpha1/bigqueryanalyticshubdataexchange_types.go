@@ -23,9 +23,6 @@ import (
 
 var BigQueryAnalyticsHubDataExchangeGVK = GroupVersion.WithKind("BigQueryAnalyticsHubDataExchange")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // BigQueryAnalyticsHubDataExchangeSpec defines the desired state of BigQueryAnalyticsHubDataExchange
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.DataExchange
 type BigQueryAnalyticsHubDataExchangeSpec struct {
@@ -53,12 +50,13 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 	// Optional. Documentation describing the data exchange.
 	Documentation *string `json:"documentation,omitempty"`
 
-	// Optional. Base64 encoded image representing the data exchange. Max
-	//  Size: 3.0MiB Expected image dimensions are 512x512 pixels, however the API
-	//  only performs validation on size of the encoded data. Note: For byte
-	//  fields, the content of the fields are base64-encoded (which increases the
-	//  size of the data by 33-36%) when using JSON on the wire.
-	Icon *string `json:"icon,omitempty"`
+	// TODO(KCC): NOT YET
+	// // Optional. Base64 encoded image representing the data exchange. Max
+	// //  Size: 3.0MiB Expected image dimensions are 512x512 pixels, however the API
+	// //  only performs validation on size of the encoded data. Note: For byte
+	// //  fields, the content of the fields are base64-encoded (which increases the
+	// //  size of the data by 33-36%) when using JSON on the wire.
+	// Icon *string `json:"icon,omitempty"`
 
 	// As of now SharingEnvironmentConfig is empty or output only so let's not include it as
 	// part of the spec yet.
@@ -109,6 +107,7 @@ type BigQueryAnalyticsHubDataExchangeObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshubdataexchange;gcpbigqueryanalyticshubdataexchanges
 // +kubebuilder:resource:categories=gcp
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/stability-level=alpha"

@@ -220,9 +220,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if !reflect.DeepEqual(a.desired.Spec.Documentation, a.actual.Documentation) {
 		updateMask.Paths = append(updateMask.Paths, "documentation")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.Icon, string(a.actual.Icon)) {
-		updateMask.Paths = append(updateMask.Paths, "icon")
-	}
+	// not yet
+	// if !reflect.DeepEqual(a.desired.Spec.Icon, string(a.actual.Icon)) {
+	// 	updateMask.Paths = append(updateMask.Paths, "icon")
+	// }
 	if !reflect.DeepEqual(a.desired.Spec.DiscoveryType, a.actual.DiscoveryType.String()) {
 		updateMask.Paths = append(updateMask.Paths, "discovery_type")
 	}

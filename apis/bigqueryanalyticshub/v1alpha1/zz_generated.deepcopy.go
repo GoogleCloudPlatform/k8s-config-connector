@@ -117,11 +117,6 @@ func (in *BigQueryAnalyticsHubDataExchangeSpec) DeepCopyInto(out *BigQueryAnalyt
 		*out = new(string)
 		**out = **in
 	}
-	if in.Icon != nil {
-		in, out := &in.Icon, &out.Icon
-		*out = new(string)
-		**out = **in
-	}
 	if in.DiscoveryType != nil {
 		in, out := &in.DiscoveryType, &out.DiscoveryType
 		*out = new(string)

@@ -82,14 +82,6 @@ spec:
               documentation:
                 description: Optional. Documentation describing the data exchange.
                 type: string
-              icon:
-                description: 'Optional. Base64 encoded image representing the data
-                  exchange. Max Size: 3.0MiB Expected image dimensions are 512x512
-                  pixels, however the API only performs validation on size of the
-                  encoded data. Note: For byte fields, the content of the fields are
-                  base64-encoded (which increases the size of the data by 33-36%)
-                  when using JSON on the wire.'
-                type: string
               location:
                 description: Immutable. The name of the location this data exchange.
                 type: string

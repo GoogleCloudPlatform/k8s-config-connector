@@ -52,10 +52,6 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 	// +optional
 	Documentation *string `json:"documentation,omitempty"`
 
-	/* Optional. Base64 encoded image representing the data exchange. Max Size: 3.0MiB Expected image dimensions are 512x512 pixels, however the API only performs validation on size of the encoded data. Note: For byte fields, the content of the fields are base64-encoded (which increases the size of the data by 33-36%) when using JSON on the wire. */
-	// +optional
-	Icon *string `json:"icon,omitempty"`
-
 	/* Immutable. The name of the location this data exchange. */
 	Location string `json:"location"`
 
