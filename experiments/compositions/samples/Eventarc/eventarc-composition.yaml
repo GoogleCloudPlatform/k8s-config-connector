@@ -102,8 +102,8 @@ spec:
       spec:
         destination:
           workflowRef:
-            external: "projects/{{ context.spec.project }}/locations/us-central1/workflows/{{eventarcconfigs.spec.workflowName}}"
-        location: us-central1
+            external: "projects/{{ context.spec.project }}/locations/{{eventarcconfigs.spec.location}}/workflows/{{eventarcconfigs.spec.workflowName}}"
+        location: {{eventarcconfigs.spec.location}}
         serviceAccountRef:
           name: eventarctrigger-iam-gsa
         transport:

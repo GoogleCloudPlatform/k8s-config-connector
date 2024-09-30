@@ -17,6 +17,18 @@ This repository provides a KCC Compositions approach to setting up an event-driv
 * **Service Account:** With IAM permissions to manage GCS buckets, Pub/Sub topics, Eventarc triggers, and Cloud Workflows.
 * **Cloud Workflow:** The workflow you want to trigger.
 
+**Why Getters and the Context API are Used**
+
+This configuration utilizes KCC's `GetterConfiguration` and `Context` API to improve resource management and streamline deployments.
+
+* **Getters (`GetterConfiguration`)**
+
+    Getters allow the composition to extract values from resources within the cluster. In this case, they ensure that the `StorageNotification` resource is created only after the GCS bucket and Pub/Sub topic are fully available, preventing dependency errors.
+
+* **Context API (`Context`)**
+
+    The Context API provides a way to define contextual information, such as the project ID, that can be accessed by the composition. This avoids redundant specification of the project ID for each resource and promotes centralized configuration management.
+
 **Deployment Steps**
 
 1. **Apply `sa.yaml`:** Creates the service account and grants it necessary permissions.
