@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "MYSQL_5_7",
+  "kind": "sql#instance",
   "name": "sqlinstance-master-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -46,6 +47,7 @@ User-Agent: kcc/controller-manager
     },
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -416,6 +418,7 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "MYSQL_5_7",
   "instanceType": "READ_REPLICA_INSTANCE",
+  "kind": "sql#instance",
   "masterInstanceName": "sqlinstance-master-direct-${uniqueId}",
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "region": "us-central1",
@@ -428,6 +431,7 @@ User-Agent: kcc/controller-manager
     "availabilityType": "ZONAL",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-b"

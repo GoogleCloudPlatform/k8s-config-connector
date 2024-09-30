@@ -169,7 +169,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 }
 
 func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCPCloneRequest(a.desired, a.refs)
+	desiredGCP, err := SQLInstanceCloneKRMToGCP(a.desired)
 	if err != nil {
 		return err
 	}
@@ -206,8 +206,8 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 
 	log.V(2).Info("instance cloned", "op", op, "instance", created)
 
-	status := &krm.SQLInstanceStatus{}
-	if err := Convert_SQLInstance_API_v1_To_KRM_status(created, status); err != nil {
+	status, err := SQLInstanceStatusGCPToKRM(created)
+	if err != nil {
 		return fmt.Errorf("updating SQLInstance status failed: %w", err)
 	}
 	return setStatus(u, status)
@@ -283,8 +283,8 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 
 	log.V(2).Info("instance created", "op", op, "instance", created)
 
-	status := &krm.SQLInstanceStatus{}
-	if err := Convert_SQLInstance_API_v1_To_KRM_status(created, status); err != nil {
+	status, err := SQLInstanceStatusGCPToKRM(created)
+	if err != nil {
 		return fmt.Errorf("updating SQLInstance status failed: %w", err)
 	}
 	return setStatus(u, status)
@@ -383,15 +383,18 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Finally, update rest of the fields
-	merged, diffDetected, err := MergeDesiredSQLInstanceWithActual(a.desired, a.refs, a.actual)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.refs)
 	if err != nil {
-		return fmt.Errorf("diffing SQLInstances failed: %w", err)
+		return err
 	}
 
-	if diffDetected {
-		op, err := a.sqlInstancesClient.Update(a.projectID, merged.Name, merged).Context(ctx).Do()
+	if !InstancesMatch(desiredGCP, a.actual) {
+		// GCP API requires we set the current settings version, otherwise update will fail.
+		desiredGCP.Settings.SettingsVersion = a.actual.Settings.SettingsVersion
+
+		op, err := a.sqlInstancesClient.Update(a.projectID, desiredGCP.Name, desiredGCP).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("updating SQLInstance %s failed: %w", merged.Name, err)
+			return fmt.Errorf("updating SQLInstance %s failed: %w", desiredGCP.Name, err)
 		}
 
 		pollingBackoff := gax.Backoff{
@@ -406,23 +409,23 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				break
 			}
 			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-				return fmt.Errorf("waiting for SQLInstance %s update failed: %w", merged.Name, err)
+				return fmt.Errorf("waiting for SQLInstance %s update failed: %w", desiredGCP.Name, err)
 			}
 			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
 			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s update operation %s failed: %w", merged.Name, op.Name, err)
+				return fmt.Errorf("getting SQLInstance %s update operation %s failed: %w", desiredGCP.Name, op.Name, err)
 			}
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", merged.Name, err)
+			return fmt.Errorf("getting SQLInstance %s failed: %w", desiredGCP.Name, err)
 		}
 
 		log.V(2).Info("instance updated", "op", op, "instance", updated)
 
-		status := &krm.SQLInstanceStatus{}
-		if err := Convert_SQLInstance_API_v1_To_KRM_status(updated, status); err != nil {
+		status, err := SQLInstanceStatusGCPToKRM(updated)
+		if err != nil {
 			return fmt.Errorf("updating SQLInstance status failed: %w", err)
 		}
 		return setStatus(u, status)

@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "MYSQL_5_7",
+  "kind": "sql#instance",
   "name": "sqlinstance-backupconfiguration-binarylog-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -54,6 +55,7 @@ User-Agent: kcc/controller-manager
     },
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -567,8 +569,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "MYSQL_5_7",
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "kind": "sql#instance",
   "name": "sqlinstance-backupconfiguration-binarylog-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -589,6 +590,7 @@ User-Agent: kcc/controller-manager
     },
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"

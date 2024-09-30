@@ -18,6 +18,7 @@ import (
 	"fmt"
 
 	api "google.golang.org/api/sqladmin/v1beta4"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
@@ -25,10 +26,8 @@ import (
 )
 
 func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*api.DatabaseInstance, error) {
-	out := &api.DatabaseInstance{}
-
 	if in == nil {
-		return nil, fmt.Errorf("cannot convert nil SQLInstance")
+		return nil, fmt.Errorf("cannot convert nil KRM SQLInstance to GCP DatabaseInstance")
 	}
 
 	if in.Spec.CloneSource != nil {
@@ -37,85 +36,49 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 		return nil, fmt.Errorf("cannot convert SQLInstance with CloneSource specified")
 	}
 
-	if in.Spec.DatabaseVersion != nil {
-		out.DatabaseVersion = *in.Spec.DatabaseVersion
-	}
-
-	if in.Spec.EncryptionKMSCryptoKeyRef != nil {
-		out.DiskEncryptionConfiguration = &api.DiskEncryptionConfiguration{
-			Kind:       "sql#diskEncryptionConfiguration",
-			KmsKeyName: refs.cryptoKey,
-		}
-	}
-
-	if in.Spec.InstanceType != nil {
-		out.InstanceType = *in.Spec.InstanceType
-	}
-
-	if in.Spec.MaintenanceVersion != nil {
-		out.MaintenanceVersion = *in.Spec.MaintenanceVersion
-	}
-
-	if in.Spec.MasterInstanceRef != nil {
-		out.MasterInstanceName = refs.masterInstance
-	}
-
-	if in.Spec.Region != nil {
-		out.Region = *in.Spec.Region
-	}
-
-	out.ReplicaConfiguration = InstanceReplicaConfigurationKRMToGCP(in.Spec.ReplicaConfiguration, refs)
-
-	if in.Spec.ResourceID != nil {
-		out.Name = *in.Spec.ResourceID
-	} else {
-		return nil, fmt.Errorf("resourceID is empty")
-	}
-
-	if in.Spec.RootPassword != nil && refs.rootPassword != "" {
-		out.RootPassword = refs.rootPassword
-	}
-
-	out.Settings = &api.Settings{}
-	out.Settings.ActivationPolicy = direct.ValueOf(in.Spec.Settings.ActivationPolicy)
-	out.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigKRMToGCP(in.Spec.Settings.ActiveDirectoryConfig)
-	out.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesKRMToGCP(in.Spec.Settings.AdvancedMachineFeatures)
-	out.Settings.AuthorizedGaeApplications = in.Spec.Settings.AuthorizedGaeApplications
-	out.Settings.AvailabilityType = direct.ValueOf(in.Spec.Settings.AvailabilityType)
-	out.Settings.BackupConfiguration = InstanceBackupConfigurationKRMToGCP(in.Spec.Settings.BackupConfiguration)
-	out.Settings.Collation = direct.ValueOf(in.Spec.Settings.Collation)
-	out.Settings.ConnectorEnforcement = direct.ValueOf(in.Spec.Settings.ConnectorEnforcement)
-	out.Settings.CrashSafeReplicationEnabled = direct.ValueOf(in.Spec.Settings.CrashSafeReplication)
-	out.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(in.Spec.Settings.DataCacheConfig)
-	out.Settings.DatabaseFlags = InstanceDatabaseFlagsKRMToGCP(in.Spec.Settings.DatabaseFlags)
-	out.Settings.DeletionProtectionEnabled = direct.ValueOf(in.Spec.Settings.DeletionProtectionEnabled)
-	out.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(in.Spec.Settings.DenyMaintenancePeriod)
-	out.Settings.StorageAutoResize = in.Spec.Settings.DiskAutoresize
-	out.Settings.StorageAutoResizeLimit = direct.ValueOf(in.Spec.Settings.DiskAutoresizeLimit)
-	out.Settings.DataDiskSizeGb = direct.ValueOf(in.Spec.Settings.DiskSize)
-	out.Settings.DataDiskType = direct.ValueOf(in.Spec.Settings.DiskType)
-	out.Settings.Edition = direct.ValueOf(in.Spec.Settings.Edition)
-	out.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(in.Spec.Settings.InsightsConfig)
-	out.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(in.Spec.Settings.IpConfiguration, refs)
-	out.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(in.Spec.Settings.LocationPreference)
-	out.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(in.Spec.Settings.MaintenanceWindow)
-	out.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyKRMToGCP(in.Spec.Settings.PasswordValidationPolicy)
-	out.Settings.PricingPlan = direct.ValueOf(in.Spec.Settings.PricingPlan)
-	out.Settings.ReplicationType = direct.ValueOf(in.Spec.Settings.ReplicationType)
-	out.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigKRMToGCP(in.Spec.Settings.SqlServerAuditConfig, refs)
-	out.Settings.Tier = in.Spec.Settings.Tier
-	out.Settings.TimeZone = direct.ValueOf(in.Spec.Settings.TimeZone)
-	out.Settings.UserLabels = in.Labels
-
-	// TODO: Move to InstanceSettingsKRMToGCP
-	if in.Spec.Settings.DeletionProtectionEnabled != nil {
-		out.Settings.ForceSendFields = append(out.ForceSendFields, "DeletionProtectionEnabled")
-	}
-	if in.Spec.Settings.DiskAutoresize != nil {
-		out.Settings.ForceSendFields = append(out.ForceSendFields, "StorageAutoResize")
+	out := &api.DatabaseInstance{
+		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
+		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef, refs),
+		// GeminiConfig is not supported in KRM API.
+		InstanceType:       direct.ValueOf(in.Spec.InstanceType),
+		Kind:               "sql#instance",
+		MaintenanceVersion: direct.ValueOf(in.Spec.MaintenanceVersion),
+		MasterInstanceName: InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef, refs),
+		// MaxDiskSize is not supported in KRM API.
+		Name: direct.ValueOf(in.Spec.ResourceID),
+		// OnPremisesConfiguration is not supported in KRM API.
+		Region:               direct.ValueOf(in.Spec.Region),
+		ReplicaConfiguration: InstanceReplicaConfigurationKRMToGCP(in.Spec.ReplicaConfiguration, refs),
+		// ReplicationCluster is not supported in KRM API.
+		RootPassword: refs.rootPassword,
+		Settings:     InstanceSettingsKRMToGCP(in.Spec.Settings, in.Labels, refs),
+		// SqlNetworkArchitecture is not supported in KRM API.
+		// SwitchTransactionLogsToCloudStorageEnabled is not supported in KRM API.
 	}
 
 	return out, nil
+}
+
+func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef, refs *SQLInstanceInternalRefs) *api.DiskEncryptionConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.DiskEncryptionConfiguration{
+		Kind:       "sql#diskEncryptionConfiguration",
+		KmsKeyName: refs.cryptoKey,
+	}
+
+	return out
+}
+
+func InstanceMasterInstanceRefKRMToGCP(in *refs.SQLInstanceRef, refs *SQLInstanceInternalRefs) string {
+	if in == nil {
+		return ""
+	}
+
+	// todo: embed refs in krm object external fields, remove this
+	return refs.masterInstance
 }
 
 func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, refs *SQLInstanceInternalRefs) *api.ReplicaConfiguration {
@@ -132,6 +95,60 @@ func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, 
 
 	if in.FailoverTarget != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "FailoverTarget")
+	}
+
+	return out
+}
+
+func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string, refs *SQLInstanceInternalRefs) *api.Settings {
+	out := &api.Settings{
+		ActivationPolicy:            direct.ValueOf(in.ActivationPolicy),
+		ActiveDirectoryConfig:       InstanceActiveDirectoryConfigKRMToGCP(in.ActiveDirectoryConfig),
+		AdvancedMachineFeatures:     InstanceAdvancedMachineFeaturesKRMToGCP(in.AdvancedMachineFeatures),
+		AuthorizedGaeApplications:   in.AuthorizedGaeApplications,
+		AvailabilityType:            direct.ValueOf(in.AvailabilityType),
+		BackupConfiguration:         InstanceBackupConfigurationKRMToGCP(in.BackupConfiguration),
+		Collation:                   direct.ValueOf(in.Collation),
+		ConnectorEnforcement:        direct.ValueOf(in.ConnectorEnforcement),
+		CrashSafeReplicationEnabled: direct.ValueOf(in.CrashSafeReplication),
+		DataCacheConfig:             InstanceDataCacheConfigKRMToGCP(in.DataCacheConfig),
+		DataDiskSizeGb:              direct.ValueOf(in.DiskSize),
+		DataDiskType:                direct.ValueOf(in.DiskType),
+		DatabaseFlags:               InstanceDatabaseFlagsKRMToGCP(in.DatabaseFlags),
+		// DatabaseReplicationEnabled is not supported in KRM API.
+		DeletionProtectionEnabled: direct.ValueOf(in.DeletionProtectionEnabled),
+		DenyMaintenancePeriods:    InstanceDenyMaintenancePeriodsKRMToGCP(in.DenyMaintenancePeriod),
+		Edition:                   direct.ValueOf(in.Edition),
+		// EnableDataplexIntegration is not supported in KRM API.
+		// EnableGoogleMlIntegration is not supported in KRM API.
+		InsightsConfig:           InstanceInsightsConfigKRMToGCP(in.InsightsConfig),
+		IpConfiguration:          InstanceIpConfigurationKRMToGCP(in.IpConfiguration, refs),
+		Kind:                     "sql#settings",
+		LocationPreference:       InstanceLocationPreferenceKRMToGCP(in.LocationPreference),
+		MaintenanceWindow:        InstanceMaintenanceWindowKRMToGCP(in.MaintenanceWindow),
+		PasswordValidationPolicy: InstancePasswordValidationPolicyKRMToGCP(in.PasswordValidationPolicy),
+		PricingPlan:              direct.ValueOf(in.PricingPlan),
+		ReplicationType:          direct.ValueOf(in.ReplicationType),
+		// SettingsVersion is omitted because it is not part of the "desired state".
+		SqlServerAuditConfig:   InstanceSqlServerAuditConfigKRMToGCP(in.SqlServerAuditConfig, refs),
+		StorageAutoResize:      in.DiskAutoresize,
+		StorageAutoResizeLimit: direct.ValueOf(in.DiskAutoresizeLimit),
+		Tier:                   in.Tier,
+		TimeZone:               direct.ValueOf(in.TimeZone),
+		UserLabels:             labels,
+	}
+
+	if in.CrashSafeReplication != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "CrashSafeReplicationEnabled")
+	}
+	if in.DeletionProtectionEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "DeletionProtectionEnabled")
+	}
+	if in.DiskAutoresize != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "StorageAutoResize")
+	}
+	if in.DiskAutoresizeLimit != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "StorageAutoResizeLimit")
 	}
 
 	return out
@@ -495,83 +512,173 @@ func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig, 
 	return out
 }
 
-func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
-	out := &krm.SQLInstance{}
-
+func SQLInstanceCloneKRMToGCP(in *krm.SQLInstance) (*api.InstancesCloneRequest, error) {
 	if in == nil {
-		return nil, fmt.Errorf("cannot convert nil DatabaseInstance")
+		return nil, fmt.Errorf("cannot convert nil KRM SQLInstance to GCP InstancesCloneRequest")
 	}
 
-	if in.DatabaseVersion != "" {
-		out.Spec.DatabaseVersion = &in.DatabaseVersion
+	if in.Spec.CloneSource == nil {
+		// If spec.cloneSource is not specified, it's invalid to convert krm.SQLInstance -> api.InstancesCloneRequest.
+		// Instead, the krm.SQLInstance should be converted to an api.DatabaseInstance.
+		return nil, fmt.Errorf("cannot convert SQLInstance without CloneSource specified")
 	}
 
-	if in.DiskEncryptionConfiguration != nil {
-		out.Spec.EncryptionKMSCryptoKeyRef = &refs.KMSCryptoKeyRef{
-			External: in.DiskEncryptionConfiguration.KmsKeyName,
-		}
-	}
-
-	if in.InstanceType != "" {
-		out.Spec.InstanceType = &in.InstanceType
-	}
-
-	if in.MaintenanceVersion != "" {
-		out.Spec.MaintenanceVersion = &in.MaintenanceVersion
-	}
-
-	if in.MasterInstanceName != "" {
-		out.Spec.MasterInstanceRef = &refs.SQLInstanceRef{
-			External: in.MasterInstanceName,
-		}
-	}
-
-	if in.Region != "" {
-		out.Spec.Region = &in.Region
-	}
-
-	out.Spec.ReplicaConfiguration = InstanceReplicaConfigurationGCPToKRM(in.ReplicaConfiguration)
-
-	out.Spec.ResourceID = &in.Name
-
-	out.Spec.RootPassword = &krm.InstanceRootPassword{
-		Value: &in.RootPassword,
-	}
-
-	out.Spec.Settings.ActivationPolicy = direct.LazyPtr(in.Settings.ActivationPolicy)
-	out.Spec.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigGCPToKRM(in.Settings.ActiveDirectoryConfig)
-	out.Spec.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesGCPToKRM(in.Settings.AdvancedMachineFeatures)
-	out.Spec.Settings.AuthorizedGaeApplications = in.Settings.AuthorizedGaeApplications
-	out.Spec.Settings.AvailabilityType = direct.LazyPtr(in.Settings.AvailabilityType)
-	out.Spec.Settings.BackupConfiguration = InstanceBackupConfigurationGCPToKRM(in.Settings.BackupConfiguration)
-	out.Spec.Settings.Collation = direct.LazyPtr(in.Settings.Collation)
-	out.Spec.Settings.ConnectorEnforcement = direct.LazyPtr(in.Settings.ConnectorEnforcement)
-	out.Spec.Settings.CrashSafeReplication = direct.LazyPtr(in.Settings.CrashSafeReplicationEnabled)
-	out.Spec.Settings.DataCacheConfig = InstanceDataCacheConfigGCPToKRM(in.Settings.DataCacheConfig)
-	out.Spec.Settings.DatabaseFlags = InstanceDatabaseFlagsGCPToKRM(in.Settings.DatabaseFlags)
-	out.Spec.Settings.DeletionProtectionEnabled = direct.PtrTo(in.Settings.DeletionProtectionEnabled)
-	out.Spec.Settings.DenyMaintenancePeriod = InstanceDenyMaintenancePeriodsGCPToKRM(in.Settings.DenyMaintenancePeriods)
-	out.Spec.Settings.DiskAutoresize = in.Settings.StorageAutoResize
-	out.Spec.Settings.DiskAutoresizeLimit = direct.LazyPtr(in.Settings.StorageAutoResizeLimit)
-	out.Spec.Settings.DiskSize = direct.LazyPtr(in.Settings.DataDiskSizeGb)
-	out.Spec.Settings.DiskType = direct.LazyPtr(in.Settings.DataDiskType)
-	out.Spec.Settings.Edition = direct.LazyPtr(in.Settings.Edition)
-	out.Spec.Settings.InsightsConfig = InstanceInsightsConfigGCPToKRM(in.Settings.InsightsConfig)
-	out.Spec.Settings.IpConfiguration = InstanceIpConfigurationGCPToKRM(in.Settings.IpConfiguration)
-	out.Spec.Settings.LocationPreference = InstanceLocationPreferenceGCPToKRM(in.Settings.LocationPreference)
-	out.Spec.Settings.MaintenanceWindow = InstanceMaintenanceWindowGCPToKRM(in.Settings.MaintenanceWindow)
-	out.Spec.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyGCPToKRM(in.Settings.PasswordValidationPolicy)
-	out.Spec.Settings.PricingPlan = direct.LazyPtr(in.Settings.PricingPlan)
-	out.Spec.Settings.ReplicationType = direct.LazyPtr(in.Settings.ReplicationType)
-	out.Spec.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigGCPToKRM(in.Settings.SqlServerAuditConfig)
-	out.Spec.Settings.Tier = in.Settings.Tier
-	out.Spec.Settings.TimeZone = direct.LazyPtr(in.Settings.TimeZone)
-
-	if in.Settings.UserLabels != nil {
-		out.Labels = in.Settings.UserLabels
+	out := &api.InstancesCloneRequest{
+		CloneContext: &api.CloneContext{
+			AllocatedIpRange:        CloneAllocatedIpRangeKRMToGCP(in),
+			BinLogCoordinates:       CloneBinLogCoordinatesKRMToGCP(in),
+			DatabaseNames:           in.Spec.CloneSource.DatabaseNames,
+			DestinationInstanceName: direct.ValueOf(in.Spec.ResourceID),
+			Kind:                    "sql#cloneContext",
+			PointInTime:             direct.ValueOf(in.Spec.CloneSource.PointInTime),
+			PreferredSecondaryZone:  ClonePreferredSecondaryZoneKRMToGCP(in),
+			PreferredZone:           ClonePreferredZoneKRMToGCP(in),
+		},
 	}
 
 	return out, nil
+}
+
+func CloneAllocatedIpRangeKRMToGCP(in *krm.SQLInstance) string {
+	if in.Spec.Settings.IpConfiguration == nil {
+		return ""
+	}
+
+	out := direct.ValueOf(in.Spec.Settings.IpConfiguration.AllocatedIpRange)
+
+	return out
+}
+
+func CloneBinLogCoordinatesKRMToGCP(in *krm.SQLInstance) *api.BinLogCoordinates {
+	if in.Spec.CloneSource.BinLogCoordinates == nil {
+		return nil
+	}
+
+	out := &api.BinLogCoordinates{
+		BinLogFileName: in.Spec.CloneSource.BinLogCoordinates.BinLogFileName,
+		BinLogPosition: in.Spec.CloneSource.BinLogCoordinates.BinLogPosition,
+	}
+
+	return out
+}
+
+func ClonePreferredZoneKRMToGCP(in *krm.SQLInstance) string {
+	if in.Spec.Settings.LocationPreference == nil {
+		return ""
+	}
+
+	out := direct.ValueOf(in.Spec.Settings.LocationPreference.Zone)
+
+	return out
+}
+
+func ClonePreferredSecondaryZoneKRMToGCP(in *krm.SQLInstance) string {
+	if in.Spec.Settings.LocationPreference == nil {
+		return ""
+	}
+
+	out := direct.ValueOf(in.Spec.Settings.LocationPreference.SecondaryZone)
+
+	return out
+}
+
+func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
+	if in == nil {
+		return nil, fmt.Errorf("cannot convert nil GCP DatabaseInstance to KRM SQLInstance")
+	}
+
+	out := &krm.SQLInstance{
+		ObjectMeta: metav1.ObjectMeta{
+			Labels: in.Settings.UserLabels,
+		},
+		Spec: krm.SQLInstanceSpec{
+			DatabaseVersion:           direct.LazyPtr(in.DatabaseVersion),
+			EncryptionKMSCryptoKeyRef: InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in.DiskEncryptionConfiguration),
+			// GeminiConfig is not supported in KRM API.
+			InstanceType:       direct.LazyPtr(in.InstanceType),
+			MaintenanceVersion: direct.LazyPtr(in.MaintenanceVersion),
+			MasterInstanceRef:  InstanceMasterInstanceRefGCPToKRM(in.MasterInstanceName),
+			// MaxDiskSize is not supported in KRM API.
+			ResourceID: direct.LazyPtr(in.Name),
+			// OnPremisesConfiguration is not supported in KRM API.
+			Region:               direct.LazyPtr(in.Region),
+			ReplicaConfiguration: InstanceReplicaConfigurationGCPToKRM(in.ReplicaConfiguration),
+			// ReplicationCluster is not supported in KRM API.
+			// RootPassword is not exported.
+			Settings: InstanceSettingsGCPToKRM(in.Settings),
+			// SqlNetworkArchitecture is not supported in KRM API.
+			// SwitchTransactionLogsToCloudStorageEnabled is not supported in KRM API.
+		},
+	}
+
+	return out, nil
+}
+
+func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfiguration) *refs.KMSCryptoKeyRef {
+	if in == nil {
+		return nil
+	}
+
+	out := &refs.KMSCryptoKeyRef{
+		External: in.KmsKeyName,
+	}
+
+	return out
+}
+
+func InstanceMasterInstanceRefGCPToKRM(in string) *refs.SQLInstanceRef {
+	if in == "" {
+		return nil
+	}
+
+	out := &refs.SQLInstanceRef{
+		External: in,
+	}
+
+	return out
+}
+
+func InstanceSettingsGCPToKRM(in *api.Settings) krm.InstanceSettings {
+	if in == nil {
+		return krm.InstanceSettings{}
+	}
+
+	out := krm.InstanceSettings{
+		ActivationPolicy:          direct.LazyPtr(in.ActivationPolicy),
+		ActiveDirectoryConfig:     InstanceActiveDirectoryConfigGCPToKRM(in.ActiveDirectoryConfig),
+		AdvancedMachineFeatures:   InstanceAdvancedMachineFeaturesGCPToKRM(in.AdvancedMachineFeatures),
+		AuthorizedGaeApplications: in.AuthorizedGaeApplications,
+		AvailabilityType:          direct.LazyPtr(in.AvailabilityType),
+		BackupConfiguration:       InstanceBackupConfigurationGCPToKRM(in.BackupConfiguration),
+		Collation:                 direct.LazyPtr(in.Collation),
+		ConnectorEnforcement:      direct.LazyPtr(in.ConnectorEnforcement),
+		CrashSafeReplication:      direct.PtrTo(in.CrashSafeReplicationEnabled),
+		DataCacheConfig:           InstanceDataCacheConfigGCPToKRM(in.DataCacheConfig),
+		DiskSize:                  direct.LazyPtr(in.DataDiskSizeGb),
+		DiskType:                  direct.LazyPtr(in.DataDiskType),
+		DatabaseFlags:             InstanceDatabaseFlagsGCPToKRM(in.DatabaseFlags),
+		// DatabaseReplicationEnabled is not supported in KRM API.
+		DeletionProtectionEnabled: direct.PtrTo(in.DeletionProtectionEnabled),
+		DenyMaintenancePeriod:     InstanceDenyMaintenancePeriodsGCPToKRM(in.DenyMaintenancePeriods),
+		Edition:                   direct.LazyPtr(in.Edition),
+		// EnableDataplexIntegration is not supported in KRM API.
+		// EnableGoogleMlIntegration is not supported in KRM API.
+		InsightsConfig:           InstanceInsightsConfigGCPToKRM(in.InsightsConfig),
+		IpConfiguration:          InstanceIpConfigurationGCPToKRM(in.IpConfiguration),
+		LocationPreference:       InstanceLocationPreferenceGCPToKRM(in.LocationPreference),
+		MaintenanceWindow:        InstanceMaintenanceWindowGCPToKRM(in.MaintenanceWindow),
+		PasswordValidationPolicy: InstancePasswordValidationPolicyGCPToKRM(in.PasswordValidationPolicy),
+		PricingPlan:              direct.LazyPtr(in.PricingPlan),
+		ReplicationType:          direct.LazyPtr(in.ReplicationType),
+		// SettingsVersion is omitted because it is not part of the "desired state".
+		SqlServerAuditConfig: InstanceSqlServerAuditConfigGCPToKRM(in.SqlServerAuditConfig),
+		DiskAutoresize:       in.StorageAutoResize,
+		DiskAutoresizeLimit:  direct.PtrTo(in.StorageAutoResizeLimit),
+		Tier:                 in.Tier,
+		TimeZone:             direct.LazyPtr(in.TimeZone),
+	}
+
+	return out
 }
 
 func InstanceReplicaConfigurationGCPToKRM(in *api.ReplicaConfiguration) *krm.InstanceReplicaConfiguration {
@@ -859,101 +966,95 @@ func InstanceSqlServerAuditConfigGCPToKRM(in *api.SqlServerAuditConfig) *krm.Ins
 	return out
 }
 
-func Convert_SQLInstance_API_v1_To_KRM_status(in *api.DatabaseInstance, out *krm.SQLInstanceStatus) error {
+func SQLInstanceStatusGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstanceStatus, error) {
 	if in == nil {
-		return fmt.Errorf("cannot convert nil DatabaseInstance")
+		return nil, fmt.Errorf("cannot convert nil DatabaseInstance")
 	}
 
-	if in.AvailableMaintenanceVersions != nil {
-		out.AvailableMaintenanceVersions = append(out.AvailableMaintenanceVersions, in.AvailableMaintenanceVersions...)
+	out := &krm.SQLInstanceStatus{
+		AvailableMaintenanceVersions: in.AvailableMaintenanceVersions,
+		ConnectionName:               direct.LazyPtr(in.ConnectionName),
+		DnsName:                      direct.LazyPtr(in.DnsName),
+		FirstIpAddress:               SQLInstanceFirstIpAddressGCPToKRM(in.IpAddresses),
+		InstanceType:                 direct.LazyPtr(in.InstanceType),
+		IpAddress:                    SQLInstanceIpAddressesGCPToKRM(in.IpAddresses),
+		PrivateIpAddress:             SQLInstancePrivateIpAddressGCPToKRM(in.IpAddresses),
+		PscServiceAttachmentLink:     direct.LazyPtr(in.PscServiceAttachmentLink),
+		PublicIpAddress:              SQLInstancePublicIpAddressGCPToKRM(in.IpAddresses),
+		SelfLink:                     direct.LazyPtr(in.SelfLink),
+		ServerCaCert:                 SQLInstanceServerCaCertGCPToKRM(in.ServerCaCert),
+		ServiceAccountEmailAddress:   direct.LazyPtr(in.ServiceAccountEmailAddress),
 	}
 
-	out.ConnectionName = LazyPtr(in.ConnectionName)
+	return out, nil
+}
 
-	out.DnsName = LazyPtr(in.DnsName)
-
-	if len(in.IpAddresses) >= 1 {
-		out.FirstIpAddress = LazyPtr(in.IpAddresses[0].IpAddress)
+func SQLInstanceFirstIpAddressGCPToKRM(in []*api.IpMapping) *string {
+	if len(in) == 0 {
+		return nil
 	}
 
-	out.InstanceType = LazyPtr(in.InstanceType)
+	return direct.LazyPtr(in[0].IpAddress)
+}
 
-	if in.IpAddresses != nil {
-		for _, ia := range in.IpAddresses {
-			ipAddr := krm.InstanceIpAddressStatus{
-				IpAddress:    LazyPtr(ia.IpAddress),
-				TimeToRetire: LazyPtr(ia.TimeToRetire),
-				Type:         LazyPtr(ia.Type),
-			}
-			out.IpAddress = append(out.IpAddress, ipAddr)
+func SQLInstanceIpAddressesGCPToKRM(in []*api.IpMapping) []krm.InstanceIpAddressStatus {
+	if in == nil {
+		return nil
+	}
 
-			if ia.Type == "PRIMARY" {
-				out.PublicIpAddress = LazyPtr(ia.IpAddress)
-			}
+	var out []krm.InstanceIpAddressStatus
+	for _, ia := range in {
+		ipAddr := krm.InstanceIpAddressStatus{
+			IpAddress:    direct.LazyPtr(ia.IpAddress),
+			TimeToRetire: direct.LazyPtr(ia.TimeToRetire),
+			Type:         direct.LazyPtr(ia.Type),
+		}
+		out = append(out, ipAddr)
+	}
 
-			if ia.Type == "PRIVATE" {
-				out.PrivateIpAddress = LazyPtr(ia.IpAddress)
-			}
+	return out
+}
+
+func SQLInstancePublicIpAddressGCPToKRM(in []*api.IpMapping) *string {
+	if in == nil {
+		return nil
+	}
+
+	for _, ia := range in {
+		if ia.Type == "PRIMARY" {
+			return direct.LazyPtr(ia.IpAddress)
 		}
 	}
-
-	out.PscServiceAttachmentLink = LazyPtr(in.PscServiceAttachmentLink)
-
-	out.SelfLink = LazyPtr(in.SelfLink)
-
-	if in.ServerCaCert != nil {
-		out.ServerCaCert = &krm.InstanceServerCaCertStatus{
-			Cert:            LazyPtr(in.ServerCaCert.Cert),
-			CommonName:      LazyPtr(in.ServerCaCert.CommonName),
-			CreateTime:      LazyPtr(in.ServerCaCert.CreateTime),
-			ExpirationTime:  LazyPtr(in.ServerCaCert.ExpirationTime),
-			Sha1Fingerprint: LazyPtr(in.ServerCaCert.Sha1Fingerprint),
-		}
-	}
-
-	out.ServiceAccountEmailAddress = LazyPtr(in.ServiceAccountEmailAddress)
 
 	return nil
 }
 
-func SQLInstanceKRMToGCPCloneRequest(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*api.InstancesCloneRequest, error) {
+func SQLInstancePrivateIpAddressGCPToKRM(in []*api.IpMapping) *string {
 	if in == nil {
-		return nil, fmt.Errorf("cannot convert nil SQLInstance")
+		return nil
 	}
 
-	if in.Spec.CloneSource == nil {
-		// spec.cloneSource is required for converting KRM.SQLInstance -> api.InstancesCloneRequest.
-		return nil, fmt.Errorf("cannot convert nil CloneSource")
-	}
-
-	cloneReq := &api.InstancesCloneRequest{
-		CloneContext: &api.CloneContext{
-			DatabaseNames: in.Spec.CloneSource.DatabaseNames,
-			Kind:          "sql#cloneContext",
-			PointInTime:   direct.ValueOf(in.Spec.CloneSource.PointInTime),
-		},
-	}
-
-	resourceID := ValueOf(in.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = in.Name
-	}
-	cloneReq.CloneContext.DestinationInstanceName = resourceID
-
-	if in.Spec.Settings.IpConfiguration != nil {
-		cloneReq.CloneContext.AllocatedIpRange = ValueOf(in.Spec.Settings.IpConfiguration.AllocatedIpRange)
-	}
-
-	if in.Spec.CloneSource.BinLogCoordinates != nil {
-		cloneReq.CloneContext.BinLogCoordinates = &api.BinLogCoordinates{
-			BinLogFileName: in.Spec.CloneSource.BinLogCoordinates.BinLogFileName,
-			BinLogPosition: in.Spec.CloneSource.BinLogCoordinates.BinLogPosition,
+	for _, ia := range in {
+		if ia.Type == "PRIVATE" {
+			return direct.LazyPtr(ia.IpAddress)
 		}
 	}
 
-	if in.Spec.Settings.LocationPreference != nil {
-		cloneReq.CloneContext.PreferredZone = ValueOf(in.Spec.Settings.LocationPreference.Zone)
+	return nil
+}
+
+func SQLInstanceServerCaCertGCPToKRM(in *api.SslCert) *krm.InstanceServerCaCertStatus {
+	if in == nil {
+		return nil
 	}
 
-	return cloneReq, nil
+	out := &krm.InstanceServerCaCertStatus{
+		Cert:            direct.LazyPtr(in.Cert),
+		CommonName:      direct.LazyPtr(in.CommonName),
+		CreateTime:      direct.LazyPtr(in.CreateTime),
+		ExpirationTime:  direct.LazyPtr(in.ExpirationTime),
+		Sha1Fingerprint: direct.LazyPtr(in.Sha1Fingerprint),
+	}
+
+	return out
 }
