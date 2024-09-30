@@ -24,20 +24,21 @@ import (
 )
 
 func NormalizeWorkstationCluster(ctx context.Context, kube client.Reader, obj *krm.WorkstationCluster) error {
-	if obj.Spec.NetworkRef != nil {
-		network, err := refs.ResolveComputeNetwork(ctx, kube, obj, obj.Spec.NetworkRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.NetworkRef.External = network.String()
+	// Resolve network.
+	network, err := refs.ResolveComputeNetwork(ctx, kube, obj, &obj.Spec.NetworkRef)
+	if err != nil {
+		return err
 	}
-	if obj.Spec.SubnetworkRef != nil {
-		subnet, err := refs.ResolveComputeSubnetwork(ctx, kube, obj, obj.Spec.SubnetworkRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.SubnetworkRef.External = subnet.External
+	obj.Spec.NetworkRef.External = network.String()
+
+	// Resolve subnetwork.
+	subnet, err := refs.ResolveComputeSubnetwork(ctx, kube, obj, &obj.Spec.SubnetworkRef)
+	if err != nil {
+		return err
 	}
+	obj.Spec.SubnetworkRef.External = subnet.External
+
+	// Resolve projects (in private cluster config).
 	if obj.Spec.PrivateClusterConfig != nil && obj.Spec.PrivateClusterConfig.AllowedProjects != nil {
 		var resolvedProjects []refs.ProjectRef
 		for _, projectRef := range obj.Spec.PrivateClusterConfig.AllowedProjects {
