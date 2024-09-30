@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*api.DatabaseInstance, error) {
+func SQLInstanceKRMToGCP(in *krm.SQLInstance) (*api.DatabaseInstance, error) {
 	if in == nil {
 		return nil, fmt.Errorf("cannot convert nil KRM SQLInstance to GCP DatabaseInstance")
 	}
@@ -38,20 +38,20 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 
 	out := &api.DatabaseInstance{
 		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
-		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef, refs),
+		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
 		// GeminiConfig is not supported in KRM API.
 		InstanceType:       direct.ValueOf(in.Spec.InstanceType),
 		Kind:               "sql#instance",
 		MaintenanceVersion: direct.ValueOf(in.Spec.MaintenanceVersion),
-		MasterInstanceName: InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef, refs),
+		MasterInstanceName: InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef),
 		// MaxDiskSize is not supported in KRM API.
 		Name: direct.ValueOf(in.Spec.ResourceID),
 		// OnPremisesConfiguration is not supported in KRM API.
 		Region:               direct.ValueOf(in.Spec.Region),
-		ReplicaConfiguration: InstanceReplicaConfigurationKRMToGCP(in.Spec.ReplicaConfiguration, refs),
+		ReplicaConfiguration: InstanceReplicaConfigurationKRMToGCP(in.Spec.ReplicaConfiguration),
 		// ReplicationCluster is not supported in KRM API.
-		RootPassword: refs.rootPassword,
-		Settings:     InstanceSettingsKRMToGCP(in.Spec.Settings, in.Labels, refs),
+		RootPassword: InstanceRootPasswordKRMToGCP(in.Spec.RootPassword),
+		Settings:     InstanceSettingsKRMToGCP(in.Spec.Settings, in.Labels),
 		// SqlNetworkArchitecture is not supported in KRM API.
 		// SwitchTransactionLogsToCloudStorageEnabled is not supported in KRM API.
 	}
@@ -59,29 +59,30 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	return out, nil
 }
 
-func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef, refs *SQLInstanceInternalRefs) *api.DiskEncryptionConfiguration {
+func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef) *api.DiskEncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
 
 	out := &api.DiskEncryptionConfiguration{
 		Kind:       "sql#diskEncryptionConfiguration",
-		KmsKeyName: refs.cryptoKey,
+		KmsKeyName: in.External,
 	}
 
 	return out
 }
 
-func InstanceMasterInstanceRefKRMToGCP(in *refs.SQLInstanceRef, refs *SQLInstanceInternalRefs) string {
+func InstanceMasterInstanceRefKRMToGCP(in *refs.SQLInstanceRef) string {
 	if in == nil {
 		return ""
 	}
 
-	// todo: embed refs in krm object external fields, remove this
-	return refs.masterInstance
+	out := in.External
+
+	return out
 }
 
-func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, refs *SQLInstanceInternalRefs) *api.ReplicaConfiguration {
+func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration) *api.ReplicaConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -90,7 +91,7 @@ func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, 
 		Kind: "sql#replicaConfiguration",
 		// CascadableReplica is not supported in KRM API.
 		FailoverTarget:            direct.ValueOf(in.FailoverTarget),
-		MysqlReplicaConfiguration: InstanceMysqlReplicaConfigurationKRMToGCP(in, refs),
+		MysqlReplicaConfiguration: InstanceMysqlReplicaConfigurationKRMToGCP(in),
 	}
 
 	if in.FailoverTarget != nil {
@@ -100,7 +101,17 @@ func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, 
 	return out
 }
 
-func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string, refs *SQLInstanceInternalRefs) *api.Settings {
+func InstanceRootPasswordKRMToGCP(in *krm.InstanceRootPassword) string {
+	if in == nil {
+		return ""
+	}
+
+	out := direct.ValueOf(in.Value)
+
+	return out
+}
+
+func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string) *api.Settings {
 	out := &api.Settings{
 		ActivationPolicy:            direct.ValueOf(in.ActivationPolicy),
 		ActiveDirectoryConfig:       InstanceActiveDirectoryConfigKRMToGCP(in.ActiveDirectoryConfig),
@@ -122,7 +133,7 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string,
 		// EnableDataplexIntegration is not supported in KRM API.
 		// EnableGoogleMlIntegration is not supported in KRM API.
 		InsightsConfig:           InstanceInsightsConfigKRMToGCP(in.InsightsConfig),
-		IpConfiguration:          InstanceIpConfigurationKRMToGCP(in.IpConfiguration, refs),
+		IpConfiguration:          InstanceIpConfigurationKRMToGCP(in.IpConfiguration),
 		Kind:                     "sql#settings",
 		LocationPreference:       InstanceLocationPreferenceKRMToGCP(in.LocationPreference),
 		MaintenanceWindow:        InstanceMaintenanceWindowKRMToGCP(in.MaintenanceWindow),
@@ -130,7 +141,7 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string,
 		PricingPlan:              direct.ValueOf(in.PricingPlan),
 		ReplicationType:          direct.ValueOf(in.ReplicationType),
 		// SettingsVersion is omitted because it is not part of the "desired state".
-		SqlServerAuditConfig:   InstanceSqlServerAuditConfigKRMToGCP(in.SqlServerAuditConfig, refs),
+		SqlServerAuditConfig:   InstanceSqlServerAuditConfigKRMToGCP(in.SqlServerAuditConfig),
 		StorageAutoResize:      in.DiskAutoresize,
 		StorageAutoResizeLimit: direct.ValueOf(in.DiskAutoresizeLimit),
 		Tier:                   in.Tier,
@@ -154,7 +165,7 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string,
 	return out
 }
 
-func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration, refs *SQLInstanceInternalRefs) *api.MySqlReplicaConfiguration {
+func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration) *api.MySqlReplicaConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -183,14 +194,10 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 		ConnectRetryInterval:    direct.ValueOf(in.ConnectRetryInterval),
 		DumpFilePath:            direct.ValueOf(in.DumpFilePath),
 		MasterHeartbeatPeriod:   direct.ValueOf(in.MasterHeartbeatPeriod),
+		Password:                InstancePasswordKRMToGCP(in.Password),
 		SslCipher:               direct.ValueOf(in.SslCipher),
 		Username:                direct.ValueOf(in.Username),
 		VerifyServerCertificate: direct.ValueOf(in.VerifyServerCertificate),
-	}
-
-	// todo: embed refs in krm object external fields, remove this
-	if in.Password != nil {
-		out.Password = refs.replicaPassword
 	}
 
 	if in.ConnectRetryInterval != nil {
@@ -202,6 +209,16 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 	if in.VerifyServerCertificate != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
 	}
+
+	return out
+}
+
+func InstancePasswordKRMToGCP(in *krm.InstancePassword) string {
+	if in == nil {
+		return ""
+	}
+
+	out := direct.ValueOf(in.Value)
 
 	return out
 }
@@ -360,7 +377,7 @@ func InstanceInsightsConfigKRMToGCP(in *krm.InstanceInsightsConfig) *api.Insight
 	return out
 }
 
-func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration, refs *SQLInstanceInternalRefs) *api.IpConfiguration {
+func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration) *api.IpConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -370,14 +387,10 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration, refs *SQLI
 		AuthorizedNetworks:                      InstanceAuthorizedNetworksKRMToGCP(in.AuthorizedNetworks),
 		EnablePrivatePathForGoogleCloudServices: direct.ValueOf(in.EnablePrivatePathForGoogleCloudServices),
 		Ipv4Enabled:                             direct.ValueOf(in.Ipv4Enabled),
+		PrivateNetwork:                          InstancePrivateNetworkRefKRMToGCP(in.PrivateNetworkRef),
 		PscConfig:                               InstancePscConfigKRMToGCP(in.PscConfig),
 		RequireSsl:                              direct.ValueOf(in.RequireSsl),
 		SslMode:                                 direct.ValueOf(in.SslMode),
-	}
-
-	// todo: embed refs in krm object external fields, remove this
-	if in.PrivateNetworkRef != nil {
-		out.PrivateNetwork = refs.privateNetwork
 	}
 
 	if in.EnablePrivatePathForGoogleCloudServices != nil {
@@ -403,6 +416,16 @@ func InstanceAuthorizedNetworksKRMToGCP(in []krm.InstanceAuthorizedNetworks) []*
 			Value:          net.Value,
 		})
 	}
+	return out
+}
+
+func InstancePrivateNetworkRefKRMToGCP(in *refs.ComputeNetworkRef) string {
+	if in == nil {
+		return ""
+	}
+
+	out := in.External
+
 	return out
 }
 
@@ -493,21 +516,27 @@ func InstancePasswordValidationPolicyKRMToGCP(in *krm.InstancePasswordValidation
 	return out
 }
 
-func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig, refs *SQLInstanceInternalRefs) *api.SqlServerAuditConfig {
+func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig) *api.SqlServerAuditConfig {
 	if in == nil {
 		return nil
 	}
 
 	out := &api.SqlServerAuditConfig{
+		Bucket:            InstanceAuditConfigBucketRefKRMToGCP(in.BucketRef),
 		Kind:              "sql#sqlServerAuditConfig",
 		RetentionInterval: direct.ValueOf(in.RetentionInterval),
 		UploadInterval:    direct.ValueOf(in.UploadInterval),
 	}
 
-	// todo: embed refs in krm object external fields, remove this
-	if in.BucketRef != nil {
-		out.Bucket = refs.auditLogBucket
+	return out
+}
+
+func InstanceAuditConfigBucketRefKRMToGCP(in *refs.StorageBucketRef) string {
+	if in == nil {
+		return ""
 	}
+
+	out := in.External
 
 	return out
 }
@@ -700,14 +729,14 @@ func InstanceReplicaConfigurationGCPToKRM(in *api.ReplicaConfiguration) *krm.Ins
 	}
 
 	out := &krm.InstanceReplicaConfiguration{
-		CaCertificate:           mrc.CaCertificate,
-		ClientCertificate:       mrc.ClientCertificate,
-		ClientKey:               mrc.ClientKey,
-		ConnectRetryInterval:    mrc.ConnectRetryInterval,
-		DumpFilePath:            mrc.DumpFilePath,
-		FailoverTarget:          irc.FailoverTarget,
-		MasterHeartbeatPeriod:   mrc.MasterHeartbeatPeriod,
-		Password:                mrc.Password,
+		CaCertificate:         mrc.CaCertificate,
+		ClientCertificate:     mrc.ClientCertificate,
+		ClientKey:             mrc.ClientKey,
+		ConnectRetryInterval:  mrc.ConnectRetryInterval,
+		DumpFilePath:          mrc.DumpFilePath,
+		FailoverTarget:        irc.FailoverTarget,
+		MasterHeartbeatPeriod: mrc.MasterHeartbeatPeriod,
+		// Password is not exported.
 		SslCipher:               mrc.SslCipher,
 		Username:                mrc.Username,
 		VerifyServerCertificate: mrc.VerifyServerCertificate,
@@ -722,18 +751,17 @@ func InstanceMysqlReplicaConfigurationGCPToKRM(in *api.MySqlReplicaConfiguration
 	}
 
 	out := &krm.InstanceReplicaConfiguration{
-		CaCertificate:           direct.LazyPtr(in.CaCertificate),
-		ClientCertificate:       direct.LazyPtr(in.ClientCertificate),
-		ClientKey:               direct.LazyPtr(in.ClientKey),
-		ConnectRetryInterval:    direct.PtrTo(in.ConnectRetryInterval),
-		DumpFilePath:            direct.LazyPtr(in.DumpFilePath),
-		MasterHeartbeatPeriod:   direct.PtrTo(in.MasterHeartbeatPeriod),
+		CaCertificate:         direct.LazyPtr(in.CaCertificate),
+		ClientCertificate:     direct.LazyPtr(in.ClientCertificate),
+		ClientKey:             direct.LazyPtr(in.ClientKey),
+		ConnectRetryInterval:  direct.PtrTo(in.ConnectRetryInterval),
+		DumpFilePath:          direct.LazyPtr(in.DumpFilePath),
+		MasterHeartbeatPeriod: direct.PtrTo(in.MasterHeartbeatPeriod),
+		// Password is not exported.
 		SslCipher:               direct.LazyPtr(in.SslCipher),
 		Username:                direct.LazyPtr(in.Username),
 		VerifyServerCertificate: direct.PtrTo(in.VerifyServerCertificate),
 	}
-
-	// Note: Password is not exported.
 
 	return out
 }
@@ -860,15 +888,10 @@ func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpCon
 		AuthorizedNetworks:                      InstanceAuthorizedNetworksGCPToKRM(in.AuthorizedNetworks),
 		EnablePrivatePathForGoogleCloudServices: direct.PtrTo(in.EnablePrivatePathForGoogleCloudServices),
 		Ipv4Enabled:                             direct.PtrTo(in.Ipv4Enabled),
+		PrivateNetworkRef:                       InstancePrivateNetworkRefRefGCPToKRM(in.PrivateNetwork),
 		PscConfig:                               InstancePscConfigGCPToKRM(in.PscConfig),
 		RequireSsl:                              direct.PtrTo(in.RequireSsl),
 		SslMode:                                 direct.LazyPtr(in.SslMode),
-	}
-
-	if in.PrivateNetwork != "" {
-		out.PrivateNetworkRef = &refs.ComputeNetworkRef{
-			External: in.PrivateNetwork,
-		}
 	}
 
 	return out
@@ -896,6 +919,18 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 			AllowedConsumerProjects: in.AllowedConsumerProjects,
 			PscEnabled:              direct.PtrTo(in.PscEnabled),
 		},
+	}
+
+	return out
+}
+
+func InstancePrivateNetworkRefRefGCPToKRM(in string) *refs.ComputeNetworkRef {
+	if in == "" {
+		return nil
+	}
+
+	out := &refs.ComputeNetworkRef{
+		External: in,
 	}
 
 	return out
@@ -953,14 +988,21 @@ func InstanceSqlServerAuditConfigGCPToKRM(in *api.SqlServerAuditConfig) *krm.Ins
 	}
 
 	out := &krm.InstanceSqlServerAuditConfig{
+		BucketRef:         InstanceAuditConfigBucketRefGCPToKRM(in.Bucket),
 		RetentionInterval: direct.LazyPtr(in.RetentionInterval),
 		UploadInterval:    direct.LazyPtr(in.UploadInterval),
 	}
 
-	if in.Bucket != "" {
-		out.BucketRef = &refs.StorageBucketRef{
-			External: in.Bucket,
-		}
+	return out
+}
+
+func InstanceAuditConfigBucketRefGCPToKRM(in string) *refs.StorageBucketRef {
+	if in == "" {
+		return nil
+	}
+
+	out := &refs.StorageBucketRef{
+		External: in,
 	}
 
 	return out

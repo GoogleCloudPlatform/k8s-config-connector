@@ -77,7 +77,6 @@ type sqlInstanceAdapter struct {
 	resourceID string
 
 	desired *krm.SQLInstance
-	refs    *SQLInstanceInternalRefs
 	actual  *api.DatabaseInstance
 
 	sqlOperationsClient *api.OperationsService
@@ -109,8 +108,7 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
-	refs, err := NormalizeSQLInstance(ctx, kube, obj)
-	if err != nil {
+	if err := NormalizeSQLInstance(ctx, kube, obj); err != nil {
 		return nil, err
 	}
 
@@ -118,7 +116,6 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		projectID:           projectID,
 		resourceID:          resourceID,
 		desired:             obj.DeepCopy(),
-		refs:                refs,
 		sqlOperationsClient: gcpClient.sqlOperationsClient(),
 		sqlInstancesClient:  gcpClient.sqlInstancesClient(),
 		sqlUsersClient:      gcpClient.sqlUsersClient(),
@@ -174,7 +171,8 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 		return err
 	}
 
-	op, err := a.sqlInstancesClient.Clone(a.projectID, a.refs.sourceSQLInstance, desiredGCP).Context(ctx).Do()
+	sourceInstance := a.desired.Spec.CloneSource.SQLInstanceRef.External
+	op, err := a.sqlInstancesClient.Clone(a.projectID, sourceInstance, desiredGCP).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("cloning SQLInstance %s failed: %w", a.desired.Name, err)
 	}
@@ -214,7 +212,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 }
 
 func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.refs)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired)
 	if err != nil {
 		return err
 	}
@@ -383,7 +381,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Finally, update rest of the fields
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.refs)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired)
 	if err != nil {
 		return err
 	}
