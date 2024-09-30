@@ -64,11 +64,11 @@ type WorkstationclusterAnnotations struct {
 }
 
 type WorkstationclusterLabels struct {
-	/* Key for the annotation. */
+	/* Key for the label. */
 	// +optional
 	Key *string `json:"key,omitempty"`
 
-	/* Value for the annotation. */
+	/* Value for the label. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
