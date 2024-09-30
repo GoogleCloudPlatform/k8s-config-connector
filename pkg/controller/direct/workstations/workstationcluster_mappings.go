@@ -38,7 +38,7 @@ func WorkstationClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstati
 	return out
 }
 
-func WorkstationClusterAnnotations_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationClusterAnnotation) map[string]string {
+func WorkstationClusterAnnotations_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationAnnotation) map[string]string {
 	if in == nil {
 		return nil
 	}
@@ -49,7 +49,7 @@ func WorkstationClusterAnnotations_ToProto(mapCtx *direct.MapContext, in []krm.W
 	return out
 }
 
-func WorkstationClusterLabels_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationClusterLabel) map[string]string {
+func WorkstationClusterLabels_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationLabel) map[string]string {
 	if in == nil {
 		return nil
 	}
@@ -111,13 +111,13 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 	return out
 }
 
-func WorkstationClusterAnnotations_FromProto(mapCtx *direct.MapContext, in map[string]string) []krm.WorkstationClusterAnnotation {
+func WorkstationClusterAnnotations_FromProto(mapCtx *direct.MapContext, in map[string]string) []krm.WorkstationAnnotation {
 	if in == nil {
 		return nil
 	}
-	var out []krm.WorkstationClusterAnnotation
+	var out []krm.WorkstationAnnotation
 	for k, v := range in {
-		out = append(out, krm.WorkstationClusterAnnotation{
+		out = append(out, krm.WorkstationAnnotation{
 			Key:   k,
 			Value: v,
 		})
@@ -125,13 +125,13 @@ func WorkstationClusterAnnotations_FromProto(mapCtx *direct.MapContext, in map[s
 	return out
 }
 
-func WorkstationClusterLabels_FromProto(mapCtx *direct.MapContext, in map[string]string) []krm.WorkstationClusterLabel {
+func WorkstationClusterLabels_FromProto(mapCtx *direct.MapContext, in map[string]string) []krm.WorkstationLabel {
 	if in == nil {
 		return nil
 	}
-	var out []krm.WorkstationClusterLabel
+	var out []krm.WorkstationLabel
 	for k, v := range in {
-		out = append(out, krm.WorkstationClusterLabel{
+		out = append(out, krm.WorkstationLabel{
 			Key:   k,
 			Value: v,
 		})
@@ -187,7 +187,6 @@ func WorkstationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.WorkstationClusterObservedState{
 		Uid:                  direct.LazyPtr(in.GetUid()),
-		Reconciling:          direct.LazyPtr(in.GetReconciling()),
 		CreateTime:           direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime()),
 		UpdateTime:           direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime()),
 		DeleteTime:           direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime()),
@@ -215,13 +214,13 @@ func WorkstationClusterServiceAttachmentUri_FromProto(mapCtx *direct.MapContext,
 	return direct.LazyPtr(in.GetServiceAttachmentUri())
 }
 
-func WorkstationClusterGCPConditions_FromProto(mapCtx *direct.MapContext, in []*status.Status) []krm.WorkstationClusterGCPCondition {
+func WorkstationClusterGCPConditions_FromProto(mapCtx *direct.MapContext, in []*status.Status) []krm.WorkstationServiceGCPCondition {
 	if in == nil {
 		return nil
 	}
-	var out []krm.WorkstationClusterGCPCondition
+	var out []krm.WorkstationServiceGCPCondition
 	for _, c := range in {
-		out = append(out, krm.WorkstationClusterGCPCondition{
+		out = append(out, krm.WorkstationServiceGCPCondition{
 			Code:    direct.LazyPtr(int(c.Code)),
 			Message: direct.LazyPtr(c.Message),
 		})

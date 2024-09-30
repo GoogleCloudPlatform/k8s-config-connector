@@ -78,10 +78,10 @@ spec:
                 items:
                   properties:
                     key:
-                      description: Key for the annotation.
+                      description: Key for the label.
                       type: string
                     value:
-                      description: Value for the annotation.
+                      description: Value for the label.
                       type: string
                   type: object
                 type: array
@@ -337,10 +337,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  reconciling:
-                    description: Output only. Indicates whether this workstation cluster
-                      is currently being updated to match its intended state.
-                    type: boolean
                   serviceAttachmentUri:
                     description: Output only. Service attachment URI for the workstation
                       cluster. The service attachment is created when private endpoint

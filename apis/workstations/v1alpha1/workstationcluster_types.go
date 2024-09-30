@@ -46,13 +46,13 @@ type WorkstationClusterSpec struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Optional. Client-specified annotations.
-	Annotations []WorkstationClusterAnnotation `json:"annotations,omitempty"`
+	Annotations []WorkstationAnnotation `json:"annotations,omitempty"`
 
 	// Optional.
 	//  [Labels](https://cloud.google.com/workstations/docs/label-resources) that
 	//  are applied to the workstation cluster and that are also propagated to the
 	//  underlying Compute Engine resources.
-	Labels []WorkstationClusterLabel `json:"labels,omitempty"`
+	Labels []WorkstationLabel `json:"labels,omitempty"`
 
 	// Immutable. Reference to the Compute Engine network in which instances associated
 	//  with this workstation cluster will be created.
@@ -65,22 +65,6 @@ type WorkstationClusterSpec struct {
 
 	// Optional. Configuration for private workstation cluster.
 	PrivateClusterConfig *WorkstationCluster_PrivateClusterConfig `json:"privateClusterConfig,omitempty"`
-}
-
-type WorkstationClusterAnnotation struct {
-	// Key for the annotation.
-	Key string `json:"key,omitempty"`
-
-	// Value for the annotation.
-	Value string `json:"value,omitempty"`
-}
-
-type WorkstationClusterLabel struct {
-	// Key for the annotation.
-	Key string `json:"key,omitempty"`
-
-	// Value for the annotation.
-	Value string `json:"value,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationCluster.PrivateClusterConfig
@@ -116,10 +100,6 @@ type WorkstationClusterObservedState struct {
 	// Output only. A system-assigned unique identifier for this workstation
 	//  cluster.
 	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Indicates whether this workstation cluster is currently being
-	//  updated to match its intended state.
-	Reconciling *bool `json:"reconciling,omitempty"`
 
 	// Output only. Time when this workstation cluster was created.
 	CreateTime *string `json:"createTime,omitempty"`
@@ -163,20 +143,7 @@ type WorkstationClusterObservedState struct {
 
 	// Output only. Status conditions describing the workstation cluster's current
 	//  state.
-	GCPConditions []WorkstationClusterGCPCondition `json:"gcpConditions,omitempty"`
-}
-
-// +kcc:proto=google.rpc.Status
-type WorkstationClusterGCPCondition struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	Code *int `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	Message *string `json:"message,omitempty"`
+	GCPConditions []WorkstationServiceGCPCondition `json:"gcpConditions,omitempty"`
 }
 
 // +genclient
