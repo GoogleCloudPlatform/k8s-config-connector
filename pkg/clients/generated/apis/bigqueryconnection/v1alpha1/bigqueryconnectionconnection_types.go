@@ -47,6 +47,15 @@ type ConnectionAws struct {
 	AccessRole *ConnectionAccessRole `json:"accessRole,omitempty"`
 }
 
+type ConnectionAzure struct {
+	/* The id of customer's directory that host the data. */
+	CustomerTenantID string `json:"customerTenantID"`
+
+	/* The client ID of the user's Azure Active Directory Application used for a federated connection. */
+	// +optional
+	FederatedApplicationClientID *string `json:"federatedApplicationClientID,omitempty"`
+}
+
 type ConnectionCloudResource struct {
 }
 
@@ -129,6 +138,10 @@ type BigQueryConnectionConnectionSpec struct {
 	// +optional
 	Aws *ConnectionAws `json:"aws,omitempty"`
 
+	/* Azure properties. */
+	// +optional
+	Azure *ConnectionAzure `json:"azure,omitempty"`
+
 	/* Use Cloud Resource properties. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
@@ -171,6 +184,28 @@ type ConnectionAwsStatus struct {
 	AccessRole *ConnectionAccessRoleStatus `json:"accessRole,omitempty"`
 }
 
+type ConnectionAzureStatus struct {
+	/* The name of the Azure Active Directory Application. */
+	// +optional
+	Application *string `json:"application,omitempty"`
+
+	/* The client id of the Azure Active Directory Application. */
+	// +optional
+	ClientID *string `json:"clientID,omitempty"`
+
+	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's Azure Active Directory Application. */
+	// +optional
+	Identity *string `json:"identity,omitempty"`
+
+	/* The object id of the Azure Active Directory Application. */
+	// +optional
+	ObjectID *string `json:"objectID,omitempty"`
+
+	/* The URL user will be redirected to after granting consent during connection setup. */
+	// +optional
+	RedirectUri *string `json:"redirectUri,omitempty"`
+}
+
 type ConnectionCloudResourceStatus struct {
 	/* The account ID of the service created for the purpose of this
 	connection.
@@ -200,6 +235,9 @@ type ConnectionCloudSqlStatus struct {
 type ConnectionObservedStateStatus struct {
 	// +optional
 	Aws *ConnectionAwsStatus `json:"aws,omitempty"`
+
+	// +optional
+	Azure *ConnectionAzureStatus `json:"azure,omitempty"`
 
 	// +optional
 	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`

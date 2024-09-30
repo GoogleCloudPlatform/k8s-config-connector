@@ -54,10 +54,8 @@ type BigQueryConnectionConnectionSpec struct {
 	// Amazon Web Services (AWS) properties.
 	AwsSpec *AwsPropertiesSpec `json:"aws,omitempty"`
 
-	/* NOTYET
 	// Azure properties.
-	Azure *AzureProperties `json:"azure,omitempty"`
-	*/
+	AzureSpec *AzurePropertiesSpec `json:"azure,omitempty"`
 
 	/* NOTYET
 	// Spark properties.
@@ -98,6 +96,8 @@ type BigQueryConnectionConnectionStatus struct {
 // +kcc:proto=google.cloud.bigquery.connection.v1.Connection
 type BigQueryConnectionConnectionObservedState struct {
 	Aws *AwsPropertiesStatus `json:"aws,omitempty"`
+
+	Azure *AzurePropertiesStatus `json:"azure,omitempty"`
 
 	CloudResource *CloudResourcePropertiesStatus `json:"cloudResource,omitempty"`
 
@@ -145,6 +145,16 @@ type AwsAccessRoleSpec struct {
 	// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
 	//  Connection.
 	IamRoleID *string `json:"iamRoleID,omitempty"`
+}
+
+type AzurePropertiesSpec struct {
+	// The id of customer's directory that host the data.
+	// +required
+	CustomerTenantID *string `json:"customerTenantID,omitempty"`
+
+	// The client ID of the user's Azure Active Directory Application used for a
+	//  federated connection.
+	FederatedApplicationClientID *string `json:"federatedApplicationClientID,omitempty"`
 }
 
 type CloudResourcePropertiesSpec struct{}
@@ -216,6 +226,27 @@ type AwsPropertiesStatus struct {
 type AwsAccessRoleStatus struct {
 	// A unique Google-owned and Google-generated identity for the Connection.
 	//  This identity will be used to access the user's AWS IAM Role.
+	Identity *string `json:"identity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.AzureProperties
+type AzurePropertiesStatus struct {
+	// The name of the Azure Active Directory Application.
+	Application *string `json:"application,omitempty"`
+
+	// The client id of the Azure Active Directory Application.
+	ClientID *string `json:"clientID,omitempty"`
+
+	// The object id of the Azure Active Directory Application.
+	ObjectID *string `json:"objectID,omitempty"`
+
+	// The URL user will be redirected to after granting consent during connection
+	//  setup.
+	RedirectUri *string `json:"redirectUri,omitempty"`
+
+	// A unique Google-owned and Google-generated identity for the
+	//  Connection. This identity will be used to access the user's Azure Active
+	//  Directory Application.
 	Identity *string `json:"identity,omitempty"`
 }
 

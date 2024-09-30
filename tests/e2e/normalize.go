@@ -172,7 +172,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 
 	// Specific to BigQueryConnectionConnection.
-	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"
+	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "117243083562690747295"
+	visitor.replacePaths[".status.observedState.azure.identity"] = "048077221682493034546"
 	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 	visitor.replacePaths[".status.observedState.cloudSql.serviceAccountID"] = "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
 

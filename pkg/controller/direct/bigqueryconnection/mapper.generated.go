@@ -210,6 +210,18 @@ func AwsAccessRoleStatus_FromProto(mapCtx *direct.MapContext, in *pb.AwsAccessRo
 	out.Identity = direct.PtrTo(in.Identity)
 	return out
 }
+func AzurePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AzureProperties) *krm.AzurePropertiesStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzurePropertiesStatus{}
+	out.Application = direct.LazyPtr(in.Application)
+	out.ClientID = direct.LazyPtr(in.ClientId)
+	out.ObjectID = direct.LazyPtr(in.ObjectId)
+	out.RedirectUri = direct.LazyPtr(in.RedirectUri)
+	out.Identity = direct.LazyPtr(in.Identity)
+	return out
+}
 func CloudResourcePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.CloudResourceProperties) *krm.CloudResourcePropertiesStatus {
 	if in == nil {
 		return nil

@@ -60,6 +60,26 @@ func AwsAccessRoleSpec_FromProto(mapCtx *direct.MapContext, in *pb.AwsAccessRole
 	return out
 }
 
+func AzurePropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.AzurePropertiesSpec) *pb.AzureProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureProperties{}
+	out.CustomerTenantId = direct.ValueOf(in.CustomerTenantID)
+	out.FederatedApplicationClientId = direct.ValueOf(in.FederatedApplicationClientID)
+	return out
+}
+
+func AzurePropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.AzureProperties) *krm.AzurePropertiesSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzurePropertiesSpec{}
+	out.CustomerTenantID = direct.LazyPtr(in.CustomerTenantId)
+	out.FederatedApplicationClientID = direct.LazyPtr((in.FederatedApplicationClientId))
+	return out
+}
+
 func CloudResourcePropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudResourcePropertiesSpec) *pb.CloudResourceProperties {
 	if in == nil {
 		return nil
@@ -152,6 +172,9 @@ func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.Ma
 	if oneof := AwsPropertiesStatus_FromProto(mapCtx, in.GetAws()); oneof != nil {
 		out.Aws = oneof
 	}
+	if oneof := AzurePropertiesStatus_FromProto(mapCtx, in.GetAzure()); oneof != nil {
+		out.Azure = oneof
+	}
 	if oneof := CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource()); oneof != nil {
 		out.CloudResource = oneof
 	}
@@ -174,6 +197,9 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	if oneof := AwsPropertiesSpec_ToProto(mapCtx, in.AwsSpec); oneof != nil {
 		out.Properties = &pb.Connection_Aws{Aws: oneof}
 	}
+	if oneof := AzurePropertiesSpec_ToProto(mapCtx, in.AzureSpec); oneof != nil {
+		out.Properties = &pb.Connection_Azure{Azure: oneof}
+	}
 	if oneof := CloudResourcePropertiesSpec_ToProto(mapCtx, in.CloudResourceSpec); oneof != nil {
 		out.Properties = &pb.Connection_CloudResource{}
 	}
@@ -184,7 +210,6 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 		out.Properties = &pb.Connection_CloudSpanner{CloudSpanner: oneof}
 	}
 
-	// MISSING: Azure
 	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
 	return out
