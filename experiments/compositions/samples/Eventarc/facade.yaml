@@ -5,7 +5,7 @@ metadata:
   namespace: config-control
 spec:
   triggerName: bucket-trigger
-  workflowPath: projects/your-project-id/locations/us-central1/workflows/workflow-1  # Replace with your workflow path
+  workflowName: workflow-1  # Replace with your workflow path
   location: us-central1  # Or your desired location
   serviceAccount: your-service-account  # Replace with your service account name
   topicName: eventarc-topic-1  # Replace with your Pub/Sub topic name
