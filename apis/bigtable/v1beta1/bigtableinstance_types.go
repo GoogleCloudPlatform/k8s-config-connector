@@ -28,7 +28,7 @@ var (
 // +kcc:proto=google.bigtable.admin.v2.Instance
 type BigtableInstanceSpec struct {
 	// The Instance name. If not given, the metadata.name will be used.
-	// + optional
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	//     // The unique name of the instance. Values are of the form

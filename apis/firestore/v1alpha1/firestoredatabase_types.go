@@ -32,7 +32,7 @@ type FirestoreDatabaseSpec struct {
 	ProjectRef v1beta1.ProjectRef `json:"projectRef"`
 
 	// The FirestoreDatabase name. If not given, the metadata.name will be used.
-	// + optional
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The location of the database. Available locations are listed at
