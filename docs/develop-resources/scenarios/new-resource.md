@@ -1,13 +1,5 @@
 # Add a new Config Connector resource
 
-*Understand the current status*
-
-* If the resource is not in [Config Connector API Reference](https://cloud.google.com/config-connector/docs/reference/overview), it could be an Alpha resource. Check if [the CRD](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/crds) exists with the latest release. If so, please go to [promote alpha to beta](./alpha-to-beta.md)   
-
-* We are migrating from the TF/DCL based resources to the Direct approach. That means we are holding off new PR reviews if they are using the TF/DCL based approach. Please let us know if you encounter any problems or any specific reasons that can only use the TF/DCL based approach.
-
-* If you want to contribute on a pure Direct resource, please verify it is not in Alpha first and then file an issue to let us know.  
-
 ## A basic infra 
 
 Different than other scenarios, developing a pure Direct resource requires you to have every step setup first to validate your change. Basically you need the API and mapper to write the Direct controller, then you can use the controller to write the MockGCP tests. This reverses the step 1 to the end compared to other scenarios. Thus, you first PR shall include
