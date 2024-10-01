@@ -23,8 +23,21 @@ source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 	fetch_tools && \
 	setup_envs
 
+if [[ -z "${RUN_TESTS:-}" ]]; then
+  RUN_TESTS=""
+  RUN_TESTS+="TestPauseInSeries/fixtures/iamserviceaccount" # IAM
+  RUN_TESTS+="|TestPauseInSeries/fixtures/logbucketmetric" # Direct
+  RUN_TESTS+="|TestPauseInSeries/fixtures/cloudidsendpoint" # DCL
+  RUN_TESTS+="|TestPauseInSeries/fixtures/computemanagedsslcertificate" # TF
+  RUN_TESTS+="|TestPauseInSeries/fixtures/billingaccountiampolicy" # IAM
+  RUN_TESTS+="|TestPauseInSeries/fixtures/billingaccountiampolicymember" # IAM
+  RUN_TESTS+="|TestPauseInSeries/fixtures/organizationiampolicy" # IAM
+  RUN_TESTS+="|TestPauseInSeries/fixtures/organizationiampolicymember" # IAM
+fi
+echo "Running tests matching: ${RUN_TESTS}"
+
 cd ${REPO_ROOT}/
-echo "Running mock e2e pause tests..."
+echo "Running mock e2e pause tests for select fixtures..."
 E2E_KUBE_TARGET=envtest \
 	RUN_E2E=1 GOLDEN_REQUEST_CHECKS=1 E2E_GCP_TARGET=mock \
-	go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run TestPauseInSeries 2>&1
+	go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run $RUN_TESTS 2>&1
