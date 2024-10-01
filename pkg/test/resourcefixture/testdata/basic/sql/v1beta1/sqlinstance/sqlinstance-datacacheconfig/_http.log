@@ -41,7 +41,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     "availabilityType": "ZONAL",
     "dataCacheConfig": {},
     "dataDiskType": "PD_SSD",
-    "edition": "ENTERPRISE",
+    "edition": "ENTERPRISE_PLUS",
     "locationPreference": {
       "zone": "us-central1-a"
     },
@@ -219,7 +219,7 @@ X-Xss-Protection: 0
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
-    "edition": "ENTERPRISE",
+    "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
