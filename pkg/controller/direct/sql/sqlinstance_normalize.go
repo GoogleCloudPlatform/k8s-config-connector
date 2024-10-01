@@ -24,6 +24,7 @@ import (
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -70,9 +71,9 @@ func NormalizeSQLInstance(ctx context.Context, kube client.Reader, obj *krm.SQLI
 	if err != nil {
 		return nil, err
 	}
-	if err := normalizeLabels(obj); err != nil {
-		return nil, err
-	}
+	// Normalize labels.
+	obj.Labels = label.NewGCPLabelsFromK8sLabels(obj.Labels)
+	// Apply defaults.
 	if err := normalizeTFDefaults(obj); err != nil {
 		return nil, err
 	}
@@ -336,14 +337,6 @@ func normalizeSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj 
 	} else {
 		return "", fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
 	}
-}
-
-func normalizeLabels(obj *krm.SQLInstance) error {
-	if obj.Labels == nil {
-		obj.Labels = make(map[string]string)
-	}
-	obj.Labels["managed-by-cnrm"] = "true"
-	return nil
 }
 
 func normalizeTFDefaults(obj *krm.SQLInstance) error {

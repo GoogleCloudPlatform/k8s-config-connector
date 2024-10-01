@@ -105,13 +105,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, refs *SQLInstanceInternalRefs) (*a
 	out.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigKRMToGCP(in.Spec.Settings.SqlServerAuditConfig, refs)
 	out.Settings.Tier = in.Spec.Settings.Tier
 	out.Settings.TimeZone = direct.ValueOf(in.Spec.Settings.TimeZone)
-
-	if in.Labels != nil {
-		out.Settings.UserLabels = make(map[string]string)
-		for k, v := range in.Labels {
-			out.Settings.UserLabels[k] = v
-		}
-	}
+	out.Settings.UserLabels = in.Labels
 
 	// TODO: Move to InstanceSettingsKRMToGCP
 	if in.Spec.Settings.DeletionProtectionEnabled != nil {
