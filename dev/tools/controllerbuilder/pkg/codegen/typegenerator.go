@@ -41,15 +41,15 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 
 type TypeGenerator struct {
 	generatorBase
-	goPackage             string
-	resourceProtoFullName string
-	visitedMessages       []protoreflect.MessageDescriptor
+	goPackage       string
+	protoFullNames  []string
+	visitedMessages []protoreflect.MessageDescriptor
 }
 
-func NewTypeGenerator(goPackage string, outputBaseDir, resourceProtoFullName string) *TypeGenerator {
+func NewTypeGenerator(goPackage, outputBaseDir string, protoFullNames []string) *TypeGenerator {
 	g := &TypeGenerator{
-		goPackage:             goPackage,
-		resourceProtoFullName: resourceProtoFullName,
+		goPackage:      goPackage,
+		protoFullNames: protoFullNames,
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -65,21 +65,31 @@ func (g *TypeGenerator) VisitProto(api *protoapi.Proto) error {
 }
 
 func (g *TypeGenerator) visitMessages(files *protoregistry.Files) error {
-	messageDesc, err := files.FindDescriptorByName(protoreflect.FullName(g.resourceProtoFullName))
-	if err != nil {
-		return fmt.Errorf("failed to find the proto message %s: %w", g.resourceProtoFullName, err)
-	}
-	msgDesc, ok := messageDesc.(protoreflect.MessageDescriptor)
-	if !ok {
-		return fmt.Errorf("unexpected descriptor type: %T", msgDesc)
-	}
-	//klog.Infof("found message %q", msgDesc.FullName())
+	for _, fqn := range g.protoFullNames {
+		messageDesc, err := files.FindDescriptorByName(protoreflect.FullName(fqn))
+		if err != nil {
+			return fmt.Errorf("failed to find the proto message %s: %w", fqn, err)
+		}
+		msgDesc, ok := messageDesc.(protoreflect.MessageDescriptor)
+		if !ok {
+			return fmt.Errorf("unexpected descriptor type: %T", msgDesc)
+		}
 
-	msgs, err := findDependenciesForMessage(msgDesc)
-	if err != nil {
-		return err
+		msgs, err := findDependenciesForMessage(msgDesc)
+		if err != nil {
+			return err
+		}
+		g.visitedMessages = append(msgs, msgDesc)
 	}
-	g.visitedMessages = append(msgs, msgDesc)
+
+	// sort and remove duplicates
+	unique := []protoreflect.MessageDescriptor{}
+	for i := range sorted(g.visitedMessages) {
+		if i == 0 || g.visitedMessages[i].FullName() != g.visitedMessages[i-1].FullName() {
+			unique = append(unique, g.visitedMessages[i])
+		}
+	}
+	g.visitedMessages = unique
 
 	return nil
 }
