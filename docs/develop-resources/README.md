@@ -6,6 +6,8 @@ In the past few months, we have made a tremendous amount of efforts to make addi
 
 There are definitely more work need to be done, but we'd like to share the steps about adding the direct resource so that it can benefit more users. We will conitnue improving this guide and making the step changes to make it simpler and easier to use. Please stay tuned for the upcoming changes.
 
+Be sure to work through the [Contributing guide](../../CONTRIBUTING.md) before starting.
+
 # Contents
 
 ## Introduction

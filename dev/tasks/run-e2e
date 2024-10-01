@@ -77,9 +77,15 @@ if [[ -z "${TEST_TIMEOUT:-}" ]]; then
 fi
 echo "Using TEST_TIMEOUT=${TEST_TIMEOUT}"
 
+# Check if WRITE_GOLDEN_OUTPUT is unset (does NOT match empty string, so an empty WRITE_GOLDEN_OUTPUT can be used to disable writing output)
+if [[ -z "${WRITE_GOLDEN_OUTPUT+set}" ]]; then
+  WRITE_GOLDEN_OUTPUT=1
+fi
+echo "WRITE_GOLDEN_OUTPUT=${WRITE_GOLDEN_OUTPUT}"
+
 # Run e2e tests against real gcp, capturing output
 GOLDEN_REQUEST_CHECKS=1 \
 GOLDEN_OBJECT_CHECKS=1 \
-WRITE_GOLDEN_OUTPUT=1 \
+WRITE_GOLDEN_OUTPUT=${WRITE_GOLDEN_OUTPUT} \
 RUN_E2E=1 \
  go test ./tests/e2e -timeout ${TEST_TIMEOUT} -v -run $RUN_TESTS
