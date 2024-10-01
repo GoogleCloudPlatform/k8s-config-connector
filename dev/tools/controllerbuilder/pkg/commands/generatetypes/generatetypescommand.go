@@ -129,8 +129,9 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
+	kind := o.ResourceKindName
 	resourceProtoFullName := o.ServiceName + "." + o.ResourceProtoName
-	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, resourceProtoFullName)
+	typeGenerator := codegen.NewTypeGenerator(kind, goPackage, o.OutputAPIDirectory, resourceProtoFullName)
 	if err := typeGenerator.VisitProto(api); err != nil {
 		return err
 	}
@@ -140,7 +141,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
-	kind := o.ResourceKindName
 	if !scaffolder.TypeFileNotExist(kind) {
 		fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
 	} else {
