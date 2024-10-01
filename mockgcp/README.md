@@ -36,6 +36,9 @@ Broadly the steps are:
 
    * Note: Ensure you pick the same version the controller uses to call the GCP API during GCP resource instantiation.
 
+   * Note: If the resource does not map to an actual GCP resource, you might not be able to find a proto file
+   for this resource. You can use the proto file for the parent resource since they share the same REST API. For example, `BigQueryDatasetAccess` only maps to a single entry in a single field of the `BigQueryDataset` resource. There is no `datasetacceess.proto` in the [googleapis Github repo](https://github.com/googleapis/googleapis/tree/master/google). But `dataset.proto` would be sufficient to use for `BigQueryDatasetAccess` resource.
+
    * (Optional) If you determine that the proto file is not up to date, or if it doesn't exist at all, refer to the [Generating Proto](#generating-proto) section
    
 1. (Optional). If you're adding an API outside of `googleapis/google/cloud`,
