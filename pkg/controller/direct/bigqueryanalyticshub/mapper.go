@@ -35,7 +35,6 @@ func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krm.BigQueryAnalyticsHubDataExchangeSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
@@ -52,7 +51,6 @@ func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	}
 
 	out := &pb.DataExchange{}
-	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
