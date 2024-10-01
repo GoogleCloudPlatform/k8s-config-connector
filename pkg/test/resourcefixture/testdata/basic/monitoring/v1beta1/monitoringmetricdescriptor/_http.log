@@ -1,0 +1,280 @@
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Could not find descriptor for metric 'custom.googleapis.com/market/measurements/volume'.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "description": "Tracks a combination of estimates of trade volume for a given resource, in $USD per hour.",
+  "displayName": "Trading Volume Estimate",
+  "labels": [
+    {
+      "description": "True if the estimation system is stable.",
+      "key": "system_stable",
+      "valueType": "BOOL"
+    },
+    {
+      "description": "A description of the condition the market system is in.",
+      "key": "condition_summary",
+      "valueType": "STRING"
+    }
+  ],
+  "launchStage": "BETA",
+  "metadata": {
+    "ingestDelay": "1000s",
+    "samplePeriod": "100s"
+  },
+  "metricKind": "GAUGE",
+  "type": "custom.googleapis.com/market/measurements/volume",
+  "unit": "{USD}/h",
+  "valueType": "DISTRIBUTION"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Tracks a combination of estimates of trade volume for a given resource, in $USD per hour.",
+  "displayName": "Trading Volume Estimate",
+  "labels": [
+    {
+      "description": "True if the estimation system is stable.",
+      "key": "system_stable",
+      "valueType": "BOOL"
+    },
+    {
+      "description": "A description of the condition the market system is in.",
+      "key": "condition_summary"
+    }
+  ],
+  "launchStage": "BETA",
+  "metadata": {
+    "ingestDelay": "1000s",
+    "samplePeriod": "100s"
+  },
+  "metricKind": "GAUGE",
+  "name": "projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume",
+  "type": "custom.googleapis.com/market/measurements/volume",
+  "unit": "{USD}/h",
+  "valueType": "DISTRIBUTION"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Could not find descriptor for metric 'custom.googleapis.com/market/measurements/volume'.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Tracks a combination of estimates of trade volume for a given resource, in $USD per hour.",
+  "displayName": "Trading Volume Estimate",
+  "labels": [
+    {
+      "description": "A description of the condition the market system is in.",
+      "key": "condition_summary"
+    },
+    {
+      "description": "True if the estimation system is stable.",
+      "key": "system_stable",
+      "valueType": "BOOL"
+    }
+  ],
+  "metricKind": "GAUGE",
+  "monitoredResourceTypes": [
+    "aws_ec2_instance",
+    "aws_lambda_function",
+    "aws_sqs_queue",
+    "baremetalsolution.googleapis.com/Instance",
+    "cloud_composer_environment",
+    "cloud_composer_workflow",
+    "cloud_dataproc_batch",
+    "dataflow_job",
+    "gae_instance",
+    "gce_instance",
+    "generic_node",
+    "generic_task",
+    "gke_container",
+    "global",
+    "k8s_cluster",
+    "k8s_container",
+    "k8s_node",
+    "k8s_pod",
+    "k8s_service",
+    "prometheus_target"
+  ],
+  "name": "projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume",
+  "type": "custom.googleapis.com/market/measurements/volume",
+  "unit": "{USD}/h",
+  "valueType": "DISTRIBUTION"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Tracks a combination of estimates of trade volume for a given resource, in $USD per hour.",
+  "displayName": "Trading Volume Estimate",
+  "labels": [
+    {
+      "description": "A description of the condition the market system is in.",
+      "key": "condition_summary"
+    },
+    {
+      "description": "True if the estimation system is stable.",
+      "key": "system_stable",
+      "valueType": "BOOL"
+    }
+  ],
+  "metricKind": "GAUGE",
+  "monitoredResourceTypes": [
+    "aws_ec2_instance",
+    "aws_lambda_function",
+    "aws_sqs_queue",
+    "baremetalsolution.googleapis.com/Instance",
+    "cloud_composer_environment",
+    "cloud_composer_workflow",
+    "cloud_dataproc_batch",
+    "dataflow_job",
+    "gae_instance",
+    "gce_instance",
+    "generic_node",
+    "generic_task",
+    "gke_container",
+    "global",
+    "k8s_cluster",
+    "k8s_container",
+    "k8s_node",
+    "k8s_pod",
+    "k8s_service",
+    "prometheus_target"
+  ],
+  "name": "projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume",
+  "type": "custom.googleapis.com/market/measurements/volume",
+  "unit": "{USD}/h",
+  "valueType": "DISTRIBUTION"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Could not find descriptor for metric 'custom.googleapis.com/market/measurements/volume'.",
+    "status": "NOT_FOUND"
+  }
+}
