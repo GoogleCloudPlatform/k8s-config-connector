@@ -56,12 +56,14 @@ type WorkstationClusterSpec struct {
 
 	// Immutable. Reference to the Compute Engine network in which instances associated
 	//  with this workstation cluster will be created.
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	// +required
+	NetworkRef refs.ComputeNetworkRef `json:"networkRef"`
 
 	// Immutable. Reference to the Compute Engine subnetwork in which instances
 	//  associated with this workstation cluster will be created. Must be part of
 	//  the subnetwork specified for this workstation cluster.
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	// +required
+	SubnetworkRef refs.ComputeSubnetworkRef `json:"subnetworkRef"`
 
 	// Optional. Configuration for private workstation cluster.
 	PrivateClusterConfig *WorkstationCluster_PrivateClusterConfig `json:"privateClusterConfig,omitempty"`
