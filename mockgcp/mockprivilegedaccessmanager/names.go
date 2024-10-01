@@ -15,43 +15,44 @@
 package mockprivilegedaccessmanager
 
 import (
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 type entitlementName struct {
-	Project       *projects.ProjectData
+	Container     string
 	Location      string
 	EntitlementID string
 }
 
 func (n *entitlementName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/entitlements/" + n.EntitlementID
+	return n.parent() + "/entitlements/" + n.EntitlementID
+}
+
+func (n *entitlementName) parent() string {
+	return n.Container + "/locations/" + n.Location
 }
 
 // parseEntitlementName parses a string into a entitlementName.
-// The expected form is projects/<projectID>/locations/<region>/entitlements/<entitlementID>
+// The expected form is projects/<projectID>/locations/<region>/entitlements/<entitlementID>,
+// or folders/<folderID>/locations/<region>/entitlements/<entitlementID>, or
+// organizations/<organizationID>/locations/<region>/entitlements/<entitlementID>.
 func (s *MockService) parseEntitlementName(name string) (*entitlementName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "entitlements" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
+	if len(tokens) == 6 &&
+		(tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") &&
+		tokens[2] == "locations" && tokens[4] == "entitlements" {
 
-		name := &entitlementName{
-			Project:       project,
+		return &entitlementName{
+			Container:     fmt.Sprintf("%s/%s", tokens[0], tokens[1]),
 			Location:      tokens[3],
 			EntitlementID: tokens[5],
-		}
-
-		return name, nil
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+		}, nil
 	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
