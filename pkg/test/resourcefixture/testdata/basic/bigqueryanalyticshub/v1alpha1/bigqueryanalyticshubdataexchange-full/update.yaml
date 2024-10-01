@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,11 @@ kind: BigQueryAnalyticsHubDataExchange
 metadata:
   name: bigqueryanalyticshubdataexchange${uniqueId}
 spec:
-  description: example data exchange
   displayName: my_data_exchange
+  description: example data exchange
+  primaryContact: another@contact.com
+  documentation: an updated documentation
+  discoveryType: DISCOVERY_TYPE_PRIVATE
   location: US
   projectRef:
     external: ${projectId}
