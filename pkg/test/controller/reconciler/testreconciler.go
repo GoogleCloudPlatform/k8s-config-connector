@@ -132,11 +132,7 @@ func (r *TestReconciler) Reconcile(ctx context.Context, unstruct *unstructured.U
 		Name:      unstruct.GetName(),
 		Namespace: unstruct.GetNamespace(),
 	}
-	r.ReconcileObjectMeta(ctx, om, unstruct.GetKind(), expectedResult, expectedErrorRegex)
-}
-
-func (r *TestReconciler) ReconcileObjectMeta(ctx context.Context, om metav1.ObjectMeta, kind string, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
-	r.t.Helper()
+	kind := unstruct.GetKind()
 	reconciler := r.NewReconcilerForKind(kind)
 	testcontroller.RunReconcilerAssertResults(ctx, r.t, reconciler, kind, om, expectedResult, expectedErrorRegex)
 }

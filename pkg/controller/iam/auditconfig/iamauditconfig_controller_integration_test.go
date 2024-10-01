@@ -21,6 +21,7 @@ import (
 	"context"
 	"errors"
 	"reflect"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -43,6 +44,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
@@ -136,7 +138,7 @@ func testReconcileResourceLevelCreate(ctx context.Context, t *testing.T, mgr man
 	if err != nil {
 		t.Fatalf("error marshalling %v as unstructured: %v", k8sAuditConfig, err)
 	}
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("error retrieving GCP audit config: %v", err)
@@ -218,7 +220,7 @@ func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, mgr man
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("error retrieving GCP audit config: %v", err)
@@ -233,7 +235,7 @@ func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, mgr man
 		t.Fatalf("error updating k8s resource: %v", err)
 	}
 	preReconcileGeneration = newK8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, newK8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, newK8sAuditConfig, expectedReconcileResult, nil)
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(newK8sAuditConfig), newK8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
@@ -301,7 +303,7 @@ func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, mgr 
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("error retrieving GCP audit config: %v", err)
@@ -312,7 +314,7 @@ func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, mgr 
 	}
 	assertObservedGenerationEquals(t, k8sAuditConfig, preReconcileGeneration)
 	preReconcileGeneration = k8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	newK8sAuditConfig := &iamv1beta1.IAMAuditConfig{}
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), newK8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
@@ -384,7 +386,7 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, mgr man
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("error retrieving GCP audit config: %v", err)
@@ -398,13 +400,13 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, mgr man
 	if err := kubeClient.Delete(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error deleting k8s resource: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	_, err = tfIamClient.GetAuditConfig(ctx, k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("expected audit config to exist in GCP, but got error: %v", err)
 	}
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sAuditConfig, v1beta1.IAMAuditConfigGVK, kubeClient)
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
 		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
@@ -468,7 +470,7 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("error retrieving GCP audit config: %v", err)
@@ -492,7 +494,7 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 		t.Fatalf("error deleting k8s resource: %v", err)
 	}
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sAuditConfig, v1beta1.IAMAuditConfigGVK, kubeClient)
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err == nil || !apierrors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
 	}
@@ -557,7 +559,7 @@ func testReconcileResourceLevelAcquire(ctx context.Context, t *testing.T, mgr ma
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error retrieving GCP audit config: %v", err)
 	}
@@ -604,6 +606,15 @@ func newIAMAuditConfigFixture(t *testing.T, refResource *unstructured.Unstructur
 			AuditLogConfigs:   auditLogConfigs,
 		},
 	}
+}
+
+func reconcileIAMAuditConfig(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, policy *iamv1beta1.IAMAuditConfig, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+	if err != nil {
+		t.Fatalf("error converting to unstructured: %v", err)
+	}
+	u := &unstructured.Unstructured{Object: uObj}
+	reconciler.Reconcile(ctx, u, expectedResult, expectedErrorRegex)
 }
 
 func name(t *testing.T) string {
