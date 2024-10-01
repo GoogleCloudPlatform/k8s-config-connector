@@ -10,7 +10,7 @@ Follow [Step 1](../guides/1-add-mockgcp-tests.md)
 
 ### PR Reviews
 
-* We require the PR to contain the real GCP record for `_generated_object_<resource>.golden.yaml` and `_http.log` 
+* We require the 1st PR to show git diff between the real GCP record and the mock GCP record for `_generated_object_<resource>.golden.yaml` and `_http.log` 
 * We require the 2nd PR git diff can show the mutable fileds in `update.yaml`.
 * We require the `_generated_object_<resource>.golden.yaml` reflecting the mutable fields are successfully updated.
 * We require the `dependencies.yaml` to cover all referenced fields, and the `_http.log` showing the Cloud requests. You need to implement those dependencies' MockGCP methods as well.
@@ -23,7 +23,7 @@ The PR shall contain the types and deepcopy codes. It shall make modifications t
 
 * You may need to modify the auto-generated `types.go` to keep the existing fields the same (even if it is not following the recommended styles and conventions). You can run `dev/tasks/generate-crds` (repeatedly) to make sure the CRD are the same (comment changes are acceptable).
 
-* Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using TF-based controllers. 
+* Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using DCL-based or TF-based controllers. 
 
 * You may see some new fields added to the CRD. These are expected since the TF/DCL based resources could be out of date (and users are looking forward to these new fields!). You **shall comment out** those new fields using `/*NOTYET ..*/` in this PR if they are not supported in the TF-based controller yet (we will add them later).
 
