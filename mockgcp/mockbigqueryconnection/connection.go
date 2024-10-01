@@ -98,7 +98,7 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 		return fmt.Sprintf("service-%s@gcp-sa-bigqueryconnection.iam.gserviceaccount.com", req.GetParent())
 	}
 
-	buildAwsAccessRoleIdentity := func() string {
+	buildGoogleIdentity := func() string {
 		letterRunes := []rune("0123456789")
 		b := make([]rune, 21)
 		for i := range b {
@@ -114,9 +114,21 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 					AuthenticationMethod: &pb.AwsProperties_AccessRole{
 						AccessRole: &pb.AwsAccessRole{
 							IamRoleId: aws.GetAccessRole().GetIamRoleId(),
-							Identity:  buildAwsAccessRoleIdentity(),
+							Identity:  buildGoogleIdentity(),
 						},
 					},
+				},
+			}
+		}
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_Azure); ok {
+		if azure := req.Connection.GetAzure(); azure != nil {
+			obj.Properties = &pb.Connection_Azure{
+				Azure: &pb.AzureProperties{
+					CustomerTenantId:             azure.GetCustomerTenantId(),
+					FederatedApplicationClientId: azure.GetFederatedApplicationClientId(),
+					Identity:                     buildGoogleIdentity(),
 				},
 			}
 		}
@@ -139,6 +151,20 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 					Database:         sql.Database,
 					Type:             sql.Type,
 					ServiceAccountId: buildPrimaryServiceAccountId(),
+				},
+			}
+		}
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudSpanner); ok {
+		if spanner := req.Connection.GetCloudSpanner(); spanner != nil {
+			obj.Properties = &pb.Connection_CloudSpanner{
+				CloudSpanner: &pb.CloudSpannerProperties{
+					Database:       spanner.Database,
+					UseParallelism: spanner.UseParallelism,
+					UseDataBoost:   spanner.UseDataBoost,
+					MaxParallelism: spanner.MaxParallelism,
+					DatabaseRole:   spanner.DatabaseRole,
 				},
 			}
 		}
@@ -180,6 +206,16 @@ func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConne
 	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
 		if mod := req.Connection.GetAws(); mod != nil {
 			obj.GetAws().GetAccessRole().IamRoleId = mod.GetAccessRole().IamRoleId
+		}
+	}
+
+	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudSpanner); ok {
+		if mod := req.Connection.GetCloudSpanner(); mod != nil {
+			obj.GetCloudSpanner().Database = mod.Database
+			obj.GetCloudSpanner().UseDataBoost = mod.UseDataBoost
+			obj.GetCloudSpanner().UseParallelism = mod.UseParallelism
+			obj.GetCloudSpanner().MaxParallelism = mod.MaxParallelism
+			obj.GetCloudSpanner().DatabaseRole = mod.DatabaseRole
 		}
 	}
 
