@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -32,6 +33,7 @@ import (
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 func NewResourceRef(refResource *unstructured.Unstructured) v1beta1.ResourceReference {
@@ -82,8 +84,25 @@ func NewExternalRef(refResource *unstructured.Unstructured, provider *tfschema.P
 	}, nil
 }
 
+// isDynamicGVK returns true if the GVK is either TF-based or DCL-based.
+func isDynamicGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader dclmetadata.ServiceMetadataLoader) bool {
+	dynamicGVKs := supportedgvks.AllDynamicTypes(smLoader, serviceMetaLoader)
+	dynamicGVKMap := make(map[schema.GroupVersionKind]bool)
+	for _, gvk := range dynamicGVKs {
+		dynamicGVKMap[gvk] = true
+	}
+	_, ok := dynamicGVKMap[gvk]
+	return ok
+}
+
 func FixtureSupportsIAMAuditConfigs(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader, fixture resourcefixture.ResourceFixture) bool {
 	t.Helper()
+	if !isDynamicGVK(fixture.GVK, smLoader, serviceMetadataLoader) {
+		// Only dynamic GVKs support IAM.
+		// Direct GVKs don't support IAM yet.
+		// Handwritten GVKs are the IAM resources themselves.
+		return false
+	}
 	// IAM support is not implemented for DCL based resources
 	if dclmetadata.IsDCLBasedResourceKind(fixture.GVK, serviceMetadataLoader) {
 		return false
@@ -109,6 +128,12 @@ func FixtureSupportsIAMAuditConfigs(t *testing.T, smLoader *servicemappingloader
 func FixtureSupportsIAMPolicy(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader,
 	serviceMetadataLoader dclmetadata.ServiceMetadataLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, fixture resourcefixture.ResourceFixture) bool {
 	t.Helper()
+	if !isDynamicGVK(fixture.GVK, smLoader, serviceMetadataLoader) {
+		// Only dynamic GVKs support IAM.
+		// Direct GVKs don't support IAM yet.
+		// Handwritten GVKs are the IAM resources themselves.
+		return false
+	}
 	if dclmetadata.IsDCLBasedResourceKind(fixture.GVK, serviceMetadataLoader) {
 		dclSchema, err := dclschemaloader.GetDCLSchemaForGVK(fixture.GVK, serviceMetadataLoader, dclSchemaLoader)
 		if err != nil {
