@@ -35,10 +35,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
@@ -47,14 +49,14 @@ import (
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.org/x/sync/semaphore"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 type ResourceCleanupPolicy string
@@ -72,6 +74,19 @@ var (
 	ExpectedRequeueReconcileStruct      = reconcile.Result{Requeue: true}
 )
 
+type ReconcilerType string
+
+const (
+	ReconcilerTypeTerraform        ReconcilerType = "tf"
+	ReconcilerTypeDCL              ReconcilerType = "dcl"
+	ReconcilerTypeDirect           ReconcilerType = "direct"
+	ReconcilerTypeIAMPolicy        ReconcilerType = "iampolicy"
+	ReconcilerTypeIAMPartialPolicy ReconcilerType = "iampartialpolicy"
+	ReconcilerTypeIAMPolicyMember  ReconcilerType = "iampolicymember"
+	ReconcilerTypeIAMAuditConfig   ReconcilerType = "iamauditconfig"
+	ReconcilerTypeUnknown          ReconcilerType = "unknown"
+)
+
 type TestReconciler struct {
 	mgr          manager.Manager
 	t            *testing.T
@@ -82,7 +97,7 @@ type TestReconciler struct {
 	httpClient   *http.Client
 }
 
-// TODO(kcc-eng): consolidate New() and NewForDCLAndTFTestReconciler() and keep the name as New() by refactoring all existing usages
+// TODO(kcc-eng): consolidate New() and NewTestReconciler() and keep the name as New() by refactoring all existing usages
 func New(t *testing.T, mgr manager.Manager, provider *tfschema.Provider) *TestReconciler {
 	return NewTestReconciler(t, mgr, provider, nil, nil)
 }
@@ -171,11 +186,64 @@ func ExpectedSuccessfulReconcileResultFor(r *TestReconciler, u *unstructured.Uns
 	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(u.GroupVersionKind(), r.smLoader, r.dclConverter.MetadataLoader)}
 }
 
+func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, error) {
+	if !k8s.IsManagedByKCC(u.GroupVersionKind()) {
+		// It is only valid to call this function for KCC-managed objects.
+		return ReconcilerTypeUnknown, fmt.Errorf("%v %v/%v is not managed by KCC; cannot determine reconciler type", u.GetKind(), u.GetNamespace(), u.GetName())
+	}
+
+	gvk := u.GroupVersionKind()
+	crd, err := crdloader.GetCRDForGVK(gvk)
+	if err != nil {
+		return ReconcilerTypeUnknown, err
+	}
+
+	switch gvk.Kind {
+	case "IAMPolicy":
+		return ReconcilerTypeIAMPolicy, nil
+	case "IAMPartialPolicy":
+		return ReconcilerTypeIAMPartialPolicy, nil
+	case "IAMPolicyMember":
+		return ReconcilerTypeIAMPolicyMember, nil
+	case "IAMAuditConfig":
+		return ReconcilerTypeIAMAuditConfig, nil
+	default:
+		hasDirectController := registry.IsDirectByGK(gvk.GroupKind())
+		hasTerraformController := crd.Labels[crdgeneration.TF2CRDLabel] == "true"
+		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true"
+
+		useDirectReconciler := false
+
+		if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
+			// If KCC_USE_DIRECT_RECONCILERS is set for this object, reconciler is always direct.
+			useDirectReconciler = true
+		} else if hasDirectController && (hasTerraformController || hasDCLController) {
+			// If we have a choice of controllers, use reconcile gate to choose between them.
+			if reconcileGate := registry.GetReconcileGate(gvk.GroupKind()); reconcileGate != nil {
+				useDirectReconciler = reconcileGate.ShouldReconcile(u)
+			} else {
+				return ReconcilerTypeUnknown, fmt.Errorf("no predicate for gvk %v where we have multiple controllers", gvk)
+			}
+		} else if hasDirectController {
+			// Otherwise, if direct controller is available, use direct.
+			useDirectReconciler = true
+		}
+
+		if useDirectReconciler {
+			return ReconcilerTypeDirect, nil
+		} else if hasDCLController {
+			return ReconcilerTypeDCL, nil
+		} else if hasTerraformController {
+			return ReconcilerTypeTerraform, nil
+		}
+	}
+
+	return ReconcilerTypeUnknown, fmt.Errorf("no reconciler type found for: %v", gvk)
+}
+
 func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) reconcile.Reconciler {
 	r.t.Helper()
-	kind := u.GetKind()
-	var reconciler reconcile.Reconciler
-	var err error
+
 	// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
 	// to nil to disable reconciler's ability to create asynchronous
 	// watches on unready dependencies. This feature of the reconciler
@@ -196,56 +264,72 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 	}
 	jg := jitter.NewDefaultGenerator(r.smLoader, dclML)
 
-	switch kind {
-	case "IAMPolicy":
-		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
-	case "IAMPartialPolicy":
-		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
-	case "IAMPolicyMember":
-		reconciler, err = policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
-	case "IAMAuditConfig":
-		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
-	default:
-		crd := testcontroller.GetCRDForKind(r.t, kind)
-		reconciler, err = r.newReconcilerForCRD(crd, defaulters, jg)
-	}
+	gvk := u.GroupVersionKind()
+	crd, err := crdloader.GetCRDForGVK(gvk)
 	if err != nil {
-		r.t.Fatalf("error creating reconciler: %v", err)
+		r.t.Fatal(err)
 	}
-	return reconciler
-}
 
-func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition, defaulters []k8s.Defaulter, jg jitter.Generator) (reconcile.Reconciler, error) {
-	if crd.GetLabels()[crdgeneration.ManagedByKCCLabel] == "true" {
-		// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
-		// to nil to disable reconciler's ability to create asynchronous
-		// watches on unready dependencies. This feature of the reconciler
-		// is unnecessary for our tests since we reconcile each dependency
-		// first before the resource under test is reconciled. Overall,
-		// the feature adds risk of complications due to it's multi-threaded
-		// nature.
-		var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
-		var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
-
-		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
-			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
-		}
-		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
-			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
-		}
-		gk := schema.GroupKind{Group: crd.Spec.Group, Kind: crd.Spec.Names.Kind}
-		if registry.IsDirectByGK(gk) {
-			model, err := registry.GetModel(gk)
-			if err != nil {
-				return nil, err
-			}
-			gvk, found := registry.PreferredGVK(gk)
-			if !found {
-				return nil, fmt.Errorf("no preferred GVK for %v", gk)
-			}
-
-			return directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, jg)
-		}
+	rt, err := ReconcilerTypeForObject(u)
+	if err != nil {
+		r.t.Fatal(err)
 	}
-	return nil, fmt.Errorf("CRD format not recognized")
+
+	switch rt {
+	case ReconcilerTypeIAMPolicy:
+		reconciler, err := policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		if err != nil {
+			r.t.Fatalf("error creating reconciler: %v", err)
+		}
+		return reconciler
+	case ReconcilerTypeIAMPartialPolicy:
+		reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		if err != nil {
+			r.t.Fatalf("error creating reconciler: %v", err)
+		}
+		return reconciler
+	case ReconcilerTypeIAMPolicyMember:
+		reconciler, err := policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		if err != nil {
+			r.t.Fatalf("error creating reconciler: %v", err)
+		}
+		return reconciler
+	case ReconcilerTypeIAMAuditConfig:
+		reconciler, err := auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		if err != nil {
+			r.t.Fatalf("error creating reconciler: %v", err)
+		}
+		return reconciler
+	case ReconcilerTypeTerraform:
+		reconciler, err := tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		if err != nil {
+			r.t.Fatalf("error creating reconciler: %v", err)
+		}
+		return reconciler
+	case ReconcilerTypeDCL:
+		// Create DCL reconciler.
+		reconciler, err := dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		if err != nil {
+			r.t.Fatalf("error creating reconciler: %v", err)
+		}
+		return reconciler
+	case ReconcilerTypeDirect:
+		gk := gvk.GroupKind()
+		model, err := registry.GetModel(gk)
+		if err != nil {
+			r.t.Fatal(err)
+		}
+		gvk, found := registry.PreferredGVK(gk)
+		if !found {
+			r.t.Fatalf("no preferred GVK for %v", gk)
+		}
+		reconciler, err := directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, jg)
+		if err != nil {
+			r.t.Fatalf("error creating reconciler: %v", err)
+		}
+		return reconciler
+	}
+
+	r.t.Fatalf("no reconciler found for: %v", gvk)
+	return nil
 }
