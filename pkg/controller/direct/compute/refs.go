@@ -280,7 +280,7 @@ func ResolveComputeTargetGrpcProxy(ctx context.Context, reader client.Reader, sr
 	computeTargetGrpcProxy, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "ComputeTargetGrpcProxy",
+		Kind:    "ComputeTargetGRPCProxy",
 	})
 	if err != nil {
 		return nil, err
@@ -575,6 +575,16 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 
 			}
 			obj.Spec.Target.ServiceAttachmentRef.External = serviceAttachmentRef.External
+		}
+
+		// Get target ComputeTargetGRPCProxyRef
+		if obj.Spec.Target.TargetGRPCProxyRef != nil {
+			targetGRPCProxyRef, err := ResolveComputeTargetGrpcProxy(ctx, reader, obj, obj.Spec.Target.TargetGRPCProxyRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.TargetGRPCProxyRef.External = targetGRPCProxyRef.External
 		}
 
 		// Get target ComputeTargetHTTPProxy
