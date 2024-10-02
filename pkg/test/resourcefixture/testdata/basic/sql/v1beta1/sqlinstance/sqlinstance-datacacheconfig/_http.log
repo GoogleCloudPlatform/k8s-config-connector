@@ -47,7 +47,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     },
     "pricingPlan": "PER_USE",
     "storageAutoResize": true,
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-2",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -235,7 +235,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-2",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"

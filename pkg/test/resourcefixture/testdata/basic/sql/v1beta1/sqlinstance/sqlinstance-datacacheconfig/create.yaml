@@ -34,4 +34,5 @@ spec:
     # explicity specified.
     locationPreference:
       zone: us-central1-a
-    tier: db-custom-1-3840
+    # ENTERPRISE_PLUS edition requires using preset (non-custom) tiers.
+    tier: db-perf-optimized-N-2
