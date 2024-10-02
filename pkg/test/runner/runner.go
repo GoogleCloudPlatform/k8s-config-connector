@@ -85,7 +85,7 @@ func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T
 				t.Fatalf("error creating dependecy '%v' for resource '%v/%v': %v", u.GetKind(), testContext.CreateUnstruct.GetName(), testContext.CreateUnstruct.GetKind(), err)
 			}
 			cleanupFuncs = append(cleanupFuncs, sysContext.Reconciler.BuildCleanupFunc(ctx, u, testreconciler.CleanupPolicyAlways))
-			sysContext.Reconciler.ReconcileIfManagedByKCC(ctx, u, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, u), nil)
+			sysContext.Reconciler.Reconcile(ctx, u, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, u), nil)
 		}
 		dependencyCleanup := func() {
 			for i := len(cleanupFuncs) - 1; i >= 0; i-- {

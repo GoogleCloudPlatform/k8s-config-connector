@@ -68,9 +68,8 @@ const (
 )
 
 var (
-	ExpectedSuccessfulReconcileResultFor = expectedSuccessfulReconcileResultFor
-	ExpectedUnsuccessfulReconcileResult  = reconcile.Result{Requeue: false, RequeueAfter: 0 * time.Minute}
-	ExpectedRequeueReconcileStruct       = reconcile.Result{Requeue: true}
+	ExpectedUnsuccessfulReconcileResult = reconcile.Result{Requeue: false, RequeueAfter: 0 * time.Minute}
+	ExpectedRequeueReconcileStruct      = reconcile.Result{Requeue: true}
 )
 
 type TestReconciler struct {
@@ -115,25 +114,21 @@ func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Pro
 	}
 }
 
-func (r *TestReconciler) ReconcileIfManagedByKCC(ctx context.Context, unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegexp *regexp.Regexp) {
-	if k8s.IsManagedByKCC(unstruct.GroupVersionKind()) {
-		r.Reconcile(ctx, unstruct, expectedResult, expectedErrorRegexp)
-	} else {
+func (r *TestReconciler) Reconcile(ctx context.Context, unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	r.t.Helper()
+	if !k8s.IsManagedByKCC(unstruct.GroupVersionKind()) {
 		// Some objects like Secrets should not be reconciled since they are
 		// not managed by KCC.
 		log.Printf("%v %v/%v is not managed by KCC; skipping reconciliation",
 			unstruct.GetKind(), unstruct.GetNamespace(), unstruct.GetName())
+		return
 	}
-}
-
-func (r *TestReconciler) Reconcile(ctx context.Context, unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
-	r.t.Helper()
+	reconciler := r.newReconcilerForObject(unstruct)
 	om := metav1.ObjectMeta{
 		Name:      unstruct.GetName(),
 		Namespace: unstruct.GetNamespace(),
 	}
 	kind := unstruct.GetKind()
-	reconciler := r.NewReconcilerForKind(kind)
 	testcontroller.RunReconcilerAssertResults(ctx, r.t, reconciler, kind, om, expectedResult, expectedErrorRegex)
 }
 
@@ -161,12 +156,24 @@ func (r *TestReconciler) BuildCleanupFunc(ctx context.Context, unstruct *unstruc
 			}
 			r.t.Errorf("error deleting %v: %v", unstruct, err)
 		}
-		r.ReconcileIfManagedByKCC(ctx, unstruct, ExpectedSuccessfulReconcileResultFor(r, unstruct), nil)
+		r.Reconcile(ctx, unstruct, ExpectedSuccessfulReconcileResultFor(r, unstruct), nil)
 	}
 }
 
-func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler {
+func ExpectedSuccessfulReconcileResultFor(r *TestReconciler, u *unstructured.Unstructured) reconcile.Result {
+	if val, ok := k8s.GetAnnotation(k8s.ReconcileIntervalInSecondsAnnotation, u); ok {
+		reconcileInterval, err := reconciliationinterval.MeanReconcileReenqueuePeriodFromAnnotation(val)
+		if err != nil {
+			return reconcile.Result{}
+		}
+		return reconcile.Result{RequeueAfter: reconcileInterval}
+	}
+	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(u.GroupVersionKind(), r.smLoader, r.dclConverter.MetadataLoader)}
+}
+
+func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) reconcile.Reconciler {
 	r.t.Helper()
+	kind := u.GetKind()
 	var reconciler reconcile.Reconciler
 	var err error
 	// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
@@ -241,15 +248,4 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")
-}
-
-func expectedSuccessfulReconcileResultFor(r *TestReconciler, u *unstructured.Unstructured) reconcile.Result {
-	if val, ok := k8s.GetAnnotation(k8s.ReconcileIntervalInSecondsAnnotation, u); ok {
-		reconcileInterval, err := reconciliationinterval.MeanReconcileReenqueuePeriodFromAnnotation(val)
-		if err != nil {
-			return reconcile.Result{}
-		}
-		return reconcile.Result{RequeueAfter: reconcileInterval}
-	}
-	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(u.GroupVersionKind(), r.smLoader, r.dclConverter.MetadataLoader)}
 }
