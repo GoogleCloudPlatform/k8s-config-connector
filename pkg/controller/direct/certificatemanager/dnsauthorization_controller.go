@@ -71,6 +71,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	log := klog.FromContext(ctx).WithName(ctrlName)
 	obj := &krm.CertificateManagerDNSAuthorization{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -97,13 +98,12 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	// Get location
 	location := obj.Spec.Location
 	if location == "" {
+		log.V(2).Info("Location field is not specified; use `global` as the default location")
 		location = "global"
 	}
 
 	var id *CertificateManagerDNSAuthorizationIdentity
-	// TODO: Add ExternalRef when field is added
-	// externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	externalRef := ""
+	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
 		id = BuildID(projectID, location, resourceID)
 	} else {
