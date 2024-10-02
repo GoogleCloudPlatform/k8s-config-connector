@@ -39,7 +39,7 @@ type BigQueryConnectionConnectionSpec struct {
 
 	// The BigQuery ConnectionID. This is a server-generated ID in the UUID format.
 	// If not provided, ConfigConnector will create a new Connection and store the UUID in `status.serviceGeneratedID` field.
-	// + optional
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// User provided display name for the connection.

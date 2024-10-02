@@ -28,7 +28,7 @@ var BigQueryDatasetGVK = GroupVersion.WithKind("BigQueryDataset")
 // +kcc:proto=google.cloud.bigquery.v2.dataset
 type BigQueryDatasetSpec struct {
 	// The BigQueryDataset name. If not given, the metadata.name will be used.
-	// + optional
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// An array of objects that define dataset access for one or more entities.
