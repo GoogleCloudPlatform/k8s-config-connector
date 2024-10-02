@@ -40,4 +40,14 @@ spec:
   urlMapRef:
     name: computeurlmap-${uniqueId}
   validateForProxyless: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetGRPCProxy
+metadata:
+  name: computetargetgrpcproxy-2-${uniqueId}
+spec:
+  description: Another target gRPC proxy intended for load balancing gRPC traffic, referenced by global forwarding rules. References a URL map which specifies how traffic routes to gRPC backend services.
+  urlMapRef:
+    name: computeurlmap-${uniqueId}
+  validateForProxyless: true
 

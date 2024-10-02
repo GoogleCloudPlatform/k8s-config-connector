@@ -16,13 +16,13 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: "value-two"
   name: computeregionalforwardingrule-${uniqueId}
 spec:
   description: "A global forwarding rule"
   target:
     targetGRPCProxyRef:
-      name: computetargetgrpcproxy-${uniqueId}
+      name: computetargetgrpcproxy-2-${uniqueId}
   ipProtocol: "TCP"
   # targetGrpcProxy cannot be used with load balancing scheme EXTERNAL
   loadBalancingScheme: INTERNAL_SELF_MANAGED

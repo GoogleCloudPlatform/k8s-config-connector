@@ -7,10 +7,10 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
+    label-one: value-two
   name: computeregionalforwardingrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -23,7 +23,7 @@ spec:
   portRange: "100"
   target:
     targetGRPCProxyRef:
-      name: computetargetgrpcproxy-${uniqueId}
+      name: computetargetgrpcproxy-2-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -34,5 +34,5 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   externalRef: //compute.googleapis.com/projects/${projectId}/global/forwardingrules/computeregionalforwardingrule-${uniqueId}
   labelFingerprint: abcdef0123A=
-  observedGeneration: 1
+  observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}
