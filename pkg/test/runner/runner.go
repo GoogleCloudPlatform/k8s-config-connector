@@ -79,7 +79,19 @@ func RunAllWithObjectCreated(ctx context.Context, t *testing.T, mgr manager.Mana
 
 func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
 	testFunc := func(ctx context.Context, t *testing.T, testContext TestContext, sysContext SystemContext) {
-		dependencyCleanup := sysContext.Reconciler.CreateAndReconcile(ctx, testContext.DependencyUnstructs, testreconciler.CleanupPolicyAlways, testContext.CreateUnstruct)
+		cleanupFuncs := make([]func(), 0, len(testContext.DependencyUnstructs))
+		for _, u := range testContext.DependencyUnstructs {
+			if err := sysContext.Manager.GetClient().Create(ctx, u); err != nil {
+				t.Fatalf("error creating dependecy '%v' for resource '%v/%v': %v", u.GetKind(), testContext.CreateUnstruct.GetName(), testContext.CreateUnstruct.GetKind(), err)
+			}
+			cleanupFuncs = append(cleanupFuncs, sysContext.Reconciler.BuildCleanupFunc(ctx, u, testreconciler.CleanupPolicyAlways))
+			sysContext.Reconciler.ReconcileIfManagedByKCC(ctx, u, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, u), nil)
+		}
+		dependencyCleanup := func() {
+			for i := len(cleanupFuncs) - 1; i >= 0; i-- {
+				cleanupFuncs[i]()
+			}
+		}
 		defer dependencyCleanup()
 		testCaseFunc(ctx, t, testContext, sysContext)
 	}
