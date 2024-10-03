@@ -233,6 +233,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.actual.Name
 
 	req := &bigqueryanalyticshubpb.UpdateDataExchangeRequest{
 		UpdateMask:   updateMask,

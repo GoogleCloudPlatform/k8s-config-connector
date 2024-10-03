@@ -55,10 +55,6 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 	/* Immutable. The name of the location this data exchange. */
 	Location string `json:"location"`
 
-	/* Output only. The resource name of the data exchange. e.g. `projects/myproject/locations/US/dataExchanges/123`. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* Optional. Email or URL of the primary point of contact of the data exchange. Max Length: 1000 bytes. */
 	// +optional
 	PrimaryContact *string `json:"primaryContact,omitempty"`
