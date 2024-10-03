@@ -74,7 +74,9 @@ func (f *generatedFile) Write(addCopyright bool) error {
 		return nil
 	}
 
-	dir := f.OutputDir()
+	// This will make it such that if f.key.FileName defines a directory too,
+	// we can write out the folder path
+	dir := filepath.Dir(filepath.Join(f.OutputDir(), f.key.FileName))
 
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("creating directory %q: %w", dir, err)
@@ -88,7 +90,7 @@ func (f *generatedFile) Write(addCopyright bool) error {
 
 	f.contents.WriteTo(&w)
 
-	p := filepath.Join(dir, f.key.FileName)
+	p := filepath.Join(f.OutputDir(), f.key.FileName)
 	klog.Infof("writing file %v", p)
 	if err := os.WriteFile(p, w.Bytes(), 0644); err != nil {
 		return fmt.Errorf("writing %q: %w", p, err)

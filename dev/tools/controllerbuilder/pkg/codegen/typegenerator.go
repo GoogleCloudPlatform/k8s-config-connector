@@ -42,13 +42,15 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 type TypeGenerator struct {
 	generatorBase
 	goPackage             string
+	goKind                string
 	resourceProtoFullName string
 	visitedMessages       []protoreflect.MessageDescriptor
 }
 
-func NewTypeGenerator(goPackage string, outputBaseDir, resourceProtoFullName string) *TypeGenerator {
+func NewTypeGenerator(goKind, goPackage, outputBaseDir, resourceProtoFullName string) *TypeGenerator {
 	g := &TypeGenerator{
 		goPackage:             goPackage,
+		goKind:                goKind,
 		resourceProtoFullName: resourceProtoFullName,
 	}
 	g.generatorBase.init(outputBaseDir)
@@ -116,7 +118,7 @@ func (g *TypeGenerator) writeVisitedMessages() {
 
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
-			FileName:  "types.generated.go",
+			FileName:  strings.ToLower(g.goKind) +".types.generated.go",
 		}
 		out := g.getOutputFile(k)
 

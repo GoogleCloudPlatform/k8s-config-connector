@@ -17,7 +17,6 @@ package codegen
 import (
 	"fmt"
 	"io"
-	"path/filepath"
 	"sort"
 	"strings"
 
@@ -140,6 +139,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 			ProtoGoPackage: protoGoPackage,
 			KRMType:        goType,
 			Proto:          msg,
+			GoStructFile:   goType.FilePath,
 		})
 	}
 
@@ -153,10 +153,8 @@ type typePair struct {
 	ProtoGoPackage string
 	KRMType        *gocode.GoStruct
 	Proto          protoreflect.MessageDescriptor
-}
-
-func lastGoComponent(goPackage string) string {
-	return filepath.Base(goPackage)
+	// the file path that this pair has a go struct in
+	GoStructFile   string
 }
 
 func (v *MapperGenerator) GenerateMappers() error {
@@ -169,9 +167,21 @@ func (v *MapperGenerator) GenerateMappers() error {
 			continue
 		}
 
+		// for any resource_types.go files we want to place the mapped pairs into their own
+		// resource_name/resource_mapper.generated.go files. Everything else goes into a top level mapper.generated.go
+		fileNameToWriteTo := "mapper.generated.go"
+		paths := strings.Split(pair.GoStructFile, "/")
+		lastPath := paths[len(paths)-1]
+		mapperPackageName := goPackage
+		if strings.Contains(lastPath, "_types.go") {
+			resourceName := strings.TrimPrefix(strings.Split(lastPath, "_")[0], goPackage)
+			mapperPackageName = resourceName
+			fileNameToWriteTo = resourceName + "/" + resourceName + "_" + fileNameToWriteTo
+		}
+
 		k := generatedFileKey{
 			GoPackage: goPackage,
-			FileName:  "mapper.generated.go",
+			FileName: fileNameToWriteTo,
 		}
 		out := v.getOutputFile(k)
 		if out.contents.Len() == 0 {
@@ -184,7 +194,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 				pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 			}
 
-			out.contents.WriteString(fmt.Sprintf("package %s\n\n", lastGoComponent(goPackage)))
+			out.contents.WriteString(fmt.Sprintf("package %s\n\n", mapperPackageName))
 			out.contents.WriteString("import (\n")
 			out.contents.WriteString(fmt.Sprintf("\tpb %q\n", pbPackage))
 			out.contents.WriteString(fmt.Sprintf("\tkrm %q\n", krmPackage))

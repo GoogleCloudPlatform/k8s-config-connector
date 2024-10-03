@@ -54,6 +54,8 @@ type GoStruct struct {
 	Fields    []*StructField
 
 	Comments []string
+	// the FilePath that this GoStruct cam be found in
+	FilePath string
 }
 
 type StructField struct {
@@ -119,58 +121,59 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 	var errs []error
 	var comments []ast.Node
 
-	for _, pkgFile := range pkg.Files {
+	for filePath, pkgFile := range pkg.Files {
 		var pkgComments []ast.Node
 		for _, comment := range pkgFile.Comments {
 			pkgComments = append(pkgComments, comment)
 		}
-		comments, err := parseComments(pkgComments)
+		parsedComments, err := parseComments(pkgComments)
 		if err != nil {
 			return err
 		}
-		p.Comments = append(p.Comments, comments...)
-	}
+		p.Comments = append(p.Comments, parsedComments...)
 
-	ast.Inspect(pkg, func(n ast.Node) bool {
-		if n == nil {
-			return true
-		}
-		switch n := n.(type) {
-		case *ast.TypeSpec:
-			switch def := n.Type.(type) {
-			case *ast.StructType:
-				if err := p.addStruct(n.Name, def, comments); err != nil {
-					errs = append(errs, err)
-				}
-			case *ast.Ident:
-				// type alias
-			case *ast.InterfaceType:
-				// always skip, nothing to generate for interface
-			default:
-				errs = append(errs, fmt.Errorf("unhandled type spec in %q: %T, %+v", n.Name, n.Type, n.Type))
+		ast.Inspect(pkgFile, func(n ast.Node) bool {
+			if n == nil {
+				return true
 			}
-			comments = nil
-
-		case *ast.Comment:
-			comments = append(comments, n)
-		case *ast.CommentGroup:
-			// A CommentGroup contains a list of comments
-			// Do not truncate comments when we encounter the group
-		default:
-			// n != nil
-			comments = nil
-		}
-
-		return true
-	})
+			switch n := n.(type) {
+			case *ast.TypeSpec:
+				switch def := n.Type.(type) {
+				case *ast.StructType:
+					if err := p.addStruct(n.Name, def, comments, filePath); err != nil {
+						errs = append(errs, err)
+					}
+				case *ast.Ident:
+					// type alias
+				case *ast.InterfaceType:
+					// always skip, nothing to generate for interface
+				default:
+					errs = append(errs, fmt.Errorf("unhandled type spec in %q: %T, %+v", n.Name, n.Type, n.Type))
+				}
+				comments = nil
+	
+			case *ast.Comment:
+				comments = append(comments, n)
+			case *ast.CommentGroup:
+				// A CommentGroup contains a list of comments
+				// Do not truncate comments when we encounter the group
+			default:
+				// n != nil
+				comments = nil
+			}
+	
+			return true
+		})
+	}
 
 	return errors.Join(errs...)
 }
 
-func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast.Node) error {
+func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast.Node, filePath string) error {
 	goStruct := &GoStruct{
 		GoPackage: p.GoPackage,
 		Name:      name.String(),
+		FilePath:  filePath,
 	}
 
 	for _, field := range def.Fields.List {
