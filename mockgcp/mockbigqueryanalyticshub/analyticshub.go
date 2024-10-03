@@ -16,6 +16,7 @@ package mockbigqueryanalyticshub
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -75,13 +76,24 @@ func (a *analyticsHubServer) UpdateDataExchange(ctx context.Context, request *pb
 	fqn := name.String()
 	obj := &pb.DataExchange{}
 	if err := a.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("mockgcp server did not find resource: %w", err)
 	}
 
 	for _, path := range request.GetUpdateMask().Paths {
 		switch path {
+		case "displayName":
+			obj.DisplayName = request.GetDataExchange().GetDisplayName()
+		case "description":
+			obj.Description = request.GetDataExchange().GetDescription()
+		case "documentation":
+			obj.Documentation = request.GetDataExchange().GetDocumentation()
+		case "primaryContact":
+			obj.PrimaryContact = request.GetDataExchange().GetPrimaryContact()
+		case "discoveryType":
+			obj.DiscoveryType = request.GetDataExchange().DiscoveryType
+
 		default:
-			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
+			return nil, fmt.Errorf("field %q is not yet handled in mock", path)
 		}
 	}
 
