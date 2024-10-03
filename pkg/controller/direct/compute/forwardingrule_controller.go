@@ -323,10 +323,37 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
 	forwardingRule.Labels = desired.Labels
 
-	// Patch only support update on networkTier field, which KCC does not support yet.
-	// Use setTarget and setLabels to update target and labels fields.
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
+	if !reflect.DeepEqual(forwardingRule.AllowGlobalAccess, a.actual.AllowGlobalAccess) {
+		// To match the request body in TF-controller log
+		// https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/compute/resource_compute_forwarding_rule.go#L1151
+		reqBody := &computepb.ForwardingRule{AllowGlobalAccess: forwardingRule.AllowGlobalAccess}
+		if a.id.location == "global" {
+			// TF does not support allowGlobalAccess field for global forwarding rule
+			// Underlying API as well, error message: `Field allow-global-access is only supported for regional INTERNAL
+			// forwarding rules with backend service/target instance or regional INTERNAL_MANAGED forwarding rules.`
+			forwardingRule.AllowGlobalAccess = nil
+		} else {
+			patchReq := &computepb.PatchForwardingRuleRequest{
+				ForwardingRule:         a.id.forwardingRule,
+				ForwardingRuleResource: reqBody,
+				Project:                a.id.project,
+				Region:                 a.id.location,
+			}
+			op, err = a.forwardingRulesClient.Patch(ctx, patchReq)
+		}
+		if err != nil {
+			return fmt.Errorf("updating ComputeForwardingRule %s: %w", a.fullyQualifiedName(), err)
+		}
+		err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting ComputeForwardingRule %s update failed: %w", a.fullyQualifiedName(), err)
+		}
+		log.V(2).Info("successfully updated ComputeForwardingRule", "name", a.fullyQualifiedName())
+	}
+
+	// Use setTarget and setLabels to update target and labels fields.
 	if !reflect.DeepEqual(forwardingRule.Labels, a.actual.Labels) {
 		op, err := a.setLabels(ctx, a.actual.LabelFingerprint, forwardingRule.Labels)
 		if err != nil {
