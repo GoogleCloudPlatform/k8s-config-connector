@@ -201,6 +201,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceSchedule": null,
   "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}",
   "network": "",
@@ -680,6 +681,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "name": "projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "networkConfig": null,
   "nodes": [],
+  "outboundPublicIpAddresses": [],
   "pscInstanceConfig": null,
   "publicIpAddress": "",
   "queryInsightsConfig": null,
@@ -974,6 +976,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceSchedule": null,
   "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}",
   "network": "",

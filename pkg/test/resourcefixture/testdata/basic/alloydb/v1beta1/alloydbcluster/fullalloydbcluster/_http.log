@@ -557,6 +557,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceSchedule": null,
   "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
   "network": "",
@@ -706,6 +707,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceSchedule": null,
   "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
   "network": "",
