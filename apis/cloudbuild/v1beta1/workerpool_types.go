@@ -32,7 +32,6 @@ type CloudBuildWorkerPoolSpec struct {
 	DisplayName string `json:"displayName,omitempty"`
 
 	// The `WorkerPool` name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +required
