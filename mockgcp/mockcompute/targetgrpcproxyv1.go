@@ -123,7 +123,7 @@ func (n *targetGrpcProxyName) String() string {
 func (s *MockService) parseTargetGrpcProxyName(name string) (*targetGrpcProxyName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[3] == "targetGrpcProxies" {
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "targetGrpcProxies" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
