@@ -17,7 +17,7 @@
 set -o errexit
 
 # Automatically updated by dev/codebots/update-golang-version
-GO_VERSION="1.22.6"
+GO_VERSION="1.23.2"
 
 sudo apt-get install wget
 wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
