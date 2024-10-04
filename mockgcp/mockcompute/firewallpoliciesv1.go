@@ -82,76 +82,7 @@ func (s *FirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertFirewallP
 
 	// Use default rules
 	if obj.Rules == nil {
-		obj.Rules = []*pb.FirewallPolicyRule{
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default egress rule ipv6"),
-				Direction:     PtrTo("EGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					DestIpRanges: []string{"::/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483644)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default ingress rule ipv6"),
-				Direction:     PtrTo("INGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					SrcIpRanges: []string{"::/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483645)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default egress rule"),
-				Direction:     PtrTo("EGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					DestIpRanges: []string{"0.0.0.0/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483646)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default ingress rule"),
-				Direction:     PtrTo("INGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					SrcIpRanges: []string{"0.0.0.0/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483647)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-		}
+		populateDefaultRules(obj)
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -197,7 +128,7 @@ func (s *FirewallPoliciesV1) Patch(ctx context.Context, req *pb.PatchFirewallPol
 		// patch operation finished super fast
 		Progress: PtrTo(int32(100)),
 		Status:   PtrTo(pb.Operation_DONE),
-		EndTime:  PtrTo("2024-04-01T12:34:56.123456Z"),
+		EndTime:  PtrTo(s.nowString()),
 	}
 	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
 		return obj, nil
@@ -242,83 +173,6 @@ func (s *FirewallPoliciesV1) GetRule(ctx context.Context, req *pb.GetRuleFirewal
 		return nil, err
 	}
 
-	if obj.Rules == nil {
-		// add default rule
-		obj.Rules = []*pb.FirewallPolicyRule{
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default egress rule ipv6"),
-				Direction:     PtrTo("EGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					DestIpRanges: []string{"::/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483644)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default ingress rule ipv6"),
-				Direction:     PtrTo("INGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					SrcIpRanges: []string{"::/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483645)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default egress rule"),
-				Direction:     PtrTo("EGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					DestIpRanges: []string{"0.0.0.0/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483646)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-			{
-				Action:        PtrTo("goto_next"),
-				Description:   PtrTo("default ingress rule"),
-				Direction:     PtrTo("INGRESS"),
-				EnableLogging: PtrTo(false),
-				Kind:          PtrTo("compute#firewallPolicyRule"),
-				Match: &pb.FirewallPolicyRuleMatcher{
-					SrcIpRanges: []string{"0.0.0.0/0"},
-					Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
-						{
-							IpProtocol: PtrTo("all"),
-						},
-					},
-				},
-				Priority:       PtrTo(int32(2147483647)),
-				RuleTupleCount: PtrTo(int32(2)),
-			},
-		}
-		if err := s.storage.Update(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
-	}
-
 	var rule *pb.FirewallPolicyRule
 	rules := obj.GetRules()
 
@@ -349,17 +203,7 @@ func (s *FirewallPoliciesV1) AddRule(ctx context.Context, req *pb.AddRuleFirewal
 	}
 
 	r := req.GetFirewallPolicyRuleResource()
-	// RuleTupleCount is output only, calculation of the complexity of a single firewall policy rule.
-	// Manually set different ruleTupleCount to match the realGCP log
-	if r.TargetResources != nil {
-		r.RuleTupleCount = PtrTo(int32(4))
-	} else {
-		r.RuleTupleCount = PtrTo(int32(2))
-	}
-	r.Kind = PtrTo("compute#firewallPolicyRule")
-	if r.Description == nil {
-		r.Description = PtrTo("")
-	}
+	mockFieldValuesForRule(r)
 
 	obj.Rules = []*pb.FirewallPolicyRule{r}
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -397,17 +241,7 @@ func (s *FirewallPoliciesV1) PatchRule(ctx context.Context, req *pb.PatchRuleFir
 			// update the rule
 			r := req.GetFirewallPolicyRuleResource()
 			r.Priority = PtrTo(*rule.Priority)
-			// RuleTupleCount is output only, calculation of the complexity of a single firewall policy rule.
-			// Manually set different ruleTupleCount to match the realGCP log
-			if r.TargetResources != nil {
-				r.RuleTupleCount = PtrTo(int32(4))
-			} else {
-				r.RuleTupleCount = PtrTo(int32(2))
-			}
-			r.Kind = PtrTo("compute#firewallPolicyRule")
-			if r.Description == nil {
-				r.Description = PtrTo("")
-			}
+			mockFieldValuesForRule(r)
 			rules = append(rules, r)
 		} else {
 			rules = append(rules, rule)
@@ -453,7 +287,14 @@ func (s *FirewallPoliciesV1) RemoveRule(ctx context.Context, req *pb.RemoveRuleF
 		}
 	}
 
-	obj.Rules = rules
+	if len(rules) == 0 {
+		// When the target policy has no rules, i.e. all the custom rules are deleted,
+		// we update the policy to add default rules to it.
+		populateDefaultRules(obj)
+	} else {
+		obj.Rules = rules
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -482,12 +323,99 @@ func (n *firewallPolicyName) String() string {
 func (s *MockService) parseFirewallPolicyName(name string) (*firewallPolicyName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 4 && tokens[2] == "firewallPolicies" {
+	if len(tokens) == 4 && tokens[0] == "locations" && tokens[1] == "global" && tokens[2] == "firewallPolicies" {
 		name := &firewallPolicyName{
 			Name: tokens[3],
 		}
 		return name, nil
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+func populateDefaultRules(obj *pb.FirewallPolicy) {
+	obj.Rules = []*pb.FirewallPolicyRule{
+		{
+			Action:        PtrTo("goto_next"),
+			Description:   PtrTo("default egress rule ipv6"),
+			Direction:     PtrTo("EGRESS"),
+			EnableLogging: PtrTo(false),
+			Kind:          PtrTo("compute#firewallPolicyRule"),
+			Match: &pb.FirewallPolicyRuleMatcher{
+				DestIpRanges: []string{"::/0"},
+				Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+					{
+						IpProtocol: PtrTo("all"),
+					},
+				},
+			},
+			Priority:       PtrTo(int32(2147483644)),
+			RuleTupleCount: PtrTo(int32(2)),
+		},
+		{
+			Action:        PtrTo("goto_next"),
+			Description:   PtrTo("default ingress rule ipv6"),
+			Direction:     PtrTo("INGRESS"),
+			EnableLogging: PtrTo(false),
+			Kind:          PtrTo("compute#firewallPolicyRule"),
+			Match: &pb.FirewallPolicyRuleMatcher{
+				SrcIpRanges: []string{"::/0"},
+				Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+					{
+						IpProtocol: PtrTo("all"),
+					},
+				},
+			},
+			Priority:       PtrTo(int32(2147483645)),
+			RuleTupleCount: PtrTo(int32(2)),
+		},
+		{
+			Action:        PtrTo("goto_next"),
+			Description:   PtrTo("default egress rule"),
+			Direction:     PtrTo("EGRESS"),
+			EnableLogging: PtrTo(false),
+			Kind:          PtrTo("compute#firewallPolicyRule"),
+			Match: &pb.FirewallPolicyRuleMatcher{
+				DestIpRanges: []string{"0.0.0.0/0"},
+				Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+					{
+						IpProtocol: PtrTo("all"),
+					},
+				},
+			},
+			Priority:       PtrTo(int32(2147483646)),
+			RuleTupleCount: PtrTo(int32(2)),
+		},
+		{
+			Action:        PtrTo("goto_next"),
+			Description:   PtrTo("default ingress rule"),
+			Direction:     PtrTo("INGRESS"),
+			EnableLogging: PtrTo(false),
+			Kind:          PtrTo("compute#firewallPolicyRule"),
+			Match: &pb.FirewallPolicyRuleMatcher{
+				SrcIpRanges: []string{"0.0.0.0/0"},
+				Layer4Configs: []*pb.FirewallPolicyRuleMatcherLayer4Config{
+					{
+						IpProtocol: PtrTo("all"),
+					},
+				},
+			},
+			Priority:       PtrTo(int32(2147483647)),
+			RuleTupleCount: PtrTo(int32(2)),
+		},
+	}
+}
+
+func mockFieldValuesForRule(r *pb.FirewallPolicyRule) {
+	// RuleTupleCount is output only, calculation of the complexity of a single firewall policy rule.
+	// Manually set different ruleTupleCount to match the realGCP log
+	if r.TargetResources != nil {
+		r.RuleTupleCount = PtrTo(int32(4))
+	} else {
+		r.RuleTupleCount = PtrTo(int32(2))
+	}
+	r.Kind = PtrTo("compute#firewallPolicyRule")
+	if r.Description == nil {
+		r.Description = PtrTo("")
 	}
 }

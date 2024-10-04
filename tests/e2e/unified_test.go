@@ -530,7 +530,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
-					addReplacement("pscConnectionId", "111111111111")
 
 					// Extract resource targetID numbers from compute operations
 					for _, event := range events {
