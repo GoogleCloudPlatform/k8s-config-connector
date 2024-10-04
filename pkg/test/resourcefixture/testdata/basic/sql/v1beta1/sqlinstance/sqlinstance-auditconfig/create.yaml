@@ -16,8 +16,6 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: sqlinstance-auditconfig-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/state-into-spec: absent
 spec:
   databaseVersion: SQLSERVER_2022_EXPRESS
   region: us-central1
