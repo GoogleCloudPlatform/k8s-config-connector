@@ -169,7 +169,7 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentNoNetworkProjectID.Key), fmt.Sprintf("\"%s\"", testgcp.TestDependentNoNetworkProjectID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("organizations/${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("organizations/%s", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("\"%s\"", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IsolatedTestOrgName), testgcp.GetIsolatedTestOrgName(t), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IsolatedTestOrgName.Key), testgcp.IsolatedTestOrgName.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestBillingAccountID.Key), testgcp.TestBillingAccountID.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestBillingAccountIDForBillingResources.Key), testgcp.TestBillingAccountIDForBillingResources.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.FirestoreTestProject.Key), testgcp.FirestoreTestProject.Get(), -1)

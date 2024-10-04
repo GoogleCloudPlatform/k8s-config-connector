@@ -26,5 +26,9 @@ export RUN_TESTS=TestAllInSeries/$1
 # Clear existing artifacts
 rm -rf $(pwd)/artifactz/mock
 
+if [[ -z "${ISOLATED_TEST_ORG_NAME:-}" ]]; then
+  export ISOLATED_TEST_ORG_NAME=isolated-test-org.example.com
+fi
+
 # Run e2e tests against our mockgcp, capturing output
 E2E_GCP_TARGET=mock dev/tasks/run-e2e
