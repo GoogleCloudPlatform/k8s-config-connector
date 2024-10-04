@@ -170,6 +170,18 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 		}
 	}
 
+	if _, ok := (req.Connection.Properties).(*pb.Connection_Spark); ok {
+		if spark := req.Connection.GetSpark(); spark != nil {
+			obj.Properties = &pb.Connection_Spark{
+				Spark: &pb.SparkProperties{
+					MetastoreServiceConfig:   spark.GetMetastoreServiceConfig(),
+					SparkHistoryServerConfig: spark.GetSparkHistoryServerConfig(),
+					ServiceAccountId:         buildDelegationServiceAccountId(),
+				},
+			}
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
