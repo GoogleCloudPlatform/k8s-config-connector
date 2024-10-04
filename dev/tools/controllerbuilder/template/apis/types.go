@@ -4,7 +4,7 @@ type APIArgs struct {
 	Group           string
 	Version         string
 	Kind            string
-	GcpResource     string
+	ProtoResource   string
 	PackageProtoTag string
 	KindProtoTag    string
 }

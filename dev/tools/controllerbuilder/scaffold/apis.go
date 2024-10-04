@@ -35,6 +35,65 @@ type APIScaffolder struct {
 	PackageProtoTag string
 }
 
+func (a *APIScaffolder) RefsFileNotExist(kind, resourceProtoName string) bool {
+	refsFilePath := a.GetRefsFile(kind, resourceProtoName)
+	_, err := os.Stat(refsFilePath)
+	if err == nil {
+		return false
+	}
+	return errors.Is(err, os.ErrNotExist)
+}
+
+func (a *APIScaffolder) GetRefsFile(kind, resourceProtoName string) string {
+	fileName := strings.ToLower(resourceProtoName) + "_reference.go"
+	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
+}
+
+func (a *APIScaffolder) AddRefsFile(kind, resourceProtoName string) error {
+	refsFilePath := a.GetRefsFile(kind, resourceProtoName)
+	cArgs := &apis.APIArgs{
+		Group:           a.Group,
+		Version:         a.Version,
+		Kind:            kind,
+		PackageProtoTag: a.PackageProtoTag,
+		KindProtoTag:    a.PackageProtoTag + "." + resourceProtoName,
+		ProtoResource:   resourceProtoName,
+	}
+	return scaffoldRefsFile(refsFilePath, cArgs)
+}
+
+func ReadFromFile(path string) ([]byte, error) {
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0777)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	out := make([]byte, 1024)
+	i, err := f.Read(out)
+	if err != nil {
+		return nil, fmt.Errorf("read file %s: %w", path, err)
+	}
+	return out[:i], nil
+}
+
+func scaffoldRefsFile(path string, cArgs *apis.APIArgs) error {
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(apis.RefsHeaderTemplate)
+	if err != nil {
+		return fmt.Errorf("parse %s_reference.go template: %w", strings.ToLower(cArgs.Kind), err)
+	}
+	// Apply the APIArgs args to the template
+	out := &bytes.Buffer{}
+	if err := tmpl.Execute(out, cArgs); err != nil {
+		return err
+	}
+	// Write the generated <kind>_types.go
+	if err := WriteToFile(path, out.Bytes()); err != nil {
+		return err
+	}
+	color.HiGreen("New reference file added %s\nPlease EDIT it!\n", path)
+	return nil
+}
+
 func (a *APIScaffolder) TypeFileNotExist(kind string) bool {
 	typeFilePath := a.GetTypeFile(kind)
 	_, err := os.Stat(typeFilePath)
@@ -57,7 +116,7 @@ func (a *APIScaffolder) AddTypeFile(kind, proto string) error {
 		Kind:            kind,
 		PackageProtoTag: a.PackageProtoTag,
 		KindProtoTag:    a.PackageProtoTag + "." + proto,
-		GcpResource:     proto,
+		ProtoResource:   proto,
 	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
 }

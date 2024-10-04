@@ -39,19 +39,8 @@ var funcMap = template.FuncMap{
 }
 
 func Scaffold(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
-	var errs []error
 	if err := generateController(service, kind, cArgs); err != nil {
-		errs = append(errs, err)
-	}
-	if err := generateControllerHelpers(service, kind, cArgs); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) != 0 {
-		var finalError []string
-		for _, err := range errs {
-			finalError = append(finalError, err.Error())
-		}
-		return fmt.Errorf("multiple errors occurred:\n%s", strings.Join(finalError, "\n"))
+		return err
 	}
 	return nil
 }
@@ -84,32 +73,7 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 	return nil
 }
 
-func generateControllerHelpers(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
-	// Generate externalresourece.go used for the controller
-	externalResourcetmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ExternalResourceTemplate)
-	if err != nil {
-		return fmt.Errorf("parse external resource template: %w", err)
-	}
-	externalResourceOutput := &bytes.Buffer{}
-	if err := externalResourcetmpl.Execute(externalResourceOutput, cArgs); err != nil {
-		return err
-	}
-	externalResourceFilePath, err := buildExternalResourcePath(service, kind)
-	if err != nil {
-		return err
-	}
-	// Write the generated <resource>_externalresource.go to  pkg/controller/direct/<service>/<resource>_externalresource.go
-	if err := WriteToFile(externalResourceFilePath, externalResourceOutput.Bytes()); err != nil {
-		return err
-	}
-	if err := FormatImports(externalResourceFilePath, externalResourceOutput.Bytes()); err != nil {
-		return err
-	}
-	color.HiGreen("New helpers for controller %s has been generated.", kind)
-	return nil
-}
-
-func buildResourcePath(service, kind, filename string) (string, error) {
+func buildResourcePath(service, filename string) (string, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return "", fmt.Errorf("get current working directory: %w", err)
@@ -137,12 +101,12 @@ func buildResourcePath(service, kind, filename string) (string, error) {
 
 func buildControllerPath(service, kind string) (string, error) {
 	kind = strings.ToLower(kind)
-	return buildResourcePath(service, kind, kind + "_controller.go")
+	return buildResourcePath(service, kind, kind+"_controller.go")
 }
 
 func buildExternalResourcePath(service, kind string) (string, error) {
 	kind = strings.ToLower(kind)
-	return buildResourcePath(service, kind, kind + "_externalresource.go")
+	return buildResourcePath(service, kind, kind+"_externalresource.go")
 }
 
 func FormatImports(path string, out []byte) error {
@@ -162,7 +126,7 @@ func WriteToFile(path string, out []byte) error {
 		return fmt.Errorf("failed to create directory %q: %w", filepath.Dir(path), err)
 	}
 	// Use O_TRUNC to truncate the file
-	f, err := os.OpenFile(path, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(path, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		return err
 	}

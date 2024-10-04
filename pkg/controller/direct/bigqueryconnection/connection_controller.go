@@ -105,7 +105,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		}
 	}
 
-	connectionRef, err := krm.New(ctx, reader, obj)
+	connectionRef, err := krm.NewBigQueryConnectionConnectionRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
