@@ -260,6 +260,21 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			}
 		}
 
+		id, _, _ := unstructured.NestedString(u.Object, "status", "selfLinkWithId")
+		if id != "" {
+			tokens := strings.Split(id, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				id := tokens[len(tokens)-1]
+				if typeName == "targetGrpcProxies" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, id, "${targetGrpcProxiesID}")
+					})
+				}
+			}
+		}
+
 		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		if resourceID != "" {
 			switch u.GroupVersionKind() {

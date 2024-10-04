@@ -521,11 +521,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "backendService \"projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}\" not found",
+        "message": "The resource 'projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "backendService \"projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}\" not found"
+    "message": "The resource 'projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found"
   }
 }
 

@@ -556,6 +556,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									r.PathIDs[targetId] = "${sslCertificatesId}"
 								case "subnetworks":
 									r.PathIDs[targetId] = "${subnetworkNumber}"
+								case "targetGrpcProxies":
+									r.PathIDs[targetId] = "${targetGrpcProxiesId}"
 								case "targetHttpsProxies":
 									r.PathIDs[targetId] = "${targetHttpsProxiesId}"
 								case "targetSslProxies":
