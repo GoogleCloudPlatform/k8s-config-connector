@@ -73,7 +73,7 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 	return nil
 }
 
-func buildResourcePath(service, filename string) (string, error) {
+func buildResourcePath(service, kind, filename string) (string, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return "", fmt.Errorf("get current working directory: %w", err)
@@ -102,11 +102,6 @@ func buildResourcePath(service, filename string) (string, error) {
 func buildControllerPath(service, kind string) (string, error) {
 	kind = strings.ToLower(kind)
 	return buildResourcePath(service, kind, kind+"_controller.go")
-}
-
-func buildExternalResourcePath(service, kind string) (string, error) {
-	kind = strings.ToLower(kind)
-	return buildResourcePath(service, kind, kind+"_externalresource.go")
 }
 
 func FormatImports(path string, out []byte) error {
