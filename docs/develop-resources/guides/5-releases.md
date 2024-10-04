@@ -1,14 +1,10 @@
 # 5. Release
 
-## 5.1 Turn on your Direct controller (TF/DCL Beta Only)
+## 5.1 Make Direct controller the default (for migration from TF/DCL)
 
-### For TF-based Beta resource
+* Remove the `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` go tag from the CRD struct, and run `dev/tasks/generate-crds` to use Direct as the permanent controller.
 
-* Remove the `cnrm.cloud.google.com/tf2crd: "true"` label from the CRD will turn on SciFi controller. [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/196a4b9a28b59b17936a443d5b36bb65f3c42fd9/apis/apikeys/v1alpha1/apikey_type.go#L44)
-
-### For DCL-based Beta resource
-
-* Remove the `cnrm.cloud.google.com/dcl2crd: "true"` label from the CRD will turn on SciFi controller.
+* Remove all of the duplicate `-direct` mockgcp test cases, and re-record mockgcp interactions (now using direct controller instead of legacy TF/DCL).
 
 ## 5.2 Bump from v1alpha1 to v1beta1
 

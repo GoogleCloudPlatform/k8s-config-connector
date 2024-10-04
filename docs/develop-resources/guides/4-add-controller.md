@@ -41,11 +41,16 @@ hack/compare-mock fixtures/<your_resource_test>
 
 ### Existing DCL/TF based resource
 
-```
-KCC_USE_DIRECT_RECONCILERS=<YOUR KIND> hack/compare-mock fixtures/<your_resource_test>
-```
+Copy all existing test cases and add `-direct` suffix to the test names [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/61e85e1fc5f48de8c5c652cdb73aae48dd7dfecf/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance).
+
+Enable direct controller for the the new test cases by setting the annotation `alpha.cnrm.cloud.google.com/reconciler: direct` in `create.yaml` and `update.yaml`. [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/c0a77915723788e5068a819c93f22c4661e47b6b/pkg/test/resourcefixture/testdata/basic/dataflow/v1beta1/dataflowflextemplatejob/batchdataflowflextemplatejob-direct/create.yaml#L20)
+
+This will override the `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` annotations in the CRD and enable the direct controller for the new test cases. The previously-existing test cases will continue to use the TF/DCL-based controller.
+
+Verify the new `-direct` test cases have equivalent behavior to the existing test cases (though not necessarily the exact same API interactions, if the direct controller achieves the same end result differently than the TF/DCL-based controller).
 
 ### Exit Criteria
 
 * The PRs shall pass the MockGCP tests
 * The roundtrip fuzz tests shall cover all the fields in `spec `and `status.observedState `fields [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92)
+* There are equivalent Direct and TF/DCL-based mockgcp test cases, and all tests are passing.

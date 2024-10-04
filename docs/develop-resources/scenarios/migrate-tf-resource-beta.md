@@ -23,7 +23,7 @@ The PR shall contain the types and deepcopy codes. It shall make modifications t
 
 * You may need to modify the auto-generated `types.go` to keep the existing fields the same (even if it is not following the recommended styles and conventions). You can run `dev/tasks/generate-crds` (repeatedly) to make sure the CRD are the same (comment changes are acceptable).
 
-* Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using TF-based controllers. 
+* Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using TF-based controllers by default (for now).
 
 * You may see some new fields added to the CRD. These are expected since the TF/DCL based resources could be out of date (and users are looking forward to these new fields!). You **shall comment out** those new fields using `/*NOTYET ..*/` in this PR if they are not supported in the TF-based controller yet (we will add them later).
 
@@ -43,10 +43,6 @@ The PR adds the Direct mapper. You can do this together with the previous step o
 
 Follow [Step 4](../guides/4-add-controller.md)
 
-* Use the `KCC_USE_DIRECT_RECONCILERS` flag [exampe](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/dev/tasks/run-e2e#L27). 
-
-*Tips* The `KCC_USE_DIRECT_RECONCILERS` will override the `tf2crd` and `dcl2crd` label to force using the Direct controller, but it will not affect the releases which will still use the TF/DCL based controllers until the Direct controller is ready. This allows developing the API and controller separately. 
-
 ### PR Reviews
 
 * We require the roundtrip fuzz tests to cover all the fields in `spec` and `status.observedState` fields [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92) (For mapper)
@@ -65,8 +61,7 @@ You need to update both `types.go` and `mapping.go`, and may need to adjust the 
 
 ## Release
 
-* Remove the `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` go tag, and run `dev/tasks/generate-crds` to use Direct as the permanent controller (step 5)
-* Remove your resource from the `KCC_USE_DIRECT_RECONCILERS` flag since it is no longer needed.
+Follow [Step 5](../guides/5-releases.md)
 
 ### PR Reviews
 
