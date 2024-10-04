@@ -105,6 +105,32 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		}
 	}
 
+	// Resolve Spark.DataprocClusterRef
+	if obj.Spec.SparkSpec != nil {
+		if obj.Spec.SparkSpec.SparkHistoryServer != nil {
+			if obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef != nil {
+				cluster, err := refs.ResolveDataprocClusterRef(ctx, reader, obj, obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef)
+				if err != nil {
+					return nil, err
+				}
+				obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef.External = cluster.String()
+			}
+		}
+	}
+
+	// Resolve Spark.MetastoreServiceRef
+	if obj.Spec.SparkSpec != nil {
+		if obj.Spec.SparkSpec.MetastoreService != nil {
+			if obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef != nil {
+				service, err := refs.ResolveMetastoreServiceRef(ctx, reader, obj, obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef)
+				if err != nil {
+					return nil, err
+				}
+				obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef.External = service.String()
+			}
+		}
+	}
+
 	connectionRef, err := krm.NewBigQueryConnectionConnectionRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err

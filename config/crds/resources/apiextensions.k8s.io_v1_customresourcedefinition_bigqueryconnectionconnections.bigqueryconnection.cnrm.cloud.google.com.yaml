@@ -266,6 +266,90 @@ spec:
                   a new Connection and store the UUID in `status.serviceGeneratedID`
                   field.
                 type: string
+              spark:
+                description: Spark properties.
+                properties:
+                  metastoreService:
+                    description: Optional. Dataproc Metastore Service configuration
+                      for the connection.
+                    properties:
+                      metastoreServiceRef:
+                        description: |-
+                          Optional. Resource name of an existing Dataproc Metastore service.
+
+                           Example:
+
+                           * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The self-link of an existing Dataproc Metastore
+                              service , when not managed by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a Dataproc Metastore
+                              service.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a Dataproc Metastore
+                              service.
+                            type: string
+                        type: object
+                    type: object
+                  sparkHistoryServer:
+                    description: Optional. Spark History Server configuration for
+                      the connection.
+                    properties:
+                      dataprocClusterRef:
+                        description: |-
+                          Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+                           History Server for the connection.
+
+                           Example:
+
+                           * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The self-link of an existing Dataproc Cluster
+                              to act as a Spark History Server for the connection
+                              , when not managed by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a Dataproc Cluster.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a Dataproc Cluster.
+                            type: string
+                        type: object
+                    type: object
+                type: object
             required:
             - location
             - projectRef
@@ -386,6 +470,23 @@ spec:
                     description: Output only. True, if credential is configured for
                       this connection.
                     type: boolean
+                  spark:
+                    properties:
+                      serviceAccountID:
+                        description: |2-
+                           The account ID of the service created for the purpose of this
+                           connection.
+
+                           The service account does not have any permissions associated with it when
+                           it is created. After creation, customers delegate permissions to the
+                           service account. When the connection is used in the context of a stored
+                           procedure for Apache Spark in BigQuery, the service account is used to
+                           connect to the desired resources in Google Cloud.
+
+                           The account ID is in the form of:
+                           bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
+                        type: string
+                    type: object
                 type: object
             type: object
         type: object
