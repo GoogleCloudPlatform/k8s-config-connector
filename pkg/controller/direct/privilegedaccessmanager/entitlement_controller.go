@@ -122,7 +122,7 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 		}
 	}
 
-	container, err = oneOfContainer(ctx, reader, obj,
+	iamAccessResource, err := oneOfContainer(ctx, reader, obj,
 		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef,
 		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef,
 		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef)
@@ -133,26 +133,26 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 	}
 	switch *obj.Spec.PrivilegedAccess.GcpIAMAccess.ResourceType {
 	case "cloudresourcemanager.googleapis.com/Project":
-		if !strings.HasPrefix(container, "projects/") {
+		if !strings.HasPrefix(iamAccessResource, "projects/") {
 			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.projectRef' "+
 				"should be configured because the corresponding resourceType is "+
-				"'cloudresourcemanager.googleapis.com/Project', but got resource %s", container)
+				"'cloudresourcemanager.googleapis.com/Project', but got resource %s", iamAccessResource)
 		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef.External = container
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef.External = iamAccessResource
 	case "cloudresourcemanager.googleapis.com/Folder":
-		if !strings.HasPrefix(container, "folders/") {
+		if !strings.HasPrefix(iamAccessResource, "folders/") {
 			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.folderRef' "+
 				"should be configured because the corresponding resourceType is "+
-				"'cloudresourcemanager.googleapis.com/Folder', but got resource %s", container)
+				"'cloudresourcemanager.googleapis.com/Folder', but got resource %s", iamAccessResource)
 		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef.External = container
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef.External = iamAccessResource
 	case "cloudresourcemanager.googleapis.com/Organization":
-		if !strings.HasPrefix(container, "organizations/") {
+		if !strings.HasPrefix(iamAccessResource, "organizations/") {
 			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.organizationRef' "+
 				"should be configured because the corresponding resourceType is "+
-				"'cloudresourcemanager.googleapis.com/Organization', but got resource %s", container)
+				"'cloudresourcemanager.googleapis.com/Organization', but got resource %s", iamAccessResource)
 		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef.External = container
+		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef.External = iamAccessResource
 	default:
 		return nil, fmt.Errorf("unrecoganizable resourceType: %v; must be one of "+
 			"'cloudresourcemanager.googleapis.com/Project', "+
@@ -182,12 +182,32 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 	}, nil
 }
 
-func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.PrivilegedAccessManagerEntitlement, projectRef *refs.ProjectRef, folderRef *refs.FolderRef, organizationRef *refs.OrganizationRef) (string, error) {
-	container := ""
-	if projectRef == nil && folderRef == nil && organizationRef == nil {
-		return "", fmt.Errorf("none of 'projectRef', 'folderRef' or 'organizationRef' was set")
+func checkExactlyOneOf(values ...interface{}) (bool, interface{}) {
+	numOfNonNil := 0
+	var nonNilVal interface{}
+	for _, value := range values {
+		if value != nil && !reflect.ValueOf(value).IsNil() {
+			numOfNonNil++
+			nonNilVal = value
+		}
 	}
-	if folderRef == nil && organizationRef == nil {
+	if numOfNonNil != 1 {
+		return false, nil
+	}
+	return true, nonNilVal
+}
+
+func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.PrivilegedAccessManagerEntitlement, projectRef *refs.ProjectRef, folderRef *refs.FolderRef, organizationRef *refs.OrganizationRef) (string, error) {
+	hasExactlyOneContainer, containerRef := checkExactlyOneOf(projectRef, folderRef, organizationRef)
+	if !hasExactlyOneContainer {
+		return "", fmt.Errorf("exactly one of 'projectRef', 'folderRef' "+
+			"or 'organizationRef' must be set, but got projectRef: %+v, folderRef: %+v, organizationRef: %+v",
+			projectRef, folderRef, organizationRef)
+	}
+
+	container := ""
+	switch containerRef.(type) {
+	case *refs.ProjectRef:
 		project, err := refs.ResolveProject(ctx, reader, obj, projectRef)
 		if err != nil {
 			return "", err
@@ -197,8 +217,7 @@ func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.Privileg
 			return "", fmt.Errorf("cannot resolve project: project ID is empty")
 		}
 		container = fmt.Sprintf("projects/%s", projectID)
-	}
-	if projectRef == nil && organizationRef == nil {
+	case *refs.FolderRef:
 		folder, err := refs.ResolveFolder(ctx, reader, obj, folderRef)
 		if err != nil {
 			return "", err
@@ -208,8 +227,7 @@ func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.Privileg
 			return "", fmt.Errorf("cannot resolve folder: folder ID is empty")
 		}
 		container = fmt.Sprintf("folders/%s", folderID)
-	}
-	if projectRef == nil && folderRef == nil {
+	case *refs.OrganizationRef:
 		organization, err := refs.ResolveOrganization(ctx, reader, obj, organizationRef)
 		if err != nil {
 			return "", err
@@ -219,12 +237,10 @@ func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.Privileg
 			return "", fmt.Errorf("cannot resolve organization: organization ID is empty")
 		}
 		container = fmt.Sprintf("organizations/%s", organizationID)
+	default:
+		return "", fmt.Errorf("unexpected ref type %T", containerRef)
 	}
-	if container == "" {
-		return "", fmt.Errorf("more than one of 'projectRef', 'folderRef' "+
-			"or 'organizationRef' was set: projectRef: %+v, folderRef: %+v, organizationRef: %+v",
-			projectRef, folderRef, organizationRef)
-	}
+
 	return container, nil
 }
 
@@ -306,15 +322,19 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	updateMask := &fieldmaskpb.FieldMask{}
 
-	if !reflect.DeepEqual(AdditionalNotificationTargets_FromProto(mapCtx, a.actual.AdditionalNotificationTargets), a.desired.Spec.AdditionalNotificationTargets) {
+	parsedActual := PrivilegedAccessManagerEntitlementSpec_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return fmt.Errorf("error generating update mask: %w", mapCtx.Err())
+	}
+	if !reflect.DeepEqual(parsedActual.AdditionalNotificationTargets, a.desired.Spec.AdditionalNotificationTargets) {
 		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(AdditionalNotificationTargets_FromProto(mapCtx, a.actual.AdditionalNotificationTargets), a.desired.Spec.AdditionalNotificationTargets))
 		updateMask.Paths = append(updateMask.Paths, "additional_notification_targets")
 	}
-	if !reflect.DeepEqual(ApprovalWorkflow_FromProto(mapCtx, a.actual.ApprovalWorkflow), a.desired.Spec.ApprovalWorkflow) {
+	if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, a.desired.Spec.ApprovalWorkflow) {
 		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(ApprovalWorkflow_FromProto(mapCtx, a.actual.ApprovalWorkflow), a.desired.Spec.ApprovalWorkflow))
 		updateMask.Paths = append(updateMask.Paths, "approval_workflow")
 	}
-	if !reflect.DeepEqual(direct.SliceOfPointers_FromProto(mapCtx, a.actual.EligibleUsers, AccessControlEntry_FromProto), a.desired.Spec.EligibleUsers) {
+	if !reflect.DeepEqual(parsedActual.EligibleUsers, a.desired.Spec.EligibleUsers) {
 		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(direct.SliceOfPointers_FromProto(mapCtx, a.actual.EligibleUsers, AccessControlEntry_FromProto), a.desired.Spec.EligibleUsers))
 		updateMask.Paths = append(updateMask.Paths, "eligible_users")
 	}
@@ -322,16 +342,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("'spec.maxRequestDuration' field is updated (-old +new)", cmp.Diff(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, a.desired.Spec.MaxRequestDuration).AsDuration()))
 		updateMask.Paths = append(updateMask.Paths, "max_request_duration")
 	}
-	if !reflect.DeepEqual(PrivilegedAccess_FromProto(mapCtx, a.actual.PrivilegedAccess), a.desired.Spec.PrivilegedAccess) {
+	if !reflect.DeepEqual(parsedActual.PrivilegedAccess, a.desired.Spec.PrivilegedAccess) {
 		log.V(2).Info("'spec.privilegedAccess' field is updated (-old +new)", cmp.Diff(PrivilegedAccess_FromProto(mapCtx, a.actual.PrivilegedAccess), a.desired.Spec.PrivilegedAccess))
 		updateMask.Paths = append(updateMask.Paths, "privileged_access")
 	}
-	if !reflect.DeepEqual(RequesterJustificationConfig_FromProto(mapCtx, a.actual.RequesterJustificationConfig), a.desired.Spec.RequesterJustificationConfig) {
+	if !reflect.DeepEqual(parsedActual.RequesterJustificationConfig, a.desired.Spec.RequesterJustificationConfig) {
 		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(RequesterJustificationConfig_FromProto(mapCtx, a.actual.RequesterJustificationConfig), a.desired.Spec.RequesterJustificationConfig))
 		updateMask.Paths = append(updateMask.Paths, "requester_justification_config")
-	}
-	if mapCtx.Err() != nil {
-		return fmt.Errorf("error generating update mask: %w", mapCtx.Err())
 	}
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("underlying PrivilegedAccessManagerEntitlement already up to date", "name", a.id.FullyQualifiedName())

@@ -53,23 +53,24 @@ func asID(externalRef string) (*PrivilegedAccessManagerEntitlementIdentity, erro
 	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
 	tokens := strings.Split(path, "/")
 
-	if len(tokens) != 6 ||
-		!(tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") ||
-		tokens[2] != "locations" || tokens[4] != "entitlements" {
-		return nil, fmt.Errorf("externalRef should be one of "+
-			"%s/projects/<project>/locations/<location>/entitlements/<entitlement>, "+
-			"%s/folders/<folder>/locations/<location>/entitlements/<entitlement> and "+
-			"%s/organizations/<organization>/locations/<location>/entitlements/<entitlement>,"+
-			"got %s", serviceDomain, serviceDomain, serviceDomain, externalRef)
+	if len(tokens) == 6 &&
+		(tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") &&
+		tokens[2] == "locations" && tokens[4] == "entitlements" {
+
+		return &PrivilegedAccessManagerEntitlementIdentity{
+			Parent: &parent{
+				Container: fmt.Sprintf("%s/%s", tokens[0], tokens[1]),
+				Location:  tokens[3],
+			},
+			Entitlement: tokens[5],
+		}, nil
 	}
 
-	return &PrivilegedAccessManagerEntitlementIdentity{
-		Parent: &parent{
-			Container: fmt.Sprintf("%s/%s", tokens[0], tokens[1]),
-			Location:  tokens[3],
-		},
-		Entitlement: tokens[5],
-	}, nil
+	return nil, fmt.Errorf("externalRef should be one of "+
+		"%s/projects/<project>/locations/<location>/entitlements/<entitlement>, "+
+		"%s/folders/<folder>/locations/<location>/entitlements/<entitlement> and "+
+		"%s/organizations/<organization>/locations/<location>/entitlements/<entitlement>,"+
+		"got %s", serviceDomain, serviceDomain, serviceDomain, externalRef)
 }
 
 // BuildID builds the ID for Config Connector to track the PrivilegedAccessManagerEntitlement resource from the GCP service.
