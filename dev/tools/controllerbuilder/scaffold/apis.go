@@ -35,22 +35,22 @@ type APIScaffolder struct {
 	PackageProtoTag string
 }
 
-func (a *APIScaffolder) RefsFileNotExist(kind, resourceProtoName string) bool {
-	refsFilePath := a.GetRefsFile(kind, resourceProtoName)
+func (a *APIScaffolder) RefsFileExist(kind, resourceProtoName string) bool {
+	refsFilePath := a.PathToRefsFile(kind, resourceProtoName)
 	_, err := os.Stat(refsFilePath)
 	if err == nil {
-		return false
+		return true
 	}
-	return errors.Is(err, os.ErrNotExist)
+	return !errors.Is(err, os.ErrNotExist)
 }
 
-func (a *APIScaffolder) GetRefsFile(kind, resourceProtoName string) string {
+func (a *APIScaffolder) PathToRefsFile(kind, resourceProtoName string) string {
 	fileName := strings.ToLower(resourceProtoName) + "_reference.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
 func (a *APIScaffolder) AddRefsFile(kind, resourceProtoName string) error {
-	refsFilePath := a.GetRefsFile(kind, resourceProtoName)
+	refsFilePath := a.PathToRefsFile(kind, resourceProtoName)
 	cArgs := &apis.APIArgs{
 		Group:           a.Group,
 		Version:         a.Version,
@@ -60,20 +60,6 @@ func (a *APIScaffolder) AddRefsFile(kind, resourceProtoName string) error {
 		ProtoResource:   resourceProtoName,
 	}
 	return scaffoldRefsFile(refsFilePath, cArgs)
-}
-
-func ReadFromFile(path string) ([]byte, error) {
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0777)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	out := make([]byte, 1024)
-	i, err := f.Read(out)
-	if err != nil {
-		return nil, fmt.Errorf("read file %s: %w", path, err)
-	}
-	return out[:i], nil
 }
 
 func scaffoldRefsFile(path string, cArgs *apis.APIArgs) error {
@@ -95,7 +81,7 @@ func scaffoldRefsFile(path string, cArgs *apis.APIArgs) error {
 }
 
 func (a *APIScaffolder) TypeFileNotExist(kind string) bool {
-	typeFilePath := a.GetTypeFile(kind)
+	typeFilePath := a.PathToTypeFile(kind)
 	_, err := os.Stat(typeFilePath)
 	if err == nil {
 		return false
@@ -103,13 +89,13 @@ func (a *APIScaffolder) TypeFileNotExist(kind string) bool {
 	return errors.Is(err, os.ErrNotExist)
 }
 
-func (a *APIScaffolder) GetTypeFile(kind string) string {
+func (a *APIScaffolder) PathToTypeFile(kind string) string {
 	fileName := strings.ToLower(kind) + "_types.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
 func (a *APIScaffolder) AddTypeFile(kind, proto string) error {
-	typeFilePath := a.GetTypeFile(kind)
+	typeFilePath := a.PathToTypeFile(kind)
 	cArgs := &apis.APIArgs{
 		Group:           a.Group,
 		Version:         a.Version,

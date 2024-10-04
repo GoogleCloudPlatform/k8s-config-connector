@@ -142,19 +142,19 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 	kind := o.ResourceKindName
 	if !scaffolder.TypeFileNotExist(kind) {
-		fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
+		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToTypeFile(kind))
 	} else {
 		err := scaffolder.AddTypeFile(kind, o.ResourceProtoName)
 		if err != nil {
-			return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
+			return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(kind), err)
 		}
 	}
-	if !scaffolder.RefsFileNotExist(kind, o.ResourceProtoName) {
-		fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
+	if scaffolder.RefsFileExist(kind, o.ResourceProtoName) {
+		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToRefsFile(kind, o.ResourceProtoName))
 	} else {
 		err := scaffolder.AddRefsFile(kind, o.ResourceProtoName)
 		if err != nil {
-			return fmt.Errorf("add refs file %s: %w", scaffolder.GetRefsFile(kind, o.ResourceProtoName), err)
+			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(kind, o.ResourceProtoName), err)
 		}
 	}
 	return nil

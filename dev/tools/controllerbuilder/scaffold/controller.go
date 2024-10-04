@@ -126,7 +126,7 @@ func WriteToFile(path string, out []byte) error {
 		return fmt.Errorf("failed to create directory %q: %w", filepath.Dir(path), err)
 	}
 	// Use O_TRUNC to truncate the file
-	f, err := os.OpenFile(path, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0777)
+	f, err := os.OpenFile(path, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
