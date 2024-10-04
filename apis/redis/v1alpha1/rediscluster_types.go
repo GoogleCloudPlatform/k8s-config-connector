@@ -33,7 +33,6 @@ type RedisClusterSpec struct {
 	Location *string `json:"location"`
 
 	// The RedisCluster name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. The authorization mode of the Redis cluster.

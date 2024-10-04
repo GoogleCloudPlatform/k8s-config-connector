@@ -39,7 +39,6 @@ type WorkstationClusterSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.
 	// The WorkstationCluster name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Human-readable name for this workstation cluster.

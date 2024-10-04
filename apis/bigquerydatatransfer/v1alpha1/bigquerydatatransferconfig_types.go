@@ -85,7 +85,6 @@ type BigQueryDataTransferConfigSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.
 	// The BigQueryDataTransferConfig name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Data transfer schedule.
