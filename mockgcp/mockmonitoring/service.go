@@ -25,6 +25,7 @@ import (
 	"google.golang.org/grpc"
 
 	dashboardpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	metricsscopepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/metricsscope/v1"
 	monitoringpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 )
 
@@ -56,6 +57,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	monitoringpb.RegisterUptimeCheckServiceServer(grpcServer, &UptimeCheckService{MockService: s})
 
 	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
+
+	metricsscopepb.RegisterMetricsScopesServer(grpcServer, &metricsScopeService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -64,7 +67,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		monitoringpb.RegisterGroupServiceHandler,
 		monitoringpb.RegisterNotificationChannelServiceHandler,
 		monitoringpb.RegisterUptimeCheckServiceHandler,
-		dashboardpb.RegisterDashboardsServiceHandler)
+		dashboardpb.RegisterDashboardsServiceHandler,
+		metricsscopepb.RegisterMetricsScopesHandler,
+	)
 	if err != nil {
 		return nil, err
 	}
