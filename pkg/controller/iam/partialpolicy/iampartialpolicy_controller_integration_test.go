@@ -686,8 +686,9 @@ func assertObservedGenerationEquals(t *testing.T, gcpPolicy *iamv1beta1.IAMParti
 	}
 }
 
-func reconcileIAMPartialPolicy(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, policy *iamv1beta1.IAMPartialPolicy, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
-	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+func reconcileIAMPartialPolicy(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, partialPolicy *iamv1beta1.IAMPartialPolicy, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	kcciamclient.SetGVK(partialPolicy)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(partialPolicy)
 	if err != nil {
 		t.Fatalf("error converting to unstructured: %v", err)
 	}

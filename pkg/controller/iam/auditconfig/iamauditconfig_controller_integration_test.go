@@ -608,8 +608,9 @@ func newIAMAuditConfigFixture(t *testing.T, refResource *unstructured.Unstructur
 	}
 }
 
-func reconcileIAMAuditConfig(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, policy *iamv1beta1.IAMAuditConfig, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
-	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+func reconcileIAMAuditConfig(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, auditConfig *iamv1beta1.IAMAuditConfig, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	kcciamclient.SetGVK(auditConfig)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(auditConfig)
 	if err != nil {
 		t.Fatalf("error converting to unstructured: %v", err)
 	}

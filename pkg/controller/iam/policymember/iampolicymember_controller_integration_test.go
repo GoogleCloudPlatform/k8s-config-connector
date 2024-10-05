@@ -319,8 +319,9 @@ func newIAMPolicyMemberFixture(t *testing.T, refResource *unstructured.Unstructu
 	}
 }
 
-func reconcileIAMPolicyMember(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, policy *v1beta1.IAMPolicyMember, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
-	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+func reconcileIAMPolicyMember(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, policyMember *v1beta1.IAMPolicyMember, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	kcciamclient.SetGVK(policyMember)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(policyMember)
 	if err != nil {
 		t.Fatalf("error converting to unstructured: %v", err)
 	}
