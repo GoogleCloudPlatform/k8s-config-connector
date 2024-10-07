@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package compute
+package forwardingrule
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
