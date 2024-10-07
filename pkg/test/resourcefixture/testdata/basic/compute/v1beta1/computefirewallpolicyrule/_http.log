@@ -1,9 +1,9 @@
-POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies?alt=json&parentId=organizations%2F${organizationID}
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies?alt=json&parentId=organizations%2F128653134652
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
-  "description": "A basic organization firewall policy",
+  "description": "A basic folder firewall policy",
   "parent": "organizations/${organizationID}",
   "shortName": "firewallpolicy-${uniqueId}"
 }
@@ -34,7 +34,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F128653134652
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -60,14 +60,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -84,12 +84,12 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A basic organization firewall policy",
+  "description": "A basic folder firewall policy",
   "displayName": "firewallpolicy-${uniqueId}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#firewallPolicy",
-  "name": "${firewallPolicyId}",
+  "name": "774029050012",
   "parent": "organizations/${organizationID}",
   "ruleTupleCount": 8,
   "rules": [
@@ -170,16 +170,17 @@ X-Xss-Protection: 0
       "ruleTupleCount": 2
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}/${firewallPolicyId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/774029050012",
   "shortName": "firewallpolicy-${uniqueId}"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: firewall_policy=774029050012
 
 400 Bad Request
 Cache-Control: private
@@ -208,14 +209,14 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/addRule?alt=json
+POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/addRule
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: firewall_policy=774029050012
 
 {
   "action": "deny",
   "direction": "INGRESS",
-  "firewallPolicy": "locations/global/firewallPolicies/${firewallPolicyId}",
   "match": {
     "layer4Configs": [
       {
@@ -250,16 +251,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -283,16 +285,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: firewall_policy=774029050012
 
 200 OK
 Cache-Control: private
@@ -326,9 +329,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/patchRule?alt=json&priority=9000
+POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/patchRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: firewall_policy=774029050012
 
 {
   "action": "allow",
@@ -367,16 +371,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -400,16 +405,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: firewall_policy=774029050012
 
 200 OK
 Cache-Control: private
@@ -443,9 +449,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/removeRule?alt=json&priority=9000
+POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/removeRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: firewall_policy=774029050012
 
 200 OK
 Cache-Control: private
@@ -468,16 +475,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -501,45 +509,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-400 Bad Request
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-        "reason": "invalid"
-      }
-    ],
-    "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
-  }
-}
-
----
-
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -556,12 +533,12 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "A basic organization firewall policy",
+  "description": "A basic folder firewall policy",
   "displayName": "firewallpolicy-${uniqueId}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#firewallPolicy",
-  "name": "${firewallPolicyId}",
+  "name": "774029050012",
   "parent": "organizations/${organizationID}",
   "ruleTupleCount": 8,
   "rules": [
@@ -642,14 +619,14 @@ X-Xss-Protection: 0
       "ruleTupleCount": 2
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}/${firewallPolicyId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012/774029050012",
   "shortName": "firewallpolicy-${uniqueId}"
 }
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+DELETE https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -674,8 +651,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
@@ -707,14 +684,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "774029050012",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/774029050012?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -735,10 +712,10 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyId}' was not found",
+        "message": "The resource 'locations/global/firewallPolicies/774029050012' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyId}' was not found"
+    "message": "The resource 'locations/global/firewallPolicies/774029050012' was not found"
   }
 }
