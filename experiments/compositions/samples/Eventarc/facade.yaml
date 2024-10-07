@@ -1,3 +1,11 @@
+apiVersion: composition.google.com/v1alpha1
+kind: Context
+metadata:
+  name: context
+  namespace: config-control
+spec:
+  project: # Replace with your project ID
+---
 apiVersion: idp.mycompany.com/v1
 kind: EventarcConfig
 metadata:
@@ -10,3 +18,4 @@ spec:
   serviceAccount: your-service-account  # Replace with your service account name
   topicName: eventarc-topic-1  # Replace with your Pub/Sub topic name
   bucketName: my-gcs-bucket-101  # Replace with your GCS bucket name
+  projectNumber: # Replace with your project number

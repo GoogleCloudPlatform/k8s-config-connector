@@ -25,6 +25,8 @@ spec:
                 type: string
               bucketName:
                 type: string
+              projectNumber:
+                type: integer
   scope: Namespaced
   names:
     plural: eventarcconfigs
