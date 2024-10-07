@@ -1,11 +1,3 @@
-apiVersion: composition.google.com/v1alpha1
-kind: Context
-metadata:
-  name: context
-  namespace: config-control
-spec:
-  project: # Replace with your project ID
----
 apiVersion: idp.mycompany.com/v1
 kind: EventarcConfig
 metadata:
