@@ -43,7 +43,7 @@ func MonitoringMonitoredProjectObservedState_FromProto(mapCtx *direct.MapContext
 	}
 	out := &krm.MonitoringMonitoredProjectObservedState{}
 	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: CreateTime
 	return out
 }
 func MonitoringMonitoredProjectObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMonitoredProjectObservedState) *pb.MonitoredProject {
@@ -52,7 +52,7 @@ func MonitoringMonitoredProjectObservedState_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.MonitoredProject{}
 	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: CreateTime
 	return out
 }
 func MonitoringMonitoredProjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.MonitoredProject) *krm.MonitoringMonitoredProjectSpec {
@@ -61,6 +61,7 @@ func MonitoringMonitoredProjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.MonitoringMonitoredProjectSpec{}
 	// MISSING: Name
+	// MISSING: CreateTime
 	return out
 }
 func MonitoringMonitoredProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMonitoredProjectSpec) *pb.MonitoredProject {
@@ -69,5 +70,24 @@ func MonitoringMonitoredProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.M
 	}
 	out := &pb.MonitoredProject{}
 	// MISSING: Name
+	// MISSING: CreateTime
+	return out
+}
+func MonitoringMonitoredProjectStatus_FromProto(mapCtx *direct.MapContext, in *pb.MonitoredProject) *krm.MonitoringMonitoredProjectStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringMonitoredProjectStatus{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func MonitoringMonitoredProjectStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringMonitoredProjectStatus) *pb.MonitoredProject {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MonitoredProject{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
