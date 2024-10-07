@@ -1,0 +1,51 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicyRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: firewallpolicyrule-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  action: deny
+  direction: EGRESS
+  firewallPolicyRef:
+    name: firewallpolicy-${uniqueId}
+  match:
+    destAddressGroups:
+    - organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup
+    destFqdns:
+    - www.google.com
+    destIPRanges:
+    - 11.100.0.1/32
+    destRegionCodes:
+    - US
+    destThreatIntelligences:
+    - iplist-known-malicious-ips
+    layer4Configs:
+    - ipProtocol: tcp
+      ports:
+      - "8080"
+    srcIPRanges:
+    - 10.100.0.1/32
+  priority: 9000
+  targetResources:
+  - name: network-${uniqueId}
+  targetServiceAccounts:
+  - name: sa-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  kind: compute#firewallPolicyRule
+  observedGeneration: 1
+  ruleTupleCount: 4

@@ -1,0 +1,1021 @@
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies?alt=json&parentId=organizations%2F${organizationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "description": "A basic folder firewall policy",
+  "parent": "organizations/${organizationID}",
+  "shortName": "firewallpolicy-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createFirewallPolicy",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createFirewallPolicy",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A basic folder firewall policy",
+  "displayName": "firewallpolicy-${uniqueId}",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#firewallPolicy",
+  "name": "${firewallPolicyId}",
+  "parent": "organizations/${organizationID}",
+  "ruleTupleCount": 8,
+  "rules": [
+    {
+      "action": "goto_next",
+      "description": "default egress rule ipv6",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "::/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483644,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default ingress rule ipv6",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "::/0"
+        ]
+      },
+      "priority": 2147483645,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "0.0.0.0/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483646,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "0.0.0.0/0"
+        ]
+      },
+      "priority": 2147483647,
+      "ruleTupleCount": 2
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}/${firewallPolicyId}",
+  "shortName": "firewallpolicy-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/network-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/network-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+400 Bad Request
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
+  }
+}
+
+---
+
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/addRule?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "action": "deny",
+  "direction": "INGRESS",
+  "firewallPolicy": "locations/global/firewallPolicies/${firewallPolicyId}",
+  "match": {
+    "destIpRanges": [
+      "10.100.0.1/32"
+    ],
+    "layer4Configs": [
+      {
+        "ipProtocol": "tcp",
+        "ports": [
+          "8080"
+        ]
+      }
+    ],
+    "srcAddressGroups": [
+      "organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup"
+    ],
+    "srcFqdns": [
+      "www.google.com"
+    ],
+    "srcIpRanges": [
+      "11.100.0.1/32"
+    ],
+    "srcRegionCodes": [
+      "US"
+    ],
+    "srcThreatIntelligences": [
+      "iplist-known-malicious-ips"
+    ]
+  },
+  "priority": 9000,
+  "targetResources": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}"
+  ],
+  "targetServiceAccounts": [
+    "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "addFirewallRuleToFirewallPolicy",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "addFirewallRuleToFirewallPolicy",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": "deny",
+  "description": "",
+  "direction": "INGRESS",
+  "kind": "compute#firewallPolicyRule",
+  "match": {
+    "destIpRanges": [
+      "10.100.0.1/32"
+    ],
+    "layer4Configs": [
+      {
+        "ipProtocol": "tcp",
+        "ports": [
+          "8080"
+        ]
+      }
+    ],
+    "srcAddressGroups": [
+      "organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup"
+    ],
+    "srcFqdns": [
+      "www.google.com"
+    ],
+    "srcIpRanges": [
+      "11.100.0.1/32"
+    ],
+    "srcRegionCodes": [
+      "US"
+    ],
+    "srcThreatIntelligences": [
+      "iplist-known-malicious-ips"
+    ]
+  },
+  "priority": 9000,
+  "ruleTupleCount": 4,
+  "targetResources": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}"
+  ],
+  "targetServiceAccounts": [
+    "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+---
+
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/removeRule?alt=json&priority=9000
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "removeFirewallRuleFromFirewallPolicy",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "removeFirewallRuleFromFirewallPolicy",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+400 Bad Request
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A basic folder firewall policy",
+  "displayName": "firewallpolicy-${uniqueId}",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#firewallPolicy",
+  "name": "${firewallPolicyId}",
+  "parent": "organizations/${organizationID}",
+  "ruleTupleCount": 8,
+  "rules": [
+    {
+      "action": "goto_next",
+      "description": "default egress rule ipv6",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "::/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483644,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default ingress rule ipv6",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "::/0"
+        ]
+      },
+      "priority": 2147483645,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "0.0.0.0/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483646,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "0.0.0.0/0"
+        ]
+      },
+      "priority": 2147483647,
+      "ruleTupleCount": 2
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}/${firewallPolicyId}",
+  "shortName": "firewallpolicy-${uniqueId}"
+}
+
+---
+
+DELETE https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "deleteFirewallPolicy",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "deleteFirewallPolicy",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyId}' was not found"
+  }
+}
