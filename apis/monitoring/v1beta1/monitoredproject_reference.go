@@ -85,6 +85,8 @@ func (r *MonitoringMonitoredProjectRef) NormalizedExternal(ctx context.Context, 
 	return r.External, nil
 }
 
+/* NOTYET
+TODO: MonitoringMonitoredProject currently uses project-id annotation?
 // New builds a MonitoringMonitoredProjectRef from the Config Connector MonitoringMonitoredProject object.
 func NewMonitoringMonitoredProjectRef(ctx context.Context, reader client.Reader, obj *MonitoringMonitoredProject) (*MonitoringMonitoredProjectRef, error) {
 	var id *MonitoringMonitoredProjectRef
@@ -136,6 +138,7 @@ func NewMonitoringMonitoredProjectRef(ctx context.Context, reader client.Reader,
 	id.parent = &MonitoringMonitoredProjectParent{ProjectID: projectID, Location: location}
 	return id, nil
 }
+*/
 
 func (r *MonitoringMonitoredProjectRef) Parent() (*MonitoringMonitoredProjectParent, error) {
 	if r.parent != nil {

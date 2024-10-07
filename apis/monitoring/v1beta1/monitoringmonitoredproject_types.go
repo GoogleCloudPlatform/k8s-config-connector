@@ -46,6 +46,7 @@ type MonitoringMonitoredProjectSpec struct {
 }
 
 // MonitoringMonitoredProjectStatus defines the config connector machine state of MonitoringMonitoredProject
+// +kcc:proto=google.monitoring.metricsscope.v1.MonitoredProject
 type MonitoringMonitoredProjectStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
