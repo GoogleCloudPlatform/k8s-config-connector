@@ -304,6 +304,7 @@ X-Xss-Protection: 0
   "name": "network-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
@@ -439,6 +440,7 @@ X-Xss-Protection: 0
   "name": "network-2-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-2-${uniqueId}",
@@ -505,6 +507,99 @@ X-Xss-Protection: 0
   "oauth2ClientId": "888888888888888888888",
   "projectId": "${projectId}",
   "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+409 Conflict
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+        "reason": "alreadyExists"
+      }
+    ],
+    "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+    "status": "ALREADY_EXISTS"
+  }
 }
 
 ---
@@ -639,6 +734,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
+        "reason": "invalid"
+      }
+    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }
@@ -800,7 +902,7 @@ X-Xss-Protection: 0
     ]
   },
   "priority": 9000,
-  "ruleTupleCount": 4,
+  "ruleTupleCount": 109,
   "targetResources": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}"
   ],
@@ -966,7 +1068,7 @@ X-Xss-Protection: 0
     ]
   },
   "priority": 9000,
-  "ruleTupleCount": 4,
+  "ruleTupleCount": 110,
   "targetResources": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-2-${uniqueId}"
   ],
@@ -1060,6 +1162,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
+        "reason": "invalid"
+      }
+    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }
@@ -1175,6 +1284,7 @@ X-Xss-Protection: 0
   "name": "network-2-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-2-${uniqueId}",
@@ -1270,6 +1380,7 @@ X-Xss-Protection: 0
   "name": "network-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",

@@ -304,6 +304,7 @@ X-Xss-Protection: 0
   "name": "network-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
@@ -439,6 +440,7 @@ X-Xss-Protection: 0
   "name": "network-2-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-2-${uniqueId}",
@@ -639,6 +641,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
+        "reason": "invalid"
+      }
+    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }
@@ -800,7 +809,7 @@ X-Xss-Protection: 0
     ]
   },
   "priority": 9000,
-  "ruleTupleCount": 4,
+  "ruleTupleCount": 109,
   "targetResources": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}"
   ],
@@ -966,7 +975,7 @@ X-Xss-Protection: 0
     ]
   },
   "priority": 9000,
-  "ruleTupleCount": 4,
+  "ruleTupleCount": 110,
   "targetResources": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-2-${uniqueId}"
   ],
@@ -1060,6 +1069,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
+        "reason": "invalid"
+      }
+    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }
@@ -1175,6 +1191,7 @@ X-Xss-Protection: 0
   "name": "network-2-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-2-${uniqueId}",
@@ -1270,6 +1287,7 @@ X-Xss-Protection: 0
   "name": "network-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
