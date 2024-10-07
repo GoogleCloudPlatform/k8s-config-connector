@@ -79,7 +79,7 @@ func (r *BigQueryAnalyticsHubListingRef) NormalizedExternal(ctx context.Context,
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return "", fmt.Errorf("BigQueryAnalyticsHubListing is not ready yet.")
+		return "", fmt.Errorf("BigQueryAnalyticsHubListing is not ready yet")
 	}
 	r.External = actualExternalRef
 	return r.External, nil
@@ -87,7 +87,7 @@ func (r *BigQueryAnalyticsHubListingRef) NormalizedExternal(ctx context.Context,
 
 // New builds a BigQueryAnalyticsHubListingRef from the Config Connector BigQueryAnalyticsHubListing object.
 func NewBigQueryAnalyticsHubListingRef(ctx context.Context, reader client.Reader, obj *BigQueryAnalyticsHubListing) (*BigQueryAnalyticsHubListingRef, error) {
-	var id *BigQueryAnalyticsHubListingRef
+	id := &BigQueryAnalyticsHubListingRef{}
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
