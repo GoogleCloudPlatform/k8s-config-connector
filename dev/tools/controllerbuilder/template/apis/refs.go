@@ -81,7 +81,7 @@ func (r *{{.Kind}}Ref) NormalizedExternal(ctx context.Context, reader client.Rea
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return "", fmt.Errorf("{{.Kind}} is not ready yet.")
+		return "", fmt.Errorf("{{.Kind}} is not ready yet")
 	}
 	r.External = actualExternalRef
 	return r.External, nil
@@ -89,7 +89,7 @@ func (r *{{.Kind}}Ref) NormalizedExternal(ctx context.Context, reader client.Rea
 
 // New builds a {{.Kind}}Ref from the Config Connector {{.Kind}} object.
 func New{{.Kind}}Ref(ctx context.Context, reader client.Reader, obj *{{.Kind}}) (*{{.Kind}}Ref, error) {
-	var id *{{.Kind}}Ref
+	id := &{{.Kind}}Ref{}
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
