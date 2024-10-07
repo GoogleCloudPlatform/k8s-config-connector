@@ -101,7 +101,7 @@ type ManualApprovals struct {
 	// Optional. List of approval steps in this workflow. These steps are followed
 	// in the specified order sequentially. Only 1 step is supported.
 	// +optional
-	Steps []*Step `json:"step,omitempty"`
+	Steps []Step `json:"step,omitempty"`
 }
 
 // Step represents a logical step in a manual approval workflow.
@@ -110,7 +110,7 @@ type Step struct {
 	// Optional. The potential set of approvers in this step. This list must
 	// contain at most one entry.
 	// +optional
-	Approvers []*AccessControlEntry `json:"approvers,omitempty"`
+	Approvers []AccessControlEntry `json:"approvers,omitempty"`
 
 	// Required. How many users from the above list need to approve. If there
 	// aren't enough distinct users in the list, then the workflow indefinitely
@@ -161,7 +161,7 @@ type GcpIamAccess struct {
 
 	// Required. Role bindings that are created on successful grant.
 	// +required
-	RoleBindings []*RoleBinding `json:"roleBindings,omitempty"`
+	RoleBindings []RoleBinding `json:"roleBindings,omitempty"`
 }
 
 // RoleBinding represents IAM role bindings that are created after a successful

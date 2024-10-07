@@ -114,13 +114,9 @@ func (in *GcpIamAccess) DeepCopyInto(out *GcpIamAccess) {
 	}
 	if in.RoleBindings != nil {
 		in, out := &in.RoleBindings, &out.RoleBindings
-		*out = make([]*RoleBinding, len(*in))
+		*out = make([]RoleBinding, len(*in))
 		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(RoleBinding)
-				(*in).DeepCopyInto(*out)
-			}
+			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 }
@@ -145,13 +141,9 @@ func (in *ManualApprovals) DeepCopyInto(out *ManualApprovals) {
 	}
 	if in.Steps != nil {
 		in, out := &in.Steps, &out.Steps
-		*out = make([]*Step, len(*in))
+		*out = make([]Step, len(*in))
 		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(Step)
-				(*in).DeepCopyInto(*out)
-			}
+			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 }
@@ -310,13 +302,9 @@ func (in *PrivilegedAccessManagerEntitlementSpec) DeepCopyInto(out *PrivilegedAc
 	}
 	if in.EligibleUsers != nil {
 		in, out := &in.EligibleUsers, &out.EligibleUsers
-		*out = make([]*AccessControlEntry, len(*in))
+		*out = make([]AccessControlEntry, len(*in))
 		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(AccessControlEntry)
-				(*in).DeepCopyInto(*out)
-			}
+			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.ApprovalWorkflow != nil {
@@ -446,13 +434,9 @@ func (in *Step) DeepCopyInto(out *Step) {
 	*out = *in
 	if in.Approvers != nil {
 		in, out := &in.Approvers, &out.Approvers
-		*out = make([]*AccessControlEntry, len(*in))
+		*out = make([]AccessControlEntry, len(*in))
 		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(AccessControlEntry)
-				(*in).DeepCopyInto(*out)
-			}
+			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.ApprovalsNeeded != nil {

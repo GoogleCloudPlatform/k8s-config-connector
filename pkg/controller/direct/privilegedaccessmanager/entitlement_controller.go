@@ -259,7 +259,7 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 
 	req := &privilegedaccessmanagerpb.GetEntitlementRequest{Name: a.id.FullyQualifiedName()}
@@ -278,7 +278,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
@@ -316,7 +316,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
@@ -327,15 +327,15 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("error generating update mask: %w", mapCtx.Err())
 	}
 	if !reflect.DeepEqual(parsedActual.AdditionalNotificationTargets, a.desired.Spec.AdditionalNotificationTargets) {
-		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(AdditionalNotificationTargets_FromProto(mapCtx, a.actual.AdditionalNotificationTargets), a.desired.Spec.AdditionalNotificationTargets))
+		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, a.desired.Spec.AdditionalNotificationTargets))
 		updateMask.Paths = append(updateMask.Paths, "additional_notification_targets")
 	}
 	if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, a.desired.Spec.ApprovalWorkflow) {
-		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(ApprovalWorkflow_FromProto(mapCtx, a.actual.ApprovalWorkflow), a.desired.Spec.ApprovalWorkflow))
+		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, a.desired.Spec.ApprovalWorkflow))
 		updateMask.Paths = append(updateMask.Paths, "approval_workflow")
 	}
 	if !reflect.DeepEqual(parsedActual.EligibleUsers, a.desired.Spec.EligibleUsers) {
-		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(direct.SliceOfPointers_FromProto(mapCtx, a.actual.EligibleUsers, AccessControlEntry_FromProto), a.desired.Spec.EligibleUsers))
+		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(parsedActual.EligibleUsers, a.desired.Spec.EligibleUsers))
 		updateMask.Paths = append(updateMask.Paths, "eligible_users")
 	}
 	if !reflect.DeepEqual(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, a.desired.Spec.MaxRequestDuration).AsDuration()) {
@@ -343,11 +343,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "max_request_duration")
 	}
 	if !reflect.DeepEqual(parsedActual.PrivilegedAccess, a.desired.Spec.PrivilegedAccess) {
-		log.V(2).Info("'spec.privilegedAccess' field is updated (-old +new)", cmp.Diff(PrivilegedAccess_FromProto(mapCtx, a.actual.PrivilegedAccess), a.desired.Spec.PrivilegedAccess))
+		log.V(2).Info("'spec.privilegedAccess' field is updated (-old +new)", cmp.Diff(parsedActual.PrivilegedAccess, a.desired.Spec.PrivilegedAccess))
 		updateMask.Paths = append(updateMask.Paths, "privileged_access")
 	}
 	if !reflect.DeepEqual(parsedActual.RequesterJustificationConfig, a.desired.Spec.RequesterJustificationConfig) {
-		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(RequesterJustificationConfig_FromProto(mapCtx, a.actual.RequesterJustificationConfig), a.desired.Spec.RequesterJustificationConfig))
+		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(parsedActual.RequesterJustificationConfig, a.desired.Spec.RequesterJustificationConfig))
 		updateMask.Paths = append(updateMask.Paths, "requester_justification_config")
 	}
 	if len(updateMask.Paths) == 0 {
@@ -422,7 +422,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 
 	req := &privilegedaccessmanagerpb.DeleteEntitlementRequest{Name: a.id.FullyQualifiedName()}

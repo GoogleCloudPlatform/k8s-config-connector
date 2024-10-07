@@ -49,7 +49,7 @@ func GcpIamAccess_FromProto(mapCtx *direct.MapContext, in *pb.PrivilegedAccess_G
 			External: externalVal,
 		}
 	}
-	out.RoleBindings = direct.SliceOfPointers_FromProto(mapCtx, in.RoleBindings, RoleBinding_FromProto)
+	out.RoleBindings = direct.Slice_FromProto(mapCtx, in.RoleBindings, RoleBinding_FromProto)
 	return out
 }
 func GcpIamAccess_ToProto(mapCtx *direct.MapContext, in *krm.GcpIamAccess) *pb.PrivilegedAccess_GcpIamAccess {
@@ -67,7 +67,7 @@ func GcpIamAccess_ToProto(mapCtx *direct.MapContext, in *krm.GcpIamAccess) *pb.P
 	case "cloudresourcemanager.googleapis.com/Organization":
 		out.Resource = fmt.Sprintf("//cloudresourcemanager.googleapis.com/%s", in.OrganizationRef.External)
 	}
-	out.RoleBindings = direct.SliceOfPointers_ToProto(mapCtx, in.RoleBindings, RoleBinding_ToProto)
+	out.RoleBindings = direct.Slice_ToProto(mapCtx, in.RoleBindings, RoleBinding_ToProto)
 	return out
 }
 func ManualApprovals_FromProto(mapCtx *direct.MapContext, in *pb.ManualApprovals) *krm.ManualApprovals {
@@ -76,7 +76,7 @@ func ManualApprovals_FromProto(mapCtx *direct.MapContext, in *pb.ManualApprovals
 	}
 	out := &krm.ManualApprovals{}
 	out.RequireApproverJustification = direct.LazyPtr(in.GetRequireApproverJustification())
-	out.Steps = direct.SliceOfPointers_FromProto(mapCtx, in.Steps, Step_FromProto)
+	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Step_FromProto)
 	return out
 }
 func ManualApprovals_ToProto(mapCtx *direct.MapContext, in *krm.ManualApprovals) *pb.ManualApprovals {
@@ -85,7 +85,7 @@ func ManualApprovals_ToProto(mapCtx *direct.MapContext, in *krm.ManualApprovals)
 	}
 	out := &pb.ManualApprovals{}
 	out.RequireApproverJustification = direct.ValueOf(in.RequireApproverJustification)
-	out.Steps = direct.SliceOfPointers_ToProto(mapCtx, in.Steps, Step_ToProto)
+	out.Steps = direct.Slice_ToProto(mapCtx, in.Steps, Step_ToProto)
 	return out
 }
 func PrivilegedAccess_FromProto(mapCtx *direct.MapContext, in *pb.PrivilegedAccess) *krm.PrivilegedAccess {
@@ -111,7 +111,7 @@ func PrivilegedAccessManagerEntitlementSpec_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krm.PrivilegedAccessManagerEntitlementSpec{}
-	out.EligibleUsers = direct.SliceOfPointers_FromProto(mapCtx, in.EligibleUsers, AccessControlEntry_FromProto)
+	out.EligibleUsers = direct.Slice_FromProto(mapCtx, in.EligibleUsers, AccessControlEntry_FromProto)
 	out.ApprovalWorkflow = ApprovalWorkflow_FromProto(mapCtx, in.GetApprovalWorkflow())
 	out.PrivilegedAccess = PrivilegedAccess_FromProto(mapCtx, in.GetPrivilegedAccess())
 	out.MaxRequestDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxRequestDuration())
@@ -125,7 +125,7 @@ func PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.Entitlement{}
 	// MISSING: Name
-	out.EligibleUsers = direct.SliceOfPointers_ToProto(mapCtx, in.EligibleUsers, AccessControlEntry_ToProto)
+	out.EligibleUsers = direct.Slice_ToProto(mapCtx, in.EligibleUsers, AccessControlEntry_ToProto)
 	out.ApprovalWorkflow = ApprovalWorkflow_ToProto(mapCtx, in.ApprovalWorkflow)
 	out.PrivilegedAccess = PrivilegedAccess_ToProto(mapCtx, in.PrivilegedAccess)
 	out.MaxRequestDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRequestDuration)
@@ -177,7 +177,7 @@ func Step_FromProto(mapCtx *direct.MapContext, in *pb.ManualApprovals_Step) *krm
 		return nil
 	}
 	out := &krm.Step{}
-	out.Approvers = direct.SliceOfPointers_FromProto(mapCtx, in.Approvers, AccessControlEntry_FromProto)
+	out.Approvers = direct.Slice_FromProto(mapCtx, in.Approvers, AccessControlEntry_FromProto)
 	out.ApprovalsNeeded = direct.LazyPtr(in.GetApprovalsNeeded())
 	out.ApproverEmailRecipients = in.ApproverEmailRecipients
 	return out
@@ -187,7 +187,7 @@ func Step_ToProto(mapCtx *direct.MapContext, in *krm.Step) *pb.ManualApprovals_S
 		return nil
 	}
 	out := &pb.ManualApprovals_Step{}
-	out.Approvers = direct.SliceOfPointers_ToProto(mapCtx, in.Approvers, AccessControlEntry_ToProto)
+	out.Approvers = direct.Slice_ToProto(mapCtx, in.Approvers, AccessControlEntry_ToProto)
 	out.ApprovalsNeeded = direct.ValueOf(in.ApprovalsNeeded)
 	out.ApproverEmailRecipients = in.ApproverEmailRecipients
 	return out

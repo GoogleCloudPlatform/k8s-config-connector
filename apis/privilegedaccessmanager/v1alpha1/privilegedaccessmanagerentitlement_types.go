@@ -58,7 +58,7 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 	// Who can create grants using this entitlement. This list should
 	// contain at most one entry.
 	// +required
-	EligibleUsers []*AccessControlEntry `json:"eligibleUsers,omitempty"`
+	EligibleUsers []AccessControlEntry `json:"eligibleUsers,omitempty"`
 
 	// Optional. The approvals needed before access are granted to a requester.
 	// No approvals are needed if this field is null.
