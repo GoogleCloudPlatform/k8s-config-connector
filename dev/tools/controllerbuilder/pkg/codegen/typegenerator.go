@@ -71,7 +71,7 @@ func (g *TypeGenerator) visitMessages(files *protoregistry.Files) error {
 	}
 	msgDesc, ok := messageDesc.(protoreflect.MessageDescriptor)
 	if !ok {
-		return fmt.Errorf("unexpected descriptor type: %T", msgDesc)
+		return fmt.Errorf("unexpected descriptor type: %T", messageDesc)
 	}
 	//klog.Infof("found message %q", msgDesc.FullName())
 
