@@ -19,6 +19,7 @@ metadata:
 spec:
   displayName: my_data_exchange
   location: US
+  discoveryType: DISCOVERY_TYPE_PRIVATE
   projectRef:
     external: ${projectId}
   resourceID: bigqueryanalyticshubdataexchange${uniqueId}

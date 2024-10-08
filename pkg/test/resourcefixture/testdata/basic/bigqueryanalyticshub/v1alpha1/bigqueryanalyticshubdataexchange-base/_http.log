@@ -20,7 +20,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS
 
 {
-  "discoveryType": 0,
+  "discoveryType": 1,
   "displayName": "my_data_exchange"
 }
 
@@ -30,7 +30,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "documentation": "",
   "icon": "",
@@ -53,7 +53,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "documentation": "",
   "icon": "",

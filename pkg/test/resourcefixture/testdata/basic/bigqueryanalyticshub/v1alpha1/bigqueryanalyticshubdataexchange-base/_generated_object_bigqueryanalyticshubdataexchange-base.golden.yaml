@@ -12,6 +12,7 @@ metadata:
   name: bigqueryanalyticshubdataexchange${uniqueId}
   namespace: ${uniqueId}
 spec:
+  discoveryType: DISCOVERY_TYPE_PRIVATE
   displayName: my_data_exchange
   location: US
   projectRef:

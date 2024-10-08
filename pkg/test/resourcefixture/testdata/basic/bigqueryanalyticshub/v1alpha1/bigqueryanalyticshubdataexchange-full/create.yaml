@@ -19,9 +19,9 @@ metadata:
 spec:
   displayName: my_data_exchange
   description: example data exchange
+  discoveryType: DISCOVERY_TYPE_PRIVATE
   primaryContact: a@contact.com
   documentation: a documentation
-  discoveryType: DISCOVERY_TYPE_UNSPECIFIED
   location: US
   projectRef:
     external: ${projectId}
