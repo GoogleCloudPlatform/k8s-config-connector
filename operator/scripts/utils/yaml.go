@@ -15,15 +15,13 @@
 package utils
 
 import (
-	"bytes"
-	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
 
 	"github.com/ghodss/yaml"
-	goyaml "gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+
+	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
 )
 
 func UnstructToYaml(u *unstructured.Unstructured) ([]byte, error) {
@@ -48,7 +46,7 @@ func ReadFileToUnstructs(filePath string) ([]*unstructured.Unstructured, error) 
 	if err != nil {
 		return nil, err
 	}
-	yamls, err := SplitYAML(b)
+	yamls, err := kccyaml.SplitYAML(b)
 	if err != nil {
 		return nil, err
 	}
@@ -60,27 +58,4 @@ func ReadFileToUnstructs(filePath string) ([]*unstructured.Unstructured, error) 
 		returnUnstructs = append(returnUnstructs, u)
 	}
 	return returnUnstructs, nil
-}
-
-func SplitYAML(yamlBytes []byte) ([][]byte, error) {
-	r := bytes.NewReader(yamlBytes)
-	dec := goyaml.NewDecoder(r)
-	results := make([][]byte, 0)
-	for {
-		var value map[string]interface{}
-		err := dec.Decode(&value)
-		if err != nil {
-			if errors.Is(err, io.EOF) {
-				break
-			}
-			return nil, fmt.Errorf("error decoding yaml: %w", err)
-		}
-
-		bytes, err := goyaml.Marshal(value)
-		if err != nil {
-			return nil, fmt.Errorf("error marshalling '%v' to YAML: %w", value, err)
-		}
-		results = append(results, bytes)
-	}
-	return results, nil
 }
