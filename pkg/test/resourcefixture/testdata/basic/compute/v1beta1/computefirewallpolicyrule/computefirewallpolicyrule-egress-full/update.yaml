@@ -17,29 +17,30 @@ kind: ComputeFirewallPolicyRule
 metadata:
   name: firewallpolicyrule-${uniqueId}
 spec:
-  action: "deny"
+  action: "allow"
   direction: "EGRESS"
   firewallPolicyRef:
     name: firewallpolicy-${uniqueId}
   match:
     destAddressGroups:
-      - "organizations/${TEST_ORG_ID}/locations/global/addressGroups/testnetworksecurityaddressgroup"
+      - "organizations/${TEST_ORG_ID}/locations/global/addressGroups/testnetworksecurityaddressgroup-2"
     destFqdns:
-      - "www.google.com"
+      - "www.github.com"
     destIPRanges:
-      - "11.100.0.1/32"
+      - "11.100.0.2/32"
     destRegionCodes:
-      - "US"
+      - "AU"
     destThreatIntelligences:
       - "iplist-known-malicious-ips"
+      - "iplist-tor-exit-nodes"
     layer4Configs:
-      - ipProtocol: "tcp"
+      - ipProtocol: "udp"
         ports:
-          - "8080"
+          - "8081"
     srcIPRanges:
-      - "10.100.0.1/32"
+      - "10.100.0.2/32"
   priority: 9000
   targetResources:
-    - name: network-${uniqueId}
+    - name: network-2-${uniqueId}
   targetServiceAccounts:
-    - name: sa-${uniqueId}
+    - name: sa-2-${uniqueId}

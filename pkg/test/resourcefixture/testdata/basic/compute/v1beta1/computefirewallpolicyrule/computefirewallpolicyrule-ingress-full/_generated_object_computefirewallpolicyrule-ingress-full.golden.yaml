@@ -7,38 +7,39 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: firewallpolicyrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  action: deny
+  action: allow
   direction: INGRESS
   firewallPolicyRef:
     name: firewallpolicy-${uniqueId}
   match:
     destIPRanges:
-    - 10.100.0.1/32
+    - 10.100.0.2/32
     layer4Configs:
-    - ipProtocol: tcp
+    - ipProtocol: udp
       ports:
-      - "8080"
+      - "8081"
     srcAddressGroups:
-    - organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup
+    - organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup-2
     srcFqdns:
-    - www.google.com
+    - www.github.com
     srcIPRanges:
-    - 11.100.0.1/32
+    - 11.100.0.2/32
     srcRegionCodes:
-    - US
+    - AU
     srcThreatIntelligences:
     - iplist-known-malicious-ips
+    - iplist-tor-exit-nodes
   priority: 9000
   targetResources:
-  - name: network-${uniqueId}
+  - name: network-2-${uniqueId}
   targetServiceAccounts:
-  - name: sa-${uniqueId}
+  - name: sa-2-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -47,5 +48,5 @@ status:
     status: "True"
     type: Ready
   kind: compute#firewallPolicyRule
-  observedGeneration: 1
+  observedGeneration: 2
   ruleTupleCount: 4
