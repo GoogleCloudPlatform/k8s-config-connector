@@ -1,0 +1,13 @@
+apiVersion: idp.mycompany.com/v1
+kind: EventarcConfig
+metadata:
+  name: ea-test
+  namespace: config-control
+spec:
+  triggerName: bucket-trigger
+  workflowName: workflow-1  # Replace with your workflow path
+  location: us-central1  # Or your desired location
+  serviceAccount: your-service-account  # Replace with your service account name
+  topicName: eventarc-topic-1  # Replace with your Pub/Sub topic name
+  bucketName: my-gcs-bucket-101  # Replace with your GCS bucket name
+  projectNumber: # Replace with your project number
