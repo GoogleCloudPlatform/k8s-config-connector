@@ -16,8 +16,6 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: sqlinstance-denymaintenanceperiod-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/state-into-spec: absent
 spec:
   databaseVersion: POSTGRES_15
   region: us-central1

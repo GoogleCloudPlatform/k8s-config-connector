@@ -18,8 +18,6 @@ metadata:
   labels:
     label-one: "new-value"
   name: sqlinstance-encryptionkey-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/state-into-spec: absent
 spec:
   databaseVersion: POSTGRES_15
   encryptionKMSCryptoKeyRef:
