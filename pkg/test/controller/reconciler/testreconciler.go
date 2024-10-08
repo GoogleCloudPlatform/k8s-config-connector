@@ -34,11 +34,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -192,13 +192,13 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, erro
 		return ReconcilerTypeUnknown, fmt.Errorf("%v %v/%v is not managed by KCC; cannot determine reconciler type", u.GetKind(), u.GetNamespace(), u.GetName())
 	}
 
-	gvk := u.GroupVersionKind()
-	crd, err := crdloader.GetCRDForGVK(gvk)
-	if err != nil {
-		return ReconcilerTypeUnknown, err
+	objectGVK := u.GroupVersionKind()
+	gvkMetadata, ok := supportedgvks.SupportedGVKs[objectGVK]
+	if !ok {
+		return ReconcilerTypeUnknown, fmt.Errorf("%v is not recognized as a supported GVK; cannot determine reconciler type", objectGVK)
 	}
 
-	switch gvk.Kind {
+	switch objectGVK.Kind {
 	case "IAMPolicy":
 		return ReconcilerTypeIAMPolicy, nil
 	case "IAMPartialPolicy":
@@ -208,21 +208,21 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, erro
 	case "IAMAuditConfig":
 		return ReconcilerTypeIAMAuditConfig, nil
 	default:
-		hasDirectController := registry.IsDirectByGK(gvk.GroupKind())
-		hasTerraformController := crd.Labels[crdgeneration.TF2CRDLabel] == "true"
-		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true"
+		hasDirectController := registry.IsDirectByGK(objectGVK.GroupKind())
+		hasTerraformController := gvkMetadata.Labels[k8s.TF2CRDLabel] == "true"
+		hasDCLController := gvkMetadata.Labels[k8s.DCL2CRDLabel] == "true"
 
 		useDirectReconciler := false
 
-		if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
+		if kccfeatureflags.UseDirectReconciler(objectGVK.GroupKind()) {
 			// If KCC_USE_DIRECT_RECONCILERS is set for this object, reconciler is always direct.
 			useDirectReconciler = true
 		} else if hasDirectController && (hasTerraformController || hasDCLController) {
 			// If we have a choice of controllers, use reconcile gate to choose between them.
-			if reconcileGate := registry.GetReconcileGate(gvk.GroupKind()); reconcileGate != nil {
+			if reconcileGate := registry.GetReconcileGate(objectGVK.GroupKind()); reconcileGate != nil {
 				useDirectReconciler = reconcileGate.ShouldReconcile(u)
 			} else {
-				return ReconcilerTypeUnknown, fmt.Errorf("no predicate for gvk %v where we have multiple controllers", gvk)
+				return ReconcilerTypeUnknown, fmt.Errorf("no predicate for gvk %v where we have multiple controllers", objectGVK)
 			}
 		} else if hasDirectController {
 			// Otherwise, if direct controller is available, use direct.
@@ -238,7 +238,7 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, erro
 		}
 	}
 
-	return ReconcilerTypeUnknown, fmt.Errorf("no reconciler type found for: %v", gvk)
+	return ReconcilerTypeUnknown, fmt.Errorf("no reconciler type found for: %v", objectGVK)
 }
 
 func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) reconcile.Reconciler {
