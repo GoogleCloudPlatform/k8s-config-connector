@@ -115,6 +115,7 @@ import (
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1"
 	osloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
+	privilegedaccessmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1alpha1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1"
 	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1"
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1"
@@ -241,6 +242,7 @@ type Interface interface {
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
 	OsloginV1alpha1() osloginv1alpha1.OsloginV1alpha1Interface
 	PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface
+	PrivilegedaccessmanagerV1alpha1() privilegedaccessmanagerv1alpha1.PrivilegedaccessmanagerV1alpha1Interface
 	PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface
 	PubsubliteV1alpha1() pubsublitev1alpha1.PubsubliteV1alpha1Interface
 	PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Interface
@@ -275,125 +277,126 @@ type Interface interface {
 // Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	accesscontextmanagerV1beta1  *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
-	accesscontextmanagerV1alpha1 *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
-	alloydbV1beta1               *alloydbv1beta1.AlloydbV1beta1Client
-	apigatewayV1alpha1           *apigatewayv1alpha1.ApigatewayV1alpha1Client
-	apigeeV1alpha1               *apigeev1alpha1.ApigeeV1alpha1Client
-	apigeeV1beta1                *apigeev1beta1.ApigeeV1beta1Client
-	apikeysV1alpha1              *apikeysv1alpha1.ApikeysV1alpha1Client
-	appengineV1alpha1            *appenginev1alpha1.AppengineV1alpha1Client
-	artifactregistryV1beta1      *artifactregistryv1beta1.ArtifactregistryV1beta1Client
-	beyondcorpV1alpha1           *beyondcorpv1alpha1.BeyondcorpV1alpha1Client
-	bigqueryV1alpha1             *bigqueryv1alpha1.BigqueryV1alpha1Client
-	bigqueryV1beta1              *bigqueryv1beta1.BigqueryV1beta1Client
-	bigqueryanalyticshubV1alpha1 *bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Client
-	bigqueryconnectionV1alpha1   *bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Client
-	bigquerydatapolicyV1alpha1   *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
-	bigquerydatatransferV1alpha1 *bigquerydatatransferv1alpha1.BigquerydatatransferV1alpha1Client
-	bigqueryreservationV1alpha1  *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
-	bigtableV1beta1              *bigtablev1beta1.BigtableV1beta1Client
-	billingbudgetsV1beta1        *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
-	binaryauthorizationV1beta1   *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
-	certificatemanagerV1beta1    *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
-	cloudassetV1alpha1           *cloudassetv1alpha1.CloudassetV1alpha1Client
-	cloudbuildV1beta1            *cloudbuildv1beta1.CloudbuildV1beta1Client
-	cloudfunctionsV1beta1        *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
-	cloudfunctions2V1alpha1      *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
-	cloudidentityV1beta1         *cloudidentityv1beta1.CloudidentityV1beta1Client
-	cloudidsV1beta1              *cloudidsv1beta1.CloudidsV1beta1Client
-	cloudiotV1alpha1             *cloudiotv1alpha1.CloudiotV1alpha1Client
-	cloudschedulerV1beta1        *cloudschedulerv1beta1.CloudschedulerV1beta1Client
-	cloudtasksV1alpha1           *cloudtasksv1alpha1.CloudtasksV1alpha1Client
-	computeV1alpha1              *computev1alpha1.ComputeV1alpha1Client
-	computeV1beta1               *computev1beta1.ComputeV1beta1Client
-	configcontrollerV1beta1      *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
-	containerV1beta1             *containerv1beta1.ContainerV1beta1Client
-	containeranalysisV1alpha1    *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
-	containeranalysisV1beta1     *containeranalysisv1beta1.ContaineranalysisV1beta1Client
-	containerattachedV1beta1     *containerattachedv1beta1.ContainerattachedV1beta1Client
-	datacatalogV1alpha1          *datacatalogv1alpha1.DatacatalogV1alpha1Client
-	datacatalogV1beta1           *datacatalogv1beta1.DatacatalogV1beta1Client
-	dataflowV1beta1              *dataflowv1beta1.DataflowV1beta1Client
-	dataformV1beta1              *dataformv1beta1.DataformV1beta1Client
-	datafusionV1beta1            *datafusionv1beta1.DatafusionV1beta1Client
-	dataprocV1beta1              *dataprocv1beta1.DataprocV1beta1Client
-	datastoreV1alpha1            *datastorev1alpha1.DatastoreV1alpha1Client
-	datastreamV1alpha1           *datastreamv1alpha1.DatastreamV1alpha1Client
-	deploymentmanagerV1alpha1    *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
-	dialogflowV1alpha1           *dialogflowv1alpha1.DialogflowV1alpha1Client
-	dialogflowcxV1alpha1         *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
-	dlpV1beta1                   *dlpv1beta1.DlpV1beta1Client
-	dnsV1alpha1                  *dnsv1alpha1.DnsV1alpha1Client
-	dnsV1beta1                   *dnsv1beta1.DnsV1beta1Client
-	documentaiV1alpha1           *documentaiv1alpha1.DocumentaiV1alpha1Client
-	edgecontainerV1beta1         *edgecontainerv1beta1.EdgecontainerV1beta1Client
-	edgenetworkV1beta1           *edgenetworkv1beta1.EdgenetworkV1beta1Client
-	essentialcontactsV1alpha1    *essentialcontactsv1alpha1.EssentialcontactsV1alpha1Client
-	eventarcV1beta1              *eventarcv1beta1.EventarcV1beta1Client
-	filestoreV1alpha1            *filestorev1alpha1.FilestoreV1alpha1Client
-	filestoreV1beta1             *filestorev1beta1.FilestoreV1beta1Client
-	firebaseV1alpha1             *firebasev1alpha1.FirebaseV1alpha1Client
-	firebasedatabaseV1alpha1     *firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Client
-	firebasehostingV1alpha1      *firebasehostingv1alpha1.FirebasehostingV1alpha1Client
-	firebasestorageV1alpha1      *firebasestoragev1alpha1.FirebasestorageV1alpha1Client
-	firestoreV1alpha1            *firestorev1alpha1.FirestoreV1alpha1Client
-	firestoreV1beta1             *firestorev1beta1.FirestoreV1beta1Client
-	gkebackupV1alpha1            *gkebackupv1alpha1.GkebackupV1alpha1Client
-	gkehubV1beta1                *gkehubv1beta1.GkehubV1beta1Client
-	healthcareV1alpha1           *healthcarev1alpha1.HealthcareV1alpha1Client
-	iamV1beta1                   *iamv1beta1.IamV1beta1Client
-	iapV1beta1                   *iapv1beta1.IapV1beta1Client
-	identityplatformV1alpha1     *identityplatformv1alpha1.IdentityplatformV1alpha1Client
-	identityplatformV1beta1      *identityplatformv1beta1.IdentityplatformV1beta1Client
-	k8sV1alpha1                  *k8sv1alpha1.K8sV1alpha1Client
-	kmsV1alpha1                  *kmsv1alpha1.KmsV1alpha1Client
-	kmsV1beta1                   *kmsv1beta1.KmsV1beta1Client
-	loggingV1beta1               *loggingv1beta1.LoggingV1beta1Client
-	memcacheV1beta1              *memcachev1beta1.MemcacheV1beta1Client
-	mlengineV1alpha1             *mlenginev1alpha1.MlengineV1alpha1Client
-	monitoringV1beta1            *monitoringv1beta1.MonitoringV1beta1Client
-	networkconnectivityV1alpha1  *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
-	networkconnectivityV1beta1   *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
-	networkmanagementV1alpha1    *networkmanagementv1alpha1.NetworkmanagementV1alpha1Client
-	networksecurityV1beta1       *networksecurityv1beta1.NetworksecurityV1beta1Client
-	networkservicesV1alpha1      *networkservicesv1alpha1.NetworkservicesV1alpha1Client
-	networkservicesV1beta1       *networkservicesv1beta1.NetworkservicesV1beta1Client
-	notebooksV1alpha1            *notebooksv1alpha1.NotebooksV1alpha1Client
-	orgpolicyV1alpha1            *orgpolicyv1alpha1.OrgpolicyV1alpha1Client
-	osconfigV1alpha1             *osconfigv1alpha1.OsconfigV1alpha1Client
-	osconfigV1beta1              *osconfigv1beta1.OsconfigV1beta1Client
-	osloginV1alpha1              *osloginv1alpha1.OsloginV1alpha1Client
-	privatecaV1beta1             *privatecav1beta1.PrivatecaV1beta1Client
-	pubsubV1beta1                *pubsubv1beta1.PubsubV1beta1Client
-	pubsubliteV1alpha1           *pubsublitev1alpha1.PubsubliteV1alpha1Client
-	pubsubliteV1beta1            *pubsublitev1beta1.PubsubliteV1beta1Client
-	recaptchaenterpriseV1beta1   *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
-	redisV1alpha1                *redisv1alpha1.RedisV1alpha1Client
-	redisV1beta1                 *redisv1beta1.RedisV1beta1Client
-	resourcemanagerV1beta1       *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
-	runV1beta1                   *runv1beta1.RunV1beta1Client
-	secretmanagerV1beta1         *secretmanagerv1beta1.SecretmanagerV1beta1Client
-	securitycenterV1alpha1       *securitycenterv1alpha1.SecuritycenterV1alpha1Client
-	servicedirectoryV1beta1      *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
-	servicenetworkingV1beta1     *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
-	serviceusageV1alpha1         *serviceusagev1alpha1.ServiceusageV1alpha1Client
-	serviceusageV1beta1          *serviceusagev1beta1.ServiceusageV1beta1Client
-	sourcerepoV1beta1            *sourcerepov1beta1.SourcerepoV1beta1Client
-	spannerV1beta1               *spannerv1beta1.SpannerV1beta1Client
-	sqlV1beta1                   *sqlv1beta1.SqlV1beta1Client
-	storageV1alpha1              *storagev1alpha1.StorageV1alpha1Client
-	storageV1beta1               *storagev1beta1.StorageV1beta1Client
-	storagetransferV1alpha1      *storagetransferv1alpha1.StoragetransferV1alpha1Client
-	storagetransferV1beta1       *storagetransferv1beta1.StoragetransferV1beta1Client
-	tagsV1alpha1                 *tagsv1alpha1.TagsV1alpha1Client
-	tagsV1beta1                  *tagsv1beta1.TagsV1beta1Client
-	tpuV1alpha1                  *tpuv1alpha1.TpuV1alpha1Client
-	vertexaiV1alpha1             *vertexaiv1alpha1.VertexaiV1alpha1Client
-	vertexaiV1beta1              *vertexaiv1beta1.VertexaiV1beta1Client
-	vpcaccessV1beta1             *vpcaccessv1beta1.VpcaccessV1beta1Client
-	workflowsV1alpha1            *workflowsv1alpha1.WorkflowsV1alpha1Client
-	workstationsV1alpha1         *workstationsv1alpha1.WorkstationsV1alpha1Client
+	accesscontextmanagerV1beta1     *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
+	accesscontextmanagerV1alpha1    *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
+	alloydbV1beta1                  *alloydbv1beta1.AlloydbV1beta1Client
+	apigatewayV1alpha1              *apigatewayv1alpha1.ApigatewayV1alpha1Client
+	apigeeV1alpha1                  *apigeev1alpha1.ApigeeV1alpha1Client
+	apigeeV1beta1                   *apigeev1beta1.ApigeeV1beta1Client
+	apikeysV1alpha1                 *apikeysv1alpha1.ApikeysV1alpha1Client
+	appengineV1alpha1               *appenginev1alpha1.AppengineV1alpha1Client
+	artifactregistryV1beta1         *artifactregistryv1beta1.ArtifactregistryV1beta1Client
+	beyondcorpV1alpha1              *beyondcorpv1alpha1.BeyondcorpV1alpha1Client
+	bigqueryV1alpha1                *bigqueryv1alpha1.BigqueryV1alpha1Client
+	bigqueryV1beta1                 *bigqueryv1beta1.BigqueryV1beta1Client
+	bigqueryanalyticshubV1alpha1    *bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Client
+	bigqueryconnectionV1alpha1      *bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Client
+	bigquerydatapolicyV1alpha1      *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
+	bigquerydatatransferV1alpha1    *bigquerydatatransferv1alpha1.BigquerydatatransferV1alpha1Client
+	bigqueryreservationV1alpha1     *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
+	bigtableV1beta1                 *bigtablev1beta1.BigtableV1beta1Client
+	billingbudgetsV1beta1           *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
+	binaryauthorizationV1beta1      *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
+	certificatemanagerV1beta1       *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
+	cloudassetV1alpha1              *cloudassetv1alpha1.CloudassetV1alpha1Client
+	cloudbuildV1beta1               *cloudbuildv1beta1.CloudbuildV1beta1Client
+	cloudfunctionsV1beta1           *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
+	cloudfunctions2V1alpha1         *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
+	cloudidentityV1beta1            *cloudidentityv1beta1.CloudidentityV1beta1Client
+	cloudidsV1beta1                 *cloudidsv1beta1.CloudidsV1beta1Client
+	cloudiotV1alpha1                *cloudiotv1alpha1.CloudiotV1alpha1Client
+	cloudschedulerV1beta1           *cloudschedulerv1beta1.CloudschedulerV1beta1Client
+	cloudtasksV1alpha1              *cloudtasksv1alpha1.CloudtasksV1alpha1Client
+	computeV1alpha1                 *computev1alpha1.ComputeV1alpha1Client
+	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
+	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
+	containerV1beta1                *containerv1beta1.ContainerV1beta1Client
+	containeranalysisV1alpha1       *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
+	containeranalysisV1beta1        *containeranalysisv1beta1.ContaineranalysisV1beta1Client
+	containerattachedV1beta1        *containerattachedv1beta1.ContainerattachedV1beta1Client
+	datacatalogV1alpha1             *datacatalogv1alpha1.DatacatalogV1alpha1Client
+	datacatalogV1beta1              *datacatalogv1beta1.DatacatalogV1beta1Client
+	dataflowV1beta1                 *dataflowv1beta1.DataflowV1beta1Client
+	dataformV1beta1                 *dataformv1beta1.DataformV1beta1Client
+	datafusionV1beta1               *datafusionv1beta1.DatafusionV1beta1Client
+	dataprocV1beta1                 *dataprocv1beta1.DataprocV1beta1Client
+	datastoreV1alpha1               *datastorev1alpha1.DatastoreV1alpha1Client
+	datastreamV1alpha1              *datastreamv1alpha1.DatastreamV1alpha1Client
+	deploymentmanagerV1alpha1       *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
+	dialogflowV1alpha1              *dialogflowv1alpha1.DialogflowV1alpha1Client
+	dialogflowcxV1alpha1            *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
+	dlpV1beta1                      *dlpv1beta1.DlpV1beta1Client
+	dnsV1alpha1                     *dnsv1alpha1.DnsV1alpha1Client
+	dnsV1beta1                      *dnsv1beta1.DnsV1beta1Client
+	documentaiV1alpha1              *documentaiv1alpha1.DocumentaiV1alpha1Client
+	edgecontainerV1beta1            *edgecontainerv1beta1.EdgecontainerV1beta1Client
+	edgenetworkV1beta1              *edgenetworkv1beta1.EdgenetworkV1beta1Client
+	essentialcontactsV1alpha1       *essentialcontactsv1alpha1.EssentialcontactsV1alpha1Client
+	eventarcV1beta1                 *eventarcv1beta1.EventarcV1beta1Client
+	filestoreV1alpha1               *filestorev1alpha1.FilestoreV1alpha1Client
+	filestoreV1beta1                *filestorev1beta1.FilestoreV1beta1Client
+	firebaseV1alpha1                *firebasev1alpha1.FirebaseV1alpha1Client
+	firebasedatabaseV1alpha1        *firebasedatabasev1alpha1.FirebasedatabaseV1alpha1Client
+	firebasehostingV1alpha1         *firebasehostingv1alpha1.FirebasehostingV1alpha1Client
+	firebasestorageV1alpha1         *firebasestoragev1alpha1.FirebasestorageV1alpha1Client
+	firestoreV1alpha1               *firestorev1alpha1.FirestoreV1alpha1Client
+	firestoreV1beta1                *firestorev1beta1.FirestoreV1beta1Client
+	gkebackupV1alpha1               *gkebackupv1alpha1.GkebackupV1alpha1Client
+	gkehubV1beta1                   *gkehubv1beta1.GkehubV1beta1Client
+	healthcareV1alpha1              *healthcarev1alpha1.HealthcareV1alpha1Client
+	iamV1beta1                      *iamv1beta1.IamV1beta1Client
+	iapV1beta1                      *iapv1beta1.IapV1beta1Client
+	identityplatformV1alpha1        *identityplatformv1alpha1.IdentityplatformV1alpha1Client
+	identityplatformV1beta1         *identityplatformv1beta1.IdentityplatformV1beta1Client
+	k8sV1alpha1                     *k8sv1alpha1.K8sV1alpha1Client
+	kmsV1alpha1                     *kmsv1alpha1.KmsV1alpha1Client
+	kmsV1beta1                      *kmsv1beta1.KmsV1beta1Client
+	loggingV1beta1                  *loggingv1beta1.LoggingV1beta1Client
+	memcacheV1beta1                 *memcachev1beta1.MemcacheV1beta1Client
+	mlengineV1alpha1                *mlenginev1alpha1.MlengineV1alpha1Client
+	monitoringV1beta1               *monitoringv1beta1.MonitoringV1beta1Client
+	networkconnectivityV1alpha1     *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
+	networkconnectivityV1beta1      *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
+	networkmanagementV1alpha1       *networkmanagementv1alpha1.NetworkmanagementV1alpha1Client
+	networksecurityV1beta1          *networksecurityv1beta1.NetworksecurityV1beta1Client
+	networkservicesV1alpha1         *networkservicesv1alpha1.NetworkservicesV1alpha1Client
+	networkservicesV1beta1          *networkservicesv1beta1.NetworkservicesV1beta1Client
+	notebooksV1alpha1               *notebooksv1alpha1.NotebooksV1alpha1Client
+	orgpolicyV1alpha1               *orgpolicyv1alpha1.OrgpolicyV1alpha1Client
+	osconfigV1alpha1                *osconfigv1alpha1.OsconfigV1alpha1Client
+	osconfigV1beta1                 *osconfigv1beta1.OsconfigV1beta1Client
+	osloginV1alpha1                 *osloginv1alpha1.OsloginV1alpha1Client
+	privatecaV1beta1                *privatecav1beta1.PrivatecaV1beta1Client
+	privilegedaccessmanagerV1alpha1 *privilegedaccessmanagerv1alpha1.PrivilegedaccessmanagerV1alpha1Client
+	pubsubV1beta1                   *pubsubv1beta1.PubsubV1beta1Client
+	pubsubliteV1alpha1              *pubsublitev1alpha1.PubsubliteV1alpha1Client
+	pubsubliteV1beta1               *pubsublitev1beta1.PubsubliteV1beta1Client
+	recaptchaenterpriseV1beta1      *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
+	redisV1alpha1                   *redisv1alpha1.RedisV1alpha1Client
+	redisV1beta1                    *redisv1beta1.RedisV1beta1Client
+	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
+	runV1beta1                      *runv1beta1.RunV1beta1Client
+	secretmanagerV1beta1            *secretmanagerv1beta1.SecretmanagerV1beta1Client
+	securitycenterV1alpha1          *securitycenterv1alpha1.SecuritycenterV1alpha1Client
+	servicedirectoryV1beta1         *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
+	servicenetworkingV1beta1        *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
+	serviceusageV1alpha1            *serviceusagev1alpha1.ServiceusageV1alpha1Client
+	serviceusageV1beta1             *serviceusagev1beta1.ServiceusageV1beta1Client
+	sourcerepoV1beta1               *sourcerepov1beta1.SourcerepoV1beta1Client
+	spannerV1beta1                  *spannerv1beta1.SpannerV1beta1Client
+	sqlV1beta1                      *sqlv1beta1.SqlV1beta1Client
+	storageV1alpha1                 *storagev1alpha1.StorageV1alpha1Client
+	storageV1beta1                  *storagev1beta1.StorageV1beta1Client
+	storagetransferV1alpha1         *storagetransferv1alpha1.StoragetransferV1alpha1Client
+	storagetransferV1beta1          *storagetransferv1beta1.StoragetransferV1beta1Client
+	tagsV1alpha1                    *tagsv1alpha1.TagsV1alpha1Client
+	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
+	tpuV1alpha1                     *tpuv1alpha1.TpuV1alpha1Client
+	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
+	vertexaiV1beta1                 *vertexaiv1beta1.VertexaiV1beta1Client
+	vpcaccessV1beta1                *vpcaccessv1beta1.VpcaccessV1beta1Client
+	workflowsV1alpha1               *workflowsv1alpha1.WorkflowsV1alpha1Client
+	workstationsV1alpha1            *workstationsv1alpha1.WorkstationsV1alpha1Client
 }
 
 // AccesscontextmanagerV1beta1 retrieves the AccesscontextmanagerV1beta1Client
@@ -844,6 +847,11 @@ func (c *Clientset) OsloginV1alpha1() osloginv1alpha1.OsloginV1alpha1Interface {
 // PrivatecaV1beta1 retrieves the PrivatecaV1beta1Client
 func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface {
 	return c.privatecaV1beta1
+}
+
+// PrivilegedaccessmanagerV1alpha1 retrieves the PrivilegedaccessmanagerV1alpha1Client
+func (c *Clientset) PrivilegedaccessmanagerV1alpha1() privilegedaccessmanagerv1alpha1.PrivilegedaccessmanagerV1alpha1Interface {
+	return c.privilegedaccessmanagerV1alpha1
 }
 
 // PubsubV1beta1 retrieves the PubsubV1beta1Client
@@ -1395,6 +1403,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.privilegedaccessmanagerV1alpha1, err = privilegedaccessmanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.pubsubV1beta1, err = pubsubv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1622,6 +1634,7 @@ func New(c rest.Interface) *Clientset {
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)
 	cs.osloginV1alpha1 = osloginv1alpha1.New(c)
 	cs.privatecaV1beta1 = privatecav1beta1.New(c)
+	cs.privilegedaccessmanagerV1alpha1 = privilegedaccessmanagerv1alpha1.New(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.New(c)
 	cs.pubsubliteV1alpha1 = pubsublitev1alpha1.New(c)
 	cs.pubsubliteV1beta1 = pubsublitev1beta1.New(c)

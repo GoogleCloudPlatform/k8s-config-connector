@@ -63,6 +63,11 @@ operator:
 manager: generate fmt vet
 	go build -o bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
+# Generate CRDs for direct controllers.
+.PHONY: generate-crds
+generate-crds:
+	./dev/tasks/generate-crds
+
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
 manifests: generate

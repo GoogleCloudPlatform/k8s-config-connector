@@ -87,6 +87,7 @@ SUPPORTED_SERVICES=(
   osconfig.googleapis.com
   opsconfigmonitoring.googleapis.com
   privateca.googleapis.com
+  privilegedaccessmanager.googleapis.com
   pubsub.googleapis.com
   pubsublite.googleapis.com
   recaptchaenterprise.googleapis.com
