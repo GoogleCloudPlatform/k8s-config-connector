@@ -78,7 +78,10 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 		return nil, fmt.Errorf("error getting new dcl schema loader: %w", err)
 	}
 	serviceMetadataLoader := metadata.New()
-	allGVKs := supportedgvks.AllWithoutDirect(smLoader, serviceMetadataLoader)
+	allGVKs, err := supportedgvks.All(smLoader, serviceMetadataLoader)
+	if err != nil {
+		return nil, fmt.Errorf("error loading all supported GVKs: %w", err)
+	}
 	allResourcesRules := getRulesFromResources(allGVKs)
 	dynamicResourcesRules := getRulesFromResources(supportedgvks.AllDynamicTypes(smLoader, serviceMetadataLoader))
 	handwrittenIamResourcesRules := getRulesFromResources(supportedgvks.BasedOnHandwrittenIAMTypes())
