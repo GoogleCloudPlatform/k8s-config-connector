@@ -19,6 +19,7 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"strings"
 	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -147,7 +148,9 @@ func (s *PrivilegedAccessManager) DeleteEntitlement(ctx context.Context, req *pb
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
 		result := proto.Clone(oldObj).(*pb.Entitlement)
 		result.State = pb.Entitlement_DELETED
-		result.Name = "projects/${projectNumber}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}"
+		if strings.HasPrefix(result.Name, "projects/${projectId}/locations/") {
+			result.Name = "projects/${projectNumber}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}"
+		}
 		now := timestamppb.New(time.Now())
 		metadata.EndTime = now
 		return result, nil
