@@ -54,6 +54,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	monitoringpb.RegisterAlertPolicyServiceServer(grpcServer, &AlertPolicyService{MockService: s})
 	monitoringpb.RegisterGroupServiceServer(grpcServer, &GroupService{MockService: s})
 	monitoringpb.RegisterNotificationChannelServiceServer(grpcServer, &NotificationChannelService{MockService: s})
+	monitoringpb.RegisterServiceMonitoringServiceServer(grpcServer, &serviceMonitoringService{MockService: s})
 	monitoringpb.RegisterUptimeCheckServiceServer(grpcServer, &UptimeCheckService{MockService: s})
 
 	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
@@ -66,6 +67,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		monitoringpb.RegisterAlertPolicyServiceHandler,
 		monitoringpb.RegisterGroupServiceHandler,
 		monitoringpb.RegisterNotificationChannelServiceHandler,
+		monitoringpb.RegisterServiceMonitoringServiceHandler,
 		monitoringpb.RegisterUptimeCheckServiceHandler,
 		dashboardpb.RegisterDashboardsServiceHandler,
 		metricsscopepb.RegisterMetricsScopesHandler,
