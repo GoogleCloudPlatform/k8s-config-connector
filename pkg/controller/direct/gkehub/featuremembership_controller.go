@@ -156,6 +156,19 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 		}
 		return false, fmt.Errorf("getting feature %q: %w", a.featureID, err)
 	}
+	// Custom diff handling for hierarchyController(HNC), Hub API will always return {} for all false fields.
+	// So here, we convert {} to all false.
+	if feature.MembershipSpecs != nil {
+		if mSpec, ok := feature.MembershipSpecs[a.membershipID]; ok {
+			if mSpec.Configmanagement != nil || mSpec.Configmanagement.HierarchyController != nil {
+				if reflect.DeepEqual(mSpec.Configmanagement.HierarchyController, featureapi.ConfigManagementHierarchyControllerConfig{}) {
+					mSpec.Configmanagement.HierarchyController.EnableHierarchicalResourceQuota = false
+					mSpec.Configmanagement.HierarchyController.EnablePodTreeLabels = false
+					mSpec.Configmanagement.HierarchyController.Enabled = false
+				}
+			}
+		}
+	}
 	a.actual = feature
 	return true, nil
 }
