@@ -35,6 +35,15 @@ You need to set up your own DEV environment before contributing to this project.
 
 We follow the typical contribution flow similar to most OSS projects on GitHub.
 
+### Configure Variables
+
+Export the `GITHUB_USERNAME` environment variable which will be used in subsequent
+steps.
+
+```
+export GITHUB_USERNAME=YOUR_USERNAME
+```
+
 ### Fork and pull
 
 We follow the
@@ -64,13 +73,13 @@ summary, you perform the follow steps to get your fork ready:
     https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository
 
     We recommend you to create the local clone under the path
-    `~/go/src/github.com/YOUR_USERNAME`. This will help to avoid a few known
+    `~/go/src/github.com/$GITHUB_USERNAME`. This will help to avoid a few known
     build frictions related to generated code.
 
     ```shell
-    mkdir -p ~/go/src/github.com/YOUR_USERNAME
-    cd ~/go/src/github.com/YOUR_USERNAME
-    git clone https://github.com/YOUR_USERNAME/k8s-config-connector   # If you use ssh key auth, this will be git@github.com:YOUR_USERNAME/k8s-config-connector.git
+    mkdir -p ~/go/src/github.com/$GITHUB_USERNAME
+    cd ~/go/src/github.com/$GITHUB_USERNAME
+    git clone https://github.com/$GITHUB_USERNAME/k8s-config-connector   # If you use ssh key auth, this will be git@github.com:$GITHUB_USERNAME/k8s-config-connector.git
     ```
 
 ### Set up your environment
@@ -96,7 +105,7 @@ repo to quickly set up a local dev environment.
 1.  Change to environment-setup directory.
 
     ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector/scripts/environment-setup
+    cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector/scripts/environment-setup
     ```
 
 1.  Set up sudoless Docker.
@@ -115,7 +124,7 @@ repo to quickly set up a local dev environment.
 1.  Install Golang.
 
     ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector/scripts/environment-setup
+    cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector/scripts/environment-setup
     ./golang-setup.sh
     source ~/.profile
     ```
@@ -153,7 +162,7 @@ repo to quickly set up a local dev environment.
         validate creation of this resource in the next step. So we can do:
 
         ```shell
-        cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector
+        cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector
         make manifests
         kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
         ```
