@@ -176,6 +176,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
+
+	if u.GetDeletionTimestamp().IsZero() {
+		if !k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName) {
+			if err := r.Update(ctx, u); err != nil {
+				return reconcile.Result{}, fmt.Errorf("updating to add finalizers: %w", err)
+			}
+		}
+	}
+
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -355,9 +364,6 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	if !liveState.Empty() && diff.RequiresNew() {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource,
 			k8s.NewImmutableFieldsMutationError(tfresource.ImmutableFieldsFromDiff(diff)))
-	}
-	if err := r.EnsureFinalizers(ctx, krmResource.Original, &krmResource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
-		return false, err
 	}
 	if diff.Empty() {
 		r.logger.Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
