@@ -33,14 +33,6 @@ go run . generate-types \
     --kind DataflowFlexTemplateJob \
     --proto-resource FlexTemplateRuntimeEnvironment
 
-go run main.go generate-types \
-     --service google.cloud.secretmanager.v1  \
-     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
-     --output-api ${APIS_DIR} \
-     --kind SecretManagerSecret  \ 
-     --proto-resource Secret \
-     --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
-
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.dataflow.v1beta3 \
@@ -202,6 +194,23 @@ go run . generate-mapper \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
+
+# SecretManager
+go run main.go generate-types \
+     --service google.cloud.secretmanager.v1 \
+     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+     --output-api ${APIS_DIR} \
+     --kind SecretManagerSecret \
+     --proto-resource Secret \
+     --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
+
+go run . generate-mapper \
+   --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+   --service google.cloud.secretmanager.v1 \
+   --api-version "secretmanager.cnrm.cloud.google.com/v1beta1" \
+   --api-go-package-path  $REPO_ROOT/apis/ \
+   --output-dir $REPO_ROOT/pkg/controller/direct/ \
+   --api-dir $REPO_ROOT/apis/
 
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

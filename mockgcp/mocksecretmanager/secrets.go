@@ -16,6 +16,7 @@ package mocksecretmanager
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -62,20 +63,28 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	if obj.Replication == nil {
-		obj.Replication = &pb.Replication{}
-	}
-	if obj.Replication.Replication == nil {
-		obj.Replication.Replication = &pb.Replication_Automatic_{
-			Automatic: &pb.Replication_Automatic{},
-		}
+		return nil, fmt.Errorf("Secret.replication must be specified.")
 	}
 	obj.Etag = computeEtag(obj)
-
+	if err := s.populateDefaultsForSecret(ctx, obj); err != nil {
+		return nil, err
+	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (s *SecretsV1) populateDefaultsForSecret(ctx context.Context, obj *pb.Secret) error {
+	for _, version := range obj.VersionAliases {
+		versionName := obj.Name + "/versions/" + strconv.FormatInt(version, 64)
+		_, err := s.GetSecretVersion(ctx, &pb.GetSecretVersionRequest{Name: versionName})
+		if err != nil {
+			return fmt.Errorf("Aliases cannot be assigned to versions that don't exist")
+		}
+	}
+	return nil
 }
 
 // Gets metadata for a given [Secret][google.cloud.secretmanager.v1.Secret].
@@ -122,7 +131,6 @@ func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretReques
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask is required")
 	}
-	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
 		case "topics":
@@ -131,6 +139,9 @@ func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretReques
 			updated.CustomerManagedEncryption = req.Secret.GetCustomerManagedEncryption()
 		case "rotation":
 			updated.Rotation = req.Secret.GetRotation()
+			if len(req.Secret.GetTopics()) == 0 {
+				return nil, fmt.Errorf("There must be at least one topic configured when a Rotation policy is set.")
+			}
 		case "annotations":
 			updated.Annotations = req.Secret.GetAnnotations()
 		case "labels":
@@ -144,6 +155,9 @@ func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretReques
 		}
 	}
 
+	if err := s.populateDefaultsForSecret(ctx, updated); err != nil {
+		return nil, err
+	}
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
