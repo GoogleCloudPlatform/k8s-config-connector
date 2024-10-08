@@ -1,10 +1,8 @@
-# Developing the Direct Resource Guide 
+# Guide for Developing KCC Resources 
 
-We are thrilled to introduce the new way to add a Config Connector resource: the direct resource guide!  
+We are thrilled to introduce the guide for adding Config Connector resources and fields! Resources built using this guide are called "KCC Direct Controllers", because they are built directly against the service API. Developing a new resource (or a new field) is much faster and more manageable using this new Direct Controller approach than previous approaches. We have changed some key resource reconciliation processes to be more reliable and Kubernetes-native. We have also made a revolutionary change to the test driven development and PR review process to improve test coverage for every field in a resource. 
 
-In the past few months, we have made a tremendous amount of efforts to make adding a new resource (or a new field) much faster and more manageable, we have changed some key resource reconciliation processs to be more reliable and Kubernetes-native. What's more, we have made a revolutionary change to the test driven development and PR review process to improve the test coverage for every single field. 
-
-There are definitely more work need to be done, but we'd like to share the steps about adding the direct resource so that it can benefit more users. We will conitnue improving this guide and making the step changes to make it simpler and easier to use. Please stay tuned for the upcoming changes.
+While there is more work to be done to further improve the process of adding KCC resources, we believe the guide is now ready to be shared broadly, such that Google developers, partners, and customers can add KCC resources. We will continue improving this guide to make it simpler and easier to develop new KCC resources. Please stay tuned for the upcoming changes.
 
 # Contents
 
