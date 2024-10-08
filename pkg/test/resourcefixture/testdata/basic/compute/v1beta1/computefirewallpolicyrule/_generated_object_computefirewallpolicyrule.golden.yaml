@@ -1,5 +1,5 @@
-apiVersion: tags.cnrm.cloud.google.com/v1beta1
-kind: TagsTagKey
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicyRule
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
@@ -10,13 +10,19 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: tagstagkey-${uniqueId}
+  name: firewallpolicyrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: For keyname resources.
-  parent: organizations/${organizationID}
-  resourceID: ${uniqueId}
-  shortName: keyname${uniqueId}
+  action: allow
+  direction: INGRESS
+  firewallPolicyRef:
+    name: firewallpolicyrule-${uniqueId}
+  match:
+    layer4Configs:
+    - ipProtocol: tcp
+    srcIPRanges:
+    - 10.100.0.1/32
+  priority: 9000
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -24,8 +30,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  createTime: "1970-01-01T00:00:00Z"
-  name: ${uniqueId}
-  namespacedName: 123450001/keyname${uniqueId}
+  kind: compute#firewallPolicyRule
   observedGeneration: 2
-  updateTime: "1970-01-01T00:00:00Z"
+  ruleTupleCount: 2
