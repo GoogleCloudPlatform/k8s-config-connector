@@ -44,9 +44,7 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 			// generated ID that has not been set, this means the resource has not
 			// yet been created. Return as if the read returned a non-existent
 			// resource.
-			state := &terraform.InstanceState{}
-			state = SetBlueprintAttribution(state, resource, provider)
-			return state, nil
+			return &terraform.InstanceState{}, nil
 		}
 		return nil, fmt.Errorf("error getting ID for resource: %w", err)
 	}
@@ -130,14 +128,10 @@ func fetchLiveStateFromID(ctx context.Context, id string, resource *Resource, pr
 	if err != nil {
 		return nil, err
 	}
-	state = SetBlueprintAttribution(state, resource, provider)
 	state, diagnostics := resource.TFResource.RefreshWithoutUpgrade(ctx, state, provider.Meta())
 	if err := NewErrorFromDiagnostics(diagnostics); err != nil {
 		return nil, fmt.Errorf("error reading underlying resource: %w", err)
 	}
-	// Set the blueprint attribution again in case the Refresh returns nil, which
-	// clears the previously set value.
-	state = SetBlueprintAttribution(state, resource, provider)
 	return state, nil
 }
 

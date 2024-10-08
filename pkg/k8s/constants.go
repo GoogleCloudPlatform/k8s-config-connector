@@ -136,8 +136,6 @@ var (
 
 	SupportsSSAAnnotation = FormatAnnotation("supports-ssa")
 
-	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
-
 	StateIntoSpecAnnotation       = FormatAnnotation("state-into-spec")
 	StateIntoSpecAnnotationValues = []string{
 		StateMergeIntoSpec,
