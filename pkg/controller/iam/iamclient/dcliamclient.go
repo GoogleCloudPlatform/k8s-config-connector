@@ -104,6 +104,7 @@ func (d *DCLIAMClient) DeletePolicyMember(ctx context.Context, tfIAMClient *TFIA
 
 func (d *DCLIAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
 	namespace, resourceRef := extractNamespaceAndResourceReference(policy)
+	// TODO: Support the handling of external field for policy.
 	nn := types.NamespacedName{
 		Namespace: useIfNonEmptyElseDefaultTo(resourceRef.Namespace, namespace),
 		Name:      resourceRef.Name,
@@ -151,6 +152,7 @@ func (d *DCLIAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy)
 
 func (d *DCLIAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
 	namespace, resourceRef := extractNamespaceAndResourceReference(policy)
+	// TODO: Support the handling of external field for policy.
 	nn := types.NamespacedName{
 		Namespace: useIfNonEmptyElseDefaultTo(resourceRef.Namespace, namespace),
 		Name:      resourceRef.Name,
@@ -183,6 +185,7 @@ func (d *DCLIAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy)
 
 func (d *DCLIAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolicy) error {
 	namespace, resourceRef := extractNamespaceAndResourceReference(policy)
+	// TODO: Support the handling of external field for policy.
 	nn := types.NamespacedName{
 		Namespace: useIfNonEmptyElseDefaultTo(resourceRef.Namespace, namespace),
 		Name:      resourceRef.Name,
@@ -238,6 +241,10 @@ func (d *DCLIAMClient) getSchemaFromResourceReference(resourceRef v1beta1.Resour
 
 func (d *DCLIAMClient) getDCLResourceAndNamespacedNameFromPolicyMember(ctx context.Context, policyMember *v1beta1.IAMPolicyMember) (*dclunstruct.Resource, types.NamespacedName, error) {
 	namespace, resourceRef := extractNamespaceAndResourceReference(policyMember)
+	// TODO: Support the handling of external field for policy member.
+	//if resourceRef.External != "" {
+	//	return Resource constructed based on external
+	//}
 	nn := types.NamespacedName{
 		Namespace: useIfNonEmptyElseDefaultTo(resourceRef.Namespace, namespace),
 		Name:      resourceRef.Name,

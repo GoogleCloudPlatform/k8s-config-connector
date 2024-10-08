@@ -18,6 +18,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -260,7 +261,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
 			return r.handleUnresolvableDeps(policyMember, unwrappedErr)
 		}
-		if !errors.Is(err, kcciamclient.ErrNotFound) {
+		if !errors.Is(err, kcciamclient.ErrNotFound) && !strings.Contains(err.Error(), "this role does not have a binding.") {
 			return false, r.handleUpdateFailed(policyMember, err)
 		}
 	}

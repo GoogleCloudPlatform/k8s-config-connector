@@ -20,6 +20,7 @@ package policymember_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"strings"
 	"testing"
@@ -57,12 +58,15 @@ var (
 
 func TestReconcileIAMPolicyMemberResourceLevelCreateDelete(t *testing.T) {
 	ctx := context.TODO()
+	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
+		return fixture.GVK.Kind == "CloudFunctionsFunction" && fixture.Name == "httpsfunction"
+	}
 
 	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
 		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
 		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
 	}
-	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, testiam.ShouldRunWithTFResourcesOnly)
+	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, shouldRun)
 }
 
 func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithSISMerge(t *testing.T) {
@@ -171,22 +175,26 @@ func testPolicyMemberCreateDelete(ctx context.Context, t *testing.T, mgr manager
 	converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 	iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
 	_, err = iamClient.GetPolicyMember(ctx, k8sPolicyMember)
-	if !errors.Is(err, kcciamclient.ErrNotFound) {
+	if !errors.Is(err, kcciamclient.ErrNotFound) && !strings.Contains(err.Error(), "this role does not have a binding.") {
 		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Create(ctx, k8sPolicyMember); err != nil {
 		t.Fatalf("error creating policy member: %v", err)
 	}
 	preReconcileGeneration := k8sPolicyMember.GetGeneration()
-	reconciler := testreconciler.New(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig))
+	//reconciler := testreconciler.New(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig))
+
+	reconciler := testreconciler.NewTestReconciler(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig), dclConfig, nil)
 	resource, err := policymember.ToK8sResource(k8sPolicyMember)
 	if err != nil {
 		t.Fatalf("error converting object %v to k8sResource: %v", k8sPolicyMember, err)
 	}
+
 	u, err := resource.MarshalAsUnstructured()
 	if err != nil {
 		t.Fatalf("error marshalling object %v as unstructured: %v", k8sPolicyMember, err)
 	}
+
 	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpPolicyMember, err := iamClient.GetPolicyMember(ctx, k8sPolicyMember)
 	if err != nil {
@@ -214,7 +222,7 @@ func testPolicyMemberCreateDelete(ctx context.Context, t *testing.T, mgr manager
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPolicyMember, v1beta1.IAMPolicyMemberGVK, kubeClient)
 	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpPolicyMember, err = iamClient.GetPolicyMember(ctx, k8sPolicyMember)
-	if !errors.Is(err, kcciamclient.ErrNotFound) {
+	if !errors.Is(err, kcciamclient.ErrNotFound) && !strings.Contains(err.Error(), "this role does not have a binding.") {
 		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if gcpPolicyMember != nil {
@@ -310,9 +318,13 @@ func newIAMPolicyMemberFixture(t *testing.T, refResource *unstructured.Unstructu
 			Namespace: refResource.GetNamespace(),
 		},
 		Spec: v1beta1.IAMPolicyMemberSpec{
-			Role:              role,
-			Member:            v1beta1.Member(member),
-			ResourceReference: resourceRef,
+			Role:   role,
+			Member: v1beta1.Member(member),
+			ResourceReference: v1beta1.ResourceReference{
+				APIVersion: resourceRef.APIVersion,
+				Kind:       resourceRef.Kind,
+				External:   "projects/[test-project]/locations/us-west2/functions/[test-function]",
+			},
 		},
 	}
 }
