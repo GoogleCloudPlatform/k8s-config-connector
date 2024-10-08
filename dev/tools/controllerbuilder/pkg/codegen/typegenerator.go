@@ -23,44 +23,65 @@ import (
 	"strings"
 
 	protoapi "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
+	"k8s.io/apimachinery/pkg/util/sets"
 
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/klog/v2"
 )
 
-type TypeGenerator struct {
-	generatorBase
-	goPackageForMessage OutputFunc
-	visitedMessages     []protoreflect.MessageDescriptor
+// Some special-case values that are not obvious how to map in KRM
+var protoMessagesNotMappedToGoStruct = map[string]string{
+	"google.protobuf.Timestamp":   "string",
+	"google.protobuf.Duration":    "string",
+	"google.protobuf.Int64Value":  "int64",
+	"google.protobuf.StringValue": "string",
+	"google.protobuf.Struct":      "map[string]string",
 }
 
-func NewTypeGenerator(goPathForMessage OutputFunc, outputBaseDir string) *TypeGenerator {
+type TypeGenerator struct {
+	generatorBase
+	goPackage             string
+	resourceProtoFullName string
+	visitedMessages       []protoreflect.MessageDescriptor
+}
+
+func NewTypeGenerator(goPackage string, outputBaseDir, resourceProtoFullName string) *TypeGenerator {
 	g := &TypeGenerator{
-		goPackageForMessage: goPathForMessage,
+		goPackage:             goPackage,
+		resourceProtoFullName: resourceProtoFullName,
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
 }
 
-type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
-
 func (g *TypeGenerator) VisitProto(api *protoapi.Proto) error {
-	seen := make(map[string]bool) // Track seen message names
-	sortedFiles := api.SortedFiles()
-	for _, f := range sortedFiles {
-		g.visitFile(f, seen)
+	if err := g.visitMessages(api.Files()); err != nil {
+		return err
 	}
 
 	g.writeVisitedMessages()
 	return nil
 }
 
-func (g *TypeGenerator) visitFile(f protoreflect.FileDescriptor, seen map[string]bool) {
-	// visit and collect all messages (including nested)
-	for i := 0; i < f.Messages().Len(); i++ {
-		msg := f.Messages().Get(i)
-		g.visitMessage(msg, seen)
+func (g *TypeGenerator) visitMessages(files *protoregistry.Files) error {
+	messageDesc, err := files.FindDescriptorByName(protoreflect.FullName(g.resourceProtoFullName))
+	if err != nil {
+		return fmt.Errorf("failed to find the proto message %s: %w", g.resourceProtoFullName, err)
 	}
+	msgDesc, ok := messageDesc.(protoreflect.MessageDescriptor)
+	if !ok {
+		return fmt.Errorf("unexpected descriptor type: %T", msgDesc)
+	}
+	//klog.Infof("found message %q", msgDesc.FullName())
+
+	msgs, err := findDependenciesForMessage(msgDesc)
+	if err != nil {
+		return err
+	}
+	g.visitedMessages = append(msgs, msgDesc)
+
+	return nil
 }
 
 func writeCopyright(w io.Writer, year int) {
@@ -85,44 +106,21 @@ func writeCopyright(w io.Writer, year int) {
 	}
 }
 
-func (g *TypeGenerator) visitMessage(msg protoreflect.MessageDescriptor, seen map[string]bool) {
-	if _, visit := g.goPackageForMessage(msg); !visit {
-		return
-	}
-
-	if _, ok := seen[string(msg.FullName())]; ok {
-		return
-	}
-	seen[string(msg.FullName())] = true
-
-	g.visitedMessages = append(g.visitedMessages, msg)
-
-	for i := 0; i < msg.Messages().Len(); i++ {
-		nestedMsg := msg.Messages().Get(i)
-		g.visitMessage(nestedMsg, seen)
-	}
-}
-
 func (g *TypeGenerator) writeVisitedMessages() {
 	for _, msg := range sorted(g.visitedMessages) {
 		if msg.IsMapEntry() {
 			continue
 		}
 
-		goPackage, ok := g.goPackageForMessage(msg)
-		if !ok {
-			continue
-		}
-
-		krmVersion := filepath.Base(goPackage)
+		krmVersion := filepath.Base(g.goPackage)
 
 		k := generatedFileKey{
-			GoPackage: goPackage,
+			GoPackage: g.goPackage,
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
 
-		goTypeName := goNameForProtoMessage(msg, msg)
+		goTypeName := goNameForProtoMessage(msg)
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
 		if err != nil {
@@ -154,7 +152,7 @@ func (g *TypeGenerator) writeVisitedMessages() {
 }
 
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
-	goType := goNameForProtoMessage(msg, msg)
+	goType := goNameForProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
@@ -188,7 +186,7 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	} else {
 		switch field.Kind() {
 		case protoreflect.MessageKind:
-			goType = goNameForProtoMessage(msg, field.Message())
+			goType = goNameForProtoMessage(field.Message())
 
 		case protoreflect.EnumKind:
 			goType = "string" //string(field.Enum().Name())
@@ -206,6 +204,10 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 		// Special case for proto "bytes" type
 		if goType == "*[]byte" {
 			goType = "[]byte"
+		}
+		// Special case for proto "google.protobuf.Struct" type
+		if goType == "*map[string]string" {
+			goType = "map[string]string"
 		}
 	}
 
@@ -239,21 +241,17 @@ func sorted(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDes
 	return messages
 }
 
-func goNameForProtoMessage(parentMessage protoreflect.MessageDescriptor, msg protoreflect.MessageDescriptor) string {
+func goNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
-	fullName = strings.TrimPrefix(fullName, string(parentMessage.ParentFile().FullName()))
-	fullName = strings.TrimPrefix(fullName, ".")
-	fullName = strings.ReplaceAll(fullName, ".", "_")
 
 	// Some special-case values that are not obvious how to map in KRM
-	switch fullName {
-	case "google_protobuf_Timestamp":
-		return "string"
-	case "google_protobuf_Duration":
-		return "string"
-	case "google_protobuf_Int64Value":
-		return "int64"
+	if goType, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
+		return goType
 	}
+
+	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
+	fullName = strings.TrimPrefix(fullName, ".")
+	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
 
@@ -341,5 +339,66 @@ func isAcronym(s string) bool {
 		return true
 	default:
 		return false
+	}
+}
+
+// findDependenciesForMessage recursively explores the dependent proto messages of the given message.
+func findDependenciesForMessage(message protoreflect.MessageDescriptor) ([]protoreflect.MessageDescriptor, error) {
+	msgs := make(map[string]protoreflect.MessageDescriptor)
+	for i := 0; i < message.Fields().Len(); i++ {
+		field := message.Fields().Get(i)
+		FindDependenciesForField(field, msgs, nil) // TODO: explicity set ignored fields when generating Go types
+	}
+
+	RemoveNotMappedToGoStruct(msgs)
+
+	res := []protoreflect.MessageDescriptor{}
+	for _, msg := range msgs {
+		res = append(res, msg)
+	}
+	return res, nil
+}
+
+// FindDependenciesForField recursively explores the dependent proto messages of the given field.
+func FindDependenciesForField(field protoreflect.FieldDescriptor, deps map[string]protoreflect.MessageDescriptor, ignoredFields sets.String) {
+	if ignoredFields.Has(string(field.FullName())) {
+		return
+	}
+
+	if field.Message() != nil { // no need to find dependencies for proto messages that are not mapped to KRM Go struct
+		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
+			return
+		}
+	}
+
+	if field.IsMap() {
+		mapEntry := field.Message()
+		if keyField := mapEntry.Fields().ByName("key"); keyField != nil {
+			FindDependenciesForField(keyField, deps, ignoredFields)
+		}
+		if valueField := mapEntry.Fields().ByName("value"); valueField != nil {
+			FindDependenciesForField(valueField, deps, ignoredFields)
+		}
+	} else {
+		switch field.Kind() {
+		case protoreflect.MessageKind:
+			msg := field.Message()
+			fqn := string(msg.FullName())
+			if _, ok := deps[fqn]; !ok {
+				deps[fqn] = msg
+				for i := 0; i < msg.Fields().Len(); i++ {
+					field := msg.Fields().Get(i)
+					FindDependenciesForField(field, deps, ignoredFields)
+				}
+			}
+		case protoreflect.EnumKind:
+			// deps[string(field.Enum().FullName())] = true  // Skip enum because enum is mapped to Go string in code generation
+		}
+	}
+}
+
+func RemoveNotMappedToGoStruct(msgs map[string]protoreflect.MessageDescriptor) {
+	for msg := range protoMessagesNotMappedToGoStruct {
+		delete(msgs, msg)
 	}
 }

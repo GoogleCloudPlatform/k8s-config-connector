@@ -54,7 +54,7 @@ type ResourceConfig struct {
 	// If unset, the default API version of the service mapping will be used.
 	Version *string `json:"version"`
 
-	// Direct tells if the ResourceConfig is for ConfigConnector directly managed resources.
+	// Direct tells if the ResourceConfig is for ConfigConnector directly managed resources.
 	// Directly managed resource does not use Terraform or DCL controller, and do not rely on any TF specified fields like `SkipImport`
 	// A direct ResourceConfig is used to generate the reference doc.
 	Direct bool `json:"direct"`

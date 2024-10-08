@@ -195,6 +195,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  enableOutboundPublicIp:
+                    description: Enabling outbound public ip for the instance.
+                    type: boolean
                   enablePublicIp:
                     description: Enabling public ip for the instance. If a user wishes
                       to disable this, please also clear the list of the authorized
@@ -263,6 +266,14 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              outboundPublicIpAddresses:
+                description: |-
+                  The outbound public IP addresses for the instance. This is available ONLY when
+                  networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
+                  for outbound connections.
+                items:
+                  type: string
+                type: array
               publicIpAddress:
                 description: The public IP addresses for the Instance. This is available
                   ONLY when networkConfig.enablePublicIp is set to true. This is the
@@ -462,6 +473,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  enableOutboundPublicIp:
+                    description: Enabling outbound public ip for the instance.
+                    type: boolean
                   enablePublicIp:
                     description: Enabling public ip for the instance. If a user wishes
                       to disable this, please also clear the list of the authorized
@@ -530,6 +544,14 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              outboundPublicIpAddresses:
+                description: |-
+                  The outbound public IP addresses for the instance. This is available ONLY when
+                  networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
+                  for outbound connections.
+                items:
+                  type: string
+                type: array
               publicIpAddress:
                 description: The public IP addresses for the Instance. This is available
                   ONLY when networkConfig.enablePublicIp is set to true. This is the

@@ -137,9 +137,43 @@ func LazyPtr[V comparable](v V) *V {
 	return &v
 }
 
-func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
-	formatted := ts.AsTime().Format(time.RFC3339)
+func StringTimestamp_FromProto(mapCtx *MapContext, ts *timestamppb.Timestamp) *string {
+	if ts == nil {
+		return nil
+	}
+	formatted := ts.AsTime().Format(time.RFC3339Nano)
 	return &formatted
+}
+
+func StringTimestamp_ToProto(mapCtx *MapContext, s *string) *timestamppb.Timestamp {
+	if s == nil {
+		return nil
+	}
+	t, err := time.Parse(time.RFC3339Nano, *s)
+	if err != nil {
+		mapCtx.Errorf("invalid timestamp %q", *s)
+	}
+	ts := timestamppb.New(t)
+	return ts
+}
+
+func StringDuration_FromProto(mapCtx *MapContext, d *durationpb.Duration) *string {
+	if d == nil {
+		return nil
+	}
+	s := d.AsDuration().String()
+	return &s
+}
+
+func StringDuration_ToProto(mapCtx *MapContext, s *string) *durationpb.Duration {
+	if s == nil {
+		return nil
+	}
+	td, err := time.ParseDuration(*s)
+	if err != nil {
+		mapCtx.Errorf("invalid duration %q", *s)
+	}
+	return durationpb.New(td)
 }
 
 func PtrTo[T any](t T) *T {
@@ -204,17 +238,25 @@ func Duration_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
 		return nil
 	}
 
+	s := in.Seconds
+	n := in.Nanos
+
+	if in.Nanos/1e9 > 0 {
+		s += int64(in.Nanos / 1e9)
+		n = in.Nanos % 1e9
+	}
+
 	// We want to report the duration without truncation (do don't want to map via float64)
-	s := strconv.FormatInt(in.Seconds, 10)
-	if in.Nanos != 0 {
-		nanos := strconv.FormatInt(int64(in.Nanos), 10)
+	sStr := strconv.FormatInt(s, 10)
+	if n != 0 {
+		nanos := strconv.FormatInt(int64(n), 10)
 		pad := 9 - len(nanos)
 		nanos = strings.Repeat("0", pad) + nanos
 		nanos = strings.TrimRight(nanos, "0")
-		s += "." + nanos
+		sStr += "." + nanos
 	}
-	s += "s"
-	return &s
+	sStr += "s"
+	return &sStr
 }
 
 func SecondsString_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {

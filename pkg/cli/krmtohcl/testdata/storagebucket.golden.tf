@@ -15,7 +15,12 @@
  */
 
 resource "google_storage_bucket" "cc_cli" {
-  force_destroy               = false
+  force_destroy = false
+
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
   location                    = "US"
   name                        = "cc-cli"
   project                     = "my-project"

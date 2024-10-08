@@ -53,10 +53,10 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	WorkstationsWorkstationClusterGVK = schema.GroupVersionKind{
+	WorkstationClusterGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(WorkstationsWorkstationCluster{}).Name(),
+		Kind:    reflect.TypeOf(WorkstationCluster{}).Name(),
 	}
 
 	workstationsAPIVersion = SchemeGroupVersion.String()

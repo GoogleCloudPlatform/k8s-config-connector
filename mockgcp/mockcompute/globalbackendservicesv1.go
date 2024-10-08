@@ -41,7 +41,7 @@ func (s *GlobalBackendServicesV1) Get(ctx context.Context, req *pb.GetBackendSer
 
 	obj := &pb.BackendService{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 	}
 
 	return obj, nil

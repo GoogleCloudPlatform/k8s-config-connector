@@ -23,7 +23,6 @@ import (
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -204,7 +203,7 @@ func WithFieldsPresetForRead(imported map[string]interface{}, r *Resource, kubeC
 	importedAsInstanceState := MapToInstanceState(r.TFResource, imported)
 	var jsonSchema *apiextensions.JSONSchemaProps
 	config, secretVersions, err = KRMResourceToTFResourceConfigFull(
-		r, kubeClient, smLoader, importedAsInstanceState, jsonSchema, mustResolveSensitiveFields, label.GetDefaultLabels(),
+		r, kubeClient, smLoader, importedAsInstanceState, jsonSchema, mustResolveSensitiveFields,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("error converting resource config: %w", err)

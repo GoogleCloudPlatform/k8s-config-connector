@@ -229,10 +229,8 @@ spec:
                         type: string
                     type: object
                   hierarchyController:
-                    description: '**DEPRECATED** Configuring Hierarchy Controller
-                      through the configmanagement feature is no longer recommended.
-                      Use https://github.com/kubernetes-sigs/hierarchical-namespaces
-                      instead.'
+                    description: Hierarchy Controller is no longer available. Use
+                      https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
                     properties:
                       enableHierarchicalResourceQuota:
                         description: Whether hierarchical resource quota is enabled

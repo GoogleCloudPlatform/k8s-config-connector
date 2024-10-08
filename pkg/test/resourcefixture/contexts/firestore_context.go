@@ -14,7 +14,29 @@
 
 package contexts
 
+import "time"
+
 func init() {
+	resourceContextMap["firestoredatabase-minimal"] = ResourceContext{
+		ResourceKind: "FirestoreDatabase",
+		// Firestore Databases return success for create / update before the changes are actually visible
+		// in GCP. It's probably a bug with the service, or some issue with eventual consistency.
+		PostModifyDelay: 60 * time.Second,
+		// After deleting a FirestoreDatabase, the database name is reserved for a while, so we cannot
+		// immediately re-create the database with the same name.
+		SkipDriftDetection: true,
+	}
+
+	resourceContextMap["firestoredatabase-full"] = ResourceContext{
+		ResourceKind: "FirestoreDatabase",
+		// Firestore Databases return success for create / update before the changes are actually visible
+		// in GCP. It's probably a bug with the service, or some issue with eventual consistency.
+		PostModifyDelay: 60 * time.Second,
+		// After deleting a FirestoreDatabase, the database name is reserved for a while, so we cannot
+		// immediately re-create the database with the same name.
+		SkipDriftDetection: true,
+	}
+
 	resourceContextMap["firestoreindex"] = ResourceContext{
 		ResourceKind: "FirestoreIndex",
 		SkipUpdate:   true,

@@ -124,7 +124,7 @@ spec:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Create GCS Bucket with CORS and retention
+        description: Team Page Creation
         properties:
           apiVersion:
             type: string

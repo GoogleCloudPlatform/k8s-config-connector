@@ -55,8 +55,11 @@ gcloud config set project "${GCP_PROJECT_ID}"
 gcloud services enable \
   compute.googleapis.com \
   dataflow.googleapis.com \
+  cloudkms.googleapis.com \
+  firestore.googleapis.com \
   logging.googleapis.com \
   monitoring.googleapis.com \
   redis.googleapis.com \
   servicenetworking.googleapis.com \
-  sqladmin.googleapis.com
+  sqladmin.googleapis.com \
+  workstations.googleapis.com

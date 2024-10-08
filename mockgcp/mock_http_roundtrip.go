@@ -39,7 +39,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryanalyticshub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryconnection"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquerydatatransfer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
@@ -53,6 +55,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
@@ -68,11 +71,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicedirectory"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
 	mockspanner "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspanner/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -165,6 +170,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mockcertificatemanager.New(env, storage))
 	services = append(services, mockcompute.New(env, storage))
 	services = append(services, mockdataflow.New(env, storage))
+	services = append(services, mockfirestore.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockiam.New(env, storage))
 	services = append(services, mockkms.New(env, storage))
@@ -194,6 +200,10 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mockcontaineranalysis.New(env, storage))
 	services = append(services, mockdataform.New(env, storage))
 	services = append(services, mockbigqueryconnection.New(env, storage))
+	services = append(services, mockservicedirectory.New(env, storage))
+	services = append(services, mockworkstations.New(env, storage))
+	services = append(services, mockbigquerydatatransfer.New(env, storage))
+	services = append(services, mockbigqueryanalyticshub.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)

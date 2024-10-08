@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.121.0
+    cnrm.cloud.google.com/version: 1.123.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -83,8 +83,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The compute network selflink of form "projects/<project>/global/networks/<network>",
-                              when not managed by KCC.
+                            description: A reference to an externally managed Compute
+                              Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
                             type: string
                           name:
                             description: The `name` field of a `ComputeNetwork` resource.
@@ -127,7 +127,7 @@ spec:
                 properties:
                   external:
                     description: The `projectID` field of a project, when not managed
-                      by KCC.
+                      by Config Connector.
                     type: string
                   kind:
                     description: The kind of the Project resource; optional but must
@@ -267,6 +267,9 @@ spec:
                           of 16 bits, with an automatically determined IP within the
                           peered VPC. If unspecified, a value of `/24` will be used.
                         type: string
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                       peeredNetworkRef:
                         description: Immutable. The network definition that the workers
                           are peered to. If this section is left empty, the workers
@@ -288,8 +291,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The compute network selflink of form "projects/<project>/global/networks/<network>",
-                              when not managed by KCC.
+                            description: A reference to an externally managed Compute
+                              Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
                             type: string
                           name:
                             description: The `name` field of a `ComputeNetwork` resource.
@@ -299,6 +302,9 @@ spec:
                               resource.
                             type: string
                         type: object
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                     type: object
                   workerConfig:
                     description: Machine configuration for the workers in the pool.
@@ -338,7 +344,7 @@ spec:
                 properties:
                   external:
                     description: The `projectID` field of a project, when not managed
-                      by KCC.
+                      by Config Connector.
                     type: string
                   kind:
                     description: The kind of the Project resource; optional but must
@@ -391,7 +397,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the CloudBuild workerpool resource
+                description: A unique Config Connector specifier for the resource
                   in GCP.
                 type: string
               observedGeneration:

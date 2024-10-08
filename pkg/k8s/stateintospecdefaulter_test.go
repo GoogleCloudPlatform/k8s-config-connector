@@ -64,7 +64,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 				},
 			},
 			expectChanged: true,
-			expectValue:   "merge",
+			expectValue:   "absent",
 		},
 		{
 			name: "use 'absent' if resource doesn't support 'merge'",

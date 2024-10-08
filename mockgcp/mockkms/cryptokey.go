@@ -71,17 +71,42 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 
 	r.populateDefaultsForCryptoKey(name, obj)
 
-	if err := r.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
 	if !req.SkipInitialVersionCreation {
-		createVersionReq := &pb.CreateCryptoKeyVersionRequest{
-			Parent: fqn,
+		var primary *pb.CryptoKeyVersion
+
+		if obj.VersionTemplate != nil {
+			primary = &pb.CryptoKeyVersion{
+				Algorithm:       obj.VersionTemplate.Algorithm,
+				ProtectionLevel: obj.VersionTemplate.ProtectionLevel,
+			}
+		} else if req.GetCryptoKey().Purpose == pb.CryptoKey_ENCRYPT_DECRYPT {
+			// Set default
+			primary = &pb.CryptoKeyVersion{
+				Algorithm:       pb.CryptoKeyVersion_GOOGLE_SYMMETRIC_ENCRYPTION,
+				ProtectionLevel: pb.ProtectionLevel_SOFTWARE,
+			}
+		} else {
+			primary = &pb.CryptoKeyVersion{
+				// Algorithm is required
+				Algorithm: obj.VersionTemplate.Algorithm,
+			}
 		}
-		if _, err := r.CreateCryptoKeyVersion(ctx, createVersionReq); err != nil {
+		createVersionReq := &pb.CreateCryptoKeyVersionRequest{
+			Parent:           fqn,
+			CryptoKeyVersion: primary,
+		}
+		createdVersion, err := r.CreateCryptoKeyVersion(ctx, createVersionReq)
+		if err != nil {
 			return nil, err
 		}
+		obj.Primary = createdVersion
+		obj.VersionTemplate = &pb.CryptoKeyVersionTemplate{
+			Algorithm:       createdVersion.Algorithm,
+			ProtectionLevel: createdVersion.ProtectionLevel,
+		}
+	}
+	if err := r.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
 	}
 
 	return obj, nil

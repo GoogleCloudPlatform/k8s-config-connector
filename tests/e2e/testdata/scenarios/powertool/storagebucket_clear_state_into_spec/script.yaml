@@ -17,6 +17,8 @@
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: "merge"
   labels:
     label-one: "value-one"
   name: storagebucket-merge-${uniqueId}

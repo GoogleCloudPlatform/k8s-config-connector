@@ -55,7 +55,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		// Generate a "reasonable" timestamp; huge values are out of range of golang time types
 		seconds := (1900 * 365 * 24 * 60 * 60) + randStream.Intn(400*365*24*60*60)
 		nanos := randStream.Intn(1000000000)
-		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt32(int32(seconds)))
+		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt64(int64(seconds)))
 		msg.Set(descriptor.Fields().ByName("nanos"), protoreflect.ValueOfInt32(int32(nanos)))
 		return
 	}
@@ -105,6 +105,13 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					v := randomString(randStream)
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
+			case "string->message":
+				if field.FullName() == "google.protobuf.Struct.fields" && field.MapValue().Message().FullName() == "google.protobuf.Value" {
+					// currently this is converted to "map[string]string" in "BigQueryDataTransferConfig"
+					// TODO: fill in random strings
+				} else {
+					t.Fatalf("unhandled case for map kind %q: %v", mapType, field)
+				}
 
 			default:
 				t.Fatalf("unhandled map kind %q: %v", mapType, field)
@@ -132,6 +139,8 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			msg.Set(field, protoreflect.ValueOfInt32(randStream.Int31()))
 		case protoreflect.Int64Kind:
 			msg.Set(field, protoreflect.ValueOfInt64(randStream.Int63()))
+		case protoreflect.Uint64Kind:
+			msg.Set(field, protoreflect.ValueOfUint64(randStream.Uint64()))
 		case protoreflect.StringKind:
 			s := randomString(randStream)
 			msg.Set(field, protoreflect.ValueOfString(s))
@@ -317,6 +326,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 			protoreflect.DoubleKind,
 			protoreflect.Int32Kind,
 			protoreflect.Int64Kind,
+			protoreflect.Uint64Kind,
 			protoreflect.StringKind,
 			protoreflect.EnumKind:
 			setter := func(v protoreflect.Value) {

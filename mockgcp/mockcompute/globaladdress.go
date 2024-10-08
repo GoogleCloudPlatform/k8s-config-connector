@@ -75,7 +75,15 @@ func (s *GlobalAddressesV1) Insert(ctx context.Context, req *pb.InsertGlobalAddr
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalAddressesV1) Delete(ctx context.Context, req *pb.DeleteGlobalAddressRequest) (*pb.Operation, error) {
@@ -93,7 +101,15 @@ func (s *GlobalAddressesV1) Delete(ctx context.Context, req *pb.DeleteGlobalAddr
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *GlobalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsGlobalAddressRequest) (*pb.Operation, error) {

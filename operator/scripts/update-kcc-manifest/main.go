@@ -23,6 +23,7 @@ import (
 	"os"
 	"path"
 	"regexp"
+	"sort"
 	"strings"
 
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/loaders"
@@ -30,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/scripts/utils"
+	"github.com/blang/semver/v4"
 )
 
 const (
@@ -233,7 +235,7 @@ func main() {
 	}
 	log.Printf("successfully updated the version annotation in %v for autopilot kustomization\n", kustomizationFilePath)
 
-	//remove the stale manifest
+	//Update the stable version
 	r := loaders.NewFSRepository(path.Join(operatorSrcRoot, loaders.FlagChannel))
 	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
 	if err != nil {
@@ -243,10 +245,11 @@ func main() {
 	if err != nil {
 		log.Fatal(fmt.Errorf("error resolving the current version: %w", err))
 	}
-	if currentVersion.Version == version {
-		log.Printf("the current KCC version is the same as the latest version %v\n", version)
-		return
-	}
+	/*
+		if currentVersion.Version == version {
+			log.Printf("the current KCC version is the same as the latest version %v\n", version)
+			return
+		}*/
 	stableFilePath := path.Join(operatorSrcRoot, "channels", "stable")
 	b, err = ioutil.ReadFile(stableFilePath)
 	if err != nil {
@@ -268,16 +271,89 @@ func main() {
 		log.Fatalf("error updating file %v", stableFilePath)
 	}
 
-	staleManifestDir := path.Join(operatorSrcRoot, "channels", "packages", "configconnector", currentVersion.Version)
-	log.Printf("removing stale manifest %v", staleManifestDir)
-	if err := os.RemoveAll(staleManifestDir); err != nil {
-		log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
+	channelDir := path.Join(operatorSrcRoot, "channels", "packages", "configconnector")
+	if err := dropStalePackages(channelDir); err != nil {
+		log.Fatalf("drop stale packages: %s", err)
 	}
-	staleManifestDir = path.Join(operatorSrcRoot, "autopilot-channels", "packages", "configconnector", currentVersion.Version)
-	log.Printf("removing stale manifest %v", staleManifestDir)
-	if err := os.RemoveAll(staleManifestDir); err != nil {
-		log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
+	autoPilotChannelDir := path.Join(operatorSrcRoot, "autopilot-channels", "packages", "configconnector")
+	if err := dropStalePackages(autoPilotChannelDir); err != nil {
+		log.Fatalf("drop stale packages: %s", err)
 	}
+}
+
+func dropStalePackages(pacakgesPath string) error {
+	dirEntries, _ := os.ReadDir(pacakgesPath)
+
+	totalReleases := Releases{}
+	for _, entry := range dirEntries {
+		if entry.IsDir() {
+			totalReleases = append(totalReleases, entry.Name())
+		} else {
+			log.Printf("found unknown file %s under %s\n", entry.Name(), pacakgesPath)
+		}
+	}
+
+	// Support the latest 3 minor versions with their latest patch
+	supported := totalReleases.StablePatchAtTopMinor(3)
+
+	// Drop older versions
+	for _, r := range totalReleases {
+		shouldKeep := false
+		for _, s := range supported {
+			if r == s {
+				shouldKeep = true
+				break
+			}
+		}
+		if shouldKeep {
+			continue
+		}
+		staleManifestDir := path.Join(pacakgesPath, r)
+		log.Printf("removing stale manifest %v", staleManifestDir)
+		if err := os.RemoveAll(staleManifestDir); err != nil {
+			log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
+		}
+	}
+	return nil
+}
+
+type Releases []string
+
+type minor int
+
+type patches []int
+
+// StablePatchAtTopMinor returns the latest `n` semver2 Minor releases with their latest semver2 Patch.
+// For example, if the total releases are 1.121.2, 1.121.1, 1.121.0, 1.120.1, 1.120.0, 1.119.3, 1.119.2, 1.119.1, 1.119.0, 1.118.0, and n is 3, the top 3 stable versions are 1.121.2, 1.120.1, 1.119.3
+func (r Releases) StablePatchAtTopMinor(n int) []string {
+	minorPatchesMap := map[minor]patches{}
+	totalMinors := []int{}
+	for _, release := range r {
+		v, err := semver.ParseTolerant(release)
+		if err != nil {
+			log.Printf("skipping unknown package version %q", release)
+		}
+		m := minor(v.Minor)
+		if _, ok := minorPatchesMap[m]; ok {
+			minorPatchesMap[m] = append(minorPatchesMap[m], int(v.Patch))
+		} else {
+			totalMinors = append(totalMinors, int(m))
+			minorPatchesMap[m] = patches{int(v.Patch)}
+		}
+	}
+	sort.Sort(sort.IntSlice(totalMinors))
+	if len(totalMinors) > n {
+		totalMinors = totalMinors[len(totalMinors)-n:]
+	}
+	supportedVersions := []string{}
+	for _, m := range totalMinors {
+		patches := minorPatchesMap[minor(m)]
+		sort.Sort(sort.IntSlice(patches))
+		v := semver.Version{Major: 1, Minor: uint64(m), Patch: uint64(patches[len(patches)-1])}
+		supportedVersions = append(supportedVersions, v.String())
+	}
+	return supportedVersions
+
 }
 
 func kustomizeBuild(operatorSrcRoot string) {

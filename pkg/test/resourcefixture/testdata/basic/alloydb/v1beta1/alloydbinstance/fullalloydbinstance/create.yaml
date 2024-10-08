@@ -28,6 +28,7 @@ spec:
     password.enforce_complexity: "on"
   networkConfig:
     enablePublicIp: true
+    enableOutboundPublicIp: true
     authorizedExternalNetworks:
     - cidrRange: 8.8.8.8/30
     - cidrRange: 8.8.4.4/30

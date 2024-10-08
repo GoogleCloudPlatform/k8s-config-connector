@@ -151,3 +151,6 @@ Session.vim
 # always skip vendored files
 /vendor
 .build
+
+# Go workspaces
+go.work.sum

@@ -40,7 +40,6 @@ type NetworkConnectivityServiceConnectionPolicySpec struct {
 	Location *string `json:"location"`
 
 	// The NetworkConnectivityServiceConnectionPolicy name. If not given, the metadata.name will be used.
-	// + optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// A description of this resource.

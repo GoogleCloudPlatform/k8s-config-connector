@@ -76,6 +76,12 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		case "JOB_STATE_PENDING", "JOB_STATE_QUEUED":
 			return false
 		}
+		// Also handle when we're encoding enums as integers
+		currentStateEnum, _, _ := unstructured.NestedInt64(responseBody, "currentState")
+		switch currentStateEnum {
+		case 9 /* JOB_STATE_PENDING */, 11 /* JOB_STATE_QUEUED */ :
+			return false
+		}
 		return true
 	})
 

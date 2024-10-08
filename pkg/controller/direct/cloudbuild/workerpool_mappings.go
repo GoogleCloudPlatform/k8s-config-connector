@@ -30,8 +30,8 @@ func CloudBuildWorkerPoolObservedState_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krm.CloudBuildWorkerPoolObservedState{}
 	out.ETag = direct.LazyPtr(in.Etag)
-	out.CreateTime = direct.ToOpenAPIDateTime(in.GetCreateTime())
-	out.UpdateTime = direct.ToOpenAPIDateTime(in.GetUpdateTime())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 
 	privateConfig := in.GetPrivatePoolV1Config()
 	if privateConfig != nil {

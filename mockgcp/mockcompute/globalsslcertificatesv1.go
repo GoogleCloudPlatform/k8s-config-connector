@@ -18,13 +18,11 @@ import (
 	"context"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type GlobalSSLCertificatesV1 struct {
@@ -67,7 +65,7 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 	obj.Kind = PtrTo("compute#sslCertificate")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating sslCertificate: %v", err)
+		return nil, err
 	}
 
 	op := &pb.Operation{
@@ -92,11 +90,7 @@ func (s *GlobalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteSslC
 
 	deleted := &pb.SslCertificate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "sslCertificate %q not found", name)
-		}
-
-		return nil, status.Errorf(codes.Internal, "error deleting sslCertificate: %v", err)
+		return nil, err
 	}
 
 	op := &pb.Operation{
@@ -120,7 +114,7 @@ func (n *globalSSLCertificateName) String() string {
 }
 
 // parseGlobalSslCertificateName parses a string into a globalSslCertificateName.
-// The expected form is `projects/*/regions/*/sslcertificate/*`.
+// The expected form is `projects/*/global/sslcertificate/*`.
 func (s *MockService) parseGlobalSslCertificateName(name string) (*globalSSLCertificateName, error) {
 	tokens := strings.Split(name, "/")
 

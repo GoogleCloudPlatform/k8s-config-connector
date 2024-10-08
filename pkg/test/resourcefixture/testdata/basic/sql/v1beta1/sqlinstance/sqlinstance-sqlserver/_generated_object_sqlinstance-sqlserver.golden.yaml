@@ -3,29 +3,33 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"rootPassword":{"valueFrom":{"secretKeyRef":{"key":"password","name":"secret-${uniqueId}"}}}}}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
-    label-two: value-two
-  name: sqlinstance-sample-${uniqueId}
+  name: sqlinstance-sqlserver-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseVersion: SQLSERVER_2017_EXPRESS
+  databaseVersion: SQLSERVER_2019_EXPRESS
   region: us-central1
+  resourceID: sqlinstance-sqlserver-${uniqueId}
   rootPassword:
-    value: "1234"
+    valueFrom:
+      secretKeyRef:
+        key: password
+        name: secret-${uniqueId}
   settings:
-    diskAutoresize: false
-    diskSize: 20
-    sqlServerAuditConfig:
-      bucketRef:
-        name: storagebucket-${uniqueId}
+    collation: SQL_Latin1_General_CP1_CI_AS
+    locationPreference:
+      zone: us-central1-a
     tier: db-custom-1-3840
+    timeZone: Mountain Standard Time
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -33,13 +37,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-sample-${uniqueId}
+  connectionName: ${projectId}:us-central1:sqlinstance-sqlserver-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
   publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sqlserver-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----

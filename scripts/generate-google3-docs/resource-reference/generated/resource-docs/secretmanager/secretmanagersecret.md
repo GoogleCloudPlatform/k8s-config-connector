@@ -148,20 +148,18 @@ versionAliases:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Custom metadata about the secret.
+            <p>{% verbatim %}Optional. Custom metadata about the secret.
 
-Annotations are distinct from various forms of labels. Annotations exist to allow
-client tools to store their own state information without requiring a database.
+ Annotations are distinct from various forms of labels.
+ Annotations exist to allow client tools to store their own state
+ information without requiring a database.
 
-Annotation keys must be between 1 and 63 characters long, have a UTF-8 encoding of
-maximum 128 bytes, begin and end with an alphanumeric character ([a-z0-9A-Z]), and
-may have dashes (-), underscores (_), dots (.), and alphanumerics in between these
-symbols.
+ Annotation keys must be between 1 and 63 characters long, have a UTF-8
+ encoding of maximum 128 bytes, begin and end with an alphanumeric character
+ ([a-z0-9A-Z]), and may have dashes (-), underscores (_), dots (.), and
+ alphanumerics in between these symbols.
 
-The total size of annotation keys and values must be less than 16KiB.
-
-An object containing a list of "key": value pairs. Example:
-{ "name": "wrench", "mass": "1.3kg", "count": "3" }.{% endverbatim %}</p>
+ The total size of annotation keys and values must be less than 16KiB.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -171,19 +169,20 @@ An object containing a list of "key": value pairs. Example:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Timestamp in UTC when the Secret is scheduled to expire. This is always provided on output, regardless of what was sent on input.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Timestamp in UTC when the [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to expire. This is always provided on output, regardless of what was sent on input.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>replication</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The replication policy of the secret data attached to the Secret. It cannot be changed
-after the Secret has been created.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Immutable. The replication policy of the secret data attached to
+ the [Secret][google.cloud.secretmanager.v1.Secret].
+
+ The replication policy cannot be changed after the Secret has been created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -193,7 +192,7 @@ after the Secret has been created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+            <p>{% verbatim %}The [Secret][google.cloud.secretmanager.v1.Secret] will automatically be replicated without any restrictions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -203,9 +202,15 @@ after the Secret has been created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The customer-managed encryption configuration of the Secret.
-If no configuration is provided, Google-managed default
-encryption is used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The customer-managed encryption configuration of the
+ [Secret][google.cloud.secretmanager.v1.Secret]. If no configuration is
+ provided, Google-managed default encryption is used.
+
+ Updates to the [Secret][google.cloud.secretmanager.v1.Secret] encryption
+ configuration only apply to
+ [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added
+ afterwards. They do not apply retroactively to existing
+ [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -215,9 +220,19 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The customer-managed encryption configuration of the Secret.
-If no configuration is provided, Google-managed default
-encryption is used.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The resource name of the Cloud KMS CryptoKey used to encrypt
+ secret payloads.
+
+ For secrets using the
+ [UserManaged][google.cloud.secretmanager.v1.Replication.UserManaged]
+ replication policy type, Cloud KMS CryptoKeys must reside in the same
+ location as the [replica location][Secret.UserManaged.Replica.location].
+
+ For secrets using the
+ [Automatic][google.cloud.secretmanager.v1.Replication.Automatic]
+ replication policy type, Cloud KMS CryptoKeys must reside in `global`.
+
+ The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +242,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -237,7 +252,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +262,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -267,7 +282,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Secret will be replicated to the regions specified by the user.{% endverbatim %}</p>
+            <p>{% verbatim %}The [Secret][google.cloud.secretmanager.v1.Secret] will only be replicated into the locations specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -277,7 +292,10 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. The list of Replicas for this Secret. Cannot be empty.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The list of Replicas for this
+ [Secret][google.cloud.secretmanager.v1.Secret].
+
+ Cannot be empty.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +315,15 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Customer Managed Encryption for the secret.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The customer-managed encryption configuration of the
+ [User-Managed Replica][Replication.UserManaged.Replica]. If no
+ configuration is provided, Google-managed default encryption is used.
+
+ Updates to the [Secret][google.cloud.secretmanager.v1.Secret]
+ encryption configuration only apply to
+ [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added
+ afterwards. They do not apply retroactively to existing
+ [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +333,19 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Customer Managed Encryption for the secret.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The resource name of the Cloud KMS CryptoKey used to encrypt
+ secret payloads.
+
+ For secrets using the
+ [UserManaged][google.cloud.secretmanager.v1.Replication.UserManaged]
+ replication policy type, Cloud KMS CryptoKeys must reside in the same
+ location as the [replica location][Secret.UserManaged.Replica.location].
+
+ For secrets using the
+ [Automatic][google.cloud.secretmanager.v1.Replication.Automatic]
+ replication policy type, Cloud KMS CryptoKeys must reside in `global`.
+
+ The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -317,7 +355,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -327,7 +365,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -337,7 +375,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -347,7 +385,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The canonical IDs of the location to replicate data. For example: "us-east1".{% endverbatim %}</p>
+            <p>{% verbatim %}The canonical IDs of the location to replicate data. For example: `"us-east1"`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -357,7 +395,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The secretId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The SecretManagerSecret name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -367,7 +405,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The rotation time and period for a Secret. At 'next_rotation_time', Secret Manager will send a Pub/Sub notification to the topics configured on the Secret. 'topics' must be set to configure rotation.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Rotation policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. May be excluded if there is no rotation policy.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -377,8 +415,15 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Timestamp in UTC at which the Secret is scheduled to rotate.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Timestamp in UTC at which the
+ [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to rotate.
+ Cannot be set to less than 300s (5 min) in the future and at most
+ 3153600000s (100 years).
+
+ [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+ MUST  be set if
+ [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period]
+ is set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -388,8 +433,17 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Duration between rotation notifications. Must be in seconds and at least 3600s (1h) and at most 3153600000s (100 years).
-If rotationPeriod is set, 'next_rotation_time' must be set. 'next_rotation_time' will be advanced by this period when the service automatically sends rotation notifications.{% endverbatim %}</p>
+            <p>{% verbatim %}Input only. The Duration between rotation notifications. Must be in seconds
+ and at least 3600s (1h) and at most 3153600000s (100 years).
+
+ If
+ [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period]
+ is set,
+ [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+ must be set.
+ [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+ will be advanced by this period when the service automatically sends
+ rotation notifications.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -399,7 +453,7 @@ If rotationPeriod is set, 'next_rotation_time' must be set. 'next_rotation_time'
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of up to 10 Pub/Sub topics to which messages are published when control plane operations are called on the secret or its versions.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A list of up to 10 Pub/Sub topics to which messages are published when control plane operations are called on the secret or its versions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,9 +473,7 @@ If rotationPeriod is set, 'next_rotation_time' must be set. 'next_rotation_time'
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A list of up to 10 Pub/Sub topics to which messages are
-published when control plane operations are called on the secret
-or its versions.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -431,7 +483,7 @@ or its versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/topics/{{value}}`, where {{value}} is the `name` field of a `PubSubTopic` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}If provided must be in the format `projects/[project_id]/topics/[topic_id]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -441,7 +493,7 @@ or its versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `PubSubTopic` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -451,7 +503,7 @@ or its versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `PubSubTopic` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -461,8 +513,7 @@ or its versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The TTL for the Secret.
-A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
+            <p>{% verbatim %}Input only. The TTL for the [Secret][google.cloud.secretmanager.v1.Secret].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -472,15 +523,17 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Mapping from version alias to version name.
+            <p>{% verbatim %}Optional. Mapping from version alias to version name.
 
-A version alias is a string with a maximum length of 63 characters and can contain
-uppercase and lowercase letters, numerals, and the hyphen (-) and underscore ('_')
-characters. An alias string must start with a letter and cannot be the string
-'latest' or 'NEW'. No more than 50 aliases can be assigned to a given secret.
+ A version alias is a string with a maximum length of 63 characters and can
+ contain uppercase and lowercase letters, numerals, and the hyphen (`-`)
+ and underscore ('_') characters. An alias string must start with a
+ letter and cannot be the string 'latest' or 'NEW'.
+ No more than 50 aliases can be assigned to a given secret.
 
-An object containing a list of "key": value pairs. Example:
-{ "name": "wrench", "mass": "1.3kg", "count": "3" }.{% endverbatim %}</p>
+ Version-Alias pairs will be viewable via GetSecret and modifiable via
+ UpdateSecret. Access by alias is only be supported on
+ GetSecretVersion and AccessSecretVersion.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -499,9 +552,10 @@ conditions:
   reason: string
   status: string
   type: string
-createTime: string
+externalRef: string
 name: string
 observedGeneration: integer
+observedState: {}
 ```
 
 <table class="properties responsive">
@@ -515,7 +569,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -561,18 +615,17 @@ observedGeneration: integer
         </td>
     </tr>
     <tr>
-        <td><code>createTime</code></td>
+        <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time at which the Secret was created.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the SecretManagerSecret resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The resource name of the Secret. Format:
-'projects/{{project}}/secrets/{{secret_id}}'.{% endverbatim %}</p>
+            <p>{% verbatim %}[DEPRECATED] Please read from `.status.externalRef` instead. Config Connector will remove the `.status.name` in v1 Version.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -580,6 +633,13 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

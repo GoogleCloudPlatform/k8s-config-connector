@@ -26,7 +26,10 @@ import (
 )
 
 func TestAllIncludesIAMResource(t *testing.T) {
-	allResources := supportedgvks.All(testservicemappingloader.New(t), dclmetadata.New())
+	allResources, err := supportedgvks.All(testservicemappingloader.New(t), dclmetadata.New())
+	if err != nil {
+		t.Fatalf("error loading all supported GVKs: %v", err)
+	}
 	iamResources := []schema.GroupVersionKind{
 		v1beta1.IAMAuditConfigGVK,
 		v1beta1.IAMPolicyGVK,

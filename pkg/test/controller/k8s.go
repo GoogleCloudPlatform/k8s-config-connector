@@ -180,6 +180,7 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.HighCPUQuotaTestProject), testgcp.GetHighCPUQuotaTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.RecaptchaEnterpriseTestProject.Key), testgcp.RecaptchaEnterpriseTestProject.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAttachedClusterProject.Key), testgcp.TestKCCAttachedClusterProject.Get(), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAttachedClusterPlatformVersion.Key), testgcp.TestKCCAttachedClusterPlatformVersion.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCVertexAIIndexBucket.Key), testgcp.TestKCCVertexAIIndexBucket.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCVertexAIIndexDataURI.Key), testgcp.TestKCCVertexAIIndexDataURI.Get(), -1)
 	return []byte(s)

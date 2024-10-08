@@ -62,6 +62,10 @@ type ResourceContext struct {
 	IsDCLResource    bool
 	IsDirectResource bool
 
+	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
+	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	PostModifyDelay time.Duration
+
 	// Time to delay before recreating the resource as part of the drift detection test.
 	// The default wait time is 10 seconds. However, some resources appear to need to
 	// wait longer before recreating, so this value is customizable.
@@ -419,7 +423,7 @@ func directCreate(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 		return nil, fmt.Errorf("GVK %s '%v' already exist", u.GroupVersionKind(), u.GetName())
 	}
 
-	op := directbase.NewCreateOperation(u)
+	op := directbase.NewCreateOperation(c, u)
 	err = a.Create(ctx, op)
 	if err != nil {
 		return nil, err
@@ -441,7 +445,7 @@ func directDelete(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 		return fmt.Errorf("GVK %s '%v' is not found", u.GroupVersionKind(), u.GetName())
 	}
 
-	op := directbase.NewDeleteOperation(u)
+	op := directbase.NewDeleteOperation(c, u)
 	_, err = a.Delete(ctx, op)
 	return err
 }

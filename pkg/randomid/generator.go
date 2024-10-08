@@ -29,7 +29,11 @@ type ID struct {
 // New builds a random identifier.
 // We always generate a more secure random value; we could in future expose less secure options if this becomes a bottleneck.
 func New() ID {
-	b := make([]byte, 12)
+	// The forwarding rule name for PSC Google APIs must be an 1-20 characters string with lowercase letters and numbers and must start with a letter.
+	// 9 bytes is equivalent to 72 bits of data. Each character in Base32 represents 5 bits.
+	// Calculation: 72 bits / 5 bits per character = 14.4 characters.
+	// Round up to the nearest whole number, which is 15. the ID string will have 15 characters.
+	b := make([]byte, 9)
 	if _, err := cryptorand.Read(b); err != nil {
 		klog.Fatalf("failed to read from crypto/rand: %v", err)
 	}

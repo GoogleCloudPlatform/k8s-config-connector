@@ -6,7 +6,7 @@ metadata:
     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"ddl":["CREATE
       TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"]}}'
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -16,13 +16,11 @@ metadata:
   name: spannerdb-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseDialect: GOOGLE_STANDARD_SQL
   ddl:
   - CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)
   instanceRef:
     name: spannerinstance-${uniqueId}
   resourceID: spannerdb-${uniqueId}
-  versionRetentionPeriod: 1h
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

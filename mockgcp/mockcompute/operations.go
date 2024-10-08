@@ -91,12 +91,16 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	op.InsertTime = PtrTo(formatTime(now))
 	op.Id = PtrTo(uint64(nanos))
 
-	op.Progress = PtrTo(int32(0))
+	if op.Progress == nil {
+		op.Progress = PtrTo(int32(0))
+	}
+
+	if op.Status == nil {
+		op.Status = PtrTo(pb.Operation_RUNNING)
+	}
 
 	op.Kind = PtrTo("compute#operation")
 	op.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + fqn)
-
-	op.Status = PtrTo(pb.Operation_RUNNING)
 
 	log.Info("storing operation", "fqn", fqn)
 	if err := s.storage.Create(ctx, fqn, op); err != nil {

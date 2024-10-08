@@ -3,17 +3,16 @@ kind: AlloyDBInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 4
+  generation: 2
   labels:
     cnrm-test: "true"
   name: alloydbinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  availabilityType: AVAILABILITY_TYPE_UNSPECIFIED
   clusterRef:
     name: alloydbcluster-${uniqueId}
   databaseFlags:
@@ -24,6 +23,8 @@ spec:
   machineConfig:
     cpuCount: 4
   networkConfig:
+    authorizedExternalNetworks: []
+    enableOutboundPublicIp: false
     enablePublicIp: false
   resourceID: alloydbinstance${uniqueId}
 status:
@@ -35,5 +36,5 @@ status:
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
   name: projects/${projectId}/locations/europe-north1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}
-  observedGeneration: 4
+  observedGeneration: 2
   state: STATE_UNSPECIFIED

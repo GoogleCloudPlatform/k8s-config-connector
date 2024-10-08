@@ -40,7 +40,7 @@ func UnstructuredToHCL(ctx context.Context, u *unstructured.Unstructured, smLoad
 	if err != nil {
 		return "", fmt.Errorf("could not parse resource %s: %w", u.GetName(), err)
 	}
-	config, _, err := krmtotf.KRMResourceToTFResourceConfigFull(krmResource, k8s.NewErroringClient(), smLoader, nil, nil, true, map[string]string{})
+	config, _, err := krmtotf.KRMResourceToTFResourceConfigFull(krmResource, k8s.NewErroringClient(), smLoader, nil, nil, true)
 	if err != nil {
 		return "", fmt.Errorf("error expanding resource configuration: %w", err)
 	}

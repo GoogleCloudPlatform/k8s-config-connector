@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -95,13 +96,9 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	fqn := name.String()
 	now := time.Now()
 
-	region := "us-central1"
-	zone := "us-central1-a"
-
 	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
 	obj.Name = name.InstanceName
 	obj.Project = name.Project.ID
-	obj.Region = region
 
 	obj.SelfLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s",
 		name.Project.ID, name.InstanceName)
@@ -111,8 +108,6 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	if err := setDatabaseVersionDefaults(obj); err != nil {
 		return nil, err
 	}
-
-	obj.GceZone = zone
 
 	// By default, allocate a public IP for the instance.
 	shouldAllocatePublicIP := true
@@ -172,7 +167,9 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	obj.ServiceAccountEmailAddress = fmt.Sprintf("p%d-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com", name.Project.Number)
 
-	populateDefaults(obj, zone)
+	populateDefaults(obj)
+
+	obj.GceZone = obj.Settings.LocationPreference.Zone
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(1)
 
@@ -252,6 +249,9 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_CREATE,
+	}
+	if obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE {
+		op.OperationType = pb.Operation_CREATE_REPLICA
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
@@ -492,7 +492,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
 	case pb.SqlDatabaseVersion_POSTGRES_15:
 		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
-		obj.MaintenanceVersion = "POSTGRES_15_7.R20240514.00_08"
+		obj.MaintenanceVersion = "POSTGRES_15_7.R20240514.00_12"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("POSTGRES_16"),
@@ -510,7 +510,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 	return nil
 }
 
-func populateDefaults(obj *pb.DatabaseInstance, zone string) {
+func populateDefaults(obj *pb.DatabaseInstance) {
 	if obj.InstanceType == pb.SqlInstanceType_SQL_INSTANCE_TYPE_UNSPECIFIED {
 		obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
 	}
@@ -567,17 +567,20 @@ func populateDefaults(obj *pb.DatabaseInstance, zone string) {
 	}
 	setDefaultBool(&ipConfiguration.Ipv4Enabled, true)
 	setDefaultBool(&ipConfiguration.RequireSsl, false)
-	if ipConfiguration.SslMode == 0 {
-		ipConfiguration.SslMode = pb.IpConfiguration_ALLOW_UNENCRYPTED_AND_ENCRYPTED
+	if ipConfiguration.SslMode == pb.IpConfiguration_SSL_MODE_UNSPECIFIED {
+		if ipConfiguration.RequireSsl.Value {
+			ipConfiguration.SslMode = pb.IpConfiguration_TRUSTED_CLIENT_CERTIFICATE_REQUIRED
+		} else {
+			ipConfiguration.SslMode = pb.IpConfiguration_ALLOW_UNENCRYPTED_AND_ENCRYPTED
+		}
 	}
 
-	locationPreference := settings.LocationPreference
-	if locationPreference == nil {
-		locationPreference = &pb.LocationPreference{}
-		settings.LocationPreference = locationPreference
+	if settings.LocationPreference == nil {
+		settings.LocationPreference = &pb.LocationPreference{
+			Kind: "sql#locationPreference",
+			Zone: obj.Region + "-a",
+		}
 	}
-	locationPreference.Kind = "sql#locationPreference"
-	locationPreference.Zone = zone
 
 	backupConfiguration := settings.BackupConfiguration
 	if backupConfiguration == nil {
@@ -586,6 +589,12 @@ func populateDefaults(obj *pb.DatabaseInstance, zone string) {
 	} else {
 		if isPostgres(obj) {
 			setDefaultBool(&backupConfiguration.ReplicationLogArchivingEnabled, false)
+		}
+
+		if backupConfiguration.BinaryLogEnabled != nil && backupConfiguration.BinaryLogEnabled.Value {
+			if isPostgres(obj) || isMysql(obj) {
+				backupConfiguration.TransactionalLogStorageState = direct.PtrTo(pb.BackupConfiguration_CLOUD_STORAGE)
+			}
 		}
 	}
 	backupConfiguration.Kind = "sql#backupConfiguration"
@@ -665,6 +674,9 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	if settings := req.GetBody().GetSettings(); settings != nil {
+		if settings.Edition != pb.Settings_EDITION_UNSPECIFIED {
+			obj.Settings.Edition = settings.Edition
+		}
 		if settings.Tier != "" {
 			obj.Settings.Tier = settings.Tier
 		}
@@ -672,9 +684,9 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	if body := req.GetBody(); body != nil {
 		if body.DatabaseVersion != pb.SqlDatabaseVersion_SQL_DATABASE_VERSION_UNSPECIFIED {
 			obj.DatabaseVersion = body.DatabaseVersion
-			if err := setDatabaseVersionDefaults(obj); err != nil {
-				return nil, err
-			}
+		}
+		if err := setDatabaseVersionDefaults(obj); err != nil {
+			return nil, err
 		}
 	}
 
@@ -735,7 +747,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.State = existing.State
 	obj.UpgradableDatabaseVersions = existing.UpgradableDatabaseVersions
 
-	populateDefaults(obj, existing.GetSettings().GetLocationPreference().GetZone())
+	populateDefaults(obj)
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(existing.GetSettings().GetSettingsVersion().GetValue() + 1)
 

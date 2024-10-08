@@ -1220,6 +1220,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
   },
@@ -1281,6 +1282,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
   },
@@ -1307,6 +1309,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 
 {
   "subscription": {
+    "ackDeadlineSeconds": 10,
     "bigqueryConfig": {
       "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}"
     },
@@ -1335,6 +1338,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
   },
@@ -1375,6 +1379,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
   },

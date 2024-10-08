@@ -27,8 +27,18 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// fixStaleExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
+// This guarantees the backward compatibility for Compute Beta resources.
+func fixStaleExternalFormat(external string) string {
+	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1/")
+	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1beta1/")
+	external = strings.TrimPrefix(external, "/")
+	return external
+}
+
 type ComputeNetworkRef struct {
-	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by Config Connector. */
+	// A reference to an externally managed Compute Network resource.
+	// Should be in the format `projects/<projectID>/global/networks/<network>`.
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeNetwork` resource. */
 	Name string `json:"name,omitempty"`
@@ -55,6 +65,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
 		}
 
+		ref.External = fixStaleExternalFormat(ref.External)
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
 			return &ComputeNetwork{
@@ -105,7 +116,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 }
 
 type ComputeSubnetworkRef struct {
-	/* The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by KCC. */
+	/* The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeSubnetwork` resource. */
 	Name string `json:"name,omitempty"`
@@ -122,6 +133,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 		if ref.Name != "" {
 			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
 		}
+		ref.External = fixStaleExternalFormat(ref.External)
 
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
@@ -180,7 +192,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 }
 
 type ComputeAddressRef struct {
-	/* The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by KCC. */
+	/* The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeAddress` resource. */
 	Name string `json:"name,omitempty"`
@@ -189,7 +201,7 @@ type ComputeAddressRef struct {
 }
 
 type ComputeBackendServiceRef struct {
-	/* The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by KCC. */
+	/* The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeBackendService` resource. */
 	Name string `json:"name,omitempty"`
@@ -198,7 +210,7 @@ type ComputeBackendServiceRef struct {
 }
 
 type ComputeServiceAttachmentRef struct {
-	/* The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by KCC. */
+	/* The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeServiceAttachment` resource. */
 	Name string `json:"name,omitempty"`
@@ -207,7 +219,7 @@ type ComputeServiceAttachmentRef struct {
 }
 
 type ComputeTargetGrpcProxyRef struct {
-	/* The ComputeTargetGrpcProxy selflink in the form "projects/{{project}}/global/targetGrpcProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetGrpcProxy selflink in the form "projects/{{project}}/global/targetGrpcProxies/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetGrpcProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -216,7 +228,7 @@ type ComputeTargetGrpcProxyRef struct {
 }
 
 type ComputeTargetHTTPProxyRef struct {
-	/* The ComputeTargetHTTPProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetHTTPProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetHTTPProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -225,7 +237,7 @@ type ComputeTargetHTTPProxyRef struct {
 }
 
 type ComputeTargetHTTPSProxyRef struct {
-	/* The ComputeTargetHTTPSProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetHTTPSProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetHTTPSProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -234,7 +246,7 @@ type ComputeTargetHTTPSProxyRef struct {
 }
 
 type ComputeTargetSSLProxyRef struct {
-	/* The ComputeTargetSSLProxy selflink in the form "projects/{{project}}/global/targetSslProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetSSLProxy selflink in the form "projects/{{project}}/global/targetSslProxies/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetSSLProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -243,7 +255,7 @@ type ComputeTargetSSLProxyRef struct {
 }
 
 type ComputeTargetTCPProxyRef struct {
-	/* The ComputeTargetTCPProxy selflink in the form "projects/{{project}}/global/targetTcpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetTCPProxy selflink in the form "projects/{{project}}/global/targetTcpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetTCPProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -252,10 +264,20 @@ type ComputeTargetTCPProxyRef struct {
 }
 
 type ComputeTargetVPNGatewayRef struct {
-	/* The ComputeTargetVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetVPNGateway` resource. */
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeTargetVPNGateway` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeFirewallPolicyRef struct {
+	// A reference to an externally managed ComputeFirewallPolicy resource.
+	// Should be in the format `locations/global/firewallPolicies/<firewallPolicy>`.
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeFirewall olicy ` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeFirewallPolicy ` resource. */
 	Namespace string `json:"namespace,omitempty"`
 }

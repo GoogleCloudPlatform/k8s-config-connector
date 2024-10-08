@@ -399,6 +399,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/dataflow/dataflowflextemplatejob.md">DataflowFlexTemplateJob</a></td>
 </tr>
 <tr>
+  <td><a href="/dataform/docs/">{{dataform_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/dataform/dataformrepository.md">DataformRepository</a></td>
+</tr>
+<tr>
   <td><a href="/data-fusion/docs/">{{data_fusion_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/datafusion/datafusioninstance.md">DatafusionInstance</a></td>
 </tr>

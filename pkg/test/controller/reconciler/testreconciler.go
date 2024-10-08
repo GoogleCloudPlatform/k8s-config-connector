@@ -92,7 +92,7 @@ func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Pro
 	smLoader := testservicemappingloader.New(t)
 	dclSchemaLoader, err := dclschemaloader.New()
 	if err != nil {
-		log.Fatalf("error creating a DCL schema loader: %v", err)
+		t.Fatalf("error creating a DCL schema loader: %v", err)
 	}
 	serviceMetaLoader := metadata.New()
 	dclConverter := conversion.New(dclSchemaLoader, serviceMetaLoader)
@@ -101,7 +101,7 @@ func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Pro
 	if err := registry.Init(context.TODO(), &config.ControllerConfig{
 		HTTPClient: httpClient,
 	}); err != nil {
-		log.Fatalf("error intializing direct registry: %v", err)
+		t.Fatalf("error intializing direct registry: %v", err)
 	}
 
 	return &TestReconciler{

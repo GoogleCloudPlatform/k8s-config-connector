@@ -70,7 +70,6 @@ manifests: generate
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
 	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
-	go run ./scripts/generate-cnrm-cluster-roles/main.go
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
@@ -81,6 +80,10 @@ manifests: generate
 
 	# for direct controllers
 	dev/tasks/generate-crds
+
+	# Generating cnrm cluster roles is dependent on the existence of directory
+	# config/crds/resources with all the freshly generated CRDs.
+	go run ./scripts/generate-cnrm-cluster-roles/main.go
 
 # Format code
 .PHONY: fmt
@@ -232,7 +235,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs generate-go-client
+ready-pr: lint manifests resource-docs generate-go-client ensure
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl
@@ -337,8 +340,7 @@ clean-release-manifests:
 	rm config/installbundle/release-manifests/standard/manifests.yaml
 	rm config/installbundle/release-manifests/autopilot/manifests.yaml
 
-# deploy config connector manifests to a k8s cluster
-# make sure to connect to a k8s cluster first
+
 .PHONY: deploy-kcc-operator-standard
 deploy-kcc-operator-standard: config-connector-manifests-standard push-operator-manifest
 	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml ${CONTEXT_FLAG}
@@ -362,7 +364,7 @@ deploy-kcc-autopilot: install-crds build-push-all-images deploy-kcc-operator-sta
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: powertool-tests
-powertool-tests:	
+powertool-tests:
 	cd scripts/github-actions/ && ./powertool-test.sh
 
 .PHONY: e2e-scenario-tests
@@ -376,7 +378,7 @@ TEST_TARGET ?= mock
 
 .PHONY: e2e-sample-tests
 e2e-sample-tests:
-	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="SQLInstance,ComputeForwardingRule" \ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
+	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="ComputeForwardingRule" \ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
 
 # orgnization ID for google.com
 ORG_ID ?= 433637338589

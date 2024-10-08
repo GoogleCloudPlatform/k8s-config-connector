@@ -1,6 +1,7 @@
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 404 Not Found
 Cache-Control: private
@@ -16,16 +17,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Connection projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}",
+    "message": "Not found: Connection projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?alt=json&connectionId=bigqueryconnectionconnection-${uniqueId}
+POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "cloudResource": {},
@@ -52,14 +54,15 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -80,19 +83,18 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json&updateMask=friendlyName%2Cdescription
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=friendlyName%2Cdescription
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 {
-  "cloudResource": {
-    "serviceAccountId": "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
-  },
+  "cloudResource": {},
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated"
 }
@@ -116,14 +118,15 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -144,14 +147,15 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?alt=json
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private

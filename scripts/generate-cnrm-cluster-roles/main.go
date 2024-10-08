@@ -48,8 +48,10 @@ func main() {
 		log.Fatalf("error getting new service mapping loader: %v", err)
 	}
 	serviceMetadataLoader := dclmetadata.New()
-	gvks := supportedgvks.All(smLoader, serviceMetadataLoader)
-
+	gvks, err := supportedgvks.All(smLoader, serviceMetadataLoader)
+	if err != nil {
+		log.Fatalf("error loading all supported GVKs: %v", err)
+	}
 	apis := make(map[string]bool)
 	for _, gvk := range gvks {
 		apis[gvk.Group] = true

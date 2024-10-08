@@ -1,0 +1,33 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+kind: DataflowFlexTemplateJob
+metadata:
+  annotations:
+    cnrm.cloud.google.com/on-delete: "cancel"
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: dataflowflextemplatejob-${uniqueId}
+spec:
+  region: us-central1
+  # This is a public, Google-maintained Dataflow Job flex template of a batch job
+  containerSpecGcsPath: gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion
+  parameters:
+    inputFileFormat: csv
+    outputFileFormat: avro
+    # This is maintained by us.
+    inputFileSpec: gs://config-connector-samples/dataflowflextemplate/numbertest.csv
+    outputBucket: gs://storagebucket-${uniqueId}
+    # This is maintained by us.
+    schema: gs://config-connector-samples/dataflowflextemplate/numbers.avsc

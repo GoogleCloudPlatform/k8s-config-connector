@@ -26,6 +26,7 @@ rm -rf mockgcp/ && mkdir -p mockgcp/api/ && mkdir -p mockgcp/devtools
 mv google/cloud/ mockgcp/
 mv google/container/ mockgcp/
 mv google/dataflow/ mockgcp/
+mv google/firestore/ mockgcp/
 mv google/iam/ mockgcp/
 mv google/logging/ mockgcp/
 mv google/pubsub/ mockgcp/
@@ -52,6 +53,9 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.container@mockgcp.contain
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/dataflow/@mockgcp/dataflow/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.dataflow@mockgcp.dataflow@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/firestore/@mockgcp/firestore/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.firestore@mockgcp.firestore@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/iam/@mockgcp/iam/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.iam@mockgcp.iam@g"

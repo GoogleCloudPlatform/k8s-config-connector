@@ -44,7 +44,7 @@ import (
 // validation of either the input KRM or output TF is left as the
 // responsibility of other layers (e.g. webhooks, CRD schemas, GCP API, etc.)
 func KRMResourceToTFResourceConfig(r *Resource, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (tfConfig *terraform.ResourceConfig, secretVersions map[string]string, err error) {
-	return KRMResourceToTFResourceConfigFull(r, c, smLoader, nil, nil, true, label.GetDefaultLabels())
+	return KRMResourceToTFResourceConfigFull(r, c, smLoader, nil, nil, true)
 }
 
 // KRMResourceToTFResourceConfigFull is a more flexible version of KRMResourceToTFResourceConfig,
@@ -55,7 +55,7 @@ func KRMResourceToTFResourceConfig(r *Resource, c client.Client, smLoader *servi
 //   - mustResolveSensitiveFields: if set, sensitive fields will be resolved.
 //   - defaultLabels: if set, these labels will be added to tfConfig.
 func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader,
-	liveState *terraform.InstanceState, jsonSchema *apiextensions.JSONSchemaProps, mustResolveSensitiveFields bool, defaultLabels map[string]string) (tfConfig *terraform.ResourceConfig, secretVersions map[string]string, err error) {
+	liveState *terraform.InstanceState, jsonSchema *apiextensions.JSONSchemaProps, mustResolveSensitiveFields bool) (tfConfig *terraform.ResourceConfig, secretVersions map[string]string, err error) {
 	config := deepcopy.MapStringInterface(r.Spec)
 	if config == nil {
 		config = make(map[string]interface{})
@@ -74,7 +74,7 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	}
 	if r.ResourceConfig.MetadataMapping.Labels != "" {
 		path := text.SnakeCaseToLowerCamelCase(r.ResourceConfig.MetadataMapping.Labels)
-		labels := label.NewGCPLabelsFromK8SLabels(r.GetLabels(), defaultLabels)
+		labels := label.ToJSONCompatibleFormat(label.NewGCPLabelsFromK8sLabels(r.GetLabels()))
 		if err := setValue(config, path, labels); err != nil {
 			return nil, nil, fmt.Errorf("error mapping 'metadata.labels': %w", err)
 		}
@@ -123,6 +123,25 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	config, err = withCustomFlatteners(config, r.Kind)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error running custom flatteners: %w", err)
+	}
+	// Set desired state with default values.
+	defaultingMap := map[string]map[string]string{
+		"CloudBuildTrigger": {
+			"location": "global",
+		},
+		"CloudIdentityGroup": {
+			"initial_group_config": "EMPTY",
+		},
+		"FirestoreIndex": {
+			"database": "(default)",
+		},
+	}
+	if defaults, ok := defaultingMap[r.Kind]; ok {
+		for field, value := range defaults {
+			if v, ok := config[field]; !ok || v == "" {
+				config[field] = value
+			}
+		}
 	}
 	state := InstanceStateToMap(r.TFResource, liveState)
 	config, err = withResourceCustomResolvers(config, state, r.Kind, r.TFResource)

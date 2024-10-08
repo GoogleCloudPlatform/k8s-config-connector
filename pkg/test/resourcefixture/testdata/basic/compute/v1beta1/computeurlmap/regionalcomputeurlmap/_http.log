@@ -129,11 +129,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "backendService \"projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "backendService \"projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found"
   }
 }
 
@@ -247,11 +247,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "urlMap \"projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "urlMap \"projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}' was not found"
   }
 }
 

@@ -249,6 +249,11 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
+
+	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
+	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	time.Sleep(resourceContext.PostModifyDelay)
+
 	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, systemContext.HttpClient)
 	if err != nil {
 		t.Fatalf("[validateCreate] unexpected error when GET-ing '%v': %v", initialUnstruct.GetName(), err)
@@ -423,6 +428,10 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 		t.Fatalf("unexpected generation increase %v", generationIncrease)
 	}
 
+	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
+	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	time.Sleep(resourceContext.PostModifyDelay)
+
 	// Check labels match on update
 	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)
 	if err != nil {
@@ -514,10 +523,14 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		return isServerGenerated
+	} else if resourceContext.IsTFResource {
+		// Skip drift detection test for tf-based resources with server-generated id.
+		rc := testservicemapping.GetResourceConfig(t, smLoader, u)
+		return hasServerGeneratedId(*rc)
+	} else {
+		// Drift detection tests are enabled by default for direct resources.
+		return false
 	}
-	// Skip drift detection test for tf-based resources with server-generated id.
-	rc := testservicemapping.GetResourceConfig(t, smLoader, u)
-	return hasServerGeneratedId(*rc)
 }
 
 func hasServerGeneratedId(rc v1alpha1.ResourceConfig) bool {
@@ -799,7 +812,11 @@ func getChangedFields(initialObject, updatedObject map[string]interface{}, field
 		for k, v := range updated {
 			if !reflect.DeepEqual(initial[k], v) {
 				if _, ok := v.(map[string]interface{}); ok {
-					changedFields[k] = getChangedFields(initial, updated, k)
+					// Skip checking for changes in resource reference fields, because there
+					// is no way to export the name and namespace fields (only external).
+					if !strings.HasSuffix(k, "Ref") {
+						changedFields[k] = getChangedFields(initial, updated, k)
+					}
 				} else {
 					changedFields[k] = updated[k]
 				}

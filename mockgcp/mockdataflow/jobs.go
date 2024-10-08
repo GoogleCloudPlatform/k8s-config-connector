@@ -22,8 +22,10 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/dataflow/v1beta3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 )
@@ -31,6 +33,33 @@ import (
 type jobsServer struct {
 	*MockService
 	pb.UnimplementedJobsV1Beta3Server
+}
+
+func findJobByJobName(ctx context.Context, jobStore storage.Storage, projectID string, location string, jobName string) (*pb.Job, error) {
+	prefix := fmt.Sprintf("projects/%s/locations/%s/jobs/", projectID, location)
+	var matches []*pb.Job
+
+	findKind := (&pb.Job{}).ProtoReflect().Descriptor()
+	if err := jobStore.List(ctx, findKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		job := obj.(*pb.Job)
+		if job.Name == jobName {
+			matches = append(matches, job)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if len(matches) == 0 {
+		return nil, nil
+	}
+	if len(matches) == 1 {
+		return matches[0], nil
+	}
+	// Probably need to filter by state
+	return nil, fmt.Errorf("multiple matches for jobName %q", jobName)
 }
 
 func (r *jobsServer) GetJob(ctx context.Context, req *pb.GetJobRequest) (*pb.Job, error) {
@@ -93,9 +122,11 @@ func (r *jobsServer) UpdateJob(ctx context.Context, req *pb.UpdateJobRequest) (*
 		}
 	}()
 
-	// This method returns a few fields:
+	// This method returns only a few fields
 	ret := &pb.Job{
-		Type: obj.Type,
+		// Doesn't seem to return the actual job type, seems to always return JOB_TYPE_BATCH
+		// Type: obj.Type,
+		Type: pb.JobType_JOB_TYPE_BATCH,
 	}
 	return ret, nil
 }

@@ -793,7 +793,7 @@ func convertToDCLLabelsField(obj *unstructured.Unstructured, r *dclunstruct.Reso
 	if _, ok := schema.Properties[labelsField]; !ok {
 		return nil
 	}
-	labels := label.NewGCPLabelsFromK8SLabels(obj.GetLabels(), label.GetDefaultLabels())
+	labels := label.ToJSONCompatibleFormat(label.NewGCPLabelsFromK8sLabels(obj.GetLabels()))
 	if len(labels) != 0 {
 		r.Object[labelsField] = labels
 	}

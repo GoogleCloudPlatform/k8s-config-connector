@@ -49,6 +49,8 @@ var TestNameRegexesToSkip = []string{
 	// Disable due to TF bug https://github.com/hashicorp/terraform-provider-google/issues/16255.
 	// We can't specify labels in the create operation, that causes AssertLabelsMatchAndHaveManagedLabel check to fail.
 	".*(regionalforwardingrulepsc).*",
+	// This test only works with direct controller. Re-enable it when we turn on direct ComputeForwardingRule.
+	".*(globalforwardingrulepscgoogleapis).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to

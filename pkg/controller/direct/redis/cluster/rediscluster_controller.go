@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
@@ -187,11 +188,15 @@ func (a *redisClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("deleting redisCluster %s: %w", a.fullyQualifiedName(), err)
+		if !strings.Contains(err.Error(), "missing \"value\" field") {
+			return false, fmt.Errorf("deleting redisCluster %s: %w", a.fullyQualifiedName(), err)
+		}
 	}
 
 	if err := op.Wait(ctx); err != nil {
-		return false, fmt.Errorf("waiting for redisCluster delete %s: %w", a.fullyQualifiedName(), err)
+		if !strings.Contains(err.Error(), "missing \"value\" field") {
+			return false, fmt.Errorf("waiting for redisCluster delete %s: %w", a.fullyQualifiedName(), err)
+		}
 	}
 
 	return true, nil

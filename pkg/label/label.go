@@ -18,13 +18,14 @@ import (
 	"strings"
 )
 
-func NewGcpFromK8sLabels(labels map[string]string) map[string]string {
-	res := RemoveLabelsWithKRMPrefix(labels)
+func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
+	res := removeLabelsWithKRMPrefix(labels)
+	// Apply default label.
 	res[CnrmManagedKey] = "true"
 	return res
 }
 
-func RemoveLabelsWithKRMPrefix(labels map[string]string) map[string]string {
+func removeLabelsWithKRMPrefix(labels map[string]string) map[string]string {
 	res := make(map[string]string)
 	for k, v := range labels {
 		if len(strings.Split(k, "/")) == 2 {
@@ -38,26 +39,11 @@ func RemoveLabelsWithKRMPrefix(labels map[string]string) map[string]string {
 	return res
 }
 
-func NewGCPLabelsFromK8SLabels(labelMaps ...map[string]string) map[string]interface{} {
+// Reformat labels map into a JSON-compatible map[string]interface{} type.
+func ToJSONCompatibleFormat(labels map[string]string) map[string]interface{} {
 	res := make(map[string]interface{})
-	for _, labels := range labelMaps {
-		if labels != nil {
-			for k, v := range labels {
-				if len(strings.Split(k, "/")) == 2 {
-					// Do not include any KRM-style labels (labels that include a prefix
-					// denoted with a '/').
-					// TODO(b/137755194): Determine long-term solution.
-					continue
-				}
-				res[k] = v
-			}
-		}
+	for k, v := range labels {
+		res[k] = v
 	}
 	return res
-}
-
-func GetDefaultLabels() map[string]string {
-	return map[string]string{
-		CnrmManagedKey: "true",
-	}
 }

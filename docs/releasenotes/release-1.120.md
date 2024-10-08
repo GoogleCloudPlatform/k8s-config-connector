@@ -3,7 +3,7 @@
 
 * IAM configuration can now be applied to `PrivateCACAPool`, using our direct-actuation approach.
 
-* You can configure the ConfigConnector operator to roll back to install the v1.119.0 CRDs by specifying `spec.version: 1.119.0` in the `ConfigConnectorContext` CR (namespaced mode). 
+* You can configure the Config Connector operator to roll back to install the v1.119.0 CRDs by specifying `spec.version: 1.119.0` in the `Config ConnectorContext` CR (namespaced mode). 
 
 * Special shout-outs to 600lyy,acpana,barney-s,coperni,gemmahou,hankfreund,jasonvigil,justinsb,maqiuyujoyce,nancynh,xiaoweim,yuwenma,zicongmei,ziyue-101 for their contributions to this release.
 

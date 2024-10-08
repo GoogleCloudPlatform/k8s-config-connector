@@ -21,28 +21,29 @@ import (
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
+	"strings"
 	"time"
 
-	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/ready"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	flag "github.com/spf13/pflag"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
-	"k8s.io/klog/v2/klogr"
+	"k8s.io/client-go/rest"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 const (
@@ -51,12 +52,18 @@ const (
 )
 
 var (
-	logger           = klog.Log.WithName("setup")
+	logger           = crlog.Log.WithName("setup")
 	appliedResources = metrics.NewAppliedResourcesCollector()
 )
 
 func main() {
+	if err := run(context.Background()); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+}
 
+func run(ctx context.Context) error {
 	var (
 		prometheusScrapeEndpoint string
 		metricInterval           int
@@ -68,11 +75,20 @@ func main() {
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	profiler.AddFlag(flag.CommandLine)
+
+	// Support default klog verbosity (so that we can see client-go traffic)
+	klogFlagSet := goflag.NewFlagSet("klog", goflag.ExitOnError)
+	klog.InitFlags(klogFlagSet)
+	flag.CommandLine.AddGoFlag(klogFlagSet.Lookup("v"))
+
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
+
 	kccVersion := os.Getenv("CONFIG_CONNECTOR_VERSION")
 
-	klog.SetLogger(klogr.New())
+	logger := klog.NewKlogr()
+	ctx = klog.NewContext(ctx, logger)
+	crlog.SetLogger(logger)
 
 	logger.Info("Recording the stats of Config Connector resources")
 
@@ -106,34 +122,52 @@ func main() {
 	logger.Info("Container is ready.")
 
 	// Get a config to talk to the apiserver
-	cfg, err := config.GetConfig()
+	restConfig, err := config.GetConfig()
 	if err != nil {
-		logging.Fatal(err, "error getting configuration from APIServer.")
+		return fmt.Errorf("error getting kubernetes configuration: %w", err)
 	}
 
 	// Get a client to talk to the APIServer
-	c, err := client.New(cfg, client.Options{})
+	kubeClient, err := client.New(restConfig, client.Options{})
 	if err != nil {
-		logging.Fatal(err, "error getting client.")
+		return fmt.Errorf("building kubernetes client: %w", err)
 	}
 
-	smLoader, err := servicemappingloader.New()
+	restHTTPClient, err := rest.HTTPClientFor(restConfig)
 	if err != nil {
-		logging.Fatal(err, "error getting new service mapping loader")
+		return fmt.Errorf("building kubernetes http client: %w", err)
 	}
 
-	supportedGVKs := supportedgvks.All(smLoader, dclmetadata.New())
+	kubeTarget, err := kube.NewTarget(restConfig, restHTTPClient)
+	if err != nil {
+		return fmt.Errorf("building kubernetes target: %w", err)
+	}
+
+	crdGVR := schema.GroupVersionResource{Group: "apiextensions.k8s.io", Version: "v1", Resource: "customresourcedefinitions"}
+	crdInfos := kube.WatchKube(ctx, kubeTarget, crdGVR, buildCRDInfo)
+
 	for {
-		err := doRecord(c, supportedGVKs)
-		if err != nil {
-			logger.Error(err, "error recording metrics.")
-		}
 		time.Sleep(time.Duration(metricInterval) * time.Second)
+		if !crdInfos.HasSyncedOnce() {
+			logger.Info("CRDs have not yet synced, skipping metric collection")
+			continue
+		}
+		var gvks []schema.GroupVersionKind
+		for _, crdInfo := range crdInfos.Snapshot() {
+			if !strings.HasSuffix(crdInfo.GVK.Group, ".cnrm.cloud.google.com") {
+				continue
+			}
+			gvks = append(gvks, crdInfo.GVK)
+		}
+
+		if err := doRecord(ctx, kubeClient, gvks); err != nil {
+			logger.Error(err, "error recording metrics")
+		}
 	}
 }
 
-func doRecord(c client.Client, gvks []schema.GroupVersionKind) error {
-	logger.Info("listing all CRDs managed by Config Connector.")
+func doRecord(ctx context.Context, c client.Client, gvks []schema.GroupVersionKind) error {
+	logger := klog.FromContext(ctx)
 
 	// reset all metrics in this vector before the new run of recording
 	appliedResources.Reset()
@@ -144,9 +178,9 @@ func doRecord(c client.Client, gvks []schema.GroupVersionKind) error {
 		sem <- struct{}{}
 		go func() {
 			defer func() { <-sem }()
-			err := recordMetricsForGVK(c, gvk)
+			err := recordMetricsForGVK(ctx, c, gvk)
 			if err != nil {
-				logger.Error(err, "error recording metrics for CRD %v: %v", gvk.String())
+				logger.Error(err, "error recording metrics for CRD", "gvk", gvk.String())
 			}
 		}()
 	}
@@ -175,7 +209,9 @@ func forEach(c client.Client, gvk schema.GroupVersionKind, listOptions *client.L
 	return nil
 }
 
-func recordMetricsForGVK(c client.Client, gvk schema.GroupVersionKind) error {
+func recordMetricsForGVK(ctx context.Context, c client.Client, gvk schema.GroupVersionKind) error {
+	logger := klog.FromContext(ctx)
+
 	opts := &client.ListOptions{
 		Limit: MaximumListResults,
 		Raw:   &v1.ListOptions{},
@@ -190,7 +226,7 @@ func recordMetricsForGVK(c client.Client, gvk schema.GroupVersionKind) error {
 		}
 		lastCondition, err := getTheLastCondition(obj)
 		if err != nil {
-			logger.Error(err, "error getting the last condition for metrics for %v: %v", gvk.String())
+			logger.Error(err, "error getting the last condition for metrics", "gvk", gvk.String())
 			return nil
 		}
 		s.countByStatus[lastCondition]++
@@ -200,6 +236,7 @@ func recordMetricsForGVK(c client.Client, gvk schema.GroupVersionKind) error {
 	}
 	for ns, stats := range statsNamespaceMap {
 		for status, count := range stats.countByStatus {
+			logger.V(2).Info("posting metrics", "namespace", ns, "gvk", gvk.String(), "status", status, "count", count)
 			appliedResources.WithLabelValues(ns, gvk.GroupKind().String(), status).Set(float64(count))
 		}
 	}
@@ -228,4 +265,76 @@ func getTheLastCondition(obj unstructured.Unstructured) (string, error) {
 		return k8s.NoCondition, nil
 	}
 	return currConditions[0].Reason, nil
+}
+
+type CRDInfo struct {
+	GVR schema.GroupVersionResource
+	GVK schema.GroupVersionKind
+}
+
+// customResourceDefinition is a cut-down version of the CRD resource, so we can easily extract the GVK/GVR
+type customResourceDefinition struct {
+	Spec customResourceDefinitionSpec `json:"spec"`
+}
+
+type customResourceDefinitionSpec struct {
+	Names    customResourceDefinitionNames     `json:"names"`
+	Versions []customResourceDefinitionVersion `json:"versions"`
+}
+
+type customResourceDefinitionNames struct {
+	Kind string `json:"kind"`
+}
+
+type customResourceDefinitionVersion struct {
+	Name string `json:"name"`
+}
+
+// buildCRDInfo extracts the GVK/GVR from a CRD.
+func buildCRDInfo(u *unstructured.Unstructured) CRDInfo {
+	if _, found := u.GetLabels()["cnrm.cloud.google.com/managed-by-kcc"]; !found {
+		return CRDInfo{}
+	}
+
+	tokens := strings.SplitN(u.GetName(), ".", 2)
+	if len(tokens) != 2 {
+		logger.Info("cannot parse crd name", "name", u.GetName())
+		return CRDInfo{}
+	}
+
+	crd := &customResourceDefinition{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, crd); err != nil {
+		logger.Error(err, "parsing CRD")
+		return CRDInfo{}
+	}
+
+	kind := crd.Spec.Names.Kind
+	if kind == "" {
+		logger.Info("cannot extract crd kind", "name", u.GetName())
+		return CRDInfo{}
+	}
+
+	version := ""
+	for _, versionObj := range crd.Spec.Versions {
+		if versionObj.Name != "" {
+			version = versionObj.Name
+			break
+		}
+	}
+
+	if version == "" {
+		logger.Info("cannot extract crd version", "name", u.GetName())
+		return CRDInfo{}
+	}
+
+	var info CRDInfo
+	info.GVR.Resource = tokens[0]
+	info.GVR.Version = version
+	info.GVR.Group = tokens[1]
+
+	info.GVK.Group = tokens[1]
+	info.GVK.Version = version
+	info.GVK.Kind = kind
+
+	return info
 }

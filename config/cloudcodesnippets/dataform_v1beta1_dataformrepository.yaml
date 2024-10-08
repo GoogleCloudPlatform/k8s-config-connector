@@ -1,0 +1,11 @@
+label: Config Connector DataformRepository
+markdownDescription: Creates yaml for a DataformRepository resource
+insertText: |
+  apiVersion: dataform.cnrm.cloud.google.com/v1alpha1
+  kind: DataformRepository
+  metadata:
+    name: \${1:dataformrepository-name}
+  spec:
+    projectRef:
+      external: \${2:[PROJECT_ID?]}
+    region: \${3:us-west2}

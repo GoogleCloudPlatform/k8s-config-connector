@@ -14,7 +14,12 @@
 
 package options
 
-import "github.com/spf13/cobra"
+import (
+	"os/exec"
+	"strings"
+
+	"github.com/spf13/cobra"
+)
 
 type GenerateOptions struct {
 	ProtoSourcePath string
@@ -29,4 +34,14 @@ func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringVar(&o.ProtoSourcePath, "proto-source-path", o.ProtoSourcePath, "path to (compiled) proto for APIs")
 	cmd.PersistentFlags().StringVarP(&o.APIVersion, "api-version", "v", o.APIVersion, "the KRM API version. used to import the KRM API")
 	cmd.PersistentFlags().StringVarP(&o.ServiceName, "service", "s", o.ServiceName, "the GCP service name")
+}
+
+func RepoRoot() (string, error) {
+	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	output, err := cmd.Output()
+	if err != nil {
+		return "", err
+	}
+	repoRoot := strings.TrimSpace(string(output))
+	return repoRoot, nil
 }

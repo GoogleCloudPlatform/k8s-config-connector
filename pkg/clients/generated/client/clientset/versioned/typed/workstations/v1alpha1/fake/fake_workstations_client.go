@@ -31,8 +31,8 @@ type FakeWorkstationsV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeWorkstationsV1alpha1) WorkstationsWorkstationClusters(namespace string) v1alpha1.WorkstationsWorkstationClusterInterface {
-	return &FakeWorkstationsWorkstationClusters{c, namespace}
+func (c *FakeWorkstationsV1alpha1) WorkstationClusters(namespace string) v1alpha1.WorkstationClusterInterface {
+	return &FakeWorkstationClusters{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

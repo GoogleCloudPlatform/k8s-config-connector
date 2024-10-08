@@ -163,7 +163,7 @@ func generateDCLBasedCRDs() []*apiextensions.CustomResourceDefinition {
 	if err != nil {
 		log.Fatalf("could not create service mapping loader: %v", err)
 	}
-	generator := crdgeneration.New(serviceMetadataLoader, schemaLoader, supportedgvks.All(smLoader, serviceMetadataLoader))
+	generator := crdgeneration.New(serviceMetadataLoader, schemaLoader, supportedgvks.AllWithoutDirect(smLoader, serviceMetadataLoader))
 	gvks := supportedgvks.BasedOnDCL(serviceMetadataLoader)
 	for _, gvk := range gvks {
 		s, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, schemaLoader)

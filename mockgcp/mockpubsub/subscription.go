@@ -49,6 +49,10 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 
 	obj.State = pb.Subscription_ACTIVE
 
+	if obj.AckDeadlineSeconds == 0 {
+		obj.AckDeadlineSeconds = 10
+	}
+
 	s.populateDefaultsForSubscription(obj)
 
 	// Unlike many other APIs, creation is eventually consistent (not immediately visible in GET)
