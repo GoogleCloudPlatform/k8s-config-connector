@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1059,7 +1059,7 @@ type EventTrigger struct {
 	//     same project as the `CloudFunction`.
 	//  2. The resource type must match the pattern expected for an
 	//     `event_type`. For example, an `EventTrigger` that has an
-	//     `event_type` of "google.pubsub.topic.publish" should have a resource
+	//     `event_type` of "mockgcp.pubsub.topic.publish" should have a resource
 	//     that matches Google Cloud Pub/Sub topics.
 	//
 	// Additionally, some services may support short names when creating an
