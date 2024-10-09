@@ -181,6 +181,18 @@ repo to quickly set up a local dev environment.
         make deploy-controller
         ```
 
+    1. If you want to install config connector on a brand new GKE cluster, the following command will install all CRDs, locally build, push and deploy all workloads to a standard GKE cluster.
+
+        ```shell
+        make deploy-kcc-standard
+        ```
+    
+        For autopilot clusters, please use the following command.
+
+        ```shell
+        make deploy-kcc-autopilot
+        ```
+
 ### Validate your environment
 
 The script `gcp-setup.sh` annotates your `default` namespace in the GKE cluster
