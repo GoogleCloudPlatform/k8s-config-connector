@@ -26,6 +26,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"k8s.io/klog/v2"
 )
 
@@ -174,6 +175,40 @@ func StringDuration_ToProto(mapCtx *MapContext, s *string) *durationpb.Duration 
 		mapCtx.Errorf("invalid duration %q", *s)
 	}
 	return durationpb.New(td)
+}
+
+func StringValue_FromProto(mapCtx *MapContext, in *wrapperspb.StringValue) *string {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func StringValue_ToProto(mapCtx *MapContext, in *string) *wrapperspb.StringValue {
+	if in == nil {
+		return nil
+	}
+	out := &wrapperspb.StringValue{}
+	out.Value = *in
+	return out
+}
+
+func BoolValue_FromProto(mapCtx *MapContext, in *wrapperspb.BoolValue) *bool {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func BoolValue_ToProto(mapCtx *MapContext, in *bool) *wrapperspb.BoolValue {
+	if in == nil {
+		return nil
+	}
+	out := &wrapperspb.BoolValue{}
+	out.Value = *in
+	return out
 }
 
 func PtrTo[T any](t T) *T {
