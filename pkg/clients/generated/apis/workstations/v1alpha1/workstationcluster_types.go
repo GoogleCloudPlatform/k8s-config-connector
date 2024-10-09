@@ -101,8 +101,7 @@ type WorkstationClusterSpec struct {
 	Location *string `json:"location,omitempty"`
 
 	/* Immutable. Reference to the Compute Engine network in which instances associated with this workstation cluster will be created. */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
 	/* Optional. Configuration for private workstation cluster. */
 	// +optional
@@ -116,8 +115,7 @@ type WorkstationClusterSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. Reference to the Compute Engine subnetwork in which instances associated with this workstation cluster will be created. Must be part of the subnetwork specified for this workstation cluster. */
-	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type WorkstationclusterGcpConditionsStatus struct {

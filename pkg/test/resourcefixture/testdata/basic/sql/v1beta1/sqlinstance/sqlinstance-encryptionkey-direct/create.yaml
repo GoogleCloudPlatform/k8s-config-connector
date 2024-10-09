@@ -19,7 +19,6 @@ metadata:
     label-one: "value-one"
   name: sqlinstance-encryptionkey-direct-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/state-into-spec: absent
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   databaseVersion: POSTGRES_15

@@ -39,7 +39,6 @@ type BigQueryConnectionConnectionSpec struct {
 
 	// The BigQuery ConnectionID. This is a server-generated ID in the UUID format.
 	// If not provided, ConfigConnector will create a new Connection and store the UUID in `status.serviceGeneratedID` field.
-	// + optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// User provided display name for the connection.
@@ -54,15 +53,8 @@ type BigQueryConnectionConnectionSpec struct {
 	// Amazon Web Services (AWS) properties.
 	AwsSpec *AwsPropertiesSpec `json:"aws,omitempty"`
 
-	/* NOTYET
 	// Azure properties.
-	Azure *AzureProperties `json:"azure,omitempty"`
-	*/
-
-	/* NOTYET
-	// Cloud Spanner properties.
-	CloudSpanner *CloudSpannerProperties `json:"cloudSpanner,omitempty"`
-	*/
+	AzureSpec *AzurePropertiesSpec `json:"azure,omitempty"`
 
 	/* NOTYET
 	// Spark properties.
@@ -78,6 +70,9 @@ type BigQueryConnectionConnectionSpec struct {
 
 	// Use Cloud Resource properties.
 	CloudResourceSpec *CloudResourcePropertiesSpec `json:"cloudResource,omitempty"`
+
+	// Cloud Spanner properties.
+	CloudSpannerSpec *CloudSpannerPropertiesSpec `json:"cloudSpanner,omitempty"`
 }
 
 // BigQueryConnectionConnectionStatus defines the config connector machine state of BigQueryConnectionConnection
@@ -100,6 +95,8 @@ type BigQueryConnectionConnectionStatus struct {
 // +kcc:proto=google.cloud.bigquery.connection.v1.Connection
 type BigQueryConnectionConnectionObservedState struct {
 	Aws *AwsPropertiesStatus `json:"aws,omitempty"`
+
+	Azure *AzurePropertiesStatus `json:"azure,omitempty"`
 
 	CloudResource *CloudResourcePropertiesStatus `json:"cloudResource,omitempty"`
 
@@ -149,6 +146,16 @@ type AwsAccessRoleSpec struct {
 	IamRoleID *string `json:"iamRoleID,omitempty"`
 }
 
+type AzurePropertiesSpec struct {
+	// The id of customer's directory that host the data.
+	// +required
+	CustomerTenantID *string `json:"customerTenantID,omitempty"`
+
+	// The client ID of the user's Azure Active Directory Application used for a
+	//  federated connection.
+	FederatedApplicationClientID *string `json:"federatedApplicationClientID,omitempty"`
+}
+
 type CloudResourcePropertiesSpec struct{}
 
 type CloudSqlPropertiesSpec struct {
@@ -165,6 +172,50 @@ type CloudSqlPropertiesSpec struct {
 	Credential *CloudSqlCredential `json:"credential,omitempty"`
 }
 
+type CloudSpannerPropertiesSpec struct {
+	// Reference to a spanner database ID.
+	// +required
+	DatabaseRef *refv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
+
+	// If parallelism should be used when reading from Cloud Spanner
+	UseParallelism *bool `json:"useParallelism,omitempty"`
+
+	// Allows setting max parallelism per query when executing on Spanner
+	//  independent compute resources. If unspecified, default values of
+	//  parallelism are chosen that are dependent on the Cloud Spanner instance
+	//  configuration.
+	//
+	//  REQUIRES: `use_parallelism` must be set.
+	//  REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+	//  set.
+	MaxParallelism *int32 `json:"maxParallelism,omitempty"`
+
+	// If the serverless analytics service should be used to read data from Cloud
+	//  Spanner.
+	//  Note: `use_parallelism` must be set when using serverless analytics.
+	UseServerlessAnalytics *bool `json:"useServerlessAnalytics,omitempty"`
+
+	// If set, the request will be executed via Spanner independent compute
+	//  resources.
+	//  REQUIRES: `use_parallelism` must be set.
+	//
+	//  NOTE: `use_serverless_analytics` will be deprecated. Prefer
+	//  `use_data_boost` over `use_serverless_analytics`.
+	UseDataBoost *bool `json:"useDataBoost,omitempty"`
+
+	// Optional. Cloud Spanner database role for fine-grained access control.
+	//  The Cloud Spanner admin should have provisioned the database role with
+	//  appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+	//  only use roles provided by their Cloud Spanner admins.
+	//
+	//  For more details, see [About fine-grained access control]
+	//  (https://cloud.google.com/spanner/docs/fgac-about).
+	//
+	//  REQUIRES: The database role name must start with a letter, and can only
+	//  contain letters, numbers, and underscores.
+	DatabaseRole *string `json:"databaseRole,omitempty"`
+}
+
 // +kcc:proto=google.cloud.bigquery.connection.v1.AwsProperties
 type AwsPropertiesStatus struct {
 	AccessRole *AwsAccessRoleStatus `json:"accessRole,omitempty"`
@@ -174,6 +225,27 @@ type AwsPropertiesStatus struct {
 type AwsAccessRoleStatus struct {
 	// A unique Google-owned and Google-generated identity for the Connection.
 	//  This identity will be used to access the user's AWS IAM Role.
+	Identity *string `json:"identity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.AzureProperties
+type AzurePropertiesStatus struct {
+	// The name of the Azure Active Directory Application.
+	Application *string `json:"application,omitempty"`
+
+	// The client id of the Azure Active Directory Application.
+	ClientID *string `json:"clientID,omitempty"`
+
+	// The object id of the Azure Active Directory Application.
+	ObjectID *string `json:"objectID,omitempty"`
+
+	// The URL user will be redirected to after granting consent during connection
+	//  setup.
+	RedirectUri *string `json:"redirectUri,omitempty"`
+
+	// A unique Google-owned and Google-generated identity for the
+	//  Connection. This identity will be used to access the user's Azure Active
+	//  Directory Application.
 	Identity *string `json:"identity,omitempty"`
 }
 

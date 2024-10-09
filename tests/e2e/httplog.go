@@ -135,6 +135,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".monitoredProjects[].createTime", "2024-04-01T12:34:56.123456Z")
 
 	addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")

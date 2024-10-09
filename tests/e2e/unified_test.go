@@ -491,10 +491,12 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".monitoredProjects[].createTime", "2024-04-01T12:34:56.123456Z")
 
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to cloudbuild
 					addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
@@ -546,6 +548,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									r.PathIDs[targetId] = "${addressesId}"
 								case "backendServices":
 									r.PathIDs[targetId] = "${backendServicesId}"
+								case "firewallPolicies":
+									r.PathIDs[targetId] = "${firewallPolicyId}"
 								case "forwardingRules":
 									r.PathIDs[targetId] = "${forwardingRulesId}"
 								case "healthChecks":
@@ -556,6 +560,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									r.PathIDs[targetId] = "${sslCertificatesId}"
 								case "subnetworks":
 									r.PathIDs[targetId] = "${subnetworkNumber}"
+								case "targetGrpcProxies":
+									r.PathIDs[targetId] = "${targetGrpcProxiesId}"
 								case "targetHttpsProxies":
 									r.PathIDs[targetId] = "${targetHttpsProxiesId}"
 								case "targetSslProxies":
@@ -748,6 +754,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Specific to BigQueryConnectionConnection.
 					addReplacement("aws.accessRole.identity", "048077221682493034546")
+					addReplacement("azure.identity", "117243083562690747295")
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
 
@@ -837,9 +844,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					if testgcp.TestFolderID.Get() != "" {
 						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
 					}
-					if testgcp.TestOrgID.Get() != "" {
-						normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
-						normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
+					if organizationID := testgcp.TestOrgID.Get(); organizationID != "" {
+						normalizers = append(normalizers, ReplaceString("organizations/"+organizationID, "organizations/${organizationID}"))
+						normalizers = append(normalizers, ReplaceString(organizationID+"/", "${organizationID}/"))
+						normalizers = append(normalizers, ReplaceString("organizations%2F"+organizationID, "organizations%2F${organizationID}"))
 					}
 					for k, v := range r.PathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))

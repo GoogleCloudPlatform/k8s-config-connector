@@ -18,7 +18,6 @@ import (
 	"fmt"
 
 	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
@@ -68,33 +67,17 @@ func resources(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaL
 }
 
 func DirectResources() (map[schema.GroupVersionKind]bool, error) {
-	crds, err := crdloader.LoadCRDs()
-	if err != nil {
-		return nil, fmt.Errorf("error loading crds: %w", err)
-	}
 	handWrittenIAMTypes := make(map[schema.GroupVersionKind]bool)
 	directResources := make(map[schema.GroupVersionKind]bool)
 	for _, gvk := range BasedOnHandwrittenIAMTypes() {
 		handWrittenIAMTypes[gvk] = true
 	}
-	for _, crd := range crds {
-		if crd.ObjectMeta.Labels["cnrm.cloud.google.com/tf2crd"] == "true" {
+	for gvk, metadata := range SupportedGVKs {
+		if metadata.Labels[k8s.TF2CRDLabel] == "true" {
 			continue
 		}
-		if crd.ObjectMeta.Labels["cnrm.cloud.google.com/dcl2crd"] == "true" {
+		if metadata.Labels[k8s.DCL2CRDLabel] == "true" {
 			continue
-		}
-		versions := crd.Spec.Versions
-		highestVersion := k8s.KCCAPIVersionV1Alpha1
-		for _, version := range versions {
-			if version.Name == k8s.KCCAPIVersionV1Beta1 {
-				highestVersion = k8s.KCCAPIVersionV1Beta1
-			}
-		}
-		gvk := schema.GroupVersionKind{
-			Group:   crd.Spec.Group,
-			Kind:    crd.Spec.Names.Kind,
-			Version: highestVersion,
 		}
 		if _, ok := handWrittenIAMTypes[gvk]; ok {
 			continue

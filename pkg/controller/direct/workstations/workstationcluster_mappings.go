@@ -31,8 +31,8 @@ func WorkstationClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstati
 		DisplayName:          direct.ValueOf(in.DisplayName),
 		Annotations:          WorkstationClusterAnnotations_ToProto(mapCtx, in.Annotations),
 		Labels:               WorkstationClusterLabels_ToProto(mapCtx, in.Labels),
-		Network:              WorkstationClusterNetworkRef_ToProto(mapCtx, in.NetworkRef),
-		Subnetwork:           WorkstationClusterSubnetworkRef_ToProto(mapCtx, in.SubnetworkRef),
+		Network:              in.NetworkRef.External,
+		Subnetwork:           in.SubnetworkRef.External,
 		PrivateClusterConfig: WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig),
 	}
 	return out
@@ -58,20 +58,6 @@ func WorkstationClusterLabels_ToProto(mapCtx *direct.MapContext, in []krm.Workst
 		out[l.Key] = l.Value
 	}
 	return out
-}
-
-func WorkstationClusterNetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeNetworkRef) string {
-	if in == nil {
-		return ""
-	}
-	return in.External
-}
-
-func WorkstationClusterSubnetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeSubnetworkRef) string {
-	if in == nil {
-		return ""
-	}
-	return in.External
 }
 
 func WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationCluster_PrivateClusterConfig) *pb.WorkstationCluster_PrivateClusterConfig {
@@ -101,11 +87,15 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 		return nil
 	}
 	out := &krm.WorkstationClusterSpec{
-		DisplayName:          direct.LazyPtr(in.GetDisplayName()),
-		Annotations:          WorkstationClusterAnnotations_FromProto(mapCtx, in.GetAnnotations()),
-		Labels:               WorkstationClusterLabels_FromProto(mapCtx, in.GetLabels()),
-		NetworkRef:           WorkstationClusterNetworkRef_FromProto(mapCtx, in.GetNetwork()),
-		SubnetworkRef:        WorkstationClusterSubnetworkRef_FromProto(mapCtx, in.GetSubnetwork()),
+		DisplayName: direct.LazyPtr(in.GetDisplayName()),
+		Annotations: WorkstationClusterAnnotations_FromProto(mapCtx, in.GetAnnotations()),
+		Labels:      WorkstationClusterLabels_FromProto(mapCtx, in.GetLabels()),
+		NetworkRef: refs.ComputeNetworkRef{
+			External: in.GetNetwork(),
+		},
+		SubnetworkRef: refs.ComputeSubnetworkRef{
+			External: in.GetSubnetwork(),
+		},
 		PrivateClusterConfig: WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx, in.GetPrivateClusterConfig()),
 	}
 	return out
@@ -137,24 +127,6 @@ func WorkstationClusterLabels_FromProto(mapCtx *direct.MapContext, in map[string
 		})
 	}
 	return out
-}
-
-func WorkstationClusterNetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeNetworkRef {
-	if in == "" {
-		return nil
-	}
-	return &refs.ComputeNetworkRef{
-		External: in,
-	}
-}
-
-func WorkstationClusterSubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeSubnetworkRef {
-	if in == "" {
-		return nil
-	}
-	return &refs.ComputeSubnetworkRef{
-		External: in,
-	}
 }
 
 func WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationCluster_PrivateClusterConfig) *krm.WorkstationCluster_PrivateClusterConfig {

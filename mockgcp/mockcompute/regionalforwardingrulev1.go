@@ -82,7 +82,7 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	if obj.NetworkTier == nil {
 		obj.NetworkTier = PtrTo("PREMIUM")
 	}
-	if *obj.LoadBalancingScheme == "" {
+	if obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme == "" {
 		obj.LoadBalancingScheme = nil
 	}
 

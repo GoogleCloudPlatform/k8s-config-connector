@@ -15,6 +15,7 @@ metadata:
 spec:
   description: updated sample dns authorization
   domain: ${uniqueId}.hashicorptest.com
+  location: us-central1
   projectRef:
     external: ${projectId}
   resourceID: certificatemanagerdnsauthorization${uniqueId}

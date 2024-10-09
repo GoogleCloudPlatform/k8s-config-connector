@@ -65,6 +65,7 @@
 ```yaml
 description: string
 domain: string
+location: string
 projectRef:
   external: string
   kind: string
@@ -98,6 +99,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. A domain which is being authorized. A DnsAuthorization resource covers a single domain and its wildcard, e.g. authorization for "example.com" can be used to issue certificates for "example.com" and "*.example.com".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>location</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -178,6 +189,7 @@ dnsResourceRecord:
 - data: string
   name: string
   type: string
+externalRef: string
 observedGeneration: integer
 ```
 
@@ -273,6 +285,13 @@ observedGeneration: integer
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -305,6 +324,7 @@ kind: CertificateManagerDNSAuthorization
 metadata:
   name: certificatemanagerdnsauthorization-sample
 spec:
+  location: us-central1
   description: sample dns authorization
   domain: subdomain.hashicorptest.com
   projectRef:

@@ -21,9 +21,9 @@ import (
 )
 
 type ExternalNormalizer interface {
-	// NormalizeToExternalForm expects the implemented struct has a "External" field, and this function
+	// NormalizedExternal expects the implemented struct has a "External" field, and this function
 	// assigns a value to the "External" field if it is empty.
 	// In general, it retrieves the corresponding ConfigConnector object from the cluster, using
 	// the `status.externalRef` or other field as the "External" value
-	NormalizeToExternalForm(context.Context, client.Reader) error
+	NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error)
 }

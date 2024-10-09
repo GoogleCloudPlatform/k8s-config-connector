@@ -20,6 +20,7 @@ package policy_test
 import (
 	"context"
 	"log"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -45,6 +46,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -225,7 +227,7 @@ func testReconcileResourceLevelCreate(ctx context.Context, t *testing.T, kubeCli
 		t.Fatalf("error creating k8sPolicy: %v", err)
 	}
 	preReconcileGeneration := k8sPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, k8sPolicy, expectedReconcileResult, nil)
 	gcpPolicy, err := iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
@@ -248,7 +250,7 @@ func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, kubeCli
 		t.Fatalf("error updating k8sPolicy: %v", err)
 	}
 	preReconcileGeneration := newK8sPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, newK8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, newK8sPolicy, expectedReconcileResult, nil)
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(newK8sPolicy), newK8sPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
@@ -267,7 +269,7 @@ func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, kube
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, k8sPolicy, expectedReconcileResult, nil)
 	newK8sPolicy := &iamv1beta1.IAMPolicy{}
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPolicy), newK8sPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
@@ -319,14 +321,14 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, kubeCli
 	if err := kubeClient.Delete(ctx, k8sPolicy); err != nil {
 		t.Fatalf("error deleting k8sPolicy: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, k8sPolicy, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	gcpPolicy, err := iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
 	testiam.AssertSamePolicy(t, k8sPolicy, gcpPolicy)
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPolicy, iamv1beta1.IAMPolicyGVK, kubeClient)
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, k8sPolicy, expectedReconcileResult, nil)
 	gcpPolicy, err = iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
@@ -346,7 +348,7 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 		t.Fatalf("error creating k8sPolicy: %v", err)
 	}
 	reconciler := testreconciler.New(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig))
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, k8sPolicy, expectedReconcileResult, nil)
 
 	// First, delete the parent resource of the IAM Policy.
 	log.Printf("Deleting the parent of the IAM Policy first %v: %v/%v\n", refResource.GetKind(), refResource.GetNamespace(), refResource.GetName())
@@ -362,7 +364,7 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 	if err := kubeClient.Delete(ctx, k8sPolicy); err != nil {
 		t.Fatalf("error deleting k8sPolicy: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, k8sPolicy, expectedReconcileResult, nil)
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPolicy), k8sPolicy); err == nil || !errors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
 	}
@@ -454,7 +456,7 @@ func testReconcileResourceLevelAcquire(ctx context.Context, t *testing.T, mgr ma
 		t.Fatalf("error creating k8sPolicy: %v", err)
 	}
 	preReconcileGeneration := k8sPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicy(ctx, t, reconciler, k8sPolicy, expectedReconcileResult, nil)
 	gcpPolicy, err := iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
@@ -494,6 +496,16 @@ func assertObservedGenerationEquals(t *testing.T, gcpPolicy *iamv1beta1.IAMPolic
 	if gcpPolicy.Status.ObservedGeneration != preReconcileGeneration {
 		t.Errorf("observedGeneration %v doesn't match with the pre-reconcile generation %v", gcpPolicy.Status.ObservedGeneration, preReconcileGeneration)
 	}
+}
+
+func reconcileIAMPolicy(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, policy *iamv1beta1.IAMPolicy, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	kcciamclient.SetGVK(policy)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+	if err != nil {
+		t.Fatalf("error converting to unstructured: %v", err)
+	}
+	u := &unstructured.Unstructured{Object: uObj}
+	reconciler.Reconcile(ctx, u, expectedResult, expectedErrorRegex)
 }
 
 func name(t *testing.T) string {

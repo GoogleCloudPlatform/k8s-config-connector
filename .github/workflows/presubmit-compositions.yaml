@@ -30,7 +30,7 @@ jobs:
   lint:
     name: lint
     runs-on: ubuntu-22.04
-    timeout-minutes: 7
+    timeout-minutes: 12
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
         with:
           working-directory: ./experiments/compositions/composition
           version: v1.59.1 # should match the version in Makefile
-          args: --timeout=5m
+          args: --timeout=10m
   verify-goimports:
     runs-on: ubuntu-latest
     steps:

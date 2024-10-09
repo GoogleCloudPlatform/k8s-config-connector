@@ -199,6 +199,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceSchedule": null,
   "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-north1/clusters/alloydbcluster${uniqueId}",
   "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
@@ -642,6 +643,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
         "cidrRange": "8.8.4.4/30"
       }
     ],
+    "enableOutboundPublicIp": true,
     "enablePublicIp": true
   }
 }
@@ -697,9 +699,11 @@ Grpc-Metadata-Content-Type: application/grpc
         "cidrRange": "8.8.4.4/30"
       }
     ],
+    "enableOutboundPublicIp": true,
     "enablePublicIp": true
   },
   "nodes": [],
+  "outboundPublicIpAddresses": [],
   "pscInstanceConfig": null,
   "publicIpAddress": "",
   "queryInsightsConfig": null,
@@ -780,9 +784,11 @@ Grpc-Metadata-Content-Type: application/grpc
   "name": "projects/${projectId}/locations/europe-north1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
   "networkConfig": {
     "authorizedExternalNetworks": [],
+    "enableOutboundPublicIp": false,
     "enablePublicIp": false
   },
   "nodes": [],
+  "outboundPublicIpAddresses": [],
   "pscInstanceConfig": null,
   "publicIpAddress": "",
   "queryInsightsConfig": null,
@@ -1077,6 +1083,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceSchedule": null,
   "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-north1/clusters/alloydbcluster${uniqueId}",
   "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",

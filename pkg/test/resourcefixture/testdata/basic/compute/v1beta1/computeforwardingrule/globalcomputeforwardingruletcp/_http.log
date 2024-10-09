@@ -331,11 +331,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "backendService \"projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "backendService \"projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}' was not found"
   }
 }
 

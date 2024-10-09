@@ -63,6 +63,11 @@ operator:
 manager: generate fmt vet
 	go build -o bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
+# Generate CRDs for direct controllers.
+.PHONY: generate-crds
+generate-crds:
+	./dev/tasks/generate-crds
+
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
 manifests: generate
@@ -84,6 +89,10 @@ manifests: generate
 	# Generating cnrm cluster roles is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
 	go run ./scripts/generate-cnrm-cluster-roles/main.go
+
+	# Generating list of all supported GVKs is dependent on the existence of directory
+	# config/crds/resources with all the freshly generated CRDs.
+	go run ./scripts/generate-gvks/main.go -input-dir=config/crds/resources -output-file=pkg/gvks/supportedgvks/gvks_generated.go
 
 # Format code
 .PHONY: fmt

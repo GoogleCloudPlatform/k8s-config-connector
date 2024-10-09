@@ -29,7 +29,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	certificatemanagerpb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
-	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -45,18 +44,7 @@ const (
 )
 
 func init() {
-	rg := &DNSAuthorizationReconcileGate{}
-	registry.RegisterModelWithReconcileGate(krm.CertificateManagerDNSAuthorizationGVK, NewModel, rg)
-}
-
-type DNSAuthorizationReconcileGate struct {
-	optIn kccpredicate.OptInToDirectReconciliation
-}
-
-var _ kccpredicate.ReconcileGate = &DNSAuthorizationReconcileGate{}
-
-func (r *DNSAuthorizationReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	return r.optIn.ShouldReconcile(o)
+	registry.RegisterModel(krm.CertificateManagerDNSAuthorizationGVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -83,6 +71,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	log := klog.FromContext(ctx).WithName(ctrlName)
 	obj := &krm.CertificateManagerDNSAuthorization{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -107,14 +96,14 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get location
-	// TODO: Add location when field is added
-	// location := obj.Spec.Location
-	location := "global"
+	location := obj.Spec.Location
+	if location == "" {
+		log.V(2).Info("Location field is not specified; use `global` as the default location")
+		location = "global"
+	}
 
 	var id *CertificateManagerDNSAuthorizationIdentity
-	// TODO: Add ExternalRef when field is added
-	// externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	externalRef := ""
+	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
 		id = BuildID(projectID, location, resourceID)
 	} else {

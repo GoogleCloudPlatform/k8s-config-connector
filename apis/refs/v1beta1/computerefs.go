@@ -271,3 +271,13 @@ type ComputeTargetVPNGatewayRef struct {
 	/* The `namespace` field of a `ComputeTargetVPNGateway` resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeFirewallPolicyRef struct {
+	// A reference to an externally managed ComputeFirewallPolicy resource.
+	// Should be in the format `locations/global/firewallPolicies/<firewallPolicy>`.
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeFirewall olicy ` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeFirewallPolicy ` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}

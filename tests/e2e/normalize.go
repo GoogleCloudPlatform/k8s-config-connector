@@ -173,6 +173,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"
+	visitor.replacePaths[".status.observedState.azure.identity"] = "117243083562690747295"
 	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 	visitor.replacePaths[".status.observedState.cloudSql.serviceAccountID"] = "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
 
@@ -259,6 +260,21 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			}
 		}
 
+		id, _, _ := unstructured.NestedString(u.Object, "status", "selfLinkWithId")
+		if id != "" {
+			tokens := strings.Split(id, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				id := tokens[len(tokens)-1]
+				if typeName == "targetGrpcProxies" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, id, "${targetGrpcProxiesID}")
+					})
+				}
+			}
+		}
+
 		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		if resourceID != "" {
 			switch u.GroupVersionKind() {
@@ -271,9 +287,18 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
 				})
+			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${firewallPolicyID}")
+				})
 			}
 		}
 	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
+
+	})
 
 	return visitor.VisitUnstructued(u)
 }

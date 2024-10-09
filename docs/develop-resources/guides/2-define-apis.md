@@ -92,11 +92,11 @@ According to the above principles, you shall decide how to process the following
 
 * Add the parent field and mark as required
 
-    * See detailed [requirements and example](../api-conventions/validations.md#rule-3-parent)  (TODO: update link)
+    * See detailed [requirements and example](../api-conventions/validations.md#rule-3-parent).
 
 * Replace any field that is a resource reference to `<resource>Ref `and add the resource to `./apis/refs` if not exist.` `
 
-    * See [direct resource reference validation rules](../api-conventions/resource-reference.md)  (TODO: update link). This validation shall consider the actual resource field’ usage and can be done in follow-up PRs 
+    * See [direct resource reference validation rules](../api-conventions/resource-reference.md). This validation shall consider the actual resource field’ usage and can be done in follow-up PRs 
 
 * Add **non** output-only fields to `spec`, excluding imperative fields.
 

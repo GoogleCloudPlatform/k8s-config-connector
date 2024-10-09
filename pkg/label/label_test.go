@@ -21,41 +21,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
 
-func TestNewGcpFromK8sLabelsBasicMap(t *testing.T) {
-	labels := map[string]string{
-		"key1":        "val1",
-		"key2":        "val2",
-		"test.io/foo": "bar",
-	}
-	result := label.NewGcpFromK8sLabels(labels)
-	expectedResult := map[string]string{
-		"key1":            "val1",
-		"key2":            "val2",
-		"managed-by-cnrm": "true",
-	}
-	if !reflect.DeepEqual(result, expectedResult) {
-		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
-	}
-}
-
 func TestNilMap(t *testing.T) {
-	result := label.NewGcpFromK8sLabels(nil)
+	result := label.NewGCPLabelsFromK8sLabels(nil)
 	expectedResult := map[string]string{
 		"managed-by-cnrm": "true",
-	}
-	if !reflect.DeepEqual(result, expectedResult) {
-		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
-	}
-}
-
-func TestRemoveLabelsWithKRMPrefix(t *testing.T) {
-	labels := map[string]string{
-		"test.io/foo": "bar",
-		"key1":        "val1",
-	}
-	result := label.RemoveLabelsWithKRMPrefix(labels)
-	expectedResult := map[string]string{
-		"key1": "val1",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
@@ -68,36 +37,11 @@ func TestNewGCPLabelsFromK8sLabelsBasicMap(t *testing.T) {
 		"key2":        "val2",
 		"test.io/foo": "bar",
 	}
-	result := label.NewGCPLabelsFromK8SLabels(labels, label.GetDefaultLabels())
-	expectedResult := map[string]interface{}{
+	result := label.NewGCPLabelsFromK8sLabels(labels)
+	expectedResult := map[string]string{
 		"key1":            "val1",
 		"key2":            "val2",
 		"managed-by-cnrm": "true",
-	}
-	if !reflect.DeepEqual(result, expectedResult) {
-		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
-	}
-	result = label.NewGCPLabelsFromK8SLabels(labels)
-	expectedResult = map[string]interface{}{
-		"key1": "val1",
-		"key2": "val2",
-	}
-	if !reflect.DeepEqual(result, expectedResult) {
-		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
-	}
-	result = label.NewGCPLabelsFromK8SLabels(labels, nil)
-	expectedResult = map[string]interface{}{
-		"key1": "val1",
-		"key2": "val2",
-	}
-	if !reflect.DeepEqual(result, expectedResult) {
-		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
-	}
-	result = label.NewGCPLabelsFromK8SLabels(labels, map[string]string{"foo": "bar"})
-	expectedResult = map[string]interface{}{
-		"key1": "val1",
-		"key2": "val2",
-		"foo":  "bar",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)

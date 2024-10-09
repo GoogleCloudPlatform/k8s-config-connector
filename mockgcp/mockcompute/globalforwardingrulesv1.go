@@ -125,6 +125,12 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 		}
 	}
 
+	// network field is only used for global internal load balancing.
+	// If neither subnetwork nor network field is specified, the default network will be used.
+	if obj.Network == nil && obj.Subnetwork == nil && obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme != "EXTERNAL" {
+		obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"))
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.123.0
+    cnrm.cloud.google.com/version: 1.123.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"

@@ -138,6 +138,7 @@ oidcConfig:
 platformVersion: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -157,12 +158,15 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. Annotations on the cluster. This field has the same
-restrictions as Kubernetes annotations. The total size of all keys and
-values combined is limited to 256k. Key can have 2 segments: prefix (optional)
-and name (required), separated by a slash (/). Prefix must be a DNS subdomain.
-Name must be 63 characters or less, begin and end with alphanumerics,
-with dashes (-), underscores (_), dots (.), and alphanumerics between.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Annotations on the cluster.
+
+ This field has the same restrictions as Kubernetes annotations.
+ The total size of all keys and values combined is limited to 256k.
+ Key can have 2 segments: prefix (optional) and name (required),
+ separated by a slash (/).
+ Prefix must be a DNS subdomain.
+ Name must be 63 characters or less, begin and end with alphanumerics,
+ with dashes (-), underscores (_), dots (.), and alphanumerics between.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -172,7 +176,7 @@ with dashes (-), underscores (_), dots (.), and alphanumerics between.{% endverb
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Configuration related to the cluster RBAC settings.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Configuration related to the cluster RBAC settings.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -182,12 +186,12 @@ with dashes (-), underscores (_), dots (.), and alphanumerics between.{% endverb
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Users that can perform operations as a cluster admin. A managed
-ClusterRoleBinding will be created to grant the 'cluster-admin' ClusterRole
-to the users. Up to ten admin users can be provided.
+            <p>{% verbatim %}Optional. Users that can perform operations as a cluster admin. A managed
+ ClusterRoleBinding will be created to grant the `cluster-admin` ClusterRole
+ to the users. Up to ten admin users can be provided.
 
-For more info on RBAC, see
-https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles.{% endverbatim %}</p>
+ For more info on RBAC, see
+ https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -207,7 +211,7 @@ https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles.
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Binary Authorization configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Binary Authorization configuration for this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -217,7 +221,7 @@ https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Configure Binary Authorization evaluation mode. Possible values: ["DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE"].{% endverbatim %}</p>
+            <p>{% verbatim %}Mode of operation for binauthz policy evaluation. If unspecified, defaults to DISABLED. Possible values: ["DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +231,7 @@ https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Policy to determine what flags to send on delete.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Policy to determine what flags to send on delete.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -237,8 +241,7 @@ https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A human readable description of this attached cluster. Cannot be longer
-than 255 UTF-8 encoded bytes.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A human readable description of this Attached cluster. Cannot be longer than 255 UTF-8 encoded bytes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,8 +251,9 @@ than 255 UTF-8 encoded bytes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Kubernetes distribution of the underlying attached cluster. Supported values:
-"eks", "aks".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Kubernetes distribution of the underlying attached cluster.
+
+ Supported values: ["eks", "aks", "generic"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -259,7 +263,7 @@ than 255 UTF-8 encoded bytes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Fleet configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fleet configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -269,9 +273,11 @@ than 255 UTF-8 encoded bytes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the managed Hub Membership resource associated to this
-cluster. Membership names are formatted as
-projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The name of the managed Hub Membership resource associated to
+ this cluster.
+
+ Membership names are formatted as
+ `projects/<project-number>/locations/global/membership/<cluster-id>`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -281,7 +287,7 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The number of the Fleet host project where this cluster will be registered.{% endverbatim %}</p>
+            <p>{% verbatim %}The id of the Fleet host project where this cluster will be registered.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -291,7 +297,7 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{value}}`, where {{value}} is the `number` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The project of the fleet. Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -301,7 +307,7 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -311,7 +317,7 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}Namespace of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -331,7 +337,7 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Logging configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Logging configuration for this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -341,7 +347,7 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The configuration of the logging components.{% endverbatim %}</p>
+            <p>{% verbatim %}The configuration of the logging components;{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -371,7 +377,7 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Monitoring configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Monitoring configuration for this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -401,17 +407,16 @@ projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbati
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}OIDC discovery information of the target cluster.
+            <p>{% verbatim %}Required. OpenID Connect (OIDC) discovery information of the target cluster.
 
 Kubernetes Service Account (KSA) tokens are JWT tokens signed by the cluster
-API server. This fields indicates how GCP services
-validate KSA tokens in order to allow system workloads (such as GKE Connect
-and telemetry agents) to authenticate back to GCP.
+API server. This field indicates how GCP services	validate KSA tokens in order
+to allow system workloads (such as GKE Connect and telemetry agents) to
+authenticate back to GCP.
 
 Both clusters with public and private issuer URLs are supported.
-Clusters with public issuers only need to specify the 'issuer_url' field
-while clusters with private issuers need to provide both
-'issuer_url' and 'jwks'.{% endverbatim %}</p>
+Clusters with public issuers only need to specify the 'issuerUrl' field
+while clusters with private issuers need to provide both 'issuerUrl' and 'jwks'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -421,7 +426,7 @@ while clusters with private issuers need to provide both
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. A JSON Web Token (JWT) issuer URI. 'issuer' must start with 'https://'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. A JSON Web Token (JWT) issuer URI. `issuer` must start with `https://`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -431,7 +436,13 @@ while clusters with private issuers need to provide both
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. OIDC verification keys in JWKS format (RFC 7517).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable, Optional. OIDC verification keys in JWKS format (RFC 7517).
+ It contains a list of OIDC verification keys that can be used to verify
+ OIDC JWTs.
+
+ This field is required for cluster that doesn't have a publicly available
+ discovery endpoint. When provided, it will be directly used
+ to verify the OIDC JWT asserted by the IDP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -441,13 +452,13 @@ while clusters with private issuers need to provide both
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The platform version for the cluster (e.g. '1.23.0-gke.1').{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The platform version for the cluster (e.g. `1.30.0-gke.1`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -461,7 +472,17 @@ while clusters with private issuers need to provide both
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -471,7 +492,7 @@ while clusters with private issuers need to provide both
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -481,7 +502,7 @@ while clusters with private issuers need to provide both
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -491,7 +512,7 @@ while clusters with private issuers need to provide both
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable, Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -514,6 +535,8 @@ errors:
 - message: string
 kubernetesVersion: string
 observedGeneration: integer
+observedState:
+  fleetMembership: string
 reconciling: boolean
 state: string
 uid: string
@@ -535,17 +558,17 @@ workloadIdentityConfig:
         <td><code>clusterRegion</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The region where this cluster runs.
+            <p>{% verbatim %}The region where this cluster runs.
 
-For EKS clusters, this is an AWS region. For AKS clusters,
-this is an Azure region.{% endverbatim %}</p>
+ For EKS clusters, this is an AWS region. For AKS clusters,
+ this is an Azure region.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -594,7 +617,7 @@ this is an Azure region.{% endverbatim %}</p>
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The time at which this cluster was created.{% endverbatim %}</p>
+            <p>{% verbatim %}The time at which this cluster was registered.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -633,6 +656,25 @@ this is an Azure region.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fleetMembership</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The name of the managed Hub Membership resource associated to
+ this cluster.
+
+ Membership names are formatted as
+ `projects/<project-number>/locations/global/membership/<cluster-id>`.
+ This field mirrors the Spec.Fleet.Membership field.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>reconciling</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
@@ -643,9 +685,7 @@ this is an Azure region.{% endverbatim %}</p>
         <td><code>state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The current state of the cluster. Possible values:
-STATE_UNSPECIFIED, PROVISIONING, RUNNING, RECONCILING, STOPPING, ERROR,
-DEGRADED.{% endverbatim %}</p>
+            <p>{% verbatim %}The current state of the cluster. Possible values:	STATE_UNSPECIFIED, PROVISIONING, RUNNING, RECONCILING, STOPPING, ERROR,	DEGRADED.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -680,8 +720,7 @@ DEGRADED.{% endverbatim %}</p>
         <td><code>workloadIdentityConfig[].identityProvider</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the OIDC Identity Provider (IdP) associated to
-the Workload Identity Pool.{% endverbatim %}</p>
+            <p>{% verbatim %}The ID of the OIDC Identity Provider (IdP) associated to the Workload Identity Pool.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

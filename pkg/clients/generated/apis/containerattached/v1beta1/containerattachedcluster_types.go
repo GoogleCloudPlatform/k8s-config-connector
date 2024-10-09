@@ -36,18 +36,18 @@ import (
 )
 
 type ClusterAuthorization struct {
-	/* Users that can perform operations as a cluster admin. A managed
-	ClusterRoleBinding will be created to grant the 'cluster-admin' ClusterRole
+	/* Optional. Users that can perform operations as a cluster admin. A managed
+	ClusterRoleBinding will be created to grant the `cluster-admin` ClusterRole
 	to the users. Up to ten admin users can be provided.
 
 	For more info on RBAC, see
-	https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles. */
+	https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles */
 	// +optional
 	AdminUsers []string `json:"adminUsers,omitempty"`
 }
 
 type ClusterBinaryAuthorization struct {
-	/* Configure Binary Authorization evaluation mode. Possible values: ["DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE"]. */
+	/* Mode of operation for binauthz policy evaluation. If unspecified, defaults to DISABLED. Possible values: ["DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE"]. */
 	// +optional
 	EvaluationMode *string `json:"evaluationMode,omitempty"`
 }
@@ -59,18 +59,20 @@ type ClusterComponentConfig struct {
 }
 
 type ClusterFleet struct {
-	/* The name of the managed Hub Membership resource associated to this
-	cluster. Membership names are formatted as
-	projects/<project-number>/locations/global/membership/<cluster-id>. */
+	/* Output only. The name of the managed Hub Membership resource associated to
+	this cluster.
+
+	Membership names are formatted as
+	`projects/<project-number>/locations/global/membership/<cluster-id>`. */
 	// +optional
 	Membership *string `json:"membership,omitempty"`
 
-	/* The number of the Fleet host project where this cluster will be registered. */
+	/* The id of the Fleet host project where this cluster will be registered. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type ClusterLoggingConfig struct {
-	/* The configuration of the logging components. */
+	/* The configuration of the logging components; */
 	// +optional
 	ComponentConfig *ClusterComponentConfig `json:"componentConfig,omitempty"`
 }
@@ -88,79 +90,88 @@ type ClusterMonitoringConfig struct {
 }
 
 type ClusterOidcConfig struct {
-	/* Immutable. A JSON Web Token (JWT) issuer URI. 'issuer' must start with 'https://'. */
+	/* Immutable. A JSON Web Token (JWT) issuer URI. `issuer` must start with `https://`. */
 	IssuerUrl string `json:"issuerUrl"`
 
-	/* Immutable. OIDC verification keys in JWKS format (RFC 7517). */
+	/* Immutable, Optional. OIDC verification keys in JWKS format (RFC 7517).
+	It contains a list of OIDC verification keys that can be used to verify
+	OIDC JWTs.
+
+	This field is required for cluster that doesn't have a publicly available
+	discovery endpoint. When provided, it will be directly used
+	to verify the OIDC JWT asserted by the IDP. */
 	// +optional
 	Jwks *string `json:"jwks,omitempty"`
 }
 
 type ContainerAttachedClusterSpec struct {
-	/* Optional. Annotations on the cluster. This field has the same
-	restrictions as Kubernetes annotations. The total size of all keys and
-	values combined is limited to 256k. Key can have 2 segments: prefix (optional)
-	and name (required), separated by a slash (/). Prefix must be a DNS subdomain.
+	/* Optional. Annotations on the cluster.
+
+	This field has the same restrictions as Kubernetes annotations.
+	The total size of all keys and values combined is limited to 256k.
+	Key can have 2 segments: prefix (optional) and name (required),
+	separated by a slash (/).
+	Prefix must be a DNS subdomain.
 	Name must be 63 characters or less, begin and end with alphanumerics,
 	with dashes (-), underscores (_), dots (.), and alphanumerics between. */
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Configuration related to the cluster RBAC settings. */
+	/* Optional. Configuration related to the cluster RBAC settings. */
 	// +optional
 	Authorization *ClusterAuthorization `json:"authorization,omitempty"`
 
-	/* Binary Authorization configuration. */
+	/* Optional. Binary Authorization configuration for this cluster. */
 	// +optional
 	BinaryAuthorization *ClusterBinaryAuthorization `json:"binaryAuthorization,omitempty"`
 
-	/* Policy to determine what flags to send on delete. */
+	/* Optional. Policy to determine what flags to send on delete. */
 	// +optional
 	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
-	/* A human readable description of this attached cluster. Cannot be longer
-	than 255 UTF-8 encoded bytes. */
+	/* Optional. A human readable description of this Attached cluster. Cannot be longer than 255 UTF-8 encoded bytes. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The Kubernetes distribution of the underlying attached cluster. Supported values:
-	"eks", "aks". */
+	/* Immutable. The Kubernetes distribution of the underlying attached cluster.
+
+	Supported values: ["eks", "aks", "generic"]. */
 	Distribution string `json:"distribution"`
 
-	/* Fleet configuration. */
+	/* Required. Fleet configuration. */
 	Fleet ClusterFleet `json:"fleet"`
 
 	/* Immutable. The location for the resource. */
 	Location string `json:"location"`
 
-	/* Logging configuration. */
+	/* Optional. Logging configuration for this cluster. */
 	// +optional
 	LoggingConfig *ClusterLoggingConfig `json:"loggingConfig,omitempty"`
 
-	/* Monitoring configuration. */
+	/* Optional. Monitoring configuration for this cluster. */
 	// +optional
 	MonitoringConfig *ClusterMonitoringConfig `json:"monitoringConfig,omitempty"`
 
-	/* OIDC discovery information of the target cluster.
+	/* Required. OpenID Connect (OIDC) discovery information of the target cluster.
 
 	Kubernetes Service Account (KSA) tokens are JWT tokens signed by the cluster
-	API server. This fields indicates how GCP services
-	validate KSA tokens in order to allow system workloads (such as GKE Connect
-	and telemetry agents) to authenticate back to GCP.
+	API server. This field indicates how GCP services	validate KSA tokens in order
+	to allow system workloads (such as GKE Connect and telemetry agents) to
+	authenticate back to GCP.
 
 	Both clusters with public and private issuer URLs are supported.
-	Clusters with public issuers only need to specify the 'issuer_url' field
-	while clusters with private issuers need to provide both
-	'issuer_url' and 'jwks'. */
+	Clusters with public issuers only need to specify the 'issuerUrl' field
+	while clusters with private issuers need to provide both 'issuerUrl' and 'jwks'. */
 	OidcConfig ClusterOidcConfig `json:"oidcConfig"`
 
-	/* The platform version for the cluster (e.g. '1.23.0-gke.1'). */
+	/* Required. The platform version for the cluster (e.g. `1.30.0-gke.1`). */
 	PlatformVersion string `json:"platformVersion"`
 
 	/* The ID of the project in which the resource belongs. If it is not provided, the provider project is used. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable, Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -171,9 +182,19 @@ type ClusterErrorsStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
+type ClusterObservedStateStatus struct {
+	/* Output only. The name of the managed Hub Membership resource associated to
+	this cluster.
+
+	Membership names are formatted as
+	`projects/<project-number>/locations/global/membership/<cluster-id>`.
+	This field mirrors the Spec.Fleet.Membership field. */
+	// +optional
+	FleetMembership *string `json:"fleetMembership,omitempty"`
+}
+
 type ClusterWorkloadIdentityConfigStatus struct {
-	/* The ID of the OIDC Identity Provider (IdP) associated to
-	the Workload Identity Pool. */
+	/* The ID of the OIDC Identity Provider (IdP) associated to the Workload Identity Pool. */
 	// +optional
 	IdentityProvider *string `json:"identityProvider,omitempty"`
 
@@ -190,14 +211,14 @@ type ContainerAttachedClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerAttachedCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The region where this cluster runs.
+	/* The region where this cluster runs.
 
 	For EKS clusters, this is an AWS region. For AKS clusters,
 	this is an Azure region. */
 	// +optional
 	ClusterRegion *string `json:"clusterRegion,omitempty"`
 
-	/* Output only. The time at which this cluster was created. */
+	/* The time at which this cluster was registered. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
@@ -213,13 +234,15 @@ type ContainerAttachedClusterStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
+
 	/* If set, there are currently changes in flight to the cluster. */
 	// +optional
 	Reconciling *bool `json:"reconciling,omitempty"`
 
-	/* The current state of the cluster. Possible values:
-	STATE_UNSPECIFIED, PROVISIONING, RUNNING, RECONCILING, STOPPING, ERROR,
-	DEGRADED. */
+	/* The current state of the cluster. Possible values:	STATE_UNSPECIFIED, PROVISIONING, RUNNING, RECONCILING, STOPPING, ERROR,	DEGRADED. */
 	// +optional
 	State *string `json:"state,omitempty"`
 
