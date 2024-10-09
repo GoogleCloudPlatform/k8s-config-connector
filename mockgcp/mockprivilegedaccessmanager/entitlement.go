@@ -16,11 +16,16 @@ package mockprivilegedaccessmanager
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/base64"
+	"fmt"
+	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/privilegedaccessmanager/v1"
 )
@@ -40,6 +45,9 @@ func (s *PrivilegedAccessManager) GetEntitlement(ctx context.Context, req *pb.Ge
 
 	obj := &pb.Entitlement{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -53,16 +61,25 @@ func (s *PrivilegedAccessManager) CreateEntitlement(ctx context.Context, req *pb
 		return nil, err
 	}
 
+	now := timestamppb.New(time.Now())
 	fqn := name.String()
 
 	obj := proto.Clone(req.Entitlement).(*pb.Entitlement)
 	obj.Name = fqn
-
+	obj.CreateTime = now
+	obj.UpdateTime = now
+	obj.Etag = computeEtag(obj)
+	obj.State = pb.Entitlement_AVAILABLE
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := constructOperationMetadata(fqn, "create")
+	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Entitlement)
+		metadata.EndTime = now
+		return result, nil
+	})
 }
 
 func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb.UpdateEntitlementRequest) (*longrunning.Operation, error) {
@@ -82,7 +99,6 @@ func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
-	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
 		case "eligibleUsers":
@@ -106,7 +122,13 @@ func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := constructOperationMetadata(fqn, "update")
+	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Entitlement)
+		now := timestamppb.New(time.Now())
+		metadata.EndTime = now
+		return result, nil
+	})
 }
 
 func (s *PrivilegedAccessManager) DeleteEntitlement(ctx context.Context, req *pb.DeleteEntitlementRequest) (*longrunning.Operation, error) {
@@ -121,6 +143,33 @@ func (s *PrivilegedAccessManager) DeleteEntitlement(ctx context.Context, req *pb
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
+	metadata := constructOperationMetadata(fqn, "delete")
+	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(oldObj).(*pb.Entitlement)
+		result.State = pb.Entitlement_DELETED
+		result.Name = "projects/${projectNumber}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}"
+		now := timestamppb.New(time.Now())
+		metadata.EndTime = now
+		return result, nil
+	})
+}
 
-	return s.operations.NewLRO(ctx)
+func computeEtag(obj proto.Message) string {
+	b, err := proto.Marshal(obj)
+	if err != nil {
+		panic(fmt.Sprintf("converting to proto: %v", err))
+	}
+	hash := md5.Sum(b)
+	return base64.URLEncoding.EncodeToString(hash[:])
+}
+
+func constructOperationMetadata(target, verb string) *pb.OperationMetadata {
+	now := timestamppb.New(time.Now())
+	return &pb.OperationMetadata{
+		Target:                target,
+		CreateTime:            now,
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Verb:                  verb,
+	}
 }
