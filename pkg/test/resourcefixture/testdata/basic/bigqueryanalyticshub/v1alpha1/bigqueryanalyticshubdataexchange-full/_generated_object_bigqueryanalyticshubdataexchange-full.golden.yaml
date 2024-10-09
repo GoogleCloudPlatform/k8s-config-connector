@@ -13,7 +13,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   description: example data exchange
-  discoveryType: DISCOVERY_TYPE_PRIVATE
+  discoveryType: DISCOVERY_TYPE_PUBLIC
   displayName: my_data_exchange
   documentation: an updated documentation
   location: US
