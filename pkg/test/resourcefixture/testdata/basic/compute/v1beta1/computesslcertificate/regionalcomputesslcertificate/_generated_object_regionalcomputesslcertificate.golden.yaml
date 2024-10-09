@@ -1,0 +1,41 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLCertificate
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: computesslcertificate-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  certificate:
+    valueFrom:
+      secretKeyRef:
+        key: certificate
+        name: secret-${uniqueId}
+  description: example compute SSL certificate
+  location: us-central1
+  privateKey:
+    valueFrom:
+      secretKeyRef:
+        key: privateKey
+        name: secret-${uniqueId}
+  resourceID: computesslcertificate-${uniqueId}
+status:
+  certificateId: 1111111111111111
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  observedGeneration: 2
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/sslCertificates/computesslcertificate-${uniqueId}

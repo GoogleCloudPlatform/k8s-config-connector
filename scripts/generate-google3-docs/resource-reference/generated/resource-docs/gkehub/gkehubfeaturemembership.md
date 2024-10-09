@@ -474,7 +474,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}**DEPRECATED** Configuring Hierarchy Controller through the configmanagement feature is no longer recommended. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead.{% endverbatim %}</p>
+            <p>{% verbatim %}Hierarchy Controller is no longer available. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1120,8 +1120,6 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
   name: gkehubfeaturemembership-dep-acm
-  # The GKEHubFeature is a global resource in your project.
-  # In case you might have configured the resource using other clients like gcloud, abandon the resource when deleted.
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:

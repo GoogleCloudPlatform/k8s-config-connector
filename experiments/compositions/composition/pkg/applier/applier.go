@@ -17,6 +17,7 @@ package applier
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/pkg/cel"
@@ -393,4 +394,71 @@ func (a *Applier) AreResourcesReady() (bool, error) {
 	}
 
 	return allReady, nil
+}
+
+func (a *Applier) AddAppliedObjectsIntoValues(values map[string]interface{}) map[string]interface{} {
+	for _, resultObj := range a.results.Objects {
+		if resultObj.Apply.IsPruned {
+			continue
+		}
+		obj := resultObj.LastApplied
+		name := obj.GetName()
+		gvk := obj.GroupVersionKind()
+		kind := strings.ToLower(gvk.Kind)
+
+		// short path: values.<kind>.<name>. May clash
+		_, ok := values[kind]
+		if !ok {
+			values[kind] = map[string]interface{}{}
+		}
+		ref := values[kind].(map[string]interface{})
+
+		_, ok = ref[name]
+		if ok {
+			// Clash !! We will ignore
+			a.logger.Info("Clash when adding applied objects to values.", "kind", kind, "name", name)
+		} else {
+			ref[name] = obj.Object
+		}
+
+		// long path: values.<group>.<kind>.<namespace>.<name> will not clash
+		// Long path may not be practical since the namespace is not part of the composition and
+		// most templating languages dont support nested templatable variable.
+		// ex: {{ values.deployment.teampage.status.something  }} will work in jinja2
+		// but this {{ values.apps.deployment.{{teampage.metadata.namespace}}.status.something }} wont work
+		// So leaving this code commented for now.
+		/*
+			group := strings.ReplaceAll(strings.ToLower(gvk.Group), ".", "_")
+			namespace := obj.GetNamespace()
+
+			if group == "" {
+				group = "core"
+			}
+			_, ok = values[group]
+			if !ok {
+				values[group] = map[string]interface{}{}
+			}
+			ref = values[group].(map[string]interface{})
+
+			_, ok = ref[kind]
+			if !ok {
+				ref[kind] = map[string]interface{}{}
+			}
+			ref = ref[kind].(map[string]interface{})
+
+			_, ok = ref[namespace]
+			if !ok {
+				ref[namespace] = map[string]interface{}{}
+			}
+			ref = ref[namespace].(map[string]interface{})
+
+			_, ok = ref[name]
+			if !ok {
+				ref[name] = map[string]interface{}{}
+			}
+			ref[name] = obj.Object
+		*/
+
+	}
+	return values
 }

@@ -1,0 +1,31 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: bigquerydataset${uniqueId}
+spec:
+  access:
+  - domain: google.com
+    role: READER
+  - role: OWNER
+    specialGroup: projectOwners
+  - role: OWNER
+    userByEmail: user@google.com
+  defaultCollation: und:ci
+  defaultEncryptionConfiguration:
+    kmsKeyRef:
+      external: projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
+  defaultPartitionExpirationMs: 3800000
+  defaultTableExpirationMs: 3800000
+  description: Fully Configured BigQuery Dataset updated
+  friendlyName: bigquerydataset-fullyconfigured-updated
+  location: US
+  maxTimeTravelHours: "96"
+  projectRef:
+    external: ${projectId}
+  resourceID: bigquerydataset${uniqueId}
+  storageBillingModel: LOGICAL

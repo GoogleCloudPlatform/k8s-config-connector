@@ -200,6 +200,8 @@ func TestCRDsAcronyms(t *testing.T) {
 						isAcronym = true
 					case "os":
 						isAcronym = true
+					case "iam":
+						isAcronym = true
 					}
 
 					// TODO: Ips, Cidrs

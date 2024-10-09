@@ -24,6 +24,7 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/dataflow/v1beta3"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 )
@@ -34,7 +35,6 @@ type flexTemplatesServer struct {
 }
 
 func (r *flexTemplatesServer) LaunchFlexTemplate(ctx context.Context, req *pb.LaunchFlexTemplateRequest) (*pb.LaunchFlexTemplateResponse, error) {
-
 	now := time.Now()
 	jobID := now.Format("2006-01-02-15_04_05") + fmt.Sprintf("-%d", now.UnixNano())
 	reqName := fmt.Sprintf("projects/%s/locations/%s/flexTemplates/%s", req.GetProjectId(), req.GetLocation(), jobID)
@@ -64,19 +64,34 @@ func (r *flexTemplatesServer) LaunchFlexTemplate(ctx context.Context, req *pb.La
 		job.Name = launchParameter.GetJobName()
 	}
 
+	if req.GetLaunchParameter().GetUpdate() {
+		existingJob, err := findJobByJobName(ctx, r.storage, name.Project.ID, name.Location, job.Name)
+		if err != nil {
+			return nil, err
+		}
+		if existingJob == nil {
+			return nil, fmt.Errorf("existing job not found")
+		}
+		job.ReplaceJobId = existingJob.GetId()
+		// job.CurrentState = pb.JobState_JOB_STATE_QUEUED
+	}
+
 	if err := r.storage.Create(ctx, fqn, job); err != nil {
 		return nil, err
 	}
 
 	go func() {
 		if err := r.StartJob(fqn, name.Project, req); err != nil {
-			klog.Fatalf("error stopping job: %v", err)
+			klog.Fatalf("error starting job: %v", err)
 		}
 	}()
 
-	return &pb.LaunchFlexTemplateResponse{
+	retVal := &pb.LaunchFlexTemplateResponse{
 		Job: job,
-	}, nil
+	}
+	retVal = proto.Clone(retVal).(*pb.LaunchFlexTemplateResponse)
+	retVal.Job.ReplaceJobId = ""
+	return retVal, nil
 }
 
 type flexTemplateName struct {

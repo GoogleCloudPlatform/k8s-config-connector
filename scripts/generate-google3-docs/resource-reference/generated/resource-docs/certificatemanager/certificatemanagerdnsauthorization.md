@@ -65,8 +65,10 @@
 ```yaml
 description: string
 domain: string
+location: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -96,9 +98,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
-single domain and its wildcard, e.g. authorization for "example.com" can
-be used to issue certificates for "example.com" and "*.example.com".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. A domain which is being authorized. A DnsAuthorization resource covers a single domain and its wildcard, e.g. authorization for "example.com" can be used to issue certificates for "example.com" and "*.example.com".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>location</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -118,7 +128,17 @@ be used to issue certificates for "example.com" and "*.example.com".{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +148,7 @@ be used to issue certificates for "example.com" and "*.example.com".{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -138,7 +158,7 @@ be used to issue certificates for "example.com" and "*.example.com".{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -169,6 +189,7 @@ dnsResourceRecord:
 - data: string
   name: string
   type: string
+externalRef: string
 observedGeneration: integer
 ```
 
@@ -183,7 +204,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the CertificateManagerDNSAuthorization's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -232,9 +253,7 @@ observedGeneration: integer
         <td><code>dnsResourceRecord</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The structure describing the DNS Resource Record that needs to be added
-to DNS configuration for the authorization to be usable by
-certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}The structure describing the DNS Resource Record that needs to be added to DNS configuration for the authorization to be usable by certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,22 +267,28 @@ certificate.{% endverbatim %}</p>
         <td><code>dnsResourceRecord[].data</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Data of the DNS Resource Record.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Data of the DNS Resource Record.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>dnsResourceRecord[].name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Fully qualified name of the DNS Resource Record.
-E.g. '_acme-challenge.example.com'.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Fully qualified name of the DNS Resource Record. e.g. `_acme-challenge.example.com`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>dnsResourceRecord[].type</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of the DNS Resource Record.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Type of the DNS Resource Record. Currently always set to "CNAME".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -299,6 +324,7 @@ kind: CertificateManagerDNSAuthorization
 metadata:
   name: certificatemanagerdnsauthorization-sample
 spec:
+  location: us-central1
   description: sample dns authorization
   domain: subdomain.hashicorptest.com
   projectRef:

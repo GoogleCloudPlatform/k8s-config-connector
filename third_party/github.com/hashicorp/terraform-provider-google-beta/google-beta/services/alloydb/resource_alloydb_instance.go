@@ -156,6 +156,11 @@ can have regional availability (nodes are present in 2 or more zones in a region
 							},
 							RequiredWith: []string{"network_config.0.enable_public_ip"},
 						},
+						"enable_outbound_public_ip": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Enabling outbound public ip for the instance.`,
+						},
 						"enable_public_ip": {
 							Type:     schema.TypeBool,
 							Optional: true,
@@ -193,6 +198,16 @@ can have regional availability (nodes are present in 2 or more zones in a region
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: `The name of the instance resource.`,
+			},
+			"outbound_public_ip_addresses": {
+				Type:     schema.TypeList,
+				Computed: true,
+				Description: `The outbound public IP addresses for the instance. This is available ONLY when
+networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
+for outbound connections.`,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 			"public_ip_address": {
 				Type:     schema.TypeString,
@@ -522,12 +537,15 @@ func resourceAlloydbInstanceRead(d *schema.ResourceData, meta interface{}) error
 	if err := d.Set("public_ip_address", flattenAlloydbInstancePublicIpAddress(res["publicIpAddress"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Instance: %s", err)
 	}
+  if err := d.Set("outbound_public_ip_addresses", flattenAlloydbInstanceOutboundPublicIpAddresses(res["outboundPublicIpAddresses"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Instance: %s", err)
+	}
 	if err := d.Set("query_insights_config", flattenAlloydbInstanceQueryInsightsConfig(res["queryInsightsConfig"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Instance: %s", err)
 	}
 	if err := d.Set("observability_config", flattenAlloydbInstanceObservabilityConfig(res["observabilityConfig"], d, config)); err != nil {
-		return fmt.Errorf("Error reading Instance: %s", err)
-	}
+    return fmt.Errorf("Error reading Instance: %s", err)
+  }
 
 	return nil
 }
@@ -915,6 +933,8 @@ func flattenAlloydbInstanceNetworkConfig(v interface{}, d *schema.ResourceData, 
 		flattenAlloydbInstanceNetworkConfigAuthorizedExternalNetworks(original["authorizedExternalNetworks"], d, config)
 	transformed["enable_public_ip"] =
 		flattenAlloydbInstanceNetworkConfigEnablePublicIp(original["enablePublicIp"], d, config)
+	transformed["enable_outbound_public_ip"] =
+		flattenAlloydbInstanceNetworkConfigEnableOutboundPublicIp(original["enableOutboundPublicIp"], d, config)
 	return []interface{}{transformed}
 }
 func flattenAlloydbInstanceNetworkConfigAuthorizedExternalNetworks(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -943,7 +963,15 @@ func flattenAlloydbInstanceNetworkConfigEnablePublicIp(v interface{}, d *schema.
 	return v
 }
 
+func flattenAlloydbInstanceNetworkConfigEnableOutboundPublicIp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenAlloydbInstancePublicIpAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbInstanceOutboundPublicIpAddresses(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -1087,7 +1115,6 @@ func flattenAlloydbInstanceObservabilityConfigTrackActiveQueries(v interface{}, 
 	return v
 }
 
-
 func expandAlloydbInstanceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
@@ -1206,6 +1233,13 @@ func expandAlloydbInstanceNetworkConfig(v interface{}, d tpgresource.TerraformRe
 		transformed["enablePublicIp"] = transformedEnablePublicIp
 	}
 
+	transformedEnableOutboundPublicIp, err := expandAlloydbInstanceNetworkConfigEnableOutboundPublicIp(original["enable_outbound_public_ip"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedEnableOutboundPublicIp); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["enableOutboundPublicIp"] = transformedEnableOutboundPublicIp
+	}
+
 	return transformed, nil
 }
 
@@ -1236,6 +1270,10 @@ func expandAlloydbInstanceNetworkConfigAuthorizedExternalNetworksCidrRange(v int
 }
 
 func expandAlloydbInstanceNetworkConfigEnablePublicIp(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAlloydbInstanceNetworkConfigEnableOutboundPublicIp(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -1419,3 +1457,4 @@ func expandAlloydbInstanceObservabilityConfigRecordApplicationTags(v interface{}
 func expandAlloydbInstanceObservabilityConfigTrackActiveQueries(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
+

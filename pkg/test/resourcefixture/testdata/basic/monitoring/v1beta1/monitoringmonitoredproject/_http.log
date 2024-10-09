@@ -1,0 +1,1055 @@
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+403 Forbidden
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "MonitoringMonitoredProjectTest",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectNumber}",
+    "parent": "organizations/${organizationID}",
+    "projectId": "mmp-${uniqueId}",
+    "state": "ACTIVE"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/mmp-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/mmp-${uniqueId}/billingInfo",
+  "projectId": "mmp-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/mmp-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/mmp-${uniqueId}/billingInfo",
+  "projectId": "mmp-${uniqueId}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+POST https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}/projects?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "name": "locations/global/metricsScopes/${projectId}/projects/mmp-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.monitoring.metricsscope.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "state": "DONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.monitoring.metricsscope.v1.MonitoredProject",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.monitoring.metricsscope.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "state": "DONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "MonitoringMonitoredProjectTest",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "mmp-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/mmp-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/mmp-${uniqueId}/billingInfo",
+  "projectId": "mmp-${uniqueId}"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v1/projects/mmp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

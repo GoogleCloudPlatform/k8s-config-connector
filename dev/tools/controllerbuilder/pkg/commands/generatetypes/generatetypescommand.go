@@ -17,6 +17,7 @@ package generatetypes
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"unicode"
 
@@ -24,7 +25,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	"github.com/spf13/cobra"
@@ -38,7 +38,14 @@ type GenerateCRDOptions struct {
 	ResourceProtoName  string
 }
 
-func (o *GenerateCRDOptions) InitDefaults() {
+func (o *GenerateCRDOptions) InitDefaults() error {
+	root, err := options.RepoRoot()
+	if err != nil {
+		return nil
+	}
+	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
+	o.OutputAPIDirectory = root + "/apis/"
+	return nil
 }
 
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
@@ -52,7 +59,10 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		GenerateOptions: baseOptions,
 	}
 
-	opt.InitDefaults()
+	if err := opt.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
+	}
 
 	cmd := &cobra.Command{
 		Use:   "generate-types",
@@ -78,6 +88,13 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	if o.GenerateOptions.ProtoSourcePath == "" {
 		return fmt.Errorf("`proto-source-path` is required")
 	}
+	if o.ResourceProtoName == "" {
+		return fmt.Errorf("`--proto-resource` is required")
+	}
+	if o.ResourceKindName == "" {
+		return fmt.Errorf("`--kind` is required")
+	}
+	o.ResourceProtoName = capitalizeFirstRune(o.ResourceProtoName)
 
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
 	if err != nil {
@@ -112,27 +129,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
-		fullName := string(msg.FullName())
-		if strings.HasSuffix(fullName, "Request") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "Response") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "OperationMetadata") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "Metadata") {
-			return "", false
-		}
-		if !strings.HasPrefix(fullName, o.ServiceName+".") {
-			return "", false
-		}
-
-		return goPackage, true
-	}
-	typeGenerator := codegen.NewTypeGenerator(pathForMessage, o.OutputAPIDirectory)
+	resourceProtoFullName := o.ServiceName + "." + o.ResourceProtoName
+	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, resourceProtoFullName)
 	if err := typeGenerator.VisitProto(api); err != nil {
 		return err
 	}
@@ -142,23 +140,31 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
-	if o.ResourceProtoName != "" {
-		kind := o.ResourceKindName
-		if kind == "" {
-			output := []rune{unicode.ToUpper(rune(o.ResourceProtoName[0]))}
-			for _, val := range o.ResourceProtoName[1:] {
-				output = append(output, val)
-			}
-			kind = string(output)
+	kind := o.ResourceKindName
+	if !scaffolder.TypeFileNotExist(kind) {
+		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToTypeFile(kind))
+	} else {
+		err := scaffolder.AddTypeFile(kind, o.ResourceProtoName)
+		if err != nil {
+			return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(kind), err)
 		}
-		if !scaffolder.TypeFileNotExist(kind) {
-			fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
-		} else {
-			err := scaffolder.AddTypeFile(kind, o.ResourceProtoName)
-			if err != nil {
-				return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
-			}
+	}
+	if scaffolder.RefsFileExist(kind, o.ResourceProtoName) {
+		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToRefsFile(kind, o.ResourceProtoName))
+	} else {
+		err := scaffolder.AddRefsFile(kind, o.ResourceProtoName)
+		if err != nil {
+			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(kind, o.ResourceProtoName), err)
 		}
 	}
 	return nil
+}
+
+func capitalizeFirstRune(s string) string {
+	if s == "" {
+		return s
+	}
+	runes := []rune(s)
+	runes[0] = unicode.ToUpper(runes[0])
+	return string(runes)
 }

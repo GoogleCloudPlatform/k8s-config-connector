@@ -63,6 +63,11 @@ operator:
 manager: generate fmt vet
 	go build -o bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
+# Generate CRDs for direct controllers.
+.PHONY: generate-crds
+generate-crds:
+	./dev/tasks/generate-crds
+
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
 manifests: generate
@@ -70,7 +75,6 @@ manifests: generate
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
 	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
-	go run ./scripts/generate-cnrm-cluster-roles/main.go
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
@@ -81,6 +85,14 @@ manifests: generate
 
 	# for direct controllers
 	dev/tasks/generate-crds
+
+	# Generating cnrm cluster roles is dependent on the existence of directory
+	# config/crds/resources with all the freshly generated CRDs.
+	go run ./scripts/generate-cnrm-cluster-roles/main.go
+
+	# Generating list of all supported GVKs is dependent on the existence of directory
+	# config/crds/resources with all the freshly generated CRDs.
+	go run ./scripts/generate-gvks/main.go -input-dir=config/crds/resources -output-file=pkg/gvks/supportedgvks/gvks_generated.go
 
 # Format code
 .PHONY: fmt
@@ -232,7 +244,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs generate-go-client
+ready-pr: lint manifests resource-docs generate-go-client ensure
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl
@@ -335,14 +347,14 @@ clean-release-manifests:
 # make sure to connect to a k8s cluster first
 .PHONY: deploy-kcc-manifests-standard
 deploy-kcc-manifests-standard: config-connector-manifests-standard
-	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml 
+	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml
 
 .PHONY: deploy-kcc-manifests-autopilot
 deploy-kcc-manifests-autopilot: config-connector-manifests-autopilot
-	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml 
+	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: powertool-tests
-powertool-tests:	
+powertool-tests:
 	cd scripts/github-actions/ && ./powertool-test.sh
 
 .PHONY: e2e-scenario-tests
@@ -356,7 +368,7 @@ TEST_TARGET ?= mock
 
 .PHONY: e2e-sample-tests
 e2e-sample-tests:
-	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="SQLInstance,ComputeForwardingRule" \ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
+	RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=${TEST_TARGET} KCC_USE_DIRECT_RECONCILERS="ComputeForwardingRule" \ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run ${SAMPLE_TESTCASE}
 
 # orgnization ID for google.com
 ORG_ID ?= 433637338589

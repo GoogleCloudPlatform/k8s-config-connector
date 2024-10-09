@@ -21,4 +21,4 @@
 
 package v1alpha1
 
-type WorkstationsWorkstationClusterExpansion interface{}
+type WorkstationClusterExpansion interface{}

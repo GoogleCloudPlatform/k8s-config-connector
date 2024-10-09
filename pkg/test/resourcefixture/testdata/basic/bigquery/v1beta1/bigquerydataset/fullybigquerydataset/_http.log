@@ -1,0 +1,920 @@
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "KeyRing projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "CryptoKey projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "purpose": "ENCRYPT_DECRYPT"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+      }
+    ],
+    "version": 3
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "accountId": "bigquerydataset-dep",
+  "serviceAccount": {}
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "bigquerydataset-dep@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "bigquerydataset-dep@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    }
+  ],
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}"
+  },
+  "defaultCollation": "und:ci",
+  "defaultEncryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "defaultPartitionExpirationMs": 3600000,
+  "defaultTableExpirationMs": 3600000,
+  "description": "Fully Configured BigQuery Dataset",
+  "friendlyName": "bigquerydataset-fullyconfigured",
+  "isCaseInsensitive": true,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "maxTimeTravelHours": "72"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultCollation": "und:ci",
+  "defaultEncryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "defaultPartitionExpirationMs": "3600000",
+  "defaultTableExpirationMs": "3600000",
+  "description": "Fully Configured BigQuery Dataset",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-fullyconfigured",
+  "id": "000000000000000000000",
+  "isCaseInsensitive": true,
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "72",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultCollation": "und:ci",
+  "defaultEncryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "defaultPartitionExpirationMs": "3600000",
+  "defaultTableExpirationMs": "3600000",
+  "description": "Fully Configured BigQuery Dataset",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-fullyconfigured",
+  "id": "000000000000000000000",
+  "isCaseInsensitive": true,
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "72",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "access": [
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    }
+  ],
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}"
+  },
+  "defaultCollation": "und:ci",
+  "defaultEncryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "defaultPartitionExpirationMs": 3800000,
+  "defaultTableExpirationMs": 3800000,
+  "description": "Fully Configured BigQuery Dataset updated",
+  "friendlyName": "bigquerydataset-fullyconfigured-updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "maxTimeTravelHours": "96",
+  "storageBillingModel": "LOGICAL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultCollation": "und:ci",
+  "defaultEncryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "defaultPartitionExpirationMs": "3800000",
+  "defaultTableExpirationMs": "3800000",
+  "description": "Fully Configured BigQuery Dataset updated",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-fullyconfigured-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "96",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "storageBillingModel": "LOGICAL",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultCollation": "und:ci",
+  "defaultEncryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "defaultPartitionExpirationMs": "3800000",
+  "defaultTableExpirationMs": "3800000",
+  "description": "Fully Configured BigQuery Dataset updated",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-fullyconfigured-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "96",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "storageBillingModel": "LOGICAL",
+  "type": "DEFAULT"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "bigquerydataset-dep@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/bigquerydataset-dep@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+}

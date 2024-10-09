@@ -15,6 +15,8 @@
 package supportedgvks
 
 import (
+	"fmt"
+
 	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -26,20 +28,63 @@ import (
 
 // All returns GroupVersionKinds corresponding to all the GCP resources
 // supported by KCC.
-func All(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader) []schema.GroupVersionKind {
+func All(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader) ([]schema.GroupVersionKind, error) {
+	return resourcesWithDirect(smLoader, serviceMetaLoader, true)
+}
+
+func AllWithoutDirect(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader) []schema.GroupVersionKind {
 	return resources(smLoader, serviceMetaLoader, true)
 }
 
 // ManualResources returns GroupVersionKinds for all the manually configured KCC
 // resources.
-func ManualResources(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader) []schema.GroupVersionKind {
-	return resources(smLoader, serviceMetaLoader, false)
+func ManualResources(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader) ([]schema.GroupVersionKind, error) {
+	return resourcesWithDirect(smLoader, serviceMetaLoader, false)
+}
+
+func resourcesWithDirect(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader, includesAutoGen bool) ([]schema.GroupVersionKind, error) {
+	gvks := resources(smLoader, serviceMetaLoader, includesAutoGen)
+
+	directGVKs, err := DirectResources()
+	if err != nil {
+		return nil, fmt.Errorf("error getting direct resource GVKs: %w", err)
+	}
+	for _, gvk := range gvks {
+		if _, ok := directGVKs[gvk]; ok {
+			delete(directGVKs, gvk)
+		}
+	}
+	for gvk, _ := range directGVKs {
+		gvks = append(gvks, gvk)
+	}
+	return gvks, nil
 }
 
 func resources(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader, includesAutoGen bool) []schema.GroupVersionKind {
 	gvks := dynamicTypes(smLoader, serviceMetaLoader, includesAutoGen)
 	gvks = append(gvks, BasedOnHandwrittenIAMTypes()...)
 	return gvks
+}
+
+func DirectResources() (map[schema.GroupVersionKind]bool, error) {
+	handWrittenIAMTypes := make(map[schema.GroupVersionKind]bool)
+	directResources := make(map[schema.GroupVersionKind]bool)
+	for _, gvk := range BasedOnHandwrittenIAMTypes() {
+		handWrittenIAMTypes[gvk] = true
+	}
+	for gvk, metadata := range SupportedGVKs {
+		if metadata.Labels[k8s.TF2CRDLabel] == "true" {
+			continue
+		}
+		if metadata.Labels[k8s.DCL2CRDLabel] == "true" {
+			continue
+		}
+		if _, ok := handWrittenIAMTypes[gvk]; ok {
+			continue
+		}
+		directResources[gvk] = true
+	}
+	return directResources, nil
 }
 
 // AllDynamicTypes returns GroupVersionKinds generated from:

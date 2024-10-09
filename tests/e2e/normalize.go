@@ -46,10 +46,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	}
 	u.SetAnnotations(annotations)
 
-	visitor := objectWalker{}
-	visitor.removePaths = sets.New[string]()
-	visitor.replacePaths = map[string]any{}
-	visitor.sortSlices = sets.New[string]()
+	visitor := newObjectWalker()
 
 	// Apply replacements
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -84,7 +81,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
 	// Specific to Dataflow
-	visitor.sortSlices.Insert(".spec.additionalExperiments")
+	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
+
+	// Specific to Firestore
+	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
 
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
@@ -135,8 +135,12 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.proxyId"] = 1111111111111111
 	visitor.replacePaths[".status.mapId"] = 1111111111111111
 	visitor.replacePaths[".status.id"] = 1111111111111111
+	visitor.replacePaths[".status.certificateId"] = 1111111111111111
 	visitor.replacePaths[".status.labelFingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".status.fingerprint"] = "abcdef0123A="
+
+	// Specific to Certificate Manager
+	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
 
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -168,7 +172,18 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 
 	// Specific to BigQueryConnectionConnection.
-	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountId"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"
+	visitor.replacePaths[".status.observedState.azure.identity"] = "117243083562690747295"
+	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+	visitor.replacePaths[".status.observedState.cloudSql.serviceAccountID"] = "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
+
+	// Specific to BigQueryDataTransferConfig
+	if u.GetKind() == "BigQueryDataTransferConfig" {
+		visitor.replacePaths[".status.observedState.nextRunTime"] = "1970-01-01T00:00:00Z"
+		visitor.replacePaths[".status.observedState.ownerInfo.email"] = "user@google.com"
+		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
+		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
+	}
 
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
@@ -238,6 +253,26 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 					return strings.ReplaceAll(s, id, "${notificationChannelID}")
 				})
 			}
+			if typeName == "transferConfigs" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${transferConfigID}")
+				})
+			}
+		}
+
+		id, _, _ := unstructured.NestedString(u.Object, "status", "selfLinkWithId")
+		if id != "" {
+			tokens := strings.Split(id, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				id := tokens[len(tokens)-1]
+				if typeName == "targetGrpcProxies" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, id, "${targetGrpcProxiesID}")
+					})
+				}
+			}
 		}
 
 		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
@@ -252,9 +287,18 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
 				})
+			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${firewallPolicyID}")
+				})
 			}
 		}
 	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
+
+	})
 
 	return visitor.VisitUnstructued(u)
 }
@@ -276,12 +320,22 @@ func setStringAtPath(m map[string]any, atPath string, newValue string) error {
 }
 
 type objectWalker struct {
-	removePaths      sets.Set[string]
-	sortSlices       sets.Set[string]
-	replacePaths     map[string]any
-	stringTransforms []func(path string, value string) string
-	objectTransforms []func(path string, value map[string]any)
-	sliceTransforms  []func(path string, value []any) []any
+	removePaths              sets.Set[string]
+	sortSlices               sets.Set[string]
+	sortAndDeduplicateSlices sets.Set[string]
+	replacePaths             map[string]any
+	stringTransforms         []func(path string, value string) string
+	objectTransforms         []func(path string, value map[string]any)
+	sliceTransforms          []func(path string, value []any) []any
+}
+
+func newObjectWalker() *objectWalker {
+	return &objectWalker{
+		removePaths:              sets.New[string](),
+		sortSlices:               sets.New[string](),
+		sortAndDeduplicateSlices: sets.New[string](),
+		replacePaths:             make(map[string]any),
+	}
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
@@ -333,7 +387,7 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 	return nil
 }
 
-func sortSlice(s []any) error {
+func sortSlice(s []any, deduplicate bool) ([]any, error) {
 	type entry struct {
 		o       any
 		sortKey string
@@ -343,7 +397,7 @@ func sortSlice(s []any) error {
 	for i := range s {
 		j, err := json.Marshal(s[i])
 		if err != nil {
-			return fmt.Errorf("error converting to json: %w", err)
+			return nil, fmt.Errorf("error converting to json: %w", err)
 		}
 		entries = append(entries, entry{o: s[i], sortKey: string(j)})
 	}
@@ -352,11 +406,15 @@ func sortSlice(s []any) error {
 		return entries[i].sortKey < entries[j].sortKey
 	})
 
+	out := make([]any, 0, len(s))
 	for i := range s {
-		s[i] = entries[i].o
+		if deduplicate && i > 0 && entries[i].sortKey == entries[i-1].sortKey {
+			continue
+		}
+		out = append(out, entries[i].o)
 	}
 
-	return nil
+	return out, nil
 }
 
 func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
@@ -374,9 +432,19 @@ func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
 
 	// Note: do sorting "last" so we sort normalized values
 	if o.sortSlices.Has(path) {
-		if err := sortSlice(s); err != nil {
+		sorted, err := sortSlice(s, false)
+		if err != nil {
 			return s, err
 		}
+		s = sorted
+	}
+
+	if o.sortAndDeduplicateSlices.Has(path) {
+		sorted, err := sortSlice(s, true)
+		if err != nil {
+			return s, err
+		}
+		s = sorted
 	}
 
 	return s, nil
@@ -476,6 +544,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
 	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("X-Debug-Tracking-Id")
 	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
 	events.RemoveHTTPResponseHeader("Etag")
 	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
@@ -523,11 +592,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 }
 
 func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
-	visitor := objectWalker{}
-
-	visitor.removePaths = sets.New[string]()
-	visitor.replacePaths = make(map[string]any)
-	visitor.sortSlices = sets.New[string]()
+	visitor := newObjectWalker()
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
@@ -541,12 +606,15 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
-	// Compute URLs: Replace any compute beta URLs with v1 URLs
-	// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
-	// This special handling to avoid diffs in http logs.
-	// This can be removed once all Compute resources are migrated to direct controller.
 	for _, event := range events {
+		// Compute URLs: Replace any compute beta URLs with v1 URLs
+		// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+		// This special handling to avoid diffs in http logs.
+		// This can be removed once all Compute resources are migrated to direct controller.
 		event.Request.URL = rewriteComputeURL(event.Request.URL)
+
+		// Normalize etags in URLS
+		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
 	}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -562,7 +630,10 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.replacePaths[".job.startTime"] = "2024-04-01T12:34:56.123456Z"
 		visitor.replacePaths[".job.createTime"] = "2024-04-01T12:34:56.123456Z"
 		visitor.replacePaths[".currentStateTime"] = "2024-04-01T12:34:56.123456Z"
-		visitor.sortSlices.Insert(".environment.experiments")
+		// The pipelineUrl includes a long random ID that does not appear elsewhere
+		visitor.replacePaths[".environment.sdkPipelineOptions.options.pipelineUrl"] = "${pipelineUrl}"
+		visitor.sortAndDeduplicateSlices.Insert(".environment.experiments")
+		visitor.sortAndDeduplicateSlices.Insert(".environment.sdkPipelineOptions.options.experiments")
 
 		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
 			switch path {
@@ -606,6 +677,11 @@ func rewriteComputeURL(u string) string {
 		}
 	}
 	return u
+}
+
+func normalizeEtagsInURL(u string) string {
+	re := regexp.MustCompile(`etag=[a-zA-Z0-9%]+`)
+	return re.ReplaceAllString(u, "etag=abcdef0123A")
 }
 
 // isGetOperation returns true if this is an operation poll request

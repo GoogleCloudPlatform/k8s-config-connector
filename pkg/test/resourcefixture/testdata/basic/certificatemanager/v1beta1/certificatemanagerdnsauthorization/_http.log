@@ -1,6 +1,7 @@
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -23,9 +24,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations?alt=json&dnsAuthorizationId=certificatemanagerdnsauthorization${uniqueId}
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations?%24alt=json%3Benum-encoding%3Dint&dnsAuthorizationId=certificatemanagerdnsauthorization${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
   "description": "sample dns authorization",
@@ -61,9 +63,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -91,7 +94,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "sample dns authorization",
     "dnsResourceRecord": {
-      "data": "authorize.certificatemanager.goog.",
+      "data": "${uniqueId}",
       "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
       "type": "CNAME"
     },
@@ -104,9 +107,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -134,15 +138,16 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
-  "type": "FIXED_RECORD",
+  "type": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json&updateMask=description%2Clabels
+PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: dns_authorization.name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization${uniqueId}
 
 {
   "description": "updated dns authorization",
@@ -151,7 +156,8 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "label-one": "value-one-updated",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  }
+  },
+  "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}"
 }
 
 200 OK
@@ -178,9 +184,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -208,7 +215,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "updated dns authorization",
     "dnsResourceRecord": {
-      "data": "authorize.certificatemanager.goog.",
+      "data": "${uniqueId}",
       "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
       "type": "CNAME"
     },
@@ -221,9 +228,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -252,15 +260,16 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
-  "type": "FIXED_RECORD",
+  "type": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -286,9 +295,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private

@@ -439,6 +439,23 @@ func TestCustomStatusCELRule(t *testing.T) {
 	// Verify plan has no errors
 }
 
+func TestImplicitGetter(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Check plan object has no error
+	plan := utils.GetPlanObj("my-team2", "team2pages-landing")
+	condition := utils.GetReadyCondition("ProcessedAllStages", "")
+	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcileTimeout)
+
+	// Verify that all resources objects are created
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Verify plan has no errors
+}
+
 func TestMultipleCompositionsDisallowedForSameGVK(t *testing.T) {
 	s := scenario.NewBasic(t)
 	defer s.Cleanup()

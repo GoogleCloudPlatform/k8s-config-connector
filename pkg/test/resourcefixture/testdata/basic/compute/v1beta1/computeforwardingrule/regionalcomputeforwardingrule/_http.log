@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/regions/us-central1/networks/computeraddress-${uniqueId}\" not found",
+        "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/regions/us-central1/networks/computeraddress-${uniqueId}\" not found"
+    "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}\" not found"
   }
 }
 
@@ -60,10 +60,48 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
+  "user": "user@example.com"
 }
 
 ---
@@ -96,7 +134,7 @@ X-Xss-Protection: 0
   },
   "name": "computeraddress-${uniqueId}",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networks/computeraddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}"
 }
 
 ---
@@ -166,7 +204,7 @@ X-Xss-Protection: 0
   },
   "name": "computeraddress-${uniqueId}",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networks/computeraddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}"
 }
 
 ---
@@ -504,11 +542,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "forwardingRule \"projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "forwardingRule \"projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found"
   }
 }
 
@@ -622,6 +660,85 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
+  "loadBalancingScheme": "EXTERNAL",
+  "name": "computeregionalforwardingrule-${uniqueId}",
+  "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&resource=computeregionalforwardingrule-${uniqueId}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "IPProtocol": "ESP",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A regional forwarding rule",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -630,6 +747,7 @@ X-Xss-Protection: 0
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
   "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
@@ -667,42 +785,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "SetLabels",
-  "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${forwardingRulesId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&operation=${operationID}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "SetLabels",
+  "operationType": "setLabels",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -748,6 +831,7 @@ X-Xss-Protection: 0
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
   "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
@@ -907,7 +991,7 @@ X-Xss-Protection: 0
   },
   "name": "computeraddress-${uniqueId}",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networks/computeraddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}"
 }
 
 ---
@@ -932,8 +1016,46 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeraddress-${uniqueId}",
+  "user": "user@example.com"
 }

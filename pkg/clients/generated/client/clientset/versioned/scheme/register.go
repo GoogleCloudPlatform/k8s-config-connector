@@ -62,7 +62,7 @@ import (
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
-	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1alpha1"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastore/v1alpha1"
@@ -84,6 +84,7 @@ import (
 	firebasedatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasedatabase/v1alpha1"
 	firebasehostingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasehosting/v1alpha1"
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasestorage/v1alpha1"
+	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1alpha1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkebackup/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
@@ -111,6 +112,7 @@ import (
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1beta1"
 	osloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/oslogin/v1alpha1"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privateca/v1beta1"
+	privilegedaccessmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privilegedaccessmanager/v1alpha1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsub/v1beta1"
 	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1alpha1"
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1beta1"
@@ -120,7 +122,6 @@ import (
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
-	securesourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securesourcemanager/v1alpha1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securitycenter/v1alpha1"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicenetworking/v1beta1"
@@ -192,7 +193,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	datacatalogv1alpha1.AddToScheme,
 	datacatalogv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
-	dataformv1alpha1.AddToScheme,
+	dataformv1beta1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
 	dataprocv1beta1.AddToScheme,
 	datastorev1alpha1.AddToScheme,
@@ -214,6 +215,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	firebasedatabasev1alpha1.AddToScheme,
 	firebasehostingv1alpha1.AddToScheme,
 	firebasestoragev1alpha1.AddToScheme,
+	firestorev1alpha1.AddToScheme,
 	firestorev1beta1.AddToScheme,
 	gkebackupv1alpha1.AddToScheme,
 	gkehubv1beta1.AddToScheme,
@@ -241,6 +243,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	osconfigv1beta1.AddToScheme,
 	osloginv1alpha1.AddToScheme,
 	privatecav1beta1.AddToScheme,
+	privilegedaccessmanagerv1alpha1.AddToScheme,
 	pubsubv1beta1.AddToScheme,
 	pubsublitev1alpha1.AddToScheme,
 	pubsublitev1beta1.AddToScheme,
@@ -250,7 +253,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	resourcemanagerv1beta1.AddToScheme,
 	runv1beta1.AddToScheme,
 	secretmanagerv1beta1.AddToScheme,
-	securesourcemanagerv1alpha1.AddToScheme,
 	securitycenterv1alpha1.AddToScheme,
 	servicedirectoryv1beta1.AddToScheme,
 	servicenetworkingv1beta1.AddToScheme,

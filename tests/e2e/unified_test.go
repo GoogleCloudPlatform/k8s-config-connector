@@ -229,9 +229,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
 					// Stop recording after tests finish and write to cassette
 					t.Cleanup(func() {
-						err := h.VCRRecorderDCL.Stop()
+						err := h.VCRRecorderNonTF.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
+							t.Errorf("[VCR] Failed stop non TF vcr recorder: %v", err)
 						}
 						err = h.VCRRecorderTF.Stop()
 						if err != nil {
@@ -487,13 +487,16 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".monitoredProjects[].createTime", "2024-04-01T12:34:56.123456Z")
 
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to cloudbuild
 					addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
@@ -526,6 +529,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("labelFingerprint", "abcdef0123A=")
 					addReplacement("fingerprint", "abcdef0123A=")
+					// Matches the mock ip address of Compute forwarding rule
+					addReplacement("IPAddress", "8.8.8.8")
+					addReplacement("pscConnectionId", "111111111111")
+
 					// Extract resource targetID numbers from compute operations
 					for _, event := range events {
 						body := event.Response.ParseBody()
@@ -537,14 +544,32 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if n >= 2 {
 								kind := tokens[n-2]
 								switch kind {
-								case "subnetworks":
-									r.PathIDs[targetId] = "${subnetworkNumber}"
-								case "sslCertificates":
-									r.PathIDs[targetId] = "${sslCertificatesId}"
+								case "addresses":
+									r.PathIDs[targetId] = "${addressesId}"
+								case "backendServices":
+									r.PathIDs[targetId] = "${backendServicesId}"
+								case "firewallPolicies":
+									r.PathIDs[targetId] = "${firewallPolicyId}"
 								case "forwardingRules":
 									r.PathIDs[targetId] = "${forwardingRulesId}"
+								case "healthChecks":
+									r.PathIDs[targetId] = "${healthChecksId}"
 								case "serviceAttachments":
 									r.PathIDs[targetId] = "${serviceAttachmentsId}"
+								case "sslCertificates":
+									r.PathIDs[targetId] = "${sslCertificatesId}"
+								case "subnetworks":
+									r.PathIDs[targetId] = "${subnetworkNumber}"
+								case "targetGrpcProxies":
+									r.PathIDs[targetId] = "${targetGrpcProxiesId}"
+								case "targetHttpsProxies":
+									r.PathIDs[targetId] = "${targetHttpsProxiesId}"
+								case "targetSslProxies":
+									r.PathIDs[targetId] = "${targetSslProxiesId}"
+								case "targetTcpProxies":
+									r.PathIDs[targetId] = "${targetTcpProxiesId}"
+								case "urlMaps":
+									r.PathIDs[targetId] = "${urlMapsId}"
 								}
 							}
 						}
@@ -610,6 +635,23 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to Firestore
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if _, found, _ := unstructured.NestedMap(obj, "response"); found {
+							// Only run this mutator for firestore database objects.
+							if val, found, err := unstructured.NestedString(obj, "response", "@type"); err == nil && found && val == "type.googleapis.com/google.firestore.admin.v1.Database" {
+								// Only run this mutator for firestore database objects that have a name set in the response.
+								if val, found, err := unstructured.NestedString(obj, "response", "name"); err == nil && found && val != "" {
+									// Set name field to use human-readable ID, instead of UID
+									// Note: This only works if firestore databases in all resource fixture test cases use the name "firestoredatabase-${uniqueId}"
+									if err := unstructured.SetNestedField(obj, "projects/${projectId}/databases/firestoredatabase-${uniqueId}", "response", "name"); err != nil {
+										t.Fatal(err)
+									}
+								}
+							}
+						}
+					})
+
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("revisionId", "revision-id-placeholder")
@@ -632,6 +674,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 					addReplacement("settings.backupConfiguration.startTime", "12:00")
 					addReplacement("settings.settingsVersion", "123")
+
+					// Specific to CertificateManager
+					addReplacement("response.dnsResourceRecord.data", uniqueID)
 					jsonMutators = append(jsonMutators, func(obj map[string]any) {
 						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
 							// Only run this mutator for sql instance objects.
@@ -708,7 +753,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to BigQueryConnectionConnection.
+					addReplacement("aws.accessRole.identity", "048077221682493034546")
+					addReplacement("azure.identity", "117243083562690747295")
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
+					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -727,6 +775,29 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								}
 							}
 						}
+					})
+
+					// Specific to BigQueryDataTransferConfig
+					addReplacement("nextRunTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("ownerInfo.email", "user@google.com")
+					addReplacement("userId", "0000000000000000000")
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if _, found, err := unstructured.NestedString(obj, "destinationDatasetId"); err != nil || !found {
+							// This is a hack to only run this mutator for BigQueryDataTransferConfig objects.
+							return
+						}
+						// special handling because the field includes dot
+						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientId"); found {
+							if err := unstructured.SetNestedField(obj, "client-id", "params", "connector.authentication.oauth.clientId"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientSecret"); found {
+							if err := unstructured.SetNestedField(obj, "client-secret", "params", "connector.authentication.oauth.clientSecret"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						delete(obj, "state") // data transfer run state, which depends on timing
 					})
 
 					// Remove error details which can contain confidential information
@@ -773,9 +844,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					if testgcp.TestFolderID.Get() != "" {
 						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
 					}
-					if testgcp.TestOrgID.Get() != "" {
-						normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
-						normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
+					if organizationID := testgcp.TestOrgID.Get(); organizationID != "" {
+						normalizers = append(normalizers, ReplaceString("organizations/"+organizationID, "organizations/${organizationID}"))
+						normalizers = append(normalizers, ReplaceString(organizationID+"/", "${organizationID}/"))
+						normalizers = append(normalizers, ReplaceString("organizations%2F"+organizationID, "organizations%2F${organizationID}"))
 					}
 					for k, v := range r.PathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
@@ -1030,7 +1102,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 
 		return nil
 	}
-	h.VCRRecorderDCL.AddHook(hook, recorder.BeforeSaveHook)
+	h.VCRRecorderNonTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderOauth.AddHook(hook, recorder.BeforeSaveHook)
 
@@ -1070,7 +1142,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		}
 		return true
 	}
-	h.VCRRecorderDCL.SetMatcher(matcher)
+	h.VCRRecorderNonTF.SetMatcher(matcher)
 	h.VCRRecorderTF.SetMatcher(matcher)
 	h.VCRRecorderOauth.SetMatcher(matcher)
 }

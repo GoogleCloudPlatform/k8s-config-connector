@@ -20,4 +20,4 @@ spec:
   organizationRef:
     external: "organizations/${TEST_ORG_ID}"
   shortName: firewallpolicy-${uniqueId}
-  description: "A basic folder firewall policy"
+  description: "A basic organization firewall policy"

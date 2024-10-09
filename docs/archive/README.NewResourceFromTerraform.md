@@ -165,7 +165,7 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 1.  Replace the value for `name` with the name of the Terraform resource
     associated with your GCP resource.
 
-1.  Replace the value for `kind` with the ConfigConnector `Kind` for your
+1.  Replace the value for `kind` with the Config Connector `Kind` for your
     resource. The name should be in pascal case, i.e. ServiceNameResourceName,
     but with acronyms in uppercase.
 

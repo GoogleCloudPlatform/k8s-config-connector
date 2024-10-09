@@ -89,7 +89,7 @@ func (s *connectionsV1) PatchServicesConnection(ctx context.Context, req *pb.Pat
 
 	create := false
 
-	fqn := connectionName.String()
+	fqn := connectionName.String() + network.String()
 	obj := &pb.Connection{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {

@@ -156,23 +156,31 @@ func main() {
 		log.Fatal(fmt.Errorf("error creating a DCL schema loader: %w", err))
 	}
 	serviceMetadataLoader = dclmetadata.New()
-	for _, gvk := range supportedgvks.ManualResources(smLoader, serviceMetadataLoader) {
+	manualResources, err := supportedgvks.ManualResources(smLoader, serviceMetadataLoader)
+	if err != nil {
+		log.Fatalf("error getting manual resources: %v", err)
+	}
+	directGVKs, err := supportedgvks.DirectResources()
+	if err != nil {
+		log.Fatalf("error getting direct resource GVKs: %v", err)
+	}
+	for _, gvk := range manualResources {
 		if strings.HasPrefix(gvk.Version, "v1alpha") {
 			klog.Infof("skipping alpha resource %v", gvk)
 			continue
 		}
-		if err := generateDocForGVK(gvk, smLoader); err != nil {
+		if err := generateDocForGVK(gvk, smLoader, directGVKs); err != nil {
 			log.Fatal(fmt.Errorf("error generating doc for GVK %v: %w", gvk, err))
 		}
 	}
 }
 
-func generateDocForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) error {
+func generateDocForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader, directGVKs map[schema.GroupVersionKind]bool) error {
 	template, err := templateForGVK(gvk)
 	if err != nil {
 		return fmt.Errorf("error creating template: %w", err)
 	}
-	templateData, err := templateDataForGVK(gvk, smLoader)
+	templateData, err := templateDataForGVK(gvk, smLoader, directGVKs)
 	if err != nil {
 		return fmt.Errorf("error preparing template data: %w", err)
 	}
@@ -206,8 +214,8 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 	return template, nil
 }
 
-func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) (interface{}, error) {
-	resource, err := constructResourceForGVK(gvk, smLoader)
+func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader, directGVKs map[schema.GroupVersionKind]bool) (interface{}, error) {
+	resource, err := constructResourceForGVK(gvk, smLoader, directGVKs)
 	if err != nil {
 		return nil, fmt.Errorf("error constructing resource data: %w", err)
 	}
@@ -252,7 +260,7 @@ func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloa
 	}
 }
 
-func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) (*resource, error) {
+func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader, directGVKs map[schema.GroupVersionKind]bool) (*resource, error) {
 	r := &resource{}
 
 	// crd properties
@@ -282,6 +290,10 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
 	}
 	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader).Seconds())
+	isDirectGVK := directGVKs[gvk]
+	if err != nil {
+		return nil, fmt.Errorf("error checking whether GVK is direct: %w", err)
+	}
 	if dclmetadata.IsDCLBasedResourceKind(gvk, serviceMetadataLoader) {
 		resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
 		if !found {
@@ -293,13 +305,25 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 		}
 	} else {
 		if err := handleAnnotationsAndIAMSettingsForTFBasedResource(r, gvk, smLoader); err != nil {
-			return nil, fmt.Errorf("error processing the TF based resource %v: %w", gvk, err)
+			// TODO: Add annotation and IAM settings handling logic for direct GKs.
+			if isDirectGVK &&
+				strings.Contains(err.Error(), fmt.Sprintf("unable to get service mapping: no mapping with name '%s' found", gvk.Group)) {
+				log.Printf("reference doc for direct GK '%v' doesn't cover annotations and IAM settings", gvk.GroupKind().String())
+			} else {
+				return nil, fmt.Errorf("error processing the TF based resource %v: %w", gvk, err)
+			}
 		}
 	}
 
 	r.SampleYamls, err = buildSamples(r.Kind, sampleDirPathForGVK(gvk), smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error building samples: %w", err)
+		// TODO: Samples should also be required for direct CRDs.
+		if isDirectGVK &&
+			strings.Contains(err.Error(), fmt.Sprintf("k8s-config-connector/config/samples/resources/%s: no such file or directory", strings.ToLower(gvk.Kind))) {
+			log.Printf("direct GK '%v' doesn't have samples", gvk.GroupKind().String())
+		} else {
+			return nil, fmt.Errorf("error building samples: %w", err)
+		}
 	}
 	return r, nil
 }
@@ -346,6 +370,10 @@ func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.G
 	rcs, err := smLoader.GetResourceConfigs(gvk)
 	if err != nil {
 		return fmt.Errorf("error getting resource configs: %w", err)
+	}
+	if len(rcs) == 0 {
+		log.Printf("no resource config found for '%s'", gvk.String())
+		return nil
 	}
 
 	for _, rc := range rcs {

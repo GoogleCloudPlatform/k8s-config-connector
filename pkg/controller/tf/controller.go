@@ -34,7 +34,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
@@ -80,7 +79,7 @@ type Reconciler struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator, irp predicate.Predicate) (k8s.SchemaReferenceUpdater, error) {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator, additionalPredicate predicate.Predicate) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
@@ -97,8 +96,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		},
 	}
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if irp != nil {
-		predicateList = append(predicateList, irp)
+	if additionalPredicate != nil {
+		predicateList = append(predicateList, additionalPredicate)
 	}
 	_, err = builder.
 		ControllerManagedBy(mgr).
@@ -336,7 +335,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			fmt.Errorf("underlying resource no longer exists and can't be recreated without creating a brand new resource"))
 	}
 	config, secretVersions, err := krmtotf.KRMResourceToTFResourceConfigFull(
-		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true, label.GetDefaultLabels(),
+		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true,
 	)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {

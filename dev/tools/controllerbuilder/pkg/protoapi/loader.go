@@ -62,3 +62,7 @@ func (p *Proto) SortedFiles() []protoreflect.FileDescriptor {
 	})
 	return sortedFiles
 }
+
+func (p *Proto) Files() *protoregistry.Files {
+	return p.files
+}

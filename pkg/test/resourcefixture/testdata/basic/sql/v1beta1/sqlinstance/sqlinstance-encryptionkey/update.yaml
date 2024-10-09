@@ -17,7 +17,7 @@ kind: SQLInstance
 metadata:
   labels:
     label-one: "new-value"
-  name: sqlinstance-sample-${uniqueId}
+  name: sqlinstance-encryptionkey-${uniqueId}
 spec:
   databaseVersion: POSTGRES_15
   encryptionKMSCryptoKeyRef:

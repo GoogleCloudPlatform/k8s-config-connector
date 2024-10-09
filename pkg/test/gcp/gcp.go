@@ -64,6 +64,7 @@ var (
 	TestBillingAccountIDForBillingResources = EnvVar{Key: "BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES"}
 	TestAttachedClusterName                 = EnvVar{Key: "TEST_ATTACHED_CLUSTER_NAME"}
 	TestKCCAttachedClusterProject           = EnvVar{Key: "KCC_ATTACHED_CLUSTER_TEST_PROJECT"}
+	TestKCCAttachedClusterPlatformVersion   = EnvVar{Key: "ATTACHED_CLUSTER_PLATFORM_VERSION"}
 	FirestoreTestProject                    = EnvVar{Key: "FIRESTORE_TEST_PROJECT"}
 	IdentityPlatformTestProject             = EnvVar{Key: "IDENTITY_PLATFORM_TEST_PROJECT"}
 	RecaptchaEnterpriseTestProject          = EnvVar{Key: "RECAPTCHA_ENTERPRISE_TEST_PROJECT"}

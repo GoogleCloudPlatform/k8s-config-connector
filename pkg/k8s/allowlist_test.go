@@ -16,7 +16,6 @@ package k8s_test
 
 import (
 	"fmt"
-	"slices"
 	"strings"
 	"testing"
 
@@ -27,11 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 )
-
-// TODO(yuwenma): This is a temp fix. We should use a more generic approach.
-var SkipServiceLoaderList = []string{
-	"CloudBuildWorkerPool",
-}
 
 func TestSupportsStateIntoSpecMerge(t *testing.T) {
 	tests := []struct {
@@ -91,9 +85,7 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 				Version: version.Name,
 				Kind:    crd.Spec.Names.Kind,
 			}
-			if slices.Contains(SkipServiceLoaderList, gvk.Kind) {
-				continue
-			}
+
 			t.Run(fmt.Sprintf("%s/%s/%s", gvk.Group, gvk.Version, gvk.Kind), func(t *testing.T) {
 				openAPISchema := version.Schema.OpenAPIV3Schema
 				prop := findOpenAPIProperty(openAPISchema, "status", "observedState")
@@ -129,11 +121,16 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 					t.Errorf("'status.observedState' doesn't exist, but it should")
 				}
 
-				// If both shouldHaveObservedState and mayHaveObservedState are
-				// false, the CRD is not supposed to have 'status.observedState'.
-				if !(shouldHaveObservedState || mayHaveObservedState) && hasObservedState {
-					t.Errorf("'status.observedState' exists, but it shouldn't")
-				}
+				// For a TF-based CRD, if both shouldHaveObservedState and
+				// mayHaveObservedState are false, the CRD is not supposed to
+				// have 'status.observedState'.
+				//     if !(shouldHaveObservedState || mayHaveObservedState) && hasObservedState {
+				//         t.Errorf("'status.observedState' exists, but it shouldn't")
+				//     }
+				// But because some TF-based CRD starts migrating to direct
+				// controllers, and it's hard to tell whether a TF-based CRD
+				// also supports direct features, we decided to skip this check
+				// to unblock the migration.
 
 				// If mayHaveObservedState is true, it means 'status' will only
 				// have subfields 'conditions' and 'observedGeneration', and
@@ -145,6 +142,11 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 					}
 					requiredFieldsMap := map[string]bool{"observedGeneration": true, "conditions": true}
 					optionalFieldsMap := map[string]bool{"observedState": true}
+
+					// for direct resources, we will use the "externalRef" prop under the "status"
+					// to track the KCC full resource ID
+					optionalFieldsMap["externalRef"] = true
+
 					for k, _ := range statusProp.Properties {
 						foundInMaps := false
 						if _, ok := requiredFieldsMap[k]; ok {
@@ -156,7 +158,7 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 							delete(optionalFieldsMap, k)
 						}
 						if !foundInMaps {
-							t.Errorf("CRD has non-boilerplate field %v under 'status'", k)
+							t.Errorf("CRD has non-boilerplate field '%v' under 'status'", k)
 						}
 					}
 

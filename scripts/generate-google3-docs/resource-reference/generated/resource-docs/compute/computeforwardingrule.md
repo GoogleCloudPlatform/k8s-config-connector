@@ -131,6 +131,7 @@ subnetworkRef:
   name: string
   namespace: string
 target:
+  googleAPIsBundle: string
   serviceAttachmentRef:
     external: string
     name: string
@@ -227,8 +228,7 @@ internal load balancer.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A ComputeBackendService to receive the matched traffic. This is
-used only for internal load balancing.{% endverbatim %}</p>
+            <p>{% verbatim %}A ComputeBackendService to receive the matched traffic. This is used only for internal load balancing.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -238,7 +238,7 @@ used only for internal load balancing.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@ used only for internal load balancing.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +258,7 @@ used only for internal load balancing.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -268,8 +268,7 @@ used only for internal load balancing.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. An optional description of this resource. Provide this property when
-you create the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. An optional description of this resource. Provide this property when you create the resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -317,7 +316,7 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `address` field of a `ComputeAddress` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -327,7 +326,7 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeAddress` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -337,7 +336,7 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeAddress` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -418,7 +417,7 @@ Must set to empty for private service connect forwarding rule. For more informat
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -491,8 +490,7 @@ This list must not be empty and can have at the most 64 entries.{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Name of the metadata label. The length must be between
-1 and 1024 characters, inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Name of the metadata label. The length must be between 1 and 1024 characters, inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -502,8 +500,7 @@ This list must not be empty and can have at the most 64 entries.{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The value that the label must match. The value has a maximum
-length of 1024 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The value that the label must match. The value has a maximum length of 1024 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -529,10 +526,7 @@ provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"].{% endverbatim %}
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}This field is not used for external load balancing. For internal
-load balancing, this field identifies the network that the load
-balanced IP should belong to for this forwarding rule. If this
-field is not specified, the default network will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}This field is not used for external load balancing. For internal load balancing, this field identifies the network that the load balanced IP should belong to for this forwarding rule. If this field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -542,7 +536,7 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -552,7 +546,7 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -562,7 +556,7 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -612,7 +606,6 @@ Some products have restrictions on what ports can be used. See
 [port specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications)
 for details.
 
-
 Only packets addressed to ports in the specified range will be forwarded to
 the backends configured with this forwarding rule.
 
@@ -639,7 +632,6 @@ pair, and cannot have overlapping 'portRange's.{% endverbatim %}</p>
 * If 'IPProtocol' is one of TCP, UDP, or SCTP.
 * By internal TCP/UDP load balancers, backend service-based network load
 balancers, internal protocol forwarding and when protocol is not L3_DEFAULT.
-
 
 You can specify a list of up to five ports by number, separated by commas.
 The ports can be contiguous or discontiguous. Only packets addressed to
@@ -783,7 +775,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -793,7 +785,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -803,7 +795,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -813,10 +805,17 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The target resource to receive the matched traffic. The forwarded
-traffic must be of a type appropriate to the target object. For
-INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
-are valid.{% endverbatim %}</p>
+            <p>{% verbatim %}The target resource to receive the matched traffic. The forwarded traffic must be of a type appropriate to the target object. For INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets are valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.googleAPIsBundle</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -836,7 +835,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeServiceAttachment` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -846,7 +845,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeServiceAttachment` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -856,7 +855,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeServiceAttachment` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -876,7 +875,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeTargetGRPCProxy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetGrpcProxy selflink in the form "projects/{{project}}/global/targetGrpcProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -886,7 +885,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeTargetGrpcProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -896,7 +895,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeTargetGrpcProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -916,7 +915,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeTargetHTTPProxy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetHTTPProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -926,7 +925,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeTargetHTTPProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -936,7 +935,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeTargetHTTPProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -956,7 +955,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeTargetHTTPSProxy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetHTTPSProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -966,7 +965,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeTargetHTTPSProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -976,7 +975,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeTargetHTTPSProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -996,7 +995,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeTargetSSLProxy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetSSLProxy selflink in the form "projects/{{project}}/global/targetSslProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1006,7 +1005,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeTargetSSLProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1016,7 +1015,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeTargetSSLProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1036,7 +1035,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeTargetTCPProxy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetTCPProxy selflink in the form "projects/{{project}}/global/targetTcpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1046,7 +1045,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeTargetTCPProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1056,7 +1055,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeTargetTCPProxy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1076,7 +1075,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeTargetVPNGateway` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeTargetVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1086,7 +1085,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeTargetVPNGateway` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1096,7 +1095,7 @@ are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeTargetVPNGateway` resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1117,6 +1116,7 @@ conditions:
   status: string
   type: string
 creationTimestamp: string
+externalRef: string
 labelFingerprint: string
 observedGeneration: integer
 pscConnectionId: string
@@ -1143,7 +1143,7 @@ serviceName: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1196,11 +1196,17 @@ serviceName: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique Config Connector specifier for the resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The fingerprint used for optimistic locking of this resource.  Used
-internally during updates.{% endverbatim %}</p>
+            <p>{% verbatim %}The fingerprint used for optimistic locking of this resource.  Used internally during updates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

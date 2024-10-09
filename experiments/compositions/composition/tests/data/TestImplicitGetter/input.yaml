@@ -1,0 +1,186 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+apiVersion: composition.google.com/v1alpha1
+kind: Composition
+metadata:
+ name: team2-page
+ namespace: default
+spec:
+ inputAPIGroup: team2pages.idp.mycompany.com  # Facade API
+ readiness:
+ - group: apps
+   version: v1
+   kind: Deployment
+   readyIf: "status.readyReplicas==status.replicas"
+ expanders:
+ - type: jinja2  # pluggable expander
+   name: server  # stage
+   template: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        # Use the team2pages Facade's name
+        name: team2deployment
+        # The namespace is set to the facade's namespace
+        namespace: default
+        labels:
+          # use facade's name in the label
+          app: nginx-{{ team2pages.metadata.name }}
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: nginx-{{ team2pages.metadata.name }}
+        template:
+          metadata:
+            labels:
+              # use facade name in the pod's label
+              app: nginx-{{ team2pages.metadata.name }}
+          spec:
+            containers:
+              - name: server
+                image: nginx:1.16.0
+                ports:
+                  - name: http
+                    containerPort: 80
+                    protocol: TCP
+                volumeMounts:
+                  - name: index
+                    mountPath: /usr/share/nginx/html/
+            volumes:
+              - name: index
+                configMap:
+                  # use the configmap created by this composition
+                  name: team2-{{ team2pages.metadata.name }}-page
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        # include the facade name in the service name
+        name: team2service
+        namespace: default
+        labels:
+          app: nginx-{{ team2pages.metadata.name }}
+      spec:
+        ports:
+        - port: 80
+          protocol: TCP
+        selector:
+          # match the web-server pod
+          app: nginx-{{ team2pages.metadata.name }}
+      ---
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: team2-{{ team2pages.metadata.name }}-page
+        namespace: default
+      data:
+        index.html: |
+           <html>
+           <h1>{{ team2pages.metadata.name  }}</h1>
+           <table>
+             <tr>
+               <th>Name</th>
+               <th>Role</th>
+             </tr>
+           {% for member in team2pages.spec.members %}
+             <tr>
+               <td>{{ member.name }}</td>
+               <td>{{ member.role }}</td>
+             </tr>
+           {% endfor %}
+           </table>
+           </html>
+ - type: jinja2  # pluggable expander
+   name: configmap  # stage
+   template: |
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: team2config
+        namespace: default
+      data:
+        ports: "{% for port in values.service.team2service.spec.ports %}{{ port.port }}({{ port.protocol }}),{% endfor %}"
+        pods: "{{ values.deployment.team2deployment.status.readyReplicas }}"
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: team2pages.idp.mycompany.com
+spec:
+  group: idp.mycompany.com
+  names:
+    categories:
+    - facade
+    - facades
+    kind: Team2Page
+    listKind: Team2PageList
+    plural: team2pages
+    singular: team2page
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Team page creation
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            required:
+            - members
+            properties:
+              members:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - role
+                  - name
+                  properties:
+                    role:
+                      type: string
+                    name:
+                      type: string
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-team2
+---
+apiVersion: idp.mycompany.com/v1alpha1
+kind: Team2Page
+metadata:
+  name: landing
+  namespace: my-team2
+spec:
+  members:
+  - name: Jo
+    role: Eng Manager
+  - name: Jane
+    role: Lead
+  - name: Bob
+    role: Developer

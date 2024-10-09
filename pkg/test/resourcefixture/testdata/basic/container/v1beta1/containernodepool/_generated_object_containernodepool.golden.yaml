@@ -4,7 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -20,41 +20,13 @@ spec:
     minNodeCount: 1
   clusterRef:
     name: cluster-sample-${uniqueId}
-  initialNodeCount: 1
   location: us-central1-a
-  management:
-    autoRepair: true
-    autoUpgrade: true
-  maxPodsPerNode: 110
   nodeConfig:
-    diskSizeGb: 100
-    diskType: pd-balanced
-    imageType: COS_CONTAINERD
-    loggingVariant: DEFAULT
-    machineType: e2-standard-4
-    metadata:
-      disable-legacy-endpoints: "true"
-    oauthScopes:
-    - https://www.googleapis.com/auth/devstorage.read_only
-    - https://www.googleapis.com/auth/logging.write
-    - https://www.googleapis.com/auth/monitoring
-    - https://www.googleapis.com/auth/service.management.readonly
-    - https://www.googleapis.com/auth/servicecontrol
-    - https://www.googleapis.com/auth/trace.append
-    serviceAccountRef:
-      external: default
-    shieldedInstanceConfig:
-      enableIntegrityMonitoring: true
     taint:
     - effect: NO_SCHEDULE
       key: newKey
       value: newValue
-  nodeCount: 0
   resourceID: nodepool-sample-${uniqueId}
-  upgradeSettings:
-    maxSurge: 1
-    strategy: SURGE
-  version: ""
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

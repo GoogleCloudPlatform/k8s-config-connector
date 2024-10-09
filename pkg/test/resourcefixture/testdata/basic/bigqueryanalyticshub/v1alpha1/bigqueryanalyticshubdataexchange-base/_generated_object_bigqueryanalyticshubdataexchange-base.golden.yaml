@@ -1,0 +1,29 @@
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryAnalyticsHubDataExchange
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: bigqueryanalyticshubdataexchange${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: my_data_exchange
+  location: US
+  projectRef:
+    external: ${projectId}
+  resourceID: bigqueryanalyticshubdataexchange${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: //bigqueryanalyticshub.googleapis.com/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+  observedGeneration: 1
+  observedState: {}

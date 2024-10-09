@@ -128,6 +128,7 @@ location: string
 maxTimeTravelHours: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -168,7 +169,7 @@ storageBillingModel: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Grants all resources of particular types in a particular dataset read access to the current dataset.{% endverbatim %}</p>
+            <p>{% verbatim %}[Pick one] A grant authorizing all resources of a particular type in a particular dataset access to this dataset. Only views are supported for now. The role field is not required when this field is set. If that dataset is deleted and re-created, its access needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -188,7 +189,7 @@ storageBillingModel: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the dataset containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -198,7 +199,7 @@ storageBillingModel: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the project containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The ID of the project containing this dataset.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -208,8 +209,7 @@ storageBillingModel: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Which resources in the dataset this entry applies to. Currently, only views are supported,
-but additional target types may be added in the future. Possible values: VIEWS.{% endverbatim %}</p>
+            <p>{% verbatim %}Which resources in the dataset this entry applies to. Currently, only views are supported, but additional target types may be added in the future.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -229,8 +229,7 @@ but additional target types may be added in the future. Possible values: VIEWS.{
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A domain to grant access to. Any users signed in with the
-domain specified will be granted the specified access.{% endverbatim %}</p>
+            <p>{% verbatim %}[Pick one] A domain to grant access to. Any users signed in with the domain specified will be granted the specified access. Example: "example.com". Maps to IAM policy member "domain:DOMAIN".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -240,7 +239,7 @@ domain specified will be granted the specified access.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An email address of a Google Group to grant access to.{% endverbatim %}</p>
+            <p>{% verbatim %}[Pick one] An email address of a Google Group to grant access to. Maps to IAM policy member "group:GROUP".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -250,8 +249,7 @@ domain specified will be granted the specified access.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Some other type of member that appears in the IAM Policy but isn't a user,
-group, domain, or special group. For example: 'allUsers'.{% endverbatim %}</p>
+            <p>{% verbatim %}[Pick one] Some other type of member that appears in the IAM Policy but isn't a user, group, domain, or special group.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -261,11 +259,17 @@ group, domain, or special group. For example: 'allUsers'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Describes the rights granted to the user specified by the other
-member of the access object. Basic, predefined, and custom roles
-are supported. Predefined roles that have equivalent basic roles
-are swapped by the API to their basic counterparts. See
-[official docs](https://cloud.google.com/bigquery/docs/access-control).{% endverbatim %}</p>
+            <p>{% verbatim %}An IAM role ID that should be granted to the user, group,
+ or domain specified in this access entry.
+ The following legacy mappings will be applied:
+
+ * `OWNER`: `roles/bigquery.dataOwner`
+ * `WRITER`: `roles/bigquery.dataEditor`
+ * `READER`: `roles/bigquery.dataViewer`
+
+ This field will accept any of the above formats, but will return only
+ the legacy format. For example, if you set this field to
+ "roles/bigquery.dataOwner", it will be returned back as "OWNER".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -275,11 +279,7 @@ are swapped by the API to their basic counterparts. See
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A routine from a different dataset to grant access to. Queries
-executed against that routine will have read access to tables in
-this dataset. The role field is not required when this field is
-set. If that routine is updated by any user, access to the routine
-needs to be granted again via an update operation.{% endverbatim %}</p>
+            <p>{% verbatim %}[Pick one] A routine from a different dataset to grant access to. Queries executed against that routine will have read access to views/tables/routines in this dataset. Only UDF is supported for now. The role field is not required when this field is set. If that routine is updated by any user, access to the routine needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -289,7 +289,7 @@ needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the dataset containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The ID of the dataset containing this routine.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -299,7 +299,7 @@ needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the project containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The ID of the project containing this routine.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -309,9 +309,7 @@ needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the routine. The ID must contain only letters (a-z,
-A-Z), numbers (0-9), or underscores (_). The maximum length
-is 256 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The ID of the routine. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 256 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -321,19 +319,14 @@ is 256 characters.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A special group to grant access to. Possible values include:
+            <p>{% verbatim %}[Pick one] A special group to grant access to. Possible values include:
 
+   * projectOwners: Owners of the enclosing project.
+   * projectReaders: Readers of the enclosing project.
+   * projectWriters: Writers of the enclosing project.
+   * allAuthenticatedUsers: All authenticated BigQuery users.
 
-* 'projectOwners': Owners of the enclosing project.
-
-
-* 'projectReaders': Readers of the enclosing project.
-
-
-* 'projectWriters': Writers of the enclosing project.
-
-
-* 'allAuthenticatedUsers': All authenticated BigQuery users.{% endverbatim %}</p>
+ Maps to similarly-named IAM members.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -343,8 +336,7 @@ is 256 characters.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An email address of a user to grant access to. For example:
-fred@example.com.{% endverbatim %}</p>
+            <p>{% verbatim %}[Pick one] An email address of a user to grant access to. For example: fred@example.com. Maps to IAM policy member "user:EMAIL" or "serviceAccount:EMAIL".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -354,11 +346,7 @@ fred@example.com.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A view from a different dataset to grant access to. Queries
-executed against that view will have read access to tables in
-this dataset. The role field is not required when this field is
-set. If that view is updated by any user, access to the view
-needs to be granted again via an update operation.{% endverbatim %}</p>
+            <p>{% verbatim %}[Pick one] A view from a different dataset to grant access to. Queries executed against that view will have read access to views/tables/routines in this dataset. The role field is not required when this field is set. If that view is updated by any user, access to the view needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -368,7 +356,7 @@ needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the dataset containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The ID of the dataset containing this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -378,7 +366,7 @@ needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the project containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The ID of the project containing this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -388,9 +376,7 @@ needs to be granted again via an update operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the table. The ID must contain only letters (a-z,
-A-Z), numbers (0-9), or underscores (_). The maximum length
-is 1,024 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The ID of the table. The ID can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table ID with a partition decorator, such as `sample_table$20190123`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -400,16 +386,16 @@ is 1,024 characters.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Defines the default collation specification of future tables created
-in the dataset. If a table is created in this dataset without table-level
-default collation, then the table inherits the dataset default collation,
-which is applied to the string fields that do not have explicit collation
-specified. A change to this field affects only tables created afterwards,
-and does not alter the existing tables.
+            <p>{% verbatim %}Optional. Defines the default collation specification of future tables
+ created in the dataset. If a table is created in this dataset without
+ table-level default collation, then the table inherits the dataset default
+ collation, which is applied to the string fields that do not have explicit
+ collation specified. A change to this field affects only tables created
+ afterwards, and does not alter the existing tables.
+ The following values are supported:
 
-The following values are supported:
-- 'und:ci': undetermined locale, case insensitive.
-- '': empty string. Default to case-sensitive behavior.{% endverbatim %}</p>
+ * 'und:ci': undetermined locale, case insensitive.
+ * '': empty string. Default to case-sensitive behavior.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,21 +405,17 @@ The following values are supported:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The default encryption key for all tables in the dataset. Once this property is set,
-all newly-created partitioned tables in the dataset will have encryption key set to
-this value, unless table creation request (or query) overrides the key.{% endverbatim %}</p>
+            <p>{% verbatim %}The default encryption key for all tables in the dataset. After this property is set, the encryption key of all newly-created tables in the dataset is set to this value unless the table creation request or query explicitly overrides the key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>defaultEncryptionConfiguration.kmsKeyRef</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Describes the Cloud KMS encryption key that will be used to protect destination
-BigQuery table. The BigQuery Service Account associated with your project requires
-access to this encryption key.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -443,7 +425,7 @@ access to this encryption key.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -453,7 +435,7 @@ access to this encryption key.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -463,7 +445,7 @@ access to this encryption key.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -473,21 +455,17 @@ access to this encryption key.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The default partition expiration for all partitioned tables in
-the dataset, in milliseconds.
+            <p>{% verbatim %}This default partition expiration, expressed in milliseconds.
 
+ When new time-partitioned tables are created in a dataset where this
+ property is set, the table will inherit this value, propagated as the
+ `TimePartitioning.expirationMs` property on the new table.  If you set
+ `TimePartitioning.expirationMs` explicitly when creating a table,
+ the `defaultPartitionExpirationMs` of the containing dataset is ignored.
 
-Once this property is set, all newly-created partitioned tables in
-the dataset will have an 'expirationMs' property in the 'timePartitioning'
-settings set to this value, and changing the value will only
-affect new tables, not existing ones. The storage in a partition will
-have an expiration time of its partition time plus this value.
-Setting this property overrides the use of 'defaultTableExpirationMs'
-for partitioned tables: only one of 'defaultTableExpirationMs' and
-'defaultPartitionExpirationMs' will be used for any new partitioned
-table. If you provide an explicit 'timePartitioning.expirationMs' when
-creating or updating a partitioned table, that value takes precedence
-over the default partition expiration time indicated by this property.{% endverbatim %}</p>
+ When creating a partitioned table, if `defaultPartitionExpirationMs`
+ is set, the `defaultTableExpirationMs` value is ignored and the table
+ will not be inherit a table expiration deadline.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -497,19 +475,7 @@ over the default partition expiration time indicated by this property.{% endverb
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The default lifetime of all tables in the dataset, in milliseconds.
-The minimum value is 3600000 milliseconds (one hour).
-
-
-Once this property is set, all newly-created tables in the dataset
-will have an 'expirationTime' property set to the creation time plus
-the value in this property, and changing the value will only affect
-new tables, not existing ones. When the 'expirationTime' for a given
-table is reached, that table will be deleted automatically.
-If a table's 'expirationTime' is modified or removed before the
-table expires, or if you provide an explicit 'expirationTime' when
-creating a table, that value takes precedence over the default
-expiration time indicated by this property.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The default lifetime of all tables in the dataset, in milliseconds. The minimum lifetime value is 3600000 milliseconds (one hour). To clear an existing default expiration with a PATCH request, set to 0. Once this property is set, all newly-created tables in the dataset will have an expirationTime property set to the creation time plus the value in this property, and changing the value will only affect new tables, not existing ones. When the expirationTime for a given table is reached, that table will be deleted automatically. If a table's expirationTime is modified or removed before the table expires, or if you provide an explicit expirationTime when creating a table, that value takes precedence over the default expiration time indicated by this property.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -519,7 +485,7 @@ expiration time indicated by this property.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A user-friendly description of the dataset.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A user-friendly description of the dataset.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -529,7 +495,7 @@ expiration time indicated by this property.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A descriptive name for the dataset.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A descriptive name for the dataset.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -539,9 +505,7 @@ expiration time indicated by this property.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}TRUE if the dataset and its table names are case-insensitive, otherwise FALSE.
-By default, this is FALSE, which means the dataset and its table names are
-case-sensitive. This field does not affect routine references.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. TRUE if the dataset and its table names are case-insensitive, otherwise FALSE. By default, this is FALSE, which means the dataset and its table names are case-sensitive. This field does not affect routine references.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -551,18 +515,7 @@ case-sensitive. This field does not affect routine references.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The geographic location where the dataset should reside.
-See [official docs](https://cloud.google.com/bigquery/docs/dataset-locations).
-
-
-There are two types of locations, regional or multi-regional. A regional
-location is a specific geographic place, such as Tokyo, and a multi-regional
-location is a large geographic area, such as the United States, that
-contains at least two geographic places.
-
-
-The default value is multi-regional location 'US'.
-Changing this forces a new resource to be created.{% endverbatim %}</p>
+            <p>{% verbatim %}The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -572,7 +525,7 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days). The default value is 168 hours if this is not set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -582,7 +535,7 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}The project that this resource belongs to. optional.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -592,7 +545,17 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -602,7 +565,7 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -612,7 +575,7 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -622,7 +585,7 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The datasetId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The BigQueryDataset name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -632,11 +595,7 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the storage billing model for the dataset.
-Set this flag value to LOGICAL to use logical bytes for storage billing,
-or to PHYSICAL to use physical bytes instead.
-
-LOGICAL is the default if this flag isn't specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Updates storage_billing_model for the dataset.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -673,7 +632,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -722,23 +681,21 @@ selfLink: string
         <td><code>creationTime</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The time when this dataset was created, in milliseconds since the
-epoch.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time when this dataset was created, in milliseconds since the epoch.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A hash of the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. A hash of the resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>lastModifiedTime</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The date when this dataset or any of its tables was last modified, in
-milliseconds since the epoch.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The date when this dataset was last modified, in milliseconds since the epoch.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -752,7 +709,7 @@ milliseconds since the epoch.{% endverbatim %}</p>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. A URL that can be used to access the resource again. You can use this URL in Get or Update requests to the resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

@@ -580,8 +580,8 @@ sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd h1:EDPBXCAspyGV4jQlpZSudPeMm
 sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd/go.mod h1:B8JuhiUyNFVKdsE8h686QcCxMaH6HrOAZj4vswFpcB0=
 sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1.0.20240614185435-a248ed1e894c h1:oDDOYsfrwJlLZ0pyzZiG7L/rF2JuQvvut+vFOYYZKQQ=
 sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1.0.20240614185435-a248ed1e894c/go.mod h1:56THnwsHGyrijk2GYKsTzcagxDoevccrdl+gBJWNocs=
-sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240813172011-a8a1382c63c4 h1:1q3oCBqWse+jT0xqxsRhmka3pPJCrUrxVzO8xzPrGCA=
-sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240813172011-a8a1382c63c4/go.mod h1:HReseUdDPJYAh1jxBreYJsh/mJ9l7AtvoSB30Jdlfmc=
+sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240830014331-1a63d5a3bb9d h1:9Re+DU/Qzv7mIz6qDFmVFvYqfFSAuc6ssi1CH/2yQX8=
+sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240830014331-1a63d5a3bb9d/go.mod h1:HReseUdDPJYAh1jxBreYJsh/mJ9l7AtvoSB30Jdlfmc=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b h1:VcgyLj8SawHulvC24SRgI37mnhMmR3hW+ZVqZGBmkbc=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b/go.mod h1:smCBkOX4Z3K9+MUGAscbschHAYgbuRZ+Pri49+x2zTc=
 sigs.k8s.io/kustomize/kstatus v0.0.2-0.20200509233124-065f70705d4d h1:k+m3LgwVsvSDvcUWoaG2yUGcyN/HKR6Dq2lb0FYgbq8=

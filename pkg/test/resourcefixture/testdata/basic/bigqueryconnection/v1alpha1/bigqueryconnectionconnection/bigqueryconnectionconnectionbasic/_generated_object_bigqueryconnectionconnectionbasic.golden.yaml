@@ -3,23 +3,19 @@ kind: BigQueryConnectionConnection
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/observed-secret-versions: (removed)
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: bigqueryconnectionconnection-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  cloudResource:
-    serviceAccountId: ""
+  cloudResource: {}
   location: us-central1
   projectRef:
     external: ${projectId}
-  resourceID: bigqueryconnectionconnection-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -27,8 +23,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}
-  observedGeneration: 2
+  externalRef: projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be
+  observedGeneration: 1
   observedState:
     cloudResource:
-      serviceAccountId: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com
+      serviceAccountID: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com

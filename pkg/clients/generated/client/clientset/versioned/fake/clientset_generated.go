@@ -103,8 +103,8 @@ import (
 	fakedatacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1/fake"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
 	fakedataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1/fake"
-	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1"
-	fakedataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1/fake"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
+	fakedataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1/fake"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	fakedatafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1/fake"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
@@ -147,6 +147,8 @@ import (
 	fakefirebasehostingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasehosting/v1alpha1/fake"
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1"
 	fakefirebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1/fake"
+	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1"
+	fakefirestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1/fake"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
 	fakefirestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1/fake"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
@@ -201,6 +203,8 @@ import (
 	fakeosloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1/fake"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
 	fakeprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1/fake"
+	privilegedaccessmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1alpha1"
+	fakeprivilegedaccessmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1alpha1/fake"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1"
 	fakepubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1/fake"
 	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1"
@@ -219,8 +223,6 @@ import (
 	fakerunv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1/fake"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	fakesecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1/fake"
-	securesourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1"
-	fakesecuresourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1/fake"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
 	fakesecuritycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1/fake"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
@@ -518,9 +520,9 @@ func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return &fakedataflowv1beta1.FakeDataflowV1beta1{Fake: &c.Fake}
 }
 
-// DataformV1alpha1 retrieves the DataformV1alpha1Client
-func (c *Clientset) DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface {
-	return &fakedataformv1alpha1.FakeDataformV1alpha1{Fake: &c.Fake}
+// DataformV1beta1 retrieves the DataformV1beta1Client
+func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
+	return &fakedataformv1beta1.FakeDataformV1beta1{Fake: &c.Fake}
 }
 
 // DatafusionV1beta1 retrieves the DatafusionV1beta1Client
@@ -626,6 +628,11 @@ func (c *Clientset) FirebasehostingV1alpha1() firebasehostingv1alpha1.Firebaseho
 // FirebasestorageV1alpha1 retrieves the FirebasestorageV1alpha1Client
 func (c *Clientset) FirebasestorageV1alpha1() firebasestoragev1alpha1.FirebasestorageV1alpha1Interface {
 	return &fakefirebasestoragev1alpha1.FakeFirebasestorageV1alpha1{Fake: &c.Fake}
+}
+
+// FirestoreV1alpha1 retrieves the FirestoreV1alpha1Client
+func (c *Clientset) FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Interface {
+	return &fakefirestorev1alpha1.FakeFirestoreV1alpha1{Fake: &c.Fake}
 }
 
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client
@@ -763,6 +770,11 @@ func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interfac
 	return &fakeprivatecav1beta1.FakePrivatecaV1beta1{Fake: &c.Fake}
 }
 
+// PrivilegedaccessmanagerV1alpha1 retrieves the PrivilegedaccessmanagerV1alpha1Client
+func (c *Clientset) PrivilegedaccessmanagerV1alpha1() privilegedaccessmanagerv1alpha1.PrivilegedaccessmanagerV1alpha1Interface {
+	return &fakeprivilegedaccessmanagerv1alpha1.FakePrivilegedaccessmanagerV1alpha1{Fake: &c.Fake}
+}
+
 // PubsubV1beta1 retrieves the PubsubV1beta1Client
 func (c *Clientset) PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface {
 	return &fakepubsubv1beta1.FakePubsubV1beta1{Fake: &c.Fake}
@@ -806,11 +818,6 @@ func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 // SecretmanagerV1beta1 retrieves the SecretmanagerV1beta1Client
 func (c *Clientset) SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface {
 	return &fakesecretmanagerv1beta1.FakeSecretmanagerV1beta1{Fake: &c.Fake}
-}
-
-// SecuresourcemanagerV1alpha1 retrieves the SecuresourcemanagerV1alpha1Client
-func (c *Clientset) SecuresourcemanagerV1alpha1() securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Interface {
-	return &fakesecuresourcemanagerv1alpha1.FakeSecuresourcemanagerV1alpha1{Fake: &c.Fake}
 }
 
 // SecuritycenterV1alpha1 retrieves the SecuritycenterV1alpha1Client

@@ -28,6 +28,7 @@ spec:
   resourceID: alloydbinstance${uniqueId}
   networkConfig:
     enablePublicIp: false
+    enableOutboundPublicIp: false
     authorizedExternalNetworks: []
   queryInsightsConfig:
     queryPlansPerMinute: 5

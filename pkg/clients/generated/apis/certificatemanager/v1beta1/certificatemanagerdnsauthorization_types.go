@@ -40,10 +40,12 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
-	single domain and its wildcard, e.g. authorization for "example.com" can
-	be used to issue certificates for "example.com" and "*.example.com". */
+	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a single domain and its wildcard, e.g. authorization for "example.com" can be used to issue certificates for "example.com" and "*.example.com". */
 	Domain string `json:"domain"`
+
+	/* Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -54,16 +56,15 @@ type CertificateManagerDNSAuthorizationSpec struct {
 }
 
 type DnsauthorizationDnsResourceRecordStatus struct {
-	/* Data of the DNS Resource Record. */
+	/* Output only. Data of the DNS Resource Record. */
 	// +optional
 	Data *string `json:"data,omitempty"`
 
-	/* Fully qualified name of the DNS Resource Record.
-	E.g. '_acme-challenge.example.com'. */
+	/* Output only. Fully qualified name of the DNS Resource Record. e.g. `_acme-challenge.example.com` */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* Type of the DNS Resource Record. */
+	/* Output only. Type of the DNS Resource Record. Currently always set to "CNAME". */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
@@ -72,11 +73,13 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerDNSAuthorization's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The structure describing the DNS Resource Record that needs to be added
-	to DNS configuration for the authorization to be usable by
-	certificate. */
+	/* The structure describing the DNS Resource Record that needs to be added to DNS configuration for the authorization to be usable by certificate. */
 	// +optional
 	DnsResourceRecord []DnsauthorizationDnsResourceRecordStatus `json:"dnsResourceRecord,omitempty"`
+
+	/* A unique specifier for the CertificateManagerDNSAuthorization resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
@@ -87,7 +90,7 @@ type CertificateManagerDNSAuthorizationStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcertificatemanagerdnsauthorization;gcpcertificatemanagerdnsauthorizations
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

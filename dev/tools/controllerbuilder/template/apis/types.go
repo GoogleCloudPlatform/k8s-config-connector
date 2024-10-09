@@ -4,7 +4,7 @@ type APIArgs struct {
 	Group           string
 	Version         string
 	Kind            string
-	GcpResource     string
+	ProtoResource   string
 	PackageProtoTag string
 	KindProtoTag    string
 }
@@ -43,7 +43,6 @@ type {{ .Kind }}Spec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
-	// + optional
 	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
 }
 
@@ -54,22 +53,16 @@ type {{ .Kind }}Status struct {
 	Conditions []v1alpha1.Condition ` + "`" + `json:"conditions,omitempty"` + "`" + ` 
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	// +optional
 	ObservedGeneration *int64 ` + "`" + `json:"observedGeneration,omitempty"` + "`" + `
 
 	// A unique specifier for the {{ .Kind }} resource in GCP.
-	// +optional
 	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	// +optional
 	ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
 }
 
-// {{ .Kind }}Spec defines the desired state of {{ .Kind }}
-{{- if .KindProtoTag }}
-// +kcc:proto={{ .KindProtoTag }}
-{{- end }}
+// {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 type {{ .Kind }}ObservedState struct {
 }
 

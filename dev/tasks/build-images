@@ -23,19 +23,34 @@ if [[ -z "${IMAGE_PREFIX:-}" ]]; then
   IMAGE_PREFIX=""
 fi
 
-# Force the image names, to avoid depending on the current gcloud project
-export SHORT_SHA=$(git rev-parse --short=7 HEAD)
-export BUILDER_IMG=${IMAGE_PREFIX}builder:${SHORT_SHA}
-export CONTROLLER_IMG=${IMAGE_PREFIX}controller:${SHORT_SHA}
-export RECORDER_IMG=${IMAGE_PREFIX}recorder:${SHORT_SHA}
-export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${SHORT_SHA}
-export DELETION_DEFENDER_IMG=${IMAGE_PREFIX}deletiondefender:${SHORT_SHA}
-export UNMANAGED_DETECTOR_IMG=${IMAGE_PREFIX}unmanageddetector:${SHORT_SHA}
+if [[ -z "${IMAGE_TAG:-}" ]]; then
+  EXACT_TAG=$(git describe --tags --exact-match 2>/dev/null || true)
+  if [[ -n "${EXACT_TAG}" ]]; then
+    IMAGE_TAG="${EXACT_TAG}"
+    # If there is a github/ prefix (as there is in our internal mirror), remove it
+    IMAGE_TAG=${IMAGE_TAG#github/}
+  else
+    IMAGE_TAG=$(git rev-parse --short=7 HEAD)
+  fi
+fi
+export IMAGE_TAG
+echo "Building images with tag: ${IMAGE_TAG}"
 
-export OPERATOR_IMG=${IMAGE_PREFIX}operator:${SHORT_SHA}
+# Force the image names, to avoid depending on the current gcloud project
+export BUILDER_IMG=${IMAGE_PREFIX}builder:${IMAGE_TAG}
+export CONTROLLER_IMG=${IMAGE_PREFIX}controller:${IMAGE_TAG}
+export RECORDER_IMG=${IMAGE_PREFIX}recorder:${IMAGE_TAG}
+export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${IMAGE_TAG}
+export DELETION_DEFENDER_IMG=${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}
+export UNMANAGED_DETECTOR_IMG=${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}
+
+export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 
 cd ${REPO_ROOT}
 make docker-build
 
 cd ${REPO_ROOT}/operator
 make docker-build
+
+# Remove images that are not artifacts we would want to promote / keep
+docker image rm ${BUILDER_IMG}

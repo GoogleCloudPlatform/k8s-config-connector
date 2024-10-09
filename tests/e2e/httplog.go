@@ -76,6 +76,12 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		case "JOB_STATE_PENDING", "JOB_STATE_QUEUED":
 			return false
 		}
+		// Also handle when we're encoding enums as integers
+		currentStateEnum, _, _ := unstructured.NestedInt64(responseBody, "currentState")
+		switch currentStateEnum {
+		case 9 /* JOB_STATE_PENDING */, 11 /* JOB_STATE_QUEUED */ :
+			return false
+		}
 		return true
 	})
 
@@ -129,6 +135,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".monitoredProjects[].createTime", "2024-04-01T12:34:56.123456Z")
 
 	addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")

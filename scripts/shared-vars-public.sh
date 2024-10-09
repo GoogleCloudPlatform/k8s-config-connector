@@ -42,6 +42,7 @@ SUPPORTED_SERVICES=(
   artifactregistry.googleapis.com
   bigquery.googleapis.com
   bigqueryconnection.googleapis.com
+  bigquerydatatransfer.googleapis.com
   bigtableadmin.googleapis.com
   billingbudgets.googleapis.com
   binaryauthorization.googleapis.com
@@ -68,6 +69,7 @@ SUPPORTED_SERVICES=(
   edgecontainer.googleapis.com
   eventarc.googleapis.com
   file.googleapis.com
+  firestore.googleapis.com
   gkeconnect.googleapis.com
   gkehub.googleapis.com
   gkemulticloud.googleapis.com
@@ -85,6 +87,7 @@ SUPPORTED_SERVICES=(
   osconfig.googleapis.com
   opsconfigmonitoring.googleapis.com
   privateca.googleapis.com
+  privilegedaccessmanager.googleapis.com
   pubsub.googleapis.com
   pubsublite.googleapis.com
   recaptchaenterprise.googleapis.com
@@ -100,6 +103,7 @@ SUPPORTED_SERVICES=(
   sqladmin.googleapis.com
   storagetransfer.googleapis.com
   vpcaccess.googleapis.com
+  workstations.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new

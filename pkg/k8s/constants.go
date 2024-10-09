@@ -80,7 +80,7 @@ const (
 	// State into spec annotation values
 	StateMergeIntoSpec               = "merge"
 	StateAbsentInSpec                = "absent"
-	StateIntoSpecDefaultValueV1Beta1 = StateMergeIntoSpec
+	StateIntoSpecDefaultValueV1Beta1 = StateAbsentInSpec
 
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"
@@ -129,6 +129,7 @@ var (
 	KCCVersionLabel      = FormatAnnotation("version")
 	ScopedNamespaceLabel = FormatAnnotation("scoped-namespace")
 	DCL2CRDLabel         = FormatAnnotation("dcl2crd")
+	TF2CRDLabel          = FormatAnnotation("tf2crd")
 	KCCStabilityLabel    = FormatAnnotation("stability-level")
 
 	MutableButUnreadableFieldsAnnotation = FormatAnnotation("mutable-but-unreadable-fields")

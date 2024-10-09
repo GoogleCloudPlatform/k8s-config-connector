@@ -246,53 +246,34 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	loggerCR := logger
 	stagesApplied := []string{}
 	values := map[string]interface{}{}
-	waitRequested := false
+	requeueAgain := false
+
+	// ---------- Evaluate and Apply expanders in order ---------------------
 	for index, expander := range compositionCR.Spec.Expanders {
 		planUpdated := false
+		reason := ""
 
 		// ------------------- EVALUATION SECTION -----------------------
-		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
-		uri, ev, reason, err := r.getExpanderConfig(ctx, expander.Version, expander.Type)
-		if err != nil {
-			logger.Error(err, "Error getting expander version", "expander", expander.Type,
-				"version", expander.Version, "reason", reason)
-			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
-			return ctrl.Result{}, err
-		}
-
-		logger.Info("Got valid expander uri", "uri", uri)
-
-		if expanderDebugLogsEnabled {
-			r.Recorder.Event(&inputcr, "Normal", fmt.Sprintf("Running expander stage %d: %s", index, expander.Name), expanderDebugLog(&inputcr))
-		}
-
-		if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
-			reason, err = r.runJob(ctx, logger, &inputcr, expander.Name, planNN.Name, uri, ev.Spec.ImageRegistry)
-		} else {
-			values, planUpdated, reason, err = r.evaluateAndSavePlan(ctx, logger, &inputcr, values, expander, planNN, ev, uri, expanderDebugLogsEnabled)
-			_, iswaitErr := err.(*EvaluateWaitError)
-			if iswaitErr {
-				newStatus.AppendWaitingCondition(expander.Name, err.Error(), reason)
-				// Subsume the error
-				waitRequested = true
-				// continue to apply phase
-				break
-			}
+		values, planUpdated, reason, err = r.evaluate(ctx, logger, &inputcr, planNN, expander, values, expanderDebugLogsEnabled)
+		_, iswaitErr := err.(*EvaluateWaitError)
+		if iswaitErr {
+			newStatus.AppendWaitingCondition(expander.Name, err.Error(), reason)
+			// Subsume the error
+			requeueAgain = true
+			break
 		}
 
 		if err != nil {
-			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
 			// Skip apply phase and return
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
 			return ctrl.Result{}, err
 		}
+
 		// Inject plan.Ready Condition with list of expanders
 		newStatus.ClearCondition(compositionv1alpha1.Ready)
 		message := fmt.Sprintf("Evaluated stage: %s", expander.Name)
 		newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionFalse, message, "EvaluationPending")
-		if expanderDebugLogsEnabled {
-			r.Recorder.Event(&inputcr, "Normal", fmt.Sprintf("Evaluated expander stage %d: %s", index, expander.Name), expanderDebugLog(&inputcr))
-		}
 
 		// ------------------- APPLIER SECTION -----------------------
 
@@ -390,9 +371,15 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			logger.Info("Applied successfully but some resources did not become healthy")
 			// Inject plan.Waiting Condition
 			newStatus.AppendWaitingCondition(expander.Name, "Not all resources are healthy", "WaitingForAppliedResources")
-			return ctrl.Result{}, fmt.Errorf("Some applied resources are not healthy")
+
+			// Request a re-reconcile
+			requeueAgain = true
+			break
 		}
 		logger.Info("Applied resources successfully.")
+
+		// Implicit getter: Make the applied objects available in the values passed to subsequent stages
+		values = applier.AddAppliedObjectsIntoValues(values)
 
 		stagesApplied = append(stagesApplied, expander.Name)
 		r.Recorder.Event(&inputcr, "Normal", "ResourcesReconciled", fmt.Sprintf("All applied resources were reconciled. name: %s", expander.Name))
@@ -418,10 +405,46 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	newStatus.Generation = plancr.GetGeneration()
 	newStatus.CompositionGeneration = compositionCR.GetGeneration()
 	newStatus.CompositionUID = compositionCR.GetUID()
-	if waitRequested {
+	if requeueAgain {
 		return ctrl.Result{RequeueAfter: time.Second * 5}, nil
 	}
 	return ctrl.Result{}, nil
+}
+
+func (r *ExpanderReconciler) evaluate(ctx context.Context, logger logr.Logger,
+	cr *unstructured.Unstructured, planNN types.NamespacedName,
+	expander compositionv1alpha1.Expander, values map[string]interface{},
+	expanderDebugLogsEnabled bool) (map[string]interface{}, bool, string, error) {
+
+	planUpdated := false
+
+	logger = logger.WithName(expander.Name).WithName("Expand")
+
+	uri, ev, reason, err := r.getExpanderConfig(ctx, expander.Version, expander.Type)
+	if err != nil {
+		logger.Error(err, "Error getting expander version", "expander", expander.Type,
+			"version", expander.Version, "reason", reason)
+		return values, planUpdated, reason, err
+	}
+
+	logger.Info("Got valid expander uri", "uri", uri)
+
+	if expanderDebugLogsEnabled {
+		r.Recorder.Event(cr, "Normal", fmt.Sprintf("Running expander stage: %s", expander.Name), expanderDebugLog(cr))
+	}
+
+	if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
+		reason, err = r.runJob(ctx, logger, cr, expander.Name, planNN.Name, uri, ev.Spec.ImageRegistry)
+	} else {
+		values, planUpdated, reason, err = r.evaluateAndSavePlan(ctx, logger, cr, values, expander, planNN, ev, uri, expanderDebugLogsEnabled)
+	}
+
+	if err == nil && expanderDebugLogsEnabled {
+		r.Recorder.Event(cr, "Normal", fmt.Sprintf("Evaluated expander stage: %s", expander.Name), expanderDebugLog(cr))
+	}
+
+	return values, planUpdated, reason, err
+
 }
 
 func (r *ExpanderReconciler) getExpanderConfig(

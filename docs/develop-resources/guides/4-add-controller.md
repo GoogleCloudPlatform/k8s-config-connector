@@ -1,0 +1,51 @@
+# 4. Add the direct controller
+
+Run the following command to generate a controller template 
+
+```
+cd dev/tools/controllerbuilder
+go run main.go add --service <YOUR_SERVICE> --api-version <VERSION> --kind <YOUR_RESOURCE> --proto-resource <PROTO_RESOURCE>
+```
+
+Fix the generated code to make your SciFi running!
+
+## 4.1 Implement the `model` interface
+
+The controller template has implemented the model interface` find, create, update, delete `and` export`. You may need to update the code to fit your resource.
+
+
+## 4.2 Resolve resource references
+
+Most Config Connector resource need references like `spec.projectRef. `You should add those references in `AdapterForObject` using functions `Resolve<RefResource>`
+
+if there is no previous reference method, You may need to add a new` Resolve<RefResource> `
+
+Check  to make sure your validation is complete.
+
+
+## 4.3 Register your controller
+
+To wire your controller in the Config Connector operator, you need to register the controller [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/register/register.go)
+
+
+## 4.4 Verify your controller
+
+To turn on the SciFi controller to reconcile resources:
+
+
+### New Resource
+
+```
+hack/compare-mock fixtures/<your_resource_test>
+```
+
+### Existing DCL/TF based resource
+
+```
+KCC_USE_DIRECT_RECONCILERS=<YOUR KIND> hack/compare-mock fixtures/<your_resource_test>
+```
+
+### Exit Criteria
+
+* The PRs shall pass the MockGCP tests
+* The roundtrip fuzz tests shall cover all the fields in `spec `and `status.observedState `fields [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92)
