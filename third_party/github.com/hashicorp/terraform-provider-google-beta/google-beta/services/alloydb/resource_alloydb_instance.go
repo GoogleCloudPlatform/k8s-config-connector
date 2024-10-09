@@ -827,6 +827,7 @@ func flattenAlloydbInstanceUid(v interface{}, d *schema.ResourceData, config *tr
 func flattenAlloydbInstanceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
+
 func flattenAlloydbInstanceAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
@@ -915,6 +916,7 @@ func flattenAlloydbInstanceMachineConfigCpuCount(v interface{}, d *schema.Resour
 		intVal := int(floatVal)
 		return intVal
 	}
+
 	return v // let terraform core handle it otherwise
 }
 
