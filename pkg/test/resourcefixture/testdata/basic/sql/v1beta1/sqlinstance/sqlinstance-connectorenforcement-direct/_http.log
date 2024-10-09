@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
+  "kind": "sql#instance",
   "name": "sqlinstance-connectorenforcement-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -42,6 +43,7 @@ User-Agent: kcc/controller-manager
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -373,8 +375,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "kind": "sql#instance",
   "name": "sqlinstance-connectorenforcement-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -383,6 +384,7 @@ User-Agent: kcc/controller-manager
     "connectorEnforcement": "REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"

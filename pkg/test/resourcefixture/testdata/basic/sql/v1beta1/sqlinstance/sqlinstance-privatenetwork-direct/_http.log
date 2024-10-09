@@ -1370,6 +1370,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_16",
+  "kind": "sql#instance",
   "name": "sqlinstance-privatenetwork-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -1383,6 +1384,7 @@ User-Agent: kcc/controller-manager
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
     },
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -1698,8 +1700,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_16",
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "kind": "sql#instance",
   "name": "sqlinstance-privatenetwork-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -1713,6 +1714,7 @@ User-Agent: kcc/controller-manager
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork2-${uniqueId}"
     },
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"

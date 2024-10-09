@@ -35,6 +35,7 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "MYSQL_5_7",
   "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-mysql-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -43,6 +44,7 @@ User-Agent: kcc/controller-manager
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "pricingPlan": "PER_USE",
     "storageAutoResize": false,
     "tier": "db-n1-standard-1",
@@ -552,7 +554,7 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "MYSQL_5_7",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "kind": "sql#instance",
   "name": "sqlinstance-mysql-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -561,6 +563,7 @@ User-Agent: kcc/controller-manager
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "pricingPlan": "PER_USE",
     "settingsVersion": "123",
     "storageAutoResize": false,

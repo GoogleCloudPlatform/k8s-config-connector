@@ -32,75 +32,54 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-type SQLInstanceInternalRefs struct {
-	cryptoKey         string
-	masterInstance    string
-	replicaPassword   string
-	rootPassword      string
-	privateNetwork    string
-	auditLogBucket    string
-	sourceSQLInstance string
-}
-
-func NormalizeSQLInstance(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (*SQLInstanceInternalRefs, error) {
-	cryptoKeyRef, err := normalizeCryptoKeyRef(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	masterInstanceRef, err := normalizeMasterInstanceRef(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	replicaPassword, err := normalizeReplicaPasswordRef(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	rootPassword, err := normalizeRootPasswordRef(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	privateNetwork, err := normalizePrivateNetworkRef(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	auditLogBucket, err := normalizeAuditLogBucketRef(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	sourceSQLInstance, err := normalizeSourceSQLInstanceRef(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	// Normalize labels.
-	obj.Labels = label.NewGCPLabelsFromK8sLabels(obj.Labels)
+func NormalizeSQLInstance(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	// Apply defaults.
 	if err := normalizeTFDefaults(obj); err != nil {
-		return nil, err
+		return err
 	}
-	return &SQLInstanceInternalRefs{
-		cryptoKey:         cryptoKeyRef,
-		masterInstance:    masterInstanceRef,
-		replicaPassword:   replicaPassword,
-		rootPassword:      rootPassword,
-		privateNetwork:    privateNetwork,
-		auditLogBucket:    auditLogBucket,
-		sourceSQLInstance: sourceSQLInstance,
-	}, nil
+
+	// Normalize references.
+	if err := normalizeCryptoKeyRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := normalizeMasterInstanceRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := normalizeReplicaPasswordRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := normalizeRootPasswordRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := normalizePrivateNetworkRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := normalizeAuditLogBucketRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := normalizeSourceSQLInstanceRef(ctx, kube, obj); err != nil {
+		return err
+	}
+
+	// Filter labels.
+	obj.Labels = label.NewGCPLabelsFromK8sLabels(obj.Labels)
+
+	return nil
 }
 
-func normalizeCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+func normalizeCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.EncryptionKMSCryptoKeyRef == nil {
-		return "", nil
+		return nil
 	}
 
 	keyRef := obj.Spec.EncryptionKMSCryptoKeyRef
 
 	if keyRef.External != "" && keyRef.Name != "" {
-		return "", fmt.Errorf("cannot specify both spec.encryptionKMSCryptoKeyRef.external and spec.encryptionKMSCryptoKeyRef.name")
+		return fmt.Errorf("cannot specify both spec.encryptionKMSCryptoKeyRef.external and spec.encryptionKMSCryptoKeyRef.name")
 	}
 
 	if keyRef.External != "" {
-		return keyRef.External, nil
+		return nil
 	} else if keyRef.Name != "" {
 		if keyRef.Namespace == "" {
 			keyRef.Namespace = obj.Namespace
@@ -115,32 +94,35 @@ func normalizeCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQL
 		cryptoKey.SetGroupVersionKind(kmsv1beta1.KMSCryptoKeyGVK)
 		if err := kube.Get(ctx, key, cryptoKey); err != nil {
 			if apierrors.IsNotFound(err) {
-				return "", k8s.NewReferenceNotFoundError(kmsv1beta1.KMSCryptoKeyGVK, key)
+				return k8s.NewReferenceNotFoundError(kmsv1beta1.KMSCryptoKeyGVK, key)
 			}
-			return "", fmt.Errorf("error reading referenced KMSCryptoKey %v: %w", cryptoKey, err)
+			return fmt.Errorf("error reading referenced KMSCryptoKey %v: %w", cryptoKey, err)
 		}
 
 		keyLink, _, err := unstructured.NestedString(cryptoKey.Object, "status", "selfLink")
 		if err != nil || keyLink == "" {
-			return "", fmt.Errorf("reading status.selfLink from %v %v/%v: %w", cryptoKey.GroupVersionKind().Kind, cryptoKey.GetNamespace(), cryptoKey.GetName(), err)
+			return fmt.Errorf("reading status.selfLink from %v %v/%v: %w", cryptoKey.GroupVersionKind().Kind, cryptoKey.GetNamespace(), cryptoKey.GetName(), err)
 		}
-		return keyLink, nil
+
+		obj.Spec.EncryptionKMSCryptoKeyRef.External = keyLink
+
+		return nil
 	} else {
-		return "", fmt.Errorf("must specify either spec.encryptionKMSCryptoKeyRef.external or spec.encryptionKMSCryptoKeyRef.name")
+		return fmt.Errorf("must specify either spec.encryptionKMSCryptoKeyRef.external or spec.encryptionKMSCryptoKeyRef.name")
 	}
 }
 
-func normalizeMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+func normalizeMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.MasterInstanceRef == nil {
-		return "", nil
+		return nil
 	}
 
 	if obj.Spec.MasterInstanceRef.External != "" && obj.Spec.MasterInstanceRef.Name != "" {
-		return "", fmt.Errorf("cannot specify both spec.masterInstanceRef.external and spec.masterInstanceRef.name")
+		return fmt.Errorf("cannot specify both spec.masterInstanceRef.external and spec.masterInstanceRef.name")
 	}
 
 	if obj.Spec.MasterInstanceRef.External != "" {
-		return obj.Spec.MasterInstanceRef.External, nil
+		return nil
 	} else if obj.Spec.MasterInstanceRef.Name != "" {
 		if obj.Spec.MasterInstanceRef.Namespace == "" {
 			obj.Spec.MasterInstanceRef.Namespace = obj.Namespace
@@ -155,32 +137,35 @@ func normalizeMasterInstanceRef(ctx context.Context, kube client.Reader, obj *kr
 		masterInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
 		if err := kube.Get(ctx, key, masterInstance); err != nil {
 			if apierrors.IsNotFound(err) {
-				return "", k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
+				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
 			}
-			return "", fmt.Errorf("error reading referenced master instance %v: %w", key, err)
+			return fmt.Errorf("error reading referenced master instance %v: %w", key, err)
 		}
 
 		masterInstanceName, err := refs.GetResourceID(masterInstance)
 		if err != nil {
-			return "", err
+			return err
 		}
-		return masterInstanceName, nil
+
+		obj.Spec.MasterInstanceRef.External = masterInstanceName
+
+		return nil
 	} else {
-		return "", fmt.Errorf("must specify either spec.masterInstanceRef.external or spec.masterInstanceRef.name")
+		return fmt.Errorf("must specify either spec.masterInstanceRef.external or spec.masterInstanceRef.name")
 	}
 }
 
-func normalizeReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+func normalizeReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.ReplicaConfiguration == nil || obj.Spec.ReplicaConfiguration.Password == nil {
-		return "", nil
+		return nil
 	}
 
 	if obj.Spec.ReplicaConfiguration.Password.Value != nil && obj.Spec.ReplicaConfiguration.Password.ValueFrom != nil {
-		return "", fmt.Errorf("cannot specify both spec.replicaConfiguration.password.value and spec.replicaConfiguration.password.valueFrom")
+		return fmt.Errorf("cannot specify both spec.replicaConfiguration.password.value and spec.replicaConfiguration.password.valueFrom")
 	}
 
 	if obj.Spec.ReplicaConfiguration.Password.Value != nil {
-		return *obj.Spec.ReplicaConfiguration.Password.Value, nil
+		return nil
 	} else if obj.Spec.ReplicaConfiguration.Password.ValueFrom != nil {
 		key := types.NamespacedName{
 			Namespace: obj.Namespace,
@@ -190,28 +175,31 @@ func normalizeReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *k
 		secret := &corev1.Secret{}
 		if err := kube.Get(ctx, key, secret); err != nil {
 			if apierrors.IsNotFound(err) {
-				return "", k8s.NewSecretNotFoundError(key)
+				return k8s.NewSecretNotFoundError(key)
 			}
-			return "", fmt.Errorf("error reading referenced Secret %v: %w", key, err)
+			return fmt.Errorf("error reading referenced Secret %v: %w", key, err)
 		}
 
 		password := string(secret.Data[obj.Spec.ReplicaConfiguration.Password.ValueFrom.SecretKeyRef.Key])
-		return password, nil
+
+		obj.Spec.ReplicaConfiguration.Password.Value = direct.PtrTo(password)
+
+		return nil
 	}
-	return "", nil
+	return nil
 }
 
-func normalizeRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+func normalizeRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.RootPassword == nil {
-		return "", nil
+		return nil
 	}
 
 	if obj.Spec.RootPassword.Value != nil && obj.Spec.RootPassword.ValueFrom != nil {
-		return "", fmt.Errorf("cannot specify both spec.rootPassword.value and spec.rootPassword.valueFrom")
+		return fmt.Errorf("cannot specify both spec.rootPassword.value and spec.rootPassword.valueFrom")
 	}
 
 	if obj.Spec.RootPassword.Value != nil {
-		return *obj.Spec.RootPassword.Value, nil
+		return nil
 	} else if obj.Spec.RootPassword.ValueFrom != nil {
 		key := types.NamespacedName{
 			Namespace: obj.Namespace,
@@ -221,20 +209,23 @@ func normalizeRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.
 		secret := &corev1.Secret{}
 		if err := kube.Get(ctx, key, secret); err != nil {
 			if apierrors.IsNotFound(err) {
-				return "", k8s.NewSecretNotFoundError(key)
+				return k8s.NewSecretNotFoundError(key)
 			}
-			return "", fmt.Errorf("error reading referenced Secret %v: %w", key, err)
+			return fmt.Errorf("error reading referenced Secret %v: %w", key, err)
 		}
 
 		password := string(secret.Data[obj.Spec.RootPassword.ValueFrom.SecretKeyRef.Key])
-		return password, nil
+
+		obj.Spec.RootPassword.Value = direct.PtrTo(password)
+
+		return nil
 	}
-	return "", nil
+	return nil
 }
 
-func normalizePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+func normalizePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.Settings.IpConfiguration == nil || obj.Spec.Settings.IpConfiguration.PrivateNetworkRef == nil {
-		return "", nil
+		return nil
 	}
 
 	resRef := obj.Spec.Settings.IpConfiguration.PrivateNetworkRef
@@ -245,29 +236,31 @@ func normalizePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *kr
 	}
 	net, err := refs.ResolveComputeNetwork(ctx, kube, obj, netRef)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	return net.String(), nil
+	obj.Spec.Settings.IpConfiguration.PrivateNetworkRef.External = net.String()
+
+	return nil
 }
 
-func normalizeAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+func normalizeAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.Settings.SqlServerAuditConfig == nil {
-		return "", nil
+		return nil
 	}
 
 	if obj.Spec.Settings.SqlServerAuditConfig.BucketRef == nil {
-		return "", fmt.Errorf("must specify bucket for audit config")
+		return fmt.Errorf("must specify bucket for audit config")
 	}
 
 	bucketRef := obj.Spec.Settings.SqlServerAuditConfig.BucketRef
 
 	if bucketRef.External != "" && bucketRef.Name != "" {
-		return "", fmt.Errorf("cannot specify both spec.settings.sqlServerAuditConfig.bucketRef.external and spec.settings.sqlServerAuditConfig.bucketRef.name")
+		return fmt.Errorf("cannot specify both spec.settings.sqlServerAuditConfig.bucketRef.external and spec.settings.sqlServerAuditConfig.bucketRef.name")
 	}
 
 	if bucketRef.External != "" {
-		return bucketRef.External, nil
+		return nil
 	} else if bucketRef.Name != "" {
 		if bucketRef.Namespace == "" {
 			bucketRef.Namespace = obj.Namespace
@@ -282,34 +275,36 @@ func normalizeAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *kr
 		bucket.SetGroupVersionKind(storagev1beta1.StorageBucketGVK)
 		if err := kube.Get(ctx, key, bucket); err != nil {
 			if apierrors.IsNotFound(err) {
-				return "", k8s.NewReferenceNotFoundError(storagev1beta1.StorageBucketGVK, key)
+				return k8s.NewReferenceNotFoundError(storagev1beta1.StorageBucketGVK, key)
 			}
-			return "", fmt.Errorf("error reading referenced StorageBucket %v: %w", key, err)
+			return fmt.Errorf("error reading referenced StorageBucket %v: %w", key, err)
 		}
 
 		storageBucketName, err := refs.GetResourceID(bucket)
 		if err != nil {
-			return "", err
+			return err
 		}
-		return "gs://" + storageBucketName, nil
+		obj.Spec.Settings.SqlServerAuditConfig.BucketRef.External = "gs://" + storageBucketName
+
+		return nil
 	} else {
-		return "", fmt.Errorf("must specify either spec.settings.sqlServerAuditConfig.bucketRef.external or spec.settings.sqlServerAuditConfig.bucketRef.name")
+		return fmt.Errorf("must specify either spec.settings.sqlServerAuditConfig.bucketRef.external or spec.settings.sqlServerAuditConfig.bucketRef.name")
 	}
 }
 
-func normalizeSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {
+func normalizeSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.CloneSource == nil {
-		return "", nil
+		return nil
 	}
 
 	sqlInstanceRef := obj.Spec.CloneSource.SQLInstanceRef
 
 	if sqlInstanceRef.External != "" && sqlInstanceRef.Name != "" {
-		return "", fmt.Errorf("cannot specify both spec.settings.cloneSource.sqlInstanceRef.external and spec.settings.cloneSource.sqlInstanceRef.name")
+		return fmt.Errorf("cannot specify both spec.settings.cloneSource.sqlInstanceRef.external and spec.settings.cloneSource.sqlInstanceRef.name")
 	}
 
 	if sqlInstanceRef.External != "" {
-		return sqlInstanceRef.External, nil
+		return nil
 	} else if sqlInstanceRef.Name != "" {
 		if sqlInstanceRef.Namespace == "" {
 			sqlInstanceRef.Namespace = obj.Namespace
@@ -324,18 +319,21 @@ func normalizeSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj 
 		sqlInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
 		if err := kube.Get(ctx, key, sqlInstance); err != nil {
 			if apierrors.IsNotFound(err) {
-				return "", k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
+				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
 			}
-			return "", fmt.Errorf("error reading referenced SQLInstance %v: %w", key, err)
+			return fmt.Errorf("error reading referenced SQLInstance %v: %w", key, err)
 		}
 
 		sqlInstanceName, err := refs.GetResourceID(sqlInstance)
 		if err != nil {
-			return "", err
+			return err
 		}
-		return sqlInstanceName, nil
+
+		obj.Spec.CloneSource.SQLInstanceRef.External = sqlInstanceName
+
+		return nil
 	} else {
-		return "", fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
+		return fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
 	}
 }
 

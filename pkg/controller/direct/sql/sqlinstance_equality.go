@@ -15,280 +15,72 @@
 package sql
 
 import (
-	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-// The goal of this function is to merge the desired state with the actual API state. Some fields in the API are defaulted by GCP.
-// Additionally, some fields may be desirable to "unmanage". To handle these quirks, this function implements some merging logic
-// for every API field.
-func MergeDesiredSQLInstanceWithActual(desired *krm.SQLInstance, refs *SQLInstanceInternalRefs, actual *api.DatabaseInstance) (*api.DatabaseInstance, bool, error) {
-	merged := &api.DatabaseInstance{}
-	updateRequired := false
+func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.DatabaseVersion != actual.DatabaseVersion {
+		return false
+	}
+	if !DiskEncryptionConfigurationsMatch(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration) {
+		return false
+	}
+	// Ignore GeminiConfig. It is not supported in KRM API.
+	if desired.InstanceType != actual.InstanceType {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
+	if desired.MaintenanceVersion != actual.MaintenanceVersion {
+		return false
+	}
+	if desired.MasterInstanceName != actual.MasterInstanceName {
+		return false
+	}
+	// Ignore MaxDiskSize. It is not supported in KRM API.
+	if desired.Name != actual.Name {
+		return false
+	}
+	// Ignore OnPremisesConfiguration. It is not supported in KRM API.
+	if desired.Region != actual.Region {
+		return false
+	}
+	if !ReplicaConfigurationsMatch(desired.ReplicaConfiguration, actual.ReplicaConfiguration) {
+		return false
+	}
+	// Ignore ReplicationCluster. It is not supported in KRM API.
+	// Ignore RootPassword. It is not exported.
+	if !SettingsMatch(desired.Settings, actual.Settings) {
+		return false
+	}
+	// Ignore SqlNetworkArchitecture. It is not supported in KRM API.
+	// Ignore SwitchTransactionLogsToCloudStorageEnabled. It is not supported in KRM API.
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
 
-	if desired == nil || actual == nil {
-		return nil, false, fmt.Errorf("cannot merge nil SQLInstance")
+func DiskEncryptionConfigurationsMatch(desired *api.DiskEncryptionConfiguration, actual *api.DiskEncryptionConfiguration) bool {
+	if desired == nil && actual == nil {
+		return true
 	}
-
-	if desired.Spec.ResourceID != nil {
-		merged.Name = direct.ValueOf(desired.Spec.ResourceID)
-	} else {
-		merged.Name = desired.Name
+	if !PointersMatch(desired, actual) {
+		return false
 	}
-	if merged.Name != actual.Name {
-		return nil, false, fmt.Errorf("cannot rename SQLInstance")
+	// Ignore Kind. It is sometimes not set in API responses.
+	if desired.KmsKeyName != actual.KmsKeyName {
+		return false
 	}
-
-	if desired.Spec.DatabaseVersion != nil {
-		if direct.ValueOf(desired.Spec.DatabaseVersion) != actual.DatabaseVersion {
-			// Change version
-			updateRequired = true
-		}
-		merged.DatabaseVersion = direct.ValueOf(desired.Spec.DatabaseVersion)
-	} else {
-		// Keep same version
-		merged.DatabaseVersion = actual.DatabaseVersion
-	}
-
-	if desired.Spec.EncryptionKMSCryptoKeyRef != nil {
-		if actual.DiskEncryptionConfiguration == nil {
-			// Add key
-			updateRequired = true
-		} else if refs.cryptoKey != actual.DiskEncryptionConfiguration.KmsKeyName {
-			// Change keys
-			updateRequired = true
-		}
-		merged.DiskEncryptionConfiguration = &api.DiskEncryptionConfiguration{
-			Kind:       "sql#diskEncryptionConfiguration",
-			KmsKeyName: refs.cryptoKey,
-		}
-	} else if actual.DiskEncryptionConfiguration != nil {
-		// Remove key
-		updateRequired = true
-	}
-
-	if desired.Spec.InstanceType != nil {
-		if direct.ValueOf(desired.Spec.InstanceType) != actual.InstanceType {
-			// Change instance type
-			updateRequired = true
-		}
-		merged.InstanceType = direct.ValueOf(desired.Spec.InstanceType)
-	} else {
-		// Keep instance type
-		merged.InstanceType = actual.InstanceType
-	}
-
-	if desired.Spec.MaintenanceVersion != nil {
-		if direct.ValueOf(desired.Spec.MaintenanceVersion) != actual.MaintenanceVersion {
-			// Change maintenance version
-			updateRequired = true
-		}
-		merged.MaintenanceVersion = direct.ValueOf(desired.Spec.MaintenanceVersion)
-	} else {
-		// Keep maintenance version
-		merged.MaintenanceVersion = actual.MaintenanceVersion
-	}
-
-	if desired.Spec.MasterInstanceRef != nil {
-		if refs.masterInstance != actual.MasterInstanceName {
-			// Change master
-			updateRequired = true
-		}
-		merged.MasterInstanceName = refs.masterInstance
-	} else if actual.MasterInstanceName != "" {
-		// Remove master
-		updateRequired = true
-	}
-
-	if desired.Spec.Region != nil {
-		if direct.ValueOf(desired.Spec.Region) != actual.Region {
-			// Change region
-			updateRequired = true
-		}
-		merged.Region = direct.ValueOf(desired.Spec.Region)
-	} else {
-		// Keep region
-		merged.Region = actual.Region
-	}
-
-	merged.ReplicaConfiguration = InstanceReplicaConfigurationKRMToGCP(desired.Spec.ReplicaConfiguration, refs)
-	if !ReplicaConfigurationsMatch(merged.ReplicaConfiguration, actual.ReplicaConfiguration) {
-		updateRequired = true
-	}
-
-	if desired.Spec.RootPassword != nil && refs.rootPassword != "" {
-		if refs.rootPassword != actual.RootPassword {
-			// Change root password
-			updateRequired = true
-		}
-		merged.RootPassword = refs.rootPassword
-	} else {
-		// Keep root password
-		merged.RootPassword = actual.RootPassword
-	}
-
-	merged.Settings = &api.Settings{
-		SettingsVersion: actual.Settings.SettingsVersion,
-	}
-
-	merged.Settings.ActivationPolicy = direct.ValueOf(desired.Spec.Settings.ActivationPolicy)
-	if merged.Settings.ActivationPolicy != actual.Settings.ActivationPolicy {
-		updateRequired = true
-	}
-
-	merged.Settings.ActiveDirectoryConfig = InstanceActiveDirectoryConfigKRMToGCP(desired.Spec.Settings.ActiveDirectoryConfig)
-	if !ActiveDirectoryConfigsMatch(merged.Settings.ActiveDirectoryConfig, actual.Settings.ActiveDirectoryConfig) {
-		updateRequired = true
-	}
-
-	merged.Settings.AdvancedMachineFeatures = InstanceAdvancedMachineFeaturesKRMToGCP(desired.Spec.Settings.AdvancedMachineFeatures)
-	if !AdvancedMachineFeaturesMatch(merged.Settings.AdvancedMachineFeatures, actual.Settings.AdvancedMachineFeatures) {
-		updateRequired = true
-	}
-
-	merged.Settings.AuthorizedGaeApplications = desired.Spec.Settings.AuthorizedGaeApplications
-	if !reflect.DeepEqual(merged.Settings.AuthorizedGaeApplications, actual.Settings.AuthorizedGaeApplications) {
-		updateRequired = true
-	}
-
-	merged.Settings.AvailabilityType = direct.ValueOf(desired.Spec.Settings.AvailabilityType)
-	if merged.Settings.AvailabilityType != actual.Settings.AvailabilityType {
-		updateRequired = true
-	}
-
-	merged.Settings.BackupConfiguration = InstanceBackupConfigurationKRMToGCP(desired.Spec.Settings.BackupConfiguration)
-	if !BackupConfigurationsMatch(merged.Settings.BackupConfiguration, actual.Settings.BackupConfiguration) {
-		updateRequired = true
-	}
-
-	merged.Settings.Collation = direct.ValueOf(desired.Spec.Settings.Collation)
-	if merged.Settings.Collation != actual.Settings.Collation {
-		updateRequired = true
-	}
-
-	merged.Settings.ConnectorEnforcement = direct.ValueOf(desired.Spec.Settings.ConnectorEnforcement)
-	if merged.Settings.ConnectorEnforcement != actual.Settings.ConnectorEnforcement {
-		updateRequired = true
-	}
-
-	merged.Settings.CrashSafeReplicationEnabled = direct.ValueOf(desired.Spec.Settings.CrashSafeReplication)
-	if merged.Settings.CrashSafeReplicationEnabled != actual.Settings.CrashSafeReplicationEnabled {
-		updateRequired = true
-	}
-
-	merged.Settings.DataCacheConfig = InstanceDataCacheConfigKRMToGCP(desired.Spec.Settings.DataCacheConfig)
-	if !DataCacheConfigsMatch(merged.Settings.DataCacheConfig, actual.Settings.DataCacheConfig) {
-		updateRequired = true
-	}
-
-	merged.Settings.DatabaseFlags = InstanceDatabaseFlagsKRMToGCP(desired.Spec.Settings.DatabaseFlags)
-	if !DatabaseFlagListsMatch(merged.Settings.DatabaseFlags, actual.Settings.DatabaseFlags) {
-		updateRequired = true
-	}
-
-	merged.Settings.DeletionProtectionEnabled = direct.ValueOf(desired.Spec.Settings.DeletionProtectionEnabled)
-	if merged.Settings.DeletionProtectionEnabled != actual.Settings.DeletionProtectionEnabled {
-		updateRequired = true
-	}
-
-	merged.Settings.DenyMaintenancePeriods = InstanceDenyMaintenancePeriodsKRMToGCP(desired.Spec.Settings.DenyMaintenancePeriod)
-	if !DenyMaintenancePeriodListsMatch(merged.Settings.DenyMaintenancePeriods, actual.Settings.DenyMaintenancePeriods) {
-		updateRequired = true
-	}
-
-	merged.Settings.StorageAutoResize = desired.Spec.Settings.DiskAutoresize
-	if merged.Settings.StorageAutoResize != actual.Settings.StorageAutoResize {
-		updateRequired = true
-	}
-
-	merged.Settings.StorageAutoResizeLimit = direct.ValueOf(desired.Spec.Settings.DiskAutoresizeLimit)
-	if merged.Settings.StorageAutoResizeLimit != actual.Settings.StorageAutoResizeLimit {
-		updateRequired = true
-	}
-
-	merged.Settings.DataDiskSizeGb = direct.ValueOf(desired.Spec.Settings.DiskSize)
-	if merged.Settings.DataDiskSizeGb != actual.Settings.DataDiskSizeGb {
-		updateRequired = true
-	}
-
-	merged.Settings.DataDiskType = direct.ValueOf(desired.Spec.Settings.DiskType)
-	if merged.Settings.DataDiskType != actual.Settings.DataDiskType {
-		updateRequired = true
-	}
-
-	merged.Settings.Edition = direct.ValueOf(desired.Spec.Settings.Edition)
-	if merged.Settings.Edition != actual.Settings.Edition {
-		updateRequired = true
-	}
-
-	merged.Settings.InsightsConfig = InstanceInsightsConfigKRMToGCP(desired.Spec.Settings.InsightsConfig)
-	if !InsightsConfigsMatch(merged.Settings.InsightsConfig, actual.Settings.InsightsConfig) {
-		updateRequired = true
-	}
-
-	merged.Settings.IpConfiguration = InstanceIpConfigurationKRMToGCP(desired.Spec.Settings.IpConfiguration, refs)
-	if !IpConfigurationsMatch(merged.Settings.IpConfiguration, actual.Settings.IpConfiguration) {
-		updateRequired = true
-	}
-
-	merged.Settings.LocationPreference = InstanceLocationPreferenceKRMToGCP(desired.Spec.Settings.LocationPreference)
-	if !LocationPreferencesMatch(merged.Settings.LocationPreference, actual.Settings.LocationPreference) {
-		updateRequired = true
-	}
-
-	merged.Settings.MaintenanceWindow = InstanceMaintenanceWindowKRMToGCP(desired.Spec.Settings.MaintenanceWindow)
-	if !MaintenanceWindowsMatch(merged.Settings.MaintenanceWindow, actual.Settings.MaintenanceWindow) {
-		updateRequired = true
-	}
-
-	merged.Settings.PasswordValidationPolicy = InstancePasswordValidationPolicyKRMToGCP(desired.Spec.Settings.PasswordValidationPolicy)
-	if !PasswordValidationPoliciesMatch(merged.Settings.PasswordValidationPolicy, actual.Settings.PasswordValidationPolicy) {
-		updateRequired = true
-	}
-
-	merged.Settings.PricingPlan = direct.ValueOf(desired.Spec.Settings.PricingPlan)
-	if merged.Settings.PricingPlan != actual.Settings.PricingPlan {
-		updateRequired = true
-	}
-
-	merged.Settings.ReplicationType = direct.ValueOf(desired.Spec.Settings.ReplicationType)
-	if merged.Settings.ReplicationType != actual.Settings.ReplicationType {
-		updateRequired = true
-	}
-
-	merged.Settings.SqlServerAuditConfig = InstanceSqlServerAuditConfigKRMToGCP(desired.Spec.Settings.SqlServerAuditConfig, refs)
-	if !SqlServerAuditConfigsMatch(merged.Settings.SqlServerAuditConfig, actual.Settings.SqlServerAuditConfig) {
-		updateRequired = true
-	}
-
-	merged.Settings.Tier = desired.Spec.Settings.Tier
-	if merged.Settings.Tier != actual.Settings.Tier {
-		updateRequired = true
-	}
-
-	merged.Settings.TimeZone = direct.ValueOf(desired.Spec.Settings.TimeZone)
-	if merged.Settings.TimeZone != actual.Settings.TimeZone {
-		updateRequired = true
-	}
-
-	if !reflect.DeepEqual(desired.Labels, actual.Settings.UserLabels) {
-		updateRequired = true
-	}
-	merged.Settings.UserLabels = desired.Labels
-
-	// todo: Remove these after switching over to use InstanceSettingsKRMToGCP
-	if desired.Spec.Settings.DeletionProtectionEnabled != nil {
-		merged.Settings.ForceSendFields = append(merged.ForceSendFields, "DeletionProtectionEnabled")
-	}
-	if desired.Spec.Settings.DiskAutoresize != nil {
-		merged.Settings.ForceSendFields = append(merged.ForceSendFields, "StorageAutoResize")
-	}
-
-	return merged, updateRequired, nil
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
 }
 
 func ReplicaConfigurationsMatch(desired *api.ReplicaConfiguration, actual *api.ReplicaConfiguration) bool {
@@ -304,6 +96,110 @@ func ReplicaConfigurationsMatch(desired *api.ReplicaConfiguration, actual *api.R
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if !MysqlReplicaConfigurationsMatch(desired.MysqlReplicaConfiguration, actual.MysqlReplicaConfiguration) {
+		return false
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func SettingsMatch(desired *api.Settings, actual *api.Settings) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.ActivationPolicy != actual.ActivationPolicy {
+		return false
+	}
+	if !ActiveDirectoryConfigsMatch(desired.ActiveDirectoryConfig, actual.ActiveDirectoryConfig) {
+		return false
+	}
+	if !AdvancedMachineFeaturesMatch(desired.AdvancedMachineFeatures, actual.AdvancedMachineFeatures) {
+		return false
+	}
+	if !reflect.DeepEqual(desired.AuthorizedGaeApplications, actual.AuthorizedGaeApplications) {
+		return false
+	}
+	if desired.AvailabilityType != actual.AvailabilityType {
+		return false
+	}
+	if !BackupConfigurationsMatch(desired.BackupConfiguration, actual.BackupConfiguration) {
+		return false
+	}
+	if desired.Collation != actual.Collation {
+		return false
+	}
+	if desired.ConnectorEnforcement != actual.ConnectorEnforcement {
+		return false
+	}
+	if desired.CrashSafeReplicationEnabled != actual.CrashSafeReplicationEnabled {
+		return false
+	}
+	if !DataCacheConfigsMatch(desired.DataCacheConfig, actual.DataCacheConfig) {
+		return false
+	}
+	if desired.DataDiskSizeGb != actual.DataDiskSizeGb {
+		return false
+	}
+	if desired.DataDiskType != actual.DataDiskType {
+		return false
+	}
+	if !DatabaseFlagListsMatch(desired.DatabaseFlags, actual.DatabaseFlags) {
+		return false
+	}
+	// Ignore DatabaseReplicationEnabled. It is not supported in KRM API.
+	if desired.DeletionProtectionEnabled != actual.DeletionProtectionEnabled {
+		return false
+	}
+	if !DenyMaintenancePeriodListsMatch(desired.DenyMaintenancePeriods, actual.DenyMaintenancePeriods) {
+		return false
+	}
+	if desired.Edition != actual.Edition {
+		return false
+	}
+	// Ignore EnableDataplexIntegration. It is not supported in KRM API.
+	// Ignore EnableGoogleMlIntegration. It is not supported in KRM API.
+	if !InsightsConfigsMatch(desired.InsightsConfig, actual.InsightsConfig) {
+		return false
+	}
+	if !IpConfigurationsMatch(desired.IpConfiguration, actual.IpConfiguration) {
+		return false
+	}
+	// Ignore Kind. It is sometimes not set in API responses.
+	if !LocationPreferencesMatch(desired.LocationPreference, actual.LocationPreference) {
+		return false
+	}
+	if !MaintenanceWindowsMatch(desired.MaintenanceWindow, actual.MaintenanceWindow) {
+		return false
+	}
+	if !PasswordValidationPoliciesMatch(desired.PasswordValidationPolicy, actual.PasswordValidationPolicy) {
+		return false
+	}
+	if desired.PricingPlan != actual.PricingPlan {
+		return false
+	}
+	if desired.ReplicationType != actual.ReplicationType {
+		return false
+	}
+	// Ignore SettingsVersion. It is not part of the "desired state".
+	if !SqlServerAuditConfigsMatch(desired.SqlServerAuditConfig, actual.SqlServerAuditConfig) {
+		return false
+	}
+	if desired.StorageAutoResize != actual.StorageAutoResize {
+		return false
+	}
+	if desired.StorageAutoResizeLimit != actual.StorageAutoResizeLimit {
+		return false
+	}
+	if desired.Tier != actual.Tier {
+		return false
+	}
+	if desired.TimeZone != actual.TimeZone {
+		return false
+	}
+	if !reflect.DeepEqual(desired.UserLabels, actual.UserLabels) {
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.

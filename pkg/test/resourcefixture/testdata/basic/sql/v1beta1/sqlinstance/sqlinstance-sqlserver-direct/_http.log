@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
+  "kind": "sql#instance",
   "name": "sqlinstance-sqlserver-direct-${uniqueId}",
   "region": "us-central1",
   "rootPassword": "1234!@#$asdf",
@@ -43,6 +44,7 @@ User-Agent: kcc/controller-manager
     "collation": "SQL_Latin1_General_CP1_CI_AS",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
