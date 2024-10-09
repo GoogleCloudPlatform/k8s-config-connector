@@ -83,6 +83,7 @@ type {{ .Kind }} struct {
 	metav1.TypeMeta   ` + "`" + `json:",inline"` + "`" + `
 	metav1.ObjectMeta ` + "`" + `json:"metadata,omitempty"` + "`" + `
 
+	// +required
 	Spec   {{ .Kind }}Spec   ` + "`" + `json:"spec,omitempty"` + "`" + `
 	Status {{ .Kind }}Status ` + "`" + `json:"status,omitempty"` + "`" + `
 }
