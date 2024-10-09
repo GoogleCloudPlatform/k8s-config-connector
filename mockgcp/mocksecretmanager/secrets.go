@@ -135,21 +135,29 @@ func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretReques
 		switch path {
 		case "topics":
 			updated.Topics = req.Secret.GetTopics()
-		case "customer_managed_encryption":
+		case "customerManagedEncryption":
 			updated.CustomerManagedEncryption = req.Secret.GetCustomerManagedEncryption()
 		case "rotation":
 			updated.Rotation = req.Secret.GetRotation()
 			if len(req.Secret.GetTopics()) == 0 {
 				return nil, fmt.Errorf("There must be at least one topic configured when a Rotation policy is set.")
 			}
+		case "rotation.rotationPeriod":
+			updated.Rotation.RotationPeriod = req.Secret.GetRotation().RotationPeriod
 		case "annotations":
 			updated.Annotations = req.Secret.GetAnnotations()
 		case "labels":
 			updated.Labels = req.Secret.GetLabels()
-		case "version_aliases":
+		case "versionAliases":
 			updated.VersionAliases = req.Secret.GetVersionAliases()
+		case "expireTime":
+			updated.Expiration = &pb.Secret_ExpireTime{
+				ExpireTime: req.Secret.GetExpireTime(),
+			}
 		case "expiration":
 			updated.Expiration = req.Secret.GetExpiration()
+		case "rotation.nextRotationTime":
+			updated.Rotation.NextRotationTime = req.Secret.Rotation.NextRotationTime
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

@@ -280,7 +280,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if !topicsEqual(desired.Spec.TopicRefs, a.actual.GetTopics()) {
 		updateMask.Paths = append(updateMask.Paths, "topics")
 	}
-	if !reflect.DeepEqual(desired.Spec.ExpireTime, a.actual.GetExpireTime()) {
+	if !common.DeepEqual_StringAndTimestampPb(*desired.Spec.ExpireTime, a.actual.GetExpireTime()) {
 		updateMask.Paths = append(updateMask.Paths, "expire_time")
 	}
 	if !reflect.DeepEqual(desired.Spec.Rotation.NextRotationTime, a.actual.GetRotation().GetNextRotationTime()) {
