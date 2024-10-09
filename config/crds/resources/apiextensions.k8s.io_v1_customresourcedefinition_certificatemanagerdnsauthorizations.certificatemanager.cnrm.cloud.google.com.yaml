@@ -8,7 +8,6 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: certificatemanagerdnsauthorizations.certificatemanager.cnrm.cloud.google.com
 spec:
   group: certificatemanager.cnrm.cloud.google.com
@@ -233,6 +232,11 @@ spec:
                 x-kubernetes-validations:
                 - message: Domain field is immutable
                   rule: self == oldSelf
+              location:
+                description: Immutable. Optional. Location represents the geographical
+                  location of the DnsAuthorization. If not specified, "global" is
+                  used.
+                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -326,6 +330,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the CertificateManagerDNSAuthorization
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

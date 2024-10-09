@@ -29,8 +29,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// New builds a BigQueryConnectionConnectionRef from the ConfigConnector BigQueryConnectionConnection object.
-func New(ctx context.Context, reader client.Reader, obj *BigQueryConnectionConnection) (*BigQueryConnectionConnectionRef, error) {
+// NewBigQueryConnectionConnectionRef builds a BigQueryConnectionConnectionRef from the ConfigConnector BigQueryConnectionConnection object.
+func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reader, obj *BigQueryConnectionConnection) (*BigQueryConnectionConnectionRef, error) {
 	id := &BigQueryConnectionConnectionRef{}
 
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
@@ -120,37 +120,37 @@ func (r *BigQueryConnectionConnectionRef) Parent() (string, error) {
 	return "", fmt.Errorf("BigQueryConnectionConnectionRef not normalized to External form or not created from `New()`")
 }
 
-// NormalizeToExternalForm provision the "External" value.
+// NormalizedExternal provision the "External" value.
 // If the "External" comes from the ConfigConnector object, it has to acquire or reconcile with the GCP resource already.
-func (r *BigQueryConnectionConnectionRef) NormalizeToExternalForm(ctx context.Context, reader client.Reader) error {
+func (r *BigQueryConnectionConnectionRef) NormalizedExternal(ctx context.Context, reader client.Reader, othernamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return fmt.Errorf("cannot specify both name and external on %s reference", BigQueryConnectionConnectionGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryConnectionConnectionGVK.Kind)
 	}
 	if r.External != "" {
 		r.External = strings.TrimPrefix(r.External, "/")
 		tokens := strings.Split(r.External, "/")
 		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-			return fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
+			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
 		}
-		return nil
+		return r.External, nil
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(BigQueryConnectionConnectionGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return fmt.Errorf("reading referenced %s %s: %w", BigQueryConnectionConnectionGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryConnectionConnectionGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
-		return fmt.Errorf("reading status.externalRef: %w", err)
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return fmt.Errorf("BigQueryConnectionConnection is not ready yet.")
+		return "", fmt.Errorf("BigQueryConnectionConnection is not ready yet.")
 	}
 	r.External = actualExternalRef
-	return nil
+	return r.External, nil
 }

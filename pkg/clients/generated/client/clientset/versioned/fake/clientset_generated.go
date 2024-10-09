@@ -203,6 +203,8 @@ import (
 	fakeosloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1/fake"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
 	fakeprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1/fake"
+	privilegedaccessmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1alpha1"
+	fakeprivilegedaccessmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1alpha1/fake"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1"
 	fakepubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1/fake"
 	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1"
@@ -766,6 +768,11 @@ func (c *Clientset) OsloginV1alpha1() osloginv1alpha1.OsloginV1alpha1Interface {
 // PrivatecaV1beta1 retrieves the PrivatecaV1beta1Client
 func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface {
 	return &fakeprivatecav1beta1.FakePrivatecaV1beta1{Fake: &c.Fake}
+}
+
+// PrivilegedaccessmanagerV1alpha1 retrieves the PrivilegedaccessmanagerV1alpha1Client
+func (c *Clientset) PrivilegedaccessmanagerV1alpha1() privilegedaccessmanagerv1alpha1.PrivilegedaccessmanagerV1alpha1Interface {
+	return &fakeprivilegedaccessmanagerv1alpha1.FakePrivilegedaccessmanagerV1alpha1{Fake: &c.Fake}
 }
 
 // PubsubV1beta1 retrieves the PubsubV1beta1Client

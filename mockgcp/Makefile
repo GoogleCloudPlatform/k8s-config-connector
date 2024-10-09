@@ -64,6 +64,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/tensorboard*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/user_action_reference.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
+		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/connection/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/billing/v1/*.proto \
@@ -99,6 +100,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/logging/v2/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
+		./third_party/googleapis/mockgcp/monitoring/metricsscope/v1/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/v3/*.proto \
 		./third_party/googleapis/mockgcp/pubsub/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \

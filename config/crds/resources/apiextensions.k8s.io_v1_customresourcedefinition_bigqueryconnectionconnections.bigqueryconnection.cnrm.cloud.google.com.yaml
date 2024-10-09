@@ -74,8 +74,99 @@ spec:
                         type: string
                     type: object
                 type: object
+              azure:
+                description: Azure properties.
+                properties:
+                  customerTenantID:
+                    description: The id of customer's directory that host the data.
+                    type: string
+                  federatedApplicationClientID:
+                    description: The client ID of the user's Azure Active Directory
+                      Application used for a federated connection.
+                    type: string
+                required:
+                - customerTenantID
+                type: object
               cloudResource:
                 description: Use Cloud Resource properties.
+                type: object
+              cloudSpanner:
+                description: Cloud Spanner properties.
+                properties:
+                  databaseRef:
+                    description: Reference to a spanner database ID.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The Spanner Database selfLink, when not managed
+                          by Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SpannerDatabase` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SpannerDatabase`
+                          resource.
+                        type: string
+                    type: object
+                  databaseRole:
+                    description: |-
+                      Optional. Cloud Spanner database role for fine-grained access control.
+                       The Cloud Spanner admin should have provisioned the database role with
+                       appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+                       only use roles provided by their Cloud Spanner admins.
+
+                       For more details, see [About fine-grained access control]
+                       (https://cloud.google.com/spanner/docs/fgac-about).
+
+                       REQUIRES: The database role name must start with a letter, and can only
+                       contain letters, numbers, and underscores.
+                    type: string
+                  maxParallelism:
+                    description: |-
+                      Allows setting max parallelism per query when executing on Spanner
+                       independent compute resources. If unspecified, default values of
+                       parallelism are chosen that are dependent on the Cloud Spanner instance
+                       configuration.
+
+                       REQUIRES: `use_parallelism` must be set.
+                       REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+                       set.
+                    format: int32
+                    type: integer
+                  useDataBoost:
+                    description: |-
+                      If set, the request will be executed via Spanner independent compute
+                       resources.
+                       REQUIRES: `use_parallelism` must be set.
+
+                       NOTE: `use_serverless_analytics` will be deprecated. Prefer
+                       `use_data_boost` over `use_serverless_analytics`.
+                    type: boolean
+                  useParallelism:
+                    description: If parallelism should be used when reading from Cloud
+                      Spanner
+                    type: boolean
+                  useServerlessAnalytics:
+                    description: 'If the serverless analytics service should be used
+                      to read data from Cloud Spanner. Note: `use_parallelism` must
+                      be set when using serverless analytics.'
+                    type: boolean
+                required:
+                - databaseRef
                 type: object
               cloudSql:
                 description: Cloud SQL properties.
@@ -235,6 +326,27 @@ spec:
                               to access the user's AWS IAM Role.
                             type: string
                         type: object
+                    type: object
+                  azure:
+                    properties:
+                      application:
+                        description: The name of the Azure Active Directory Application.
+                        type: string
+                      clientID:
+                        description: The client id of the Azure Active Directory Application.
+                        type: string
+                      identity:
+                        description: A unique Google-owned and Google-generated identity
+                          for the Connection. This identity will be used to access
+                          the user's Azure Active Directory Application.
+                        type: string
+                      objectID:
+                        description: The object id of the Azure Active Directory Application.
+                        type: string
+                      redirectUri:
+                        description: The URL user will be redirected to after granting
+                          consent during connection setup.
+                        type: string
                     type: object
                   cloudResource:
                     properties:

@@ -106,7 +106,7 @@ type Parent struct {
 
 Since most parent is a reference to another resource which can either be `<kind>Ref.external `or `<kind>Ref.name` , the immutable validation needs to be done at the controller validation level. For example, switching `<kind>Ref.external `and `<kind>Ref.name `are allowed if referring to the same resource.
 
-See this [resource reference guide](./resource-reference.md) (todo update once PR merged) for general rules;
+See this [resource reference guide](./resource-reference.md) for general rules;
 
 See this [external reference guide](./external-reference.md#statusexternalref-format) for parent validation with `status.externalRef`.   
 

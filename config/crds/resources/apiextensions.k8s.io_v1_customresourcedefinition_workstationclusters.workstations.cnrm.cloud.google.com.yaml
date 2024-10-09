@@ -240,7 +240,9 @@ spec:
                     type: string
                 type: object
             required:
+            - networkRef
             - projectRef
+            - subnetworkRef
             type: object
           status:
             description: WorkstationClusterStatus defines the config connector machine

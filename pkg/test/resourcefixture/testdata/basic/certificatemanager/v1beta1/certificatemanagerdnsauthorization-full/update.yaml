@@ -19,6 +19,7 @@ metadata:
   labels:
     label-one: "value-one-updated"
 spec:
+  location: "us-central1"
   description: updated sample dns authorization
   domain: ${uniqueId}.hashicorptest.com
   projectRef:

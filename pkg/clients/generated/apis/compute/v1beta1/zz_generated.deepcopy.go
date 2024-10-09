@@ -2381,6 +2381,11 @@ func (in *ComputeFirewallPolicyRuleStatus) DeepCopyInto(out *ComputeFirewallPoli
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.Kind != nil {
 		in, out := &in.Kind, &out.Kind
 		*out = new(string)

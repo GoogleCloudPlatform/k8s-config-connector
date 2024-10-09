@@ -44,7 +44,31 @@ echo ${VERSION} > ${BUNDLE_DIR}/version
 # Create temp crds.yaml file
 CRDS_FILE=$(mktemp -t crds.XXXXXXXX.yaml)
 
+# Update container registry for kustomize
+IMAGE_PREFIX=${IMAGE_PREFIX:-"gcr.io/gke-release/cnrm/"}
+IMAGE_TAG=${IMAGE_TAG:-${VERSION}}
+
+RECORDER_IMG=${RECORDER_IMG:-"${IMAGE_PREFIX}recorder:${IMAGE_TAG}"}
+WEBHOOK_IMG=${WEBHOOK_IMG:-"${IMAGE_PREFIX}webhook:${IMAGE_TAG}"}
+UNMANAGEDDETECTOR_IMG=${UNMANAGEDDETECTOR_IMG:-"${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}"}
+DELETIONDEFENDER_IMG=${DELETIONDEFENDER_IMG:-"${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}"}
+MANAGER_IMG=${MANAGER_IMG:-"${IMAGE_PREFIX}controller:${IMAGE_TAG}"}
+
+cd ${REPO_ROOT}
+cat config/installbundle/components/recorder/recorder_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${RECORDER_IMG}@g" > config/installbundle/components/recorder/recorder_image_patch.yaml
+cat config/installbundle/components/webhook/webhook_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${WEBHOOK_IMG}@g" > config/installbundle/components/webhook/webhook_image_patch.yaml
+cat config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${UNMANAGEDDETECTOR_IMG}@g" > config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+cat config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${DELETIONDEFENDER_IMG}@g" > config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+cat config/installbundle/components/manager/base/manager_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${MANAGER_IMG}@g" > config/installbundle/components/manager/base/manager_image_patch.yaml
+
+
 # Combine CRDs into one file and add a license header
+rm -f kustomization.yaml
 kustomize create
 kustomize edit add resource config/crds/resources/*.yaml
 $LICENSING_SCRIPT <(kustomize build .) > $CRDS_FILE
@@ -96,3 +120,6 @@ sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
 cp -r config/samples/ ${BUNDLE_DIR}/
 
 tar -czvf ${DIST}/release-bundle.tar.gz -C ${BUNDLE_DIR}/ .
+
+# Remove the temporary kustomization.yaml file we wrote
+rm -f ${REPO_ROOT}/kustomization.yaml

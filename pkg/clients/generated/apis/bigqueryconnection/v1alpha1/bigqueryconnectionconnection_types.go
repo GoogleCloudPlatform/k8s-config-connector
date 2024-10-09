@@ -47,7 +47,62 @@ type ConnectionAws struct {
 	AccessRole *ConnectionAccessRole `json:"accessRole,omitempty"`
 }
 
+type ConnectionAzure struct {
+	/* The id of customer's directory that host the data. */
+	CustomerTenantID string `json:"customerTenantID"`
+
+	/* The client ID of the user's Azure Active Directory Application used for a federated connection. */
+	// +optional
+	FederatedApplicationClientID *string `json:"federatedApplicationClientID,omitempty"`
+}
+
 type ConnectionCloudResource struct {
+}
+
+type ConnectionCloudSpanner struct {
+	/* Reference to a spanner database ID. */
+	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+
+	/* Optional. Cloud Spanner database role for fine-grained access control.
+	The Cloud Spanner admin should have provisioned the database role with
+	appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+	only use roles provided by their Cloud Spanner admins.
+
+	For more details, see [About fine-grained access control]
+	(https://cloud.google.com/spanner/docs/fgac-about).
+
+	REQUIRES: The database role name must start with a letter, and can only
+	contain letters, numbers, and underscores. */
+	// +optional
+	DatabaseRole *string `json:"databaseRole,omitempty"`
+
+	/* Allows setting max parallelism per query when executing on Spanner
+	independent compute resources. If unspecified, default values of
+	parallelism are chosen that are dependent on the Cloud Spanner instance
+	configuration.
+
+	REQUIRES: `use_parallelism` must be set.
+	REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+	set. */
+	// +optional
+	MaxParallelism *int32 `json:"maxParallelism,omitempty"`
+
+	/* If set, the request will be executed via Spanner independent compute
+	resources.
+	REQUIRES: `use_parallelism` must be set.
+
+	NOTE: `use_serverless_analytics` will be deprecated. Prefer
+	`use_data_boost` over `use_serverless_analytics`. */
+	// +optional
+	UseDataBoost *bool `json:"useDataBoost,omitempty"`
+
+	/* If parallelism should be used when reading from Cloud Spanner */
+	// +optional
+	UseParallelism *bool `json:"useParallelism,omitempty"`
+
+	/* If the serverless analytics service should be used to read data from Cloud Spanner. Note: `use_parallelism` must be set when using serverless analytics. */
+	// +optional
+	UseServerlessAnalytics *bool `json:"useServerlessAnalytics,omitempty"`
 }
 
 type ConnectionCloudSql struct {
@@ -83,9 +138,17 @@ type BigQueryConnectionConnectionSpec struct {
 	// +optional
 	Aws *ConnectionAws `json:"aws,omitempty"`
 
+	/* Azure properties. */
+	// +optional
+	Azure *ConnectionAzure `json:"azure,omitempty"`
+
 	/* Use Cloud Resource properties. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
+
+	/* Cloud Spanner properties. */
+	// +optional
+	CloudSpanner *ConnectionCloudSpanner `json:"cloudSpanner,omitempty"`
 
 	/* Cloud SQL properties. */
 	// +optional
@@ -121,6 +184,28 @@ type ConnectionAwsStatus struct {
 	AccessRole *ConnectionAccessRoleStatus `json:"accessRole,omitempty"`
 }
 
+type ConnectionAzureStatus struct {
+	/* The name of the Azure Active Directory Application. */
+	// +optional
+	Application *string `json:"application,omitempty"`
+
+	/* The client id of the Azure Active Directory Application. */
+	// +optional
+	ClientID *string `json:"clientID,omitempty"`
+
+	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's Azure Active Directory Application. */
+	// +optional
+	Identity *string `json:"identity,omitempty"`
+
+	/* The object id of the Azure Active Directory Application. */
+	// +optional
+	ObjectID *string `json:"objectID,omitempty"`
+
+	/* The URL user will be redirected to after granting consent during connection setup. */
+	// +optional
+	RedirectUri *string `json:"redirectUri,omitempty"`
+}
+
 type ConnectionCloudResourceStatus struct {
 	/* The account ID of the service created for the purpose of this
 	connection.
@@ -150,6 +235,9 @@ type ConnectionCloudSqlStatus struct {
 type ConnectionObservedStateStatus struct {
 	// +optional
 	Aws *ConnectionAwsStatus `json:"aws,omitempty"`
+
+	// +optional
+	Azure *ConnectionAzureStatus `json:"azure,omitempty"`
 
 	// +optional
 	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`

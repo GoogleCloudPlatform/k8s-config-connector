@@ -17,7 +17,6 @@ kind: SQLInstance
 metadata:
   name: sqlinstance-denymaintenanceperiod-direct-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/state-into-spec: absent
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   databaseVersion: POSTGRES_15

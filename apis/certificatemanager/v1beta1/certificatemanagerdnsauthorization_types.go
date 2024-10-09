@@ -40,6 +40,10 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	// +required
 	ProjectRef refs.ProjectRef `json:"projectRef"`
 
+	/* Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used. */
+	// +optional
+	Location string `json:"location"`
+
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -61,11 +65,9 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* NOTYET
 	// A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
-	*/
 
 	/* NOTYET
 	// ObservedState is the state of the resource as most recently observed in GCP.
@@ -90,7 +92,7 @@ type CertificateManagerDNSAuthorizationObservedState struct {
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable"
 
 // CertificateManagerDNSAuthorization is the Schema for the CertificateManagerDNSAuthorization API
 // +k8s:openapi-gen=true

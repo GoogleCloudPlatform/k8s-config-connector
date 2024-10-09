@@ -41,7 +41,7 @@ func (s *RegionalURLMapsV1) Get(ctx context.Context, req *pb.GetRegionUrlMapRequ
 
 	obj := &pb.UrlMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 	}
 
 	return obj, nil

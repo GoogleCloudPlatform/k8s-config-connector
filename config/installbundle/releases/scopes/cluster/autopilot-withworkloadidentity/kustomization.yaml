@@ -16,5 +16,5 @@ namespace: cnrm-system
 resources:
   - ../withworkloadidentity
 patches:
-  - hostnetwork_patch.yaml
+  - path: hostnetwork_patch.yaml
 

@@ -42,7 +42,7 @@ const ControllerTemplate = `
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package {{.KCCService}}
+package {{.Kind | ToLower }}
 
 import (
 	"context"
@@ -75,8 +75,6 @@ import (
 
 const (
 	ctrlName = "{{.KCCService}}-{{.ProtoResource | ToLower }}-controller"
-    // TODO(user): Confirm service domain
-	serviceDomain = "//{{.KCCService}}.googleapis.com"
 )
 
 func init() {
@@ -112,52 +110,11 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	id, err := krm.New{{.Kind}}Ref(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
 
-	// Get location
-	location := obj.Spec.Location
-
-	var id *{{.Kind}}Identity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(projectID, location, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.Parent.Project != projectID {
-			return nil, fmt.Errorf("{{.Kind}} %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
-		}
-		if id.Parent.Location != location {
-			return nil, fmt.Errorf("{{.Kind}} %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
-		}
-		if id.{{.ProtoResource}} != resourceID {
-			return nil, fmt.Errorf("{{.Kind}}  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.{{.ProtoResource}}, resourceID)
-		}
-	}
-
-	// TODO(kcc): GetGCPClient as interface method.
 	// Get {{.KCCService}} GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -176,7 +133,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id         *{{.Kind}}Identity
+	id         *krm.{{.Kind}}Ref
 	gcpClient  *gcp.Client
 	desired    *krm.{{.Kind}}
 	actual     *{{.KCCService}}pb.{{.ProtoResource}}
@@ -186,16 +143,15 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting {{.Kind}}", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("getting {{.Kind}}", "name", a.id.External)
 
-	// TODO(user): write the gcp "GET" operation.
-	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.FullyQualifiedName()}
+	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.External}
 	{{.ProtoResource | ToLower }}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.External, err)
 	}
 
 	a.actual = {{.ProtoResource | ToLower }}pb
@@ -206,7 +162,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -216,26 +172,30 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
+	parent, err := a.id.Parent()
+	if err != nil {
+		return err
+	}
 	req := &{{.KCCService}}pb.Create{{.ProtoResource}}Request{
-		Parent: 						  a.id.Parent.String(),
+		Parent: 						  parent.String(),
 		{{.ProtoResource}}:               resource,
 	}
 	op, err := a.gcpClient.Create{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id.External, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id.External, err)
 	}
-	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id.External)
 
 	status := &krm.{{.Kind}}Status{}
 	status.ObservedState = {{.Kind}}StatusObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
+	status.ExternalRef = &a.id.External
 	return setStatus(u, status)
 }
 
@@ -243,7 +203,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -259,24 +219,24 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	
 	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.FullyQualifiedName())
+		log.V(2).Info("no field needs update", "name", a.id.External)
 		return nil
 	}
 	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
 	req := &{{.KCCService}}pb.Update{{.ProtoResource}}Request{
-		Name:       			a.id.FullyQualifiedName(),
+		Name:       			a.id.External,
 		UpdateMask:             updateMask,
 		{{.ProtoResource}}:     resource,
 	}
 	op, err := a.gcpClient.Update{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id.External, err)
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id.External, err)
 	}
-	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id.External)
 
 	status := &krm.{{.Kind}}Status{}
 	status.ObservedState = {{.Kind}}StatusObservedState_FromProto(mapCtx, updated)
@@ -299,8 +259,12 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 	// TODO(user): Update other resource reference 
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Parent.Project}
-	obj.Spec.Location = a.id.Parent.Location
+	parent, err := a.id.Parent()
+	if err != nil {
+		return nil, err
+	}
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
+	obj.Spec.Location = parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -312,18 +276,18 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id.External)
 
-	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.FullyQualifiedName()}
+	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.External}
 	op, err := a.gcpClient.Delete{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id.External, err)
 	}
-	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id.External)
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id.External, err)
 	}
 	return true, nil
 }

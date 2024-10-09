@@ -1,0 +1,78 @@
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "dataExchange \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}\" not found"
+}
+
+---
+
+POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges?dataExchangeId=bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS
+
+{
+  "discoveryType": 0,
+  "displayName": "my_data_exchange"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "description": "",
+  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "displayName": "my_data_exchange",
+  "documentation": "",
+  "icon": "",
+  "listingCount": 0,
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "primaryContact": "",
+  "sharingEnvironmentConfig": null
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "description": "",
+  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "displayName": "my_data_exchange",
+  "documentation": "",
+  "icon": "",
+  "listingCount": 0,
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "primaryContact": "",
+  "sharingEnvironmentConfig": null
+}
+
+---
+
+DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+Grpc-Metadata-X-Http-Code: 204
+
+{}

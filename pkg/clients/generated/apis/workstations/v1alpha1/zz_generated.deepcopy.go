@@ -117,11 +117,7 @@ func (in *WorkstationClusterSpec) DeepCopyInto(out *WorkstationClusterSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.NetworkRef != nil {
-		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
-		**out = **in
-	}
+	out.NetworkRef = in.NetworkRef
 	if in.PrivateClusterConfig != nil {
 		in, out := &in.PrivateClusterConfig, &out.PrivateClusterConfig
 		*out = new(WorkstationclusterPrivateClusterConfig)
@@ -133,11 +129,7 @@ func (in *WorkstationClusterSpec) DeepCopyInto(out *WorkstationClusterSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.SubnetworkRef != nil {
-		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
-		**out = **in
-	}
+	out.SubnetworkRef = in.SubnetworkRef
 	return
 }
 

@@ -129,6 +129,7 @@ var (
 	KCCVersionLabel      = FormatAnnotation("version")
 	ScopedNamespaceLabel = FormatAnnotation("scoped-namespace")
 	DCL2CRDLabel         = FormatAnnotation("dcl2crd")
+	TF2CRDLabel          = FormatAnnotation("tf2crd")
 	KCCStabilityLabel    = FormatAnnotation("stability-level")
 
 	MutableButUnreadableFieldsAnnotation = FormatAnnotation("mutable-but-unreadable-fields")

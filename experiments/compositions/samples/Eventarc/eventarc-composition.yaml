@@ -1,0 +1,212 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: gcs-bucket-getter
+  namespace: config-control
+spec:
+  valuesFrom:
+  - name: bucket
+    resourceRef:
+      group: storage.cnrm.cloud.google.com
+      version: v1beta1
+      kind: StorageBucket
+      resource: storagebuckets
+      name: my-gcs-bucket-101 # Replace with your bucket name
+    fieldRef:
+    - path: ".metadata.name"
+      as: name
+---
+apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: pubsub-topic-getter
+  namespace: config-control
+spec:
+  valuesFrom:
+  - name: topic
+    resourceRef:
+      group: pubsub.cnrm.cloud.google.com
+      version: v1beta1
+      kind: PubSubTopic
+      resource: pubsubtopics
+      name: eventarc-topic-1 # Replace with your Pub/Sub topic name
+    fieldRef:
+    - path: ".metadata.name"
+      as: name
+---
+apiVersion: composition.google.com/v1alpha1
+kind: Composition
+metadata:
+  name: complete-eventarc-composition
+  namespace: config-control
+spec:
+  inputAPIGroup: eventarcconfigs.idp.mycompany.com
+  expanders:
+  # STAGE 1: Enable necessary APIs.
+  - type: jinja2
+    version: v0.0.1
+    name: enable-services
+    template: |
+      {% set services=[ 'storage.googleapis.com', 'pubsub.googleapis.com', 'eventarc.googleapis.com', 'workflows.googleapis.com' ] %}
+      {% for service in services %}
+      ---
+      apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+      kind: Service
+      metadata:
+        annotations:
+          cnrm.cloud.google.com/deletion-policy: "abandon"
+          cnrm.cloud.google.com/disable-dependent-services: "false"
+        name: {{service}}
+        namespace: {{ eventarcconfigs.spec.namespace }}
+      spec:
+        resourceID: {{service}}
+      {% endfor %}
+
+  # STAGE 2: Apply SAs
+  - type: jinja2  # applies service accounts
+    name: apply-sa
+    template: |
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMServiceAccount
+      metadata:
+        annotations:
+          cnrm.cloud.google.com/project-id: {{ context.spec.project }}
+        name: eventarctrigger-iam-gsa
+        namespace: {{ context.spec.namespace }}
+      spec:
+        displayName: ExampleGSA-EventArc-POC
+      ---
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPolicyMember
+      metadata:
+        name: eventarctrigger-iam-gsa-wf
+        namespace: {{ context.spec.namespace }}
+      spec:
+        memberFrom:
+          serviceAccountRef:
+            name: eventarctrigger-iam-gsa
+        role: roles/workflows.admin
+        resourceRef:
+          kind: Project
+          external: {{ context.spec.project }}
+      ---
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPolicyMember
+      metadata:
+        name: eventarctrigger-iam-gsa-ev
+        namespace: {{ context.spec.namespace }}
+      spec:
+        memberFrom:
+          serviceAccountRef:
+            name: eventarctrigger-iam-gsa
+        role: roles/eventarc.admin
+        resourceRef:
+          kind: Project
+          external: {{ context.spec.project }}
+      ---
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPolicyMember
+      metadata:
+        name: gcs-bucket-pubsub-publisher
+        namespace: {{ context.spec.namespace }}
+      spec:
+        member: serviceAccount:service-{{ eventarcconfigs.spec.projectNumber }}@gs-project-accounts.iam.gserviceaccount.com
+        role: roles/pubsub.publisher
+        resourceRef:
+          kind: PubSubTopic
+          name: {{ eventarcconfigs.spec.topicName }}
+
+  # STAGE 3: Create the StorageBucket and PubSubTopic resources
+  - type: jinja2  # create-gcs-bucket
+    name: create-gcs-bucket
+    template: |
+      apiVersion: storage.cnrm.cloud.google.com/v1beta1
+      kind: StorageBucket
+      metadata:
+        name: {{ eventarcconfigs.spec.bucketName }}
+        namespace: {{ eventarcconfigs.spec.namespace }}
+      spec:
+        uniformBucketLevelAccess: true
+  - type: jinja2  # create-pubsub-topic
+    name: create-pubsub-topic
+    template: |
+      apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+      kind: PubSubTopic
+      metadata:
+        name: {{ eventarcconfigs.spec.topicName }}
+        namespace: {{ eventarcconfigs.spec.namespace }}
+
+  # STAGE 4: Wait for the StorageBucket and PubSubTopic to be ready
+  - type: getter  # get-gcs-bucket
+    version: v0.0.1
+    name: get-gcs-bucket
+    template: ""
+    configref:
+      name: gcs-bucket-getter
+      namespace: config-control
+
+  - type: getter  # get-pubsub-topic
+    version: v0.0.1
+    name: get-pubsub-topic
+    template: ""
+    configref:
+      name: pubsub-topic-getter
+      namespace: config-control
+
+  # STAGE 5: Create the EventarcTrigger and StorageNotification using extracted values
+  - type: jinja2
+    name: create-eventarc-trigger
+    template: |
+      apiVersion: eventarc.cnrm.cloud.google.com/v1beta1
+      kind: EventarcTrigger
+      metadata:
+        name: {{ eventarcconfigs.spec.triggerName }}
+        namespace: {{ context.spec.namespace }}
+      spec:
+        destination:
+          workflowRef:
+            external: "projects/{{ context.spec.project }}/locations/{{eventarcconfigs.spec.location}}/workflows/{{eventarcconfigs.spec.workflowName}}"
+        location: {{eventarcconfigs.spec.location}}
+        serviceAccountRef:
+          name: eventarctrigger-iam-gsa
+        transport:
+          pubsub:
+            topicRef:
+              name: {{ values.topic.name }}
+              namespace: config-control
+        matchingCriteria:
+        - attribute: "type"
+          value: "google.cloud.pubsub.topic.v1.messagePublished"
+        projectRef:
+          external: "projects/{{ context.spec.project }}"
+
+  - type: jinja2  # create-storage-notification
+    name: create-storage-notification
+    template: |
+      apiVersion: storage.cnrm.cloud.google.com/v1beta1
+      kind: StorageNotification
+      metadata:
+        name: bucket-notification
+        namespace: {{ eventarcconfigs.spec.namespace }}
+      spec:
+        bucketRef:
+          name: {{ values.bucket.name }}
+        topicRef:
+          name: {{ values.topic.name }}
+        eventTypes:
+        - "OBJECT_FINALIZE"
+        payloadFormat: JSON_API_V1

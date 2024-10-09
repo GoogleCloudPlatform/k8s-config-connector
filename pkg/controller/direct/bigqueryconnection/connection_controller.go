@@ -94,7 +94,18 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		}
 	}
 
-	connectionRef, err := krm.New(ctx, reader, obj)
+	// Resolve SpannerDatabaseRef
+	if obj.Spec.CloudSpannerSpec != nil {
+		if obj.Spec.CloudSpannerSpec.DatabaseRef != nil {
+			database, err := refs.ResolveSpannerDatabaseRef(ctx, reader, obj, obj.Spec.CloudSpannerSpec.DatabaseRef)
+			if err != nil {
+				return nil, err
+			}
+			obj.Spec.CloudSpannerSpec.DatabaseRef.External = database.String()
+		}
+	}
+
+	connectionRef, err := krm.NewBigQueryConnectionConnectionRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
