@@ -204,7 +204,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating DataExchange", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
-	// TODO(user): (Optional) Add GCP mutable fields.
 	// TODO(kcc): Autogen "func immutable()" for each field
 	// TODO(kcc): autogen updateMastk.path for mutable gcp fields.
 	updateMask := &fieldmaskpb.FieldMask{}
@@ -224,7 +223,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// if !reflect.DeepEqual(a.desired.Spec.Icon, string(a.actual.Icon)) {
 	// 	updateMask.Paths = append(updateMask.Paths, "icon")
 	// }
-	if !reflect.DeepEqual(a.desired.Spec.DiscoveryType, a.actual.DiscoveryType.String()) {
+	if a.desired.Spec.DiscoveryType != nil && !reflect.DeepEqual(a.desired.Spec.DiscoveryType, a.actual.DiscoveryType.String()) {
 		updateMask.Paths = append(updateMask.Paths, "discovery_type")
 	}
 
