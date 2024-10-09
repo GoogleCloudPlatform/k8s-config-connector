@@ -17,6 +17,7 @@ output fields from GCP APIs are in `status.observedState.*`
 
 ## Direct Cloud Reconciler:
 * CertificateManagerDNSAuthorization (v1beta1).
+* BigQueryAnalyticsHubDataExchange (v1alpha1).
 
 ## New Resources:
 
