@@ -23,6 +23,7 @@ generate-pb: install-protoc-linux
 		./third_party/googleapis/google/logging/v2/*.proto \
 		./third_party/googleapis/google/monitoring/v3/*.proto \
 		./third_party/googleapis/google/monitoring/dashboard/v1/*.proto \
+		./third_party/googleapis/google/monitoring/metricsscope/v1/*.proto \
 		./third_party/googleapis/google/devtools/cloudbuild/*/*.proto \
 		-o build/googleapis.pb
 

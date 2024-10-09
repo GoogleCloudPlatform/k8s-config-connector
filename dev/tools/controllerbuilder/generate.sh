@@ -24,6 +24,23 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
+# Monitoring
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.monitoring.metricsscope.v1 \
+    --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
+    --output-api ${APIS_DIR} \
+    --kind MonitoringMonitoredProject \
+    --proto-resource MonitoredProject
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.monitoring.metricsscope.v1 \
+    --api-version monitoring.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # DataFlow
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
