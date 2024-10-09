@@ -12,9 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-namespace: cnrm-system
 resources:
-  - ../withworkloadidentity
-patches:
-  - path: hostnetwork_patch.yaml
-
+- ../release-bundle/install-bundle-gcp-identity/0-cnrm-system.yaml
