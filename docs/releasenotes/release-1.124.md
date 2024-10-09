@@ -17,6 +17,7 @@ output fields from GCP APIs are in `status.observedState.*`
 
 ## Direct Cloud Reconciler:
 * CertificateManagerDNSAuthorization (v1beta1).
+* ComputeForwardingRule (v1beta1).
 * BigQueryAnalyticsHubDataExchange (v1alpha1).
 
 ## New Resources:
@@ -27,3 +28,5 @@ output fields from GCP APIs are in `status.observedState.*`
 
 * CertificateManagerDNSAuthorization
   * Added `spec.Location` field.
+* ComputeForwardingRule
+  * Added `spec.target.googleApisBundle` field
