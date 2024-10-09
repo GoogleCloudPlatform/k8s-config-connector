@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"sort"
-	"strings"
 
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -27,12 +25,14 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -187,33 +187,20 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func MergeMap(a, b map[string]string) map[string]string {
+	copy := make(map[string]string, len(a))
+	for k, v := range a {
+		copy[k] = v
+	}
 	for k, v := range b {
-		a[k] = v
+		copy[k] = v
 	}
-	return a
+	return copy
 }
 
-func RemoveByPrefixes(a map[string]string, prefixes ...string) map[string]string {
-	for k, _ := range a {
-		for i := range prefixes {
-			if strings.HasPrefix(k, prefixes[i]) {
-				delete(a, k)
-			}
-		}
-	}
-	return a
-}
-
-func UserAnnotations(secret *krm.SecretManagerSecret) map[string]string {
+func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
 	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
-	annotations = RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com")
+	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com")
 	return annotations
-}
-
-func UserLabels(secret *krm.SecretManagerSecret) map[string]string {
-	labels := RemoveByPrefixes(secret.GetLabels(), "cnrm.cloud.google.com")
-	labels["managed-by-cnrm"] = "true"
-	return labels
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
@@ -229,8 +216,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	resource.Annotations = UserAnnotations(desired)
-	resource.Labels = UserLabels(desired)
+	resource.Annotations = ComputeAnnotations(desired)
+	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 
 	// Add metadata
 	req := &secretmanagerpb.CreateSecretRequest{
@@ -255,17 +242,16 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 }
 
 func topicsEqual(desired []*krm.TopicRef, actual []*secretmanagerpb.Topic) bool {
-	externalsDesired := []string{}
-	externalsActual := []string{}
+
+	externalsDesired := sets.Set[string]{}
+	externalsActual := sets.Set[string]{}
 	for _, topicRef := range desired {
-		externalsDesired = append(externalsDesired, topicRef.PubSubTopicRef.External)
+		externalsDesired.Insert(topicRef.PubSubTopicRef.External)
 	}
 	for _, topic := range actual {
-		externalsActual = append(externalsActual, topic.GetName())
+		externalsActual.Insert(topic.GetName())
 	}
-	sort.Sort(sort.StringSlice(externalsDesired))
-	sort.Sort(sort.StringSlice(externalsActual))
-	return reflect.DeepEqual(externalsDesired, externalsActual)
+	return reflect.DeepEqual(sets.List(externalsDesired), sets.List(externalsActual))
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -283,8 +269,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.FullyQualifiedName()
 
-	resource.Annotations = UserAnnotations(desired)
-	resource.Labels = UserLabels(desired)
+	resource.Annotations = ComputeAnnotations(desired)
+	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 
 	updateMask := &fieldmaskpb.FieldMask{}
 
