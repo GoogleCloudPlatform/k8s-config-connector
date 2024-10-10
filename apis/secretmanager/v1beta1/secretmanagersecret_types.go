@@ -108,6 +108,49 @@ type SecretManagerSecretSpec struct {
 	*/
 }
 
+// +kcc:proto=google.cloud.secretmanager.v1.Replication
+type Replication struct {
+	// The Secret will automatically be replicated without any restrictions.
+	LegacyAuto *bool `json:"automatic,omitempty"`
+
+	// The [Secret][google.cloud.secretmanager.v1.Secret] will automatically be
+	//  replicated without any restrictions.
+	LegacyAutomatic *Replication_Automatic `json:"auto,omitempty"`
+
+	// The [Secret][google.cloud.secretmanager.v1.Secret] will only be
+	//  replicated into the locations specified.
+	UserManaged *Replication_UserManaged `json:"userManaged,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.Replication.UserManaged
+type Replication_UserManaged struct {
+	// +required
+	// Required. The list of Replicas for this
+	//  [Secret][google.cloud.secretmanager.v1.Secret].
+	//
+	//  Cannot be empty.
+	Replicas []Replication_UserManaged_Replica `json:"replicas,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.Replication.UserManaged.Replica
+type Replication_UserManaged_Replica struct {
+	// +required
+	// The canonical IDs of the location to replicate data.
+	//  For example: `"us-east1"`.
+	Location *string `json:"location,omitempty"`
+
+	// Optional. The customer-managed encryption configuration of the
+	//  [User-Managed Replica][Replication.UserManaged.Replica]. If no
+	//  configuration is provided, Google-managed default encryption is used.
+	//
+	//  Updates to the [Secret][google.cloud.secretmanager.v1.Secret]
+	//  encryption configuration only apply to
+	//  [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added
+	//  afterwards. They do not apply retroactively to existing
+	//  [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+	CustomerManagedEncryption *CustomerManagedEncryption `json:"customerManagedEncryption,omitempty"`
+}
+
 type TopicRef struct {
 	// +required
 	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
