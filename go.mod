@@ -21,6 +21,7 @@ require (
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/redis v1.17.0
 	cloud.google.com/go/resourcemanager v1.10.0
+	cloud.google.com/go/secretmanager v1.14.0
 	cloud.google.com/go/securesourcemanager v1.1.1
 	cloud.google.com/go/security v1.18.0
 	cloud.google.com/go/workstations v1.1.1

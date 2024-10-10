@@ -38,6 +38,15 @@ kind: PubSubTopic
 metadata:
   name: topic-2-${uniqueId}
 ---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: serviceidentity-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: secretmanager.googleapis.com
+---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:

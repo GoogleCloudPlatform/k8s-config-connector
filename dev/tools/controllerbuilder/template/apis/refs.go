@@ -80,7 +80,7 @@ func (r *{{.Kind}}Ref) NormalizedExternal(ctx context.Context, reader client.Rea
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if actualExternalRef == ""
+	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 	r.External = actualExternalRef
