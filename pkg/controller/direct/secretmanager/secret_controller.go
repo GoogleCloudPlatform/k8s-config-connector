@@ -248,6 +248,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	updateMask := &fieldmaskpb.FieldMask{}
 
+	_, err := common.Compare(resource, a.actual)
+
 	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
 		updateMask.Paths = append(updateMask.Paths, "annotations")
 	}

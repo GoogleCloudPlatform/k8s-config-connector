@@ -14,7 +14,35 @@
 
 package common
 
-import "google.golang.org/protobuf/types/known/timestamppb"
+import (
+	"fmt"
+	"reflect"
+
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+func Compare(x, y proto.Message) (*fieldmaskpb.FieldMask, error) {
+	updateMask := &fieldmaskpb.FieldMask{}
+	// 	return nil, fmt.Errorf("compare type not known, suggest write your own compare logic.")
+	if x == nil || y == nil {
+		return nil, fmt.Errorf("missing compare proto objects")
+	}
+	if reflect.TypeOf(x).Kind() == reflect.Ptr && x == y {
+		return updateMask, nil
+	}
+	mx := x.ProtoReflect()
+	my := y.ProtoReflect()
+	if mx.IsValid() != my.IsValid() {
+		return nil, fmt.Errorf("mismatch validity, at least one proto object is empty and read-only.")
+	}
+	vx := protoreflect.ValueOfMessage(mx)
+	vy := protoreflect.ValueOfMessage(my)
+	vx.Equal(vy)
+	return updateMask, nil
+}
 
 func DeepEqual_StringAndTimestampPb(a string, b *timestamppb.Timestamp) bool {
 	norm := NormalizeStringToTimestamp(a)
