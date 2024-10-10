@@ -31,12 +31,17 @@ import (
 
 type RedisV1beta1Interface interface {
 	RESTClient() rest.Interface
+	RedisClustersGetter
 	RedisInstancesGetter
 }
 
 // RedisV1beta1Client is used to interact with features provided by the redis.cnrm.cloud.google.com group.
 type RedisV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *RedisV1beta1Client) RedisClusters(namespace string) RedisClusterInterface {
+	return newRedisClusters(c, namespace)
 }
 
 func (c *RedisV1beta1Client) RedisInstances(namespace string) RedisInstanceInterface {
