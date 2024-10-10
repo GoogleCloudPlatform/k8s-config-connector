@@ -40,11 +40,10 @@ hack/record-gcp fixtures/<your_resource_test>
 
 #### Record mock GCP log. 
 
-Note: This will override the output!
-(remove the` WRITE_GOLDEN_OUTPUT=1` in hack/compare-mock if you don’t want to override)
+Note: This will overwrite the golden output! (use `hack/compare-mock` to just compare instead)
 
 ```
-hack/compare-mock fixtures/<your_resource_test>
+hack/record-mock fixtures/<your_resource_test>
 ```
 
 ## Exit Criteria

@@ -4,6 +4,8 @@ We are thrilled to introduce the guide for adding Config Connector resources and
 
 While there is more work to be done to further improve the process of adding KCC resources, we believe the guide is now ready to be shared broadly, such that Google developers, partners, and customers can add KCC resources. We will continue improving this guide to make it simpler and easier to develop new KCC resources. Please stay tuned for the upcoming changes.
 
+Be sure to work through the [Contributing guide](../../CONTRIBUTING.md) before starting.
+
 # Contents
 
 ## Introduction
