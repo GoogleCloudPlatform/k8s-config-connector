@@ -22,7 +22,7 @@ output fields from GCP APIs are in `status.observedState.*`
 
 ## New Resources:
 
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* Added support for `PrivilegedAccessManagerEntitlement` (v1alpha1) resource.
 
 ## New Fields:
 
