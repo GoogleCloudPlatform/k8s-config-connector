@@ -29,49 +29,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeFirewallPolicyRef) (*refs.ComputeFirewallPolicyRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeFirwallPolicy, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeFirewallPolicy",
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	resourceID, err := refs.GetResourceID(computeFirwallPolicy)
-	if err != nil {
-		return nil, err
-	}
-
-	return &refs.ComputeFirewallPolicyRef{
-		External: fmt.Sprintf("%s", resourceID)}, nil
-}
-
 func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*refs.ComputeNetworkRef, error) {
 	if ref == nil {
 		return nil, nil

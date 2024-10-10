@@ -30,6 +30,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: locations/global/firewallPolicies/${firewallPolicyID}/rules/9000
   kind: compute#firewallPolicyRule
   observedGeneration: 2
   ruleTupleCount: 2
