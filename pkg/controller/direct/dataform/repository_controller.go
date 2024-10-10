@@ -288,8 +288,26 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	// TODO(kcc)
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.DataformRepository{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(DataformRepositorySpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	obj.Spec.ProjectRef = &apirefs.ProjectRef{Name: a.id.project}
+	obj.Spec.Region = a.id.location
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u.Object = uObj
+	return u, nil
 }
 
 // Delete implements the Adapter interface.
