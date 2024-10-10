@@ -213,8 +213,6 @@ import (
 	fakepubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1/fake"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	fakerecaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1/fake"
-	redisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1alpha1"
-	fakeredisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1alpha1/fake"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
 	fakeredisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1/fake"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
@@ -793,11 +791,6 @@ func (c *Clientset) PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Inter
 // RecaptchaenterpriseV1beta1 retrieves the RecaptchaenterpriseV1beta1Client
 func (c *Clientset) RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface {
 	return &fakerecaptchaenterprisev1beta1.FakeRecaptchaenterpriseV1beta1{Fake: &c.Fake}
-}
-
-// RedisV1alpha1 retrieves the RedisV1alpha1Client
-func (c *Clientset) RedisV1alpha1() redisv1alpha1.RedisV1alpha1Interface {
-	return &fakeredisv1alpha1.FakeRedisV1alpha1{Fake: &c.Fake}
 }
 
 // RedisV1beta1 retrieves the RedisV1beta1Client
