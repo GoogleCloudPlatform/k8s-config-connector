@@ -169,6 +169,9 @@ spec:
         labels: labels
       resourceID:
         targetField: instance_id
+      ignoredFields:
+        - psc_instance_config.psc_dns_name
+        - psc_instance_config.service_attachment_link
       resourceReferences:
         - tfField: cluster
           key: clusterRef
