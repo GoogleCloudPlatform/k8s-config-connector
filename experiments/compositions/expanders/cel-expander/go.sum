@@ -1,5 +1,7 @@
 github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20240701212443-eb03df209286 h1:U8TWXJeAegVv/kzPj2rAXWlxQbsWkhWSfKXWlJvuaUQ=
 github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20240701212443-eb03df209286/go.mod h1:b+qvSKhDpHuIDqWavpFEBsFW/1VjjFgjVqlD+KgGOHk=
+github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20241010173209-4e8eb9270282 h1:dfGdYRXOuhYZLXJoQpWT7HRsUDDafBTyXs7kUb97JA4=
+github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20241010173209-4e8eb9270282/go.mod h1:AF64cnkL0ipuJa6758I7jrznQ2SPhMqDI+5iC1uLXww=
 github.com/antlr4-go/antlr/v4 v4.13.0 h1:lxCg3LAv+EUK6t1i0y1V6/SLeUi0eKEKdhQAlS8TVTI=
 github.com/antlr4-go/antlr/v4 v4.13.0/go.mod h1:pfChB/xh/Unjila75QW7+VU4TSnWnnk9UTnmpPaOR2g=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
