@@ -228,8 +228,8 @@ func IsNotFound(err error) bool {
 	return HasHTTPCode(err, 404)
 }
 
-// IsInvalidValue returns true if the given error is an HTTP 400.
-func IsInvalidValue(err error) bool {
+// IsBadRequest returns true if the given error is an HTTP 400.
+func IsBadRequest(err error) bool {
 	return HasHTTPCode(err, 400)
 }
 

@@ -25,8 +25,8 @@ import (
 
 var (
 	ComputeFirewallPolicyRuleGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
 		Kind:    "ComputeFirewallPolicyRule",
 	}
 )

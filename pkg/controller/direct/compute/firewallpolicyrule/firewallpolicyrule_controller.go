@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	"google.golang.org/api/option"
+
 	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -59,6 +61,19 @@ type firewallPolicyRuleAdapter struct {
 
 var _ directbase.Adapter = &firewallPolicyRuleAdapter{}
 
+func (m *firewallPolicyRuleModel) client(ctx context.Context) (*gcp.FirewallPoliciesClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := gcp.NewFirewallPoliciesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building FirewallPolicy client: %w", err)
+	}
+	return gcpClient, err
+}
+
 func (m *firewallPolicyRuleModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.ComputeFirewallPolicyRule{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -88,16 +103,11 @@ func (m *firewallPolicyRuleModel) AdapterForObject(ctx context.Context, reader c
 	}
 
 	// Get GCP client
-	gcpClient, err := newGCPClient(ctx, m.config)
+	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
-
-	firewallPoliciesClient, err := gcpClient.firewallPoliciesClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-	firewallPolicyRuleAdapter.firewallPoliciesClient = firewallPoliciesClient
+	firewallPolicyRuleAdapter.firewallPoliciesClient = gcpClient
 
 	return firewallPolicyRuleAdapter, nil
 }
@@ -113,10 +123,10 @@ func (a *firewallPolicyRuleAdapter) Find(ctx context.Context) (bool, error) {
 
 	firewallPolicyRule, err := a.get(ctx)
 	if err != nil {
-		// When a certain rule does not exist, the error has code 400(invalid) instead of 404(not found)
+		// When a certain rule does not exist, the error has code 400(bad request) instead of 404(not found)
 		// example error message:
 		// "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-		if direct.IsInvalidValue(err) {
+		if direct.IsBadRequest(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting ComputeFirewallPolicyRule %d: %w", a.priority, err)
@@ -126,7 +136,6 @@ func (a *firewallPolicyRuleAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
 	var err error
 
 	err = resolveDependencies(ctx, a.reader, a.desired)
@@ -169,15 +178,12 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 		return fmt.Errorf("getting ComputeFirewallPolicyRule %d: %w", a.priority, err)
 	}
 
-	status := &krm.ComputeFirewallPolicyRuleStatus{
-		RuleTupleCount: direct.PtrTo(int64(*created.RuleTupleCount)),
-		Kind:           direct.PtrTo("compute#firewallPolicyRule"),
-	}
-	return setStatus(u, status)
+	status := &krm.ComputeFirewallPolicyRuleStatus{}
+	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, created)
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
 	var err error
 
 	err = resolveDependencies(ctx, a.reader, a.desired)
@@ -194,9 +200,10 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	// The field priority should be removed from the patch request body and included as a query parameter.
+	// See API doc: https://cloud.google.com/compute/docs/reference/rest/v1/firewallPolicies/patchRule#query-parameters
 	firewallPolicyRule.Priority = nil
 
-	op := &gcp.Operation{}
 	updated := &computepb.FirewallPolicyRule{}
 
 	updateReq := &computepb.PatchRuleFirewallPolicyRequest{
@@ -204,7 +211,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		FirewallPolicy:             a.firewallPolicy,
 		Priority:                   direct.PtrTo(int32(a.priority)),
 	}
-	op, err = a.firewallPoliciesClient.PatchRule(ctx, updateReq)
+	op, err := a.firewallPoliciesClient.PatchRule(ctx, updateReq)
 	if err != nil {
 		return fmt.Errorf("updating ComputeFirewallPolicyRule %d: %w", a.priority, err)
 	}
@@ -222,11 +229,9 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		return fmt.Errorf("getting ComputeFirewallPolicyRule %d: %w", a.priority, err)
 	}
 
-	status := &krm.ComputeFirewallPolicyRuleStatus{
-		RuleTupleCount: direct.PtrTo(int64(*updated.RuleTupleCount)),
-		Kind:           direct.PtrTo("compute#firewallPolicyRule"),
-	}
-	return setStatus(u, status)
+	status := &krm.ComputeFirewallPolicyRuleStatus{}
+	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, updated)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -289,22 +294,4 @@ func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepb.Firewal
 		Priority:       direct.PtrTo(int32(a.priority)),
 	}
 	return a.firewallPoliciesClient.GetRule(ctx, getReq)
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
-	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
 }
