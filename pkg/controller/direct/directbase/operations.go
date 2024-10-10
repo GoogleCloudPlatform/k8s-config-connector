@@ -20,6 +20,9 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -56,13 +59,21 @@ func (o *operationBase) GetUnstructured() *unstructured.Unstructured {
 
 type UpdateOperation struct {
 	operationBase
+
+	lifecycleHandler lifecyclehandler.LifecycleHandler
 }
 
-func NewUpdateOperation(client client.Client, object *unstructured.Unstructured) *UpdateOperation {
+func NewUpdateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, client client.Client, object *unstructured.Unstructured) *UpdateOperation {
 	op := &UpdateOperation{}
+	op.lifecycleHandler = lifecycleHandler
 	op.client = client
 	op.object = object
 	return op
+}
+
+func (o *UpdateOperation) RecordUpdatingEvent() {
+	r := o.lifecycleHandler.Recorder
+	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 }
 
 type CreateOperation struct {
