@@ -43,6 +43,9 @@ func matchResourceNameToRC(uriPath string, sm *v1alpha1.ServiceMapping) (*v1alph
 
 func matchResourceNameToRCGeneral(uriPath string, sm *v1alpha1.ServiceMapping) (*v1alpha1.ResourceConfig, error) {
 	for _, rc := range sm.Spec.Resources {
+		if rc.Direct {
+			continue
+		}
 		if !*rc.IDTemplateCanBeUsedToMatchResourceName {
 			continue
 		}

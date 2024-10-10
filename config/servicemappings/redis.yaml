@@ -22,6 +22,10 @@ spec:
   version: v1beta1
   serviceHostName: "redis.googleapis.com"
   resources:
+    - name: google_redis_cluster
+      kind: RedisCluster
+      direct: true
+
     - name: google_redis_instance
       kind: RedisInstance
       idTemplate: "{{project}}/{{region}}/{{name}}"
