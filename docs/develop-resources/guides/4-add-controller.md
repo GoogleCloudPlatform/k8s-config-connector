@@ -45,6 +45,15 @@ hack/compare-mock fixtures/<your_resource_test>
 KCC_USE_DIRECT_RECONCILERS=<YOUR KIND> hack/compare-mock fixtures/<your_resource_test>
 ```
 
+### Turn on SciFi Controller
+
+To fully turn on the SciFi controller, add your resource to [KCC_USE_DIRECT_RECONCILERS](https://github.com/xiaoweim/k8s-config-connector/blob/master/dev/tasks/run-e2e#L27) and make sure it passes all tests and there is a decent test coverage over customer use cases. Usually we do not turn it on for beta resources right away.
+ 
+
+ * Note: some resources are used as dependency resources in other test scenarios, to only test the direct controller with your resource test, you can use this annotation `alpha.cnrm.cloud.google.com/reconciler: "direct"` in the test yamls instead of using the `KCC_USE_DIRECT_RECONCILERS` flag at CLI.
+
+ * Note: Differences in http.logs such as `user-agent` and method url are expected. Please regenerate test logs before `compare-mock`.
+
 ### Exit Criteria
 
 * The PRs shall pass the MockGCP tests
