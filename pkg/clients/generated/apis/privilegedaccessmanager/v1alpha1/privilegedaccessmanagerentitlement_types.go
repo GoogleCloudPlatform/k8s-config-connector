@@ -61,21 +61,6 @@ type EntitlementEligibleUsers struct {
 }
 
 type EntitlementGcpIAMAccess struct {
-	/* The Folder that this privileged access is granted to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
-	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
-
-	/* The Organization that this privileged access is granted to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
-	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
-
-	/* The Project that this privileged access is granted to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
-
-	/* Required. The type of this resource. */
-	ResourceType string `json:"resourceType"`
-
 	/* Required. Role bindings that are created on successful grant. */
 	RoleBindings []EntitlementRoleBindings `json:"roleBindings"`
 }

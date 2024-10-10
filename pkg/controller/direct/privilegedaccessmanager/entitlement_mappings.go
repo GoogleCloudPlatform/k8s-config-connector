@@ -15,11 +15,7 @@
 package privilegedaccessmanager
 
 import (
-	"fmt"
-	"strings"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	pb "cloud.google.com/go/privilegedaccessmanager/apiv1/privilegedaccessmanagerpb"
@@ -31,43 +27,17 @@ func GcpIamAccess_FromProto(mapCtx *direct.MapContext, in *pb.PrivilegedAccess_G
 		return nil
 	}
 	out := &krm.GcpIamAccess{}
-	resourceType := in.GetResourceType()
-	out.ResourceType = direct.LazyPtr(resourceType)
-	resource := in.GetResource()
-	externalVal := strings.TrimPrefix(resource, "//cloudresourcemanager.googleapis.com/")
-	switch resourceType {
-	case "cloudresourcemanager.googleapis.com/Project":
-		out.ProjectRef = &refs.ProjectRef{
-			External: externalVal,
-		}
-	case "cloudresourcemanager.googleapis.com/Folder":
-		out.FolderRef = &refs.FolderRef{
-			External: externalVal,
-		}
-	case "cloudresourcemanager.googleapis.com/Organization":
-		out.OrganizationRef = &refs.OrganizationRef{
-			External: externalVal,
-		}
-	}
 	out.RoleBindings = direct.Slice_FromProto(mapCtx, in.RoleBindings, RoleBinding_FromProto)
 	return out
 }
-func GcpIamAccess_ToProto(mapCtx *direct.MapContext, in *krm.GcpIamAccess) *pb.PrivilegedAccess_GcpIamAccess {
+func GcpIamAccess_ToProto(mapCtx *direct.MapContext, in *krm.GcpIamAccess,
+	customization func(mapCtx *direct.MapContext, in *krm.GcpIamAccess, out pb.PrivilegedAccess_GcpIamAccess) *pb.PrivilegedAccess_GcpIamAccess) *pb.PrivilegedAccess_GcpIamAccess {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PrivilegedAccess_GcpIamAccess{}
-	resourceType := in.ResourceType
-	out.ResourceType = direct.ValueOf(resourceType)
-	switch *resourceType {
-	case "cloudresourcemanager.googleapis.com/Project":
-		out.Resource = fmt.Sprintf("//cloudresourcemanager.googleapis.com/%s", in.ProjectRef.External)
-	case "cloudresourcemanager.googleapis.com/Folder":
-		out.Resource = fmt.Sprintf("//cloudresourcemanager.googleapis.com/%s", in.FolderRef.External)
-	case "cloudresourcemanager.googleapis.com/Organization":
-		out.Resource = fmt.Sprintf("//cloudresourcemanager.googleapis.com/%s", in.OrganizationRef.External)
-	}
 	out.RoleBindings = direct.Slice_ToProto(mapCtx, in.RoleBindings, RoleBinding_ToProto)
+	out = customization(mapCtx, in, *out)
 	return out
 }
 func ManualApprovals_FromProto(mapCtx *direct.MapContext, in *pb.ManualApprovals) *krm.ManualApprovals {
@@ -96,12 +66,13 @@ func PrivilegedAccess_FromProto(mapCtx *direct.MapContext, in *pb.PrivilegedAcce
 	out.GcpIAMAccess = GcpIamAccess_FromProto(mapCtx, in.GetGcpIamAccess())
 	return out
 }
-func PrivilegedAccess_ToProto(mapCtx *direct.MapContext, in *krm.PrivilegedAccess) *pb.PrivilegedAccess {
+func PrivilegedAccess_ToProto(mapCtx *direct.MapContext, in *krm.PrivilegedAccess,
+	customization func(mapCtx *direct.MapContext, in *krm.GcpIamAccess, out pb.PrivilegedAccess_GcpIamAccess) *pb.PrivilegedAccess_GcpIamAccess) *pb.PrivilegedAccess {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PrivilegedAccess{}
-	if oneof := GcpIamAccess_ToProto(mapCtx, in.GcpIAMAccess); oneof != nil {
+	if oneof := GcpIamAccess_ToProto(mapCtx, in.GcpIAMAccess, customization); oneof != nil {
 		out.AccessType = &pb.PrivilegedAccess_GcpIamAccess_{GcpIamAccess: oneof}
 	}
 	return out
@@ -119,7 +90,8 @@ func PrivilegedAccessManagerEntitlementSpec_FromProto(mapCtx *direct.MapContext,
 	out.AdditionalNotificationTargets = AdditionalNotificationTargets_FromProto(mapCtx, in.GetAdditionalNotificationTargets())
 	return out
 }
-func PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivilegedAccessManagerEntitlementSpec) *pb.Entitlement {
+func PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivilegedAccessManagerEntitlementSpec,
+	customization func(mapCtx *direct.MapContext, in *krm.GcpIamAccess, out pb.PrivilegedAccess_GcpIamAccess) *pb.PrivilegedAccess_GcpIamAccess) *pb.Entitlement {
 	if in == nil {
 		return nil
 	}
@@ -127,7 +99,7 @@ func PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.EligibleUsers = direct.Slice_ToProto(mapCtx, in.EligibleUsers, AccessControlEntry_ToProto)
 	out.ApprovalWorkflow = ApprovalWorkflow_ToProto(mapCtx, in.ApprovalWorkflow)
-	out.PrivilegedAccess = PrivilegedAccess_ToProto(mapCtx, in.PrivilegedAccess)
+	out.PrivilegedAccess = PrivilegedAccess_ToProto(mapCtx, in.PrivilegedAccess, customization)
 	out.MaxRequestDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRequestDuration)
 	out.RequesterJustificationConfig = RequesterJustificationConfig_ToProto(mapCtx, in.RequesterJustificationConfig)
 	out.AdditionalNotificationTargets = AdditionalNotificationTargets_ToProto(mapCtx, in.AdditionalNotificationTargets)
