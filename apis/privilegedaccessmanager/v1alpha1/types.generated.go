@@ -15,8 +15,6 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -137,6 +135,9 @@ type PrivilegedAccess struct {
 // about IAM.
 // +kcc:proto=google.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess
 type GcpIamAccess struct {
+	/* The following fields should be hidden because their values must match
+	   the resource's parent.
+
 	// Required. The type of this resource.
 	// +required
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -158,6 +159,7 @@ type GcpIamAccess struct {
 	// be set.
 	// +optional
 	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+	*/
 
 	// Required. Role bindings that are created on successful grant.
 	// +required
