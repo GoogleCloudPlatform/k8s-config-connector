@@ -36,10 +36,11 @@ spec:
     recordApplicationTags: false
     recordClientAddress: false
   observabilityConfig:
+    enabled: true
     preserveComments: false
     trackWaitEvents: true
     trackWaitEventTypes: true
     maxQueryStringLength: 10240
     recordApplicationTags: false
-    queryPlansPerMinute: 200
-    trackActiveQueries: false
+    queryPlansPerMinute: 20
+    trackActiveQueries: true
