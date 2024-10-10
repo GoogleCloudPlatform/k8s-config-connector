@@ -90,6 +90,9 @@ networkConfig:
   - cidrRange: string
   enableOutboundPublicIp: boolean
   enablePublicIp: boolean
+pscInstanceConfig:
+  allowedConsumerProjects:
+  - string
 readPoolConfig:
   nodeCount: integer
 resourceID: string
@@ -339,6 +342,37 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for Private Service Connect (PSC) for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjects</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+These should be specified as project numbers only.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjects[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

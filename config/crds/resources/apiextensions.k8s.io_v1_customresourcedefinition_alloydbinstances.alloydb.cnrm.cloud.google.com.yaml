@@ -204,6 +204,18 @@ spec:
                       external networks set on the same instance.
                     type: boolean
                 type: object
+              pscInstanceConfig:
+                description: Configuration for Private Service Connect (PSC) for the
+                  instance.
+                properties:
+                  allowedConsumerProjects:
+                    description: |-
+                      List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+                      These should be specified as project numbers only.
+                    items:
+                      type: string
+                    type: array
+                type: object
               readPoolConfig:
                 description: Read pool specific config. If the instance type is READ_POOL,
                   this configuration must be provided.
@@ -481,6 +493,18 @@ spec:
                       to disable this, please also clear the list of the authorized
                       external networks set on the same instance.
                     type: boolean
+                type: object
+              pscInstanceConfig:
+                description: Configuration for Private Service Connect (PSC) for the
+                  instance.
+                properties:
+                  allowedConsumerProjects:
+                    description: |-
+                      List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+                      These should be specified as project numbers only.
+                    items:
+                      type: string
+                    type: array
                 type: object
               readPoolConfig:
                 description: Read pool specific config. If the instance type is READ_POOL,
