@@ -15,14 +15,14 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: ndc2-kcc
+  name: alloydbcluster-sample-regular
 spec:
-  location: us-west1
+  location: asia-south2
   networkConfig:
     networkRef: 
-      name: default
+      name: alloydbcluster-dep-regular
   projectRef:
-    external: ego-duet
+    external: ${PROJECT_ID?}
   automatedBackupPolicy:
     backupWindow: 3600s
     encryptionConfig:
