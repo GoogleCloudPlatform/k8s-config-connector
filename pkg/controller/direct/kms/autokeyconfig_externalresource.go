@@ -21,20 +21,20 @@ import (
 
 // The Identifier for ConfigConnector to track the KMSAutokeyConfig resource from the GCP service.
 type KMSAutokeyConfigIdentity struct {
-	Parent        *parent
+	Parent *parent
 }
 
 type parent struct {
-	Folder  string
+	FolderID string
 }
 
 func (p *parent) String() string {
-	return fmt.Sprintf("folders/%s", p.Folder)
+	return fmt.Sprintf("folders/%s", p.FolderID)
 }
 
 // FullyQualifiedName returns both parent and resource ID in the full url format.
 func (c *KMSAutokeyConfigIdentity) FullyQualifiedName() string {
-	return fmt.Sprintf("%s/autokeyconfig", c.Parent)
+	return fmt.Sprintf("%s/autokeyConfig", c.Parent)
 }
 
 // AsExternalRef builds a externalRef from a KMSAutokeyConfig
@@ -45,27 +45,24 @@ func (c *KMSAutokeyConfigIdentity) AsExternalRef() *string {
 
 // asID builds a KMSAutokeyConfigIdentity from a `status.externalRef`
 func asID(externalRef string) (*KMSAutokeyConfigIdentity, error) {
-	// TODO(user): Build resource identity from external reference
 	if !strings.HasPrefix(externalRef, serviceDomain) {
 		return nil, fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
 	}
 	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
 	tokens := strings.Split(path, "/")
 
-	// TODO(user): Confirm the format of your resources, and verify it like the example below
 	if len(tokens) != 3 || tokens[0] != "folders" || tokens[2] != "autokeyConfig" {
-		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/autokeyconfigs/<AutokeyConfig>, got %s",
+		return nil, fmt.Errorf("externalRef should be %s/folders/<folder>/autokeyConfig, got %s",
 			serviceDomain, externalRef)
 	}
 	return &KMSAutokeyConfigIdentity{
-		Parent:        &parent{Folder: tokens[1]},
+		Parent: &parent{FolderID: tokens[1]},
 	}, nil
 }
 
 // BuildID builds the ID for ConfigConnector to track the KMSAutokeyConfig resource from the GCP service.
-func BuildID(folder string) *KMSAutokeyConfigIdentity {
-	// TODO(user): Build resource identity from resource components, i.e. project, location, resource id
+func BuildID(folderID string) *KMSAutokeyConfigIdentity {
 	return &KMSAutokeyConfigIdentity{
-		Parent:        &parent{Folder: folder},
+		Parent: &parent{FolderID: folderID},
 	}
 }

@@ -16,7 +16,8 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	folderref "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/folderref"
+
+	//folderref "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/folderref"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -36,14 +37,14 @@ type KMSAutokeyConfigSpec struct {
 	// + optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	FolderRef *folderref.FolderRef `json:"folderRef"`
+	// Immutable. The folder that this resource belongs to.
+	FolderRef *refs.FolderRef `json:"folderRef"`
 
 	// +optional
-	KeyProject *refs.ProjectRef `json:"projectRef,omitempty"`
+	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
 
 	// +optional
-	State *string `json:"state,omitempty"` 
-
+	State *string `json:"state,omitempty"`
 }
 
 // KMSAutokeyConfigStatus defines the config connector machine state of KMSAutokeyConfig
@@ -54,8 +55,9 @@ type KMSAutokeyConfigStatus struct {
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-	PrjectRef *refs.ProjectRef  `json:"projectRef,omitempty"`
-	State *string  `json:"state,omitempty"`
+	//KeyProject          *refs.ProjectRef `json:"projectRef,omitempty"`
+	//State              *string          `json:"state,omitempty"`
+
 	// A unique specifier for the KMSAutokeyConfig resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -66,7 +68,9 @@ type KMSAutokeyConfigStatus struct {
 // KMSAutokeyConfigSpec defines the desired state of KMSAutokeyConfig
 // +kcc:proto=google.cloud.kms.v1.AutokeyConfig
 type KMSAutokeyConfigObservedState struct {
-
+	// Output only. Current state of this AutokeyConfig.
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 // +genclient

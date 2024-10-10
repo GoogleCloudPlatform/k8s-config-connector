@@ -1,0 +1,53 @@
+GET https://cloudkms.googleapis.com/v1/folders/${testFolderId}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=folders%2F${testFolderId}%2FautokeyConfig
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "keyProject": "",
+  "name": "",
+  "state": "UNINITIALIZED"
+}
+
+---
+
+PATCH https://cloudkms.googleapis.com/v1/folders/${testFolderId}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=keyProject
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: autokey_config.name=folders%2F${testFolderId}%2FautokeyConfig
+
+{
+  "keyProject": "projects/${uniqueId}",
+  "name": "folders/${testFolderId}/autokeyConfig"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "keyProject": "projects/${uniqueId}",
+  "name": "folders/${testFolderId}/autokeyConfig",
+  "state": "ACTIVE"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/folders/${testFolderId}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=folders%2F${testFolderId}%2FautokeyConfig
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "keyProject": "projects/${uniqueId}",
+  "name": "folders/${testFolderId}/autokeyConfig",
+  "state": "ACTIVE"
+}

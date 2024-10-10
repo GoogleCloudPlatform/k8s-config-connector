@@ -17,14 +17,17 @@ package kms
 import (
 	"context"
 	"fmt"
+	"reflect"
+
 	//"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
-//	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	folderref "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/folderref"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+
+	//folderref "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/folderref"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(user): Update the import with the google cloud client
@@ -80,7 +83,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
 	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -88,46 +90,35 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
-	//TODO add folder ref to kmsautokeyconfig
-	folderRef, err := folderref.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+	var folder *refs.Folder
+	var err error
+	folder, err = refs.ResolveFolderFromAnnotation(ctx, reader, obj)
 	if err != nil {
-		return nil, err
+		folder, err = refs.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
 	}
-	folderID := folderRef.FolderID
-	if folderID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if err != nil || folder.FolderID == "" {
+		return nil, fmt.Errorf("Unable to resolve folder for autokeyConfig", "name", obj.GetName())
 	}
-	/*projectRef := &refs.ProjectRef{
-		Name:      obj.Spec.ProjectRef.Name,
-		Namespace: obj.Spec.ProjectRef.Namespace,
-		External:  obj.Spec.ProjectRef.External,
-	}
-	project, err := refs.ResolveProject(ctx, reader, obj, projectRef)
-	if err != nil {
-		return nil, err
-	}*/
 	var id *KMSAutokeyConfigIdentity
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		id = BuildID(folderID)
+		id = BuildID(folder.FolderID)
 	} else {
 		id, err = asID(externalRef)
 		if err != nil {
 			return nil, err
 		}
 
-		if id.Parent.Folder != folderID {
+		if id.Parent.FolderID != folder.FolderID {
 			return nil, fmt.Errorf("KMSAutokeyConfig %s/%s has spec.folderRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Folder, folderID)
+				u.GetNamespace(), u.GetName(), id.Parent.FolderID, folder.FolderID)
 		}
-		/*if id.AutokeyConfig != resourceID {
+		if id.FullyQualifiedName() != resourceID {
 			return nil, fmt.Errorf("KMSAutokeyConfig  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.AutokeyConfig, resourceID)
-		}*/
+				u.GetNamespace(), u.GetName(), id.FullyQualifiedName(), resourceID)
+		}
 	}
 
-	// TODO(kcc): GetGCPClient as interface method.
-	// Get kms GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -156,8 +147,6 @@ var _ directbase.Adapter = &Adapter{}
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting KMSAutokeyConfig", "name", a.id.FullyQualifiedName())
-
-	// TODO(user): write the gcp "GET" operation.
 	req := &kmspb.GetAutokeyConfigRequest{Name: a.id.FullyQualifiedName()}
 	autokeyconfigpb, err := a.gcpClient.GetAutokeyConfig(ctx, req)
 	if err != nil {
@@ -172,7 +161,6 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	/*
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
@@ -183,35 +171,21 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
-	req := &kmspb.CreateAutokeyConfigRequest{
-		Parent:        a.id.Parent.String(),
-		AutokeyConfig: resource,
-	}
-	op, err := a.gcpClient.CreateAutokeyConfig(ctx, req)
+	updated, err := a.updateAutokeyConfig(ctx, resource)
 	if err != nil {
-		return fmt.Errorf("creating AutokeyConfig %s: %w", a.id.FullyQualifiedName(), err)
+		return err
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("AutokeyConfig %s waiting creation: %w", a.id.FullyQualifiedName(), err)
-	}
-	log.V(2).Info("successfully created AutokeyConfig", "name", a.id.FullyQualifiedName())
 	status := &krm.KMSAutokeyConfigStatus{}
-	status.ObservedState = KMSAutokeyConfigStatusObservedState_FromProto(mapCtx, created)
+	status.ObservedState = KMSAutokeyConfigStatusObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = a.id.AsExternalRef()
-	log.V(2).Info("no-op, AutokeyConfig is already created")
-	*/
-	return setStatus(nil, nil)
+	return setStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
-
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating AutokeyConfig", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
@@ -222,27 +196,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
-	// TODO(user): Update the field if applicable.
-	updateMask := &fieldmaskpb.FieldMask{}
-	/*if projectID != "" && !reflect.DeepEqual(projectID, a.actual.KeyProject) {
-		updateMask.Paths = append(updateMask.Paths, "KeyProject")
-	}*/
-
-	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.FullyQualifiedName())
-		return nil
-	}
-	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
-	req := &kmspb.UpdateAutokeyConfigRequest{
-		//Name:          a.id.FullyQualifiedName(),
-		UpdateMask:    updateMask,
-		AutokeyConfig: resource,
-	}
-	updated, err := a.gcpClient.UpdateAutokeyConfig(ctx, req)
+	updated, err := a.updateAutokeyConfig(ctx, resource)
 	if err != nil {
-		return fmt.Errorf("updating AutokeyConfig %s: %w", a.id.FullyQualifiedName(), err)
+		return err
 	}
-	log.V(2).Info("successfully updated AutokeyConfig", "name", a.id.FullyQualifiedName())
 
 	status := &krm.KMSAutokeyConfigStatus{}
 	status.ObservedState = KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
@@ -250,6 +207,31 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 	return setStatus(u, status)
+}
+
+func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	// to populate a.actual
+	a.Find(ctx)
+	updateMask := &fieldmaskpb.FieldMask{}
+	if resource.KeyProject != "" && !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
+		updateMask.Paths = append(updateMask.Paths, "key_project")
+	}
+
+	if len(updateMask.Paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.FullyQualifiedName())
+		return nil, nil
+	}
+	req := &kmspb.UpdateAutokeyConfigRequest{
+		UpdateMask:    updateMask,
+		AutokeyConfig: resource,
+	}
+	updated, err := a.gcpClient.UpdateAutokeyConfig(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("updating AutokeyConfig %s: %w", a.id.FullyQualifiedName(), err)
+	}
+	log.V(2).Info("successfully updated AutokeyConfig", "name", a.id.FullyQualifiedName())
+	return updated, nil
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -264,8 +246,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	// TODO(user): Update other resource reference
-	obj.Spec.FolderRef = &folderref.FolderRef{Name: a.id.Parent.Folder}
+	obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Parent.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

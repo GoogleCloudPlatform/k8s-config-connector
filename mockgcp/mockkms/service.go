@@ -18,10 +18,10 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -32,6 +32,7 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
+	v1         *autokeyAdminServer
 }
 
 // New creates a MockService.
@@ -41,6 +42,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
+	s.v1 = &autokeyAdminServer{MockService: s}
 	return s
 }
 
@@ -50,26 +52,16 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterKeyManagementServiceServer(grpcServer, &kmsServer{MockService: s})
-	pb.RegisterAutokeyAdminServer(grpcServer, &autokeyAdminServer{MockService: s})
+	pb.RegisterAutokeyAdminServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterKeyManagementServiceHandler,
-		pb.RegisterAutokeyHandler,
-		// TODO: Any LROs on this API?
-		//	s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
-	if err != nil {
+	mux := runtime.NewServeMux()
+	if err := pb.RegisterAutokeyAdminHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
-
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
+	if err := pb.RegisterKeyManagementServiceHandler(ctx, mux, conn); err != nil {
+		return nil, err
 	}
-
 	return mux, nil
 }

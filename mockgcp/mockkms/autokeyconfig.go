@@ -47,7 +47,9 @@ func (r *autokeyAdminServer) GetAutokeyConfig(ctx context.Context, req *pb.GetAu
 	obj := &pb.AutokeyConfig{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "AutokeyConfig %s not found.", fqn)
+			obj.State = pb.AutokeyConfig_UNINITIALIZED
+			r.storage.Create(ctx, fqn, obj)
+			return obj, nil
 		}
 		return nil, err
 	}
@@ -66,7 +68,11 @@ func (r *autokeyAdminServer) UpdateAutokeyConfig(ctx context.Context, req *pb.Up
 
 	obj := proto.Clone(req.GetAutokeyConfig()).(*pb.AutokeyConfig)
 	obj.Name = fqn
-
+	if len(req.AutokeyConfig.KeyProject) > 0 {
+		obj.State = pb.AutokeyConfig_ACTIVE
+	} else {
+		obj.State = pb.AutokeyConfig_UNINITIALIZED
+	}
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -95,6 +101,7 @@ func (a *autokeyConfigName) String() string {
 func (r *autokeyAdminServer) parseAutokeyConfigName(name string) (*autokeyConfigName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 3 && tokens[0] == "folders" && tokens[2] == "autokeyConfig" {
+		//fmt.Printf("Inside mock gcp controller %s\n\n", tokens[1])
 		name := &autokeyConfigName{
 			folder: tokens[1],
 		}

@@ -56,6 +56,73 @@ spec:
           spec:
             description: KMSAutokeyConfigSpec defines the desired state of KMSAutokeyConfig
             properties:
+              folderRef:
+                description: Immutable. The folder that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              keyProject:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                  - kind
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                    - required:
+                      - kind
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: Immutable. The KMSAutokeyConfig name. If not given, the
                   metadata.name will be used.
@@ -63,6 +130,10 @@ spec:
                 x-kubernetes-validations:
                 - message: ResourceID field is immutable
                   rule: self == oldSelf
+              state:
+                type: string
+            required:
+            - folderRef
             type: object
           status:
             description: KMSAutokeyConfigStatus defines the config connector machine
@@ -109,6 +180,10 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  state:
+                    description: Output only. Current state of this AutokeyConfig.
+                    type: string
                 type: object
             type: object
         type: object

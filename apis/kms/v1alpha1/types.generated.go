@@ -14,6 +14,10 @@
 
 package v1alpha1
 
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+)
+
 // +kcc:proto=google.cloud.kms.v1.AutokeyConfig
 type AutokeyConfig struct {
 	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
@@ -31,7 +35,7 @@ type AutokeyConfig struct {
 	//  Cloud KMS Service Agent for this key project must be granted the
 	//  `cloudkms.admin` role (or pertinent permissions). A request with an empty
 	//  key project field will clear the configuration.
-	KeyProject *string `json:"keyProject,omitempty"`
+	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
 
 	// Output only. The state for the AutokeyConfig.
 	State *string `json:"state,omitempty"`

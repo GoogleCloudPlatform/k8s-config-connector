@@ -73,6 +73,7 @@ func (m *entitlementModel) client(ctx context.Context) (*gcp.Client, error) {
 func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 
 	obj := &krm.PrivilegedAccessManagerEntitlement{}
+	fmt.Printf("Object received %v", u.Object)
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
