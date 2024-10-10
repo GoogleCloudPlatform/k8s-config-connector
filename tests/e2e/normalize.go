@@ -291,6 +291,22 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			}
 		}
 
+		// Get firewall policy id from firewall policy rule's externalRef and replace it
+		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+		if externalRef != "" {
+			tokens := strings.Split(externalRef, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				firewallPolicyId := tokens[len(tokens)-3]
+				if typeName == "rules" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+					})
+				}
+			}
+		}
+
 		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		if resourceID != "" {
 			switch u.GroupVersionKind() {
@@ -306,6 +322,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${firewallPolicyID}")
+
 				})
 			}
 		}
