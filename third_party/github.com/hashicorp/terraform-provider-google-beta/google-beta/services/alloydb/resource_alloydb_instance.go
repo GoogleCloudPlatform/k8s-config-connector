@@ -1115,10 +1115,6 @@ func flattenAlloydbInstanceObservabilityConfigTrackActiveQueries(v interface{}, 
 	return v
 }
 
-func flattenAlloydbInstanceOutboundPublicIpAddresses(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
-	return v
-}
-
 func expandAlloydbInstanceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
