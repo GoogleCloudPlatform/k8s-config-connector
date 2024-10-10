@@ -24,9 +24,6 @@ spec:
   maxRequestDuration: 1h0m0s
   privilegedAccess:
     gcpIAMAccess:
-      resourceType: cloudresourcemanager.googleapis.com/Project
-      projectRef:
-        external: projects/${projectId}
       roleBindings:
         - role: roles/storage.admin
   requesterJustificationConfig:

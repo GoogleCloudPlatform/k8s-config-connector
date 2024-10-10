@@ -15,8 +15,6 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -137,6 +135,26 @@ type PrivilegedAccess struct {
 // about IAM.
 // +kcc:proto=google.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess
 type GcpIamAccess struct {
+	/* We decided to hide the following fields. Here are the context:
+
+	   1. Currently, in the API, the resource information under gcpIamAccess is
+	      duplicate with the parent information in the URL. I.e. Resolved values
+	      of 'projectRef', 'folderRef', and 'organizationRef' here must be the
+	      same as the resolved values of `spec.projectRef', 'spec.folderRef',
+	      and 'spec.organizationRef'.
+	   2. It's better not to ask users to specify the same information
+	      repetitively: It can avoid confusion and potential mistakes.
+	   3. Even if the API behavior will be changed, i.e. the resource
+	      information here no longer needs to match the parent information in
+	      the URL, we can always support it in the future without breaking
+	      existing resources. Adding a field later is cheaper than adding a
+	      field in the beginning and making changes in the future, and can avoid
+	      breaking changes.
+	   4. We are under the discussion with the API team to finalize the schema
+	      design. Hiding the fields gives us the flexibility to graduate the
+	      resource to Beta while we are still deciding on the most appropriate
+	      schema.
+
 	// Required. The type of this resource.
 	// +required
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -158,6 +176,7 @@ type GcpIamAccess struct {
 	// be set.
 	// +optional
 	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+	*/
 
 	// Required. Role bindings that are created on successful grant.
 	// +required
