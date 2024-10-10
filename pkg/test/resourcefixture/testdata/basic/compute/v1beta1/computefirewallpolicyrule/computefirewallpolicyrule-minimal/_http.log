@@ -196,13 +196,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-        "reason": "invalid"
-      }
-    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }
@@ -346,8 +339,7 @@ x-goog-request-params: firewall_policy=${firewallPolicyId}
     "srcIpRanges": [
       "10.100.0.1/32"
     ]
-  },
-  "priority": 9000
+  }
 }
 
 200 OK
@@ -535,13 +527,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-        "reason": "invalid"
-      }
-    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }

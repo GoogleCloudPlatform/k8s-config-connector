@@ -48,4 +48,4 @@ status:
     type: Ready
   kind: compute#firewallPolicyRule
   observedGeneration: 2
-  ruleTupleCount: 110
+  ruleTupleCount: 4

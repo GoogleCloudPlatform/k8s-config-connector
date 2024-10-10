@@ -255,17 +255,14 @@ func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.U
 
 // Delete implements the Adapter interface.
 func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting ComputeFirewallPolicyRule", "priority", a.priority)
 
-	var err error
-	op := &gcp.Operation{}
-	req := &computepb.RemoveRuleFirewallPolicyRequest{
+	delReq := &computepb.RemoveRuleFirewallPolicyRequest{
 		FirewallPolicy: a.firewallPolicy,
 		Priority:       direct.PtrTo(int32(a.priority)),
 	}
-	op, err = a.firewallPoliciesClient.RemoveRule(ctx, req)
+	op, err := a.firewallPoliciesClient.RemoveRule(ctx, delReq)
 
 	if err != nil {
 		return false, fmt.Errorf("deleting ComputeFirewallPolicyRule %d: %w", a.priority, err)
