@@ -21,8 +21,8 @@ spec:
   resourceID: sqlinstance-denymaintenanceperiod-${uniqueId}
   settings:
     denyMaintenancePeriod:
-      endDate: 01-15
-      startDate: 11-01
+      endDate: 0-1-15
+      startDate: 0-11-1
       time: "01:00:00"
     locationPreference:
       zone: us-central1-a
