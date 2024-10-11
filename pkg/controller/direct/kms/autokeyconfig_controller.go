@@ -97,7 +97,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		folder, err = refs.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
 	}
 	if err != nil || folder.FolderID == "" {
-		return nil, fmt.Errorf("Unable to resolve folder for autokeyConfig", "name", obj.GetName())
+		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s", obj.GetName())
 	}
 	var id *KMSAutokeyConfigIdentity
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
@@ -212,7 +212,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	// to populate a.actual
-	a.Find(ctx)
+	isExist, err := a.Find(ctx)
+	if !isExist {
+		return nil, fmt.Errorf("updateAutokeyConfig failed as AutokeyConfig does not exist, name: %s", a.id.FullyQualifiedName())
+	}
+	if err != nil {
+		return nil, err
+	}
 	updateMask := &fieldmaskpb.FieldMask{}
 	if resource.KeyProject != "" && !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
 		updateMask.Paths = append(updateMask.Paths, "key_project")

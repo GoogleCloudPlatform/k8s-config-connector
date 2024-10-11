@@ -28,8 +28,10 @@ func AutokeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *k
 	}
 	out := &krm.AutokeyConfig{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.KeyProject = &refs.ProjectRef{
-		External: in.KeyProject,
+	if in.KeyProject != "" {
+		out.KeyProject = &refs.ProjectRef{
+			External: in.KeyProject,
+		}
 	}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
@@ -41,7 +43,9 @@ func AutokeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutokeyConfig) *pb
 	}
 	out := &pb.AutokeyConfig{}
 	out.Name = direct.ValueOf(in.Name)
-	out.KeyProject = in.KeyProject.External
+	if in.KeyProject != nil {
+		out.KeyProject = in.KeyProject.External
+	}
 	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
 	return out
 }
@@ -64,8 +68,10 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 	out.FolderRef = &refs.FolderRef{
 		External: extId.Parent.String(),
 	}
-	out.KeyProject = &refs.ProjectRef{
-		External: in.GetKeyProject(),
+	if in.GetKeyProject() != "" {
+		out.KeyProject = &refs.ProjectRef{
+			External: in.GetKeyProject(),
+		}
 	}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
@@ -77,7 +83,9 @@ func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSAutokeyC
 	}
 	out := &pb.AutokeyConfig{}
 	out.Name = in.FolderRef.External + "/autokeyConfig"
-	out.KeyProject = in.KeyProject.External
+	if in.KeyProject != nil {
+		out.KeyProject = in.KeyProject.External
+	}
 	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
 	return out
 }
