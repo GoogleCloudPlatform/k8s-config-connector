@@ -344,6 +344,27 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/secretmanager.googleapis.com:generateServiceIdentity?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "email": "service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com",
+    "uniqueId": "123456789006"
+  }
+}
+
+---
+
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -630,9 +651,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -655,9 +677,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-${uniqueId}
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecret-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}
 
 {
   "annotations": {
@@ -680,11 +703,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     {
       "name": "projects/${projectId}/topics/topic-${uniqueId}"
     }
-  ],
-  "versionAliases": {
-    "bar": "222",
-    "foo": "111"
-  }
+  ]
 }
 
 200 OK
@@ -722,18 +741,15 @@ X-Xss-Protection: 0
     {
       "name": "projects/${projectId}/topics/topic-${uniqueId}"
     }
-  ],
-  "versionAliases": {
-    "bar": "222",
-    "foo": "111"
-  }
+  ]
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -770,46 +786,40 @@ X-Xss-Protection: 0
     {
       "name": "projects/${projectId}/topics/topic-${uniqueId}"
     }
-  ],
-  "versionAliases": {
-    "bar": "222",
-    "foo": "111"
-  }
+  ]
 }
 
 ---
 
-PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json&updateMask=annotations%2Ctopics
+PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2Ctopics%2CexpireTime%2Crotation.nextRotationTime%2Crotation.rotationPeriod
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
 
 {
   "annotations": {
     "bar": "secretmanagersecret-bar",
     "foo": "secretmanagersecret"
   },
-  "expireTime": "2025-10-02T15:01:23Z",
+  "expireTime": "2025-10-03T15:01:23Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
+  "name": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
-    "rotationPeriod": "3600s"
+    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "rotationPeriod": "7200s"
   },
   "topics": [
     {
       "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
     }
-  ],
-  "versionAliases": {
-    "bar": "222",
-    "foo": "111"
-  }
+  ]
 }
 
 200 OK
@@ -830,7 +840,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2025-10-02T15:01:23Z",
+  "expireTime": "2025-10-03T15:01:23Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -841,25 +851,22 @@ X-Xss-Protection: 0
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
-    "rotationPeriod": "3600s"
+    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "rotationPeriod": "7200s"
   },
   "topics": [
     {
       "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
     }
-  ],
-  "versionAliases": {
-    "bar": "222",
-    "foo": "111"
-  }
+  ]
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -879,7 +886,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2025-10-02T15:01:23Z",
+  "expireTime": "2025-10-03T15:01:23Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -890,25 +897,22 @@ X-Xss-Protection: 0
     "automatic": {}
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
-    "rotationPeriod": "3600s"
+    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "rotationPeriod": "7200s"
   },
   "topics": [
     {
       "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
     }
-  ],
-  "versionAliases": {
-    "bar": "222",
-    "foo": "111"
-  }
+  ]
 }
 
 ---
 
-DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
 
 200 OK
 Cache-Control: private

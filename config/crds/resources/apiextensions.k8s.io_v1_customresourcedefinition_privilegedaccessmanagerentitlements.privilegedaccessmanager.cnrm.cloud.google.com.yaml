@@ -214,93 +214,6 @@ spec:
                   gcpIAMAccess:
                     description: Access to a Google Cloud resource through IAM.
                     properties:
-                      folderRef:
-                        description: The Folder that this privileged access is granted
-                          to. One and only one of 'projectRef', 'folderRef', or 'organizationRef'
-                          must be set.
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                          required:
-                          - external
-                        properties:
-                          external:
-                            description: The 'name' field of a folder, when not managed
-                              by Config Connector. This field must be set when 'name'
-                              field is not set.
-                            type: string
-                          name:
-                            description: The 'name' field of a 'Folder' resource.
-                              This field must be set when 'external' field is not
-                              set.
-                            type: string
-                          namespace:
-                            description: The 'namespace' field of a 'Folder' resource.
-                              If unset, the namespace is defaulted to the namespace
-                              of the referencer resource.
-                            type: string
-                        type: object
-                      organizationRef:
-                        description: The Organization that this privileged access
-                          is granted to. One and only one of 'projectRef', 'folderRef',
-                          or 'organizationRef' must be set.
-                        properties:
-                          external:
-                            description: The 'name' field of an organization, when
-                              not managed by Config Connector.
-                            type: string
-                        required:
-                        - external
-                        type: object
-                      projectRef:
-                        description: The Project that this privileged access is granted
-                          to. One and only one of 'projectRef', 'folderRef', or 'organizationRef'
-                          must be set.
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                          - kind
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                            - required:
-                              - kind
-                          required:
-                          - external
-                        properties:
-                          external:
-                            description: The `projectID` field of a project, when
-                              not managed by Config Connector.
-                            type: string
-                          kind:
-                            description: The kind of the Project resource; optional
-                              but must be `Project` if provided.
-                            type: string
-                          name:
-                            description: The `name` field of a `Project` resource.
-                            type: string
-                          namespace:
-                            description: The `namespace` field of a `Project` resource.
-                            type: string
-                        type: object
-                      resourceType:
-                        description: Required. The type of this resource.
-                        type: string
                       roleBindings:
                         description: Required. Role bindings that are created on successful
                           grant.
@@ -328,7 +241,6 @@ spec:
                           type: object
                         type: array
                     required:
-                    - resourceType
                     - roleBindings
                     type: object
                 required:

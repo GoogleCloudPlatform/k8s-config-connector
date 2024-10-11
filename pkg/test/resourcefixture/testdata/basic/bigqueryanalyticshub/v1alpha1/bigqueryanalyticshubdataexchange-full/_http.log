@@ -21,7 +21,7 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS
 
 {
   "description": "example data exchange",
-  "discoveryType": 0,
+  "discoveryType": 1,
   "displayName": "my_data_exchange",
   "documentation": "a documentation",
   "primaryContact": "a@contact.com"
@@ -33,7 +33,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "description": "example data exchange",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "documentation": "a documentation",
   "icon": "",
@@ -56,7 +56,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "description": "example data exchange",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "documentation": "a documentation",
   "icon": "",
@@ -75,7 +75,7 @@ x-goog-request-params: data_exchange.name=projects%2F${projectId}%2Flocations%2F
 
 {
   "description": "example data exchange",
-  "discoveryType": 1,
+  "discoveryType": 2,
   "displayName": "my_data_exchange",
   "documentation": "an updated documentation",
   "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
@@ -88,7 +88,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "description": "example data exchange",
-  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
+  "discoveryType": "DISCOVERY_TYPE_PUBLIC",
   "displayName": "my_data_exchange",
   "documentation": "an updated documentation",
   "icon": "",
@@ -111,7 +111,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "description": "example data exchange",
-  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
+  "discoveryType": "DISCOVERY_TYPE_PUBLIC",
   "displayName": "my_data_exchange",
   "documentation": "an updated documentation",
   "icon": "",

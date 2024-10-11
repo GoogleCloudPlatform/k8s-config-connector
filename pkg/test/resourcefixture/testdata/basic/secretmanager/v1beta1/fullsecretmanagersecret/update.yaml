@@ -35,10 +35,10 @@ spec:
   annotations:
     "foo": secretmanagersecret
     "bar": secretmanagersecret-bar
-  expireTime: "2025-10-02T15:01:23Z"
+  expireTime: "2025-10-03T15:01:23Z"
   rotation:
-    nextRotationTime: "2025-10-02T15:01:23Z"
-    rotationPeriod: "3600s"
-  versionAliases:
-    "foo": "111"
-    "bar": "222"
+    nextRotationTime: "2025-10-03T15:01:23Z"
+    rotationPeriod: "7200s"
+  # versionAliases:
+  #   "foo": "111"
+  #   "bar": "222"

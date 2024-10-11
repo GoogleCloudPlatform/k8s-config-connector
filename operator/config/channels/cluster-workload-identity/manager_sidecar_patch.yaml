@@ -1,0 +1,35 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- op: add
+  path: /spec/template/spec/containers/-
+  value:
+    command:
+    - /monitor
+    - --source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]=$(POD_NAMESPACE)&customLabels[pod_name]=$(POD_NAME)
+    - --stackdriver-prefix=kubernetes.io/internal/addons
+    image: gcr.io/gke-release/prometheus-to-sd:v0.11.12-gke.11
+    name: prom-to-sd
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    securityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
