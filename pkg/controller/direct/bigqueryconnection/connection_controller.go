@@ -105,7 +105,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		}
 	}
 
-	// Resolve Spark.DataprocClusterRef
+	// Resolve Spark.DataprocClusterRef and Spark.MetastoreServiceRef
 	if obj.Spec.SparkSpec != nil {
 		if obj.Spec.SparkSpec.SparkHistoryServer != nil {
 			if obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef != nil {
@@ -116,10 +116,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 				obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef.External = cluster.String()
 			}
 		}
-	}
 
-	// Resolve Spark.MetastoreServiceRef
-	if obj.Spec.SparkSpec != nil {
 		if obj.Spec.SparkSpec.MetastoreService != nil {
 			if obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef != nil {
 				service, err := refs.ResolveMetastoreServiceRef(ctx, reader, obj, obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef)
