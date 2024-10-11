@@ -23,9 +23,6 @@ spec:
   maxRequestDuration: 1800s
   privilegedAccess:
     gcpIAMAccess:
-      resourceType: cloudresourcemanager.googleapis.com/Project
-      projectRef:
-        external: projects/${projectId}
       roleBindings:
         - role: roles/pubsub.admin
   requesterJustificationConfig:
