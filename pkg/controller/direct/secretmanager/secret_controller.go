@@ -239,34 +239,21 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	}
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.External
-
+	resource.Etag = a.actual.Etag
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
+	paths, err := common.CompareProtoMessage(resource, a.actual)
+	if err != nil {
+		return err
+	}
 
-	updateMask := &fieldmaskpb.FieldMask{}
-
-	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
-		updateMask.Paths = append(updateMask.Paths, "annotations")
-	}
-	if !topicsEqual(desired.Spec.TopicRefs, a.actual.GetTopics()) {
-		updateMask.Paths = append(updateMask.Paths, "topics")
-	}
-	if !common.DeepEqual_StringAndTimestampPb(*desired.Spec.ExpireTime, a.actual.GetExpireTime()) {
-		updateMask.Paths = append(updateMask.Paths, "expire_time")
-	}
-	if !reflect.DeepEqual(desired.Spec.Rotation.NextRotationTime, a.actual.GetRotation().GetNextRotationTime()) {
-		updateMask.Paths = append(updateMask.Paths, "rotation.next_rotation_time")
-	}
-	if !reflect.DeepEqual(desired.Spec.Rotation.RotationPeriod, a.actual.GetRotation().GetRotationPeriod()) {
-		updateMask.Paths = append(updateMask.Paths, "rotation.rotation_period")
-	}
-	if len(updateMask.Paths) == 0 {
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.External)
 		return nil
 	}
 
 	req := &secretmanagerpb.UpdateSecretRequest{
-		UpdateMask: updateMask,
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
 		Secret:     resource,
 	}
 	updated, err := a.gcpClient.UpdateSecret(ctx, req)

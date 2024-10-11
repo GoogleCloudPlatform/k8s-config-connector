@@ -43,7 +43,9 @@ func CustomerManagedEncryption_ToProto(mapCtx *direct.MapContext, in *krm.Custom
 		return nil
 	}
 	out := &pb.CustomerManagedEncryption{}
-	out.KmsKeyName = in.KmsKeyRef.External
+	if in.KmsKeyRef != nil {
+		out.KmsKeyName = in.KmsKeyRef.External
+	}
 	return out
 }
 func Replication_FromProto(mapCtx *direct.MapContext, in *pb.Replication) *krm.Replication {
