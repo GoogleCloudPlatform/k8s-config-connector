@@ -21,5 +21,5 @@ metadata:
 spec:
   folderRef:
     external: folders/${TEST_FOLDER_ID}
-  #keyProject:
-  #  external: projects/${uniqueId}
+  keyProject:
+    external: projects/${uniqueId}

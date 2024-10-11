@@ -22,4 +22,4 @@ spec:
   folderRef:
     external: folders/${TEST_FOLDER_ID}
   keyProject:
-    external: projects/keyservicedemo-autokey
+    external: projects/{uniqueId}
