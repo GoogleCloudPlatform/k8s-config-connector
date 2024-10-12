@@ -7,6 +7,7 @@
 package securesourcemanagerpb
 
 import (
+	"fmt"
 	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	context "context"
@@ -293,6 +294,10 @@ func _SecureSourceManager_CreateInstance_Handler(srv interface{}, ctx context.Co
 	if err := dec(in); err != nil {
 		return nil, err
 	}
+
+	fmt.Println()
+	fmt.Printf("in req: %#v", in)
+	fmt.Println()
 	if interceptor == nil {
 		return srv.(SecureSourceManagerServer).CreateInstance(ctx, in)
 	}
@@ -300,7 +305,11 @@ func _SecureSourceManager_CreateInstance_Handler(srv interface{}, ctx context.Co
 		Server:     srv,
 		FullMethod: "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/CreateInstance",
 	}
+
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		fmt.Println()
+		fmt.Printf("rreq: %#v", req)
+		fmt.Println()
 		return srv.(SecureSourceManagerServer).CreateInstance(ctx, req.(*CreateInstanceRequest))
 	}
 	return interceptor(ctx, in, info, handler)

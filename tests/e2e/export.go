@@ -35,7 +35,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
-	// location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
+	location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
 
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
@@ -51,6 +51,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
+
+	case schema.GroupKind{Group: "securesourcemanager.cnrm.cloud.google.com", Kind: "SecureSourceManagerInstance"}:
+		exportURI = "//securesourcemanager.googleapis.com/projects/" + projectID + "/locations/" + location + "/instances/" + resourceID
 	}
 
 	if exportURI == "" {

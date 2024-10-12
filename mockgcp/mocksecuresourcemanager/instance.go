@@ -51,6 +51,9 @@ func (s *SecureSourceManagerServer) GetInstance(ctx context.Context, req *pb.Get
 }
 
 func (s *SecureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
+	fmt.Println("req")
+	fmt.Printf("%v", req)
+	fmt.Println()
 	reqName := req.Parent + "/instances/" + req.InstanceId
 	name, err := s.parseInstanceName(reqName)
 	if err != nil {
@@ -68,7 +71,7 @@ func (s *SecureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.
 	obj.UpdateTime = timestamppb.New(now)
 
 	// TODO: State should be Creating at first, ACTIVE once done
-	obj.State = pb.Instance_CREATING
+	obj.State = pb.Instance_ACTIVE
 
 	// TODO: Only fill in when ACTIVE
 	prefix := fmt.Sprintf("%s-%d", name.InstanceID, name.Project.Number)

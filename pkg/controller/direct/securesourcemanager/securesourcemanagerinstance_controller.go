@@ -82,6 +82,9 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
+	fmt.Println()
+	fmt.Printf("resource id: %v", resourceID)
+	fmt.Println()
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
@@ -127,6 +130,9 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println()
+	fmt.Printf("instance id: %#v", id)
+	fmt.Println()
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
@@ -173,10 +179,17 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	fmt.Println()
+	fmt.Printf("Adapter Create desired: %#v", desired)
+	fmt.Println()
+
 	resource := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	fmt.Println()
+	fmt.Printf("Adapter Create resource: %#v", resource)
+	fmt.Println()
 
 	req := &pb.CreateInstanceRequest{
 		Parent:   a.id.Parent.String(),

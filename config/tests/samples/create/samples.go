@@ -128,6 +128,10 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		}
 	}
 
+	fmt.Println()
+	fmt.Printf("opt create: %#v", opt.Create)
+	fmt.Println()
+
 	if !opt.CreateInOrder && !opt.SkipWaitForReady {
 		WaitForReady(t, DefaultWaitForReadyTimeout, opt.Create...)
 	}

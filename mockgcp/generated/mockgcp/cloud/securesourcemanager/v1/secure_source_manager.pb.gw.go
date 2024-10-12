@@ -11,6 +11,7 @@ package securesourcemanagerpb
 import (
 	"context"
 	"io"
+	"fmt"
 	"net/http"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
@@ -234,7 +235,9 @@ func local_request_SecureSourceManager_CreateInstance_0(ctx context.Context, mar
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SecureSourceManager_CreateInstance_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	fmt.Println()
+	fmt.Printf("proto req: %#v", protoReq)
+	fmt.Println()
 	msg, err := server.CreateInstance(ctx, &protoReq)
 	return msg, metadata, err
 
