@@ -57,11 +57,6 @@ type BigQueryConnectionConnectionSpec struct {
 	AzureSpec *AzurePropertiesSpec `json:"azure,omitempty"`
 
 	/* NOTYET
-	// Spark properties.
-	Spark *SparkProperties `json:"spark,omitempty"`
-	*/
-
-	/* NOTYET
 	// Optional. Salesforce DataCloud properties. This field is intended for
 	//  use only by Salesforce partner projects. This field contains properties
 	//  for your Salesforce DataCloud connection.
@@ -73,6 +68,9 @@ type BigQueryConnectionConnectionSpec struct {
 
 	// Cloud Spanner properties.
 	CloudSpannerSpec *CloudSpannerPropertiesSpec `json:"cloudSpanner,omitempty"`
+
+	// Spark properties.
+	SparkSpec *SparkPropertiesSpec `json:"spark,omitempty"`
 }
 
 // BigQueryConnectionConnectionStatus defines the config connector machine state of BigQueryConnectionConnection
@@ -101,6 +99,8 @@ type BigQueryConnectionConnectionObservedState struct {
 	CloudResource *CloudResourcePropertiesStatus `json:"cloudResource,omitempty"`
 
 	CloudSql *CloudSqlPropertiesStatus `json:"cloudSql,omitempty"`
+
+	Spark *SparkPropertiesStatus `json:"spark,omitempty"`
 
 	// The display name for the connection.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -216,6 +216,33 @@ type CloudSpannerPropertiesSpec struct {
 	DatabaseRole *string `json:"databaseRole,omitempty"`
 }
 
+type SparkPropertiesSpec struct {
+	// Optional. Dataproc Metastore Service configuration for the connection.
+	MetastoreService *MetastoreServiceConfigSpec `json:"metastoreService,omitempty"`
+
+	// Optional. Spark History Server configuration for the connection.
+	SparkHistoryServer *SparkHistoryServerConfigSpec `json:"sparkHistoryServer,omitempty"`
+}
+
+type MetastoreServiceConfigSpec struct {
+	// Optional. Resource name of an existing Dataproc Metastore service.
+	//
+	//  Example:
+	//
+	//  * `projects/[project_id]/locations/[region]/services/[service_id]`
+	MetastoreServiceRef *refv1beta1.MetastoreServiceRef `json:"metastoreServiceRef,omitempty"`
+}
+
+type SparkHistoryServerConfigSpec struct {
+	// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+	//  History Server for the connection.
+	//
+	//  Example:
+	//
+	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+	DataprocClusterRef *refv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+}
+
 // +kcc:proto=google.cloud.bigquery.connection.v1.AwsProperties
 type AwsPropertiesStatus struct {
 	AccessRole *AwsAccessRoleStatus `json:"accessRole,omitempty"`
@@ -272,6 +299,22 @@ type CloudResourcePropertiesStatus struct {
 	//
 	//  The account ID is in the form of:
 	//    <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
+	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.SparkProperties
+type SparkPropertiesStatus struct {
+	//  The account ID of the service created for the purpose of this
+	//  connection.
+	//
+	//  The service account does not have any permissions associated with it when
+	//  it is created. After creation, customers delegate permissions to the
+	//  service account. When the connection is used in the context of a stored
+	//  procedure for Apache Spark in BigQuery, the service account is used to
+	//  connect to the desired resources in Google Cloud.
+	//
+	//  The account ID is in the form of:
+	//  bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
 
