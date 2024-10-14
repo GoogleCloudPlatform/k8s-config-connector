@@ -184,6 +184,11 @@ func init() {
 		ResourceKind: "ComputeTargetTCPProxy",
 	}
 
+	resourceContextMap["regionalcomputetargettcpproxy"] = ResourceContext{
+		ResourceKind: "ComputeTargetTCPProxy",
+		SkipUpdate:   true, // No UPDATE/PATCH method supported in API.
+	}
+
 	resourceContextMap["globalcomputeforwardingrule"] = ResourceContext{
 		ResourceKind: "ComputeForwardingRule",
 		SkipUpdate:   true, // The only field which supports update is targetRef, which currently cannot be used for testing updates because of b/147506185
