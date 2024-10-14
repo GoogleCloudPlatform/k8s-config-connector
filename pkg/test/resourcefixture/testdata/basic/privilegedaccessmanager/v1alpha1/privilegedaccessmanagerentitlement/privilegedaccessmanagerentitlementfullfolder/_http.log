@@ -172,10 +172,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -191,19 +191,47 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
+    "message": "Resource 'folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
+POST https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+x-goog-request-params: parent=folders%2F${testFolderId}%2Flocations%2Fglobal
 
 {
+  "additionalNotificationTargets": {
+    "adminEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ],
+    "requesterEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ]
+  },
+  "approvalWorkflow": {
+    "manualApprovals": {
+      "steps": [
+        {
+          "approvalsNeeded": 1,
+          "approverEmailRecipients": [
+            "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "approvers": [
+            {
+              "principals": [
+                "group:kcc-eng@google.com"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
   "eligibleUsers": [
     {
       "principals": [
@@ -214,11 +242,12 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
   "maxRequestDuration": "1800s",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
-      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
-          "role": "roles/pubsub.admin"
+          "conditionExpression": "request.time \u003e timestamp(\"2019-12-31T12:00:00.000Z\")",
+          "role": "roles/pubsub.viewer"
         }
       ]
     }
@@ -246,18 +275,18 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "name": "folders/${testFolderId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -278,12 +307,40 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "name": "folders/${testFolderId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
+    "additionalNotificationTargets": {
+      "adminEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "requesterEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    },
+    "approvalWorkflow": {
+      "manualApprovals": {
+        "steps": [
+          {
+            "approvalsNeeded": 1,
+            "approverEmailRecipients": [
+              "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            ],
+            "approvers": [
+              {
+                "principals": [
+                  "group:kcc-eng@google.com"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "eligibleUsers": [
       {
@@ -294,14 +351,15 @@ X-Xss-Protection: 0
     ],
     "etag": "abcdef0123A=",
     "maxRequestDuration": "1800s",
-    "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "privilegedAccess": {
       "gcpIamAccess": {
-        "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
-        "resourceType": "cloudresourcemanager.googleapis.com/Project",
+        "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+        "resourceType": "cloudresourcemanager.googleapis.com/Folder",
         "roleBindings": [
           {
-            "role": "roles/pubsub.admin"
+            "conditionExpression": "request.time \u003e timestamp(\"2019-12-31T12:00:00.000Z\")",
+            "role": "roles/pubsub.viewer"
           }
         ]
       }
@@ -316,10 +374,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -333,6 +391,34 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "additionalNotificationTargets": {
+    "adminEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ],
+    "requesterEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ]
+  },
+  "approvalWorkflow": {
+    "manualApprovals": {
+      "steps": [
+        {
+          "approvalsNeeded": 1,
+          "approverEmailRecipients": [
+            "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "approvers": [
+            {
+              "principals": [
+                "group:kcc-eng@google.com"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "eligibleUsers": [
     {
@@ -343,14 +429,15 @@ X-Xss-Protection: 0
   ],
   "etag": "abcdef0123A=",
   "maxRequestDuration": "1800s",
-  "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
-      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
-          "role": "roles/pubsub.admin"
+          "conditionExpression": "request.time \u003e timestamp(\"2019-12-31T12:00:00.000Z\")",
+          "role": "roles/pubsub.viewer"
         }
       ]
     }
@@ -364,12 +451,41 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=eligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
+PATCH https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=additionalNotificationTargets%2CapprovalWorkflow%2CeligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: entitlement.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: entitlement.name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 {
+  "additionalNotificationTargets": {
+    "adminEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ],
+    "requesterEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ]
+  },
+  "approvalWorkflow": {
+    "manualApprovals": {
+      "requireApproverJustification": true,
+      "steps": [
+        {
+          "approvalsNeeded": 1,
+          "approverEmailRecipients": [
+            "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "approvers": [
+            {
+              "principals": [
+                "group:kcc-team@google.com"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
   "eligibleUsers": [
     {
       "principals": [
@@ -379,14 +495,15 @@ x-goog-request-params: entitlement.name=projects%2F${projectId}%2Flocations%2Fgl
   ],
   "etag": "abcdef0123A=",
   "maxRequestDuration": "3600s",
-  "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
-      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
-          "role": "roles/storage.admin"
+          "conditionExpression": "request.time \u003e timestamp(\"2020-10-31T12:00:00.000Z\")",
+          "role": "roles/storage.objectViewer"
         }
       ]
     }
@@ -414,18 +531,18 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "name": "folders/${testFolderId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -446,12 +563,41 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "name": "folders/${testFolderId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
+    "additionalNotificationTargets": {
+      "adminEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "requesterEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    },
+    "approvalWorkflow": {
+      "manualApprovals": {
+        "requireApproverJustification": true,
+        "steps": [
+          {
+            "approvalsNeeded": 1,
+            "approverEmailRecipients": [
+              "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            ],
+            "approvers": [
+              {
+                "principals": [
+                  "group:kcc-team@google.com"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "eligibleUsers": [
       {
@@ -462,14 +608,15 @@ X-Xss-Protection: 0
     ],
     "etag": "abcdef0123A=",
     "maxRequestDuration": "3600s",
-    "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "privilegedAccess": {
       "gcpIamAccess": {
-        "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
-        "resourceType": "cloudresourcemanager.googleapis.com/Project",
+        "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+        "resourceType": "cloudresourcemanager.googleapis.com/Folder",
         "roleBindings": [
           {
-            "role": "roles/storage.admin"
+            "conditionExpression": "request.time \u003e timestamp(\"2020-10-31T12:00:00.000Z\")",
+            "role": "roles/storage.objectViewer"
           }
         ]
       }
@@ -484,10 +631,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -501,6 +648,35 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "additionalNotificationTargets": {
+    "adminEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ],
+    "requesterEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ]
+  },
+  "approvalWorkflow": {
+    "manualApprovals": {
+      "requireApproverJustification": true,
+      "steps": [
+        {
+          "approvalsNeeded": 1,
+          "approverEmailRecipients": [
+            "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "approvers": [
+            {
+              "principals": [
+                "group:kcc-team@google.com"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "eligibleUsers": [
     {
@@ -511,14 +687,15 @@ X-Xss-Protection: 0
   ],
   "etag": "abcdef0123A=",
   "maxRequestDuration": "3600s",
-  "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
-      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
-          "role": "roles/storage.admin"
+          "conditionExpression": "request.time \u003e timestamp(\"2020-10-31T12:00:00.000Z\")",
+          "role": "roles/storage.objectViewer"
         }
       ]
     }
@@ -532,10 +709,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -555,18 +732,18 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "name": "folders/${testFolderId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -587,12 +764,41 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "name": "folders/${testFolderId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
+    "additionalNotificationTargets": {
+      "adminEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "requesterEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    },
+    "approvalWorkflow": {
+      "manualApprovals": {
+        "requireApproverJustification": true,
+        "steps": [
+          {
+            "approvalsNeeded": 1,
+            "approverEmailRecipients": [
+              "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            ],
+            "approvers": [
+              {
+                "principals": [
+                  "group:kcc-team@google.com"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "eligibleUsers": [
       {
@@ -603,14 +809,15 @@ X-Xss-Protection: 0
     ],
     "etag": "abcdef0123A=",
     "maxRequestDuration": "3600s",
-    "name": "projects/${projectNumber}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "privilegedAccess": {
       "gcpIamAccess": {
-        "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
-        "resourceType": "cloudresourcemanager.googleapis.com/Project",
+        "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+        "resourceType": "cloudresourcemanager.googleapis.com/Folder",
         "roleBindings": [
           {
-            "role": "roles/storage.admin"
+            "conditionExpression": "request.time \u003e timestamp(\"2020-10-31T12:00:00.000Z\")",
+            "role": "roles/storage.objectViewer"
           }
         ]
       }
