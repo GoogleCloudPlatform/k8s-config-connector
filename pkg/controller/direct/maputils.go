@@ -285,7 +285,7 @@ func SecondsString_ToProto(mapCtx *MapContext, in *string, fieldName string) *du
 	out := &durationpb.Duration{Seconds: seconds}
 	return out
 }
-func Int64Value_FromProto(mapCtx *MapContext, ts *wrapperspb.Int64Value) int64  {
+func Int64Value_FromProto(mapCtx *MapContext, ts *wrapperspb.Int64Value) int64 {
 	if ts == nil {
 		return 0
 	}
