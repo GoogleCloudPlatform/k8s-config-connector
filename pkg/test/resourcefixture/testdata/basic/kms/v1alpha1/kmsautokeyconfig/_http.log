@@ -15,7 +15,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "folders/${testFolderId}/autokeyConfig",
   "state": 3
 }
 
@@ -27,7 +26,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: autokey_config.name=folders%2F${testFolderId}%2FautokeyConfig
 
 {
-  "keyProject": "projects/${projectId}",
+  "keyProject": "projects/${uniqueId}",
   "name": "folders/${testFolderId}/autokeyConfig"
 }
 
@@ -43,7 +42,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/${projectId}",
+  "keyProject": "projects/${uniqueId}",
   "name": "folders/${testFolderId}/autokeyConfig",
   "state": 1
 }
@@ -67,7 +66,60 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/${projectId}",
+  "keyProject": "projects/${uniqueId}",
+  "name": "folders/${testFolderId}/autokeyConfig",
+  "state": 1
+}
+
+---
+
+PATCH https://cloudkms.googleapis.com/v1/folders/${testFolderId}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=keyProject
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: autokey_config.name=folders%2F${testFolderId}%2FautokeyConfig
+
+{
+  "keyProject": "projects/{uniqueId}",
+  "name": "folders/${testFolderId}/autokeyConfig"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "keyProject": "projects/{uniqueId}",
+  "name": "folders/${testFolderId}/autokeyConfig",
+  "state": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/folders/${testFolderId}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=folders%2F${testFolderId}%2FautokeyConfig
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "keyProject": "projects/{uniqueId}",
   "name": "folders/${testFolderId}/autokeyConfig",
   "state": 1
 }
