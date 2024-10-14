@@ -19,19 +19,19 @@ package cloudbuild
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	gcp "cloud.google.com/go/cloudbuild/apiv1/v2"
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -207,61 +207,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
-
-	updateMask := &fieldmaskpb.FieldMask{}
-
-	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
-	}
-
-	typedConfig, ok := a.actual.Config.(*cloudbuildpb.WorkerPool_PrivatePoolV1Config)
-	if !ok {
-		return fmt.Errorf("unable to convert cloudbuildworkerpool %s config to workerpool PrivatePoolV1Config", a.actual.Name)
-	}
-	actualConfig := typedConfig.PrivatePoolV1Config
-	desiredConfig := a.desired.Spec.PrivatePoolConfig
-
-	if desiredConfig.NetworkConfig != nil {
-		switch actualConfig.NetworkConfig.EgressOption {
-		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_EGRESS_OPTION_UNSPECIFIED:
-			if !reflect.DeepEqual(direct.ValueOf(desiredConfig.NetworkConfig.EgressOption), "UNSPECIFIED") {
-				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
-			}
-		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_NO_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(direct.ValueOf(desiredConfig.NetworkConfig.EgressOption), "NO_PUBLIC_EGRESS") {
-				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
-			}
-		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(direct.ValueOf(desiredConfig.NetworkConfig.EgressOption), "PUBLIC_EGRESS") {
-				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
-			}
-		}
-		expectedIPRange := direct.ValueOf(desiredConfig.NetworkConfig.PeeredNetworkIPRange)
-		if expectedIPRange != "" && !reflect.DeepEqual(expectedIPRange, actualConfig.NetworkConfig.PeeredNetworkIpRange) {
-			updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.peered_network_ip_range")
-		}
-
-		// TODO: better handle the network complexity
-		// 1. peered_network is an immutable field. whether/when shall we validate
-		// 2. the gcp workerpool stores the network with "project_number", different from the spec which uses the "project_id".
-		//    * projects/<project_number>/global/networks/<network_id>
-		//    * projects/<project_id>/global/networks/<network_id>
-		desiredNetwork := strings.Split(desiredConfig.NetworkConfig.PeeredNetworkRef.External, "/")
-		actualNetwork := strings.Split(actualConfig.NetworkConfig.PeeredNetwork, "/")
-		if len(desiredNetwork) == 5 && len(actualNetwork) == 5 && !reflect.DeepEqual(desiredNetwork[4], actualNetwork[4]) {
-			return fmt.Errorf("peered_network is immutable field")
-		}
-	}
-	if !reflect.DeepEqual(desiredConfig.WorkerConfig.DiskSizeGb, actualConfig.WorkerConfig.DiskSizeGb) {
-		updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.worker_config.disk_size_gb")
-	}
-	if !reflect.DeepEqual(desiredConfig.WorkerConfig.MachineType, actualConfig.WorkerConfig.MachineType) {
-		updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.worker_config.machine_type")
-	}
-	if len(updateMask.Paths) == 0 {
-		klog.Warningf("unexpected empty update mask, desired: %v, actual: %v", a.desired, a.actual)
-		return nil
-	}
+	log := klog.FromContext(ctx).WithName(ctrlName)
 
 	desired := a.desired.DeepCopy()
 	mapCtx := &direct.MapContext{}
@@ -271,9 +217,20 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	wp.Name = a.id.FullyQualifiedName()
 	wp.Etag = a.actual.Etag
+
+	paths, err := common.CompareProtoMessage(wp, a.actual)
+
+	if err != nil {
+		return err
+	}
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.AsExternalRef())
+		return nil
+	}
 	req := &cloudbuildpb.UpdateWorkerPoolRequest{
 		WorkerPool: wp,
-		UpdateMask: updateMask,
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
 	}
 	op, err := a.gcpClient.UpdateWorkerPool(ctx, req)
 	if err != nil {

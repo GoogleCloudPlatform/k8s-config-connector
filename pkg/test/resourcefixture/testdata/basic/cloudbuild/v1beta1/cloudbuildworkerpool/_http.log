@@ -724,7 +724,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CprivatePoolV1Config.networkConfig.egressOption%2CprivatePoolV1Config.workerConfig.diskSizeGb%2CprivatePoolV1Config.workerConfig.machineType
+PATCH https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CprivatePoolV1Config.workerConfig.machineType%2CprivatePoolV1Config.workerConfig.diskSizeGb%2CprivatePoolV1Config.networkConfig.egressOption
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: location=us-central1
