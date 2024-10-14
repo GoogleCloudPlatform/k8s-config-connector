@@ -75,39 +75,9 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// TODO: add spec.projectID
-	projectID, err := refs.ResolveProjectID(ctx, reader, u)
+	id, err := krm.NewSecretManagerSecretRef(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
-	}
-
-	var id *SecretManagerSecretIdentity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(projectID, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.Parent.Project != projectID {
-			return nil, fmt.Errorf("SecretManagerSecret %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
-		}
-		if id.Secret != resourceID {
-			return nil, fmt.Errorf("SecretManagerSecret  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Secret, resourceID)
-		}
 	}
 
 	if err = normalizeExternal(ctx, reader, u, obj); err != nil {
@@ -132,7 +102,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *SecretManagerSecretIdentity
+	id        *krm.SecretManagerSecretRef
 	gcpClient *gcp.Client
 	desired   *krm.SecretManagerSecret
 	actual    *secretmanagerpb.Secret
@@ -171,15 +141,15 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting SecretManagerSecret", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("getting SecretManagerSecret", "name", a.id.External)
 
-	req := &secretmanagerpb.GetSecretRequest{Name: a.id.FullyQualifiedName()}
+	req := &secretmanagerpb.GetSecretRequest{Name: a.id.External}
 	secretpb, err := a.gcpClient.GetSecret(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting SecretManagerSecret %q: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("getting SecretManagerSecret %q: %w", a.id.External, err)
 	}
 
 	a.actual = secretpb
@@ -207,7 +177,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating Secret", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("creating Secret", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -220,23 +190,27 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 
 	// Add metadata
+	parent, secretId, err := krm.ParseSecretManagerSecretExternal(a.id.External)
+	if err != nil {
+		return err
+	}
 	req := &secretmanagerpb.CreateSecretRequest{
-		Parent:   a.id.Parent.String(),
-		SecretId: a.id.Secret,
+		Parent:   parent.String(),
+		SecretId: secretId,
 		Secret:   resource,
 	}
 	created, err := a.gcpClient.CreateSecret(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Secret %s: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("creating Secret %s: %w", a.id.External, err)
 	}
-	log.V(2).Info("successfully created Secret", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully created Secret", "name", a.id.External)
 
 	status := &krm.SecretManagerSecretStatus{}
 	status.ObservedState = SecretManagerSecretStatusObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
+	status.ExternalRef = &a.id.External
 	status.Name = created.Name
 	return setStatus(u, status)
 }
@@ -258,7 +232,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating Secret", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("updating Secret", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -267,7 +241,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 	// the GCP service use *name* to identify the resource.
-	resource.Name = a.id.FullyQualifiedName()
+	resource.Name = a.id.External
 
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
@@ -290,7 +264,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "rotation.rotation_period")
 	}
 	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.FullyQualifiedName())
+		log.V(2).Info("no field needs update", "name", a.id.External)
 		return nil
 	}
 
@@ -300,9 +274,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	updated, err := a.gcpClient.UpdateSecret(ctx, req)
 	if err != nil {
-		return fmt.Errorf("Secret %s waiting update: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("Secret %s waiting update: %w", a.id.External, err)
 	}
-	log.V(2).Info("successfully updated Secret", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully updated Secret", "name", a.id.External)
 
 	status := &krm.SecretManagerSecretStatus{}
 	status.ObservedState = SecretManagerSecretStatusObservedState_FromProto(mapCtx, updated)
@@ -336,14 +310,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting Secret", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("deleting Secret", "name", a.id.External)
 
-	req := &secretmanagerpb.DeleteSecretRequest{Name: a.id.FullyQualifiedName()}
+	req := &secretmanagerpb.DeleteSecretRequest{Name: a.id.External}
 	err := a.gcpClient.DeleteSecret(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting Secret %s: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting Secret %s: %w", a.id.External, err)
 	}
-	log.V(2).Info("successfully deleted Secret", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully deleted Secret", "name", a.id.External)
 	return true, nil
 }
 
