@@ -16,12 +16,14 @@ package mockkms
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -56,12 +58,23 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-	if err := pb.RegisterAutokeyAdminHandler(ctx, mux, conn); err != nil {
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb.RegisterKeyManagementServiceHandler,
+		pb.RegisterAutokeyAdminHandler,
+		// TODO: Any LROs on this API?
+		//	s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
+	)
+	if err != nil {
+		fmt.Printf("Error occurred %v", err)
 		return nil, err
 	}
-	if err := pb.RegisterKeyManagementServiceHandler(ctx, mux, conn); err != nil {
-		return nil, err
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		fmt.Printf("KMS error :%v", error)
+		if error.Code == 404 && (strings.Contains(error.Message, "KeyRing") || strings.Contains(error.Message, "CryptoKey")) {
+			error.Errors = nil
+		}
 	}
 	return mux, nil
 }
