@@ -268,8 +268,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if err != nil {
 		return fmt.Errorf("error getting resourceType and resource from container: %w", err)
 	}
-	hiddenFields := gcpIAMAccessResource{resourceType: resourceType, resource: resource}
-	entitlement := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec, hiddenFields)
+	customizeGCPIAMAccessResource := func(mapCtx *direct.MapContext, in *krm.GcpIamAccess, out privilegedaccessmanagerpb.PrivilegedAccess_GcpIamAccess) *privilegedaccessmanagerpb.PrivilegedAccess_GcpIamAccess {
+		// "out" is passed in as a literal to ensure it is instantiated before
+		// calling this customization function.
+		out.ResourceType = resourceType
+		out.Resource = resource
+		return &out
+	}
+	entitlement := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec, customizeGCPIAMAccessResource)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -353,8 +359,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if err != nil {
 		return fmt.Errorf("error getting resourceType and resource from container: %w", err)
 	}
-	hiddenFields := gcpIAMAccessResource{resourceType: resourceType, resource: resource}
-	entitlement := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec, hiddenFields)
+	customizeGCPIAMAccessResource := func(mapCtx *direct.MapContext, in *krm.GcpIamAccess, out privilegedaccessmanagerpb.PrivilegedAccess_GcpIamAccess) *privilegedaccessmanagerpb.PrivilegedAccess_GcpIamAccess {
+		// "out" is passed in as a literal to ensure it is instantiated before
+		// calling this customization function.
+		out.ResourceType = resourceType
+		out.Resource = resource
+		return &out
+	}
+	entitlement := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec, customizeGCPIAMAccessResource)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
