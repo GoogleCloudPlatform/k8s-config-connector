@@ -89,6 +89,7 @@ func addResourceConfig(t *testing.T, smLoader *servicemappingloader.ServiceMappi
 func IsPureDirectResource(gk schema.GroupKind) bool {
 	pureDirectResources := []string{
 		"CloudBuildWorkerPool",
+		"DataformRepository",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }
