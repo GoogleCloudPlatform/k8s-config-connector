@@ -1,4 +1,4 @@
-apiVersion: dataform.cnrm.cloud.google.com/v1alpha1
+apiVersion: dataform.cnrm.cloud.google.com/v1beta1
 kind: DataformRepository
 metadata:
   annotations:
