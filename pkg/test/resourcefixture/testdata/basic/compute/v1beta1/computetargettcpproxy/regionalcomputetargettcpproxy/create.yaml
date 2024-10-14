@@ -22,3 +22,4 @@ spec:
   backendServiceRef:
     name: computebackendservice-${uniqueId}
   proxyHeader: NONE
+  location: europe-west4

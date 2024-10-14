@@ -1776,6 +1776,29 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_compute_region_target_tcp_proxy
+      kind: ComputeTargetTCPProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: regional
+      idTemplate: "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: backendServiceRef
+          description: |-
+            A reference to the ComputeBackendService resource.
+          tfField: backend_service
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
     - name: google_compute_region_url_map
       kind: ComputeURLMap
       metadataMapping:
@@ -2679,6 +2702,7 @@ spec:
         name: name
       resourceID:
         targetField: name
+      locationality: global
       idTemplate: "projects/{{project}}/global/targetTcpProxies/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true

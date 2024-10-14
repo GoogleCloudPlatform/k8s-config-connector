@@ -89,6 +89,11 @@ spec:
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
+              location:
+                description: 'Location represents the geographical location of the
+                  ComputeTargetTCPProxy. Specify a region name or "global" for global
+                  resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                type: string
               proxyBind:
                 description: |-
                   Immutable. This field only applies when the forwarding rule that references
@@ -96,7 +101,7 @@ spec:
                 type: boolean
               proxyHeader:
                 description: |-
-                  Specifies the type of proxy header to append before sending data to
+                  Immutable. Specifies the type of proxy header to append before sending data to
                   the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
                 type: string
               resourceID:
@@ -106,6 +111,7 @@ spec:
                 type: string
             required:
             - backendServiceRef
+            - location
             type: object
           status:
             properties:
