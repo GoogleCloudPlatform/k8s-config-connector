@@ -49,13 +49,13 @@ func (s *MockService) ExpectedHosts() []string {
 	return []string{"securesourcemanager.googleapis.com"}
 }
 
-type SecureSourceManagerServer struct {
+type secureSourceManagerServer struct {
 	*MockService
 	pb.UnimplementedSecureSourceManagerServer
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterSecureSourceManagerServer(grpcServer, &SecureSourceManagerServer{MockService: s})
+	pb.RegisterSecureSourceManagerServer(grpcServer, &secureSourceManagerServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

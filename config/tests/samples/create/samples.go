@@ -137,6 +137,9 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 
 	if len(opt.Updates) != 0 {
+		fmt.Println()
+		fmt.Printf("in opt update")
+		fmt.Println()
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
 			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {

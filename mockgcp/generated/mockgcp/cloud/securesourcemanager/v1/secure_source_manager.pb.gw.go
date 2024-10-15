@@ -10,8 +10,8 @@ package securesourcemanagerpb
 
 import (
 	"context"
-	"io"
 	"fmt"
+	"io"
 	"net/http"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
@@ -160,6 +160,14 @@ var (
 )
 
 func request_SecureSourceManager_CreateInstance_0(ctx context.Context, marshaler runtime.Marshaler, client SecureSourceManagerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	fmt.Println()
+	fmt.Printf("http req: %#v", req)
+	fmt.Println()
+	b, _ := io.ReadAll(req.Body)
+	defer req.Body.Close()
+	fmt.Printf("body: %v", string(b))
+	fmt.Println()
+
 	var protoReq CreateInstanceRequest
 	var metadata runtime.ServerMetadata
 
@@ -195,6 +203,9 @@ func request_SecureSourceManager_CreateInstance_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
+	fmt.Println()
+	fmt.Printf("proto req: %#v", protoReq)
+	fmt.Println()
 	msg, err := client.CreateInstance(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -236,7 +247,7 @@ func local_request_SecureSourceManager_CreateInstance_0(ctx context.Context, mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	fmt.Println()
-	fmt.Printf("proto req: %#v", protoReq)
+	fmt.Printf("local proto req: %#v", protoReq)
 	fmt.Println()
 	msg, err := server.CreateInstance(ctx, &protoReq)
 	return msg, metadata, err

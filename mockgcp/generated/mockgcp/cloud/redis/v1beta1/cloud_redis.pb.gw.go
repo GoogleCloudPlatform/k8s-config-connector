@@ -10,6 +10,7 @@ package redispb
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -210,6 +211,13 @@ var (
 )
 
 func request_CloudRedis_CreateInstance_0(ctx context.Context, marshaler runtime.Marshaler, client CloudRedisClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	fmt.Println()
+	fmt.Printf("http req: %#v", req)
+	fmt.Println()
+	b, _ := io.ReadAll(req.Body)
+	defer req.Body.Close()
+	fmt.Printf("body: %v", string(b))
+	fmt.Println()
 	var protoReq CreateInstanceRequest
 	var metadata runtime.ServerMetadata
 
@@ -244,6 +252,10 @@ func request_CloudRedis_CreateInstance_0(ctx context.Context, marshaler runtime.
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CloudRedis_CreateInstance_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
+	fmt.Println()
+	fmt.Printf("protoreq: %#v", protoReq)
+	fmt.Println()
 
 	msg, err := client.CreateInstance(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err

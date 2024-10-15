@@ -31,7 +31,7 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/securesourcemanager/v1"
 )
 
-func (s *SecureSourceManagerServer) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
+func (s *secureSourceManagerServer) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
 	name, err := s.parseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -50,10 +50,11 @@ func (s *SecureSourceManagerServer) GetInstance(ctx context.Context, req *pb.Get
 	return obj, nil
 }
 
-func (s *SecureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
+func (s *secureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
 	fmt.Println("req")
 	fmt.Printf("%v", req)
 	fmt.Println()
+	req.InstanceId = "ssminstance-id"
 	reqName := req.Parent + "/instances/" + req.InstanceId
 	name, err := s.parseInstanceName(reqName)
 	if err != nil {
@@ -103,7 +104,7 @@ func (s *SecureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.
 	})
 }
 
-func (s *SecureSourceManagerServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
+func (s *secureSourceManagerServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
 	name, err := s.parseInstanceName(req.GetName())
 	if err != nil {
 		return nil, err
