@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeRedisClusters implements RedisClusterInterface
 type FakeRedisClusters struct {
-	Fake *FakeRedisV1alpha1
+	Fake *FakeRedisV1beta1
 	ns   string
 }
 
-var redisclustersResource = v1alpha1.SchemeGroupVersion.WithResource("redisclusters")
+var redisclustersResource = v1beta1.SchemeGroupVersion.WithResource("redisclusters")
 
-var redisclustersKind = v1alpha1.SchemeGroupVersion.WithKind("RedisCluster")
+var redisclustersKind = v1beta1.SchemeGroupVersion.WithKind("RedisCluster")
 
 // Get takes name of the redisCluster, and returns the corresponding redisCluster object, and an error if there is any.
-func (c *FakeRedisClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.RedisCluster, err error) {
+func (c *FakeRedisClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.RedisCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(redisclustersResource, c.ns, name), &v1alpha1.RedisCluster{})
+		Invokes(testing.NewGetAction(redisclustersResource, c.ns, name), &v1beta1.RedisCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.RedisCluster), err
+	return obj.(*v1beta1.RedisCluster), err
 }
 
 // List takes label and field selectors, and returns the list of RedisClusters that match those selectors.
-func (c *FakeRedisClusters) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.RedisClusterList, err error) {
+func (c *FakeRedisClusters) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.RedisClusterList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(redisclustersResource, redisclustersKind, c.ns, opts), &v1alpha1.RedisClusterList{})
+		Invokes(testing.NewListAction(redisclustersResource, redisclustersKind, c.ns, opts), &v1beta1.RedisClusterList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeRedisClusters) List(ctx context.Context, opts v1.ListOptions) (resu
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.RedisClusterList{ListMeta: obj.(*v1alpha1.RedisClusterList).ListMeta}
-	for _, item := range obj.(*v1alpha1.RedisClusterList).Items {
+	list := &v1beta1.RedisClusterList{ListMeta: obj.(*v1beta1.RedisClusterList).ListMeta}
+	for _, item := range obj.(*v1beta1.RedisClusterList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeRedisClusters) Watch(ctx context.Context, opts v1.ListOptions) (wat
 }
 
 // Create takes the representation of a redisCluster and creates it.  Returns the server's representation of the redisCluster, and an error, if there is any.
-func (c *FakeRedisClusters) Create(ctx context.Context, redisCluster *v1alpha1.RedisCluster, opts v1.CreateOptions) (result *v1alpha1.RedisCluster, err error) {
+func (c *FakeRedisClusters) Create(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.CreateOptions) (result *v1beta1.RedisCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(redisclustersResource, c.ns, redisCluster), &v1alpha1.RedisCluster{})
+		Invokes(testing.NewCreateAction(redisclustersResource, c.ns, redisCluster), &v1beta1.RedisCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.RedisCluster), err
+	return obj.(*v1beta1.RedisCluster), err
 }
 
 // Update takes the representation of a redisCluster and updates it. Returns the server's representation of the redisCluster, and an error, if there is any.
-func (c *FakeRedisClusters) Update(ctx context.Context, redisCluster *v1alpha1.RedisCluster, opts v1.UpdateOptions) (result *v1alpha1.RedisCluster, err error) {
+func (c *FakeRedisClusters) Update(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.UpdateOptions) (result *v1beta1.RedisCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(redisclustersResource, c.ns, redisCluster), &v1alpha1.RedisCluster{})
+		Invokes(testing.NewUpdateAction(redisclustersResource, c.ns, redisCluster), &v1beta1.RedisCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.RedisCluster), err
+	return obj.(*v1beta1.RedisCluster), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeRedisClusters) UpdateStatus(ctx context.Context, redisCluster *v1alpha1.RedisCluster, opts v1.UpdateOptions) (*v1alpha1.RedisCluster, error) {
+func (c *FakeRedisClusters) UpdateStatus(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.UpdateOptions) (*v1beta1.RedisCluster, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(redisclustersResource, "status", c.ns, redisCluster), &v1alpha1.RedisCluster{})
+		Invokes(testing.NewUpdateSubresourceAction(redisclustersResource, "status", c.ns, redisCluster), &v1beta1.RedisCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.RedisCluster), err
+	return obj.(*v1beta1.RedisCluster), err
 }
 
 // Delete takes name of the redisCluster and deletes it. Returns an error if one occurs.
 func (c *FakeRedisClusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(redisclustersResource, c.ns, name, opts), &v1alpha1.RedisCluster{})
+		Invokes(testing.NewDeleteActionWithOptions(redisclustersResource, c.ns, name, opts), &v1beta1.RedisCluster{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeRedisClusters) Delete(ctx context.Context, name string, opts v1.Del
 func (c *FakeRedisClusters) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(redisclustersResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.RedisClusterList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.RedisClusterList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched redisCluster.
-func (c *FakeRedisClusters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.RedisCluster, err error) {
+func (c *FakeRedisClusters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.RedisCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(redisclustersResource, c.ns, name, pt, data, subresources...), &v1alpha1.RedisCluster{})
+		Invokes(testing.NewPatchSubresourceAction(redisclustersResource, c.ns, name, pt, data, subresources...), &v1beta1.RedisCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.RedisCluster), err
+	return obj.(*v1beta1.RedisCluster), err
 }
