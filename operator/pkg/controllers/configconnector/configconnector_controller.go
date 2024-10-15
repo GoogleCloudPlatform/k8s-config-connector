@@ -57,6 +57,12 @@ import (
 
 const controllerName = "configconnector-controller"
 
+// ReconcilerOptions holds configuration options for the reconciler
+type ReconcilerOptions struct {
+	RepoPath       string
+	ImageTransform *controllers.ImageTransform
+}
+
 // Reconciler reconciles a ConfigConnector object.
 
 // Reconciler watches 'ConfigConnector' kind and is responsible for managing the lifecycle of KCC resource CRDs and other shared components like webhook, deletion defender, recorder.
@@ -73,8 +79,8 @@ type Reconciler struct {
 	customizationWatcher *controllers.CustomizationWatcher
 }
 
-func Add(mgr ctrl.Manager, repoPath string) error {
-	r, err := newReconciler(mgr, repoPath)
+func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
+	r, err := newReconciler(mgr, opt)
 	if err != nil {
 		return err
 	}
@@ -95,8 +101,8 @@ func Add(mgr ctrl.Manager, repoPath string) error {
 	return nil
 }
 
-func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
-	repo := cnrmmanifest.NewLocalRepository(repoPath)
+func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
+	repo := cnrmmanifest.NewLocalRepository(opt.RepoPath)
 	manifestLoader := cnrmmanifest.NewLoader(repo)
 	preflight := preflight.NewCompositePreflight([]declarative.Preflight{
 		preflight.NewNameChecker(mgr.GetClient(), k8s.ConfigConnectorAllowedName),
@@ -118,7 +124,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
 			Log:         r.log,
 		})
 
-	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnector{},
+	options := []declarative.ReconcilerOption{
 		declarative.WithLabels(r.labelMaker),
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
@@ -130,7 +136,13 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
-	)
+	}
+
+	if opt.ImageTransform != nil {
+		options = append(options, declarative.WithObjectTransform(opt.ImageTransform.RemapImages))
+	}
+
+	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnector{}, options...)
 	return r, err
 }
 
