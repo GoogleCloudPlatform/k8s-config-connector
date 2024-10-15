@@ -679,6 +679,88 @@ observedState:
 
 ## Sample YAML(s)
 
+### Typical Use Case
+```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisCluster
+metadata:
+  labels:
+    label-one: "value-one"
+  name: rediscluster-sample
+spec:
+  shardCount: 6
+  pscConfigs:
+  - networkRef:
+      name: rediscluster-dep
+  location: us-central1
+  projectRef:
+    external: ${PROJECT_ID?}
+  replicaCount: 2
+  nodeType: REDIS_STANDARD_SMALL
+  transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION
+  authorizationMode: AUTH_MODE_IAM_AUTH
+  redisConfigs:
+    maxmemory-policy: volatile-ttl
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b
+  persistenceConfig:
+    mode: AOF
+    aofConfig:
+      appendFsync: EVERYSEC
+  deletionProtectionEnabled: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: rediscluster-dep
+spec:
+  description: Test network for the project
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: rediscluster-dep
+spec:
+  ipCidrRange: 10.128.0.0/20
+  region: us-central1
+  networkRef:
+    name: rediscluster-dep
+---
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityServiceConnectionPolicy
+metadata:
+  name: rediscluster-dep
+  labels:
+    label-one: "value-one"
+spec:
+  projectRef:
+    external: ${PROJECT_ID?}
+  location: us-central1
+  serviceClass: "gcp-memorystore-redis"
+  description: "Service Connection Policy for redis"
+  networkRef:
+    name: rediscluster-dep
+  pscConfig:
+    subnetworkRefs:
+    - name: rediscluster-dep
+```
+
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
