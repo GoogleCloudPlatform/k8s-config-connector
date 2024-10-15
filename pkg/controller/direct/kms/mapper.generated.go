@@ -73,7 +73,6 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 			External: in.GetKeyProject(),
 		}
 	}
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
 
@@ -86,7 +85,6 @@ func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSAutokeyC
 	if in.KeyProject != nil {
 		out.KeyProject = in.KeyProject.External
 	}
-	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
 	return out
 }
 

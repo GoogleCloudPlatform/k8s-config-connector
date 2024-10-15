@@ -17,7 +17,6 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
-	//folderref "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/folderref"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,26 +24,19 @@ import (
 
 var KMSAutokeyConfigGVK = GroupVersion.WithKind("KMSAutokeyConfig")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // KMSAutokeyConfigSpec defines the desired state of KMSAutokeyConfig
 // +kcc:proto=google.cloud.kms.v1.AutokeyConfig
 type KMSAutokeyConfigSpec struct {
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
-	// The KMSAutokeyConfig name. If not given, the metadata.name will be used.
-	// + optional
-	ResourceID *string `json:"resourceID,omitempty"`
+
+	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on folderID for uniqueness.
 
 	// Immutable. The folder that this resource belongs to.
 	FolderRef *refs.FolderRef `json:"folderRef"`
 
 	// +optional
 	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
-
-	// +optional
-	State *string `json:"state,omitempty"`
 }
 
 // KMSAutokeyConfigStatus defines the config connector machine state of KMSAutokeyConfig

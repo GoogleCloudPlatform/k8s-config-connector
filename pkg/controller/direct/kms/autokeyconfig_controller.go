@@ -19,21 +19,16 @@ import (
 	"fmt"
 	"reflect"
 
-	//"reflect"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 
-	//folderref "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/folderref"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(user): Update the import with the google cloud client
 	gcp "cloud.google.com/go/kms/apiv1"
 
-	// TODO(user): Update the import with the google cloud client api protobuf
 	kmspb "cloud.google.com/go/kms/apiv1/kmspb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -45,8 +40,7 @@ import (
 )
 
 const (
-	ctrlName = "kms-controller"
-	// TODO(user): Confirm service domain
+	ctrlName      = "kms-controller"
 	serviceDomain = "//cloudkms.googleapis.com"
 )
 
@@ -83,13 +77,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
 	var folder *refs.Folder
 	var err error
 	folder, err = refs.ResolveFolderFromAnnotation(ctx, reader, obj)
@@ -112,10 +99,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		if id.Parent.FolderID != folder.FolderID {
 			return nil, fmt.Errorf("KMSAutokeyConfig %s/%s has spec.folderRef changed, expect %s, got %s",
 				u.GetNamespace(), u.GetName(), id.Parent.FolderID, folder.FolderID)
-		}
-		if id.FullyQualifiedName() != resourceID {
-			return nil, fmt.Errorf("KMSAutokeyConfig  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.FullyQualifiedName(), resourceID)
 		}
 	}
 
@@ -211,7 +194,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	// to populate a.actual
+	// To populate a.actual calling a.Find()
 	isExist, err := a.Find(ctx)
 	if !isExist {
 		return nil, fmt.Errorf("updateAutokeyConfig failed as AutokeyConfig does not exist, name: %s", a.id.FullyQualifiedName())
@@ -266,18 +249,8 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting AutokeyConfig", "name", a.id.FullyQualifiedName())
 
-	/*req := &kmspb.DeleteAutokeyConfigRequest{Name: a.id.FullyQualifiedName()}
-	op, err := a.gcpClient.DeleteAutokeyConfig(ctx, req)
-	if err != nil {
-		return false, fmt.Errorf("deleting AutokeyConfig %s: %w", a.id.FullyQualifiedName(), err)
-	}
-	*/
 	log.V(2).Info("no-op, cannot deleted AutokeyConfig", "name", a.id.FullyQualifiedName())
 
-	/*err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete AutokeyConfig %s: %w", a.id.FullyQualifiedName(), err)
-	}*/
 	return true, nil
 }
 

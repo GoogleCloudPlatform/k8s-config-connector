@@ -16,7 +16,6 @@ package mockkms
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -65,13 +64,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		//	s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
-		fmt.Printf("Error occurred %v", err)
 		return nil, err
 	}
 
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		fmt.Printf("KMS error :%v", error)
 		if error.Code == 404 && (strings.Contains(error.Message, "KeyRing") || strings.Contains(error.Message, "CryptoKey")) {
 			error.Errors = nil
 		}

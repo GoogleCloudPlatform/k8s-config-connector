@@ -31,12 +31,7 @@ func init() {
 	}
 	resourceContextMap["kmsautokeyconfig"] = ResourceContext{
 		ResourceKind: "KMSAutokeyConfig",
-		// TestCreateNoChangeUpdateDelete/basic-kmscryptokey: dynamic_controller_integration_test.go:149: value
-		//   mismatch for label with key 'key-one': got 'value-two', want 'value-one'
-		// TestCreateNoChangeUpdateDelete/basic-kmscryptokey: dynamic_controller_integration_test.go:282: reconcile
-		//   returned unexpected error: Delete call failed: error deleting resource: googleapi: Error 400: The request
-		//   cannot be fulfilled. Resource projects/cnrm-test-tgooo56g38yqbn3k/locations/us-central1/keyRings/kmscryptokey-i94182u4ku0un1f0nsna/cryptoKeys/kmscryptokey-i94182u4ku0un1f0nsna/cryptoKeyVersions/1
-		//   has value DESTROY_SCHEDULED in field crypto_key_version.state., failedPrecondition
+		// The AutokeyConfig resource does not support delete operation.
 		SkipDriftDetection: true,
 		SkipDelete:         true,
 	}
