@@ -249,16 +249,6 @@ func (in *KMSAutokeyConfigSpec) DeepCopyInto(out *KMSAutokeyConfigSpec) {
 		*out = new(AutokeyconfigKeyProject)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ResourceID != nil {
-		in, out := &in.ResourceID, &out.ResourceID
-		*out = new(string)
-		**out = **in
-	}
-	if in.State != nil {
-		in, out := &in.State, &out.State
-		*out = new(string)
-		**out = **in
-	}
 	return
 }
 

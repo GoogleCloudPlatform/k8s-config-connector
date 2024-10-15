@@ -60,13 +60,6 @@ type KMSAutokeyConfigSpec struct {
 	/* The Project that this resource belongs to. */
 	// +optional
 	KeyProject *AutokeyconfigKeyProject `json:"keyProject,omitempty"`
-
-	/* Immutable. The KMSAutokeyConfig name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
-
-	// +optional
-	State *string `json:"state,omitempty"`
 }
 
 type AutokeyconfigObservedStateStatus struct {
