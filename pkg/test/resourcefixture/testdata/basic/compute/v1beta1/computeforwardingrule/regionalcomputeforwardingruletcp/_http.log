@@ -1,0 +1,2130 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/network-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/network-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "ipCidrRange": "10.1.2.0/24",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnetwork-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.2.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.1.2.0/24",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "ipCidrRange": "10.129.0.0/23",
+  "logConfig": null,
+  "name": "proxyonlysubnetwork-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "purpose": "REGIONAL_MANAGED_PROXY",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "role": "ACTIVE"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.2.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.129.0.0/23",
+  "kind": "compute#subnetwork",
+  "name": "proxyonlysubnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "REGIONAL_MANAGED_PROXY",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "role": "ACTIVE",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}\" not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "addressType": "EXTERNAL",
+  "description": "a test global address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "EXTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "a test global address",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "EXTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "a test global address",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 0
+  },
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "computebackendservice-${uniqueId}",
+  "protocol": "TCP",
+  "region": "projects/${projectId}/global/regions/us-central1"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 0
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "computebackendservice-${uniqueId}",
+  "protocol": "TCP",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "targetTcpProxy \"projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "targetTcpProxy \"projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}\" not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "description": "test description",
+  "name": "computetargettcpproxy-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "test description",
+  "id": "000000000000000000000",
+  "kind": "compute#targetTcpProxy",
+  "name": "computetargettcpproxy-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "targetTcpProxy \"projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "targetTcpProxy \"projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}\" not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "description": "other test description",
+  "name": "computetargettcpproxy2-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "other test description",
+  "id": "000000000000000000000",
+  "kind": "compute#targetTcpProxy",
+  "name": "computetargettcpproxy2-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1
+
+{
+  "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
+  "description": "A regional forwarding rule",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "computeregionalforwardingrule-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "portRange": "90",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&operation=${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A regional forwarding rule",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "computeregionalforwardingrule-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "networkTier": "PREMIUM",
+  "portRange": "90-90",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&resource=computeregionalforwardingrule-${uniqueId}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A regional forwarding rule",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "computeregionalforwardingrule-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "networkTier": "PREMIUM",
+  "portRange": "90-90",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&resource=computeregionalforwardingrule-${uniqueId}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setTarget
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+{
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "SetTarget",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&operation=${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "SetTarget",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A regional forwarding rule",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "computeregionalforwardingrule-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "networkTier": "PREMIUM",
+  "portRange": "90-90",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&operation=${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "other test description",
+  "id": "000000000000000000000",
+  "kind": "compute#targetTcpProxy",
+  "name": "computetargettcpproxy2-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "test description",
+  "id": "000000000000000000000",
+  "kind": "compute#targetTcpProxy",
+  "name": "computetargettcpproxy-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${targetTcpProxiesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 0
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "computebackendservice-${uniqueId}",
+  "protocol": "TCP",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "EXTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "a test global address",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.2.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.129.0.0/23",
+  "kind": "compute#subnetwork",
+  "name": "proxyonlysubnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "REGIONAL_MANAGED_PROXY",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "role": "ACTIVE",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/proxyonlysubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.2.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.1.2.0/24",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkNumber}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "user@example.com"
+}
