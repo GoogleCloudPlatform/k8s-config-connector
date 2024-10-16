@@ -8,16 +8,9 @@
 
 * We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)   
 
-
-### Enhanced `ComputeForwardingRule` Reliability (Direct reconciliation)
-
-* We improves the reliability of `ComputeForwardingRule` reconciliation and introduces advanced configuration options.  These enhancements include fixes for defaulting and label issues, and adding the Private Service Connect setup using the new `spec.target.googleApisBundle` field (accept value `all-apis` or `vpc-sc`). To enable these improvements, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to your `ComputeForwardingRule` resources.
-
 ## New Beta Resources (Direct Reconciler):
 
 * `RedisCluster`
-* `CertificateManagerDNSAuthorization` (migrated)
-* `ComputeForwardingRule` (migrated)
 
 ## New Fields:
 
@@ -27,7 +20,13 @@
 
 * `ComputeForwardingRule`
 
-  * Added `spec.target.googleApisBundle` field. Note, when using this field, you are using the Direct reconciliation by default and you get all the benefits descript in "Enhanced `ComputeForwardingRule` Reliability" even if not adding the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation. 
+  * Added `spec.target.googleApisBundle` field (accept value `all-apis` or `vpc-sc`). Note, when configured this field, you are using the new Direct reconciliation.  
+
+## Modified Beta Reconciliation
+
+We migrated the following reconciliation from the TF-based or DCL-based controller to the new Direct controller to enhance the reliability and performance. The resource CRD is unchanged.
+
+* `CertificateManagerDNSAuthorization`
 
 ## New Alpha Resources (Direct Reconciler):
 
