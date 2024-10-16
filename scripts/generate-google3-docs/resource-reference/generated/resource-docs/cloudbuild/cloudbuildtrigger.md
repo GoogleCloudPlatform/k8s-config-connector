@@ -2102,8 +2102,7 @@ a build.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
-If not specified, "global" is used.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The location of the Cloud Build trigger. If not specified, "global" is used. More info: cloud.google.com/build/docs/locations.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
