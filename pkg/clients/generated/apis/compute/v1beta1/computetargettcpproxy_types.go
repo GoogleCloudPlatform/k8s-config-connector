@@ -43,12 +43,15 @@ type ComputeTargetTCPProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Location represents the geographical location of the ComputeTargetTCPProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	Location string `json:"location"`
+
 	/* Immutable. This field only applies when the forwarding rule that references
 	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
 	// +optional
 	ProxyBind *bool `json:"proxyBind,omitempty"`
 
-	/* Specifies the type of proxy header to append before sending data to
+	/* Immutable. Specifies the type of proxy header to append before sending data to
 	the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`

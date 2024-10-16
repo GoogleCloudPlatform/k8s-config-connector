@@ -16,6 +16,7 @@ metadata:
 spec:
   backendServiceRef:
     name: computebackendservice-${uniqueId}
+  location: global
   proxyHeader: PROXY_V1
   resourceID: computetargettcpproxy-${uniqueId}
 status:
