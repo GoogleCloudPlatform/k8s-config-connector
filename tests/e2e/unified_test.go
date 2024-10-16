@@ -317,7 +317,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							t.Errorf("failed to get test name")
 						}
 						// Golden test exported GCP object
-						exportedYAML := exportResource(h, obj)
+						exportedYAML := exportResource(h, obj, &Expectations{})
 						if exportedYAML != "" {
 							exportedObj := &unstructured.Unstructured{}
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
