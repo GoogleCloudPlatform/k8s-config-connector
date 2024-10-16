@@ -23,87 +23,109 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func CompareProtoMessage(a, b proto.Message, skipFields ...string) ([]string, error) {
-	diffPaths := []string{}
+type CompareDiff func(fieldName protoreflect.Name, a, b proto.Message) (bool, error)
+
+var BasicDiff = func(fieldName protoreflect.Name, a, b proto.Message) (bool, error) {
+	aField := a.ProtoReflect().Descriptor().Fields().ByName(fieldName)
+	bField := b.ProtoReflect().Descriptor().Fields().ByName(fieldName)
+
+	// Skip output-only fields
+	if IsFieldBehavior(aField, annotations.FieldBehavior_OUTPUT_ONLY) {
+		return false, nil
+	}
+	// The field is previously unset
+	if bField == nil {
+		return true, nil
+	}
+	if !aField.Kind().IsValid() {
+		return false, fmt.Errorf("unimplemented kind: " + aField.Kind().String())
+	}
+
+	diff := false
+	aVal := a.ProtoReflect().Get(aField)
+	bVal := b.ProtoReflect().Get(bField)
+	switch aField.Kind() {
+	case protoreflect.MessageKind:
+		if aField.IsList() || aField.IsMap() {
+			if !aVal.Equal(bVal) {
+				diff = true
+			}
+		} else {
+			m := aVal.Message().Interface()
+			// Compare well-known proto type as a whole otherwise the diffPath (update field mask) could be wrong.
+			switch m.(type) {
+			case *timestamppb.Timestamp:
+				if !aVal.Equal(bVal) {
+					diff = true
+				}
+			case *durationpb.Duration:
+				if !aVal.Equal(bVal) {
+					diff = true
+				}
+			default:
+				return false, fmt.Errorf("field %s not recursed", fieldName)
+			}
+		}
+	default:
+		if !aVal.Equal(bVal) {
+			diff = true
+		}
+	}
+	if diff && IsFieldBehavior(aField, annotations.FieldBehavior_IMMUTABLE) {
+		return false, fmt.Errorf("change to immutable field %s", fieldName)
+	}
+	return diff, nil
+}
+
+func CompareProtoMessage(a, b proto.Message, compareDiff CompareDiff) (sets.Set[string], error) {
+	diffPaths := sets.Set[string]{}
 	aDescriptor := a.ProtoReflect().Descriptor()
-	bDescriptor := b.ProtoReflect().Descriptor()
 
 	for i := 0; i < aDescriptor.Fields().Len(); i++ {
-		aField := aDescriptor.Fields().Get(i)
-		bField := bDescriptor.Fields().ByName(aField.Name())
-		updatePath := updatePathFromField(a, aField)
+		field := aDescriptor.Fields().Get(i)
+		updatePath := updatePathFromField(a, aDescriptor.Fields().Get(i))
 
-		// Skip custom configured fields
-		for _, skip := range skipFields {
-			if skip == updatePath {
-				continue
+		aVal := a.ProtoReflect().Get(field)
+		bVal := b.ProtoReflect().Get(field)
+		if shouldRecurse(field, a.ProtoReflect()) {
+			subPaths, err := CompareProtoMessage(aVal.Message().Interface(), bVal.Message().Interface(), compareDiff)
+			if err != nil {
+				return nil, err
 			}
-		}
-		// Skip output-only fields
-		if IsFieldBehavior(aField, annotations.FieldBehavior_OUTPUT_ONLY) {
-			continue
-		}
-		// The field is previously unset
-		if bField == nil {
-			diffPaths = append(diffPaths, updatePath)
-			continue
-		}
-		if !aField.Kind().IsValid() {
-			return nil, fmt.Errorf("unimplemented kind: " + aField.Kind().String())
-		}
-
-		aVal := a.ProtoReflect().Get(aField)
-		bVal := b.ProtoReflect().Get(bField)
-		var diffFPath []string
-
-		switch aField.Kind() {
-		case protoreflect.MessageKind:
-			if aField.IsList() || aField.IsMap() {
-				if !aVal.Equal(bVal) {
-					diffFPath = append(diffFPath, updatePath)
-				}
-			} else {
-				m := aVal.Message().Interface()
-				// Compare well-known proto type as a whole otherwise the diffPath (update field mask) could be wrong.
-				switch m.(type) {
-				case *timestamppb.Timestamp:
-					if !aVal.Equal(bVal) {
-						diffFPath = append(diffFPath, updatePath)
-					}
-				case *durationpb.Duration:
-					if !aVal.Equal(bVal) {
-						diffFPath = append(diffFPath, updatePath)
-					}
-				default:
-					var subSkipFields []string
-					for _, skip := range skipFields {
-						subSkipFields = append(subSkipFields, strings.TrimPrefix(skip, string(aField.Name())+"."))
-					}
-					subPaths, err := CompareProtoMessage(aVal.Message().Interface(), bVal.Message().Interface(), skipFields...)
-					if err != nil {
-						return nil, err
-					}
-					for _, path := range subPaths {
-						diffFPath = append(diffFPath, updatePath+"."+path)
-					}
-				}
+			for path := range subPaths {
+				diffPaths.Insert(updatePath + "." + path)
 			}
-		default:
-			if !aVal.Equal(bVal) {
-				diffFPath = append(diffFPath, updatePath)
+		} else {
+			if diff, err := compareDiff(field.Name(), a, b); err != nil {
+				return nil, err
+			} else if diff {
+				diffPaths.Insert(updatePath)
 			}
-		}
-
-		if len(diffFPath) != 0 {
-			if IsFieldBehavior(aField, annotations.FieldBehavior_IMMUTABLE) {
-				return nil, fmt.Errorf("change to immutable field %s", diffFPath)
-			}
-			diffPaths = append(diffPaths, diffFPath...)
 		}
 	}
 	return diffPaths, nil
+}
+
+func shouldRecurse(field protoreflect.FieldDescriptor, message protoreflect.Message) bool {
+	if field.Kind() != protoreflect.MessageKind {
+		return false
+	}
+	if field.IsList() || field.IsMap() {
+		return false
+	}
+	m := message.Get(field).Message().Interface()
+	// Compare well-known proto type as a whole otherwise the diffPath (update field mask) could be wrong.
+	switch m.(type) {
+	case *timestamppb.Timestamp:
+		return false
+	case *durationpb.Duration:
+		return false
+	default:
+		return true
+	}
 }
 
 func updatePathFromField(obj proto.Message, field protoreflect.FieldDescriptor) string {

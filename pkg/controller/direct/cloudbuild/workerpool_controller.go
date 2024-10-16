@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -218,7 +219,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	wp.Name = a.id.FullyQualifiedName()
 	wp.Etag = a.actual.Etag
 
-	paths, err := common.CompareProtoMessage(wp, a.actual)
+	paths, err := common.CompareProtoMessage(wp, a.actual, common.BasicDiff)
 
 	if err != nil {
 		return err
@@ -230,7 +231,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	req := &cloudbuildpb.UpdateWorkerPoolRequest{
 		WorkerPool: wp,
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 	}
 	op, err := a.gcpClient.UpdateWorkerPool(ctx, req)
 	if err != nil {

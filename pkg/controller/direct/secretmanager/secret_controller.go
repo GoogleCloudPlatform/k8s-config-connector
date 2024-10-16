@@ -242,7 +242,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	resource.Etag = a.actual.Etag
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
-	paths, err := common.CompareProtoMessage(resource, a.actual)
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -253,7 +253,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	}
 
 	req := &secretmanagerpb.UpdateSecretRequest{
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 		Secret:     resource,
 	}
 	updated, err := a.gcpClient.UpdateSecret(ctx, req)

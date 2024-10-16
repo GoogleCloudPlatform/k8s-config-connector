@@ -791,7 +791,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=topics%2CexpireTime%2Crotation.nextRotationTime%2Crotation.rotationPeriod%2Cannotations
+PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CexpireTime%2Crotation.nextRotationTime%2Crotation.rotationPeriod%2Ctopics
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
