@@ -287,3 +287,4 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	return true, nil
 }
+`
