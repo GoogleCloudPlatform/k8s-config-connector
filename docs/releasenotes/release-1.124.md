@@ -4,31 +4,32 @@
 
 ## Announcement
 
+### Simplified and More Reliable Resource Development 
+
 * We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)   
 
-* You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on `ComputeForwardingRule` resource to opt-in
-the Direct Cloud Reconciler, which provides sustainable reconciliation support for different types of ForwardingRule uses, including setting labels for ServiceAttachments and Private Service Connect.
 
-## Resources promoted from alpha to beta:
+### Enhanced `ComputeForwardingRule` Reliability (Direct reconciliation)
 
-* `RedisCluster` (v1beta1)
+* We improves the reliability of `ComputeForwardingRule` reconciliation and introduces advanced configuration options.  These enhancements include fixes for defaulting and label issues, and adding the Private Service Connect setup using the new `spec.target.googleApisBundle` field (accept value `all-apis` or `vpc-sc`). To enable these improvements, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to your `ComputeForwardingRule` resources.
 
-## Direct Cloud Reconciler:
+## New Beta Resources (Direct Reconciler):
 
-* `BigQueryAnalyticsHubDataExchange` (v1alpha1).
-* `CertificateManagerDNSAuthorization` (v1beta1).
-* `ComputeForwardingRule` (v1beta1).
-
-## New Resources:
-
-* Added support for `PrivilegedAccessManagerEntitlement` (v1alpha1) resource.
+* `RedisCluster`
+* `CertificateManagerDNSAuthorization` (migrated)
+* `ComputeForwardingRule` (migrated)
 
 ## New Fields:
 
-* CertificateManagerDNSAuthorization
+* `CertificateManagerDNSAuthorization`
 
   * Added `spec.Location` field.
 
-* ComputeForwardingRule
+* `ComputeForwardingRule`
 
-  * Added `spec.target.googleApisBundle` field
+  * Added `spec.target.googleApisBundle` field. Note, when using this field, you are using the Direct reconciliation by default and you get all the benefits descript in "Enhanced `ComputeForwardingRule` Reliability" even if not adding the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation. 
+
+## New Alpha Resources (Direct Reconciler):
+
+* `PrivilegedAccessManagerEntitlement`
+* `BigQueryAnalyticsHubDataExchange`
