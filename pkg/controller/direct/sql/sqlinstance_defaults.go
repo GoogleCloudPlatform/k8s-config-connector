@@ -21,11 +21,17 @@ import (
 )
 
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance) {
+	if in.Spec.InstanceType == nil {
+		out.InstanceType = "CLOUD_SQL_INSTANCE"
+	}
 	if in.Spec.Settings.ActivationPolicy == nil {
 		out.Settings.ActivationPolicy = "ALWAYS"
 	}
 	if in.Spec.Settings.AvailabilityType == nil {
 		out.Settings.AvailabilityType = "ZONAL"
+	}
+	if in.Spec.Settings.ConnectorEnforcement == nil {
+		out.Settings.ConnectorEnforcement = "NOT_REQUIRED"
 	}
 	if in.Spec.Settings.DiskType == nil {
 		out.Settings.DataDiskType = "PD_SSD"
