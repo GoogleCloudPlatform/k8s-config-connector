@@ -64,6 +64,33 @@ spec:
                 items:
                   type: string
                 type: array
+              dataExchangeRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The DataExchange selfLink, when not managed by Config
+                      Connector.
+                    type: string
+                  name:
+                    description: The `name` field of a `DataExchange` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `DataExchange` resource.
+                    type: string
+                type: object
               dataProvider:
                 description: Optional. Details of the data provider who owns the source
                   data.
@@ -78,10 +105,9 @@ spec:
                 type: object
               description:
                 description: 'Optional. Short description of the listing. The description
-                  must not contain Unicode non-characters and C0 and C1 control codes
-                  except tabs (HT), new lines (LF), carriage returns (CR), and page
-                  breaks (FF). Default value is an empty string. Max length: 2000
-                  bytes.'
+                  must contain only Unicode characters or tabs  (HT), new lines (LF),
+                  carriage returns (CR), and page breaks (FF). Default value is an
+                  empty string. Max length: 2000 bytes.'
                 type: string
               discoveryType:
                 description: Optional. Type of discovery of the listing on the discovery
@@ -160,9 +186,92 @@ spec:
                 x-kubernetes-validations:
                 - message: ResourceID field is immutable
                   rule: self == oldSelf
+              source:
+                properties:
+                  bigQueryDatasetSource:
+                    description: One of the following fields must be set.
+                    properties:
+                      datasetRef:
+                        description: Resource name of the dataset source for this
+                          listing. e.g. `projects/myproject/datasets/123`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: If provided must be in the format `projects/[project_id]/datasets/[dataset_id]`.
+                            type: string
+                          name:
+                            description: The `metadata.name` field of a `BigQueryDataset`
+                              resource.
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a `BigQueryDataset`
+                              resource.
+                            type: string
+                        type: object
+                      restrictedExportPolicy:
+                        description: Optional. If set, restricted export policy will
+                          be propagated and enforced on the linked dataset.
+                        properties:
+                          enabled:
+                            description: Optional. If true, enable restricted export.
+                            properties:
+                              value:
+                                description: The bool value.
+                                type: boolean
+                            type: object
+                          restrictDirectTableAccess:
+                            description: Optional. If true, restrict direct table
+                              access (read api/tabledata.list) on linked table.
+                            properties:
+                              value:
+                                description: The bool value.
+                                type: boolean
+                            type: object
+                          restrictQueryResult:
+                            description: Optional. If true, restrict export of query
+                              result derived from restricted linked dataset table.
+                            properties:
+                              value:
+                                description: The bool value.
+                                type: boolean
+                            type: object
+                        type: object
+                      selectedResources:
+                        description: Optional. Resources in this dataset that are
+                          selectively shared. If this field is empty, then the entire
+                          dataset (all resources) are shared. This field is only valid
+                          for data clean room exchanges.
+                        items:
+                          properties:
+                            table:
+                              description: 'Optional. Format: For table: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
+                                Example:"projects/test_project/datasets/test_dataset/tables/test_table"'
+                              type: string
+                          type: object
+                        type: array
+                    required:
+                    - datasetRef
+                    type: object
+                type: object
             required:
+            - dataExchangeRef
+            - displayName
             - location
             - projectRef
+            - source
             type: object
           status:
             description: BigQueryAnalyticsHubListingStatus defines the config connector

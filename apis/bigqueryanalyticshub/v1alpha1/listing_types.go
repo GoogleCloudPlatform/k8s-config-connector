@@ -22,19 +22,45 @@ import (
 
 var BigQueryAnalyticsHubListingGVK = GroupVersion.WithKind("BigQueryAnalyticsHubDataExchangeListing")
 
+type BigQueryDatasetSource struct {
+	// +required
+	// Resource name of the dataset source for this listing.
+	//  e.g. `projects/myproject/datasets/123`
+	Dataset *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
+
+	// Optional. Resources in this dataset that are selectively shared.
+	//  If this field is empty, then the entire dataset (all resources) are
+	//  shared. This field is only valid for data clean room exchanges.
+	SelectedResources []Listing_BigQueryDatasetSource_SelectedResource `json:"selectedResources,omitempty"`
+
+	// Optional. If set, restricted export policy will be propagated and
+	//  enforced on the linked dataset.
+	RestrictedExportPolicy *Listing_BigQueryDatasetSource_RestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
+}
+type Source struct {
+	// One of the following fields must be set.
+	BigQueryDatasetSource *BigQueryDatasetSource `json:"bigQueryDatasetSource,omitempty"`
+
+	// NOT YET
+	// PubsubTopicSource *PubsubTopicSource `json:"pubsubTopicSource,omitempty"`
+}
+
 // BigQueryAnalyticsHubListingSpec defines the desired state of BigQueryAnalyticsHubDataExchangeListing
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing
 type BigQueryAnalyticsHubListingSpec struct {
+	// +required
+	Source *Source `json:"source,omitempty"`
+
+	// +required
 	// Required. Human-readable display name of the listing. The display name must
 	//  contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
 	//  spaces ( ), ampersands (&) and can't start or end with spaces. Default
 	//  value is an empty string. Max length: 63 bytes.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Optional. Short description of the listing. The description must not
-	//  contain Unicode non-characters and C0 and C1 control codes except tabs
-	//  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default
-	//  value is an empty string. Max length: 2000 bytes.
+	// Optional. Short description of the listing. The description must contain only
+	//  Unicode characters or tabs  (HT), new lines (LF), carriage returns (CR), and
+	//  page breaks (FF). Default value is an empty string. Max length: 2000 bytes.
 	Description *string `json:"description,omitempty"`
 
 	// Optional. Email or URL of the primary point of contact of the listing.
@@ -84,6 +110,9 @@ type BigQueryAnalyticsHubListingSpec struct {
 
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+
+	// +required
+	DataExchangeRef *refv1beta1.DataExchangeRef `json:"dataExchangeRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.

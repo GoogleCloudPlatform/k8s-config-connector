@@ -35,6 +35,19 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ListingBigQueryDatasetSource struct {
+	/* Resource name of the dataset source for this listing. e.g. `projects/myproject/datasets/123` */
+	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+
+	/* Optional. If set, restricted export policy will be propagated and enforced on the linked dataset. */
+	// +optional
+	RestrictedExportPolicy *ListingRestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
+
+	/* Optional. Resources in this dataset that are selectively shared. If this field is empty, then the entire dataset (all resources) are shared. This field is only valid for data clean room exchanges. */
+	// +optional
+	SelectedResources []ListingSelectedResources `json:"selectedResources,omitempty"`
+}
+
 type ListingDataProvider struct {
 	/* Optional. Name of the data provider. */
 	// +optional
@@ -43,6 +56,12 @@ type ListingDataProvider struct {
 	/* Optional. Email or URL of the data provider. Max Length: 1000 bytes. */
 	// +optional
 	PrimaryContact *string `json:"primaryContact,omitempty"`
+}
+
+type ListingEnabled struct {
+	/* The bool value. */
+	// +optional
+	Value *bool `json:"value,omitempty"`
 }
 
 type ListingPublisher struct {
@@ -55,16 +74,56 @@ type ListingPublisher struct {
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
 
+type ListingRestrictDirectTableAccess struct {
+	/* The bool value. */
+	// +optional
+	Value *bool `json:"value,omitempty"`
+}
+
+type ListingRestrictQueryResult struct {
+	/* The bool value. */
+	// +optional
+	Value *bool `json:"value,omitempty"`
+}
+
+type ListingRestrictedExportPolicy struct {
+	/* Optional. If true, enable restricted export. */
+	// +optional
+	Enabled *ListingEnabled `json:"enabled,omitempty"`
+
+	/* Optional. If true, restrict direct table access (read api/tabledata.list) on linked table. */
+	// +optional
+	RestrictDirectTableAccess *ListingRestrictDirectTableAccess `json:"restrictDirectTableAccess,omitempty"`
+
+	/* Optional. If true, restrict export of query result derived from restricted linked dataset table. */
+	// +optional
+	RestrictQueryResult *ListingRestrictQueryResult `json:"restrictQueryResult,omitempty"`
+}
+
+type ListingSelectedResources struct {
+	/* Optional. Format: For table: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` Example:"projects/test_project/datasets/test_dataset/tables/test_table" */
+	// +optional
+	Table *string `json:"table,omitempty"`
+}
+
+type ListingSource struct {
+	/* One of the following fields must be set. */
+	// +optional
+	BigQueryDatasetSource *ListingBigQueryDatasetSource `json:"bigQueryDatasetSource,omitempty"`
+}
+
 type BigQueryAnalyticsHubListingSpec struct {
 	/* Optional. Categories of the listing. Up to two categories are allowed. */
 	// +optional
 	Categories []string `json:"categories,omitempty"`
 
+	DataExchangeRef v1alpha1.ResourceRef `json:"dataExchangeRef"`
+
 	/* Optional. Details of the data provider who owns the source data. */
 	// +optional
 	DataProvider *ListingDataProvider `json:"dataProvider,omitempty"`
 
-	/* Optional. Short description of the listing. The description must not contain Unicode non-characters and C0 and C1 control codes except tabs (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default value is an empty string. Max length: 2000 bytes. */
+	/* Optional. Short description of the listing. The description must contain only Unicode characters or tabs  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default value is an empty string. Max length: 2000 bytes. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -73,8 +132,7 @@ type BigQueryAnalyticsHubListingSpec struct {
 	DiscoveryType *string `json:"discoveryType,omitempty"`
 
 	/* Required. Human-readable display name of the listing. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), ampersands (&) and can't start or end with spaces. Default value is an empty string. Max length: 63 bytes. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName string `json:"displayName"`
 
 	/* Optional. Documentation describing the listing. */
 	// +optional
@@ -101,6 +159,8 @@ type BigQueryAnalyticsHubListingSpec struct {
 	/* Immutable. The BigQueryAnalyticsHubDataExchangeListing name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	Source ListingSource `json:"source"`
 }
 
 type ListingObservedStateStatus struct {
