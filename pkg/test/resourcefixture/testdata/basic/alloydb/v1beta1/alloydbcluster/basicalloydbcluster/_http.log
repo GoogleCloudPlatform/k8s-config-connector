@@ -299,6 +299,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "network": "projects/${projectId}/global/networks/${networkID}"
   },
   "primaryConfig": null,
+  "pscConfig": null,
   "reconciling": false,
   "satisfiesPzs": false,
   "secondaryConfig": null,
@@ -391,6 +392,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "network": "projects/${projectId}/global/networks/${networkID}"
   },
   "primaryConfig": null,
+  "pscConfig": null,
   "reconciling": false,
   "satisfiesPzs": false,
   "secondaryConfig": null,
