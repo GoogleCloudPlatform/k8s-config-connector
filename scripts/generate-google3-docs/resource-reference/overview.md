@@ -696,6 +696,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/memorystore/docs/">{{memorystore_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/redis/rediscluster.md">RedisCluster</a></td>
+</tr>
+<tr>
+  <td><a href="/memorystore/docs/">{{memorystore_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/redis/redisinstance.md">RedisInstance</a></td>
 </tr>
 <tr>
