@@ -254,17 +254,21 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	// TODO(user): Update other resource reference 
+	// TODO(user): Update other resource references 
 	parent, err := a.id.Parent()
 	if err != nil {
 		return nil, err
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.String()}
 	obj.Spec.Location = parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
+
+	u.SetName(a.actual.Id)
+	u.SetGroupVersionKind(krm.{{.Kind}}GVK)
+
 	u.Object = uObj
 	return u, nil
 }
