@@ -477,6 +477,15 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              pscConfig:
+                description: Configuration for Private Service Connect (PSC) for the
+                  cluster.
+                properties:
+                  pscEnabled:
+                    description: Create an instance that allows connections from Private
+                      Service Connect endpoints to the instance.
+                    type: boolean
+                type: object
               resourceID:
                 description: Immutable. Optional. The clusterId of the resource. Used
                   for creation and acquisition. When unset, the value of `metadata.name`
@@ -1195,6 +1204,15 @@ spec:
                   namespace:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
+                type: object
+              pscConfig:
+                description: Configuration for Private Service Connect (PSC) for the
+                  cluster.
+                properties:
+                  pscEnabled:
+                    description: Create an instance that allows connections from Private
+                      Service Connect endpoints to the instance.
+                    type: boolean
                 type: object
               resourceID:
                 description: Immutable. Optional. The clusterId of the resource. Used
