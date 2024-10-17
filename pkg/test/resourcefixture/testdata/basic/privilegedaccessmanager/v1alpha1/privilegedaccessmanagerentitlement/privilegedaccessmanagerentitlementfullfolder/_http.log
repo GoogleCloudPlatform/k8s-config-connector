@@ -172,7 +172,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
+POST https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: parent=folders%2F${testFolderId}%2Flocations%2Fglobal
@@ -283,7 +283,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/operations/${operationID}
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
@@ -374,7 +374,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
@@ -451,7 +451,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=additionalNotificationTargets%2CapprovalWorkflow%2CeligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
+PATCH https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=additionalNotificationTargets%2CapprovalWorkflow%2CeligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: entitlement.name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
@@ -539,7 +539,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/operations/${operationID}
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
@@ -631,7 +631,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
@@ -709,7 +709,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
@@ -740,7 +740,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privilegedaccessmanager.googleapis.com/v1/folders/${testFolderId}/locations/global/operations/${operationID}
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}

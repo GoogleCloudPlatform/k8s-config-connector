@@ -104,6 +104,8 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			r.PathIDs[id] = "${transferConfigID}"
 		case "firewallPolicies":
 			r.PathIDs[id] = "${firewallPolicyID}"
+		case "folders":
+			r.PathIDs[id] = "${folderID}"
 		}
 		tokens = tokens[:n-2]
 	}
