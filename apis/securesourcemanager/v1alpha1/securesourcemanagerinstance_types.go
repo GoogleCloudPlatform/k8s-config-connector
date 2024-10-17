@@ -26,7 +26,8 @@ var SecureSourceManagerInstanceGVK = GroupVersion.WithKind("SecureSourceManagerI
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceSpec struct {
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef refs.ProjectRef `json:"projectRef"`
+	// +required
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
 	/* Immutable. Location of the instance. */
 	Location string `json:"location"`
