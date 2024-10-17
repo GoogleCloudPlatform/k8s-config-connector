@@ -86,3 +86,143 @@ type SharingEnvironmentConfig_DcrExchangeConfig struct {
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DefaultExchangeConfig
 type SharingEnvironmentConfig_DefaultExchangeConfig struct {
 }
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.DataProvider
+type DataProvider struct {
+	// Optional. Name of the data provider.
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Email or URL of the data provider.
+	//  Max Length: 1000 bytes.
+	PrimaryContact *string `json:"primaryContact,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing
+type Listing struct {
+	// Required. Shared dataset i.e. BigQuery dataset source.
+	BigqueryDataset *Listing_BigQueryDatasetSource `json:"bigqueryDataset,omitempty"`
+
+	// Output only. The resource name of the listing.
+	//  e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`
+	Name *string `json:"name,omitempty"`
+
+	// Required. Human-readable display name of the listing. The display name must
+	//  contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
+	//  spaces ( ), ampersands (&) and can't start or end with spaces. Default
+	//  value is an empty string. Max length: 63 bytes.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Short description of the listing. The description must not
+	//  contain Unicode non-characters and C0 and C1 control codes except tabs
+	//  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default
+	//  value is an empty string. Max length: 2000 bytes.
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Email or URL of the primary point of contact of the listing.
+	//  Max Length: 1000 bytes.
+	PrimaryContact *string `json:"primaryContact,omitempty"`
+
+	// Optional. Documentation describing the listing.
+	Documentation *string `json:"documentation,omitempty"`
+
+	// Output only. Current state of the listing.
+	State *string `json:"state,omitempty"`
+
+	// Optional. Base64 encoded image representing the listing. Max Size: 3.0MiB
+	//  Expected image dimensions are 512x512 pixels, however the API only
+	//  performs validation on size of the encoded data.
+	//  Note: For byte fields, the contents of the field are base64-encoded (which
+	//  increases the size of the data by 33-36%) when using JSON on the wire.
+	Icon []byte `json:"icon,omitempty"`
+
+	// Optional. Details of the data provider who owns the source data.
+	DataProvider *DataProvider `json:"dataProvider,omitempty"`
+
+	// Optional. Categories of the listing. Up to two categories are allowed.
+	Categories []string `json:"categories,omitempty"`
+
+	// Optional. Details of the publisher who owns the listing and who can share
+	//  the source data.
+	Publisher *Publisher `json:"publisher,omitempty"`
+
+	// Optional. Email or URL of the request access of the listing.
+	//  Subscribers can use this reference to request access.
+	//  Max Length: 1000 bytes.
+	RequestAccess *string `json:"requestAccess,omitempty"`
+
+	// Optional. If set, restricted export configuration will be propagated and
+	//  enforced on the linked dataset.
+	RestrictedExportConfig *Listing_RestrictedExportConfig `json:"restrictedExportConfig,omitempty"`
+
+	// Optional. Type of discovery of the listing on the discovery page.
+	DiscoveryType *string `json:"discoveryType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource
+type Listing_BigQueryDatasetSource struct {
+	// Resource name of the dataset source for this listing.
+	//  e.g. `projects/myproject/datasets/123`
+	Dataset *string `json:"dataset,omitempty"`
+
+	// Optional. Resources in this dataset that are selectively shared.
+	//  If this field is empty, then the entire dataset (all resources) are
+	//  shared. This field is only valid for data clean room exchanges.
+	SelectedResources []Listing_BigQueryDatasetSource_SelectedResource `json:"selectedResources,omitempty"`
+
+	// Optional. If set, restricted export policy will be propagated and
+	//  enforced on the linked dataset.
+	RestrictedExportPolicy *Listing_BigQueryDatasetSource_RestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy
+type Listing_BigQueryDatasetSource_RestrictedExportPolicy struct {
+	// Optional. If true, enable restricted export.
+	Enabled *BoolValue `json:"enabled,omitempty"`
+
+	// Optional. If true, restrict direct table access (read
+	//  api/tabledata.list) on linked table.
+	RestrictDirectTableAccess *BoolValue `json:"restrictDirectTableAccess,omitempty"`
+
+	// Optional. If true, restrict export of query result derived from
+	//  restricted linked dataset table.
+	RestrictQueryResult *BoolValue `json:"restrictQueryResult,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource
+type Listing_BigQueryDatasetSource_SelectedResource struct {
+	// Optional. Format:
+	//  For table:
+	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
+	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
+	Table *string `json:"table,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig
+type Listing_RestrictedExportConfig struct {
+	// Optional. If true, enable restricted export.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Output only. If true, restrict direct table access(read
+	//  api/tabledata.list) on linked table.
+	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
+
+	// Optional. If true, restrict export of query result derived from
+	//  restricted linked dataset table.
+	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Publisher
+type Publisher struct {
+	// Optional. Name of the listing publisher.
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Email or URL of the listing publisher.
+	//  Max Length: 1000 bytes.
+	PrimaryContact *string `json:"primaryContact,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.BoolValue
+type BoolValue struct {
+	// The bool value.
+	Value *bool `json:"value,omitempty"`
+}
