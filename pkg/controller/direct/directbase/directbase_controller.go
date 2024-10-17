@@ -306,7 +306,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		hasSetReadyCondition = createOp.HasSetReadyCondition
 		requeueRequested = createOp.RequeueRequested
 	} else {
-		updateOp := NewUpdateOperation(r.Reconciler.Client, u)
+		updateOp := NewUpdateOperation(r.Reconciler.LifecycleHandler, r.Reconciler.Client, u)
 		if err := adapter.Update(ctx, updateOp); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
