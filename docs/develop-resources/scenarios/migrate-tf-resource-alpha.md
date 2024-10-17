@@ -22,7 +22,7 @@ Follow [Step 2](../guides/2-define-apis.md)
 The PR shall contain the types and deepcopy codes. It shall follow the Direct resource recommended styles and conventions. (TODO add the link) **It can change the existing fields since this is a Alpha resource**.
 
 * We always start from Alpha resources. So the migration shall first be placed under `./apis/service>/v1alpha1`. Once the alpha resource is released, we then bump it to Beta.
-* Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using TF-based controllers. 
+* Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using TF-based controllers by default (for now).
 
 ### PR Reviews
 
@@ -39,10 +39,7 @@ This PR adds the Direct mapper. You can do this together with the previous step 
 
 Follow [Step 4](../guides/4-add-controller.md).
 
-* Use the `KCC_USE_DIRECT_RECONCILERS` flag [exampe](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/dev/tasks/run-e2e#L27). This will override the tf2crd and dcl2crd label to force using the Direct controller. 
-
-
 ### PR Reviews
 
 * We require the roundtrip fuzz tests to cover all the fields in `spec` and `status.observedState` fields [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92) (For mapper)
-* We require removing the `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` tags from the API and the presubmit test passes.
+* We require duplicating all existing test cases (by copying and adding `-direct` suffix to test names), and enabling the direct controller in the new test cases (by setting the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation).
