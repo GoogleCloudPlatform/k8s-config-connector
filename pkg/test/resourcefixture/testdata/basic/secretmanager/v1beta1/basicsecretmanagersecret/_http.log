@@ -30,6 +30,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: parent=projects%2F${projectId}
 
 {
+  "expireTime": "2006-01-02T15:04:05Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -60,6 +61,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
+  "expireTime": "2006-01-02T15:04:05Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -98,6 +100,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
+  "expireTime": "2006-01-02T15:04:05Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",

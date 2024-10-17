@@ -177,6 +177,7 @@ func StringTimestamp_ToProto(mapCtx *MapContext, s *string) *timestamppb.Timesta
 			return timestamppb.New(t)
 		}
 	}
+	mapCtx.Errorf("invalid timestamp value %s", *s)
 	return nil
 }
 

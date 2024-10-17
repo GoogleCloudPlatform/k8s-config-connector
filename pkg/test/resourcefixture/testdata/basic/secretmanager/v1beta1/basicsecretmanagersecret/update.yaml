@@ -25,4 +25,4 @@ spec:
     userManaged:
       replicas:
       - location: us-central1
-  expireTime: "Mon, 02 Jan 2006 15:04:05 MST"
+  expireTime: "Monday, 02-Jan-06 15:04:05 MST"
