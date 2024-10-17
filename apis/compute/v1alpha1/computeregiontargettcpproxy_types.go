@@ -77,7 +77,7 @@ type ComputeRegionTargetTCPProxyStatus struct {
 	Kind *string `json:"kind,omitempty"`
 
 	// The unique identifier for the resource.
-	ProxyId *int64 `json:"proxyId,omitempty"`
+	ProxyID *int64 `json:"proxyID,omitempty"`
 
 	// The SelfLink for the resource.
 	SelfLink *string `json:"selfLink,omitempty"`

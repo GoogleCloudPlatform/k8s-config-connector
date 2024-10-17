@@ -211,8 +211,8 @@ func (in *ComputeRegionTargetTCPProxyStatus) DeepCopyInto(out *ComputeRegionTarg
 		*out = new(string)
 		**out = **in
 	}
-	if in.ProxyId != nil {
-		in, out := &in.ProxyId, &out.ProxyId
+	if in.ProxyID != nil {
+		in, out := &in.ProxyID, &out.ProxyID
 		*out = new(int64)
 		**out = **in
 	}

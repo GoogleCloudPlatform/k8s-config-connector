@@ -88,7 +88,7 @@ type ComputeRegionTargetTCPProxyStatus struct {
 
 	/* The unique identifier for the resource. */
 	// +optional
-	ProxyId *int64 `json:"proxyId,omitempty"`
+	ProxyID *int64 `json:"proxyID,omitempty"`
 
 	/* The SelfLink for the resource. */
 	// +optional
