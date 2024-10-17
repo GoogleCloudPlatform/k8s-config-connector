@@ -202,6 +202,16 @@ type DatabaseAdminClient interface {
 	ListBackupOperations(ctx context.Context, in *ListBackupOperationsRequest, opts ...grpc.CallOption) (*ListBackupOperationsResponse, error)
 	// Lists Cloud Spanner database roles.
 	ListDatabaseRoles(ctx context.Context, in *ListDatabaseRolesRequest, opts ...grpc.CallOption) (*ListDatabaseRolesResponse, error)
+	// Creates a new backup schedule.
+	CreateBackupSchedule(ctx context.Context, in *CreateBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error)
+	// Gets backup schedule for the input schedule name.
+	GetBackupSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error)
+	// Updates a backup schedule.
+	UpdateBackupSchedule(ctx context.Context, in *UpdateBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error)
+	// Deletes a backup schedule.
+	DeleteBackupSchedule(ctx context.Context, in *DeleteBackupScheduleRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Lists all the backup schedules for the database.
+	ListBackupSchedules(ctx context.Context, in *ListBackupSchedulesRequest, opts ...grpc.CallOption) (*ListBackupSchedulesResponse, error)
 }
 
 type databaseAdminClient struct {
@@ -392,6 +402,51 @@ func (c *databaseAdminClient) ListDatabaseRoles(ctx context.Context, in *ListDat
 	return out, nil
 }
 
+func (c *databaseAdminClient) CreateBackupSchedule(ctx context.Context, in *CreateBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error) {
+	out := new(BackupSchedule)
+	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/CreateBackupSchedule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseAdminClient) GetBackupSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error) {
+	out := new(BackupSchedule)
+	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/GetBackupSchedule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseAdminClient) UpdateBackupSchedule(ctx context.Context, in *UpdateBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error) {
+	out := new(BackupSchedule)
+	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/UpdateBackupSchedule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseAdminClient) DeleteBackupSchedule(ctx context.Context, in *DeleteBackupScheduleRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/DeleteBackupSchedule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseAdminClient) ListBackupSchedules(ctx context.Context, in *ListBackupSchedulesRequest, opts ...grpc.CallOption) (*ListBackupSchedulesResponse, error) {
+	out := new(ListBackupSchedulesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/ListBackupSchedules", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DatabaseAdminServer is the server API for DatabaseAdmin service.
 // All implementations must embed UnimplementedDatabaseAdminServer
 // for forward compatibility
@@ -573,6 +628,16 @@ type DatabaseAdminServer interface {
 	ListBackupOperations(context.Context, *ListBackupOperationsRequest) (*ListBackupOperationsResponse, error)
 	// Lists Cloud Spanner database roles.
 	ListDatabaseRoles(context.Context, *ListDatabaseRolesRequest) (*ListDatabaseRolesResponse, error)
+	// Creates a new backup schedule.
+	CreateBackupSchedule(context.Context, *CreateBackupScheduleRequest) (*BackupSchedule, error)
+	// Gets backup schedule for the input schedule name.
+	GetBackupSchedule(context.Context, *GetBackupScheduleRequest) (*BackupSchedule, error)
+	// Updates a backup schedule.
+	UpdateBackupSchedule(context.Context, *UpdateBackupScheduleRequest) (*BackupSchedule, error)
+	// Deletes a backup schedule.
+	DeleteBackupSchedule(context.Context, *DeleteBackupScheduleRequest) (*empty.Empty, error)
+	// Lists all the backup schedules for the database.
+	ListBackupSchedules(context.Context, *ListBackupSchedulesRequest) (*ListBackupSchedulesResponse, error)
 	mustEmbedUnimplementedDatabaseAdminServer()
 }
 
@@ -639,6 +704,21 @@ func (UnimplementedDatabaseAdminServer) ListBackupOperations(context.Context, *L
 }
 func (UnimplementedDatabaseAdminServer) ListDatabaseRoles(context.Context, *ListDatabaseRolesRequest) (*ListDatabaseRolesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListDatabaseRoles not implemented")
+}
+func (UnimplementedDatabaseAdminServer) CreateBackupSchedule(context.Context, *CreateBackupScheduleRequest) (*BackupSchedule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBackupSchedule not implemented")
+}
+func (UnimplementedDatabaseAdminServer) GetBackupSchedule(context.Context, *GetBackupScheduleRequest) (*BackupSchedule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBackupSchedule not implemented")
+}
+func (UnimplementedDatabaseAdminServer) UpdateBackupSchedule(context.Context, *UpdateBackupScheduleRequest) (*BackupSchedule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBackupSchedule not implemented")
+}
+func (UnimplementedDatabaseAdminServer) DeleteBackupSchedule(context.Context, *DeleteBackupScheduleRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackupSchedule not implemented")
+}
+func (UnimplementedDatabaseAdminServer) ListBackupSchedules(context.Context, *ListBackupSchedulesRequest) (*ListBackupSchedulesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBackupSchedules not implemented")
 }
 func (UnimplementedDatabaseAdminServer) mustEmbedUnimplementedDatabaseAdminServer() {}
 
@@ -1013,6 +1093,96 @@ func _DatabaseAdmin_ListDatabaseRoles_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DatabaseAdmin_CreateBackupSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBackupScheduleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseAdminServer).CreateBackupSchedule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/CreateBackupSchedule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseAdminServer).CreateBackupSchedule(ctx, req.(*CreateBackupScheduleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatabaseAdmin_GetBackupSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupScheduleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseAdminServer).GetBackupSchedule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/GetBackupSchedule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseAdminServer).GetBackupSchedule(ctx, req.(*GetBackupScheduleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatabaseAdmin_UpdateBackupSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBackupScheduleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseAdminServer).UpdateBackupSchedule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/UpdateBackupSchedule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseAdminServer).UpdateBackupSchedule(ctx, req.(*UpdateBackupScheduleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatabaseAdmin_DeleteBackupSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBackupScheduleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseAdminServer).DeleteBackupSchedule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/DeleteBackupSchedule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseAdminServer).DeleteBackupSchedule(ctx, req.(*DeleteBackupScheduleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatabaseAdmin_ListBackupSchedules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBackupSchedulesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseAdminServer).ListBackupSchedules(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/ListBackupSchedules",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseAdminServer).ListBackupSchedules(ctx, req.(*ListBackupSchedulesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DatabaseAdmin_ServiceDesc is the grpc.ServiceDesc for DatabaseAdmin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1099,6 +1269,26 @@ var DatabaseAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListDatabaseRoles",
 			Handler:    _DatabaseAdmin_ListDatabaseRoles_Handler,
+		},
+		{
+			MethodName: "CreateBackupSchedule",
+			Handler:    _DatabaseAdmin_CreateBackupSchedule_Handler,
+		},
+		{
+			MethodName: "GetBackupSchedule",
+			Handler:    _DatabaseAdmin_GetBackupSchedule_Handler,
+		},
+		{
+			MethodName: "UpdateBackupSchedule",
+			Handler:    _DatabaseAdmin_UpdateBackupSchedule_Handler,
+		},
+		{
+			MethodName: "DeleteBackupSchedule",
+			Handler:    _DatabaseAdmin_DeleteBackupSchedule_Handler,
+		},
+		{
+			MethodName: "ListBackupSchedules",
+			Handler:    _DatabaseAdmin_ListBackupSchedules_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
