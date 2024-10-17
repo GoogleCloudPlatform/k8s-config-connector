@@ -128,11 +128,18 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		}
 	}
 
+	fmt.Println()
+	fmt.Printf("opt create: %#v", opt.Create)
+	fmt.Println()
+
 	if !opt.CreateInOrder && !opt.SkipWaitForReady {
 		WaitForReady(t, DefaultWaitForReadyTimeout, opt.Create...)
 	}
 
 	if len(opt.Updates) != 0 {
+		fmt.Println()
+		fmt.Printf("in opt update")
+		fmt.Println()
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
 			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {

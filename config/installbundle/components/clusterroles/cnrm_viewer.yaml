@@ -671,6 +671,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - securesourcemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - securitycenter.cnrm.cloud.google.com
   resources:
   - '*'

@@ -19,7 +19,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: epang-test
 spec:
-  location: us-central1
+  location: europe-west4
   projectRef:
     external: epang-test
 
