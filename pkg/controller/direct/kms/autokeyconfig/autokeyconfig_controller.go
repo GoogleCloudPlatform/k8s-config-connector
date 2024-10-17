@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package kms
+package kmsautokeyconfig
 
 import (
 	"context"
@@ -24,11 +24,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
+	// TODO(user): Update the import with the google cloud client
 	gcp "cloud.google.com/go/kms/apiv1"
 
+	// TODO(user): Update the import with the google cloud client api protobuf
 	kmspb "cloud.google.com/go/kms/apiv1/kmspb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -40,8 +41,7 @@ import (
 )
 
 const (
-	ctrlName      = "kms-controller"
-	serviceDomain = "//cloudkms.googleapis.com"
+	ctrlName = "kms-autokeyconfig-controller"
 )
 
 func init() {
@@ -77,31 +77,14 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	var folder *refs.Folder
-	var err error
-	folder, err = refs.ResolveFolderFromAnnotation(ctx, reader, obj)
+	id, err := krm.NewKMSAutokeyConfigRef(ctx, reader, obj)
 	if err != nil {
-		folder, err = refs.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+		return nil, err
 	}
-	if err != nil || folder.FolderID == "" {
+
+	if err != nil {
 		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s", obj.GetName())
 	}
-	var id *KMSAutokeyConfigIdentity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(folder.FolderID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.Parent.FolderID != folder.FolderID {
-			return nil, fmt.Errorf("KMSAutokeyConfig %s/%s has spec.folderRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.FolderID, folder.FolderID)
-		}
-	}
-
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -119,7 +102,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *KMSAutokeyConfigIdentity
+	id        *krm.KMSAutokeyConfigRef
 	gcpClient *gcp.AutokeyAdminClient
 	desired   *krm.KMSAutokeyConfig
 	actual    *kmspb.AutokeyConfig
@@ -129,14 +112,15 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting KMSAutokeyConfig", "name", a.id.FullyQualifiedName())
-	req := &kmspb.GetAutokeyConfigRequest{Name: a.id.FullyQualifiedName()}
+	log.V(2).Info("getting KMSAutokeyConfig", "name", a.id.External)
+
+	req := &kmspb.GetAutokeyConfigRequest{Name: a.id.External}
 	autokeyconfigpb, err := a.gcpClient.GetAutokeyConfig(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting KMSAutokeyConfig %q: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("getting KMSAutokeyConfig %q: %w", a.id.External, err)
 	}
 
 	a.actual = autokeyconfigpb
@@ -147,13 +131,15 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating AutokeyConfig", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("creating AutokeyConfig", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
+
 	desired := a.desired.DeepCopy()
 	resource := KMSAutokeyConfigSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
 	updated, err := a.updateAutokeyConfig(ctx, resource)
 	if err != nil {
 		return err
@@ -163,14 +149,15 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
+	status.ExternalRef = &a.id.External
 	return setStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating AutokeyConfig", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("updating AutokeyConfig", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -197,7 +184,7 @@ func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.Autok
 	// To populate a.actual calling a.Find()
 	isExist, err := a.Find(ctx)
 	if !isExist {
-		return nil, fmt.Errorf("updateAutokeyConfig failed as AutokeyConfig does not exist, name: %s", a.id.FullyQualifiedName())
+		return nil, fmt.Errorf("updateAutokeyConfig failed as AutokeyConfig does not exist, name: %s", a.id.External)
 	}
 	if err != nil {
 		return nil, err
@@ -208,7 +195,7 @@ func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.Autok
 	}
 
 	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.FullyQualifiedName())
+		log.V(2).Info("no field needs update", "name", a.id.External)
 		return nil, nil
 	}
 	req := &kmspb.UpdateAutokeyConfigRequest{
@@ -217,9 +204,9 @@ func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.Autok
 	}
 	updated, err := a.gcpClient.UpdateAutokeyConfig(ctx, req)
 	if err != nil {
-		return nil, fmt.Errorf("updating AutokeyConfig %s: %w", a.id.FullyQualifiedName(), err)
+		return nil, fmt.Errorf("updating AutokeyConfig %s: %w", a.id.External, err)
 	}
-	log.V(2).Info("successfully updated AutokeyConfig", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully updated AutokeyConfig", "name", a.id.External)
 	return updated, nil
 }
 
@@ -235,7 +222,11 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Parent.String()}
+	parent, err := a.id.Parent()
+	if err != nil {
+		return nil, err
+	}
+	obj.Spec.FolderRef = &refs.FolderRef{External: parent.FolderID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -247,9 +238,9 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting AutokeyConfig", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("deleting AutokeyConfig", "name", a.id.External)
 
-	log.V(2).Info("no-op, cannot deleted AutokeyConfig", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("no-op, cannot deleted AutokeyConfig", "name", a.id.External)
 
 	return true, nil
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package kms
+package kmsautokeyconfig
 
 import (
 	kmspb "cloud.google.com/go/kms/apiv1/kmspb"
@@ -64,9 +64,9 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 		return nil
 	}
 	out := &krm.KMSAutokeyConfigSpec{}
-	extId, _ := asID(in.Name)
+	parent, _ := krm.ParseKMSAutokeyConfigExternal(in.Name)
 	out.FolderRef = &refs.FolderRef{
-		External: extId.Parent.String(),
+		External: parent.String(),
 	}
 	if in.GetKeyProject() != "" {
 		out.KeyProject = &refs.ProjectRef{
