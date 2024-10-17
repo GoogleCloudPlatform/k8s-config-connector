@@ -18,10 +18,9 @@ metadata:
   name: bigqueryroutine-${uniqueId}
 spec:
   datasetRef:
-    name: bigquerydataset-${uniqueId}
+    name: bigquerydataset${uniqueId}
   definitionBody: CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x
     + y);
-  language: SQL
   projectRef:
     external: ${projectId}
   resourceID: bigqueryroutine${uniqueId}
