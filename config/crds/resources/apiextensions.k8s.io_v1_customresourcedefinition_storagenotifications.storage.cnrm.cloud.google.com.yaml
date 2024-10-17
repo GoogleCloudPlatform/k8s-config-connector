@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: storagenotifications.storage.cnrm.cloud.google.com
 spec:
   group: storage.cnrm.cloud.google.com
@@ -16,10 +14,8 @@ spec:
     categories:
     - gcp
     kind: StorageNotification
+    listKind: StorageNotificationList
     plural: storagenotifications
-    shortNames:
-    - gcpstoragenotification
-    - gcpstoragenotifications
     singular: storagenotification
   preserveUnknownFields: false
   scope: Namespaced
@@ -43,20 +39,23 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: StorageNotification is the Schema for the StorageNotification
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: StorageNotificationSpec defines the desired state of StorageNotification
             properties:
               bucketRef:
                 oneOf:
@@ -75,45 +74,42 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `StorageBucket`
-                      resource.'
+                    description: The StorageBucket selfLink, when not managed by Config
+                      Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `StorageBucket` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `StorageBucket` resource.
                     type: string
                 type: object
               customAttributes:
                 additionalProperties:
                   type: string
-                description: Immutable.  A set of key/value attribute pairs to attach
-                  to each Cloud Pub/Sub message published for this notification subscription.
+                description: An optional list of additional attributes to attach to
+                  each Cloud PubSub message published for this notification subscription.
                 type: object
               eventTypes:
-                description: 'Immutable. List of event type filters for this notification
-                  config. If not specified, Cloud Storage will send notifications
-                  for all event types. The valid types are: "OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE",
-                  "OBJECT_DELETE", "OBJECT_ARCHIVE".'
+                description: If present, only send notifications about listed event
+                  types. If empty, sent notifications for all event types.
                 items:
                   type: string
                 type: array
               objectNamePrefix:
-                description: Immutable. Specifies a prefix path filter for this notification
-                  config. Cloud Storage will only send notifications for objects in
-                  this bucket whose names begin with the specified prefix.
+                description: If present, only apply this notification configuration
+                  to object names that begin with this prefix.
                 type: string
               payloadFormat:
-                description: Immutable. The desired content of the Payload. One of
-                  "JSON_API_V1" or "NONE".
+                description: The desired content of the Payload.
                 type: string
               resourceID:
-                description: Immutable. Optional. The service-generated notificationId
-                  of the resource. Used for acquisition only. Leave unset to create
-                  a new resource.
+                description: The StorageNotification name. If not given, the metadata.name
+                  will be used.
                 type: string
               topicRef:
+                description: 'The Cloud PubSub topic to which this subscription publishes.
+                  Formatted as: ''//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'''
                 oneOf:
                 - not:
                     required:
@@ -130,26 +126,20 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `projects/{{project}}/topics/{{value}}`,
-                      where {{value}} is the `name` field of a `PubSubTopic` resource.'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
-            required:
-            - bucketRef
-            - payloadFormat
-            - topicRef
             type: object
           status:
+            description: StorageNotificationStatus defines the config connector machine
+              state of StorageNotification
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -173,8 +163,13 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the StorageNotification resource
+                  in GCP.
+                type: string
               notificationId:
-                description: The ID of the created notification.
+                description: 'Deprecated: use the `.status.externalRef` to identify
+                  the resource. The ID of the created notification.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -182,21 +177,31 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  etag:
+                    description: HTTP 1.1 [https://tools.ietf.org/html/rfc7232#section-2.3][Entity
+                      tag] for this subscription notification.
+                    type: string
+                  id:
+                    description: The ID of the notification.
+                    type: string
+                  topic:
+                    description: 'The Cloud PubSub topic to which this subscription
+                      publishes. Formatted as: ''//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'''
+                    type: string
+                type: object
               selfLink:
-                description: The URI of the created resource.
+                description: 'Deprecated: use the `.status.externalRef` to identify
+                  the resource. The URI of the created resource.'
                 type: string
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
