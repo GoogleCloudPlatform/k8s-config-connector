@@ -42,8 +42,8 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     "dataDiskType": "PD_SSD",
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-31",
-        "startDate": "12-01",
+        "endDate": "0-1-31",
+        "startDate": "0-12-1",
         "time": "00:00:00"
       }
     ],
@@ -226,8 +226,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-31",
-        "startDate": "12-01",
+        "endDate": "0-1-31",
+        "startDate": "0-12-1",
         "time": "00:00:00"
       }
     ],
@@ -291,8 +291,8 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     "dataDiskType": "PD_SSD",
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-15",
-        "startDate": "11-01",
+        "endDate": "0-1-15",
+        "startDate": "0-11-1",
         "time": "01:00:00"
       }
     ],
@@ -453,8 +453,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-15",
-        "startDate": "11-01",
+        "endDate": "0-1-15",
+        "startDate": "0-11-1",
         "time": "01:00:00"
       }
     ],
