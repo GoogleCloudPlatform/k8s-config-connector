@@ -36,15 +36,12 @@ import (
 )
 
 type ComputeRegionTargetTCPProxySpec struct {
-	/* Immutable. An optional description of this resource. Immutable. A reference to the ComputeBackendService resource. */
+	/* Immutable. A reference to the ComputeBackendService resource. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
 
 	/* Immutable. An optional description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
-
-	/* Location represents the geographical location of the ComputeTargetTCPProxy. If it is not provided, the provider project is used. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
-	Location string `json:"location"`
 
 	/* Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
 	// +optional
@@ -53,6 +50,9 @@ type ComputeRegionTargetTCPProxySpec struct {
 	/* Immutable. Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	/* Immutable. The geographical location of the ComputeTargetTCPProxy. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	Region string `json:"region"`
 
 	/* Immutable. The ComputeRegionTargetTCPProxy name. If not given, the metadata.name will be used. */
 	// +optional
@@ -89,10 +89,6 @@ type ComputeRegionTargetTCPProxyStatus struct {
 	/* The unique identifier for the resource. */
 	// +optional
 	ProxyId *int64 `json:"proxyId,omitempty"`
-
-	/* URL of the region where the regional TCP proxy resides. */
-	// +optional
-	Region *string `json:"region,omitempty"`
 
 	/* The SelfLink for the resource. */
 	// +optional

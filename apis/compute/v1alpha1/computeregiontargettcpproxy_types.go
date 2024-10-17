@@ -26,7 +26,6 @@ var ComputeRegionTargetTCPProxyGVK = GroupVersion.WithKind("ComputeRegionTargetT
 // +kcc:proto=google.cloud.compute.v1.TargetTcpProxy
 type ComputeRegionTargetTCPProxySpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="BackendServiceRef is immutable"
-	// Immutable. An optional description of this resource.
 	// Immutable. A reference to the ComputeBackendService resource.
 	// +required
 	BackendServiceRef *refs.ComputeBackendServiceRef `json:"backendServiceRef"`
@@ -35,10 +34,10 @@ type ComputeRegionTargetTCPProxySpec struct {
 	// Immutable. An optional description of this resource.
 	Description *string `json:"description,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable"
-	// Location represents the geographical location of the ComputeTargetTCPProxy. If it is not provided, the provider project is used.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Region is immutable"
+	// Immutable. The geographical location of the ComputeTargetTCPProxy.
 	// Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
-	Location string `json:"location"`
+	Region *string `json:"region"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProxyBind is immutable"
 	// Immutable. This field only applies when the forwarding rule that references
@@ -76,9 +75,6 @@ type ComputeRegionTargetTCPProxyStatus struct {
 
 	// Type of the resource. Always compute#targetTcpProxy for target TCP proxies.
 	Kind *string `json:"kind,omitempty"`
-
-	// URL of the region where the regional TCP proxy resides.
-	Region *string `json:"region,omitempty"`
 
 	// The unique identifier for the resource.
 	ProxyId *int64 `json:"proxyId,omitempty"`

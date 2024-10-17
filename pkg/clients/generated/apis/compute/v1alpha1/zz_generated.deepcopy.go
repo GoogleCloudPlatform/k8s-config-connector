@@ -2875,11 +2875,6 @@ func (in *ComputeRegionTargetTCPProxyStatus) DeepCopyInto(out *ComputeRegionTarg
 		*out = new(int64)
 		**out = **in
 	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
-		*out = new(string)
-		**out = **in
-	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)

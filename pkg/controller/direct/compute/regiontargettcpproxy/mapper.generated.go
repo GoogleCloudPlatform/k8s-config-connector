@@ -28,6 +28,7 @@ func ComputeRegionTargetTCPProxySpec_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Description = in.Description
 	out.ProxyBind = in.ProxyBind
 	out.ProxyHeader = in.ProxyHeader
+	out.Region = in.Region
 	out.BackendServiceRef = ComputeRegionTargetTCPProxySpec_BackendServiceRef_FromProto(mapCtx, direct.ValueOf(in.Service))
 	return out
 }
@@ -39,6 +40,7 @@ func ComputeRegionTargetTCPProxySpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Description = in.Description
 	out.ProxyBind = in.ProxyBind
 	out.ProxyHeader = in.ProxyHeader
+	out.Region = in.Region
 	out.Service = ComputeRegionTargetTCPProxySpec_BackendServiceRef_ToProto(mapCtx, in.BackendServiceRef)
 	return out
 }
@@ -50,7 +52,6 @@ func ComputeRegionTargetTCPProxyStatus_FromProto(mapCtx *direct.MapContext, in *
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Kind = in.Kind
 	out.ProxyId = direct.LazyPtr(int64(in.GetId()))
-	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
 }
@@ -62,7 +63,6 @@ func ComputeRegionTargetTCPProxyStatus_ToProto(mapCtx *direct.MapContext, in *kr
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Id = direct.LazyPtr(uint64(*in.ProxyId))
 	out.Kind = in.Kind
-	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
 }

@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &ComputeRegionTargetTCPProxyRef{}
 // holds the GCP identifier for the KRM object.
 type ComputeRegionTargetTCPProxyRef struct {
 	// A reference to an externally managed ComputeRegionTargetTCPProxy resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/targettcpproxys/<targettcpproxyID>".
+	// Should be in the format "projects/<projectID>/regions/<region>/targetTcpProxies/<targettcpproxyID>".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeRegionTargetTCPProxy resource.
@@ -94,8 +94,8 @@ func NewComputeRegionTargetTCPProxyRef(ctx context.Context, reader client.Reader
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
-	id.parent = &ComputeRegionTargetTCPProxyParent{ProjectID: projectID, Location: location}
+	region := valueOf(obj.Spec.Region)
+	id.parent = &ComputeRegionTargetTCPProxyParent{ProjectID: projectID, Region: region}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -121,15 +121,15 @@ func NewComputeRegionTargetTCPProxyRef(ctx context.Context, reader client.Reader
 	if actualParent.ProjectID != projectID {
 		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+	if actualParent.Region != region {
+		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Region, region)
 	}
 	if actualResourceID != resourceID {
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 			resourceID, actualResourceID)
 	}
 	id.External = externalRef
-	id.parent = &ComputeRegionTargetTCPProxyParent{ProjectID: projectID, Location: location}
+	id.parent = &ComputeRegionTargetTCPProxyParent{ProjectID: projectID, Region: region}
 	return id, nil
 }
 
@@ -149,26 +149,26 @@ func (r *ComputeRegionTargetTCPProxyRef) Parent() (*ComputeRegionTargetTCPProxyP
 
 type ComputeRegionTargetTCPProxyParent struct {
 	ProjectID string
-	Location  string
+	Region    string
 }
 
 func (p *ComputeRegionTargetTCPProxyParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/regions/" + p.Region
 }
 
 func asComputeRegionTargetTCPProxyExternal(parent *ComputeRegionTargetTCPProxyParent, resourceID string) (external string) {
-	return parent.String() + "/targettcpproxys/" + resourceID
+	return parent.String() + "/targetTcpProxies/" + resourceID
 }
 
 func parseComputeRegionTargetTCPProxyExternal(external string) (parent *ComputeRegionTargetTCPProxyParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "targettcpproxy" {
-		return nil, "", fmt.Errorf("format of ComputeRegionTargetTCPProxy external=%q was not known (use projects/<projectId>/locations/<location>/targettcpproxys/<targettcpproxyID>)", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "targetTcpProxies" {
+		return nil, "", fmt.Errorf("format of ComputeRegionTargetTCPProxy external=%q was not known (use projects/<projectId>/regions/<region>/targetTcpProxies/<targettcpproxyID>)", external)
 	}
 	parent = &ComputeRegionTargetTCPProxyParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
+		Region:    tokens[3],
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil

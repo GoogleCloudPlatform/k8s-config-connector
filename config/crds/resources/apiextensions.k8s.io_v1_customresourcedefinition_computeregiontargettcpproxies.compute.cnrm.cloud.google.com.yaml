@@ -62,8 +62,7 @@ spec:
               of ComputeRegionTargetTCPProxy
             properties:
               backendServiceRef:
-                description: Immutable. An optional description of this resource.
-                  Immutable. A reference to the ComputeBackendService resource.
+                description: Immutable. A reference to the ComputeBackendService resource.
                 oneOf:
                 - not:
                     required:
@@ -101,14 +100,6 @@ spec:
                 x-kubernetes-validations:
                 - message: Description is immutable
                   rule: self == oldSelf
-              location:
-                description: 'Location represents the geographical location of the
-                  ComputeTargetTCPProxy. If it is not provided, the provider project
-                  is used. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
-                type: string
-                x-kubernetes-validations:
-                - message: Location is immutable
-                  rule: self == oldSelf
               proxyBind:
                 description: Immutable. This field only applies when the forwarding
                   rule that references this target proxy has a loadBalancingScheme
@@ -125,6 +116,13 @@ spec:
                 x-kubernetes-validations:
                 - message: ProxyHeader is immutable
                   rule: self == oldSelf
+              region:
+                description: 'Immutable. The geographical location of the ComputeTargetTCPProxy.
+                  Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                type: string
+                x-kubernetes-validations:
+                - message: Region is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: Immutable. The ComputeRegionTargetTCPProxy name. If not
                   given, the metadata.name will be used.
@@ -134,7 +132,7 @@ spec:
                   rule: self == oldSelf
             required:
             - backendServiceRef
-            - location
+            - region
             type: object
           status:
             description: ComputeRegionTargetTCPProxyStatus defines the config connector
@@ -193,9 +191,6 @@ spec:
                 description: The unique identifier for the resource.
                 format: int64
                 type: integer
-              region:
-                description: URL of the region where the regional TCP proxy resides.
-                type: string
               selfLink:
                 description: The SelfLink for the resource.
                 type: string

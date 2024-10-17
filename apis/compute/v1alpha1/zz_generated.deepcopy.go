@@ -146,6 +146,11 @@ func (in *ComputeRegionTargetTCPProxySpec) DeepCopyInto(out *ComputeRegionTarget
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
 	if in.ProxyBind != nil {
 		in, out := &in.ProxyBind, &out.ProxyBind
 		*out = new(bool)
@@ -203,11 +208,6 @@ func (in *ComputeRegionTargetTCPProxyStatus) DeepCopyInto(out *ComputeRegionTarg
 	}
 	if in.Kind != nil {
 		in, out := &in.Kind, &out.Kind
-		*out = new(string)
-		**out = **in
-	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
 		*out = new(string)
 		**out = **in
 	}

@@ -45,7 +45,6 @@ func FuzzComputeRegionTargetTCPProxySpec(f *testing.F) {
 		// Status fields
 		unimplementedFields.Insert(".creation_timestamp")
 		unimplementedFields.Insert(".kind")
-		unimplementedFields.Insert(".region")
 		unimplementedFields.Insert(".id")
 		unimplementedFields.Insert(".self_link")
 
