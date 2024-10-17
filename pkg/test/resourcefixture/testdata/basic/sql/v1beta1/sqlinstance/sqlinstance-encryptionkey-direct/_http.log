@@ -1030,6 +1030,7 @@ User-Agent: kcc/controller-manager
     "kind": "sql#diskEncryptionConfiguration",
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
   "region": "us-central1",
@@ -1046,6 +1047,7 @@ User-Agent: kcc/controller-manager
       "startTime": "12:00",
       "transactionLogRetentionDays": 5
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -1457,6 +1459,7 @@ User-Agent: kcc/controller-manager
     "kind": "sql#diskEncryptionConfiguration",
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
   "region": "us-central1",
@@ -1473,6 +1476,7 @@ User-Agent: kcc/controller-manager
       "startTime": "12:00",
       "transactionLogRetentionDays": 5
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [

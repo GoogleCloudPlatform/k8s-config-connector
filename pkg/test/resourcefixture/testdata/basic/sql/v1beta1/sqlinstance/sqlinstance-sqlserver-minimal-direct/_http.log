@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-sqlserver-minimal-direct-${uniqueId}",
   "region": "us-central1",
@@ -41,6 +42,7 @@ User-Agent: kcc/controller-manager
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",
@@ -616,6 +618,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-sqlserver-minimal-direct-${uniqueId}",
   "region": "us-central1",
@@ -623,6 +626,7 @@ User-Agent: kcc/controller-manager
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",
