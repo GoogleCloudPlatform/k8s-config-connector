@@ -1,5 +1,5 @@
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogSink
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
@@ -7,17 +7,19 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
-  name: project-name-${uniqueId}
+  name: orgsink-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  name: KCC-2 ${uniqueId}
+  destination:
+    storageBucketRef:
+      name: orgsink-${uniqueId}
+  filter: resource.type="bigquery_dataset" AND logName:"cloudaudit.googleapis.com"
   organizationRef:
     external: ${organizationID}
-  resourceID: project-${uniqueId}
+  resourceID: orgsink-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -25,5 +27,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  number: ${projectNumber}
-  observedGeneration: 2
+  observedGeneration: 3
+  writerIdentity: serviceAccount:service-org-${organizationID}@gcp-sa-logging.iam.gserviceaccount.com

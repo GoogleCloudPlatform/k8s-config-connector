@@ -1,23 +1,25 @@
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
 metadata:
   annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
-    label-one: value-one
-  name: project-name-${uniqueId}
+  name: iammemberref-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  name: KCC-2 ${uniqueId}
-  organizationRef:
-    external: ${organizationID}
-  resourceID: project-${uniqueId}
+  memberFrom:
+    logSinkRef:
+      name: logginglogsink-${uniqueId}
+  resourceRef:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    name: pubsubtopic-${uniqueId}
+  role: roles/editor
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -25,5 +27,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  number: ${projectNumber}
-  observedGeneration: 2
+  observedGeneration: 1
