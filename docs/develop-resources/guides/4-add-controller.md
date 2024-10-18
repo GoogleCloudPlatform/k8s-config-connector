@@ -45,6 +45,8 @@ hack/compare-mock fixtures/<your_resource_test>
 KCC_USE_DIRECT_RECONCILERS=<YOUR KIND> hack/compare-mock fixtures/<your_resource_test>
 ```
 
+ * Note: Differences in http.logs such as `user-agent` and method url are expected. Please regenerate test logs before `compare-mock`.
+
 ### Exit Criteria
 
 * The PRs shall pass the MockGCP tests

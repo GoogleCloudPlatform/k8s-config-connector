@@ -17,6 +17,8 @@ go run . generate-mapper \
    --api-dir $REPO_ROOT/apis 
 ```
 
+**Note**: We suggest using the same proto for your mock GCP and for you type-generation tool to generate the Config Connector API and mapper to avoid mismatch in schema definitions. There are some exceptions where you need to [replace the proto go package](https://github.com/xiaoweim/k8s-config-connector/blob/master/dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go#L132).
+
 ### Simple path
 
 If no comments marked `MISSING` and all the mapper functions look good, you are done. You can move to “Add the controller” (step 4).

@@ -36,6 +36,9 @@ Broadly the steps are:
 
    * Note: Ensure you pick the same version the controller uses to call the GCP API during GCP resource instantiation.
 
+   * Note: If the Config Connector resource does not map to a GCP resource, please refer to the REST API of the relevant GCP resource and find the proto file that covers the resource's API endpoints.(You may not find a proto file that matches the name of that Config Connector resource)
+
+
    * (Optional) If you determine that the proto file is not up to date, or if it doesn't exist at all, refer to the [Generating Proto](#generating-proto) section
    
 1. (Optional). If you're adding an API outside of `googleapis/google/cloud`,
