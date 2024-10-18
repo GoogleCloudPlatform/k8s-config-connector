@@ -24,7 +24,6 @@ import (
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -32,42 +31,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func NormalizeSQLInstance(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
-	// Apply defaults.
-	if err := normalizeTFDefaults(obj); err != nil {
+func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+	if err := resolveCryptoKeyRef(ctx, kube, obj); err != nil {
 		return err
 	}
-
-	// Normalize references.
-	if err := normalizeCryptoKeyRef(ctx, kube, obj); err != nil {
+	if err := resolveMasterInstanceRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := normalizeMasterInstanceRef(ctx, kube, obj); err != nil {
+	if err := resolveReplicaPasswordRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := normalizeReplicaPasswordRef(ctx, kube, obj); err != nil {
+	if err := resolveRootPasswordRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := normalizeRootPasswordRef(ctx, kube, obj); err != nil {
+	if err := resolvePrivateNetworkRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := normalizePrivateNetworkRef(ctx, kube, obj); err != nil {
+	if err := resolveAuditLogBucketRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := normalizeAuditLogBucketRef(ctx, kube, obj); err != nil {
+	if err := resolveSourceSQLInstanceRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := normalizeSourceSQLInstanceRef(ctx, kube, obj); err != nil {
-		return err
-	}
-
-	// Filter labels.
-	obj.Labels = label.NewGCPLabelsFromK8sLabels(obj.Labels)
-
 	return nil
 }
 
-func normalizeCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+func resolveCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.EncryptionKMSCryptoKeyRef == nil {
 		return nil
 	}
@@ -112,7 +101,7 @@ func normalizeCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQL
 	}
 }
 
-func normalizeMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+func resolveMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.MasterInstanceRef == nil {
 		return nil
 	}
@@ -155,7 +144,7 @@ func normalizeMasterInstanceRef(ctx context.Context, kube client.Reader, obj *kr
 	}
 }
 
-func normalizeReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+func resolveReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.ReplicaConfiguration == nil || obj.Spec.ReplicaConfiguration.Password == nil {
 		return nil
 	}
@@ -189,7 +178,7 @@ func normalizeReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *k
 	return nil
 }
 
-func normalizeRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+func resolveRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.RootPassword == nil {
 		return nil
 	}
@@ -223,7 +212,7 @@ func normalizeRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.
 	return nil
 }
 
-func normalizePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+func resolvePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.Settings.IpConfiguration == nil || obj.Spec.Settings.IpConfiguration.PrivateNetworkRef == nil {
 		return nil
 	}
@@ -244,7 +233,7 @@ func normalizePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *kr
 	return nil
 }
 
-func normalizeAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+func resolveAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.Settings.SqlServerAuditConfig == nil {
 		return nil
 	}
@@ -292,7 +281,7 @@ func normalizeAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *kr
 	}
 }
 
-func normalizeSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
 	if obj.Spec.CloneSource == nil {
 		return nil
 	}
@@ -335,26 +324,4 @@ func normalizeSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj 
 	} else {
 		return fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
 	}
-}
-
-func normalizeTFDefaults(obj *krm.SQLInstance) error {
-	if obj.Spec.Settings.ActivationPolicy == nil {
-		obj.Spec.Settings.ActivationPolicy = direct.PtrTo("ALWAYS")
-	}
-	if obj.Spec.Settings.AvailabilityType == nil {
-		obj.Spec.Settings.AvailabilityType = direct.PtrTo("ZONAL")
-	}
-	if obj.Spec.Settings.DiskType == nil {
-		obj.Spec.Settings.DiskType = direct.PtrTo("PD_SSD")
-	}
-	if obj.Spec.Settings.Edition == nil {
-		obj.Spec.Settings.Edition = direct.PtrTo("ENTERPRISE")
-	}
-	if obj.Spec.Settings.PricingPlan == nil {
-		obj.Spec.Settings.PricingPlan = direct.PtrTo("PER_USE")
-	}
-	if obj.Spec.Settings.DiskAutoresize == nil {
-		obj.Spec.Settings.DiskAutoresize = direct.PtrTo(true)
-	}
-	return nil
 }
