@@ -54,6 +54,18 @@ func CloudBuildWorkerPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudBu
 	return out
 }
 
+func CloudBuildWorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krm.CloudBuildWorkerPoolSpec {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.CloudBuildWorkerPoolSpec{}
+	out.DisplayName = in.DisplayName
+	out.PrivatePoolConfig = PrivatePoolV1Config_FromProto(mapCtx, in.GetPrivatePoolV1Config())
+
+	return out
+}
+
 func PrivatePoolV1Config_NetworkConfigStatus_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigStatus {
 	if in == nil {
 		return nil
