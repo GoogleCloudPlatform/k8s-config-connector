@@ -728,6 +728,8 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return krmFieldName + "_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
+	case "google.protobuf.Int64Value":
+		return "direct.Int64Value_FromProto"
 	}
 	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -742,6 +744,8 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return krmFieldName + "_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
+	case "google.protobuf.Int64Value":
+		return "direct.Int64Value_ToProto"
 	}
 	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
 	return ""

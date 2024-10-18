@@ -26,6 +26,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"k8s.io/klog/v2"
 )
 
@@ -283,4 +284,14 @@ func SecondsString_ToProto(mapCtx *MapContext, in *string, fieldName string) *du
 	}
 	out := &durationpb.Duration{Seconds: seconds}
 	return out
+}
+func Int64Value_FromProto(mapCtx *MapContext, ts *wrapperspb.Int64Value) int64 {
+	if ts == nil {
+		return 0
+	}
+
+	return ts.GetValue()
+}
+func Int64Value_ToProto(mapCtx *MapContext, s int64) *wrapperspb.Int64Value {
+	return wrapperspb.Int64(s)
 }
