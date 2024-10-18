@@ -47,7 +47,7 @@ func (s *CloudFunctionsV1) GetFunction(ctx context.Context, req *pb.GetFunctionR
 	return obj, nil
 }
 func (s *CloudFunctionsV1) CreateFunction(ctx context.Context, req *pb.CreateFunctionRequest) (*longrunning.Operation, error) {
-	reqName := /*req.Location + "/functions/" +*/ req.GetFunction().GetName()
+	reqName := req.GetFunction().GetName()
 	name, err := s.parseFunctionName(reqName)
 	if err != nil {
 		return nil, err
@@ -94,6 +94,18 @@ func (s *CloudFunctionsV1) UpdateFunction(ctx context.Context, req *pb.UpdateFun
 			obj.Labels = req.GetFunction().GetLabels()
 		case "timeout":
 			obj.Timeout = req.GetFunction().GetTimeout()
+		case "availableMemoryMb":
+			obj.AvailableMemoryMb = req.GetFunction().GetAvailableMemoryMb()
+		case "environmentVariables":
+			obj.EnvironmentVariables = req.GetFunction().GetEnvironmentVariables()
+		case "ingressSettings":
+			obj.IngressSettings = req.GetFunction().GetIngressSettings()
+		case "maxInstances":
+			obj.MaxInstances = req.GetFunction().GetMaxInstances()
+		case "vpcConnector":
+			obj.VpcConnector = req.GetFunction().GetVpcConnector()
+		case "vpcConnectorEgressSettings":
+			obj.VpcConnectorEgressSettings = req.GetFunction().GetVpcConnectorEgressSettings()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

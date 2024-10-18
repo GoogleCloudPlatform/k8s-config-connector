@@ -28,6 +28,7 @@ var allServices = []string{
 	"mesh.googleapis.com",
 	"servicenetworking.googleapis.com",
 	"container.googleapis.com",
+	"vpcaccess.googleapis.com",
 }
 
 func isKnownService(serviceName string) bool {
