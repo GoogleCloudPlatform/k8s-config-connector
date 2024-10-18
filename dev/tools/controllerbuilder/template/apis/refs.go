@@ -88,15 +88,11 @@ func (r *{{.Kind}}Ref) NormalizedExternal(ctx context.Context, reader client.Rea
 }
 
 // New builds a {{.Kind}}Ref from the Config Connector {{.Kind}} object.
-func New{{.Kind}}Ref(ctx context.Context, reader client.Reader, obj *{{.Kind}}) (*{{.Kind}}Ref, error) {
+func New{{.Kind}}Ref(ctx context.Context, reader client.Reader, obj *{{.Kind}}, u *unstructured.Unstructured) (*{{.Kind}}Ref, error) {
 	id := &{{.Kind}}Ref{}
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
