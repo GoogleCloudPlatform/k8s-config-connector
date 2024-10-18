@@ -1,0 +1,363 @@
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "There is no service with id 'monitoringservice-${uniqueId}' in project '${projectNumber}'",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/services?alt=json&serviceId=monitoringservice-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectId}/services/monitoringservice-${uniqueId}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "There is no slo with id \"monitoringservicelevelobjective-${uniqueId}\" under service \"monitoringservice-${uniqueId}\" in project \"${projectId}\"",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives?alt=json&serviceLevelObjectiveId=monitoringservicelevelobjective-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "A request based good total ratio total service filter",
+  "goal": 0.9,
+  "name": "projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}",
+  "rollingPeriod": "86400s",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+        "totalServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+      }
+    }
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test1": "value1"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "A request based good total ratio total service filter",
+  "goal": 0.9,
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}",
+  "rollingPeriod": "86400s",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+        "totalServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+      }
+    }
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test1": "value1"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "A request based good total ratio total service filter",
+  "goal": 0.9,
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}",
+  "rollingPeriod": "86400s",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+        "totalServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+      }
+    }
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test1": "value1"
+  }
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json&updateMask=displayName%2Cgoal%2CrollingPeriod%2CuserLabels
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "update request- a request based good total ratio total service filter",
+  "goal": 0.8,
+  "rollingPeriod": "172800s",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+        "totalServiceFilter": "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+      }
+    }
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test1": "value2"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "update request- a request based good total ratio total service filter",
+  "goal": 0.8,
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}",
+  "rollingPeriod": "172800s",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+        "totalServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+      }
+    }
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test1": "value2"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "update request- a request based good total ratio total service filter",
+  "goal": 0.8,
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}",
+  "rollingPeriod": "172800s",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+        "totalServiceFilter": "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+      }
+    }
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test1": "value2"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
