@@ -50,6 +50,7 @@ type ComputeV1alpha1Interface interface {
 	ComputeRegionDiskResourcePolicyAttachmentsGetter
 	ComputeRegionPerInstanceConfigsGetter
 	ComputeRegionSSLPoliciesGetter
+	ComputeRegionTargetTCPProxiesGetter
 }
 
 // ComputeV1alpha1Client is used to interact with features provided by the compute.cnrm.cloud.google.com group.
@@ -131,6 +132,10 @@ func (c *ComputeV1alpha1Client) ComputeRegionPerInstanceConfigs(namespace string
 
 func (c *ComputeV1alpha1Client) ComputeRegionSSLPolicies(namespace string) ComputeRegionSSLPolicyInterface {
 	return newComputeRegionSSLPolicies(c, namespace)
+}
+
+func (c *ComputeV1alpha1Client) ComputeRegionTargetTCPProxies(namespace string) ComputeRegionTargetTCPProxyInterface {
+	return newComputeRegionTargetTCPProxies(c, namespace)
 }
 
 // NewForConfig creates a new ComputeV1alpha1Client for the given config.
