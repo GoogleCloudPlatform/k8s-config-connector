@@ -88,7 +88,11 @@ func RunExportCSV(ctx context.Context, o *ExportCSVOptions) error {
 		return fmt.Errorf("--output-dir is required")
 	}
 
-	x, err := toolbot.NewCSVExporter(o.ProtoDir)
+	extractor := &toolbot.ExtractToolMarkers{}
+	addProtoDefinition := &toolbot.EnhanceWithProtoDefinition{
+		ProtoDirectory: o.ProtoDir,
+	}
+	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
 	if err != nil {
 		return err
 	}

@@ -1,6 +1,7 @@
 package toolbot
 
 type DataPoint struct {
+	Type   string
 	Input  map[string]string
 	Output string
 }

@@ -67,7 +67,11 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		return fmt.Errorf("--proto-dir is required")
 	}
 
-	x, err := toolbot.NewCSVExporter(o.ProtoDir)
+	extractor := &toolbot.ExtractToolMarkers{}
+	addProtoDefinition := &toolbot.EnhanceWithProtoDefinition{
+		ProtoDirectory: o.ProtoDir,
+	}
+	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
 	if err != nil {
 		return err
 	}

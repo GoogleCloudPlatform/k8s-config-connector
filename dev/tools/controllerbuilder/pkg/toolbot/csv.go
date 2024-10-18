@@ -30,21 +30,26 @@ import (
 )
 
 type CSVExporter struct {
-	protoDirectory string
-	toolEntries    []*toolEntry
+	enhancers  []Enhancer
+	extractor  Extractor
+	dataPoints []*DataPoint
 }
 
-func NewCSVExporter(protoDirectory string) (*CSVExporter, error) {
+type Extractor interface {
+	Extract(ctx context.Context, b []byte) ([]*DataPoint, error)
+}
+
+type Enhancer interface {
+	EnhanceDataPoint(ctx context.Context, d *DataPoint) error
+}
+
+func NewCSVExporter(extractor Extractor, enhancers ...Enhancer) (*CSVExporter, error) {
 	x := &CSVExporter{
-		protoDirectory: protoDirectory,
+		enhancers: enhancers,
+		extractor: extractor,
 	}
 
 	return x, nil
-}
-
-type toolEntry struct {
-	Name      string
-	DataPoint DataPoint
 }
 
 func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
@@ -52,61 +57,14 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 	if err != nil {
 		return fmt.Errorf("reading file %q: %w", p, err)
 	}
-	return x.visitGoCode(ctx, b)
-}
-
-func (x *CSVExporter) visitGoCode(ctx context.Context, b []byte) error {
-	r := bytes.NewReader(b)
-	br := bufio.NewReader(r)
-
-	for {
-		line, err := br.ReadString('\n')
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			return fmt.Errorf("scanning code: %w", err)
-		}
-		line = strings.TrimSpace(line)
-		if strings.HasPrefix(line, "//") {
-			comment := strings.TrimPrefix(line, "//")
-			comment = strings.TrimSpace(comment)
-			if strings.HasPrefix(comment, "+tool:") {
-				klog.V(2).Infof("found tool line %q", comment)
-				toolName := strings.TrimPrefix(comment, "+tool:")
-				toolEntry := &toolEntry{
-					Name: toolName,
-				}
-				toolEntry.DataPoint.Output = string(b)
-
-				for {
-					line, err := br.ReadString('\n')
-					if err != nil {
-						if err == io.EOF {
-							break
-						}
-						return fmt.Errorf("scanning code: %w", err)
-					}
-					line = strings.TrimSpace(line)
-					if !strings.HasPrefix(line, "//") {
-						break
-					}
-					toolLine := strings.TrimPrefix(line, "//")
-					toolLine = strings.TrimPrefix(toolLine, " ")
-
-					tokens := strings.SplitN(toolLine, ":", 2)
-					if len(tokens) == 2 {
-						toolEntry.DataPoint.SetInput(tokens[0], strings.TrimSpace(tokens[1]))
-					} else {
-						return fmt.Errorf("cannot parse tool line %q", toolLine)
-					}
-				}
-				x.toolEntries = append(x.toolEntries, toolEntry)
-			}
-		}
+	dataPoints, err := x.extractor.Extract(ctx, b)
+	if err != nil {
+		return err
 	}
+	x.dataPoints = append(x.dataPoints, dataPoints...)
 	return nil
 }
+
 
 func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 	if err := filepath.WalkDir(srcDir, func(p string, d os.DirEntry, err error) error {
@@ -137,15 +95,15 @@ func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 func (x *CSVExporter) WriteCSVForAllTools(ctx context.Context, outputDir string) error {
 	log := klog.FromContext(ctx)
 
-	for _, toolEntry := range x.toolEntries {
-		if err := x.DecorateExample(ctx, &toolEntry.DataPoint); err != nil {
+	for _, dataPoint := range x.dataPoints {
+		if err := x.EnhanceDataPoint(ctx, dataPoint); err != nil {
 			return err
 		}
 	}
 
 	toolNames := sets.NewString()
-	for _, toolEntry := range x.toolEntries {
-		toolNames.Insert(toolEntry.Name)
+	for _, dataPoint := range x.dataPoints {
+		toolNames.Insert(dataPoint.Type)
 	}
 
 	for _, toolName := range toolNames.List() {
@@ -164,12 +122,12 @@ func (x *CSVExporter) WriteCSVForAllTools(ctx context.Context, outputDir string)
 }
 
 func (x *CSVExporter) writeCSVForTool(ctx context.Context, toolName string, out io.Writer) error {
-	var entries []*toolEntry
-	for _, toolEntry := range x.toolEntries {
-		if toolEntry.Name != toolName {
+	var dataPoints []*DataPoint
+	for _, dataPoint := range x.dataPoints {
+		if dataPoint.Type != toolName {
 			continue
 		}
-		entries = append(entries, toolEntry)
+		dataPoints = append(dataPoints, dataPoint)
 	}
 
 	var bb bytes.Buffer
@@ -178,8 +136,8 @@ func (x *CSVExporter) writeCSVForTool(ctx context.Context, toolName string, out 
 	columnSet := sets.NewString()
 	columnSet.Insert("out")
 
-	for _, entry := range entries {
-		for k := range entry.DataPoint.Input {
+	for _, dataPoint := range dataPoints {
+		for k := range dataPoint.Input {
 			columnSet.Insert("in." + k)
 		}
 	}
@@ -189,16 +147,16 @@ func (x *CSVExporter) writeCSVForTool(ctx context.Context, toolName string, out 
 	csvFile.Write(columns)
 	csvFile.Flush()
 
-	for _, entry := range entries {
+	for _, dataPoint := range dataPoints {
 		row := make([]string, len(columns))
 		for i, column := range columns {
 			switch column {
 			case "out":
-				row[i] = entry.DataPoint.Output
+				row[i] = dataPoint.Output
 
 			default:
 				if strings.HasPrefix(column, "in.") {
-					row[i] = entry.DataPoint.Input[strings.TrimPrefix(column, "in.")]
+					row[i] = dataPoint.Input[strings.TrimPrefix(column, "in.")]
 				} else {
 					return fmt.Errorf("unknown column %q", column)
 				}
@@ -220,162 +178,63 @@ func (x *CSVExporter) writeCSVForTool(ctx context.Context, toolName string, out 
 	return nil
 }
 
-type protoService struct {
-	FilePath   string
-	Definition []string
-}
-
-func (x *CSVExporter) DecorateExample(ctx context.Context, p *DataPoint) error {
-	service := p.Input["proto.service"]
-	if service == "" {
-		return nil
+func (x *CSVExporter) EnhanceDataPoint(ctx context.Context, d *DataPoint) error {
+	for _, enhancer := range x.enhancers {
+		if err := enhancer.EnhanceDataPoint(ctx, d); err != nil {
+			return err
+		}
 	}
-
-	protoService, err := x.getProtoForService(ctx, service)
-	if err != nil {
-		return fmt.Errorf("getting proto for service %q: %w", service, err)
-	}
-	p.SetInput("proto.service.definition", strings.Join(protoService.Definition, "\n"))
 	return nil
 }
 
-func (x *CSVExporter) getProtoForService(ctx context.Context, serviceName string) (*protoService, error) {
-	var matches []*protoService
-	if err := filepath.WalkDir(x.protoDirectory, func(p string, d os.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if d.IsDir() {
-			return nil
-		}
-		switch filepath.Ext(p) {
-		case ".proto":
-			// OK
-		default:
-			return nil
-		}
-		b, err := os.ReadFile(p)
-		if err != nil {
-			return fmt.Errorf("reading file %q: %w", p, err)
-		}
-		r := bytes.NewReader(b)
-		br := bufio.NewReader(r)
-
-		packageName := ""
-
-		for {
-			line, err := br.ReadString('\n')
-			if err != nil {
-				if err == io.EOF {
-					break
-				}
-				return fmt.Errorf("scanning file %q: %w", p, err)
-			}
-			line = strings.TrimSuffix(line, "\n")
-
-			tokens := strings.Fields(line)
-
-			if len(tokens) >= 2 && tokens[0] == "package" {
-				packageName = strings.TrimSuffix(tokens[1], ";")
-			}
-
-			if len(tokens) >= 2 && tokens[0] == "service" {
-				found := packageName + "." + tokens[1]
-
-				if found != serviceName {
-					continue
-				}
-
-				match := &protoService{FilePath: p}
-				indent := 0
-				for {
-					match.Definition = append(match.Definition, line)
-					for _, r := range line {
-						if r == '{' {
-							indent++
-						}
-						if r == '}' {
-							indent--
-						}
-					}
-					if indent == 0 {
-						break
-					}
-					line, err = br.ReadString('\n')
-					if err != nil {
-						if err == io.EOF {
-							break
-						}
-						return fmt.Errorf("scanning file %q: %w", p, err)
-					}
-					line = strings.TrimSuffix(line, "\n")
-				}
-				matches = append(matches, match)
-			}
-		}
-		return nil
-	}); err != nil {
-		return nil, fmt.Errorf("walking directory tree: %w", err)
-	}
-
-	if len(matches) == 0 {
-		return nil, fmt.Errorf("service %q not found", serviceName)
-	}
-	if len(matches) > 1 {
-		return nil, fmt.Errorf("found multiple services with name %q", serviceName)
-	}
-	return matches[0], nil
-}
-
 func (x *CSVExporter) BuildInputRow(ctx context.Context, b []byte, out io.Writer) error {
-	if err := x.visitGoCode(ctx, b); err != nil {
+	dataPoints, err := x.extractor.Extract(ctx, b)
+	if err != nil {
 		return err
 	}
 
-	for _, toolEntry := range x.toolEntries {
-		if err := x.DecorateExample(ctx, &toolEntry.DataPoint); err != nil {
+	for _, dataPoint := range dataPoints {
+		if err := x.EnhanceDataPoint(ctx, dataPoint); err != nil {
 			return err
 		}
 	}
 
 	toolNames := sets.NewString()
-	for _, toolEntry := range x.toolEntries {
-		toolNames.Insert(toolEntry.Name)
+	for _, dataPoint := range dataPoints {
+		toolNames.Insert(dataPoint.Type)
 	}
 
 	if toolNames.Len() != 1 {
 		return fmt.Errorf("expected exactly one tool name, got %v", toolNames.List())
 	}
 	for _, toolName := range toolNames.List() {
-		var entries []*toolEntry
-		for _, toolEntry := range x.toolEntries {
-			if toolEntry.Name != toolName {
-				continue
-			}
-			entries = append(entries, toolEntry)
-		}
 
 		var bb bytes.Buffer
 
 		columnSet := sets.NewString()
 
-		for _, entry := range entries {
-			for k := range entry.DataPoint.Input {
+		for _, dataPoint := range dataPoints {
+			if dataPoint.Type != toolName {
+				continue
+			}
+			for k := range dataPoint.Input {
 				columnSet.Insert("in." + k)
 			}
 		}
 
 		columns := columnSet.List()
 
-		for _, entry := range entries {
-			for _, column := range columns {
+		for _, dataPoint := range dataPoints {
+			if dataPoint.Type != toolName {
+				continue
+			}
 
+			for _, column := range columns {
 				if strings.HasPrefix(column, "in.") {
-					fmt.Fprintf(&bb, "%v: %v\n", column, entry.DataPoint.Input[strings.TrimPrefix(column, "in.")])
+					fmt.Fprintf(&bb, "%v: %v\n", column, dataPoint.Input[strings.TrimPrefix(column, "in.")])
 				} else {
 					return fmt.Errorf("unknown column %q", column)
 				}
-
 			}
 		}
 
