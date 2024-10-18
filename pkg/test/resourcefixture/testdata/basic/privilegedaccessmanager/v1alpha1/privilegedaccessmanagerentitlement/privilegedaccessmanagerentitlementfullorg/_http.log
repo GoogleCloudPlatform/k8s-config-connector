@@ -253,7 +253,7 @@ x-goog-request-params: parent=organizations%2F${organizationID}%2Flocations%2Fgl
     }
   },
   "requesterJustificationConfig": {
-    "unstructured": {}
+    "notMandatory": {}
   }
 }
 
@@ -365,7 +365,7 @@ X-Xss-Protection: 0
       }
     },
     "requesterJustificationConfig": {
-      "unstructured": {}
+      "notMandatory": {}
     },
     "state": "AVAILABLE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -443,7 +443,7 @@ X-Xss-Protection: 0
     }
   },
   "requesterJustificationConfig": {
-    "unstructured": {}
+    "notMandatory": {}
   },
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -451,7 +451,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://privilegedaccessmanager.googleapis.com/v1/organizations/${organizationID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=additionalNotificationTargets%2CapprovalWorkflow%2CeligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
+PATCH https://privilegedaccessmanager.googleapis.com/v1/organizations/${organizationID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=additionalNotificationTargets%2CapprovalWorkflow%2CeligibleUsers%2CmaxRequestDuration%2CprivilegedAccess%2CrequesterJustificationConfig
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: entitlement.name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}

@@ -20,6 +20,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+const (
+	RequesterJustificationTypeNotMandatory = "NOT_MANDATORY"
+	RequesterJustificationTypeUnstructured = "UNSTRUCTURED"
+)
+
+var ValidRequesterJustificationTypes = []string{RequesterJustificationTypeUnstructured, RequesterJustificationTypeNotMandatory}
+
 var PrivilegedAccessManagerEntitlementGVK = GroupVersion.WithKind("PrivilegedAccessManagerEntitlement")
 
 // PrivilegedAccessManagerEntitlementSpec defines the desired state of
@@ -74,10 +81,34 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 	// +required
 	PrivilegedAccess *PrivilegedAccess `json:"privilegedAccess,omitempty"`
 
+	/* We decided to replace the 'RequesterJustificationConfig' field with
+	   'RequesterJustificationType'. Here are the context:
+	   1. Fields under 'RequesterJustificationConfig' are of field-less, object
+	      types 'NotMandatory' and 'Unstructured'. Having no subfield under an
+	      object field is confusing.
+	   2. Fields under 'RequesterJustificationConfig' have one and only one
+	      valid value, '{}', which doesn't have a clear meaning to users.
+	   3. One of the subfields under 'RequesterJustificationConfig' must be set.
+	      It's a suboptimal UX to require users setting a required field to '{}'.
+
+	   Overall, 'RequesterJustificationConfig' and fields under it function like
+	   an option picker, and we decided to support the "picking" experience
+	   using a string that accepts enums.
+
+	   If in the future, subfields are added under object types 'NotMandatory'
+	   and 'Unstructured', then we can support 'RequesterJustificationConfig'.
+	   This will be a backwards compatible change.
+
 	// Required. The manner in which the requester should provide a justification
 	// for requesting access.
 	// +required
 	RequesterJustificationConfig *RequesterJustificationConfig `json:"requesterJustificationConfig,omitempty"`
+	*/
+
+	// Required. The manner in which the requester should provide a justification
+	// for requesting access. Accepted values are 'NOT_MANDATORY' and 'UNSTRUCTURED'.
+	// +required
+	RequesterJustificationType *string `json:"requesterJustificationType,omitempty"`
 
 	// Optional. Additional email addresses to be notified based on actions taken.
 	// +optional
