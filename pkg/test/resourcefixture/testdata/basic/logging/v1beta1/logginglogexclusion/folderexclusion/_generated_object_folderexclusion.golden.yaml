@@ -13,11 +13,11 @@ metadata:
   name: exclusion-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  billingAccountRef:
-    external: billingAccounts/123456-777777-000001
   description: An updated log exclusion
   disabled: true
   filter: resource.type=gcs_bucket severity<=ERROR sample(insertId, 0.99)
+  folderRef:
+    name: exclusion-${uniqueId}
   resourceID: exclusion-${uniqueId}
 status:
   conditions:
