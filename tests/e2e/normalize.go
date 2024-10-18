@@ -231,12 +231,17 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				})
 			}
 		}
-		if len(tokens) > 2 {
+		if len(tokens) >= 2 {
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
 			if typeName == "datasets" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${datasetId}")
+				})
+			}
+			if typeName == "folders" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${folderId}")
 				})
 			}
 			if typeName == "alertPolicies" {
