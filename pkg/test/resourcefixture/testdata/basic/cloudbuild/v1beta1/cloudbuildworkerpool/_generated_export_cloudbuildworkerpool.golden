@@ -15,4 +15,4 @@ spec:
       diskSizeGb: 100
       machineType: e2-medium
   projectRef:
-    name: ${projectId}
+    external: //cloudbuild.googleapis.com/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}
