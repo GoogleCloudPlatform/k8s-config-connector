@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_16",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-source-direct-${uniqueId}",
   "region": "us-central1",
@@ -45,6 +46,7 @@ User-Agent: kcc/controller-manager
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",

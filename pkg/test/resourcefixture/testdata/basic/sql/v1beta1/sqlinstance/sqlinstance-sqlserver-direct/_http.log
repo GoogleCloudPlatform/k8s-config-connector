@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-sqlserver-direct-${uniqueId}",
   "region": "us-central1",
@@ -42,6 +43,7 @@ User-Agent: kcc/controller-manager
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
     "collation": "SQL_Latin1_General_CP1_CI_AS",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",

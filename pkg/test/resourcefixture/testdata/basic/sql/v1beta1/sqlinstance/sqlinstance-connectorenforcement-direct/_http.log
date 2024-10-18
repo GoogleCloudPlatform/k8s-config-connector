@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-connectorenforcement-direct-${uniqueId}",
   "region": "us-central1",
@@ -375,6 +376,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-connectorenforcement-direct-${uniqueId}",
   "region": "us-central1",

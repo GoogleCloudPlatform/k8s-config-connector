@@ -34,12 +34,14 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-passwordvalidationpolicy-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",
@@ -383,12 +385,14 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-passwordvalidationpolicy-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",

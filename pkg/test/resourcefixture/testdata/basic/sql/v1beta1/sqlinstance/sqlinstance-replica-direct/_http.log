@@ -34,6 +34,7 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "MYSQL_5_7",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-master-direct-${uniqueId}",
   "region": "us-central1",
@@ -45,6 +46,7 @@ User-Agent: kcc/controller-manager
       "enabled": true,
       "kind": "sql#backupConfiguration"
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",
@@ -429,6 +431,7 @@ User-Agent: kcc/controller-manager
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "kind": "sql#settings",
