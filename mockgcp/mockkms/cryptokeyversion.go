@@ -13,10 +13,10 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// apiVersion: kms.cnrm.cloud.google.com/v1beta1
-// kind: KMSCryptoKeyVersion
-// service: google.cloud.kms.v1.KeyManagementService
-// resource: CryptoKeyVersion
+// krm.apiVersion: kms.cnrm.cloud.google.com/v1beta1
+// krm.kind: KMSCryptoKeyVersion
+// proto.service: google.cloud.kms.v1.KeyManagementService
+// proto.resource: CryptoKeyVersion
 
 package mockkms
 

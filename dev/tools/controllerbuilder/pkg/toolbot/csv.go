@@ -43,17 +43,19 @@ func NewCSVExporter(protoDirectory string) (*CSVExporter, error) {
 }
 
 type toolEntry struct {
-	Name     string
-	FilePath string
-	Values   map[string]string
+	Name      string
+	DataPoint DataPoint
 }
 
 func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
-
 	b, err := os.ReadFile(p)
 	if err != nil {
 		return fmt.Errorf("reading file %q: %w", p, err)
 	}
+	return x.visitGoCode(ctx, b)
+}
+
+func (x *CSVExporter) visitGoCode(ctx context.Context, b []byte) error {
 	r := bytes.NewReader(b)
 	br := bufio.NewReader(r)
 
@@ -63,7 +65,7 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 			if err == io.EOF {
 				break
 			}
-			return fmt.Errorf("scanning file %q: %w", p, err)
+			return fmt.Errorf("scanning code: %w", err)
 		}
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "//") {
@@ -73,17 +75,17 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 				klog.V(2).Infof("found tool line %q", comment)
 				toolName := strings.TrimPrefix(comment, "+tool:")
 				toolEntry := &toolEntry{
-					Name:     toolName,
-					FilePath: p,
-					Values:   make(map[string]string),
+					Name: toolName,
 				}
+				toolEntry.DataPoint.Output = string(b)
+
 				for {
 					line, err := br.ReadString('\n')
 					if err != nil {
 						if err == io.EOF {
 							break
 						}
-						return fmt.Errorf("scanning file %q: %w", p, err)
+						return fmt.Errorf("scanning code: %w", err)
 					}
 					line = strings.TrimSpace(line)
 					if !strings.HasPrefix(line, "//") {
@@ -94,7 +96,7 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 
 					tokens := strings.SplitN(toolLine, ":", 2)
 					if len(tokens) == 2 {
-						toolEntry.Values[tokens[0]] = strings.TrimSpace(tokens[1])
+						toolEntry.DataPoint.SetInput(tokens[0], strings.TrimSpace(tokens[1]))
 					} else {
 						return fmt.Errorf("cannot parse tool line %q", toolLine)
 					}
@@ -106,7 +108,7 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 	return nil
 }
 
-func (x *CSVExporter) VisitCode(ctx context.Context, srcDir string) error {
+func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 	if err := filepath.WalkDir(srcDir, func(p string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -132,72 +134,27 @@ func (x *CSVExporter) VisitCode(ctx context.Context, srcDir string) error {
 	return nil
 }
 
-func (x *CSVExporter) WriteCSV(ctx context.Context, outputDir string) error {
+func (x *CSVExporter) WriteCSVForAllTools(ctx context.Context, outputDir string) error {
 	log := klog.FromContext(ctx)
 
-	toolsByName := make(map[string][]*toolEntry)
 	for _, toolEntry := range x.toolEntries {
-		toolsByName[toolEntry.Name] = append(toolsByName[toolEntry.Name], toolEntry)
+		if err := x.DecorateExample(ctx, &toolEntry.DataPoint); err != nil {
+			return err
+		}
 	}
 
-	for toolName, tools := range toolsByName {
-		var bb bytes.Buffer
-		csvFile := csv.NewWriter(&bb)
+	toolNames := sets.NewString()
+	for _, toolEntry := range x.toolEntries {
+		toolNames.Insert(toolEntry.Name)
+	}
 
-		columnSet := sets.NewString()
-		columnSet.Insert("out")
-
-		for _, tool := range tools {
-			for k := range tool.Values {
-				columnSet.Insert("in." + k)
-			}
-		}
-
-		if columnSet.Has("in.proto.service") {
-			columnSet.Insert("in!proto.service.definition")
-		}
-
-		columns := columnSet.List()
-
-		csvFile.Write(columns)
-		csvFile.Flush()
-
-		for _, tool := range tools {
-			row := make([]string, len(columns))
-			for i, column := range columns {
-				switch column {
-				case "out":
-					b, err := os.ReadFile(tool.FilePath)
-					if err != nil {
-						return fmt.Errorf("reading file %q: %w", tool.FilePath, err)
-					}
-					row[i] = string(b)
-
-				case "in!proto.service.definition":
-					service := tool.Values["proto.service"]
-					protoService, err := x.getProtoForService(ctx, service)
-					if err != nil {
-						return fmt.Errorf("getting proto for service %q: %w", service, err)
-					}
-					row[i] = strings.Join(protoService.Definition, "\n")
-				default:
-					if strings.HasPrefix(column, "in.") {
-						row[i] = tool.Values[strings.TrimPrefix(column, "in.")]
-					} else {
-						return fmt.Errorf("unknown column %q", column)
-					}
-				}
-			}
-			csvFile.Write(row)
-			csvFile.Flush()
-		}
-
-		if err := csvFile.Error(); err != nil {
-			return fmt.Errorf("writing to csv: %w", err)
-		}
-
+	for _, toolName := range toolNames.List() {
 		outFilePath := filepath.Join(outputDir, toolName+".csv")
 		log.Info("writing CSV", "path", outFilePath)
+		var bb bytes.Buffer
+		if err := x.writeCSVForTool(ctx, toolName, &bb); err != nil {
+			return err
+		}
 		if err := os.WriteFile(outFilePath, bb.Bytes(), 0644); err != nil {
 			return fmt.Errorf("writing to file %q: %w", outFilePath, err)
 		}
@@ -206,9 +163,80 @@ func (x *CSVExporter) WriteCSV(ctx context.Context, outputDir string) error {
 	return nil
 }
 
+func (x *CSVExporter) writeCSVForTool(ctx context.Context, toolName string, out io.Writer) error {
+	var entries []*toolEntry
+	for _, toolEntry := range x.toolEntries {
+		if toolEntry.Name != toolName {
+			continue
+		}
+		entries = append(entries, toolEntry)
+	}
+
+	var bb bytes.Buffer
+	csvFile := csv.NewWriter(&bb)
+
+	columnSet := sets.NewString()
+	columnSet.Insert("out")
+
+	for _, entry := range entries {
+		for k := range entry.DataPoint.Input {
+			columnSet.Insert("in." + k)
+		}
+	}
+
+	columns := columnSet.List()
+
+	csvFile.Write(columns)
+	csvFile.Flush()
+
+	for _, entry := range entries {
+		row := make([]string, len(columns))
+		for i, column := range columns {
+			switch column {
+			case "out":
+				row[i] = entry.DataPoint.Output
+
+			default:
+				if strings.HasPrefix(column, "in.") {
+					row[i] = entry.DataPoint.Input[strings.TrimPrefix(column, "in.")]
+				} else {
+					return fmt.Errorf("unknown column %q", column)
+				}
+			}
+		}
+		csvFile.Write(row)
+		csvFile.Flush()
+	}
+
+	if err := csvFile.Error(); err != nil {
+		return fmt.Errorf("writing to csv: %w", err)
+	}
+
+	_, err := bb.WriteTo(out)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 type protoService struct {
 	FilePath   string
 	Definition []string
+}
+
+func (x *CSVExporter) DecorateExample(ctx context.Context, p *DataPoint) error {
+	service := p.Input["proto.service"]
+	if service == "" {
+		return nil
+	}
+
+	protoService, err := x.getProtoForService(ctx, service)
+	if err != nil {
+		return fmt.Errorf("getting proto for service %q: %w", service, err)
+	}
+	p.SetInput("proto.service.definition", strings.Join(protoService.Definition, "\n"))
+	return nil
 }
 
 func (x *CSVExporter) getProtoForService(ctx context.Context, serviceName string) (*protoService, error) {
@@ -297,4 +325,65 @@ func (x *CSVExporter) getProtoForService(ctx context.Context, serviceName string
 		return nil, fmt.Errorf("found multiple services with name %q", serviceName)
 	}
 	return matches[0], nil
+}
+
+func (x *CSVExporter) BuildInputRow(ctx context.Context, b []byte, out io.Writer) error {
+	if err := x.visitGoCode(ctx, b); err != nil {
+		return err
+	}
+
+	for _, toolEntry := range x.toolEntries {
+		if err := x.DecorateExample(ctx, &toolEntry.DataPoint); err != nil {
+			return err
+		}
+	}
+
+	toolNames := sets.NewString()
+	for _, toolEntry := range x.toolEntries {
+		toolNames.Insert(toolEntry.Name)
+	}
+
+	if toolNames.Len() != 1 {
+		return fmt.Errorf("expected exactly one tool name, got %v", toolNames.List())
+	}
+	for _, toolName := range toolNames.List() {
+		var entries []*toolEntry
+		for _, toolEntry := range x.toolEntries {
+			if toolEntry.Name != toolName {
+				continue
+			}
+			entries = append(entries, toolEntry)
+		}
+
+		var bb bytes.Buffer
+
+		columnSet := sets.NewString()
+
+		for _, entry := range entries {
+			for k := range entry.DataPoint.Input {
+				columnSet.Insert("in." + k)
+			}
+		}
+
+		columns := columnSet.List()
+
+		for _, entry := range entries {
+			for _, column := range columns {
+
+				if strings.HasPrefix(column, "in.") {
+					fmt.Fprintf(&bb, "%v: %v\n", column, entry.DataPoint.Input[strings.TrimPrefix(column, "in.")])
+				} else {
+					return fmt.Errorf("unknown column %q", column)
+				}
+
+			}
+		}
+
+		_, err := bb.WriteTo(out)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

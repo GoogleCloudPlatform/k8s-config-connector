@@ -17,8 +17,8 @@ package exportcsv
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
@@ -26,31 +26,27 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type ExportCSVOptions struct {
+type PromptOptions struct {
 	*options.GenerateOptions
 
-	ProtoDir  string
-	SrcDir    string
-	OutputDir string
+	ProtoDir string
 }
 
-func (o *ExportCSVOptions) BindFlags(cmd *cobra.Command) {
+func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
-	cmd.Flags().StringVar(&o.SrcDir, "src-dir", o.SrcDir, "base directory for source code")
-	cmd.Flags().StringVar(&o.OutputDir, "output-dir", o.OutputDir, "base directory for writing CSVs")
 }
 
-func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
-	opt := &ExportCSVOptions{
+func BuildPromptCommand(baseOptions *options.GenerateOptions) *cobra.Command {
+	opt := &PromptOptions{
 		GenerateOptions: baseOptions,
 	}
 
 	cmd := &cobra.Command{
-		Use:   "export-csv",
-		Short: "generate CSV from tool annotations",
+		Use:   "prompt",
+		Short: "build prompt",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
-			if err := RunExportCSV(ctx, opt); err != nil {
+			if err := RunPrompt(ctx, opt); err != nil {
 				return err
 			}
 			return nil
@@ -62,18 +58,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	return cmd
 }
 
-func rewriteFilePath(p *string) error {
-	if strings.HasPrefix(*p, "~/") {
-		homeDir, err := os.UserHomeDir()
-		if err != nil {
-			return fmt.Errorf("getting home directory: %w", err)
-		}
-		*p = strings.Replace(*p, "~", homeDir, 1)
-	}
-	return nil
-}
-
-func RunExportCSV(ctx context.Context, o *ExportCSVOptions) error {
+func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	if err := rewriteFilePath(&o.ProtoDir); err != nil {
 		return err
 	}
@@ -81,22 +66,17 @@ func RunExportCSV(ctx context.Context, o *ExportCSVOptions) error {
 	if o.ProtoDir == "" {
 		return fmt.Errorf("--proto-dir is required")
 	}
-	if o.SrcDir == "" {
-		return fmt.Errorf("--src-dir is required")
-	}
-	if o.OutputDir == "" {
-		return fmt.Errorf("--output-dir is required")
-	}
 
 	x, err := toolbot.NewCSVExporter(o.ProtoDir)
 	if err != nil {
 		return err
 	}
-	if err := x.VisitCodeDir(ctx, o.SrcDir); err != nil {
-		return err
+	b, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return fmt.Errorf("reading from stdin: %w", err)
 	}
 
-	if err := x.WriteCSVForAllTools(ctx, o.OutputDir); err != nil {
+	if err := x.BuildInputRow(ctx, b, os.Stdout); err != nil {
 		return err
 	}
 

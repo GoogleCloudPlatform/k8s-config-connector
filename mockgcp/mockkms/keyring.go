@@ -13,10 +13,10 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// apiVersion: kms.cnrm.cloud.google.com/v1beta1
-// kind: KMSKeyRing
-// service: google.cloud.kms.v1.KeyManagementService
-// resource: KeyRing
+// krm.apiVersion: kms.cnrm.cloud.google.com/v1beta1
+// krm.kind: KMSKeyRing
+// proto.service: google.cloud.kms.v1.KeyManagementService
+// proto.resource: KeyRing
 
 package mockkms
 

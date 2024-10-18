@@ -96,6 +96,7 @@ func Execute() {
 	rootCmd.AddCommand(generatemapper.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(updatetypes.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(exportcsv.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(exportcsv.BuildPromptCommand(&generateOptions))
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
