@@ -124,6 +124,7 @@ import (
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
+	securesourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1beta1"
@@ -250,6 +251,7 @@ type Interface interface {
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
 	RunV1beta1() runv1beta1.RunV1beta1Interface
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
+	SecuresourcemanagerV1alpha1() securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Interface
 	SecuritycenterV1alpha1() securitycenterv1alpha1.SecuritycenterV1alpha1Interface
 	ServicedirectoryV1beta1() servicedirectoryv1beta1.ServicedirectoryV1beta1Interface
 	ServicenetworkingV1beta1() servicenetworkingv1beta1.ServicenetworkingV1beta1Interface
@@ -374,6 +376,7 @@ type Clientset struct {
 	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
 	runV1beta1                      *runv1beta1.RunV1beta1Client
 	secretmanagerV1beta1            *secretmanagerv1beta1.SecretmanagerV1beta1Client
+	securesourcemanagerV1alpha1     *securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Client
 	securitycenterV1alpha1          *securitycenterv1alpha1.SecuritycenterV1alpha1Client
 	servicedirectoryV1beta1         *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
 	servicenetworkingV1beta1        *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
@@ -889,6 +892,11 @@ func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 // SecretmanagerV1beta1 retrieves the SecretmanagerV1beta1Client
 func (c *Clientset) SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface {
 	return c.secretmanagerV1beta1
+}
+
+// SecuresourcemanagerV1alpha1 retrieves the SecuresourcemanagerV1alpha1Client
+func (c *Clientset) SecuresourcemanagerV1alpha1() securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Interface {
+	return c.securesourcemanagerV1alpha1
 }
 
 // SecuritycenterV1alpha1 retrieves the SecuritycenterV1alpha1Client
@@ -1431,6 +1439,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.securesourcemanagerV1alpha1, err = securesourcemanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.securitycenterV1alpha1, err = securitycenterv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1631,6 +1643,7 @@ func New(c rest.Interface) *Clientset {
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
 	cs.runV1beta1 = runv1beta1.New(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
+	cs.securesourcemanagerV1alpha1 = securesourcemanagerv1alpha1.New(c)
 	cs.securitycenterV1alpha1 = securitycenterv1alpha1.New(c)
 	cs.servicedirectoryV1beta1 = servicedirectoryv1beta1.New(c)
 	cs.servicenetworkingV1beta1 = servicenetworkingv1beta1.New(c)
