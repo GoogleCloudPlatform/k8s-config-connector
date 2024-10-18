@@ -184,7 +184,7 @@ func (s *MockService) parseLogMetricName(name string) (*logMetricName, error) {
 		}
 
 		return name, nil
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }

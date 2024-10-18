@@ -849,7 +849,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					events.PrettifyJSON(jsonMutators...)
 
-					NormalizeHTTPLog(t, events, project, uniqueID)
+					NormalizeHTTPLog(t, events, project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
 
 					events = RemoveExtraEvents(events)
 
@@ -878,14 +878,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
-					if testgcp.TestFolderID.Get() != "" {
-						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
-					}
-					if organizationID := testgcp.TestOrgID.Get(); organizationID != "" {
-						normalizers = append(normalizers, ReplaceString("organizations/"+organizationID, "organizations/${organizationID}"))
-						normalizers = append(normalizers, ReplaceString(organizationID+"/", "${organizationID}/"))
-						normalizers = append(normalizers, ReplaceString("organizations%2F"+organizationID, "organizations%2F${organizationID}"))
-					}
+
 					for k, v := range r.PathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
 					}
