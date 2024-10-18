@@ -13,10 +13,10 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// apiVersion: logging.cnrm.cloud.google.com/v1beta1
-// kind: LoggingLogMetric
-// service: google.logging.v2.MetricsServiceV2
-// resource: LogMetric
+// krm.apiVersion: logging.cnrm.cloud.google.com/v1beta1
+// krm.kind: LoggingLogMetric
+// proto.service: google.logging.v2.MetricsServiceV2
+// proto.resource: LogMetric
 
 package mocklogging
 
@@ -184,7 +184,7 @@ func (s *MockService) parseLogMetricName(name string) (*logMetricName, error) {
 		}
 
 		return name, nil
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }

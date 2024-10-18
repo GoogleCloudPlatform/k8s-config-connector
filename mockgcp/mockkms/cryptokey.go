@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +mockgcp-support
-// apiVersion: kms.cnrm.cloud.google.com/v1beta1
-// kind: KMSCryptoKey
-// service: google.cloud.kms.v1.KeyManagementService
-// resource: CryptoKey
+// +tool:mockgcp-support
+// krm.apiVersion: kms.cnrm.cloud.google.com/v1beta1
+// krm.kind: KMSCryptoKey
+// proto.service: google.cloud.kms.v1.KeyManagementService
+// proto.resource: CryptoKey
 
 package mockkms
 
