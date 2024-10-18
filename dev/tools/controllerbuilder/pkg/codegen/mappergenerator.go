@@ -186,6 +186,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 
 			out.contents.WriteString(fmt.Sprintf("package %s\n\n", lastGoComponent(goPackage)))
 			out.contents.WriteString("import (\n")
+			out.contents.WriteString(fmt.Sprintf("\trefs %q\n", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"))
 			out.contents.WriteString(fmt.Sprintf("\tpb %q\n", pbPackage))
 			out.contents.WriteString(fmt.Sprintf("\tkrm %q\n", krmPackage))
 			out.contents.WriteString(fmt.Sprintf("\t%q\n", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"))
@@ -224,7 +225,16 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
-				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) { // special handling for Spec and observedState structs which map to the same proto message.
+				// Support refs
+				krmFieldRef := goFields[krmFieldName+"Ref"]
+				if krmFieldRef != nil {
+					fmt.Fprintf(out, "\tif in.%s != \"\" {\n", protoAccessor)
+					fmt.Fprintf(out, "\t	out.%v = &refs.%v{External: in.%v}\n", krmFieldRef.Name, strings.TrimPrefix(krmFieldRef.Type, "*refs."), protoAccessor)
+					fmt.Fprintf(out, "\t}\n")
+					continue
+				}
+
+				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for Spec and observedState structs which map to the same proto message.
 					fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
 				}
 				continue
@@ -384,17 +394,25 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
+			protoFieldName := strings.Title(protoField.JSONName())
 
 			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
-				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) { // special handling for spec and state structs which map to the same proto message.
+				// Support refs
+				krmFieldRef := goFields[krmFieldName+"Ref"]
+				if krmFieldRef != nil {
+					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
+					fmt.Fprintf(out, "\t	out.%v = in.%v.External\n", protoFieldName, krmFieldRef.Name)
+					fmt.Fprintf(out, "\t}\n")
+					continue
+				}
+
+				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for spec and state structs which map to the same proto message.
 					fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
 				}
 				continue
 			}
-
-			protoFieldName := strings.Title(protoField.JSONName())
 
 			if protoField.Cardinality() == protoreflect.Repeated {
 				useSliceToProtoFunction := ""
