@@ -61,7 +61,7 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 		return err
 	}
 
-	// Write the generated controller.go to  pkg/controller/direct/<service>/<resource>/<resource>_controller.go
+	// Write the generated controller.go to  pkg/controller/direct/<service>/<resource>_controller.go
 	if err := WriteToFile(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 	return nil
 }
 
-func buildResourcePath(service, kind, filename string) (string, error) {
+func buildResourcePath(service, filename string) (string, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return "", fmt.Errorf("get current working directory: %w", err)
@@ -83,7 +83,7 @@ func buildResourcePath(service, kind, filename string) (string, error) {
 		return "", fmt.Errorf("get absolute path %s: %w", pwd, err)
 	}
 	seg := strings.Split(abs, currRelPath)
-	controllerDir := filepath.Join(seg[0], directControllerRelPath, service, kind)
+	controllerDir := filepath.Join(seg[0], directControllerRelPath, service)
 	err = os.MkdirAll(controllerDir, os.ModePerm)
 	if err != nil {
 		return "", fmt.Errorf("create controller directory %s: %w", controllerDir, err)
@@ -100,8 +100,7 @@ func buildResourcePath(service, kind, filename string) (string, error) {
 }
 
 func buildControllerPath(service, kind string) (string, error) {
-	kind = strings.ToLower(kind)
-	return buildResourcePath(service, kind, kind+"_controller.go")
+	return buildResourcePath(service, strings.ToLower(kind)+"_controller.go")
 }
 
 func FormatImports(path string, out []byte) error {
