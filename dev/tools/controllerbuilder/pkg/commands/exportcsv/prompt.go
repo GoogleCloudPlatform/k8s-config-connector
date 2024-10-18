@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
+	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
 )
@@ -30,9 +31,11 @@ type PromptOptions struct {
 	*options.GenerateOptions
 
 	ProtoDir string
+	SrcDir   string
 }
 
 func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVar(&o.SrcDir, "src-dir", o.SrcDir, "base directory for source code")
 	cmd.Flags().StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
 }
 
@@ -59,6 +62,8 @@ func BuildPromptCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 }
 
 func RunPrompt(ctx context.Context, o *PromptOptions) error {
+	log := klog.FromContext(ctx)
+
 	if err := rewriteFilePath(&o.ProtoDir); err != nil {
 		return err
 	}
@@ -66,23 +71,43 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	if o.ProtoDir == "" {
 		return fmt.Errorf("--proto-dir is required")
 	}
-
 	extractor := &toolbot.ExtractToolMarkers{}
-	addProtoDefinition := &toolbot.EnhanceWithProtoDefinition{
-		ProtoDirectory: o.ProtoDir,
+	addProtoDefinition, err := toolbot.NewEnhanceWithProtoDefinition(o.ProtoDir)
+	if err != nil {
+		return err
 	}
 	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
 	if err != nil {
 		return err
 	}
+
+	if o.SrcDir != "" {
+		if err := x.VisitCodeDir(ctx, o.SrcDir); err != nil {
+			return err
+		}
+	}
+
 	b, err := io.ReadAll(os.Stdin)
 	if err != nil {
 		return fmt.Errorf("reading from stdin: %w", err)
 	}
 
-	if err := x.BuildInputRow(ctx, b, os.Stdout); err != nil {
+	dataPoints, err := x.BuildDataPoints(ctx, b)
+	if err != nil {
 		return err
 	}
 
+	if len(dataPoints) != 1 {
+		return fmt.Errorf("expected exactly one data point, got %d", len(dataPoints))
+	}
+
+	dataPoint := dataPoints[0]
+
+	log.Info("built data point", "dataPoint", dataPoint)
+
+	if err := x.RunGemini(ctx, dataPoint, os.Stdout); err != nil {
+		return fmt.Errorf("running LLM inference: %w", err)
+
+	}
 	return nil
 }

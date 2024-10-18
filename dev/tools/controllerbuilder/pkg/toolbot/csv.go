@@ -15,7 +15,6 @@
 package toolbot
 
 import (
-	"bufio"
 	"bytes"
 	"context"
 	"encoding/csv"
@@ -23,8 +22,9 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"github.com/google/generative-ai-go/genai"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -64,7 +64,6 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 	x.dataPoints = append(x.dataPoints, dataPoints...)
 	return nil
 }
-
 
 func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 	if err := filepath.WalkDir(srcDir, func(p string, d os.DirEntry, err error) error {
@@ -130,49 +129,28 @@ func (x *CSVExporter) writeCSVForTool(ctx context.Context, toolName string, out 
 		dataPoints = append(dataPoints, dataPoint)
 	}
 
-	var bb bytes.Buffer
-	csvFile := csv.NewWriter(&bb)
-
 	columnSet := sets.NewString()
-	columnSet.Insert("out")
-
 	for _, dataPoint := range dataPoints {
-		for k := range dataPoint.Input {
-			columnSet.Insert("in." + k)
-		}
+		dataPoint.AddCSVColumns(columnSet)
 	}
 
 	columns := columnSet.List()
 
+	csvFile := csv.NewWriter(out)
+
+	// write the CSV header
 	csvFile.Write(columns)
-	csvFile.Flush()
 
 	for _, dataPoint := range dataPoints {
-		row := make([]string, len(columns))
-		for i, column := range columns {
-			switch column {
-			case "out":
-				row[i] = dataPoint.Output
-
-			default:
-				if strings.HasPrefix(column, "in.") {
-					row[i] = dataPoint.Input[strings.TrimPrefix(column, "in.")]
-				} else {
-					return fmt.Errorf("unknown column %q", column)
-				}
-			}
+		if err := dataPoint.WriteCSV(csvFile, columns); err != nil {
+			return err
 		}
-		csvFile.Write(row)
-		csvFile.Flush()
 	}
+
+	csvFile.Flush()
 
 	if err := csvFile.Error(); err != nil {
 		return fmt.Errorf("writing to csv: %w", err)
-	}
-
-	_, err := bb.WriteTo(out)
-	if err != nil {
-		return err
 	}
 
 	return nil
@@ -187,60 +165,64 @@ func (x *CSVExporter) EnhanceDataPoint(ctx context.Context, d *DataPoint) error 
 	return nil
 }
 
-func (x *CSVExporter) BuildInputRow(ctx context.Context, b []byte, out io.Writer) error {
+func (x *CSVExporter) BuildDataPoints(ctx context.Context, b []byte) ([]*DataPoint, error) {
 	dataPoints, err := x.extractor.Extract(ctx, b)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for _, dataPoint := range dataPoints {
 		if err := x.EnhanceDataPoint(ctx, dataPoint); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	toolNames := sets.NewString()
-	for _, dataPoint := range dataPoints {
-		toolNames.Insert(dataPoint.Type)
+	return dataPoints, nil
+}
+
+func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Writer) error {
+	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+	if err != nil {
+		return fmt.Errorf("building gemini client: %w", err)
+	}
+	defer client.Close()
+
+	model := client.GenerativeModel("gemini-1.5-pro-002")
+
+	model.SetTemperature(1)
+	model.SetTopK(40)
+	model.SetTopP(0.95)
+	model.SetMaxOutputTokens(8192)
+	model.ResponseMIMEType = "text/plain"
+
+	var parts []genai.Part
+
+	for _, dataPoint := range x.dataPoints {
+		if dataPoint.Type != input.Type {
+			continue
+		}
+		parts = append(parts, dataPoint.ToGenAIParts()...)
 	}
 
-	if toolNames.Len() != 1 {
-		return fmt.Errorf("expected exactly one tool name, got %v", toolNames.List())
+	parts = append(parts, input.ToGenAIParts()...)
+	parts = append(parts, genai.Text("out "))
+
+	resp, err := model.GenerateContent(ctx, parts...)
+	if err != nil {
+		return fmt.Errorf("generating content with gemini: %w", err)
 	}
-	for _, toolName := range toolNames.List() {
 
-		var bb bytes.Buffer
+	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata)
 
-		columnSet := sets.NewString()
+	for _, candidate := range resp.Candidates {
+		content := candidate.Content
 
-		for _, dataPoint := range dataPoints {
-			if dataPoint.Type != toolName {
-				continue
+		for _, part := range content.Parts {
+			if text, ok := part.(genai.Text); ok {
+				klog.Infof("TEXT: %+v", text)
+			} else {
+				klog.Infof("UNKNOWN: %T %+v", part, part)
 			}
-			for k := range dataPoint.Input {
-				columnSet.Insert("in." + k)
-			}
-		}
-
-		columns := columnSet.List()
-
-		for _, dataPoint := range dataPoints {
-			if dataPoint.Type != toolName {
-				continue
-			}
-
-			for _, column := range columns {
-				if strings.HasPrefix(column, "in.") {
-					fmt.Fprintf(&bb, "%v: %v\n", column, dataPoint.Input[strings.TrimPrefix(column, "in.")])
-				} else {
-					return fmt.Errorf("unknown column %q", column)
-				}
-			}
-		}
-
-		_, err := bb.WriteTo(out)
-		if err != nil {
-			return err
 		}
 	}
 

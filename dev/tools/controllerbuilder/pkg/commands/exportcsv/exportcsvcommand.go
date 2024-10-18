@@ -89,8 +89,9 @@ func RunExportCSV(ctx context.Context, o *ExportCSVOptions) error {
 	}
 
 	extractor := &toolbot.ExtractToolMarkers{}
-	addProtoDefinition := &toolbot.EnhanceWithProtoDefinition{
-		ProtoDirectory: o.ProtoDir,
+	addProtoDefinition, err := toolbot.NewEnhanceWithProtoDefinition(o.ProtoDir)
+	if err != nil {
+		return err
 	}
 	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
 	if err != nil {
@@ -106,3 +107,4 @@ func RunExportCSV(ctx context.Context, o *ExportCSVOptions) error {
 
 	return nil
 }
+

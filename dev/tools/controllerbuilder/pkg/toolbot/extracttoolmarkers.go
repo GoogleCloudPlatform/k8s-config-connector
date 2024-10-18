@@ -64,6 +64,37 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, b []byte) ([]*DataPoin
 				}
 				dataPoints = append(dataPoints, dataPoint)
 			}
+
+			if strings.HasPrefix(comment, "+kcc:proto=") {
+				klog.V(2).Infof("found tool line %q", comment)
+				toolName := "kcc-proto"
+				dataPoint := &DataPoint{
+					Type: toolName,
+				}
+
+				proto := strings.TrimPrefix(comment, "+kcc:proto=")
+				dataPoint.SetInput("proto.message", proto)
+
+				var bb bytes.Buffer
+				for {
+					line, err := br.ReadString('\n')
+					if err != nil {
+						if err == io.EOF {
+							break
+						}
+						return nil, fmt.Errorf("scanning code: %w", err)
+					}
+
+					bb.WriteString(line)
+
+					s := strings.TrimSpace(line)
+					if strings.HasPrefix(s, "}") {
+						break
+					}
+				}
+				dataPoint.Output = bb.String()
+				dataPoints = append(dataPoints, dataPoint)
+			}
 		}
 	}
 	return dataPoints, nil
