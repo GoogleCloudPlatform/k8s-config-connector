@@ -35,6 +35,10 @@ go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterSpec -fu
 go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterObservedState -fuzztime 60s
 
 go test -v ./pkg/controller/direct/monitoring/ -fuzz=FuzzMonitoringDashboardSpec -fuzztime 60s
+
+go test -v ./pkg/controller/direct/monitoring/ -fuzz=FuzzMonitoringMonitoredProjectSpec -fuzztime 60s
+go test -v ./pkg/controller/direct/monitoring/ -fuzz=FuzzMonitoringMonitoredProjectStatus -fuzztime 60s
+
 go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerInstanceSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerInstanceObservedState -fuzztime 60s
 
