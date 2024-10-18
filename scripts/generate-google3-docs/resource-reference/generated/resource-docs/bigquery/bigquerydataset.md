@@ -511,7 +511,7 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>

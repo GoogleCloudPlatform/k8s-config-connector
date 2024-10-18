@@ -20,3 +20,4 @@ metadata:
     cnrm.cloud.google.com/state-into-spec: absent
 spec:
   friendlyName: bigquerydataset-sample-updated
+  location: us-central1

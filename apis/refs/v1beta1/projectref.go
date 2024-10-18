@@ -166,5 +166,13 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructur
 		return projectID, nil
 	}
 
+	if selfLink, _, _ := unstructured.NestedString(obj.Object, "status", "selfLink"); selfLink != "" {
+		params := strings.Split(selfLink, "/")
+		if len(params) > 0 {
+			if projectID := params[1]; projectID != "" {
+				return projectID, nil
+			}
+		}
+	}
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
 }
