@@ -20,3 +20,6 @@ metadata:
   name: bigquerydatasetsample${uniqueId}
 spec:
   friendlyName: bigquerydataset-sample-updated
+  location: us-central1
+  projectRef:
+    external: ${projectId}

@@ -19,6 +19,7 @@ spec:
   description: BigQuery Dataset With Access Block v2
   friendlyName: bigquerydataset-accessblock
   location: US
+  maxTimeTravelHours: "168"
   projectRef:
     external: ${projectId}
   resourceID: bigquerydataset${uniqueId}
