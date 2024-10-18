@@ -330,7 +330,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.project}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: *a.id.AsExternalRef()}
 	obj.Spec.Location = a.id.location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
