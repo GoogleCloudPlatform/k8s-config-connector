@@ -602,6 +602,7 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
+	visitor.replacePaths[".response.uniqueId"] = "12345678"
 
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
