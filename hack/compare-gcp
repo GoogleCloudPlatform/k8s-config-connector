@@ -13,5 +13,5 @@ export RUN_TESTS=TestAllInSeries/$1
 # Clear existing artifacts
 rm -rf $(pwd)/artifactz/realgcp
 
-# Run e2e tests against real gcp, capturing output
-ARTIFACTS=$(pwd)/artifactz/realgcp E2E_GCP_TARGET=real dev/tasks/run-e2e
+# Run e2e tests against real gcp
+WRITE_GOLDEN_OUTPUT="" ARTIFACTS=$(pwd)/artifactz/realgcp E2E_GCP_TARGET=real dev/tasks/run-e2e
