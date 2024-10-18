@@ -211,9 +211,9 @@ func (in *SecureSourceManagerInstanceSpec) DeepCopyInto(out *SecureSourceManager
 		*out = new(string)
 		**out = **in
 	}
-	if in.KmsKey != nil {
-		in, out := &in.KmsKey, &out.KmsKey
-		*out = new(string)
+	if in.KmsKeyRef != nil {
+		in, out := &in.KmsKeyRef, &out.KmsKeyRef
+		*out = new(v1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }

@@ -41,9 +41,8 @@ type SecureSourceManagerInstanceSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	*/
 
-	// Optional. Immutable. Customer-managed encryption key name, in the format
-	//  projects/*/locations/*/keyRings/*/cryptoKeys/*.
-	KmsKey *string `json:"kmsKey,omitempty"`
+	// Optional. Immutable. Customer-managed encryption key name.
+	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // SecureSourceManagerInstanceStatus defines the config connector machine state of SecureSourceManagerInstance

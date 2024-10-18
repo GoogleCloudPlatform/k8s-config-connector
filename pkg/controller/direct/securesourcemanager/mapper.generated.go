@@ -16,6 +16,7 @@ package securesourcemanager
 
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -104,7 +105,9 @@ func SecureSourceManagerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: PrivateConfig
-	out.KmsKey = direct.LazyPtr(in.GetKmsKey())
+	if in.GetKmsKey() != "" {
+		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
 	return out
 }
 func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerInstanceSpec) *pb.Instance {
@@ -117,6 +120,8 @@ func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: PrivateConfig
-	out.KmsKey = direct.ValueOf(in.KmsKey)
+	if in.KmsKeyRef != nil {
+		out.KmsKey = in.KmsKeyRef.External
+	}
 	return out
 }

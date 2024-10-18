@@ -62,10 +62,35 @@ spec:
             description: SecureSourceManagerInstanceSpec defines the desired state
               of SecureSourceManagerInstance
             properties:
-              kmsKey:
+              kmsKeyRef:
                 description: Optional. Immutable. Customer-managed encryption key
-                  name, in the format projects/*/locations/*/keyRings/*/cryptoKeys/*.
-                type: string
+                  name.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               location:
                 description: Immutable. Location of the instance.
                 type: string
