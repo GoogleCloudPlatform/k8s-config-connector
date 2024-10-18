@@ -5,7 +5,7 @@ go 1.22.5
 toolchain go1.23.2
 
 require (
-	github.com/smacker/go-tree-sitter v0.0.0-20240625050157-a31a98a7c0f6
+	github.com/smacker/go-tree-sitter v0.0.0-20240827094217-dd81d9e9be82
 	github.com/spf13/cobra v1.8.1
 	k8s.io/klog/v2 v2.130.1
 )
