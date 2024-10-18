@@ -280,28 +280,11 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              requesterJustificationConfig:
+              requesterJustificationType:
                 description: Required. The manner in which the requester should provide
-                  a justification for requesting access.
-                properties:
-                  notMandatory:
-                    description: NotMandatory justification type means the justification
-                      isn't required and can be provided in any of the supported formats.
-                      The user must explicitly opt out using this field if a justification
-                      from the requester isn't mandatory. The only accepted value
-                      is `{}` (empty struct). Either 'notMandatory' or 'unstructured'
-                      field must be set.
-                    type: object
-                    x-kubernetes-preserve-unknown-fields: true
-                  unstructured:
-                    description: Unstructured justification type means the justification
-                      is in the format of a string. If this is set, the server allows
-                      the requester to provide a justification but doesn't validate
-                      it. The only accepted value is `{}` (empty struct). Either 'notMandatory'
-                      or 'unstructured' field must be set.
-                    type: object
-                    x-kubernetes-preserve-unknown-fields: true
-                type: object
+                  a justification for requesting access. Accepted values are 'NOT_MANDATORY'
+                  and 'UNSTRUCTURED'.
+                type: string
               resourceID:
                 description: Immutable. The PrivilegedAccessManagerEntitlement name.
                   If not given, the 'metadata.name' will be used.
@@ -314,7 +297,7 @@ spec:
             - location
             - maxRequestDuration
             - privilegedAccess
-            - requesterJustificationConfig
+            - requesterJustificationType
             type: object
           status:
             description: PrivilegedAccessManagerEntitlementStatus defines the config

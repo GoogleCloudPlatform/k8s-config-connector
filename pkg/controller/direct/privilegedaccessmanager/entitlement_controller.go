@@ -122,13 +122,9 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 		}
 	}
 
-	if obj.Spec.RequesterJustificationConfig.NotMandatory == nil && obj.Spec.RequesterJustificationConfig.Unstructured == nil {
-		return nil, fmt.Errorf("one and only one of 'spec.requesterJustificationConfig.notMandatory' " +
-			"and 'spec.requesterJustificationConfig.unstructured' should be configured: neither is configured")
-	}
-	if obj.Spec.RequesterJustificationConfig.NotMandatory != nil && obj.Spec.RequesterJustificationConfig.Unstructured != nil {
-		return nil, fmt.Errorf("one and only one of 'spec.requesterJustificationConfig.notMandatory' " +
-			"and 'spec.requesterJustificationConfig.unstructured' should be configured: both configured")
+	if !isValid(*obj.Spec.RequesterJustificationType, krm.ValidRequesterJustificationTypes) {
+		return nil, fmt.Errorf("unknown enum value %q for 'spec.requesterJustificationType' (valid values are %v)",
+			*obj.Spec.RequesterJustificationType, krm.ValidRequesterJustificationTypes)
 	}
 
 	// Get privilegedaccessmanager GCP client
@@ -141,6 +137,16 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
+}
+
+func isValid(val string, validVals []string) bool {
+	isValid := false
+	for _, v := range validVals {
+		if val == v {
+			isValid = true
+		}
+	}
+	return isValid
 }
 
 func checkExactlyOneOf(values ...interface{}) (bool, interface{}) {
@@ -332,8 +338,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("'spec.privilegedAccess' field is updated (-old +new)", cmp.Diff(parsedActual.PrivilegedAccess, a.desired.Spec.PrivilegedAccess))
 		updateMask.Paths = append(updateMask.Paths, "privileged_access")
 	}
-	if !reflect.DeepEqual(parsedActual.RequesterJustificationConfig, a.desired.Spec.RequesterJustificationConfig) {
-		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(parsedActual.RequesterJustificationConfig, a.desired.Spec.RequesterJustificationConfig))
+	if !reflect.DeepEqual(parsedActual.RequesterJustificationType, a.desired.Spec.RequesterJustificationType) {
+		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(parsedActual.RequesterJustificationType, a.desired.Spec.RequesterJustificationType))
 		updateMask.Paths = append(updateMask.Paths, "requester_justification_config")
 	}
 	if len(updateMask.Paths) == 0 {

@@ -26,8 +26,7 @@ spec:
       roleBindings:
         - role: roles/pubsub.viewer
           conditionExpression: "request.time > timestamp(\"2019-12-31T12:00:00.000Z\")"
-  requesterJustificationConfig:
-    notMandatory: {}
+  requesterJustificationType: UNSTRUCTURED
   eligibleUsers:
     - principals:
         - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com

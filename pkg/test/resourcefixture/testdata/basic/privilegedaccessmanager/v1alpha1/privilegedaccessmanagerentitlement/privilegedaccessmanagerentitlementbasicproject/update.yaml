@@ -26,8 +26,7 @@ spec:
     gcpIAMAccess:
       roleBindings:
         - role: roles/storage.admin
-  requesterJustificationConfig:
-    notMandatory: {}
+  requesterJustificationType: UNSTRUCTURED
   eligibleUsers:
     - principals:
         - serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com

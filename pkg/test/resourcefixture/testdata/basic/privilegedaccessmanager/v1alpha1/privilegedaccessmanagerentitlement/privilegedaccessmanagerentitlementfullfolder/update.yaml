@@ -27,8 +27,7 @@ spec:
       roleBindings:
         - role: roles/storage.objectViewer
           conditionExpression: "request.time > timestamp(\"2020-10-31T12:00:00.000Z\")"
-  requesterJustificationConfig:
-    notMandatory: {}
+  requesterJustificationType: NOT_MANDATORY
   eligibleUsers:
     - principals:
         - serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com

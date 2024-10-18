@@ -19,7 +19,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	pb "cloud.google.com/go/privilegedaccessmanager/apiv1/privilegedaccessmanagerpb"
-	"k8s.io/apimachinery/pkg/runtime"
 )
 
 type gcpIAMAccessResource struct {
@@ -90,7 +89,7 @@ func PrivilegedAccessManagerEntitlementSpec_FromProto(mapCtx *direct.MapContext,
 	out.ApprovalWorkflow = ApprovalWorkflow_FromProto(mapCtx, in.GetApprovalWorkflow())
 	out.PrivilegedAccess = PrivilegedAccess_FromProto(mapCtx, in.GetPrivilegedAccess())
 	out.MaxRequestDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxRequestDuration())
-	out.RequesterJustificationConfig = RequesterJustificationConfig_FromProto(mapCtx, in.GetRequesterJustificationConfig())
+	out.RequesterJustificationType = RequesterJustificationType_FromProto(mapCtx, in.GetRequesterJustificationConfig())
 	out.AdditionalNotificationTargets = AdditionalNotificationTargets_FromProto(mapCtx, in.GetAdditionalNotificationTargets())
 	return out
 }
@@ -104,7 +103,7 @@ func PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx *direct.MapContext, i
 	out.ApprovalWorkflow = ApprovalWorkflow_ToProto(mapCtx, in.ApprovalWorkflow)
 	out.PrivilegedAccess = PrivilegedAccess_ToProto(mapCtx, in.PrivilegedAccess, hiddenFields)
 	out.MaxRequestDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRequestDuration)
-	out.RequesterJustificationConfig = RequesterJustificationConfig_ToProto(mapCtx, in.RequesterJustificationConfig)
+	out.RequesterJustificationConfig = RequesterJustificationType_ToProto(mapCtx, in.RequesterJustificationType)
 	out.AdditionalNotificationTargets = AdditionalNotificationTargets_ToProto(mapCtx, in.AdditionalNotificationTargets)
 	return out
 }
@@ -119,31 +118,38 @@ func PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx *dir
 	out.Etag = direct.LazyPtr(in.Etag)
 	return out
 }
-func RequesterJustificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement_RequesterJustificationConfig) *krm.RequesterJustificationConfig {
+func RequesterJustificationType_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement_RequesterJustificationConfig) *string {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RequesterJustificationConfig{}
+	outVal := ""
 	if in.GetNotMandatory() != nil {
-		out.NotMandatory = &runtime.RawExtension{Raw: []byte("{}")}
+		outVal = krm.RequesterJustificationTypeNotMandatory
 	} else if in.GetUnstructured() != nil {
-		out.Unstructured = &runtime.RawExtension{Raw: []byte("{}")}
+		outVal = krm.RequesterJustificationTypeUnstructured
+	} else {
+		mapCtx.Errorf("neither 'notMandatory' nor 'unstructured' set under 'requesterJustificationConfig': one of them must be set")
+		return nil
 	}
-	return out
+	return &outVal
 }
-func RequesterJustificationConfig_ToProto(mapCtx *direct.MapContext, in *krm.RequesterJustificationConfig) *pb.Entitlement_RequesterJustificationConfig {
+func RequesterJustificationType_ToProto(mapCtx *direct.MapContext, in *string) *pb.Entitlement_RequesterJustificationConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Entitlement_RequesterJustificationConfig{}
-	if in.NotMandatory != nil {
+	switch *in {
+	case krm.RequesterJustificationTypeNotMandatory:
 		out.JustificationType = &pb.Entitlement_RequesterJustificationConfig_NotMandatory_{
 			NotMandatory: &pb.Entitlement_RequesterJustificationConfig_NotMandatory{},
 		}
-	} else if in.Unstructured != nil {
+	case krm.RequesterJustificationTypeUnstructured:
 		out.JustificationType = &pb.Entitlement_RequesterJustificationConfig_Unstructured_{
 			Unstructured: &pb.Entitlement_RequesterJustificationConfig_Unstructured{},
 		}
+	default:
+		mapCtx.Errorf("unknown enum value %q for 'spec.requesterJustificationType' (valid values are %v)",
+			*in, krm.ValidRequesterJustificationTypes)
 	}
 	return out
 }

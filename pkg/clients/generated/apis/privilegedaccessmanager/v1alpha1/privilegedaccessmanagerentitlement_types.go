@@ -75,22 +75,9 @@ type EntitlementManualApprovals struct {
 	Step []EntitlementStep `json:"step,omitempty"`
 }
 
-type EntitlementNotMandatory struct {
-}
-
 type EntitlementPrivilegedAccess struct {
 	/* Access to a Google Cloud resource through IAM. */
 	GcpIAMAccess EntitlementGcpIAMAccess `json:"gcpIAMAccess"`
-}
-
-type EntitlementRequesterJustificationConfig struct {
-	/* NotMandatory justification type means the justification isn't required and can be provided in any of the supported formats. The user must explicitly opt out using this field if a justification from the requester isn't mandatory. The only accepted value is `{}` (empty struct). Either 'notMandatory' or 'unstructured' field must be set. */
-	// +optional
-	NotMandatory *EntitlementNotMandatory `json:"notMandatory,omitempty"`
-
-	/* Unstructured justification type means the justification is in the format of a string. If this is set, the server allows the requester to provide a justification but doesn't validate it. The only accepted value is `{}` (empty struct). Either 'notMandatory' or 'unstructured' field must be set. */
-	// +optional
-	Unstructured *EntitlementUnstructured `json:"unstructured,omitempty"`
 }
 
 type EntitlementRoleBindings struct {
@@ -120,9 +107,6 @@ type EntitlementStep struct {
 	/* Optional. The potential set of approvers in this step. This list must contain at most one entry. */
 	// +optional
 	Approvers []EntitlementApprovers `json:"approvers,omitempty"`
-}
-
-type EntitlementUnstructured struct {
 }
 
 type PrivilegedAccessManagerEntitlementSpec struct {
@@ -158,8 +142,8 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Required. The manner in which the requester should provide a justification for requesting access. */
-	RequesterJustificationConfig EntitlementRequesterJustificationConfig `json:"requesterJustificationConfig"`
+	/* Required. The manner in which the requester should provide a justification for requesting access. Accepted values are 'NOT_MANDATORY' and 'UNSTRUCTURED'. */
+	RequesterJustificationType string `json:"requesterJustificationType"`
 
 	/* Immutable. The PrivilegedAccessManagerEntitlement name. If not given, the 'metadata.name' will be used. */
 	// +optional

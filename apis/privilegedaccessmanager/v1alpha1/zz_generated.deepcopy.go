@@ -302,10 +302,10 @@ func (in *PrivilegedAccessManagerEntitlementSpec) DeepCopyInto(out *PrivilegedAc
 		*out = new(PrivilegedAccess)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.RequesterJustificationConfig != nil {
-		in, out := &in.RequesterJustificationConfig, &out.RequesterJustificationConfig
-		*out = new(RequesterJustificationConfig)
-		(*in).DeepCopyInto(*out)
+	if in.RequesterJustificationType != nil {
+		in, out := &in.RequesterJustificationType, &out.RequesterJustificationType
+		*out = new(string)
+		**out = **in
 	}
 	if in.AdditionalNotificationTargets != nil {
 		in, out := &in.AdditionalNotificationTargets, &out.AdditionalNotificationTargets

@@ -25,8 +25,7 @@ spec:
     gcpIAMAccess:
       roleBindings:
         - role: roles/pubsub.admin
-  requesterJustificationConfig:
-    notMandatory: {}
+  requesterJustificationType: NOT_MANDATORY
   eligibleUsers:
     - principals:
         - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
