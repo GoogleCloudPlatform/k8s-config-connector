@@ -17,6 +17,7 @@ insertText: |
       cpuCount: \${6:2}
     networkConfig:
       enablePublicIp: \${7:true}
+      enableOutboundPublicIp: \${8:true}
       authorizedExternalNetworks:
-      - cidrRange: \${8:8.8.8.8/30}
-      - cidrRange: \${9:8.8.4.4/30}
+      - cidrRange: \${9:8.8.8.8/30}
+      - cidrRange: \${10:8.8.4.4/30}

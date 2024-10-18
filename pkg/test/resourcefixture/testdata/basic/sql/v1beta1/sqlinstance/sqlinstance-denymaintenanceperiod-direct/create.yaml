@@ -23,8 +23,8 @@ spec:
   region: us-central1
   settings:
     denyMaintenancePeriod:
-      endDate: 01-31
-      startDate: 12-01
+      endDate: 0-1-31
+      startDate: 0-12-1
       time: 00:00:00
     # Location preference is not actually a required field. However, setting it for tests
     # helps with with normalizing the GCP responses, because otherwise GCP chooses a zone

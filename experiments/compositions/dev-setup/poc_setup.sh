@@ -13,13 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-var scheme = runtime.NewScheme()
-
-func init() {
-	if err := apiextensionsv1.AddToScheme(scheme); err != nil {
-		panic(err)
-	}
-}
 export PROJECT_ID=compositions-${USER}
 export REGION=us-central1
 export CONFIG_CONTROLLER_NAME=compositions

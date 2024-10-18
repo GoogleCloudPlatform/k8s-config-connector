@@ -133,6 +133,37 @@ type ConnectionCredential struct {
 	Username *string `json:"username,omitempty"`
 }
 
+type ConnectionMetastoreService struct {
+	/* Optional. Resource name of an existing Dataproc Metastore service.
+
+	Example:
+
+	* `projects/[project_id]/locations/[region]/services/[service_id]` */
+	// +optional
+	MetastoreServiceRef *v1alpha1.ResourceRef `json:"metastoreServiceRef,omitempty"`
+}
+
+type ConnectionSpark struct {
+	/* Optional. Dataproc Metastore Service configuration for the connection. */
+	// +optional
+	MetastoreService *ConnectionMetastoreService `json:"metastoreService,omitempty"`
+
+	/* Optional. Spark History Server configuration for the connection. */
+	// +optional
+	SparkHistoryServer *ConnectionSparkHistoryServer `json:"sparkHistoryServer,omitempty"`
+}
+
+type ConnectionSparkHistoryServer struct {
+	/* Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+	History Server for the connection.
+
+	Example:
+
+	* `projects/[project_id]/regions/[region]/clusters/[cluster_name]` */
+	// +optional
+	DataprocClusterRef *v1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
+}
+
 type BigQueryConnectionConnectionSpec struct {
 	/* Amazon Web Services (AWS) properties. */
 	// +optional
@@ -171,6 +202,10 @@ type BigQueryConnectionConnectionSpec struct {
 	/* The BigQuery ConnectionID. This is a server-generated ID in the UUID format. If not provided, ConfigConnector will create a new Connection and store the UUID in `status.serviceGeneratedID` field. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Spark properties. */
+	// +optional
+	Spark *ConnectionSpark `json:"spark,omitempty"`
 }
 
 type ConnectionAccessRoleStatus struct {
@@ -256,6 +291,25 @@ type ConnectionObservedStateStatus struct {
 	/* Output only. True, if credential is configured for this connection. */
 	// +optional
 	HasCredential *bool `json:"hasCredential,omitempty"`
+
+	// +optional
+	Spark *ConnectionSparkStatus `json:"spark,omitempty"`
+}
+
+type ConnectionSparkStatus struct {
+	/* The account ID of the service created for the purpose of this
+	connection.
+
+	The service account does not have any permissions associated with it when
+	it is created. After creation, customers delegate permissions to the
+	service account. When the connection is used in the context of a stored
+	procedure for Apache Spark in BigQuery, the service account is used to
+	connect to the desired resources in Google Cloud.
+
+	The account ID is in the form of:
+	bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com */
+	// +optional
+	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
 
 type BigQueryConnectionConnectionStatus struct {

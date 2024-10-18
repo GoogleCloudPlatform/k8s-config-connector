@@ -42,7 +42,6 @@
 [acronyms] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.zip.sourceUrl" should be ".spec.deployment.zip.sourceURL"
 [acronyms] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].redirectHttpResponseCode" should be ".spec.handlers[].redirectHTTPResponseCode"
 [acronyms] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeApiVersion" should be ".spec.runtimeAPIVersion"
-[acronyms] crd=bigqueryanalyticshublistings.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataExchangeId" should be ".spec.dataExchangeID"
 [acronyms] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset.dataset.datasetId" should be ".spec.dataset.dataset.datasetID"
 [acronyms] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset.dataset.projectId" should be ".spec.dataset.dataset.projectID"
 [acronyms] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasetId" should be ".spec.datasetID"

@@ -176,6 +176,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.azure.identity"] = "117243083562690747295"
 	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 	visitor.replacePaths[".status.observedState.cloudSql.serviceAccountID"] = "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
+	visitor.replacePaths[".status.observedState.spark.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
 	// Specific to BigQueryDataTransferConfig
 	if u.GetKind() == "BigQueryDataTransferConfig" {
@@ -601,6 +602,7 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
+	visitor.replacePaths[".response.uniqueId"] = "12345678"
 
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="

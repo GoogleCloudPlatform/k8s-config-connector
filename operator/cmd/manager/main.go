@@ -53,6 +53,10 @@ func main() {
 		"Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
+
+	imagePrefix := os.Getenv("IMAGE_PREFIX")
+	flag.StringVar(&imagePrefix, "image-prefix", imagePrefix, "Remap container images to pull from the specified registry or mirror.")
+
 	flag.Parse()
 
 	ctrl.SetLogger(logging.BuildLogger(os.Stderr))
@@ -92,12 +96,25 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := configconnector.Add(mgr, repoPath); err != nil {
+	var imageTransform *controllers.ImageTransform
+	if imagePrefix != "" {
+		imageTransform = controllers.NewImageTransform(imagePrefix)
+	}
+
+	ccOptions := &configconnector.ReconcilerOptions{
+		RepoPath:       repoPath,
+		ImageTransform: imageTransform,
+	}
+	if err := configconnector.Add(mgr, ccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnector")
 		os.Exit(1)
 	}
 
-	if err = configconnectorcontext.Add(mgr, repoPath); err != nil {
+	cccOptions := &configconnectorcontext.ReconcilerOptions{
+		RepoPath:       repoPath,
+		ImageTransform: imageTransform,
+	}
+	if err = configconnectorcontext.Add(mgr, cccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnectorContext")
 		os.Exit(1)
 	}

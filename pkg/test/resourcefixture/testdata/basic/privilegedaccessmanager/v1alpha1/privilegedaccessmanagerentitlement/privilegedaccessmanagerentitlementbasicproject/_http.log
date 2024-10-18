@@ -1,0 +1,710 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "accountId": "gsa-1-${uniqueId}",
+  "serviceAccount": {}
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "accountId": "gsa-2-${uniqueId}",
+  "serviceAccount": {}
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "eligibleUsers": [
+    {
+      "principals": [
+        "serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    }
+  ],
+  "maxRequestDuration": "1800s",
+  "privilegedAccess": {
+    "gcpIamAccess": {
+      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "roleBindings": [
+        {
+          "role": "roles/pubsub.admin"
+        }
+      ]
+    }
+  },
+  "requesterJustificationConfig": {
+    "notMandatory": {}
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "eligibleUsers": [
+      {
+        "principals": [
+          "serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ]
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "maxRequestDuration": "1800s",
+    "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "privilegedAccess": {
+      "gcpIamAccess": {
+        "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+        "resourceType": "cloudresourcemanager.googleapis.com/Project",
+        "roleBindings": [
+          {
+            "role": "roles/pubsub.admin"
+          }
+        ]
+      }
+    },
+    "requesterJustificationConfig": {
+      "notMandatory": {}
+    },
+    "state": "AVAILABLE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "eligibleUsers": [
+    {
+      "principals": [
+        "serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "maxRequestDuration": "1800s",
+  "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "privilegedAccess": {
+    "gcpIamAccess": {
+      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "roleBindings": [
+        {
+          "role": "roles/pubsub.admin"
+        }
+      ]
+    }
+  },
+  "requesterJustificationConfig": {
+    "notMandatory": {}
+  },
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=eligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: entitlement.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+
+{
+  "eligibleUsers": [
+    {
+      "principals": [
+        "serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "maxRequestDuration": "3600s",
+  "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "privilegedAccess": {
+    "gcpIamAccess": {
+      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "roleBindings": [
+        {
+          "role": "roles/storage.admin"
+        }
+      ]
+    }
+  },
+  "requesterJustificationConfig": {
+    "notMandatory": {}
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "eligibleUsers": [
+      {
+        "principals": [
+          "serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ]
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "maxRequestDuration": "3600s",
+    "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "privilegedAccess": {
+      "gcpIamAccess": {
+        "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+        "resourceType": "cloudresourcemanager.googleapis.com/Project",
+        "roleBindings": [
+          {
+            "role": "roles/storage.admin"
+          }
+        ]
+      }
+    },
+    "requesterJustificationConfig": {
+      "notMandatory": {}
+    },
+    "state": "AVAILABLE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "eligibleUsers": [
+    {
+      "principals": [
+        "serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "maxRequestDuration": "3600s",
+  "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "privilegedAccess": {
+    "gcpIamAccess": {
+      "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+      "resourceType": "cloudresourcemanager.googleapis.com/Project",
+      "roleBindings": [
+        {
+          "role": "roles/storage.admin"
+        }
+      ]
+    }
+  },
+  "requesterJustificationConfig": {
+    "notMandatory": {}
+  },
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "eligibleUsers": [
+      {
+        "principals": [
+          "serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ]
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "maxRequestDuration": "3600s",
+    "name": "projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "privilegedAccess": {
+      "gcpIamAccess": {
+        "resource": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+        "resourceType": "cloudresourcemanager.googleapis.com/Project",
+        "roleBindings": [
+          {
+            "role": "roles/storage.admin"
+          }
+        ]
+      }
+    },
+    "requesterJustificationConfig": {
+      "notMandatory": {}
+    },
+    "state": "DELETED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

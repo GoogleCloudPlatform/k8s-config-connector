@@ -10,10 +10,7 @@ TODO: list contributors with `git log v1.124.0... | grep Merge | grep from | awk
 
 ## Resources promoted from alpha to beta:
 
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState.*`
-
-* `PlaceholderKind`
+* `RedisCluster` is now a v1beta1 resource.
 
 ## New Resources:
 
