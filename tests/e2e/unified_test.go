@@ -215,6 +215,17 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							"pause test should not run against test cases already contain ConfigConnector "+
 							"or ConfigConnectorContext objects", fixture.Name)
 					}
+
+					// If the test contains "${resourceId}", that means it is an acquisition test, which we don't currently support
+					for _, create := range opt.Create {
+						resourceID, _, err := unstructured.NestedString(create.Object, "spec", "resourceID")
+						if err != nil {
+							t.Fatalf("error reading spec.resourceID: %v", err)
+						}
+						if strings.Contains(resourceID, "${resourceId}") {
+							t.Skipf("test has ${resourceId} placeholder in spec.resource, indicating an acquisition test.  Not currently supported here; skipping")
+						}
+					}
 				}
 
 				// Create test harness
