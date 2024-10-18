@@ -64,11 +64,11 @@ type WorkstationclusterAnnotations struct {
 }
 
 type WorkstationclusterLabels struct {
-	/* Key for the annotation. */
+	/* Key for the label. */
 	// +optional
 	Key *string `json:"key,omitempty"`
 
-	/* Value for the annotation. */
+	/* Value for the label. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
@@ -156,10 +156,6 @@ type WorkstationclusterObservedStateStatus struct {
 	/* Output only. Status conditions describing the workstation cluster's current state. */
 	// +optional
 	GcpConditions []WorkstationclusterGcpConditionsStatus `json:"gcpConditions,omitempty"`
-
-	/* Output only. Indicates whether this workstation cluster is currently being updated to match its intended state. */
-	// +optional
-	Reconciling *bool `json:"reconciling,omitempty"`
 
 	/* Output only. Service attachment URI for the workstation cluster. The service attachment is created when private endpoint is enabled. To access workstations in the workstation cluster, configure access to the managed service using [Private Service Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services). */
 	// +optional
