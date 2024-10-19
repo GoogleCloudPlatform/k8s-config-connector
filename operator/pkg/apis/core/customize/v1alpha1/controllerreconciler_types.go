@@ -112,7 +112,7 @@ type ControllerReconcilerList struct {
 	Items           []ControllerReconciler `json:"items"`
 }
 
-var SupportedNamespacedControllers = []string{
+var ValidRateLimitControllers = []string{
 	"cnrm-controller-manager",
 }
 

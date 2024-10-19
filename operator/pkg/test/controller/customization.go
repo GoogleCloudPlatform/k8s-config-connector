@@ -310,7 +310,7 @@ var (
 	ErrUnsupportedController = fmt.Sprintf("failed to apply rate limit customization %s: "+
 		"rate limit customization for %s is not supported. "+
 		"Supported controllers: %s",
-		unsupportedControllerName, unsupportedControllerName, strings.Join(customizev1alpha1.SupportedNamespacedControllers, ", "))
+		unsupportedControllerName, unsupportedControllerName, strings.Join(customizev1alpha1.ValidRateLimitControllers, ", "))
 )
 
 var ClusterModeComponents = []string{`
