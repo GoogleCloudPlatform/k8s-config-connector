@@ -87,8 +87,8 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
-					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
-						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUP=%s", s)
+					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
 					}
 				}
 
@@ -157,9 +157,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					continue
 				}
 			}
-			if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
-				if group != s {
-					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUP=%s", fixture.Name, group, s)
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
 					continue
 				}
 			}
