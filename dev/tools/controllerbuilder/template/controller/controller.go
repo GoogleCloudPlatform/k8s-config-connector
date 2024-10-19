@@ -73,10 +73,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const (
-	ctrlName = "{{.KCCService}}-{{.ProtoResource | ToLower }}-controller"
-)
-
 func init() {
 	registry.RegisterModel(krm.{{.Kind}}GVK, New{{.Kind}}Model)
 }
@@ -142,7 +138,7 @@ type {{.Kind}}Adapter struct {
 var _ directbase.Adapter = &{{.Kind}}Adapter{}
 
 func (a *{{.Kind}}Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting {{.Kind}}", "name", a.id.External)
 
 	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.External}
@@ -159,7 +155,7 @@ func (a *{{.Kind}}Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *{{.Kind}}Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
@@ -198,7 +194,7 @@ func (a *{{.Kind}}Adapter) Create(ctx context.Context, createOp *directbase.Crea
 }
 
 func (a *{{.Kind}}Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
@@ -271,7 +267,7 @@ func (a *{{.Kind}}Adapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 // Delete implements the Adapter interface.
 func (a *{{.Kind}}Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id.External)
 
 	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.External}
