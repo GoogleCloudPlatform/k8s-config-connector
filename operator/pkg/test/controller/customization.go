@@ -140,6 +140,17 @@ var (
 			},
 		},
 	}
+	ControllerReconcilerCR = &customizev1alpha1.ControllerReconciler{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "cnrm-controller-manager",
+		},
+		Spec: customizev1alpha1.ControllerReconcilerSpec{
+			RateLimit: &customizev1alpha1.RateLimit{
+				Burst: 30,
+				QPS:   80,
+			},
+		},
+	}
 )
 
 var (
@@ -301,6 +312,17 @@ var (
 			Namespace: "foo-ns",
 		},
 		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
+			RateLimit: &customizev1alpha1.RateLimit{
+				Burst: 30,
+				QPS:   80,
+			},
+		},
+	}
+	ControllerReconcilerCRForUnsupportedController = &customizev1alpha1.ControllerReconciler{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: unsupportedControllerName,
+		},
+		Spec: customizev1alpha1.ControllerReconcilerSpec{
 			RateLimit: &customizev1alpha1.RateLimit{
 				Burst: 30,
 				QPS:   80,
@@ -1037,4 +1059,140 @@ spec:
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
         image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
+`}
+
+// ClusterModeComponentsWithRatLimitCustomization is the same as ClusterModeComponents
+// with the following differences:
+// - the "args" for cnrm-controller-manager/manager container.
+var ClusterModeComponentsWithRatLimitCustomization = []string{`
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: ${SERVICE_ACCOUNT?}
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+`, `
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnrm-manager
+  namespace: cnrm-system
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - args: ["--qps=80", "--burst=30", "--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"]
+        command: ["/configconnector/manager"]
+        image: gcr.io/gke-release/cnrm/controller:4af93f1
+        name: manager
+        resources:
+          limits:
+            cpu: 200m
+          requests:
+            memory: 256Mi
+      - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
+        name: prom-to-sd
+`, `
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-webhook-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-webhook-manager
+  namespace: cnrm-system
+spec:
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-webhook-manager
+      cnrm.cloud.google.com/system: "true"
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-webhook-manager
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - command:
+        - /configconnector/webhook
+        env:
+        - name: GOMEMLIMIT
+          value: 110MiB
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: gcr.io/gke-release/cnrm/webhook:54aab28
+        imagePullPolicy: Always
+        name: webhook
+        ports:
+        - containerPort: 23232
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 23232
+          initialDelaySeconds: 7
+          periodSeconds: 3
+        resources:
+          limits:
+            memory: 128Mi
+          requests:
+            cpu: 250m
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+      enableServiceLinks: false
+      serviceAccountName: cnrm-webhook-manager
+      terminationGracePeriodSeconds: 10
+`, `
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-webhook
+  namespace: cnrm-system
+spec:
+  maxReplicas: 20
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cnrm-webhook-manager
+  targetCPUUtilizationPercentage: 90
 `}
