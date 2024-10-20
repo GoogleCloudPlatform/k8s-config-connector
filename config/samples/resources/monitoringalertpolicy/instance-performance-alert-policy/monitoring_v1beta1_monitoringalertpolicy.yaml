@@ -60,6 +60,10 @@ spec:
       thresholdValue: 1
       duration: 300s
   documentation:
+    subject: Sample Computing Instance Performance Alert Policy
+    links:
+    - displayName: Policy sample
+      url: https://cloud.google.com/monitoring/alerts/policies-in-json
     content: |-
       This sample is an amalgamation of policy samples found at https://cloud.google.com/monitoring/alerts/policies-in-json. It is meant to give an idea of what is possible rather than be a completely realistic alerting policy in and of itself.
 
