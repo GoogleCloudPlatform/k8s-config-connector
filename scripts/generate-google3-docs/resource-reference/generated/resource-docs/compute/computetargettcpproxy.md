@@ -82,6 +82,7 @@ backendServiceRef:
   name: string
   namespace: string
 description: string
+location: string
 proxyBind: boolean
 proxyHeader: string
 resourceID: string
@@ -146,6 +147,16 @@ resourceID: string
     </tr>
     <tr>
         <td>
+            <p><code>location</code></p>
+            <p><i>Required</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeTargetTCPProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>proxyBind</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -162,7 +173,7 @@ this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endv
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the type of proxy header to append before sending data to
+            <p>{% verbatim %}Immutable. Specifies the type of proxy header to append before sending data to
 the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
         </td>
     </tr>
