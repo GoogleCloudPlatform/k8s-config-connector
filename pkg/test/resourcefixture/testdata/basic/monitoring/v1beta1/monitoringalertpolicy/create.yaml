@@ -42,29 +42,33 @@ spec:
               - resource.label.instance_id
               - resource.label.zone
   documentation:
+    subject: Alerting on CPU usage
+    links:
+    - displayName: Alerting on CPU usage
+      url: https://cloud.google.com/monitoring/alerts/
     content: |-
       Introduction to alerting
       Alerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.
-      
+
       To create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.
-      
+
       For a practical introduction to alerting, try one of these quickstarts:
 
       Quickstart for GCP
       Quickstart for AWS
       For an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.
-      
+
       How does alerting work?
       You can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.
-      
+
       Each alerting policy specifies the following:
-      
+
       Conditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.
-      
+
       Notifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.
-      
+
       Documentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.
-      
+
       When the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.
-      
+
       For information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events.

@@ -44,6 +44,10 @@ spec:
       That alone should discourage the crew.
       Just the place for a Snark! I have measured it thrice:
       What I measure three times is true.”
+    links:
+    - displayName: Alerting on CPU usage - v2
+      url: https://cloud.google.com/monitoring/alerts/
+    subject: Alerting on CPU usage - v2
   enabled: false
   notificationChannels:
   - name: monitoringnotificationchannel3-${uniqueId}
