@@ -42,7 +42,7 @@ const ControllerTemplate = `
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package {{.Kind | ToLower }}
+package {{.KCCService}}
 
 import (
 	"context"
@@ -78,20 +78,20 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.{{.Kind}}GVK, NewModel)
+	registry.RegisterModel(krm.{{.Kind}}GVK, New{{.Kind}}Model)
 }
 
-func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &model{config: *config}, nil
+func New{{.Kind}}Model(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{{.Kind}}{config: *config}, nil
 }
 
-var _ directbase.Model = &model{}
+var _ directbase.Model = &model{{.Kind}}{}
 
-type model struct {
+type model{{.Kind}} struct {
 	config config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.Client, error) {
+func (m *model{{.Kind}}) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -104,7 +104,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model{{.Kind}}) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.{{.Kind}}{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -120,28 +120,28 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
-	return &Adapter{
+	return &{{.Kind}}Adapter{
 		id:        id,
 		gcpClient:  gcpClient,
 		desired:    obj,
 	}, nil
 }
 
-func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *model{{.Kind}}) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
 
-type Adapter struct {
+type {{.Kind}}Adapter struct {
 	id         *krm.{{.Kind}}Ref
 	gcpClient  *gcp.Client
 	desired    *krm.{{.Kind}}
 	actual     *{{.KCCService}}pb.{{.ProtoResource}}
 }
 
-var _ directbase.Adapter = &Adapter{}
+var _ directbase.Adapter = &{{.Kind}}Adapter{}
 
-func (a *Adapter) Find(ctx context.Context) (bool, error) {
+func (a *{{.Kind}}Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting {{.Kind}}", "name", a.id.External)
 
@@ -158,7 +158,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *{{.Kind}}Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
@@ -197,7 +197,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *{{.Kind}}Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
@@ -242,7 +242,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *{{.Kind}}Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -270,7 +270,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 }
 
 // Delete implements the Adapter interface.
-func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *{{.Kind}}Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id.External)
 
