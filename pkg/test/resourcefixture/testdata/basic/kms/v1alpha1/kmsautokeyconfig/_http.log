@@ -79,7 +79,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: autokey_config.name=folders%2F${testFolderId}%2FautokeyConfig
 
 {
-  "keyProject": "projects/{uniqueId}",
+  "keyProject": "projects/diff-{uniqueId}",
   "name": "folders/${testFolderId}/autokeyConfig"
 }
 
@@ -95,7 +95,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/{uniqueId}",
+  "keyProject": "projects/diff-{uniqueId}",
   "name": "folders/${testFolderId}/autokeyConfig",
   "state": 1
 }
@@ -119,7 +119,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/{uniqueId}",
+  "keyProject": "projects/diff-{uniqueId}",
   "name": "folders/${testFolderId}/autokeyConfig",
   "state": 1
 }
