@@ -283,6 +283,7 @@ spec:
             - location
             - oidcConfig
             - platformVersion
+            - projectRef
             type: object
           status:
             description: ContainerAttachedClusterStatus defines the config connector

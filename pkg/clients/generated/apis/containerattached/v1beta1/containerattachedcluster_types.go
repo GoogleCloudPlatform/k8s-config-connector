@@ -168,8 +168,7 @@ type ContainerAttachedClusterSpec struct {
 	PlatformVersion string `json:"platformVersion"`
 
 	/* The ID of the project in which the resource belongs. If it is not provided, the provider project is used. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable, Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used. */
 	// +optional

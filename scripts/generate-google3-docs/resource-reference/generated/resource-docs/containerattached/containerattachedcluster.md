@@ -458,7 +458,7 @@ while clusters with private issuers need to provide both 'issuerUrl' and 'jwks'.
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
