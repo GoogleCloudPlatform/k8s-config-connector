@@ -24,6 +24,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CloudBuildWorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krm.CloudBuildWorkerPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudBuildWorkerPoolSpec{}
+	out.DisplayName = in.GetDisplayName()
+	out.ResourceID = direct.LazyPtr(in.GetName())
+	out.PrivatePoolConfig = PrivatePoolV1Config_FromProto(mapCtx, in.GetPrivatePoolV1Config())
+	return out
+}
+
 func CloudBuildWorkerPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krm.CloudBuildWorkerPoolObservedState {
 	if in == nil {
 		return nil

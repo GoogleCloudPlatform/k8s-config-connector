@@ -250,7 +250,25 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("`Find()` not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	wp := &krm.CloudBuildWorkerPool{}
+	mapCtx := &direct.MapContext{}
+	wp.Spec = direct.ValueOf(CloudBuildWorkerPoolSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	wp.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.project}
+	wp.Spec.Location = a.id.location
+	obj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(wp)
+	if err != nil {
+		return nil, err
+	}
+	u.Object = obj
+	return u, nil
 }
 
 // Delete implements the Adapter interface.

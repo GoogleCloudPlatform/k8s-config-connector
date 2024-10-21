@@ -15,18 +15,85 @@
 package e2e
 
 import (
+	"context"
+	"fmt"
 	"path/filepath"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 )
 
+func directExport(ctx context.Context, u *unstructured.Unstructured, c client.Client) ([]byte, error) {
+	gvk := u.GroupVersionKind()
+	model, err := registry.GetModel(gvk.GroupKind())
+	if err != nil {
+		return nil, err
+	}
+	a, err := model.AdapterForObject(ctx, c, u)
+	if err != nil {
+		return nil, err
+	}
+
+	found, err := a.Find(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if !found {
+		return nil, fmt.Errorf("GCP resource for %v with name %q not found", u.GroupVersionKind().Kind, u.GetName())
+	}
+
+	unst, err := a.Export(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if unst == nil {
+		return nil, nil
+	}
+	unst.SetGroupVersionKind(gvk)
+	unst.SetName(u.GetName())
+	if u.GetNamespace() != "" {
+		unst.SetNamespace(u.GetNamespace())
+	}
+	unst.SetAnnotations(u.GetAnnotations())
+	unstructured.RemoveNestedField(unst.Object, "status")
+	output, err := unst.MarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return output, nil
+}
+
+func shallDirectExport(h *create.Harness, gvk schema.GroupVersionKind) bool {
+	crd := testcontroller.GetCRDForKind(h.T, gvk.Kind)
+	if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
+		return false
+	}
+	if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
+		return false
+	}
+	return registry.IsDirectByGK(gvk.GroupKind())
+}
+
 func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
+
+	if shallDirectExport(h, obj.GroupVersionKind()) {
+		output, err := directExport(h.Ctx, obj, h.GetClient())
+		if err != nil {
+			return ""
+		}
+		return string(output)
+	}
+
 	exportURI := ""
 
 	projectID := resolveProjectID(h, obj)
@@ -35,6 +102,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
+
 	// location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
 
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
@@ -45,12 +113,6 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
-
-	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
-
-	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
-		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
 	}
 
 	if exportURI == "" {
