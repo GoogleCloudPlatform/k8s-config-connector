@@ -30,3 +30,11 @@ func computeFingerprint(obj proto.Message) string {
 	hash := md5.Sum(b)
 	return base64.StdEncoding.EncodeToString(hash[:])
 }
+
+func ValueOf[T any](t *T) T {
+	if t == nil {
+		var defaultT T
+		return defaultT
+	}
+	return *t
+}
