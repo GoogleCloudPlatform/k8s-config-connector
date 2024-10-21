@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: workstations.cnrm.cloud.google.com/v1beta1
-kind: WorkstationCluster
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
 metadata:
-  name: workstationcluster-${uniqueId}
+  name: workstations.cnrm.cloud.google.com
+  namespace: cnrm-system
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-west1
-  networkRef:
-    name: computenetwork-${uniqueId}
-  subnetworkRef:
-    name: computesubnetwork-${uniqueId}
+  name: Workstations
+  version: v1beta1
+  serviceHostName: "workstations.googleapis.com"
+  resources:
+    - name: google_workstations_workstationcluster
+      kind: WorkstationCluster
+      direct: true
