@@ -61,6 +61,13 @@ type InstanceNetworkConfig struct {
 	EnablePublicIp *bool `json:"enablePublicIp,omitempty"`
 }
 
+type InstancePscInstanceConfig struct {
+	/* List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+	These should be specified as project numbers only. */
+	// +optional
+	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+}
+
 type InstanceReadPoolConfig struct {
 	/* Read capacity, i.e. number of nodes in a read pool instance. */
 	// +optional
@@ -124,6 +131,10 @@ type AlloyDBInstanceSpec struct {
 	/* Instance level network configuration. */
 	// +optional
 	NetworkConfig *InstanceNetworkConfig `json:"networkConfig,omitempty"`
+
+	/* Configuration for Private Service Connect (PSC) for the instance. */
+	// +optional
+	PscInstanceConfig *InstancePscInstanceConfig `json:"pscInstanceConfig,omitempty"`
 
 	/* Read pool specific config. If the instance type is READ_POOL, this configuration must be provided. */
 	// +optional
