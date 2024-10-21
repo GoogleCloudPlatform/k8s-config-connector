@@ -108,7 +108,7 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
-	if err := NormalizeSQLInstance(ctx, kube, obj); err != nil {
+	if err := ResolveSQLInstanceRefs(ctx, kube, obj); err != nil {
 		return nil, err
 	}
 
