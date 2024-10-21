@@ -536,7 +536,7 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 	contextcr.SetGroupVersionKind(contextGVK)
 	contextNN := types.NamespacedName{Namespace: cr.GetNamespace(), Name: "context"}
 	if err := r.Get(ctx, contextNN, &contextcr); err != nil {
-		logger.Error(err, "unable to fetch Context CR", "context", contextNN)
+		logger.Info("unable to fetch Context CR", "context", contextNN)
 		if !apierrors.IsNotFound(err) {
 			return values, updated, "ErrorGettingContext", err
 		}
