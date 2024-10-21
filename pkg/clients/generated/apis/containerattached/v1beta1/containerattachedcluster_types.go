@@ -167,9 +167,8 @@ type ContainerAttachedClusterSpec struct {
 	/* Required. The platform version for the cluster (e.g. `1.30.0-gke.1`). */
 	PlatformVersion string `json:"platformVersion"`
 
-	/* The ID of the project in which the resource belongs. If it is not provided, the provider project is used. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* The ID of the project in which the resource belongs. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable, Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used. */
 	// +optional
