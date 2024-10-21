@@ -64,7 +64,7 @@ var _ directbase.Adapter = &dashboardAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	gcpClient, err := newGCPClient(ctx, m.config)
+	gcpClient, err := newGCPClient(m.config)
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
@@ -122,7 +122,7 @@ func (m *dashboardModel) AdapterForURL(ctx context.Context, url string) (directb
 
 	tokens := strings.Split(strings.TrimPrefix(url, "//monitoring.googleapis.com/"), "/")
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "dashboards" {
-		gcpClient, err := newGCPClient(ctx, m.config)
+		gcpClient, err := newGCPClient(m.config)
 		if err != nil {
 			return nil, fmt.Errorf("building gcp client: %w", err)
 		}
