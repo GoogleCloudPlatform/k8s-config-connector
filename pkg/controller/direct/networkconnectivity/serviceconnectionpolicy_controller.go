@@ -29,6 +29,7 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -103,8 +104,7 @@ func (m *serviceConnectionPolicyModel) AdapterForObject(ctx context.Context, kub
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	// TODO: Move from monitoring package into shared package (and make refs implement an interface)
-	if err := monitoring.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
+	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
 		return nil, err
 	}
 
