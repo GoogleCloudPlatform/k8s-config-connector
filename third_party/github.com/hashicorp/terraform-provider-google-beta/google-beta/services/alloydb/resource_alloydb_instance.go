@@ -165,6 +165,35 @@ can have regional availability (nodes are present in 2 or more zones in a region
 							Type:     schema.TypeBool,
 							Optional: true,
 							Description: `Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.`,
+			"psc_instance_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `Configuration for Private Service Connect (PSC) for the instance.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"allowed_consumer_projects": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Description: `List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+These should be specified as project numbers only.`,
+							Elem: &schema.Schema{
+								Type:         schema.TypeString,
+								ValidateFunc: verify.ValidateRegexp(`^\d+$`),
+							},
+						},
+						"psc_dns_name": {
+							Type:     schema.TypeString,
+							Computed: true,
+							Description: `The DNS name of the instance for PSC connectivity.
+Name convention: <uid>.<uid>.<region>.alloydb-psc.goog`,
+						},
+						"service_attachment_link": {
+							Type:     schema.TypeString,
+							Computed: true,
+							Description: `The service attachment created when Private Service Connect (PSC) is enabled for the instance.
+The name of the resource will be in the format of
+'projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>'`,
 						},
 					},
 				},
@@ -295,6 +324,12 @@ func resourceAlloydbInstanceCreate(d *schema.ResourceData, meta interface{}) err
 		return err
 	} else if v, ok := d.GetOkExists("read_pool_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(readPoolConfigProp)) && (ok || !reflect.DeepEqual(v, readPoolConfigProp)) {
 		obj["readPoolConfig"] = readPoolConfigProp
+	}
+	pscInstanceConfigProp, err := expandAlloydbInstancePscInstanceConfig(d.Get("psc_instance_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("psc_instance_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(pscInstanceConfigProp)) && (ok || !reflect.DeepEqual(v, pscInstanceConfigProp)) {
+		obj["pscInstanceConfig"] = pscInstanceConfigProp
 	}
 	machineConfigProp, err := expandAlloydbInstanceMachineConfig(d.Get("machine_config"), d, config)
 	if err != nil {
@@ -444,6 +479,7 @@ func resourceAlloydbInstanceRead(d *schema.ResourceData, meta interface{}) error
 		return fmt.Errorf("Error reading Instance: %s", err)
 	}
 	if err := d.Set("outbound_public_ip_addresses", flattenAlloydbInstanceOutboundPublicIpAddresses(res["outboundPublicIpAddresses"], d, config)); err != nil {
+	if err := d.Set("psc_instance_config", flattenAlloydbInstancePscInstanceConfig(res["pscInstanceConfig"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Instance: %s", err)
 	}
 
@@ -514,6 +550,11 @@ func resourceAlloydbInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 		return err
 	} else if v, ok := d.GetOkExists("network_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkConfigProp)) {
 		obj["networkConfig"] = networkConfigProp
+	pscInstanceConfigProp, err := expandAlloydbInstancePscInstanceConfig(d.Get("psc_instance_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("psc_instance_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pscInstanceConfigProp)) {
+		obj["pscInstanceConfig"] = pscInstanceConfigProp
 	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
@@ -550,6 +591,10 @@ func resourceAlloydbInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 
 	if d.HasChange("read_pool_config") {
 		updateMask = append(updateMask, "readPoolConfig")
+	}
+	
+	if d.HasChange("psc_instance_config") {
+		updateMask = append(updateMask, "pscInstanceConfig")
 	}
 
 	if d.HasChange("machine_config") {
@@ -769,6 +814,35 @@ func flattenAlloydbInstanceReadPoolConfigNodeCount(v interface{}, d *schema.Reso
 	return v // let terraform core handle it otherwise
 }
 
+func flattenAlloydbInstancePscInstanceConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["service_attachment_link"] =
+		flattenAlloydbInstancePscInstanceConfigServiceAttachmentLink(original["serviceAttachmentLink"], d, config)
+	transformed["allowed_consumer_projects"] =
+		flattenAlloydbInstancePscInstanceConfigAllowedConsumerProjects(original["allowedConsumerProjects"], d, config)
+	transformed["psc_dns_name"] =
+		flattenAlloydbInstancePscInstanceConfigPscDnsName(original["pscDnsName"], d, config)
+	return []interface{}{transformed}
+}
+func flattenAlloydbInstancePscInstanceConfigServiceAttachmentLink(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbInstancePscInstanceConfigAllowedConsumerProjects(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbInstancePscInstanceConfigPscDnsName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenAlloydbInstanceMachineConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
@@ -923,6 +997,51 @@ func expandAlloydbInstanceReadPoolConfig(v interface{}, d tpgresource.TerraformR
 }
 
 func expandAlloydbInstanceReadPoolConfigNodeCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAlloydbInstancePscInstanceConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedServiceAttachmentLink, err := expandAlloydbInstancePscInstanceConfigServiceAttachmentLink(original["service_attachment_link"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedServiceAttachmentLink); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["serviceAttachmentLink"] = transformedServiceAttachmentLink
+	}
+
+	transformedAllowedConsumerProjects, err := expandAlloydbInstancePscInstanceConfigAllowedConsumerProjects(original["allowed_consumer_projects"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedAllowedConsumerProjects); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["allowedConsumerProjects"] = transformedAllowedConsumerProjects
+	}
+
+	transformedPscDnsName, err := expandAlloydbInstancePscInstanceConfigPscDnsName(original["psc_dns_name"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPscDnsName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["pscDnsName"] = transformedPscDnsName
+	}
+
+	return transformed, nil
+}
+
+func expandAlloydbInstancePscInstanceConfigServiceAttachmentLink(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAlloydbInstancePscInstanceConfigAllowedConsumerProjects(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAlloydbInstancePscInstanceConfigPscDnsName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

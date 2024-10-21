@@ -84,10 +84,6 @@ spec:
                       type: string
                     type:
                       default: jinja2
-                      description: |-
-                        Type indicates what expander to use
-                          jinja - jinja2 expander
-                          ...
                       type: string
                     version:
                       default: latest

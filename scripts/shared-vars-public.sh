@@ -108,4 +108,9 @@ SUPPORTED_SERVICES=(
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
 # long-running tests should be added to this regex in alphabetical order.
+<<<<<<< HEAD
 LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|basicalloydbinstance|basicalloydbsecondarycluster|basicalloydbsecondaryinstance|cidrconnector|cloudidsendpoint|configcontrollerinstance|containercluster|containernodepool|databasealloydbuser|datafusioninstance|filestorebackup|filestoreinstance|fullalloydbbackup|fullalloydbcluster|gkehubfeaturemembership|gkehubmembership|iamalloydbuser|postgresinstance|readalloydbinstance|restorebackupalloydbcluster|zonalalloydbinstance|memcacheinstance|redisinstance|removedefaultnodepool|sqlinstanceencryptionkey|subnetconnector|vertexaidatasetencryptionkey|vertexaiendpointencryptionkey"
+=======
+LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|basicalloydbinstance|basicalloydbsecondarycluster|basicalloydbsecondaryinstance|cidrconnector|configcontrollerinstance|containercluster|containernodepool|databasealloydbuser|datafusioninstance|edgecontainercluster|filestorebackup|filestoreinstance|fullalloydbbackup|fullalloydbcluster|gkehubfeaturemembership|gkehubmembership|iamalloydbuser|pscalloydbinstance|readalloydbinstance|restorebackupalloydbcluster|zonalalloydbinstance|memcacheinstance|redisinstance|removedefaultnodepool|subnetconnector|vertexaidatasetencryptionkey|vertexaiendpointencryptionkey"
+
+>>>>>>> 57e5c4ac3 (test files and generated files)
