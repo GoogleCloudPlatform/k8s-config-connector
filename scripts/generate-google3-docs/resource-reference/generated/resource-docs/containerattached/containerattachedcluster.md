@@ -458,11 +458,11 @@ while clusters with private issuers need to provide both 'issuerUrl' and 'jwks'.
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The ID of the project in which the resource belongs. If it is not provided, the provider project is used.{% endverbatim %}</p>
+            <p>{% verbatim %}The ID of the project in which the resource belongs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
