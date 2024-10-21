@@ -169,3 +169,49 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateGSAFormat(t *testing.T) {
+	tests := []struct {
+		name string
+		gsa  string
+		err  error
+	}{
+		{
+			name: "empty",
+			gsa:  "",
+			err:  nil,
+		},
+		{
+			name: "valid GSA format",
+			gsa:  "foo@abc.gserviceaccount.com",
+			err:  nil,
+		},
+		{
+			name: "valid GSA format",
+			gsa:  "foo@abc.def.gserviceaccount.com",
+			err:  nil,
+		},
+		{
+			name: "valid GSA format",
+			gsa:  "foo@abc.def.ghi.gserviceaccount.com",
+			err:  nil,
+		},
+		{
+			name: "invalid GSA format",
+			gsa:  "abc",
+			err:  fmt.Errorf("invalid GoogleServiceAccount format for %q", "abc"),
+		},
+		{
+			name: "invalid GSA format",
+			gsa:  "foo@bar.com",
+			err:  fmt.Errorf("invalid GoogleServiceAccount format for %q", "foo@bar.com"),
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			err := validateGSAFormat(tc.gsa)
+			asserts.AssertErrorIsExpected(t, err, tc.err)
+		})
+	}
+}
