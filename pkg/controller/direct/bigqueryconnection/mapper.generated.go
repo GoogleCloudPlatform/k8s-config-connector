@@ -123,7 +123,7 @@ func BigQueryConnectionConnectionObservedState_FromProto(mapCtx *direct.MapConte
 		out.CloudResource = CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource())
 	}
 	if oneof := CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
-		out.CloudSql = CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql())
+		out.CloudSQL = CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql())
 	}
 	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
@@ -147,7 +147,7 @@ func BigQueryConnectionConnectionObservedState_ToProto(mapCtx *direct.MapContext
 	if oneof := CloudResourcePropertiesStatus_ToProto(mapCtx, in.CloudResource); oneof != nil {
 		out.Properties = &pb.Connection_CloudResource{CloudResource: oneof}
 	}
-	if oneof := CloudSqlPropertiesStatus_ToProto(mapCtx, in.CloudSql); oneof != nil {
+	if oneof := CloudSqlPropertiesStatus_ToProto(mapCtx, in.CloudSQL); oneof != nil {
 		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
 	}
 	// MISSING: Spark

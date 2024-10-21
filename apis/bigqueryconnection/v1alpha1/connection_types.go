@@ -48,7 +48,7 @@ type BigQueryConnectionConnectionSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// Cloud SQL properties.
-	CloudSQLSpec *CloudSqlPropertiesSpec `json:"cloudSql,omitempty"`
+	CloudSQLSpec *CloudSqlPropertiesSpec `json:"cloudSQL,omitempty"`
 
 	// Amazon Web Services (AWS) properties.
 	AwsSpec *AwsPropertiesSpec `json:"aws,omitempty"`
@@ -98,7 +98,7 @@ type BigQueryConnectionConnectionObservedState struct {
 
 	CloudResource *CloudResourcePropertiesStatus `json:"cloudResource,omitempty"`
 
-	CloudSql *CloudSqlPropertiesStatus `json:"cloudSql,omitempty"`
+	CloudSQL *CloudSqlPropertiesStatus `json:"cloudSQL,omitempty"`
 
 	Spark *SparkPropertiesStatus `json:"spark,omitempty"`
 
@@ -108,28 +108,6 @@ type BigQueryConnectionConnectionObservedState struct {
 	// The description for the connection.
 	Description *string `json:"description,omitempty"`
 
-	/*
-		// Cloud SQL properties.
-		CloudSql *CloudSqlProperties `json:"cloudSql,omitempty"`
-
-		// Amazon Web Services (AWS) properties.
-		Aws *AwsProperties `json:"aws,omitempty"`
-
-		// Azure properties.
-		Azure *AzureProperties `json:"azure,omitempty"`
-
-		// Cloud Spanner properties.
-		CloudSpanner *CloudSpannerProperties `json:"cloudSpanner,omitempty"`
-
-		// Spark properties.
-		Spark *SparkProperties `json:"spark,omitempty"`
-
-		// Optional. Salesforce DataCloud properties. This field is intended for
-		//  use only by Salesforce partner projects. This field contains properties
-		//  for your Salesforce DataCloud connection.
-		SalesforceDataCloud *SalesforceDataCloudProperties `json:"salesforceDataCloud,omitempty"`
-	*/
-
 	// Output only. True, if credential is configured for this connection.
 	HasCredential *bool `json:"hasCredential,omitempty"`
 }
@@ -137,12 +115,14 @@ type BigQueryConnectionConnectionObservedState struct {
 type AwsPropertiesSpec struct {
 	// Authentication using Google owned service account to assume into
 	//  customer's AWS IAM Role.
+	// +required
 	AccessRole *AwsAccessRoleSpec `json:"accessRole,omitempty"`
 }
 
 type AwsAccessRoleSpec struct {
 	// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
 	//  Connection.
+	// +required
 	IamRoleID *string `json:"iamRoleID,omitempty"`
 }
 
@@ -160,15 +140,19 @@ type CloudResourcePropertiesSpec struct{}
 
 type CloudSqlPropertiesSpec struct {
 	// Reference to the Cloud SQL instance ID.
+	// +required
 	InstanceRef *refv1beta1.SQLInstanceRef `json:"instanceRef,omitempty"`
 
 	// Database name.
+	// +required
 	Database *string `json:"database,omitempty"`
 
 	// Type of the Cloud SQL database.
+	// +required
 	Type *string `json:"type,omitempty"`
 
 	// Cloud SQL credential.
+	// +required
 	Credential *CloudSqlCredential `json:"credential,omitempty"`
 }
 
