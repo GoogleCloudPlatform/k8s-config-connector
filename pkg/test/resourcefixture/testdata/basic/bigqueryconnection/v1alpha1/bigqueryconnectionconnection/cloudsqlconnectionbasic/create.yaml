@@ -20,7 +20,7 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
-  cloudSql:
+  cloudSQL:
     instanceRef:
       # external: "projects/${projectId}/locations/us-central1/instances/sqlinstance-sample-001"
       name: sqlinstance-sample-${uniqueId}

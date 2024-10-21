@@ -249,7 +249,7 @@ func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.Ma
 		out.CloudResource = oneof
 	}
 	if oneof := CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
-		out.CloudSql = oneof
+		out.CloudSQL = oneof
 	}
 	if oneof := SparkPropertiesStatus_FromProto(mapCtx, in.GetSpark()); oneof != nil {
 		out.Spark = oneof

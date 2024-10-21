@@ -376,8 +376,8 @@ func (in *BigQueryConnectionConnectionObservedState) DeepCopyInto(out *BigQueryC
 		*out = new(CloudResourcePropertiesStatus)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.CloudSql != nil {
-		in, out := &in.CloudSql, &out.CloudSql
+	if in.CloudSQL != nil {
+		in, out := &in.CloudSQL, &out.CloudSQL
 		*out = new(CloudSqlPropertiesStatus)
 		(*in).DeepCopyInto(*out)
 	}
