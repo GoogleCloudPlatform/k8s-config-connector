@@ -60,4 +60,10 @@ var (
 		Version: GroupVersion.Version,
 		Kind:    "NamespacedControllerReconciler",
 	}
+
+	ControllerReconcilerGroupVersionKind = schema.GroupVersionKind{
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
+		Kind:    "ControllerReconciler",
+	}
 )

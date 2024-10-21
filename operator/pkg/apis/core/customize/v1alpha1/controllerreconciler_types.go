@@ -24,7 +24,7 @@ import (
 // +kubebuilder:resource:path=namespacedcontrollerreconcilers
 
 // NamespacedControllerReconciler is the Schema for reconciliation related customization for
-// namespaced config connector controllers.
+// config connector controllers in namespaced mode.
 type NamespacedControllerReconciler struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -70,10 +70,57 @@ func (c *NamespacedControllerReconciler) SetCommonStatus(s addonv1alpha1.CommonS
 	c.Status.CommonStatus = s
 }
 
-var SupportedNamespacedControllers = []string{
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:resource:path=controllerreconcilers,scope=Cluster
+
+// ControllerReconciler is the Schema for reconciliation related customization for
+// config connector controllers in cluster mode.
+type ControllerReconciler struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   ControllerReconcilerSpec   `json:"spec"`
+	Status ControllerReconcilerStatus `json:"status,omitempty"`
+}
+
+// ControllerReconcilerSpec is the specification of ControllerReconciler.
+type ControllerReconcilerSpec struct {
+	// RateLimit configures the token bucket rate limit to the kubernetes client used
+	// by the manager container of the config connector controller manager in cluster mode.
+	// Please note this rate limit is shared among all the Config Connector resources' requests.
+	// If not specified, the default will be Token Bucket with qps 20, burst 30.
+	// +optional
+	RateLimit *RateLimit `json:"rateLimit,omitempty"`
+}
+
+// ControllerReconcilerStatus defines the observed state of ControllerReconciler.
+type ControllerReconcilerStatus struct {
+	addonv1alpha1.CommonStatus `json:",inline"`
+}
+
+func (c *ControllerReconciler) SetCommonStatus(s addonv1alpha1.CommonStatus) {
+	c.Status.CommonStatus = s
+}
+
+// +kubebuilder:object:root=true
+
+// ControllerReconcilerList contains a list of ControllerReconciler.
+type ControllerReconcilerList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ControllerReconciler `json:"items"`
+}
+
+var ValidRateLimitControllers = []string{
 	"cnrm-controller-manager",
 }
 
 func init() {
-	SchemeBuilder.Register(&NamespacedControllerReconciler{}, &NamespacedControllerReconcilerList{})
+	SchemeBuilder.Register(
+		&NamespacedControllerReconciler{},
+		&NamespacedControllerReconcilerList{},
+		&ControllerReconciler{},
+		&ControllerReconcilerList{},
+	)
 }

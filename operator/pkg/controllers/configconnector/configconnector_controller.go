@@ -20,6 +20,7 @@ import (
 	"strings"
 	"time"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -602,6 +603,11 @@ func (r *Reconciler) applyCustomizations() declarative.ObjectTransform {
 			// Don't fail entire reconciliation if we cannot apply webhook configuration customization CRs.
 			// return err
 		}
+		if err := r.fetchAndApplyAllControllerReconcilers(ctx, m); err != nil {
+			r.log.Error(err, "error applying all controller reconciler customization CRs")
+			// Don't fail entire reconciliation if we cannot apply controller reconciler customization CRs.
+			// return err
+		}
 		return nil
 	}
 }
@@ -831,6 +837,53 @@ func (r *Reconciler) updateMutatingWebhookConfigurationCustomizationStatus(ctx c
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "error updating MutatingWebhookConfigurationCustomization status", "Name", cr.Name)
 		return fmt.Errorf("failed to update MutatingWebhookConfigurationCustomization %v: %w", cr.Name, err)
+	}
+	return nil
+}
+
+func (r *Reconciler) fetchAndApplyAllControllerReconcilers(ctx context.Context, m *manifest.Objects) error {
+	crs, err := controllers.ListControllerReconcilers(ctx, r.client)
+	if err != nil {
+		return err
+	}
+	for _, cr := range crs {
+		r.log.Info("applying cluster-scoped controller reconciler customization", "name", cr.Name)
+		if err := r.applyControllerReconcilerCR(ctx, &cr, m); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (r *Reconciler) applyControllerReconcilerCR(ctx context.Context, cr *customizev1alpha1.ControllerReconciler, m *manifest.Objects) error {
+	if err := controllers.ApplyContainerRateLimit(m, cr.Name, cr.Spec.RateLimit); err != nil {
+		errMsg := fmt.Sprintf("failed to apply rate limit customization %s: %v", cr.Name, err)
+		r.log.Error(err, errMsg)
+		return r.handleApplyControllerReconcilerFailed(ctx, cr, errMsg)
+	}
+	return r.handleApplyControllerReconcilerSucceeded(ctx, cr)
+}
+
+func (r *Reconciler) handleApplyControllerReconcilerSucceeded(ctx context.Context, cr *customizev1alpha1.ControllerReconciler) error {
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: true,
+		Errors:  []string{},
+	})
+	return r.updateControllerReconcilerStatus(ctx, cr)
+}
+
+func (r *Reconciler) handleApplyControllerReconcilerFailed(ctx context.Context, cr *customizev1alpha1.ControllerReconciler, errMsg string) error {
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: false,
+		Errors:  []string{errMsg},
+	})
+	return r.updateControllerReconcilerStatus(ctx, cr)
+}
+
+func (r *Reconciler) updateControllerReconcilerStatus(ctx context.Context, cr *customizev1alpha1.ControllerReconciler) error {
+	if err := r.client.Status().Update(ctx, cr); err != nil {
+		r.log.Error(err, "error updating ControllerReconciler status", "Name", cr.Name)
+		return fmt.Errorf("error updating ControllerReconciler status for %v: %w", cr.Name, err)
 	}
 	return nil
 }
