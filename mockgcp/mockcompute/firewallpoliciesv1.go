@@ -263,6 +263,7 @@ func (s *FirewallPoliciesV1) PatchRule(ctx context.Context, req *pb.PatchRuleFir
 		return obj, nil
 	})
 }
+
 func (s *FirewallPoliciesV1) RemoveRule(ctx context.Context, req *pb.RemoveRuleFirewallPolicyRequest) (*pb.Operation, error) {
 	reqName := "locations/global/firewallPolicies/" + req.GetFirewallPolicy()
 	name, err := s.parseFirewallPolicyName(reqName)

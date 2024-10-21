@@ -326,6 +326,15 @@ func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 
 			req.Body = io.NopCloser(bytes.NewBuffer(b))
 		}
+	} else {
+		// When sending a delete request for a ComputeFirewallPolicyRule resource,
+		// The request URL looks like POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/removeRule.
+		// It's uncommon to use POST requests for delete operations, and a nil request body for POST method is unexpected,
+		// I got the "missing form body" error. Ref: https://go.dev/src/net/http/request.go?s=41070:41129 line 1340
+		// So instead of sending a nil request body, send an empty request body to ensure successful processing of the remove rule request.
+		body := &bytes.Buffer{}
+		b := body.Bytes()
+		req.Body = io.NopCloser(bytes.NewBuffer(b))
 	}
 	return nil
 }
