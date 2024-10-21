@@ -61,6 +61,58 @@ type InstanceNetworkConfig struct {
 	EnablePublicIp *bool `json:"enablePublicIp,omitempty"`
 }
 
+type InstanceObservabilityConfig struct {
+	/* Observability feature status for an instance. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Query string length. The default value is 10240. Any integer between 1024 and 100000 is considered valid. */
+	// +optional
+	MaxQueryStringLength *int64 `json:"maxQueryStringLength,omitempty"`
+
+	/* Preserve comments in the query string. */
+	// +optional
+	PreserveComments *bool `json:"preserveComments,omitempty"`
+
+	/* Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 200 is considered valid. */
+	// +optional
+	QueryPlansPerMinute *int64 `json:"queryPlansPerMinute,omitempty"`
+
+	/* Record application tags for an instance. This flag is turned "on" by default. */
+	// +optional
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	/* Track actively running queries. If not set, default value is "off". */
+	// +optional
+	TrackActiveQueries *bool `json:"trackActiveQueries,omitempty"`
+
+	/* Record wait event types during query execution for an instance. */
+	// +optional
+	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
+
+	/* Record wait events during query execution for an instance. */
+	// +optional
+	TrackWaitEvents *bool `json:"trackWaitEvents,omitempty"`
+}
+
+type InstanceQueryInsightsConfig struct {
+	/* Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 20 is considered valid. */
+	// +optional
+	QueryPlansPerMinute *int64 `json:"queryPlansPerMinute,omitempty"`
+
+	/* Query string length. The default value is 1024. Any integer between 256 and 4500 is considered valid. */
+	// +optional
+	QueryStringLength *int64 `json:"queryStringLength,omitempty"`
+
+	/* Record application tags for an instance. This flag is turned "on" by default. */
+	// +optional
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	/* Record client address for an instance. Client address is PII information. This flag is turned "on" by default. */
+	// +optional
+	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
+}
+
 type InstanceReadPoolConfig struct {
 	/* Read capacity, i.e. number of nodes in a read pool instance. */
 	// +optional
@@ -124,6 +176,14 @@ type AlloyDBInstanceSpec struct {
 	/* Instance level network configuration. */
 	// +optional
 	NetworkConfig *InstanceNetworkConfig `json:"networkConfig,omitempty"`
+
+	/* Configuration for enhanced query insights. */
+	// +optional
+	ObservabilityConfig *InstanceObservabilityConfig `json:"observabilityConfig,omitempty"`
+
+	/* Configuration for query insights. */
+	// +optional
+	QueryInsightsConfig *InstanceQueryInsightsConfig `json:"queryInsightsConfig,omitempty"`
 
 	/* Read pool specific config. If the instance type is READ_POOL, this configuration must be provided. */
 	// +optional
