@@ -18,3 +18,5 @@ metadata:
   name: bigquerydataset${uniqueId} # "-" is not supported in dataset ID
 spec:
   location: us-central1
+  projectRef:
+    external: ${projectId}
