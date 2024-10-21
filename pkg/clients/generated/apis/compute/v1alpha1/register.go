@@ -167,5 +167,11 @@ var (
 		Kind:    reflect.TypeOf(ComputeRegionSSLPolicy{}).Name(),
 	}
 
+	ComputeRegionTargetTCPProxyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeRegionTargetTCPProxy{}).Name(),
+	}
+
 	computeAPIVersion = SchemeGroupVersion.String()
 )

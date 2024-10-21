@@ -58,3 +58,5 @@ type ComputeRegionDiskResourcePolicyAttachmentExpansion interface{}
 type ComputeRegionPerInstanceConfigExpansion interface{}
 
 type ComputeRegionSSLPolicyExpansion interface{}
+
+type ComputeRegionTargetTCPProxyExpansion interface{}
