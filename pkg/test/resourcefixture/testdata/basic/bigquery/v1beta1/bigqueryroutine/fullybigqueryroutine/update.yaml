@@ -1,0 +1,37 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryRoutine
+metadata:
+  name: bigqueryroutine-${uniqueId}
+spec:
+  arguments:
+    - name: input1
+      argumentKind: ANY_TYPE
+      mode: IN
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  definitionBody: CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x
+    + y);
+  description: "fully configured big query routine"
+  determinismLevel: DETERMINISM_LEVEL_UNSPECIFIED
+  importedLibraries: 
+    - "JAVASCRIPT"
+  language: SQL
+  projectRef:
+    external: ${projectId}
+  resourceID: bigqueryroutine${uniqueId}
+  returnType: "{\"typeKind\":\"FLOAT64\"}"
+  routineType: PROCEDURE
