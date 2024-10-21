@@ -60,7 +60,8 @@ type Expander struct {
 
 	// Type indicates what expander to use
 	//   jinja - jinja2 expander
-	//   ...
+	//   none - No expander
+
 	// +kubebuilder:default=jinja2
 	Type string `json:"type"`
 	// +kubebuilder:default=latest
