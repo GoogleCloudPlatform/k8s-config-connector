@@ -4,22 +4,22 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: namespacedcontrollerreconcilers.customize.core.cnrm.cloud.google.com
+  name: controllerreconcilers.customize.core.cnrm.cloud.google.com
 spec:
   group: customize.core.cnrm.cloud.google.com
   names:
-    kind: NamespacedControllerReconciler
-    listKind: NamespacedControllerReconcilerList
-    plural: namespacedcontrollerreconcilers
-    singular: namespacedcontrollerreconciler
-  scope: Namespaced
+    kind: ControllerReconciler
+    listKind: ControllerReconcilerList
+    plural: controllerreconcilers
+    singular: controllerreconciler
+  scope: Cluster
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: |-
-          NamespacedControllerReconciler is the Schema for reconciliation related customization for
-          config connector controllers in namespaced mode.
+          ControllerReconciler is the Schema for reconciliation related customization for
+          config connector controllers in cluster mode.
         properties:
           apiVersion:
             description: |-
@@ -39,12 +39,12 @@ spec:
           metadata:
             type: object
           spec:
-            description: NamespacedControllerReconciler is the specification of NamespacedControllerReconciler.
+            description: ControllerReconcilerSpec is the specification of ControllerReconciler.
             properties:
               rateLimit:
                 description: |-
                   RateLimit configures the token bucket rate limit to the kubernetes client used
-                  by the manager container of the config connector namespaced controller manager.
+                  by the manager container of the config connector controller manager in cluster mode.
                   Please note this rate limit is shared among all the Config Connector resources' requests.
                   If not specified, the default will be Token Bucket with qps 20, burst 30.
                 properties:
@@ -59,8 +59,8 @@ spec:
                 type: object
             type: object
           status:
-            description: NamespacedControllerReconcilerStatus defines the observed
-              state of NamespacedControllerReconciler.
+            description: ControllerReconcilerStatus defines the observed state of
+              ControllerReconciler.
             properties:
               errors:
                 items:
