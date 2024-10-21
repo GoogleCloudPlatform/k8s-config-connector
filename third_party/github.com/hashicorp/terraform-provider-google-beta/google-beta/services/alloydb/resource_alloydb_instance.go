@@ -270,7 +270,8 @@ for outbound connections.`,
 				Computed:    true,
 				Optional:    true,
 				Description: `Configuration for enhanced query insights.`,
-				MaxItems:    1,
+				// Commenting out to allow multiple fields to be updated again.
+				// MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"enabled": {
