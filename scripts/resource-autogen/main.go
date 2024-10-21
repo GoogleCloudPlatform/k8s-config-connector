@@ -237,6 +237,11 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 			continue
 		}
 
+		// Change 'basic' suffix in sampleName to 'autogen', to avoid name conflict with Direct Controller basic test.
+		// Note: We have not used this script for a while, so I manually updated the names of the existing autogen tests.
+		// I made the change just in case we want to reuse it in the future.
+		sampleName = strings.TrimSuffix(sampleName, "basic") + "autogen"
+
 		if err := insertTestData(create, dependencies, autoGenType, sampleName, generatedSamples); err != nil {
 			errToReturn := fmt.Errorf("error unmarshaling json for TF sample %s: %w", sf, err)
 			klog.Warningf("Failed sample conversion: %v", errToReturn)

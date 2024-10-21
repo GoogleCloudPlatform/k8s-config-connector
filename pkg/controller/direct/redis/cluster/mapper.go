@@ -18,7 +18,7 @@ import (
 	"time"
 
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"

@@ -210,6 +210,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
   },
   "primaryConfig": null,
+  "pscConfig": null,
   "reconciling": false,
   "satisfiesPzs": false,
   "secondaryConfig": null,
@@ -777,6 +778,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
   },
   "primaryConfig": null,
+  "pscConfig": null,
   "reconciling": false,
   "satisfiesPzs": false,
   "secondaryConfig": {
@@ -867,6 +869,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
   },
   "primaryConfig": null,
+  "pscConfig": null,
   "reconciling": false,
   "satisfiesPzs": false,
   "secondaryConfig": {
@@ -1230,6 +1233,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
   },
   "primaryConfig": null,
+  "pscConfig": null,
   "reconciling": false,
   "satisfiesPzs": false,
   "secondaryConfig": null,

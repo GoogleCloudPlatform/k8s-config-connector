@@ -14,29 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority
-type CertificateAuthority struct {
-	ManagedServerCa *CertificateAuthority_ManagedCertificateAuthority `json:"managedServerCa,omitempty"`
-
-	// Identifier. Unique name of the resource in this scope including project,
-	//  location and cluster using the form:
-	//      `projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority`
-	Name *string `json:"name,omitempty"`
-}
-
-// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority
-type CertificateAuthority_ManagedCertificateAuthority struct {
-	// The PEM encoded CA certificate chains for redis managed
-	//  server authentication
-	CaCerts []CertificateAuthority_ManagedCertificateAuthority_CertChain `json:"caCerts,omitempty"`
-}
-
-// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority.CertChain
-type CertificateAuthority_ManagedCertificateAuthority_CertChain struct {
-	// The certificates that form the CA chain, from leaf to root order.
-	Certificates []string `json:"certificates,omitempty"`
-}
-
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo
 type Cluster_StateInfo struct {
 	// Describes ongoing update on the cluster when cluster state is UPDATING.

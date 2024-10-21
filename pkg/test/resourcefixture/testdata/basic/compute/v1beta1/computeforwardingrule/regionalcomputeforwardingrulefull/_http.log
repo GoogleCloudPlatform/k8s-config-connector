@@ -504,170 +504,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/namespaces/sd-namespace' was not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces?alt=json&namespaceId=sd-namespace
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/sd-namespace"
-}
-
----
-
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/sd-namespace"
-}
-
----
-
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service' was not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services?alt=json&serviceId=sd-service
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "metadata": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service"
-}
-
----
-
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service"
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
@@ -723,14 +559,8 @@ x-goog-request-params: project=${projectId}&region=us-central1
   "name": "computeregionalforwardingrule-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "sd-namespace",
-      "service": "sd-service"
-    }
-  ],
   "serviceLabel": "label",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 200 OK
@@ -833,12 +663,6 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "sd-namespace",
-      "service": "sd-service"
-    }
-  ],
   "serviceLabel": "label",
   "serviceName": "label.computeregionalforwardingrule-${uniqueId}.il4.us-central1.lb.${projectId}.internal",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -931,12 +755,170 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "sd-namespace",
-      "service": "sd-service"
-    }
-  ],
+  "serviceLabel": "label",
+  "serviceName": "label.computeregionalforwardingrule-${uniqueId}.il4.us-central1.lb.${projectId}.internal",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+{
+  "allowGlobalAccess": false
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&operation=${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&resource=computeregionalforwardingrule-${uniqueId}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
+  "allPorts": true,
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A regional forwarding rule",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "ipVersion": "IPV4",
+  "isMirroringCollector": true,
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "loadBalancingScheme": "INTERNAL",
+  "name": "computeregionalforwardingrule-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "serviceLabel": "label",
   "serviceName": "label.computeregionalforwardingrule-${uniqueId}.il4.us-central1.lb.${projectId}.internal",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -1010,94 +992,6 @@ X-Xss-Protection: 0
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
-
----
-
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service"
-}
-
----
-
-DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace/services/sd-service?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/sd-namespace"
-}
-
----
-
-DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/sd-namespace?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
 
 ---
 

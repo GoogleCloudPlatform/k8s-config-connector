@@ -62,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: '!cancelled()'
         with:
-          name: unitest_result
+          name: unittest_result
           path: unittest_result.json
           retention-days: 5
   tests-e2e-samples:
@@ -79,9 +79,9 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-tests-e2e-samples
           path: /tmp/artifacts/
   tests-e2e-fixtures:
     runs-on: ubuntu-latest
@@ -97,9 +97,9 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-tests-e2e-fixtures
           path: /tmp/artifacts/
   tests-e2e-fixtures-compute:
     runs-on: ubuntu-latest
@@ -115,9 +115,9 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-tests-e2e-fixtures-compute
           path: /tmp/artifacts/
   tests-e2e-fixtures-gkehub:
     runs-on: ubuntu-latest
@@ -133,9 +133,27 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-tests-e2e-fixtures-gkehub
+          path: /tmp/artifacts/
+  tests-e2e-fixtures-sql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run mock fixtures tests for sql service"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures-sql
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-sql
           path: /tmp/artifacts/
   pause-tests:
     runs-on: ubuntu-22.04

@@ -12,10 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// apiVersion: logging.cnrm.cloud.google.com/v1beta1
+// kind: LoggingLogBucket
+// service: google.logging.v2.ConfigServiceV2
+// resource: LogBucket
+
 package mocklogging
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -34,9 +41,54 @@ type configService struct {
 	pb.UnimplementedConfigServiceV2Server
 }
 
+// createDefaultObjects will ensure that the default log bucket is created for the folder/project/org
+func (s *configService) createDefaultObjects(ctx context.Context, name *logBucketName) error {
+	// Create the default bucket
+	{
+		bucket := &pb.LogBucket{
+			Description:    "Default bucket",
+			LifecycleState: pb.LifecycleState_ACTIVE,
+			RetentionDays:  30,
+		}
+		if name.folder != "" {
+			bucket.Name = fmt.Sprintf("folders/%s/locations/global/buckets/_Default", name.folder)
+		}
+		// TODO: Other orgs
+
+		if err := s.createBucketIfNotExists(ctx, bucket); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *configService) createBucketIfNotExists(ctx context.Context, obj *pb.LogBucket) error {
+	fqn := obj.Name
+	existing := &pb.LogBucket{}
+	err := s.storage.Get(ctx, fqn, existing)
+	if err == nil {
+		// Already exists
+		return nil
+	}
+	if status.Code(err) != codes.NotFound {
+		// Unexpected error
+		return err
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return fmt.Errorf("creating default bucket: %w", err)
+	}
+
+	return nil
+}
+
 func (s *configService) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.LogBucket, error) {
 	name, err := s.parseLogBucketName(req.Name)
 	if err != nil {
+		return nil, err
+	}
+	if err := s.createDefaultObjects(ctx, name); err != nil {
 		return nil, err
 	}
 	fqn := name.String()
@@ -54,6 +106,9 @@ func (s *configService) CreateBucket(ctx context.Context, req *pb.CreateBucketRe
 	reqName := req.Parent + "/buckets/" + req.GetBucketId()
 	name, err := s.parseLogBucketName(reqName)
 	if err != nil {
+		return nil, err
+	}
+	if err := s.createDefaultObjects(ctx, name); err != nil {
 		return nil, err
 	}
 	fqn := name.String()
@@ -79,6 +134,9 @@ func (s *configService) UpdateBucket(ctx context.Context, req *pb.UpdateBucketRe
 	reqName := req.Name
 	name, err := s.parseLogBucketName(reqName)
 	if err != nil {
+		return nil, err
+	}
+	if err := s.createDefaultObjects(ctx, name); err != nil {
 		return nil, err
 	}
 	fqn := name.String()
@@ -121,6 +179,9 @@ func (s *configService) UpdateBucket(ctx context.Context, req *pb.UpdateBucketRe
 func (s *configService) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*empty.Empty, error) {
 	name, err := s.parseLogBucketName(req.Name)
 	if err != nil {
+		return nil, err
+	}
+	if err := s.createDefaultObjects(ctx, name); err != nil {
 		return nil, err
 	}
 	fqn := name.String()

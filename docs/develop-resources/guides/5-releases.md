@@ -23,3 +23,5 @@
 ## 5.3 Turn on doc auto-generation (Direct resource only)
 
 * Add the direct resource to` config/servicemappings`, only specify the `name`, `kind` and <code>direct(true) </code>[example](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2182/files#diff-e463d47dab0190c35c12d64604451db84e0e7b6316ce33524a2a4eb29e0f2e47)
+
+* For resource that is purely direct controller based, add the resource name to `pureDirectResources` in `IsPureDirectResource` function in [sets.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/test/resourcefixture/sets.go).
