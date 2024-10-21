@@ -726,6 +726,171 @@ func (x *BucketIamConfiguration) GetUniformBucketLevelAccess() *UniformBucketLev
 	return nil
 }
 
+type PublicNetworkSource struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AllowedIpCidrRanges []string `protobuf:"bytes,1,rep,name=allowed_ip_cidr_ranges,json=allowedIpCidrRanges" json:"allowed_ip_cidr_ranges,omitempty"`
+}
+
+func (x *PublicNetworkSource) Reset() {
+	*x = PublicNetworkSource{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PublicNetworkSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PublicNetworkSource) ProtoMessage() {}
+
+func (x *PublicNetworkSource) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PublicNetworkSource.ProtoReflect.Descriptor instead.
+func (*PublicNetworkSource) Descriptor() ([]byte, []int) {
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *PublicNetworkSource) GetAllowedIpCidrRanges() []string {
+	if x != nil {
+		return x.AllowedIpCidrRanges
+	}
+	return nil
+}
+
+type VpcNetworkSources struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AllowedIpCidrRanges []string `protobuf:"bytes,1,rep,name=allowed_ip_cidr_ranges,json=allowedIpCidrRanges" json:"allowed_ip_cidr_ranges,omitempty"`
+	Network             *string  `protobuf:"bytes,2,opt,name=network" json:"network,omitempty"`
+}
+
+func (x *VpcNetworkSources) Reset() {
+	*x = VpcNetworkSources{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *VpcNetworkSources) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VpcNetworkSources) ProtoMessage() {}
+
+func (x *VpcNetworkSources) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VpcNetworkSources.ProtoReflect.Descriptor instead.
+func (*VpcNetworkSources) Descriptor() ([]byte, []int) {
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *VpcNetworkSources) GetAllowedIpCidrRanges() []string {
+	if x != nil {
+		return x.AllowedIpCidrRanges
+	}
+	return nil
+}
+
+func (x *VpcNetworkSources) GetNetwork() string {
+	if x != nil && x.Network != nil {
+		return *x.Network
+	}
+	return ""
+}
+
+type BucketIpFilter struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Mode                *string              `protobuf:"bytes,1,opt,name=mode" json:"mode,omitempty"`
+	PublicNetworkSource *PublicNetworkSource `protobuf:"bytes,2,opt,name=public_network_source,json=publicNetworkSource" json:"public_network_source,omitempty"`
+	VpcNetworkSources   []*VpcNetworkSources `protobuf:"bytes,3,rep,name=vpc_network_sources,json=vpcNetworkSources" json:"vpc_network_sources,omitempty"`
+}
+
+func (x *BucketIpFilter) Reset() {
+	*x = BucketIpFilter{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BucketIpFilter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BucketIpFilter) ProtoMessage() {}
+
+func (x *BucketIpFilter) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BucketIpFilter.ProtoReflect.Descriptor instead.
+func (*BucketIpFilter) Descriptor() ([]byte, []int) {
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *BucketIpFilter) GetMode() string {
+	if x != nil && x.Mode != nil {
+		return *x.Mode
+	}
+	return ""
+}
+
+func (x *BucketIpFilter) GetPublicNetworkSource() *PublicNetworkSource {
+	if x != nil {
+		return x.PublicNetworkSource
+	}
+	return nil
+}
+
+func (x *BucketIpFilter) GetVpcNetworkSources() []*VpcNetworkSources {
+	if x != nil {
+		return x.VpcNetworkSources
+	}
+	return nil
+}
+
 type Action struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -738,7 +903,7 @@ type Action struct {
 func (x *Action) Reset() {
 	*x = Action{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[11]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -751,7 +916,7 @@ func (x *Action) String() string {
 func (*Action) ProtoMessage() {}
 
 func (x *Action) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[11]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -764,7 +929,7 @@ func (x *Action) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Action.ProtoReflect.Descriptor instead.
 func (*Action) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{11}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *Action) GetStorageClass() string {
@@ -803,7 +968,7 @@ type Condition struct {
 func (x *Condition) Reset() {
 	*x = Condition{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[12]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -816,7 +981,7 @@ func (x *Condition) String() string {
 func (*Condition) ProtoMessage() {}
 
 func (x *Condition) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[12]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -829,7 +994,7 @@ func (x *Condition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Condition.ProtoReflect.Descriptor instead.
 func (*Condition) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{12}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Condition) GetAge() int32 {
@@ -928,7 +1093,7 @@ type Rule struct {
 func (x *Rule) Reset() {
 	*x = Rule{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[13]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -941,7 +1106,7 @@ func (x *Rule) String() string {
 func (*Rule) ProtoMessage() {}
 
 func (x *Rule) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[13]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -954,7 +1119,7 @@ func (x *Rule) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rule.ProtoReflect.Descriptor instead.
 func (*Rule) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{13}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Rule) GetAction() *Action {
@@ -982,7 +1147,7 @@ type BucketLifecycle struct {
 func (x *BucketLifecycle) Reset() {
 	*x = BucketLifecycle{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[14]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -995,7 +1160,7 @@ func (x *BucketLifecycle) String() string {
 func (*BucketLifecycle) ProtoMessage() {}
 
 func (x *BucketLifecycle) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[14]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1008,7 +1173,7 @@ func (x *BucketLifecycle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketLifecycle.ProtoReflect.Descriptor instead.
 func (*BucketLifecycle) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{14}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *BucketLifecycle) GetRule() []*Rule {
@@ -1030,7 +1195,7 @@ type BucketLogging struct {
 func (x *BucketLogging) Reset() {
 	*x = BucketLogging{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[15]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1043,7 +1208,7 @@ func (x *BucketLogging) String() string {
 func (*BucketLogging) ProtoMessage() {}
 
 func (x *BucketLogging) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[15]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1056,7 +1221,7 @@ func (x *BucketLogging) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketLogging.ProtoReflect.Descriptor instead.
 func (*BucketLogging) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{15}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *BucketLogging) GetLogBucket() string {
@@ -1084,7 +1249,7 @@ type BucketObjectRetention struct {
 func (x *BucketObjectRetention) Reset() {
 	*x = BucketObjectRetention{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[16]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1097,7 +1262,7 @@ func (x *BucketObjectRetention) String() string {
 func (*BucketObjectRetention) ProtoMessage() {}
 
 func (x *BucketObjectRetention) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[16]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1110,7 +1275,7 @@ func (x *BucketObjectRetention) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketObjectRetention.ProtoReflect.Descriptor instead.
 func (*BucketObjectRetention) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{16}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *BucketObjectRetention) GetMode() string {
@@ -1132,7 +1297,7 @@ type BucketOwner struct {
 func (x *BucketOwner) Reset() {
 	*x = BucketOwner{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[17]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1145,7 +1310,7 @@ func (x *BucketOwner) String() string {
 func (*BucketOwner) ProtoMessage() {}
 
 func (x *BucketOwner) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[17]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1158,7 +1323,7 @@ func (x *BucketOwner) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketOwner.ProtoReflect.Descriptor instead.
 func (*BucketOwner) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{17}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *BucketOwner) GetEntity() string {
@@ -1188,7 +1353,7 @@ type BucketRetentionPolicy struct {
 func (x *BucketRetentionPolicy) Reset() {
 	*x = BucketRetentionPolicy{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[18]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1201,7 +1366,7 @@ func (x *BucketRetentionPolicy) String() string {
 func (*BucketRetentionPolicy) ProtoMessage() {}
 
 func (x *BucketRetentionPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[18]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1214,7 +1379,7 @@ func (x *BucketRetentionPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketRetentionPolicy.ProtoReflect.Descriptor instead.
 func (*BucketRetentionPolicy) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{18}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *BucketRetentionPolicy) GetEffectiveTime() *timestamp.Timestamp {
@@ -1250,7 +1415,7 @@ type BucketSoftDeletePolicy struct {
 func (x *BucketSoftDeletePolicy) Reset() {
 	*x = BucketSoftDeletePolicy{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[19]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1263,7 +1428,7 @@ func (x *BucketSoftDeletePolicy) String() string {
 func (*BucketSoftDeletePolicy) ProtoMessage() {}
 
 func (x *BucketSoftDeletePolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[19]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1276,7 +1441,7 @@ func (x *BucketSoftDeletePolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketSoftDeletePolicy.ProtoReflect.Descriptor instead.
 func (*BucketSoftDeletePolicy) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{19}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *BucketSoftDeletePolicy) GetEffectiveTime() *timestamp.Timestamp {
@@ -1304,7 +1469,7 @@ type BucketVersioning struct {
 func (x *BucketVersioning) Reset() {
 	*x = BucketVersioning{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[20]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1317,7 +1482,7 @@ func (x *BucketVersioning) String() string {
 func (*BucketVersioning) ProtoMessage() {}
 
 func (x *BucketVersioning) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[20]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1330,7 +1495,7 @@ func (x *BucketVersioning) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketVersioning.ProtoReflect.Descriptor instead.
 func (*BucketVersioning) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{20}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *BucketVersioning) GetEnabled() bool {
@@ -1352,7 +1517,7 @@ type BucketWebsite struct {
 func (x *BucketWebsite) Reset() {
 	*x = BucketWebsite{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[21]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1365,7 +1530,7 @@ func (x *BucketWebsite) String() string {
 func (*BucketWebsite) ProtoMessage() {}
 
 func (x *BucketWebsite) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[21]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1378,7 +1543,7 @@ func (x *BucketWebsite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketWebsite.ProtoReflect.Descriptor instead.
 func (*BucketWebsite) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{21}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *BucketWebsite) GetMainPageSuffix() string {
@@ -1412,33 +1577,34 @@ type Bucket struct {
 	HierarchicalNamespace *BucketHierarchicalNamespace `protobuf:"bytes,10,opt,name=hierarchical_namespace,json=hierarchicalNamespace" json:"hierarchical_namespace,omitempty"`
 	IamConfiguration      *BucketIamConfiguration      `protobuf:"bytes,11,opt,name=iam_configuration,json=iamConfiguration" json:"iam_configuration,omitempty"`
 	Id                    *string                      `protobuf:"bytes,12,opt,name=id" json:"id,omitempty"`
-	Kind                  *string                      `protobuf:"bytes,13,opt,name=kind" json:"kind,omitempty"`
-	Labels                map[string]string            `protobuf:"bytes,14,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Lifecycle             *BucketLifecycle             `protobuf:"bytes,15,opt,name=lifecycle" json:"lifecycle,omitempty"`
-	Location              *string                      `protobuf:"bytes,16,opt,name=location" json:"location,omitempty"`
-	LocationType          *string                      `protobuf:"bytes,17,opt,name=location_type,json=locationType" json:"location_type,omitempty"`
-	Logging               *BucketLogging               `protobuf:"bytes,18,opt,name=logging" json:"logging,omitempty"`
-	Metageneration        *int64                       `protobuf:"varint,19,opt,name=metageneration" json:"metageneration,omitempty"`
-	Name                  *string                      `protobuf:"bytes,20,opt,name=name" json:"name,omitempty"`
-	ObjectRetention       *BucketObjectRetention       `protobuf:"bytes,21,opt,name=object_retention,json=objectRetention" json:"object_retention,omitempty"`
-	Owner                 *BucketOwner                 `protobuf:"bytes,22,opt,name=owner" json:"owner,omitempty"`
-	ProjectNumber         *uint64                      `protobuf:"varint,23,opt,name=project_number,json=projectNumber" json:"project_number,omitempty"`
-	RetentionPolicy       *BucketRetentionPolicy       `protobuf:"bytes,24,opt,name=retention_policy,json=retentionPolicy" json:"retention_policy,omitempty"`
-	Rpo                   *string                      `protobuf:"bytes,25,opt,name=rpo" json:"rpo,omitempty"`
-	SatisfiesPZS          *bool                        `protobuf:"varint,26,opt,name=satisfies_p_z_s,json=satisfiesPZS" json:"satisfies_p_z_s,omitempty"`
-	SelfLink              *string                      `protobuf:"bytes,27,opt,name=self_link,json=selfLink" json:"self_link,omitempty"`
-	SoftDeletePolicy      *BucketSoftDeletePolicy      `protobuf:"bytes,28,opt,name=soft_delete_policy,json=softDeletePolicy" json:"soft_delete_policy,omitempty"`
-	StorageClass          *string                      `protobuf:"bytes,29,opt,name=storage_class,json=storageClass" json:"storage_class,omitempty"`
-	TimeCreated           *timestamp.Timestamp         `protobuf:"bytes,30,opt,name=time_created,json=timeCreated" json:"time_created,omitempty"`
-	Updated               *timestamp.Timestamp         `protobuf:"bytes,31,opt,name=updated" json:"updated,omitempty"`
-	Versioning            *BucketVersioning            `protobuf:"bytes,32,opt,name=versioning" json:"versioning,omitempty"`
-	Website               *BucketWebsite               `protobuf:"bytes,33,opt,name=website" json:"website,omitempty"`
+	IpFilter              *BucketIpFilter              `protobuf:"bytes,13,opt,name=ip_filter,json=ipFilter" json:"ip_filter,omitempty"`
+	Kind                  *string                      `protobuf:"bytes,14,opt,name=kind" json:"kind,omitempty"`
+	Labels                map[string]string            `protobuf:"bytes,15,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Lifecycle             *BucketLifecycle             `protobuf:"bytes,16,opt,name=lifecycle" json:"lifecycle,omitempty"`
+	Location              *string                      `protobuf:"bytes,17,opt,name=location" json:"location,omitempty"`
+	LocationType          *string                      `protobuf:"bytes,18,opt,name=location_type,json=locationType" json:"location_type,omitempty"`
+	Logging               *BucketLogging               `protobuf:"bytes,19,opt,name=logging" json:"logging,omitempty"`
+	Metageneration        *int64                       `protobuf:"varint,20,opt,name=metageneration" json:"metageneration,omitempty"`
+	Name                  *string                      `protobuf:"bytes,21,opt,name=name" json:"name,omitempty"`
+	ObjectRetention       *BucketObjectRetention       `protobuf:"bytes,22,opt,name=object_retention,json=objectRetention" json:"object_retention,omitempty"`
+	Owner                 *BucketOwner                 `protobuf:"bytes,23,opt,name=owner" json:"owner,omitempty"`
+	ProjectNumber         *uint64                      `protobuf:"varint,24,opt,name=project_number,json=projectNumber" json:"project_number,omitempty"`
+	RetentionPolicy       *BucketRetentionPolicy       `protobuf:"bytes,25,opt,name=retention_policy,json=retentionPolicy" json:"retention_policy,omitempty"`
+	Rpo                   *string                      `protobuf:"bytes,26,opt,name=rpo" json:"rpo,omitempty"`
+	SatisfiesPZS          *bool                        `protobuf:"varint,27,opt,name=satisfies_p_z_s,json=satisfiesPZS" json:"satisfies_p_z_s,omitempty"`
+	SelfLink              *string                      `protobuf:"bytes,28,opt,name=self_link,json=selfLink" json:"self_link,omitempty"`
+	SoftDeletePolicy      *BucketSoftDeletePolicy      `protobuf:"bytes,29,opt,name=soft_delete_policy,json=softDeletePolicy" json:"soft_delete_policy,omitempty"`
+	StorageClass          *string                      `protobuf:"bytes,30,opt,name=storage_class,json=storageClass" json:"storage_class,omitempty"`
+	TimeCreated           *timestamp.Timestamp         `protobuf:"bytes,31,opt,name=time_created,json=timeCreated" json:"time_created,omitempty"`
+	Updated               *timestamp.Timestamp         `protobuf:"bytes,32,opt,name=updated" json:"updated,omitempty"`
+	Versioning            *BucketVersioning            `protobuf:"bytes,33,opt,name=versioning" json:"versioning,omitempty"`
+	Website               *BucketWebsite               `protobuf:"bytes,34,opt,name=website" json:"website,omitempty"`
 }
 
 func (x *Bucket) Reset() {
 	*x = Bucket{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[22]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1451,7 +1617,7 @@ func (x *Bucket) String() string {
 func (*Bucket) ProtoMessage() {}
 
 func (x *Bucket) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[22]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1464,7 +1630,7 @@ func (x *Bucket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Bucket.ProtoReflect.Descriptor instead.
 func (*Bucket) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{22}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *Bucket) GetAcl() []*BucketAccessControl {
@@ -1549,6 +1715,13 @@ func (x *Bucket) GetId() string {
 		return *x.Id
 	}
 	return ""
+}
+
+func (x *Bucket) GetIpFilter() *BucketIpFilter {
+	if x != nil {
+		return x.IpFilter
+	}
+	return nil
 }
 
 func (x *Bucket) GetKind() string {
@@ -1710,7 +1883,7 @@ type BucketAccessControlProjectTeam struct {
 func (x *BucketAccessControlProjectTeam) Reset() {
 	*x = BucketAccessControlProjectTeam{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[23]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1723,7 +1896,7 @@ func (x *BucketAccessControlProjectTeam) String() string {
 func (*BucketAccessControlProjectTeam) ProtoMessage() {}
 
 func (x *BucketAccessControlProjectTeam) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[23]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1736,7 +1909,7 @@ func (x *BucketAccessControlProjectTeam) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketAccessControlProjectTeam.ProtoReflect.Descriptor instead.
 func (*BucketAccessControlProjectTeam) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{23}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *BucketAccessControlProjectTeam) GetProjectNumber() string {
@@ -1774,7 +1947,7 @@ type BucketAccessControl struct {
 func (x *BucketAccessControl) Reset() {
 	*x = BucketAccessControl{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[24]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1787,7 +1960,7 @@ func (x *BucketAccessControl) String() string {
 func (*BucketAccessControl) ProtoMessage() {}
 
 func (x *BucketAccessControl) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[24]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1800,7 +1973,7 @@ func (x *BucketAccessControl) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketAccessControl.ProtoReflect.Descriptor instead.
 func (*BucketAccessControl) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{24}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *BucketAccessControl) GetBucket() string {
@@ -1892,7 +2065,7 @@ type BucketAccessControls struct {
 func (x *BucketAccessControls) Reset() {
 	*x = BucketAccessControls{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[25]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1905,7 +2078,7 @@ func (x *BucketAccessControls) String() string {
 func (*BucketAccessControls) ProtoMessage() {}
 
 func (x *BucketAccessControls) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[25]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1918,7 +2091,7 @@ func (x *BucketAccessControls) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketAccessControls.ProtoReflect.Descriptor instead.
 func (*BucketAccessControls) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{25}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *BucketAccessControls) GetItems() []*BucketAccessControl {
@@ -1946,7 +2119,7 @@ type BucketStorageLayoutCustomPlacementConfig struct {
 func (x *BucketStorageLayoutCustomPlacementConfig) Reset() {
 	*x = BucketStorageLayoutCustomPlacementConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[26]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1959,7 +2132,7 @@ func (x *BucketStorageLayoutCustomPlacementConfig) String() string {
 func (*BucketStorageLayoutCustomPlacementConfig) ProtoMessage() {}
 
 func (x *BucketStorageLayoutCustomPlacementConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[26]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1972,7 +2145,7 @@ func (x *BucketStorageLayoutCustomPlacementConfig) ProtoReflect() protoreflect.M
 
 // Deprecated: Use BucketStorageLayoutCustomPlacementConfig.ProtoReflect.Descriptor instead.
 func (*BucketStorageLayoutCustomPlacementConfig) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{26}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *BucketStorageLayoutCustomPlacementConfig) GetDataLocations() []string {
@@ -1993,7 +2166,7 @@ type BucketStorageLayoutHierarchicalNamespace struct {
 func (x *BucketStorageLayoutHierarchicalNamespace) Reset() {
 	*x = BucketStorageLayoutHierarchicalNamespace{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[27]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2006,7 +2179,7 @@ func (x *BucketStorageLayoutHierarchicalNamespace) String() string {
 func (*BucketStorageLayoutHierarchicalNamespace) ProtoMessage() {}
 
 func (x *BucketStorageLayoutHierarchicalNamespace) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[27]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2019,7 +2192,7 @@ func (x *BucketStorageLayoutHierarchicalNamespace) ProtoReflect() protoreflect.M
 
 // Deprecated: Use BucketStorageLayoutHierarchicalNamespace.ProtoReflect.Descriptor instead.
 func (*BucketStorageLayoutHierarchicalNamespace) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{27}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *BucketStorageLayoutHierarchicalNamespace) GetEnabled() bool {
@@ -2045,7 +2218,7 @@ type BucketStorageLayout struct {
 func (x *BucketStorageLayout) Reset() {
 	*x = BucketStorageLayout{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[28]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2058,7 +2231,7 @@ func (x *BucketStorageLayout) String() string {
 func (*BucketStorageLayout) ProtoMessage() {}
 
 func (x *BucketStorageLayout) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[28]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2071,7 +2244,7 @@ func (x *BucketStorageLayout) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BucketStorageLayout.ProtoReflect.Descriptor instead.
 func (*BucketStorageLayout) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{28}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *BucketStorageLayout) GetBucket() string {
@@ -2129,7 +2302,7 @@ type Buckets struct {
 func (x *Buckets) Reset() {
 	*x = Buckets{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[29]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2142,7 +2315,7 @@ func (x *Buckets) String() string {
 func (*Buckets) ProtoMessage() {}
 
 func (x *Buckets) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[29]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2155,7 +2328,7 @@ func (x *Buckets) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Buckets.ProtoReflect.Descriptor instead.
 func (*Buckets) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{29}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *Buckets) GetItems() []*Bucket {
@@ -2194,7 +2367,7 @@ type BulkRestoreObjectsRequest struct {
 func (x *BulkRestoreObjectsRequest) Reset() {
 	*x = BulkRestoreObjectsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[30]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[33]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2207,7 +2380,7 @@ func (x *BulkRestoreObjectsRequest) String() string {
 func (*BulkRestoreObjectsRequest) ProtoMessage() {}
 
 func (x *BulkRestoreObjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[30]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[33]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2220,7 +2393,7 @@ func (x *BulkRestoreObjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BulkRestoreObjectsRequest.ProtoReflect.Descriptor instead.
 func (*BulkRestoreObjectsRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{30}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *BulkRestoreObjectsRequest) GetAllowOverwrite() bool {
@@ -2278,7 +2451,7 @@ type Channel struct {
 func (x *Channel) Reset() {
 	*x = Channel{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[31]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[34]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2291,7 +2464,7 @@ func (x *Channel) String() string {
 func (*Channel) ProtoMessage() {}
 
 func (x *Channel) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[31]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[34]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2304,7 +2477,7 @@ func (x *Channel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Channel.ProtoReflect.Descriptor instead.
 func (*Channel) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{31}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *Channel) GetAddress() string {
@@ -2388,7 +2561,7 @@ type ObjectPreconditions struct {
 func (x *ObjectPreconditions) Reset() {
 	*x = ObjectPreconditions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[32]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2401,7 +2574,7 @@ func (x *ObjectPreconditions) String() string {
 func (*ObjectPreconditions) ProtoMessage() {}
 
 func (x *ObjectPreconditions) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[32]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2414,7 +2587,7 @@ func (x *ObjectPreconditions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectPreconditions.ProtoReflect.Descriptor instead.
 func (*ObjectPreconditions) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{32}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ObjectPreconditions) GetIfGenerationMatch() int64 {
@@ -2437,7 +2610,7 @@ type ComposeRequestSourceObjects struct {
 func (x *ComposeRequestSourceObjects) Reset() {
 	*x = ComposeRequestSourceObjects{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[33]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[36]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2450,7 +2623,7 @@ func (x *ComposeRequestSourceObjects) String() string {
 func (*ComposeRequestSourceObjects) ProtoMessage() {}
 
 func (x *ComposeRequestSourceObjects) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[33]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[36]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2463,7 +2636,7 @@ func (x *ComposeRequestSourceObjects) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComposeRequestSourceObjects.ProtoReflect.Descriptor instead.
 func (*ComposeRequestSourceObjects) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{33}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ComposeRequestSourceObjects) GetGeneration() int64 {
@@ -2500,7 +2673,7 @@ type ComposeRequest struct {
 func (x *ComposeRequest) Reset() {
 	*x = ComposeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[34]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[37]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2513,7 +2686,7 @@ func (x *ComposeRequest) String() string {
 func (*ComposeRequest) ProtoMessage() {}
 
 func (x *ComposeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[34]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[37]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2526,7 +2699,7 @@ func (x *ComposeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComposeRequest.ProtoReflect.Descriptor instead.
 func (*ComposeRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{34}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ComposeRequest) GetDestination() *Object {
@@ -2564,7 +2737,7 @@ type Expr struct {
 func (x *Expr) Reset() {
 	*x = Expr{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[35]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[38]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2577,7 +2750,7 @@ func (x *Expr) String() string {
 func (*Expr) ProtoMessage() {}
 
 func (x *Expr) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[35]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[38]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2590,7 +2763,7 @@ func (x *Expr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr.ProtoReflect.Descriptor instead.
 func (*Expr) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{35}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *Expr) GetDescription() string {
@@ -2632,7 +2805,7 @@ type FolderPendingRenameInfo struct {
 func (x *FolderPendingRenameInfo) Reset() {
 	*x = FolderPendingRenameInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[36]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[39]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2645,7 +2818,7 @@ func (x *FolderPendingRenameInfo) String() string {
 func (*FolderPendingRenameInfo) ProtoMessage() {}
 
 func (x *FolderPendingRenameInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[36]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[39]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2658,7 +2831,7 @@ func (x *FolderPendingRenameInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FolderPendingRenameInfo.ProtoReflect.Descriptor instead.
 func (*FolderPendingRenameInfo) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{36}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *FolderPendingRenameInfo) GetOperationId() string {
@@ -2687,7 +2860,7 @@ type Folder struct {
 func (x *Folder) Reset() {
 	*x = Folder{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[37]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[40]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2700,7 +2873,7 @@ func (x *Folder) String() string {
 func (*Folder) ProtoMessage() {}
 
 func (x *Folder) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[37]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[40]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2713,7 +2886,7 @@ func (x *Folder) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Folder.ProtoReflect.Descriptor instead.
 func (*Folder) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{37}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *Folder) GetBucket() string {
@@ -2792,7 +2965,7 @@ type Folders struct {
 func (x *Folders) Reset() {
 	*x = Folders{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[38]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[41]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2805,7 +2978,7 @@ func (x *Folders) String() string {
 func (*Folders) ProtoMessage() {}
 
 func (x *Folders) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[38]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2818,7 +2991,7 @@ func (x *Folders) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Folders.ProtoReflect.Descriptor instead.
 func (*Folders) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{38}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *Folders) GetItems() []*Folder {
@@ -2847,14 +3020,15 @@ type GoogleLongrunningListOperationsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	NextPageToken *string                       `protobuf:"bytes,1,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
-	Operations    []*GoogleLongrunningOperation `protobuf:"bytes,2,rep,name=operations" json:"operations,omitempty"`
+	Kind          *string                       `protobuf:"bytes,1,opt,name=kind" json:"kind,omitempty"`
+	NextPageToken *string                       `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	Operations    []*GoogleLongrunningOperation `protobuf:"bytes,3,rep,name=operations" json:"operations,omitempty"`
 }
 
 func (x *GoogleLongrunningListOperationsResponse) Reset() {
 	*x = GoogleLongrunningListOperationsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[39]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[42]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2867,7 +3041,7 @@ func (x *GoogleLongrunningListOperationsResponse) String() string {
 func (*GoogleLongrunningListOperationsResponse) ProtoMessage() {}
 
 func (x *GoogleLongrunningListOperationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[39]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[42]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2880,7 +3054,14 @@ func (x *GoogleLongrunningListOperationsResponse) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use GoogleLongrunningListOperationsResponse.ProtoReflect.Descriptor instead.
 func (*GoogleLongrunningListOperationsResponse) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{39}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *GoogleLongrunningListOperationsResponse) GetKind() string {
+	if x != nil && x.Kind != nil {
+		return *x.Kind
+	}
+	return ""
 }
 
 func (x *GoogleLongrunningListOperationsResponse) GetNextPageToken() string {
@@ -2904,15 +3085,17 @@ type GoogleLongrunningOperation struct {
 
 	Done     *bool                `protobuf:"varint,1,opt,name=done" json:"done,omitempty"`
 	Error    *GoogleRpcStatus     `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
-	Metadata map[string]*any1.Any `protobuf:"bytes,3,rep,name=metadata" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Name     *string              `protobuf:"bytes,4,opt,name=name" json:"name,omitempty"`
-	Response map[string]*any1.Any `protobuf:"bytes,5,rep,name=response" json:"response,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Kind     *string              `protobuf:"bytes,3,opt,name=kind" json:"kind,omitempty"`
+	Metadata map[string]*any1.Any `protobuf:"bytes,4,rep,name=metadata" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Name     *string              `protobuf:"bytes,5,opt,name=name" json:"name,omitempty"`
+	Response map[string]*any1.Any `protobuf:"bytes,6,rep,name=response" json:"response,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	SelfLink *string              `protobuf:"bytes,7,opt,name=self_link,json=selfLink" json:"self_link,omitempty"`
 }
 
 func (x *GoogleLongrunningOperation) Reset() {
 	*x = GoogleLongrunningOperation{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[40]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[43]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2925,7 +3108,7 @@ func (x *GoogleLongrunningOperation) String() string {
 func (*GoogleLongrunningOperation) ProtoMessage() {}
 
 func (x *GoogleLongrunningOperation) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[40]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[43]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2938,7 +3121,7 @@ func (x *GoogleLongrunningOperation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GoogleLongrunningOperation.ProtoReflect.Descriptor instead.
 func (*GoogleLongrunningOperation) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{40}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *GoogleLongrunningOperation) GetDone() bool {
@@ -2953,6 +3136,13 @@ func (x *GoogleLongrunningOperation) GetError() *GoogleRpcStatus {
 		return x.Error
 	}
 	return nil
+}
+
+func (x *GoogleLongrunningOperation) GetKind() string {
+	if x != nil && x.Kind != nil {
+		return *x.Kind
+	}
+	return ""
 }
 
 func (x *GoogleLongrunningOperation) GetMetadata() map[string]*any1.Any {
@@ -2976,6 +3166,13 @@ func (x *GoogleLongrunningOperation) GetResponse() map[string]*any1.Any {
 	return nil
 }
 
+func (x *GoogleLongrunningOperation) GetSelfLink() string {
+	if x != nil && x.SelfLink != nil {
+		return *x.SelfLink
+	}
+	return ""
+}
+
 type GoogleRpcStatus struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2989,7 +3186,7 @@ type GoogleRpcStatus struct {
 func (x *GoogleRpcStatus) Reset() {
 	*x = GoogleRpcStatus{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[41]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[44]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3002,7 +3199,7 @@ func (x *GoogleRpcStatus) String() string {
 func (*GoogleRpcStatus) ProtoMessage() {}
 
 func (x *GoogleRpcStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[41]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[44]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3015,7 +3212,7 @@ func (x *GoogleRpcStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GoogleRpcStatus.ProtoReflect.Descriptor instead.
 func (*GoogleRpcStatus) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{41}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *GoogleRpcStatus) GetCode() int32 {
@@ -3052,7 +3249,7 @@ type HmacKey struct {
 func (x *HmacKey) Reset() {
 	*x = HmacKey{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[42]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[45]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3065,7 +3262,7 @@ func (x *HmacKey) String() string {
 func (*HmacKey) ProtoMessage() {}
 
 func (x *HmacKey) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[42]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[45]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3078,7 +3275,7 @@ func (x *HmacKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HmacKey.ProtoReflect.Descriptor instead.
 func (*HmacKey) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{42}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *HmacKey) GetKind() string {
@@ -3122,7 +3319,7 @@ type HmacKeyMetadata struct {
 func (x *HmacKeyMetadata) Reset() {
 	*x = HmacKeyMetadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[43]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[46]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3135,7 +3332,7 @@ func (x *HmacKeyMetadata) String() string {
 func (*HmacKeyMetadata) ProtoMessage() {}
 
 func (x *HmacKeyMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[43]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[46]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3148,7 +3345,7 @@ func (x *HmacKeyMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HmacKeyMetadata.ProtoReflect.Descriptor instead.
 func (*HmacKeyMetadata) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{43}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *HmacKeyMetadata) GetAccessId() string {
@@ -3234,7 +3431,7 @@ type HmacKeysMetadata struct {
 func (x *HmacKeysMetadata) Reset() {
 	*x = HmacKeysMetadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[44]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[47]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3247,7 +3444,7 @@ func (x *HmacKeysMetadata) String() string {
 func (*HmacKeysMetadata) ProtoMessage() {}
 
 func (x *HmacKeysMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[44]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[47]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3260,7 +3457,7 @@ func (x *HmacKeysMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HmacKeysMetadata.ProtoReflect.Descriptor instead.
 func (*HmacKeysMetadata) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{44}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *HmacKeysMetadata) GetItems() []*HmacKeyMetadata {
@@ -3302,7 +3499,7 @@ type ManagedFolder struct {
 func (x *ManagedFolder) Reset() {
 	*x = ManagedFolder{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[45]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[48]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3315,7 +3512,7 @@ func (x *ManagedFolder) String() string {
 func (*ManagedFolder) ProtoMessage() {}
 
 func (x *ManagedFolder) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[45]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[48]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3328,7 +3525,7 @@ func (x *ManagedFolder) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManagedFolder.ProtoReflect.Descriptor instead.
 func (*ManagedFolder) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{45}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *ManagedFolder) GetBucket() string {
@@ -3400,7 +3597,7 @@ type ManagedFolders struct {
 func (x *ManagedFolders) Reset() {
 	*x = ManagedFolders{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[46]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[49]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3413,7 +3610,7 @@ func (x *ManagedFolders) String() string {
 func (*ManagedFolders) ProtoMessage() {}
 
 func (x *ManagedFolders) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[46]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[49]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3426,7 +3623,7 @@ func (x *ManagedFolders) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManagedFolders.ProtoReflect.Descriptor instead.
 func (*ManagedFolders) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{46}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *ManagedFolders) GetItems() []*ManagedFolder {
@@ -3469,7 +3666,7 @@ type Notification struct {
 func (x *Notification) Reset() {
 	*x = Notification{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[47]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[50]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3482,7 +3679,7 @@ func (x *Notification) String() string {
 func (*Notification) ProtoMessage() {}
 
 func (x *Notification) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[47]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[50]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3495,7 +3692,7 @@ func (x *Notification) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Notification.ProtoReflect.Descriptor instead.
 func (*Notification) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{47}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *Notification) GetCustomAttributes() map[string]string {
@@ -3573,7 +3770,7 @@ type Notifications struct {
 func (x *Notifications) Reset() {
 	*x = Notifications{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[48]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[51]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3586,7 +3783,7 @@ func (x *Notifications) String() string {
 func (*Notifications) ProtoMessage() {}
 
 func (x *Notifications) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[48]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[51]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3599,7 +3796,7 @@ func (x *Notifications) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Notifications.ProtoReflect.Descriptor instead.
 func (*Notifications) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{48}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *Notifications) GetItems() []*Notification {
@@ -3628,7 +3825,7 @@ type ObjectCustomerEncryption struct {
 func (x *ObjectCustomerEncryption) Reset() {
 	*x = ObjectCustomerEncryption{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[49]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[52]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3641,7 +3838,7 @@ func (x *ObjectCustomerEncryption) String() string {
 func (*ObjectCustomerEncryption) ProtoMessage() {}
 
 func (x *ObjectCustomerEncryption) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[49]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[52]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3654,7 +3851,7 @@ func (x *ObjectCustomerEncryption) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectCustomerEncryption.ProtoReflect.Descriptor instead.
 func (*ObjectCustomerEncryption) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{49}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *ObjectCustomerEncryption) GetEncryptionAlgorithm() string {
@@ -3683,7 +3880,7 @@ type ObjectOwner struct {
 func (x *ObjectOwner) Reset() {
 	*x = ObjectOwner{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[50]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[53]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3696,7 +3893,7 @@ func (x *ObjectOwner) String() string {
 func (*ObjectOwner) ProtoMessage() {}
 
 func (x *ObjectOwner) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[50]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[53]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3709,7 +3906,7 @@ func (x *ObjectOwner) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectOwner.ProtoReflect.Descriptor instead.
 func (*ObjectOwner) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{50}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *ObjectOwner) GetEntity() string {
@@ -3738,7 +3935,7 @@ type ObjectRetention struct {
 func (x *ObjectRetention) Reset() {
 	*x = ObjectRetention{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[51]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[54]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3751,7 +3948,7 @@ func (x *ObjectRetention) String() string {
 func (*ObjectRetention) ProtoMessage() {}
 
 func (x *ObjectRetention) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[51]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[54]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3764,7 +3961,7 @@ func (x *ObjectRetention) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectRetention.ProtoReflect.Descriptor instead.
 func (*ObjectRetention) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{51}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *ObjectRetention) GetMode() string {
@@ -3826,7 +4023,7 @@ type Object struct {
 func (x *Object) Reset() {
 	*x = Object{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[52]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[55]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3839,7 +4036,7 @@ func (x *Object) String() string {
 func (*Object) ProtoMessage() {}
 
 func (x *Object) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[52]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[55]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3852,7 +4049,7 @@ func (x *Object) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Object.ProtoReflect.Descriptor instead.
 func (*Object) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{52}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *Object) GetAcl() []*ObjectAccessControl {
@@ -4112,7 +4309,7 @@ type ObjectAccessControlProjectTeam struct {
 func (x *ObjectAccessControlProjectTeam) Reset() {
 	*x = ObjectAccessControlProjectTeam{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[53]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[56]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4125,7 +4322,7 @@ func (x *ObjectAccessControlProjectTeam) String() string {
 func (*ObjectAccessControlProjectTeam) ProtoMessage() {}
 
 func (x *ObjectAccessControlProjectTeam) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[53]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[56]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4138,7 +4335,7 @@ func (x *ObjectAccessControlProjectTeam) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectAccessControlProjectTeam.ProtoReflect.Descriptor instead.
 func (*ObjectAccessControlProjectTeam) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{53}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *ObjectAccessControlProjectTeam) GetProjectNumber() string {
@@ -4178,7 +4375,7 @@ type ObjectAccessControl struct {
 func (x *ObjectAccessControl) Reset() {
 	*x = ObjectAccessControl{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[54]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[57]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4191,7 +4388,7 @@ func (x *ObjectAccessControl) String() string {
 func (*ObjectAccessControl) ProtoMessage() {}
 
 func (x *ObjectAccessControl) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[54]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[57]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4204,7 +4401,7 @@ func (x *ObjectAccessControl) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectAccessControl.ProtoReflect.Descriptor instead.
 func (*ObjectAccessControl) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{54}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *ObjectAccessControl) GetBucket() string {
@@ -4310,7 +4507,7 @@ type ObjectAccessControls struct {
 func (x *ObjectAccessControls) Reset() {
 	*x = ObjectAccessControls{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[55]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[58]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4323,7 +4520,7 @@ func (x *ObjectAccessControls) String() string {
 func (*ObjectAccessControls) ProtoMessage() {}
 
 func (x *ObjectAccessControls) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[55]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[58]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4336,7 +4533,7 @@ func (x *ObjectAccessControls) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectAccessControls.ProtoReflect.Descriptor instead.
 func (*ObjectAccessControls) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{55}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *ObjectAccessControls) GetItems() []*ObjectAccessControl {
@@ -4367,7 +4564,7 @@ type Objects struct {
 func (x *Objects) Reset() {
 	*x = Objects{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[56]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[59]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4380,7 +4577,7 @@ func (x *Objects) String() string {
 func (*Objects) ProtoMessage() {}
 
 func (x *Objects) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[56]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[59]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4393,7 +4590,7 @@ func (x *Objects) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Objects.ProtoReflect.Descriptor instead.
 func (*Objects) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{56}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *Objects) GetItems() []*Object {
@@ -4437,7 +4634,7 @@ type PolicyBindings struct {
 func (x *PolicyBindings) Reset() {
 	*x = PolicyBindings{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[57]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[60]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4450,7 +4647,7 @@ func (x *PolicyBindings) String() string {
 func (*PolicyBindings) ProtoMessage() {}
 
 func (x *PolicyBindings) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[57]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[60]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4463,7 +4660,7 @@ func (x *PolicyBindings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PolicyBindings.ProtoReflect.Descriptor instead.
 func (*PolicyBindings) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{57}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *PolicyBindings) GetCondition() *Expr {
@@ -4502,7 +4699,7 @@ type Policy struct {
 func (x *Policy) Reset() {
 	*x = Policy{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[58]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[61]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4515,7 +4712,7 @@ func (x *Policy) String() string {
 func (*Policy) ProtoMessage() {}
 
 func (x *Policy) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[58]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[61]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4528,7 +4725,7 @@ func (x *Policy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Policy.ProtoReflect.Descriptor instead.
 func (*Policy) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{58}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *Policy) GetBindings() []*PolicyBindings {
@@ -4582,7 +4779,7 @@ type RewriteResponse struct {
 func (x *RewriteResponse) Reset() {
 	*x = RewriteResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[59]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[62]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4595,7 +4792,7 @@ func (x *RewriteResponse) String() string {
 func (*RewriteResponse) ProtoMessage() {}
 
 func (x *RewriteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[59]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[62]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4608,7 +4805,7 @@ func (x *RewriteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RewriteResponse.ProtoReflect.Descriptor instead.
 func (*RewriteResponse) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{59}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *RewriteResponse) GetDone() bool {
@@ -4665,7 +4862,7 @@ type ServiceAccount struct {
 func (x *ServiceAccount) Reset() {
 	*x = ServiceAccount{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[60]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[63]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4678,7 +4875,7 @@ func (x *ServiceAccount) String() string {
 func (*ServiceAccount) ProtoMessage() {}
 
 func (x *ServiceAccount) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[60]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[63]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4691,7 +4888,7 @@ func (x *ServiceAccount) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServiceAccount.ProtoReflect.Descriptor instead.
 func (*ServiceAccount) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{60}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *ServiceAccount) GetEmailAddress() string {
@@ -4720,7 +4917,7 @@ type TestIamPermissionsResponse struct {
 func (x *TestIamPermissionsResponse) Reset() {
 	*x = TestIamPermissionsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[61]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[64]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4733,7 +4930,7 @@ func (x *TestIamPermissionsResponse) String() string {
 func (*TestIamPermissionsResponse) ProtoMessage() {}
 
 func (x *TestIamPermissionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[61]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[64]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4746,7 +4943,7 @@ func (x *TestIamPermissionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestIamPermissionsResponse.ProtoReflect.Descriptor instead.
 func (*TestIamPermissionsResponse) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{61}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *TestIamPermissionsResponse) GetKind() string {
@@ -4775,7 +4972,7 @@ type DisableAnywhereCacheRequest struct {
 func (x *DisableAnywhereCacheRequest) Reset() {
 	*x = DisableAnywhereCacheRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[62]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[65]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4788,7 +4985,7 @@ func (x *DisableAnywhereCacheRequest) String() string {
 func (*DisableAnywhereCacheRequest) ProtoMessage() {}
 
 func (x *DisableAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[62]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[65]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4801,7 +4998,7 @@ func (x *DisableAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DisableAnywhereCacheRequest.ProtoReflect.Descriptor instead.
 func (*DisableAnywhereCacheRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{62}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *DisableAnywhereCacheRequest) GetAnywhereCacheId() string {
@@ -4830,7 +5027,7 @@ type GetAnywhereCacheRequest struct {
 func (x *GetAnywhereCacheRequest) Reset() {
 	*x = GetAnywhereCacheRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[63]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[66]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4843,7 +5040,7 @@ func (x *GetAnywhereCacheRequest) String() string {
 func (*GetAnywhereCacheRequest) ProtoMessage() {}
 
 func (x *GetAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[63]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[66]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4856,7 +5053,7 @@ func (x *GetAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAnywhereCacheRequest.ProtoReflect.Descriptor instead.
 func (*GetAnywhereCacheRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{63}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *GetAnywhereCacheRequest) GetAnywhereCacheId() string {
@@ -4885,7 +5082,7 @@ type InsertAnywhereCacheRequest struct {
 func (x *InsertAnywhereCacheRequest) Reset() {
 	*x = InsertAnywhereCacheRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[64]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[67]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4898,7 +5095,7 @@ func (x *InsertAnywhereCacheRequest) String() string {
 func (*InsertAnywhereCacheRequest) ProtoMessage() {}
 
 func (x *InsertAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[64]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[67]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4911,7 +5108,7 @@ func (x *InsertAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertAnywhereCacheRequest.ProtoReflect.Descriptor instead.
 func (*InsertAnywhereCacheRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{64}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *InsertAnywhereCacheRequest) GetBucket() string {
@@ -4941,7 +5138,7 @@ type ListAnywhereCachesRequest struct {
 func (x *ListAnywhereCachesRequest) Reset() {
 	*x = ListAnywhereCachesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[65]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[68]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4954,7 +5151,7 @@ func (x *ListAnywhereCachesRequest) String() string {
 func (*ListAnywhereCachesRequest) ProtoMessage() {}
 
 func (x *ListAnywhereCachesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[65]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[68]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4967,7 +5164,7 @@ func (x *ListAnywhereCachesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAnywhereCachesRequest.ProtoReflect.Descriptor instead.
 func (*ListAnywhereCachesRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{65}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *ListAnywhereCachesRequest) GetBucket() string {
@@ -5003,7 +5200,7 @@ type PauseAnywhereCacheRequest struct {
 func (x *PauseAnywhereCacheRequest) Reset() {
 	*x = PauseAnywhereCacheRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[66]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[69]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5016,7 +5213,7 @@ func (x *PauseAnywhereCacheRequest) String() string {
 func (*PauseAnywhereCacheRequest) ProtoMessage() {}
 
 func (x *PauseAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[66]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[69]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5029,7 +5226,7 @@ func (x *PauseAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PauseAnywhereCacheRequest.ProtoReflect.Descriptor instead.
 func (*PauseAnywhereCacheRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{66}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *PauseAnywhereCacheRequest) GetAnywhereCacheId() string {
@@ -5058,7 +5255,7 @@ type ResumeAnywhereCacheRequest struct {
 func (x *ResumeAnywhereCacheRequest) Reset() {
 	*x = ResumeAnywhereCacheRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[67]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[70]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5071,7 +5268,7 @@ func (x *ResumeAnywhereCacheRequest) String() string {
 func (*ResumeAnywhereCacheRequest) ProtoMessage() {}
 
 func (x *ResumeAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[67]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[70]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5084,7 +5281,7 @@ func (x *ResumeAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumeAnywhereCacheRequest.ProtoReflect.Descriptor instead.
 func (*ResumeAnywhereCacheRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{67}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *ResumeAnywhereCacheRequest) GetAnywhereCacheId() string {
@@ -5114,7 +5311,7 @@ type UpdateAnywhereCacheRequest struct {
 func (x *UpdateAnywhereCacheRequest) Reset() {
 	*x = UpdateAnywhereCacheRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[68]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[71]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5127,7 +5324,7 @@ func (x *UpdateAnywhereCacheRequest) String() string {
 func (*UpdateAnywhereCacheRequest) ProtoMessage() {}
 
 func (x *UpdateAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[68]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[71]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5140,7 +5337,7 @@ func (x *UpdateAnywhereCacheRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAnywhereCacheRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAnywhereCacheRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{68}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *UpdateAnywhereCacheRequest) GetAnywhereCacheId() string {
@@ -5177,7 +5374,7 @@ type DeleteBucketAccessControlRequest struct {
 func (x *DeleteBucketAccessControlRequest) Reset() {
 	*x = DeleteBucketAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[69]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[72]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5190,7 +5387,7 @@ func (x *DeleteBucketAccessControlRequest) String() string {
 func (*DeleteBucketAccessControlRequest) ProtoMessage() {}
 
 func (x *DeleteBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[69]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[72]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5203,7 +5400,7 @@ func (x *DeleteBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteBucketAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*DeleteBucketAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{69}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *DeleteBucketAccessControlRequest) GetBucket() string {
@@ -5240,7 +5437,7 @@ type GetBucketAccessControlRequest struct {
 func (x *GetBucketAccessControlRequest) Reset() {
 	*x = GetBucketAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[70]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[73]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5253,7 +5450,7 @@ func (x *GetBucketAccessControlRequest) String() string {
 func (*GetBucketAccessControlRequest) ProtoMessage() {}
 
 func (x *GetBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[70]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[73]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5266,7 +5463,7 @@ func (x *GetBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBucketAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*GetBucketAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{70}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *GetBucketAccessControlRequest) GetBucket() string {
@@ -5303,7 +5500,7 @@ type InsertBucketAccessControlRequest struct {
 func (x *InsertBucketAccessControlRequest) Reset() {
 	*x = InsertBucketAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[71]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[74]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5316,7 +5513,7 @@ func (x *InsertBucketAccessControlRequest) String() string {
 func (*InsertBucketAccessControlRequest) ProtoMessage() {}
 
 func (x *InsertBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[71]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[74]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5329,7 +5526,7 @@ func (x *InsertBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertBucketAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*InsertBucketAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{71}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *InsertBucketAccessControlRequest) GetBucket() string {
@@ -5365,7 +5562,7 @@ type ListBucketAccessControlsRequest struct {
 func (x *ListBucketAccessControlsRequest) Reset() {
 	*x = ListBucketAccessControlsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[72]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[75]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5378,7 +5575,7 @@ func (x *ListBucketAccessControlsRequest) String() string {
 func (*ListBucketAccessControlsRequest) ProtoMessage() {}
 
 func (x *ListBucketAccessControlsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[72]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[75]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5391,7 +5588,7 @@ func (x *ListBucketAccessControlsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBucketAccessControlsRequest.ProtoReflect.Descriptor instead.
 func (*ListBucketAccessControlsRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{72}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *ListBucketAccessControlsRequest) GetBucket() string {
@@ -5422,7 +5619,7 @@ type PatchBucketAccessControlRequest struct {
 func (x *PatchBucketAccessControlRequest) Reset() {
 	*x = PatchBucketAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[73]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[76]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5435,7 +5632,7 @@ func (x *PatchBucketAccessControlRequest) String() string {
 func (*PatchBucketAccessControlRequest) ProtoMessage() {}
 
 func (x *PatchBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[73]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[76]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5448,7 +5645,7 @@ func (x *PatchBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatchBucketAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*PatchBucketAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{73}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *PatchBucketAccessControlRequest) GetBucket() string {
@@ -5493,7 +5690,7 @@ type UpdateBucketAccessControlRequest struct {
 func (x *UpdateBucketAccessControlRequest) Reset() {
 	*x = UpdateBucketAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[74]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[77]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5506,7 +5703,7 @@ func (x *UpdateBucketAccessControlRequest) String() string {
 func (*UpdateBucketAccessControlRequest) ProtoMessage() {}
 
 func (x *UpdateBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[74]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[77]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5519,7 +5716,7 @@ func (x *UpdateBucketAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateBucketAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*UpdateBucketAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{74}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *UpdateBucketAccessControlRequest) GetBucket() string {
@@ -5564,7 +5761,7 @@ type DeleteBucketRequest struct {
 func (x *DeleteBucketRequest) Reset() {
 	*x = DeleteBucketRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[75]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[78]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5577,7 +5774,7 @@ func (x *DeleteBucketRequest) String() string {
 func (*DeleteBucketRequest) ProtoMessage() {}
 
 func (x *DeleteBucketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[75]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[78]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5590,7 +5787,7 @@ func (x *DeleteBucketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteBucketRequest.ProtoReflect.Descriptor instead.
 func (*DeleteBucketRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{75}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *DeleteBucketRequest) GetName() string {
@@ -5636,7 +5833,7 @@ type GetBucketRequest struct {
 func (x *GetBucketRequest) Reset() {
 	*x = GetBucketRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[76]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[79]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5649,7 +5846,7 @@ func (x *GetBucketRequest) String() string {
 func (*GetBucketRequest) ProtoMessage() {}
 
 func (x *GetBucketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[76]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[79]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5662,7 +5859,7 @@ func (x *GetBucketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBucketRequest.ProtoReflect.Descriptor instead.
 func (*GetBucketRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{76}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *GetBucketRequest) GetName() string {
@@ -5712,7 +5909,7 @@ type GetStorageLayoutBucketRequest struct {
 func (x *GetStorageLayoutBucketRequest) Reset() {
 	*x = GetStorageLayoutBucketRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[77]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[80]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5725,7 +5922,7 @@ func (x *GetStorageLayoutBucketRequest) String() string {
 func (*GetStorageLayoutBucketRequest) ProtoMessage() {}
 
 func (x *GetStorageLayoutBucketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[77]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[80]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5738,7 +5935,7 @@ func (x *GetStorageLayoutBucketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStorageLayoutBucketRequest.ProtoReflect.Descriptor instead.
 func (*GetStorageLayoutBucketRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{77}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *GetStorageLayoutBucketRequest) GetName() string {
@@ -5772,7 +5969,7 @@ type InsertBucketRequest struct {
 func (x *InsertBucketRequest) Reset() {
 	*x = InsertBucketRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[78]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[81]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5785,7 +5982,7 @@ func (x *InsertBucketRequest) String() string {
 func (*InsertBucketRequest) ProtoMessage() {}
 
 func (x *InsertBucketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[78]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[81]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5798,7 +5995,7 @@ func (x *InsertBucketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertBucketRequest.ProtoReflect.Descriptor instead.
 func (*InsertBucketRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{78}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *InsertBucketRequest) GetEnableObjectRetention() bool {
@@ -5866,7 +6063,7 @@ type ListBucketsRequest struct {
 func (x *ListBucketsRequest) Reset() {
 	*x = ListBucketsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[79]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[82]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5879,7 +6076,7 @@ func (x *ListBucketsRequest) String() string {
 func (*ListBucketsRequest) ProtoMessage() {}
 
 func (x *ListBucketsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[79]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[82]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5892,7 +6089,7 @@ func (x *ListBucketsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBucketsRequest.ProtoReflect.Descriptor instead.
 func (*ListBucketsRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{79}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *ListBucketsRequest) GetMaxResults() int32 {
@@ -5950,7 +6147,7 @@ type LockRetentionPolicyBucketRequest struct {
 func (x *LockRetentionPolicyBucketRequest) Reset() {
 	*x = LockRetentionPolicyBucketRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[80]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[83]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5963,7 +6160,7 @@ func (x *LockRetentionPolicyBucketRequest) String() string {
 func (*LockRetentionPolicyBucketRequest) ProtoMessage() {}
 
 func (x *LockRetentionPolicyBucketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[80]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[83]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5976,7 +6173,7 @@ func (x *LockRetentionPolicyBucketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LockRetentionPolicyBucketRequest.ProtoReflect.Descriptor instead.
 func (*LockRetentionPolicyBucketRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{80}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *LockRetentionPolicyBucketRequest) GetName() string {
@@ -6018,7 +6215,7 @@ type PatchBucketRequest struct {
 func (x *PatchBucketRequest) Reset() {
 	*x = PatchBucketRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[81]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[84]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6031,7 +6228,7 @@ func (x *PatchBucketRequest) String() string {
 func (*PatchBucketRequest) ProtoMessage() {}
 
 func (x *PatchBucketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[81]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[84]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6044,7 +6241,7 @@ func (x *PatchBucketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatchBucketRequest.ProtoReflect.Descriptor instead.
 func (*PatchBucketRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{81}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *PatchBucketRequest) GetName() string {
@@ -6121,7 +6318,7 @@ type UpdateBucketRequest struct {
 func (x *UpdateBucketRequest) Reset() {
 	*x = UpdateBucketRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[82]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[85]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6134,7 +6331,7 @@ func (x *UpdateBucketRequest) String() string {
 func (*UpdateBucketRequest) ProtoMessage() {}
 
 func (x *UpdateBucketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[82]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[85]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6147,7 +6344,7 @@ func (x *UpdateBucketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateBucketRequest.ProtoReflect.Descriptor instead.
 func (*UpdateBucketRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{82}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *UpdateBucketRequest) GetName() string {
@@ -6217,7 +6414,7 @@ type StopChannelRequest struct {
 func (x *StopChannelRequest) Reset() {
 	*x = StopChannelRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[83]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[86]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6230,7 +6427,7 @@ func (x *StopChannelRequest) String() string {
 func (*StopChannelRequest) ProtoMessage() {}
 
 func (x *StopChannelRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[83]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[86]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6243,7 +6440,7 @@ func (x *StopChannelRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StopChannelRequest.ProtoReflect.Descriptor instead.
 func (*StopChannelRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{83}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *StopChannelRequest) GetChannel() *Channel {
@@ -6266,7 +6463,7 @@ type DeleteDefaultObjectAccessControlRequest struct {
 func (x *DeleteDefaultObjectAccessControlRequest) Reset() {
 	*x = DeleteDefaultObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[84]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[87]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6279,7 +6476,7 @@ func (x *DeleteDefaultObjectAccessControlRequest) String() string {
 func (*DeleteDefaultObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *DeleteDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[84]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[87]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6292,7 +6489,7 @@ func (x *DeleteDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use DeleteDefaultObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*DeleteDefaultObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{84}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *DeleteDefaultObjectAccessControlRequest) GetBucket() string {
@@ -6329,7 +6526,7 @@ type GetDefaultObjectAccessControlRequest struct {
 func (x *GetDefaultObjectAccessControlRequest) Reset() {
 	*x = GetDefaultObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[85]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[88]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6342,7 +6539,7 @@ func (x *GetDefaultObjectAccessControlRequest) String() string {
 func (*GetDefaultObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *GetDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[85]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[88]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6355,7 +6552,7 @@ func (x *GetDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use GetDefaultObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*GetDefaultObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{85}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *GetDefaultObjectAccessControlRequest) GetBucket() string {
@@ -6392,7 +6589,7 @@ type InsertDefaultObjectAccessControlRequest struct {
 func (x *InsertDefaultObjectAccessControlRequest) Reset() {
 	*x = InsertDefaultObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[86]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[89]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6405,7 +6602,7 @@ func (x *InsertDefaultObjectAccessControlRequest) String() string {
 func (*InsertDefaultObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *InsertDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[86]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[89]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6418,7 +6615,7 @@ func (x *InsertDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use InsertDefaultObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*InsertDefaultObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{86}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *InsertDefaultObjectAccessControlRequest) GetBucket() string {
@@ -6456,7 +6653,7 @@ type ListDefaultObjectAccessControlsRequest struct {
 func (x *ListDefaultObjectAccessControlsRequest) Reset() {
 	*x = ListDefaultObjectAccessControlsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[87]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[90]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6469,7 +6666,7 @@ func (x *ListDefaultObjectAccessControlsRequest) String() string {
 func (*ListDefaultObjectAccessControlsRequest) ProtoMessage() {}
 
 func (x *ListDefaultObjectAccessControlsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[87]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[90]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6482,7 +6679,7 @@ func (x *ListDefaultObjectAccessControlsRequest) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use ListDefaultObjectAccessControlsRequest.ProtoReflect.Descriptor instead.
 func (*ListDefaultObjectAccessControlsRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{87}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *ListDefaultObjectAccessControlsRequest) GetBucket() string {
@@ -6527,7 +6724,7 @@ type PatchDefaultObjectAccessControlRequest struct {
 func (x *PatchDefaultObjectAccessControlRequest) Reset() {
 	*x = PatchDefaultObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[88]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[91]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6540,7 +6737,7 @@ func (x *PatchDefaultObjectAccessControlRequest) String() string {
 func (*PatchDefaultObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *PatchDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[88]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[91]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6553,7 +6750,7 @@ func (x *PatchDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use PatchDefaultObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*PatchDefaultObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{88}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *PatchDefaultObjectAccessControlRequest) GetBucket() string {
@@ -6598,7 +6795,7 @@ type UpdateDefaultObjectAccessControlRequest struct {
 func (x *UpdateDefaultObjectAccessControlRequest) Reset() {
 	*x = UpdateDefaultObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[89]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[92]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6611,7 +6808,7 @@ func (x *UpdateDefaultObjectAccessControlRequest) String() string {
 func (*UpdateDefaultObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *UpdateDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[89]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[92]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6624,7 +6821,7 @@ func (x *UpdateDefaultObjectAccessControlRequest) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use UpdateDefaultObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDefaultObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{89}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *UpdateDefaultObjectAccessControlRequest) GetBucket() string {
@@ -6669,7 +6866,7 @@ type DeleteFolderRequest struct {
 func (x *DeleteFolderRequest) Reset() {
 	*x = DeleteFolderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[90]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[93]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6682,7 +6879,7 @@ func (x *DeleteFolderRequest) String() string {
 func (*DeleteFolderRequest) ProtoMessage() {}
 
 func (x *DeleteFolderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[90]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[93]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6695,7 +6892,7 @@ func (x *DeleteFolderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFolderRequest.ProtoReflect.Descriptor instead.
 func (*DeleteFolderRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{90}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *DeleteFolderRequest) GetBucket() string {
@@ -6740,7 +6937,7 @@ type GetFolderRequest struct {
 func (x *GetFolderRequest) Reset() {
 	*x = GetFolderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[91]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[94]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6753,7 +6950,7 @@ func (x *GetFolderRequest) String() string {
 func (*GetFolderRequest) ProtoMessage() {}
 
 func (x *GetFolderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[91]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[94]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6766,7 +6963,7 @@ func (x *GetFolderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFolderRequest.ProtoReflect.Descriptor instead.
 func (*GetFolderRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{91}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *GetFolderRequest) GetBucket() string {
@@ -6810,7 +7007,7 @@ type InsertFolderRequest struct {
 func (x *InsertFolderRequest) Reset() {
 	*x = InsertFolderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[92]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[95]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6823,7 +7020,7 @@ func (x *InsertFolderRequest) String() string {
 func (*InsertFolderRequest) ProtoMessage() {}
 
 func (x *InsertFolderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[92]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[95]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6836,7 +7033,7 @@ func (x *InsertFolderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertFolderRequest.ProtoReflect.Descriptor instead.
 func (*InsertFolderRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{92}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *InsertFolderRequest) GetBucket() string {
@@ -6877,7 +7074,7 @@ type ListFoldersRequest struct {
 func (x *ListFoldersRequest) Reset() {
 	*x = ListFoldersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[93]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[96]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6890,7 +7087,7 @@ func (x *ListFoldersRequest) String() string {
 func (*ListFoldersRequest) ProtoMessage() {}
 
 func (x *ListFoldersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[93]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[96]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6903,7 +7100,7 @@ func (x *ListFoldersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFoldersRequest.ProtoReflect.Descriptor instead.
 func (*ListFoldersRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{93}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *ListFoldersRequest) GetBucket() string {
@@ -6970,7 +7167,7 @@ type RenameFolderRequest struct {
 func (x *RenameFolderRequest) Reset() {
 	*x = RenameFolderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[94]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[97]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6983,7 +7180,7 @@ func (x *RenameFolderRequest) String() string {
 func (*RenameFolderRequest) ProtoMessage() {}
 
 func (x *RenameFolderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[94]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[97]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6996,7 +7193,7 @@ func (x *RenameFolderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RenameFolderRequest.ProtoReflect.Descriptor instead.
 func (*RenameFolderRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{94}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *RenameFolderRequest) GetBucket() string {
@@ -7049,7 +7246,7 @@ type DeleteManagedFolderRequest struct {
 func (x *DeleteManagedFolderRequest) Reset() {
 	*x = DeleteManagedFolderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[95]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[98]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7062,7 +7259,7 @@ func (x *DeleteManagedFolderRequest) String() string {
 func (*DeleteManagedFolderRequest) ProtoMessage() {}
 
 func (x *DeleteManagedFolderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[95]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[98]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7075,7 +7272,7 @@ func (x *DeleteManagedFolderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteManagedFolderRequest.ProtoReflect.Descriptor instead.
 func (*DeleteManagedFolderRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{95}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *DeleteManagedFolderRequest) GetAllowNonEmpty() bool {
@@ -7127,7 +7324,7 @@ type GetManagedFolderRequest struct {
 func (x *GetManagedFolderRequest) Reset() {
 	*x = GetManagedFolderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[96]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[99]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7140,7 +7337,7 @@ func (x *GetManagedFolderRequest) String() string {
 func (*GetManagedFolderRequest) ProtoMessage() {}
 
 func (x *GetManagedFolderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[96]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[99]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7153,7 +7350,7 @@ func (x *GetManagedFolderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetManagedFolderRequest.ProtoReflect.Descriptor instead.
 func (*GetManagedFolderRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{96}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *GetManagedFolderRequest) GetBucket() string {
@@ -7196,7 +7393,7 @@ type InsertManagedFolderRequest struct {
 func (x *InsertManagedFolderRequest) Reset() {
 	*x = InsertManagedFolderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[97]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[100]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7209,7 +7406,7 @@ func (x *InsertManagedFolderRequest) String() string {
 func (*InsertManagedFolderRequest) ProtoMessage() {}
 
 func (x *InsertManagedFolderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[97]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[100]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7222,7 +7419,7 @@ func (x *InsertManagedFolderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertManagedFolderRequest.ProtoReflect.Descriptor instead.
 func (*InsertManagedFolderRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{97}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *InsertManagedFolderRequest) GetBucket() string {
@@ -7253,7 +7450,7 @@ type ListManagedFoldersRequest struct {
 func (x *ListManagedFoldersRequest) Reset() {
 	*x = ListManagedFoldersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[98]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[101]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7266,7 +7463,7 @@ func (x *ListManagedFoldersRequest) String() string {
 func (*ListManagedFoldersRequest) ProtoMessage() {}
 
 func (x *ListManagedFoldersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[98]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[101]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7279,7 +7476,7 @@ func (x *ListManagedFoldersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListManagedFoldersRequest.ProtoReflect.Descriptor instead.
 func (*ListManagedFoldersRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{98}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *ListManagedFoldersRequest) GetBucket() string {
@@ -7323,7 +7520,7 @@ type DeleteNotificationRequest struct {
 func (x *DeleteNotificationRequest) Reset() {
 	*x = DeleteNotificationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[99]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[102]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7336,7 +7533,7 @@ func (x *DeleteNotificationRequest) String() string {
 func (*DeleteNotificationRequest) ProtoMessage() {}
 
 func (x *DeleteNotificationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[99]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[102]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7349,7 +7546,7 @@ func (x *DeleteNotificationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteNotificationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteNotificationRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{99}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *DeleteNotificationRequest) GetBucket() string {
@@ -7386,7 +7583,7 @@ type GetNotificationRequest struct {
 func (x *GetNotificationRequest) Reset() {
 	*x = GetNotificationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[100]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[103]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7399,7 +7596,7 @@ func (x *GetNotificationRequest) String() string {
 func (*GetNotificationRequest) ProtoMessage() {}
 
 func (x *GetNotificationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[100]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[103]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7412,7 +7609,7 @@ func (x *GetNotificationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetNotificationRequest.ProtoReflect.Descriptor instead.
 func (*GetNotificationRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{100}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *GetNotificationRequest) GetBucket() string {
@@ -7449,7 +7646,7 @@ type InsertNotificationRequest struct {
 func (x *InsertNotificationRequest) Reset() {
 	*x = InsertNotificationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[101]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[104]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7462,7 +7659,7 @@ func (x *InsertNotificationRequest) String() string {
 func (*InsertNotificationRequest) ProtoMessage() {}
 
 func (x *InsertNotificationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[101]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[104]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7475,7 +7672,7 @@ func (x *InsertNotificationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertNotificationRequest.ProtoReflect.Descriptor instead.
 func (*InsertNotificationRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{101}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *InsertNotificationRequest) GetBucket() string {
@@ -7511,7 +7708,7 @@ type ListNotificationsRequest struct {
 func (x *ListNotificationsRequest) Reset() {
 	*x = ListNotificationsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[102]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[105]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7524,7 +7721,7 @@ func (x *ListNotificationsRequest) String() string {
 func (*ListNotificationsRequest) ProtoMessage() {}
 
 func (x *ListNotificationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[102]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[105]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7537,7 +7734,7 @@ func (x *ListNotificationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNotificationsRequest.ProtoReflect.Descriptor instead.
 func (*ListNotificationsRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{102}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *ListNotificationsRequest) GetBucket() string {
@@ -7569,7 +7766,7 @@ type DeleteObjectAccessControlRequest struct {
 func (x *DeleteObjectAccessControlRequest) Reset() {
 	*x = DeleteObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[103]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[106]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7582,7 +7779,7 @@ func (x *DeleteObjectAccessControlRequest) String() string {
 func (*DeleteObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *DeleteObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[103]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[106]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7595,7 +7792,7 @@ func (x *DeleteObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*DeleteObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{103}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *DeleteObjectAccessControlRequest) GetBucket() string {
@@ -7648,7 +7845,7 @@ type GetObjectAccessControlRequest struct {
 func (x *GetObjectAccessControlRequest) Reset() {
 	*x = GetObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[104]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[107]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7661,7 +7858,7 @@ func (x *GetObjectAccessControlRequest) String() string {
 func (*GetObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *GetObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[104]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[107]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7674,7 +7871,7 @@ func (x *GetObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*GetObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{104}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *GetObjectAccessControlRequest) GetBucket() string {
@@ -7727,7 +7924,7 @@ type InsertObjectAccessControlRequest struct {
 func (x *InsertObjectAccessControlRequest) Reset() {
 	*x = InsertObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[105]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[108]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7740,7 +7937,7 @@ func (x *InsertObjectAccessControlRequest) String() string {
 func (*InsertObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *InsertObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[105]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[108]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7753,7 +7950,7 @@ func (x *InsertObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*InsertObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{105}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *InsertObjectAccessControlRequest) GetBucket() string {
@@ -7805,7 +8002,7 @@ type ListObjectAccessControlsRequest struct {
 func (x *ListObjectAccessControlsRequest) Reset() {
 	*x = ListObjectAccessControlsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[106]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[109]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7818,7 +8015,7 @@ func (x *ListObjectAccessControlsRequest) String() string {
 func (*ListObjectAccessControlsRequest) ProtoMessage() {}
 
 func (x *ListObjectAccessControlsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[106]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[109]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7831,7 +8028,7 @@ func (x *ListObjectAccessControlsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListObjectAccessControlsRequest.ProtoReflect.Descriptor instead.
 func (*ListObjectAccessControlsRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{106}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *ListObjectAccessControlsRequest) GetBucket() string {
@@ -7878,7 +8075,7 @@ type PatchObjectAccessControlRequest struct {
 func (x *PatchObjectAccessControlRequest) Reset() {
 	*x = PatchObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[107]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[110]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7891,7 +8088,7 @@ func (x *PatchObjectAccessControlRequest) String() string {
 func (*PatchObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *PatchObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[107]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[110]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7904,7 +8101,7 @@ func (x *PatchObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatchObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*PatchObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{107}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{110}
 }
 
 func (x *PatchObjectAccessControlRequest) GetBucket() string {
@@ -7965,7 +8162,7 @@ type UpdateObjectAccessControlRequest struct {
 func (x *UpdateObjectAccessControlRequest) Reset() {
 	*x = UpdateObjectAccessControlRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[108]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[111]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7978,7 +8175,7 @@ func (x *UpdateObjectAccessControlRequest) String() string {
 func (*UpdateObjectAccessControlRequest) ProtoMessage() {}
 
 func (x *UpdateObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[108]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[111]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7991,7 +8188,7 @@ func (x *UpdateObjectAccessControlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateObjectAccessControlRequest.ProtoReflect.Descriptor instead.
 func (*UpdateObjectAccessControlRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{108}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{111}
 }
 
 func (x *UpdateObjectAccessControlRequest) GetBucket() string {
@@ -8048,7 +8245,7 @@ type BulkRestoreObjectRequest struct {
 func (x *BulkRestoreObjectRequest) Reset() {
 	*x = BulkRestoreObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[109]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[112]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8061,7 +8258,7 @@ func (x *BulkRestoreObjectRequest) String() string {
 func (*BulkRestoreObjectRequest) ProtoMessage() {}
 
 func (x *BulkRestoreObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[109]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[112]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8074,7 +8271,7 @@ func (x *BulkRestoreObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BulkRestoreObjectRequest.ProtoReflect.Descriptor instead.
 func (*BulkRestoreObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{109}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *BulkRestoreObjectRequest) GetBucket() string {
@@ -8109,7 +8306,7 @@ type ComposeObjectRequest struct {
 func (x *ComposeObjectRequest) Reset() {
 	*x = ComposeObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[110]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[113]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8122,7 +8319,7 @@ func (x *ComposeObjectRequest) String() string {
 func (*ComposeObjectRequest) ProtoMessage() {}
 
 func (x *ComposeObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[110]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[113]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8135,7 +8332,7 @@ func (x *ComposeObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComposeObjectRequest.ProtoReflect.Descriptor instead.
 func (*ComposeObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{110}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *ComposeObjectRequest) GetDestinationBucket() string {
@@ -8222,7 +8419,7 @@ type CopyObjectRequest struct {
 func (x *CopyObjectRequest) Reset() {
 	*x = CopyObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[111]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[114]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8235,7 +8432,7 @@ func (x *CopyObjectRequest) String() string {
 func (*CopyObjectRequest) ProtoMessage() {}
 
 func (x *CopyObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[111]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[114]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8248,7 +8445,7 @@ func (x *CopyObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CopyObjectRequest.ProtoReflect.Descriptor instead.
 func (*CopyObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{111}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *CopyObjectRequest) GetDestinationBucket() string {
@@ -8395,7 +8592,7 @@ type DeleteObjectRequest struct {
 func (x *DeleteObjectRequest) Reset() {
 	*x = DeleteObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[112]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[115]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8408,7 +8605,7 @@ func (x *DeleteObjectRequest) String() string {
 func (*DeleteObjectRequest) ProtoMessage() {}
 
 func (x *DeleteObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[112]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[115]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8421,7 +8618,7 @@ func (x *DeleteObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteObjectRequest.ProtoReflect.Descriptor instead.
 func (*DeleteObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{112}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{115}
 }
 
 func (x *DeleteObjectRequest) GetBucket() string {
@@ -8500,7 +8697,7 @@ type GetObjectRequest struct {
 func (x *GetObjectRequest) Reset() {
 	*x = GetObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[113]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[116]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8513,7 +8710,7 @@ func (x *GetObjectRequest) String() string {
 func (*GetObjectRequest) ProtoMessage() {}
 
 func (x *GetObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[113]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[116]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8526,7 +8723,7 @@ func (x *GetObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetObjectRequest.ProtoReflect.Descriptor instead.
 func (*GetObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{113}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *GetObjectRequest) GetBucket() string {
@@ -8621,7 +8818,7 @@ type InsertObjectRequest struct {
 func (x *InsertObjectRequest) Reset() {
 	*x = InsertObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[114]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[117]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8634,7 +8831,7 @@ func (x *InsertObjectRequest) String() string {
 func (*InsertObjectRequest) ProtoMessage() {}
 
 func (x *InsertObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[114]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[117]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8647,7 +8844,7 @@ func (x *InsertObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertObjectRequest.ProtoReflect.Descriptor instead.
 func (*InsertObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{114}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *InsertObjectRequest) GetBucket() string {
@@ -8758,7 +8955,7 @@ type ListObjectsRequest struct {
 func (x *ListObjectsRequest) Reset() {
 	*x = ListObjectsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[115]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[118]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8771,7 +8968,7 @@ func (x *ListObjectsRequest) String() string {
 func (*ListObjectsRequest) ProtoMessage() {}
 
 func (x *ListObjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[115]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[118]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8784,7 +8981,7 @@ func (x *ListObjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListObjectsRequest.ProtoReflect.Descriptor instead.
 func (*ListObjectsRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{115}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *ListObjectsRequest) GetBucket() string {
@@ -8907,7 +9104,7 @@ type PatchObjectRequest struct {
 func (x *PatchObjectRequest) Reset() {
 	*x = PatchObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[116]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[119]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8920,7 +9117,7 @@ func (x *PatchObjectRequest) String() string {
 func (*PatchObjectRequest) ProtoMessage() {}
 
 func (x *PatchObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[116]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[119]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8933,7 +9130,7 @@ func (x *PatchObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatchObjectRequest.ProtoReflect.Descriptor instead.
 func (*PatchObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{116}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *PatchObjectRequest) GetBucket() string {
@@ -9040,7 +9237,7 @@ type RestoreObjectRequest struct {
 func (x *RestoreObjectRequest) Reset() {
 	*x = RestoreObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[117]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[120]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9053,7 +9250,7 @@ func (x *RestoreObjectRequest) String() string {
 func (*RestoreObjectRequest) ProtoMessage() {}
 
 func (x *RestoreObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[117]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[120]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9066,7 +9263,7 @@ func (x *RestoreObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestoreObjectRequest.ProtoReflect.Descriptor instead.
 func (*RestoreObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{117}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *RestoreObjectRequest) GetBucket() string {
@@ -9169,7 +9366,7 @@ type RewriteObjectRequest struct {
 func (x *RewriteObjectRequest) Reset() {
 	*x = RewriteObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[118]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[121]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9182,7 +9379,7 @@ func (x *RewriteObjectRequest) String() string {
 func (*RewriteObjectRequest) ProtoMessage() {}
 
 func (x *RewriteObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[118]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[121]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9195,7 +9392,7 @@ func (x *RewriteObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RewriteObjectRequest.ProtoReflect.Descriptor instead.
 func (*RewriteObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{118}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *RewriteObjectRequest) GetDestinationBucket() string {
@@ -9360,7 +9557,7 @@ type UpdateObjectRequest struct {
 func (x *UpdateObjectRequest) Reset() {
 	*x = UpdateObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[119]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[122]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9373,7 +9570,7 @@ func (x *UpdateObjectRequest) String() string {
 func (*UpdateObjectRequest) ProtoMessage() {}
 
 func (x *UpdateObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[119]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[122]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9386,7 +9583,7 @@ func (x *UpdateObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateObjectRequest.ProtoReflect.Descriptor instead.
 func (*UpdateObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{119}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *UpdateObjectRequest) GetBucket() string {
@@ -9495,7 +9692,7 @@ type WatchAllObjectRequest struct {
 func (x *WatchAllObjectRequest) Reset() {
 	*x = WatchAllObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[120]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[123]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9508,7 +9705,7 @@ func (x *WatchAllObjectRequest) String() string {
 func (*WatchAllObjectRequest) ProtoMessage() {}
 
 func (x *WatchAllObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[120]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[123]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9521,7 +9718,7 @@ func (x *WatchAllObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchAllObjectRequest.ProtoReflect.Descriptor instead.
 func (*WatchAllObjectRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{120}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *WatchAllObjectRequest) GetBucket() string {
@@ -9621,7 +9818,7 @@ type CreateProjectsHmacKeyRequest struct {
 func (x *CreateProjectsHmacKeyRequest) Reset() {
 	*x = CreateProjectsHmacKeyRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[121]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[124]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9634,7 +9831,7 @@ func (x *CreateProjectsHmacKeyRequest) String() string {
 func (*CreateProjectsHmacKeyRequest) ProtoMessage() {}
 
 func (x *CreateProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[121]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[124]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9647,7 +9844,7 @@ func (x *CreateProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateProjectsHmacKeyRequest.ProtoReflect.Descriptor instead.
 func (*CreateProjectsHmacKeyRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{121}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *CreateProjectsHmacKeyRequest) GetProjectId() string {
@@ -9684,7 +9881,7 @@ type DeleteProjectsHmacKeyRequest struct {
 func (x *DeleteProjectsHmacKeyRequest) Reset() {
 	*x = DeleteProjectsHmacKeyRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[122]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[125]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9697,7 +9894,7 @@ func (x *DeleteProjectsHmacKeyRequest) String() string {
 func (*DeleteProjectsHmacKeyRequest) ProtoMessage() {}
 
 func (x *DeleteProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[122]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[125]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9710,7 +9907,7 @@ func (x *DeleteProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProjectsHmacKeyRequest.ProtoReflect.Descriptor instead.
 func (*DeleteProjectsHmacKeyRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{122}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *DeleteProjectsHmacKeyRequest) GetAccessId() string {
@@ -9747,7 +9944,7 @@ type GetProjectsHmacKeyRequest struct {
 func (x *GetProjectsHmacKeyRequest) Reset() {
 	*x = GetProjectsHmacKeyRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[123]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[126]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9760,7 +9957,7 @@ func (x *GetProjectsHmacKeyRequest) String() string {
 func (*GetProjectsHmacKeyRequest) ProtoMessage() {}
 
 func (x *GetProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[123]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[126]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9773,7 +9970,7 @@ func (x *GetProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProjectsHmacKeyRequest.ProtoReflect.Descriptor instead.
 func (*GetProjectsHmacKeyRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{123}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *GetProjectsHmacKeyRequest) GetAccessId() string {
@@ -9813,7 +10010,7 @@ type ListProjectsHmacKeysRequest struct {
 func (x *ListProjectsHmacKeysRequest) Reset() {
 	*x = ListProjectsHmacKeysRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[124]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[127]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9826,7 +10023,7 @@ func (x *ListProjectsHmacKeysRequest) String() string {
 func (*ListProjectsHmacKeysRequest) ProtoMessage() {}
 
 func (x *ListProjectsHmacKeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[124]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[127]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9839,7 +10036,7 @@ func (x *ListProjectsHmacKeysRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectsHmacKeysRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectsHmacKeysRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{124}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *ListProjectsHmacKeysRequest) GetMaxResults() int32 {
@@ -9898,7 +10095,7 @@ type UpdateProjectsHmacKeyRequest struct {
 func (x *UpdateProjectsHmacKeyRequest) Reset() {
 	*x = UpdateProjectsHmacKeyRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[125]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[128]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9911,7 +10108,7 @@ func (x *UpdateProjectsHmacKeyRequest) String() string {
 func (*UpdateProjectsHmacKeyRequest) ProtoMessage() {}
 
 func (x *UpdateProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[125]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[128]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9924,7 +10121,7 @@ func (x *UpdateProjectsHmacKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProjectsHmacKeyRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProjectsHmacKeyRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{125}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *UpdateProjectsHmacKeyRequest) GetAccessId() string {
@@ -9967,7 +10164,7 @@ type GetProjectsServiceAccountRequest struct {
 func (x *GetProjectsServiceAccountRequest) Reset() {
 	*x = GetProjectsServiceAccountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[126]
+		mi := &file_mockgcp_storage_v1_service_proto_msgTypes[129]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9980,7 +10177,7 @@ func (x *GetProjectsServiceAccountRequest) String() string {
 func (*GetProjectsServiceAccountRequest) ProtoMessage() {}
 
 func (x *GetProjectsServiceAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[126]
+	mi := &file_mockgcp_storage_v1_service_proto_msgTypes[129]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9993,7 +10190,7 @@ func (x *GetProjectsServiceAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProjectsServiceAccountRequest.ProtoReflect.Descriptor instead.
 func (*GetProjectsServiceAccountRequest) Descriptor() ([]byte, []int) {
-	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{126}
+	return file_mockgcp_storage_v1_service_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *GetProjectsServiceAccountRequest) GetProjectId() string {
@@ -10135,445 +10332,479 @@ var file_mockgcp_storage_v1_service_proto_rawDesc = []byte{
 	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x6e, 0x69, 0x66, 0x6f, 0x72,
 	0x6d, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x41, 0x63, 0x63, 0x65,
 	0x73, 0x73, 0x52, 0x18, 0x75, 0x6e, 0x69, 0x66, 0x6f, 0x72, 0x6d, 0x42, 0x75, 0x63, 0x6b, 0x65,
-	0x74, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x22, 0x41, 0x0a, 0x06,
-	0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x23, 0x0a, 0x0d, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x5f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x73,
-	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x6c, 0x61, 0x73, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x74,
-	0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x22,
-	0x8c, 0x04, 0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x10, 0x0a,
-	0x03, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x61, 0x67, 0x65, 0x12,
-	0x25, 0x0a, 0x0e, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72,
-	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64,
-	0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x12, 0x2c, 0x0a, 0x12, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d,
-	0x5f, 0x74, 0x69, 0x6d, 0x65, 0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x10, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x54, 0x69, 0x6d, 0x65, 0x42, 0x65,
-	0x66, 0x6f, 0x72, 0x65, 0x12, 0x33, 0x0a, 0x16, 0x64, 0x61, 0x79, 0x73, 0x5f, 0x73, 0x69, 0x6e,
-	0x63, 0x65, 0x5f, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x04,
-	0x20, 0x01, 0x28, 0x05, 0x52, 0x13, 0x64, 0x61, 0x79, 0x73, 0x53, 0x69, 0x6e, 0x63, 0x65, 0x43,
-	0x75, 0x73, 0x74, 0x6f, 0x6d, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x3b, 0x0a, 0x1a, 0x64, 0x61, 0x79,
-	0x73, 0x5f, 0x73, 0x69, 0x6e, 0x63, 0x65, 0x5f, 0x6e, 0x6f, 0x6e, 0x63, 0x75, 0x72, 0x72, 0x65,
-	0x6e, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x05, 0x52, 0x17, 0x64,
-	0x61, 0x79, 0x73, 0x53, 0x69, 0x6e, 0x63, 0x65, 0x4e, 0x6f, 0x6e, 0x63, 0x75, 0x72, 0x72, 0x65,
-	0x6e, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x69, 0x73, 0x5f, 0x6c, 0x69, 0x76,
-	0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x69, 0x73, 0x4c, 0x69, 0x76, 0x65, 0x12,
-	0x27, 0x0a, 0x0f, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x5f, 0x70, 0x61, 0x74, 0x74, 0x65,
-	0x72, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65,
-	0x73, 0x50, 0x61, 0x74, 0x74, 0x65, 0x72, 0x6e, 0x12, 0x25, 0x0a, 0x0e, 0x6d, 0x61, 0x74, 0x63,
-	0x68, 0x65, 0x73, 0x5f, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x18, 0x08, 0x20, 0x03, 0x28, 0x09,
-	0x52, 0x0d, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x50, 0x72, 0x65, 0x66, 0x69, 0x78, 0x12,
-	0x32, 0x0a, 0x15, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x5f, 0x73, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x5f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x18, 0x09, 0x20, 0x03, 0x28, 0x09, 0x52, 0x13,
-	0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x6c,
-	0x61, 0x73, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x5f, 0x73,
-	0x75, 0x66, 0x66, 0x69, 0x78, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0d, 0x6d, 0x61, 0x74,
-	0x63, 0x68, 0x65, 0x73, 0x53, 0x75, 0x66, 0x66, 0x69, 0x78, 0x12, 0x34, 0x0a, 0x16, 0x6e, 0x6f,
-	0x6e, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x5f, 0x62, 0x65,
-	0x66, 0x6f, 0x72, 0x65, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x09, 0x52, 0x14, 0x6e, 0x6f, 0x6e, 0x63,
-	0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x42, 0x65, 0x66, 0x6f, 0x72, 0x65,
-	0x12, 0x2c, 0x0a, 0x12, 0x6e, 0x75, 0x6d, 0x5f, 0x6e, 0x65, 0x77, 0x65, 0x72, 0x5f, 0x76, 0x65,
-	0x72, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x05, 0x52, 0x10, 0x6e, 0x75,
-	0x6d, 0x4e, 0x65, 0x77, 0x65, 0x72, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x81,
-	0x01, 0x0a, 0x04, 0x52, 0x75, 0x6c, 0x65, 0x12, 0x37, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76,
-	0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x40, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f,
-	0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f,
-	0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69,
-	0x6f, 0x6e, 0x22, 0x44, 0x0a, 0x0f, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4c, 0x69, 0x66, 0x65,
-	0x63, 0x79, 0x63, 0x6c, 0x65, 0x12, 0x31, 0x0a, 0x04, 0x72, 0x75, 0x6c, 0x65, 0x18, 0x01, 0x20,
-	0x03, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f,
-	0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x75,
-	0x6c, 0x65, 0x52, 0x04, 0x72, 0x75, 0x6c, 0x65, 0x22, 0x5a, 0x0a, 0x0d, 0x42, 0x75, 0x63, 0x6b,
-	0x65, 0x74, 0x4c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x12, 0x1d, 0x0a, 0x0a, 0x6c, 0x6f, 0x67,
-	0x5f, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6c,
-	0x6f, 0x67, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x2a, 0x0a, 0x11, 0x6c, 0x6f, 0x67, 0x5f,
-	0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x0f, 0x6c, 0x6f, 0x67, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x50, 0x72,
-	0x65, 0x66, 0x69, 0x78, 0x22, 0x2b, 0x0a, 0x15, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4f, 0x62,
-	0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a,
-	0x04, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6d, 0x6f, 0x64,
-	0x65, 0x22, 0x42, 0x0a, 0x0b, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4f, 0x77, 0x6e, 0x65, 0x72,
-	0x12, 0x16, 0x0a, 0x06, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x06, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x1b, 0x0a, 0x09, 0x65, 0x6e, 0x74, 0x69,
-	0x74, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x49, 0x64, 0x22, 0xa2, 0x01, 0x0a, 0x15, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
-	0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12,
-	0x41, 0x0a, 0x0e, 0x65, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x5f, 0x74, 0x69, 0x6d,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74,
-	0x61, 0x6d, 0x70, 0x52, 0x0d, 0x65, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x54, 0x69,
-	0x6d, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x69, 0x73, 0x5f, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x69, 0x73, 0x4c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x12,
-	0x29, 0x0a, 0x10, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x65, 0x72,
-	0x69, 0x6f, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0f, 0x72, 0x65, 0x74, 0x65, 0x6e,
-	0x74, 0x69, 0x6f, 0x6e, 0x50, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x22, 0x99, 0x01, 0x0a, 0x16, 0x42,
-	0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x6f, 0x66, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x50,
-	0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12, 0x41, 0x0a, 0x0e, 0x65, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69,
-	0x76, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
-	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
-	0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0d, 0x65, 0x66, 0x66, 0x65, 0x63,
-	0x74, 0x69, 0x76, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x3c, 0x0a, 0x1a, 0x72, 0x65, 0x74, 0x65,
-	0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73,
-	0x65, 0x63, 0x6f, 0x6e, 0x64, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x18, 0x72, 0x65,
-	0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53,
-	0x65, 0x63, 0x6f, 0x6e, 0x64, 0x73, 0x22, 0x2c, 0x0a, 0x10, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
-	0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x69, 0x6e, 0x67, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x6e,
-	0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x6e, 0x61,
-	0x62, 0x6c, 0x65, 0x64, 0x22, 0x5f, 0x0a, 0x0d, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x57, 0x65,
-	0x62, 0x73, 0x69, 0x74, 0x65, 0x12, 0x28, 0x0a, 0x10, 0x6d, 0x61, 0x69, 0x6e, 0x5f, 0x70, 0x61,
-	0x67, 0x65, 0x5f, 0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x0e, 0x6d, 0x61, 0x69, 0x6e, 0x50, 0x61, 0x67, 0x65, 0x53, 0x75, 0x66, 0x66, 0x69, 0x78, 0x12,
-	0x24, 0x0a, 0x0e, 0x6e, 0x6f, 0x74, 0x5f, 0x66, 0x6f, 0x75, 0x6e, 0x64, 0x5f, 0x70, 0x61, 0x67,
-	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6e, 0x6f, 0x74, 0x46, 0x6f, 0x75, 0x6e,
-	0x64, 0x50, 0x61, 0x67, 0x65, 0x22, 0xd8, 0x0f, 0x0a, 0x06, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
-	0x12, 0x3e, 0x0a, 0x03, 0x61, 0x63, 0x6c, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e,
-	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f,
-	0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63,
-	0x63, 0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x52, 0x03, 0x61, 0x63, 0x6c,
-	0x12, 0x46, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x6f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f,
-	0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75,
-	0x63, 0x6b, 0x65, 0x74, 0x41, 0x75, 0x74, 0x6f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x52, 0x09, 0x61,
-	0x75, 0x74, 0x6f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x12, 0x40, 0x0a, 0x07, 0x62, 0x69, 0x6c, 0x6c,
-	0x69, 0x6e, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
-	0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x42, 0x69, 0x6c, 0x6c, 0x69, 0x6e,
-	0x67, 0x52, 0x07, 0x62, 0x69, 0x6c, 0x6c, 0x69, 0x6e, 0x67, 0x12, 0x37, 0x0a, 0x04, 0x63, 0x6f,
-	0x72, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
-	0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e,
-	0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x43, 0x6f, 0x72, 0x73, 0x52, 0x04, 0x63,
-	0x6f, 0x72, 0x73, 0x12, 0x6c, 0x0a, 0x17, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x5f, 0x70, 0x6c,
-	0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x05,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c,
-	0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42,
-	0x75, 0x63, 0x6b, 0x65, 0x74, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x50, 0x6c, 0x61, 0x63, 0x65,
-	0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x15, 0x63, 0x75, 0x73, 0x74,
-	0x6f, 0x6d, 0x50, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69,
-	0x67, 0x12, 0x37, 0x0a, 0x18, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x5f, 0x65, 0x76, 0x65,
-	0x6e, 0x74, 0x5f, 0x62, 0x61, 0x73, 0x65, 0x64, 0x5f, 0x68, 0x6f, 0x6c, 0x64, 0x18, 0x06, 0x20,
-	0x01, 0x28, 0x08, 0x52, 0x15, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x45, 0x76, 0x65, 0x6e,
-	0x74, 0x42, 0x61, 0x73, 0x65, 0x64, 0x48, 0x6f, 0x6c, 0x64, 0x12, 0x5a, 0x0a, 0x12, 0x64, 0x65,
-	0x66, 0x61, 0x75, 0x6c, 0x74, 0x5f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x61, 0x63, 0x6c,
-	0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
-	0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31,
-	0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e,
-	0x74, 0x72, 0x6f, 0x6c, 0x52, 0x10, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x4f, 0x62, 0x6a,
-	0x65, 0x63, 0x74, 0x41, 0x63, 0x6c, 0x12, 0x49, 0x0a, 0x0a, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70,
-	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x67, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x45, 0x6e, 0x63, 0x72, 0x79,
-	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x12, 0x0a, 0x04, 0x65, 0x74, 0x61, 0x67, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x65, 0x74, 0x61, 0x67, 0x12, 0x6b, 0x0a, 0x16, 0x68, 0x69, 0x65, 0x72, 0x61, 0x72, 0x63,
-	0x68, 0x69, 0x63, 0x61, 0x6c, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x18,
-	0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63,
-	0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e,
-	0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x48, 0x69, 0x65, 0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63,
-	0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x15, 0x68, 0x69, 0x65,
-	0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61,
-	0x63, 0x65, 0x12, 0x5c, 0x0a, 0x11, 0x69, 0x61, 0x6d, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67,
-	0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2f, 0x2e,
-	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f,
-	0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x49, 0x61,
-	0x6d, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x10,
-	0x69, 0x61, 0x6d, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64,
-	0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
-	0x6b, 0x69, 0x6e, 0x64, 0x12, 0x43, 0x0a, 0x06, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x18, 0x0e,
-	0x20, 0x03, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c,
-	0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42,
-	0x75, 0x63, 0x6b, 0x65, 0x74, 0x2e, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72,
-	0x79, 0x52, 0x06, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x12, 0x46, 0x0a, 0x09, 0x6c, 0x69, 0x66,
-	0x65, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x67,
+	0x74, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x22, 0x4a, 0x0a, 0x13,
+	0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x12, 0x33, 0x0a, 0x16, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64, 0x5f, 0x69,
+	0x70, 0x5f, 0x63, 0x69, 0x64, 0x72, 0x5f, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x13, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64, 0x49, 0x70, 0x43, 0x69,
+	0x64, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x22, 0x62, 0x0a, 0x11, 0x56, 0x70, 0x63, 0x4e,
+	0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x12, 0x33, 0x0a,
+	0x16, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64, 0x5f, 0x69, 0x70, 0x5f, 0x63, 0x69, 0x64, 0x72,
+	0x5f, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x13, 0x61,
+	0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64, 0x49, 0x70, 0x43, 0x69, 0x64, 0x72, 0x52, 0x61, 0x6e, 0x67,
+	0x65, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x22, 0xe2, 0x01, 0x0a,
+	0x0e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x49, 0x70, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x12,
+	0x12, 0x0a, 0x04, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6d,
+	0x6f, 0x64, 0x65, 0x12, 0x60, 0x0a, 0x15, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6e, 0x65,
+	0x74, 0x77, 0x6f, 0x72, 0x6b, 0x5f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75,
+	0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x75, 0x62,
+	0x6c, 0x69, 0x63, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x52, 0x13, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x5a, 0x0a, 0x13, 0x76, 0x70, 0x63, 0x5f, 0x6e, 0x65, 0x74,
+	0x77, 0x6f, 0x72, 0x6b, 0x5f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x18, 0x03, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75,
+	0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x56, 0x70, 0x63,
+	0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x52, 0x11,
+	0x76, 0x70, 0x63, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x73, 0x22, 0x41, 0x0a, 0x06, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x23, 0x0a, 0x0d, 0x73,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x5f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0c, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x6c, 0x61, 0x73, 0x73,
+	0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x74, 0x79, 0x70, 0x65, 0x22, 0x8c, 0x04, 0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69,
+	0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x03, 0x61, 0x67, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f,
+	0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x63, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x64, 0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x12, 0x2c, 0x0a, 0x12, 0x63,
+	0x75, 0x73, 0x74, 0x6f, 0x6d, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72,
+	0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x10, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x54,
+	0x69, 0x6d, 0x65, 0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x12, 0x33, 0x0a, 0x16, 0x64, 0x61, 0x79,
+	0x73, 0x5f, 0x73, 0x69, 0x6e, 0x63, 0x65, 0x5f, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x5f, 0x74,
+	0x69, 0x6d, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x13, 0x64, 0x61, 0x79, 0x73, 0x53,
+	0x69, 0x6e, 0x63, 0x65, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x3b,
+	0x0a, 0x1a, 0x64, 0x61, 0x79, 0x73, 0x5f, 0x73, 0x69, 0x6e, 0x63, 0x65, 0x5f, 0x6e, 0x6f, 0x6e,
+	0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01,
+	0x28, 0x05, 0x52, 0x17, 0x64, 0x61, 0x79, 0x73, 0x53, 0x69, 0x6e, 0x63, 0x65, 0x4e, 0x6f, 0x6e,
+	0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x69,
+	0x73, 0x5f, 0x6c, 0x69, 0x76, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x69, 0x73,
+	0x4c, 0x69, 0x76, 0x65, 0x12, 0x27, 0x0a, 0x0f, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x5f,
+	0x70, 0x61, 0x74, 0x74, 0x65, 0x72, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x6d,
+	0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x50, 0x61, 0x74, 0x74, 0x65, 0x72, 0x6e, 0x12, 0x25, 0x0a,
+	0x0e, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x5f, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x18,
+	0x08, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0d, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x50, 0x72,
+	0x65, 0x66, 0x69, 0x78, 0x12, 0x32, 0x0a, 0x15, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x5f,
+	0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x5f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x18, 0x09, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x13, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x53, 0x74, 0x6f, 0x72,
+	0x61, 0x67, 0x65, 0x43, 0x6c, 0x61, 0x73, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x6d, 0x61, 0x74, 0x63,
+	0x68, 0x65, 0x73, 0x5f, 0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x09,
+	0x52, 0x0d, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x53, 0x75, 0x66, 0x66, 0x69, 0x78, 0x12,
+	0x34, 0x0a, 0x16, 0x6e, 0x6f, 0x6e, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x69,
+	0x6d, 0x65, 0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x14, 0x6e, 0x6f, 0x6e, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x42,
+	0x65, 0x66, 0x6f, 0x72, 0x65, 0x12, 0x2c, 0x0a, 0x12, 0x6e, 0x75, 0x6d, 0x5f, 0x6e, 0x65, 0x77,
+	0x65, 0x72, 0x5f, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x0c, 0x20, 0x01, 0x28,
+	0x05, 0x52, 0x10, 0x6e, 0x75, 0x6d, 0x4e, 0x65, 0x77, 0x65, 0x72, 0x56, 0x65, 0x72, 0x73, 0x69,
+	0x6f, 0x6e, 0x73, 0x22, 0x81, 0x01, 0x0a, 0x04, 0x52, 0x75, 0x6c, 0x65, 0x12, 0x37, 0x0a, 0x06,
+	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x67,
 	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72,
-	0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4c, 0x69, 0x66,
-	0x65, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x52, 0x09, 0x6c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c,
-	0x65, 0x12, 0x1a, 0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x10, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x23, 0x0a,
-	0x0d, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x11,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79,
-	0x70, 0x65, 0x12, 0x40, 0x0a, 0x07, 0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x18, 0x12, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f,
-	0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75,
-	0x63, 0x6b, 0x65, 0x74, 0x4c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x52, 0x07, 0x6c, 0x6f, 0x67,
-	0x67, 0x69, 0x6e, 0x67, 0x12, 0x26, 0x0a, 0x0e, 0x6d, 0x65, 0x74, 0x61, 0x67, 0x65, 0x6e, 0x65,
-	0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x13, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x6d, 0x65,
-	0x74, 0x61, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04,
-	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x14, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
-	0x12, 0x59, 0x0a, 0x10, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x72, 0x65, 0x74, 0x65, 0x6e,
-	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x15, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x67, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63,
-	0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0f, 0x6f, 0x62, 0x6a, 0x65,
-	0x63, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3a, 0x0a, 0x05, 0x6f,
-	0x77, 0x6e, 0x65, 0x72, 0x18, 0x16, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x67, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4f, 0x77, 0x6e, 0x65, 0x72,
-	0x52, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x25, 0x0a, 0x0e, 0x70, 0x72, 0x6f, 0x6a, 0x65,
-	0x63, 0x74, 0x5f, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x17, 0x20, 0x01, 0x28, 0x04, 0x52,
-	0x0d, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x59,
-	0x0a, 0x10, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x6f, 0x6c, 0x69,
-	0x63, 0x79, 0x18, 0x18, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x06, 0x61,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x40, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69,
+	0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
 	0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e,
-	0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69,
-	0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x52, 0x0f, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74,
-	0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x72, 0x70, 0x6f,
-	0x18, 0x19, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x72, 0x70, 0x6f, 0x12, 0x25, 0x0a, 0x0f, 0x73,
-	0x61, 0x74, 0x69, 0x73, 0x66, 0x69, 0x65, 0x73, 0x5f, 0x70, 0x5f, 0x7a, 0x5f, 0x73, 0x18, 0x1a,
-	0x20, 0x01, 0x28, 0x08, 0x52, 0x0c, 0x73, 0x61, 0x74, 0x69, 0x73, 0x66, 0x69, 0x65, 0x73, 0x50,
-	0x5a, 0x53, 0x12, 0x1b, 0x0a, 0x09, 0x73, 0x65, 0x6c, 0x66, 0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x18,
-	0x1b, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x65, 0x6c, 0x66, 0x4c, 0x69, 0x6e, 0x6b, 0x12,
-	0x5d, 0x0a, 0x12, 0x73, 0x6f, 0x66, 0x74, 0x5f, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x5f, 0x70,
-	0x6f, 0x6c, 0x69, 0x63, 0x79, 0x18, 0x1c, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x67, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x6f, 0x66, 0x74,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x52, 0x10, 0x73, 0x6f,
-	0x66, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12, 0x23,
-	0x0a, 0x0d, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x5f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x18,
-	0x1d, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x6c,
-	0x61, 0x73, 0x73, 0x12, 0x3d, 0x0a, 0x0c, 0x74, 0x69, 0x6d, 0x65, 0x5f, 0x63, 0x72, 0x65, 0x61,
-	0x74, 0x65, 0x64, 0x18, 0x1e, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
-	0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65,
-	0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0b, 0x74, 0x69, 0x6d, 0x65, 0x43, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x64, 0x12, 0x34, 0x0a, 0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x18, 0x1f, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52,
-	0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x12, 0x49, 0x0a, 0x0a, 0x76, 0x65, 0x72, 0x73,
-	0x69, 0x6f, 0x6e, 0x69, 0x6e, 0x67, 0x18, 0x20, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x67,
-	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72,
-	0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x56, 0x65, 0x72,
-	0x73, 0x69, 0x6f, 0x6e, 0x69, 0x6e, 0x67, 0x52, 0x0a, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e,
-	0x69, 0x6e, 0x67, 0x12, 0x40, 0x0a, 0x07, 0x77, 0x65, 0x62, 0x73, 0x69, 0x74, 0x65, 0x18, 0x21,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c,
-	0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42,
-	0x75, 0x63, 0x6b, 0x65, 0x74, 0x57, 0x65, 0x62, 0x73, 0x69, 0x74, 0x65, 0x52, 0x07, 0x77, 0x65,
-	0x62, 0x73, 0x69, 0x74, 0x65, 0x1a, 0x39, 0x0a, 0x0b, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x45,
-	0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01,
-	0x22, 0x5b, 0x0a, 0x1e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73,
-	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x65,
-	0x61, 0x6d, 0x12, 0x25, 0x0a, 0x0e, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x6e, 0x75,
-	0x6d, 0x62, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x70, 0x72, 0x6f, 0x6a,
-	0x65, 0x63, 0x74, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x65, 0x61,
-	0x6d, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x61, 0x6d, 0x22, 0xd5, 0x02,
-	0x0a, 0x13, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f,
-	0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x12, 0x16, 0x0a, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x16, 0x0a,
-	0x06, 0x64, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x64,
-	0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x18, 0x03,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x16, 0x0a, 0x06, 0x65,
-	0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x12, 0x1b, 0x0a, 0x09, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x5f, 0x69, 0x64,
-	0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64,
-	0x12, 0x12, 0x0a, 0x04, 0x65, 0x74, 0x61, 0x67, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
-	0x65, 0x74, 0x61, 0x67, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x08, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x5a, 0x0a, 0x0c, 0x70, 0x72, 0x6f, 0x6a,
-	0x65, 0x63, 0x74, 0x5f, 0x74, 0x65, 0x61, 0x6d, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x37,
-	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74,
-	0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41,
-	0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x50, 0x72, 0x6f, 0x6a,
-	0x65, 0x63, 0x74, 0x54, 0x65, 0x61, 0x6d, 0x52, 0x0b, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74,
-	0x54, 0x65, 0x61, 0x6d, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x18, 0x0a, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x73, 0x65, 0x6c, 0x66,
-	0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x65, 0x6c,
-	0x66, 0x4c, 0x69, 0x6e, 0x6b, 0x22, 0x6e, 0x0a, 0x14, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41,
-	0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x73, 0x12, 0x42, 0x0a,
-	0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67,
-	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72,
-	0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x63,
-	0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d,
-	0x73, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x6b, 0x69, 0x6e, 0x64, 0x22, 0x51, 0x0a, 0x28, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53,
-	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x43, 0x75, 0x73, 0x74,
-	0x6f, 0x6d, 0x50, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69,
-	0x67, 0x12, 0x25, 0x0a, 0x0e, 0x64, 0x61, 0x74, 0x61, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0d, 0x64, 0x61, 0x74, 0x61, 0x4c,
-	0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x44, 0x0a, 0x28, 0x42, 0x75, 0x63, 0x6b,
-	0x65, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x48,
-	0x69, 0x65, 0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73,
-	0x70, 0x61, 0x63, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x22, 0xf7,
-	0x02, 0x0a, 0x13, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x79,
-	0x0a, 0x17, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x5f, 0x70, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65,
-	0x6e, 0x74, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x41, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73,
-	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
-	0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x43, 0x75, 0x73,
-	0x74, 0x6f, 0x6d, 0x50, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66,
-	0x69, 0x67, 0x52, 0x15, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x50, 0x6c, 0x61, 0x63, 0x65, 0x6d,
-	0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x78, 0x0a, 0x16, 0x68, 0x69, 0x65,
-	0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x70,
-	0x61, 0x63, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
-	0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x48, 0x69, 0x65, 0x72, 0x61, 0x72, 0x63, 0x68, 0x69,
-	0x63, 0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x15, 0x68, 0x69,
-	0x65, 0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70,
-	0x61, 0x63, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x12, 0x23, 0x0a, 0x0d, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f,
-	0x74, 0x79, 0x70, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6c, 0x6f, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x22, 0x7c, 0x0a, 0x07, 0x42, 0x75, 0x63, 0x6b,
-	0x65, 0x74, 0x73, 0x12, 0x35, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75,
-	0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63,
-	0x6b, 0x65, 0x74, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69,
-	0x6e, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x26,
-	0x0a, 0x0f, 0x6e, 0x65, 0x78, 0x74, 0x5f, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x74, 0x6f, 0x6b, 0x65,
-	0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x6e, 0x65, 0x78, 0x74, 0x50, 0x61, 0x67,
-	0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0xb5, 0x02, 0x0a, 0x19, 0x42, 0x75, 0x6c, 0x6b, 0x52,
-	0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x12, 0x27, 0x0a, 0x0f, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x5f, 0x6f, 0x76,
-	0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0e, 0x61,
-	0x6c, 0x6c, 0x6f, 0x77, 0x4f, 0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x12, 0x26, 0x0a,
-	0x0f, 0x63, 0x6f, 0x70, 0x79, 0x5f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x61, 0x63, 0x6c,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0d, 0x63, 0x6f, 0x70, 0x79, 0x53, 0x6f, 0x75, 0x72,
-	0x63, 0x65, 0x41, 0x63, 0x6c, 0x12, 0x1f, 0x0a, 0x0b, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x5f, 0x67,
-	0x6c, 0x6f, 0x62, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0a, 0x6d, 0x61, 0x74, 0x63,
-	0x68, 0x47, 0x6c, 0x6f, 0x62, 0x73, 0x12, 0x51, 0x0a, 0x17, 0x73, 0x6f, 0x66, 0x74, 0x5f, 0x64,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x66, 0x74, 0x65, 0x72, 0x5f, 0x74, 0x69, 0x6d,
-	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74,
-	0x61, 0x6d, 0x70, 0x52, 0x14, 0x73, 0x6f, 0x66, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x64,
-	0x41, 0x66, 0x74, 0x65, 0x72, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x53, 0x0a, 0x18, 0x73, 0x6f, 0x66,
-	0x74, 0x5f, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65,
-	0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69,
-	0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x15, 0x73, 0x6f, 0x66, 0x74, 0x44, 0x65, 0x6c,
-	0x65, 0x74, 0x65, 0x64, 0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0xf0,
-	0x02, 0x0a, 0x07, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64,
-	0x72, 0x65, 0x73, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x65, 0x78, 0x70, 0x69, 0x72, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x65, 0x78, 0x70, 0x69, 0x72, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x44, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61,
-	0x6d, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x09, 0x63, 0x6f,
+	0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x44, 0x0a, 0x0f, 0x42, 0x75, 0x63, 0x6b, 0x65,
+	0x74, 0x4c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x12, 0x31, 0x0a, 0x04, 0x72, 0x75,
+	0x6c, 0x65, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
 	0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e,
-	0x76, 0x31, 0x2e, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d,
-	0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x18,
-	0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x72, 0x65, 0x73, 0x6f,
-	0x75, 0x72, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x72,
-	0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x0c, 0x72, 0x65, 0x73,
-	0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x75, 0x72, 0x69, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x0b, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x55, 0x72, 0x69, 0x12, 0x14, 0x0a, 0x05,
-	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b,
-	0x65, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x1a, 0x39, 0x0a, 0x0b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38,
-	0x01, 0x22, 0x45, 0x0a, 0x13, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x50, 0x72, 0x65, 0x63, 0x6f,
-	0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x2e, 0x0a, 0x13, 0x69, 0x66, 0x5f, 0x67,
-	0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x11, 0x69, 0x66, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x4d, 0x61, 0x74, 0x63, 0x68, 0x22, 0xb2, 0x01, 0x0a, 0x1b, 0x43, 0x6f, 0x6d,
-	0x70, 0x6f, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x53, 0x6f, 0x75, 0x72, 0x63,
-	0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x67, 0x65, 0x6e, 0x65,
-	0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x67, 0x65,
-	0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x5f, 0x0a, 0x14,
-	0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x70, 0x72, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74,
-	0x69, 0x6f, 0x6e, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x50, 0x72, 0x65, 0x63, 0x6f,
-	0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x13, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74,
-	0x50, 0x72, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xc4, 0x01,
-	0x0a, 0x0e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x12, 0x41, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63,
-	0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e,
-	0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x5b, 0x0a, 0x0e, 0x73, 0x6f, 0x75, 0x72, 0x63,
-	0x65, 0x5f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x34, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73,
-	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x73,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4f, 0x62,
-	0x6a, 0x65, 0x63, 0x74, 0x73, 0x52, 0x0d, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4f, 0x62, 0x6a,
-	0x65, 0x63, 0x74, 0x73, 0x22, 0x7a, 0x0a, 0x04, 0x45, 0x78, 0x70, 0x72, 0x12, 0x20, 0x0a, 0x0b,
-	0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e,
-	0x0a, 0x0a, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0a, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x1a,
-	0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69,
-	0x74, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65,
-	0x22, 0x3c, 0x0a, 0x17, 0x46, 0x6f, 0x6c, 0x64, 0x65, 0x72, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e,
-	0x67, 0x52, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x21, 0x0a, 0x0c, 0x6f,
-	0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0b, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x22, 0xf9,
-	0x02, 0x0a, 0x06, 0x46, 0x6f, 0x6c, 0x64, 0x65, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x62, 0x75, 0x63,
-	0x6b, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65,
-	0x74, 0x12, 0x3b, 0x0a, 0x0b, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
-	0x6d, 0x70, 0x52, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x0e,
-	0x0a, 0x02, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12,
-	0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69,
-	0x6e, 0x64, 0x12, 0x26, 0x0a, 0x0e, 0x6d, 0x65, 0x74, 0x61, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x6d, 0x65, 0x74, 0x61,
-	0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61,
-	0x6d, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x60,
-	0x0a, 0x13, 0x70, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x5f, 0x72, 0x65, 0x6e, 0x61, 0x6d, 0x65,
-	0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x30, 0x2e, 0x67, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x46, 0x6f, 0x6c, 0x64, 0x65, 0x72, 0x50, 0x65, 0x6e, 0x64,
-	0x69, 0x6e, 0x67, 0x52, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x11, 0x70,
-	0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x49, 0x6e, 0x66, 0x6f,
-	0x12, 0x1b, 0x0a, 0x09, 0x73, 0x65, 0x6c, 0x66, 0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x08, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x65, 0x6c, 0x66, 0x4c, 0x69, 0x6e, 0x6b, 0x12, 0x3b, 0x0a,
-	0x0b, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x09, 0x20, 0x01,
+	0x76, 0x31, 0x2e, 0x52, 0x75, 0x6c, 0x65, 0x52, 0x04, 0x72, 0x75, 0x6c, 0x65, 0x22, 0x5a, 0x0a,
+	0x0d, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x12, 0x1d,
+	0x0a, 0x0a, 0x6c, 0x6f, 0x67, 0x5f, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x09, 0x6c, 0x6f, 0x67, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x2a, 0x0a,
+	0x11, 0x6c, 0x6f, 0x67, 0x5f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x70, 0x72, 0x65, 0x66,
+	0x69, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x6c, 0x6f, 0x67, 0x4f, 0x62, 0x6a,
+	0x65, 0x63, 0x74, 0x50, 0x72, 0x65, 0x66, 0x69, 0x78, 0x22, 0x2b, 0x0a, 0x15, 0x42, 0x75, 0x63,
+	0x6b, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69,
+	0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x6d, 0x6f, 0x64, 0x65, 0x22, 0x42, 0x0a, 0x0b, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
+	0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x1b, 0x0a,
+	0x09, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64, 0x22, 0xa2, 0x01, 0x0a, 0x15, 0x42,
+	0x75, 0x63, 0x6b, 0x65, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f,
+	0x6c, 0x69, 0x63, 0x79, 0x12, 0x41, 0x0a, 0x0e, 0x65, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76,
+	0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67,
+	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54,
+	0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0d, 0x65, 0x66, 0x66, 0x65, 0x63, 0x74,
+	0x69, 0x76, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x69, 0x73, 0x5f, 0x6c, 0x6f,
+	0x63, 0x6b, 0x65, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x69, 0x73, 0x4c, 0x6f,
+	0x63, 0x6b, 0x65, 0x64, 0x12, 0x29, 0x0a, 0x10, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f,
+	0x6e, 0x5f, 0x70, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0f,
+	0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x22,
+	0x99, 0x01, 0x0a, 0x16, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x6f, 0x66, 0x74, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12, 0x41, 0x0a, 0x0e, 0x65, 0x66,
+	0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0a,
-	0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x7c, 0x0a, 0x07, 0x46, 0x6f,
-	0x6c, 0x64, 0x65, 0x72, 0x73, 0x12, 0x35, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01,
-	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c,
-	0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x46,
-	0x6f, 0x6c, 0x64, 0x65, 0x72, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x12, 0x0a, 0x04,
-	0x6b, 0x69, 0x6e, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64,
-	0x12, 0x26, 0x0a, 0x0f, 0x6e, 0x65, 0x78, 0x74, 0x5f, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x74, 0x6f,
-	0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x6e, 0x65, 0x78, 0x74, 0x50,
-	0x61, 0x67, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0xa6, 0x01, 0x0a, 0x27, 0x47, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x4c, 0x6f, 0x6e, 0x67, 0x72, 0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4c, 0x69,
-	0x73, 0x74, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x26, 0x0a, 0x0f, 0x6e, 0x65, 0x78, 0x74, 0x5f, 0x70, 0x61, 0x67,
-	0x65, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x6e,
-	0x65, 0x78, 0x74, 0x50, 0x61, 0x67, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x53, 0x0a, 0x0a,
-	0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
-	0x32, 0x33, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e,
-	0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x6f, 0x6f, 0x67, 0x6c,
-	0x65, 0x4c, 0x6f, 0x6e, 0x67, 0x72, 0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x73, 0x22, 0xe8, 0x03, 0x0a, 0x1a, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x4c, 0x6f, 0x6e, 0x67,
-	0x72, 0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x12, 0x0a, 0x04, 0x64, 0x6f, 0x6e, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x04,
-	0x64, 0x6f, 0x6e, 0x65, 0x12, 0x3e, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f,
-	0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x52, 0x70, 0x63, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x05, 0x65,
-	0x72, 0x72, 0x6f, 0x72, 0x12, 0x5d, 0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
-	0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
+	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0d,
+	0x65, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x3c, 0x0a,
+	0x1a, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x64, 0x75, 0x72, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x18, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x75, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x73, 0x22, 0x2c, 0x0a, 0x10, 0x42,
+	0x75, 0x63, 0x6b, 0x65, 0x74, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x69, 0x6e, 0x67, 0x12,
+	0x18, 0x0a, 0x07, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
+	0x52, 0x07, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x22, 0x5f, 0x0a, 0x0d, 0x42, 0x75, 0x63,
+	0x6b, 0x65, 0x74, 0x57, 0x65, 0x62, 0x73, 0x69, 0x74, 0x65, 0x12, 0x28, 0x0a, 0x10, 0x6d, 0x61,
+	0x69, 0x6e, 0x5f, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x6d, 0x61, 0x69, 0x6e, 0x50, 0x61, 0x67, 0x65, 0x53, 0x75,
+	0x66, 0x66, 0x69, 0x78, 0x12, 0x24, 0x0a, 0x0e, 0x6e, 0x6f, 0x74, 0x5f, 0x66, 0x6f, 0x75, 0x6e,
+	0x64, 0x5f, 0x70, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6e, 0x6f,
+	0x74, 0x46, 0x6f, 0x75, 0x6e, 0x64, 0x50, 0x61, 0x67, 0x65, 0x22, 0x9e, 0x10, 0x0a, 0x06, 0x42,
+	0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x3e, 0x0a, 0x03, 0x61, 0x63, 0x6c, 0x18, 0x01, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75,
+	0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63,
+	0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c,
+	0x52, 0x03, 0x61, 0x63, 0x6c, 0x12, 0x46, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x6f, 0x63, 0x6c, 0x61,
+	0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e,
+	0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x75, 0x74, 0x6f, 0x63, 0x6c, 0x61,
+	0x73, 0x73, 0x52, 0x09, 0x61, 0x75, 0x74, 0x6f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x12, 0x40, 0x0a,
+	0x07, 0x62, 0x69, 0x6c, 0x6c, 0x69, 0x6e, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74,
+	0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x42,
+	0x69, 0x6c, 0x6c, 0x69, 0x6e, 0x67, 0x52, 0x07, 0x62, 0x69, 0x6c, 0x6c, 0x69, 0x6e, 0x67, 0x12,
+	0x37, 0x0a, 0x04, 0x63, 0x6f, 0x72, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x43, 0x6f,
+	0x72, 0x73, 0x52, 0x04, 0x63, 0x6f, 0x72, 0x73, 0x12, 0x6c, 0x0a, 0x17, 0x63, 0x75, 0x73, 0x74,
+	0x6f, 0x6d, 0x5f, 0x70, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x63, 0x6f, 0x6e,
+	0x66, 0x69, 0x67, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
+	0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d,
+	0x50, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52,
+	0x15, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x50, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74,
+	0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x37, 0x0a, 0x18, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c,
+	0x74, 0x5f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x62, 0x61, 0x73, 0x65, 0x64, 0x5f, 0x68, 0x6f,
+	0x6c, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52, 0x15, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c,
+	0x74, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x42, 0x61, 0x73, 0x65, 0x64, 0x48, 0x6f, 0x6c, 0x64, 0x12,
+	0x5a, 0x0a, 0x12, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x5f, 0x6f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x5f, 0x61, 0x63, 0x6c, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61,
+	0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x63, 0x63, 0x65,
+	0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x52, 0x10, 0x64, 0x65, 0x66, 0x61, 0x75,
+	0x6c, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x63, 0x6c, 0x12, 0x49, 0x0a, 0x0a, 0x65,
+	0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x29, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
+	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x65, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x65, 0x74, 0x61, 0x67, 0x18, 0x09,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x65, 0x74, 0x61, 0x67, 0x12, 0x6b, 0x0a, 0x16, 0x68, 0x69,
+	0x65, 0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x73,
+	0x70, 0x61, 0x63, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x48, 0x69, 0x65, 0x72, 0x61,
+	0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65,
+	0x52, 0x15, 0x68, 0x69, 0x65, 0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61,
+	0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x12, 0x5c, 0x0a, 0x11, 0x69, 0x61, 0x6d, 0x5f, 0x63,
+	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x0b, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75,
+	0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63,
+	0x6b, 0x65, 0x74, 0x49, 0x61, 0x6d, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x75, 0x72, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x52, 0x10, 0x69, 0x61, 0x6d, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x75, 0x72,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x0c, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x44, 0x0a, 0x09, 0x69, 0x70, 0x5f, 0x66, 0x69, 0x6c, 0x74,
+	0x65, 0x72, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e,
+	0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x49, 0x70, 0x46, 0x69, 0x6c, 0x74, 0x65,
+	0x72, 0x52, 0x08, 0x69, 0x70, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6b,
+	0x69, 0x6e, 0x64, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12,
+	0x43, 0x0a, 0x06, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x18, 0x0f, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x2b, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
+	0x2e, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x06, 0x6c, 0x61,
+	0x62, 0x65, 0x6c, 0x73, 0x12, 0x46, 0x0a, 0x09, 0x6c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c,
+	0x65, 0x18, 0x10, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76,
+	0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c,
+	0x65, 0x52, 0x09, 0x6c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x12, 0x1a, 0x0a, 0x08,
+	0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x11, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
+	0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x23, 0x0a, 0x0d, 0x6c, 0x6f, 0x63, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x12, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0c, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x12, 0x40, 0x0a,
+	0x07, 0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x18, 0x13, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74,
+	0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4c,
+	0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x52, 0x07, 0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x12,
+	0x26, 0x0a, 0x0e, 0x6d, 0x65, 0x74, 0x61, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x14, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x6d, 0x65, 0x74, 0x61, 0x67, 0x65, 0x6e,
+	0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x15, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x59, 0x0a, 0x10, 0x6f,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x18,
+	0x16, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63,
+	0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e,
+	0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x74, 0x65,
+	0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x74,
+	0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3a, 0x0a, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x18,
+	0x17, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63,
+	0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e,
+	0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x52, 0x05, 0x6f, 0x77, 0x6e,
+	0x65, 0x72, 0x12, 0x25, 0x0a, 0x0e, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x6e, 0x75,
+	0x6d, 0x62, 0x65, 0x72, 0x18, 0x18, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x70, 0x72, 0x6f, 0x6a,
+	0x65, 0x63, 0x74, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x59, 0x0a, 0x10, 0x72, 0x65, 0x74,
+	0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x18, 0x19, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f,
+	0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75,
+	0x63, 0x6b, 0x65, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c,
+	0x69, 0x63, 0x79, 0x52, 0x0f, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f,
+	0x6c, 0x69, 0x63, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x72, 0x70, 0x6f, 0x18, 0x1a, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x03, 0x72, 0x70, 0x6f, 0x12, 0x25, 0x0a, 0x0f, 0x73, 0x61, 0x74, 0x69, 0x73, 0x66,
+	0x69, 0x65, 0x73, 0x5f, 0x70, 0x5f, 0x7a, 0x5f, 0x73, 0x18, 0x1b, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x0c, 0x73, 0x61, 0x74, 0x69, 0x73, 0x66, 0x69, 0x65, 0x73, 0x50, 0x5a, 0x53, 0x12, 0x1b, 0x0a,
+	0x09, 0x73, 0x65, 0x6c, 0x66, 0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x1c, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x08, 0x73, 0x65, 0x6c, 0x66, 0x4c, 0x69, 0x6e, 0x6b, 0x12, 0x5d, 0x0a, 0x12, 0x73, 0x6f,
+	0x66, 0x74, 0x5f, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x5f, 0x70, 0x6f, 0x6c, 0x69, 0x63, 0x79,
+	0x18, 0x1d, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
 	0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31,
-	0x2e, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x4c, 0x6f, 0x6e, 0x67, 0x72, 0x75, 0x6e, 0x6e, 0x69,
-	0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x4d, 0x65, 0x74, 0x61,
-	0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64,
-	0x61, 0x74, 0x61, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x5d, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
+	0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x6f, 0x66, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x52, 0x10, 0x73, 0x6f, 0x66, 0x74, 0x44, 0x65, 0x6c,
+	0x65, 0x74, 0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12, 0x23, 0x0a, 0x0d, 0x73, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x5f, 0x63, 0x6c, 0x61, 0x73, 0x73, 0x18, 0x1e, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0c, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x6c, 0x61, 0x73, 0x73, 0x12, 0x3d,
+	0x0a, 0x0c, 0x74, 0x69, 0x6d, 0x65, 0x5f, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x18, 0x1f,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70,
+	0x52, 0x0b, 0x74, 0x69, 0x6d, 0x65, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x12, 0x34, 0x0a,
+	0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x18, 0x20, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x07, 0x75, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x64, 0x12, 0x49, 0x0a, 0x0a, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x69, 0x6e,
+	0x67, 0x18, 0x21, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76,
+	0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x69,
+	0x6e, 0x67, 0x52, 0x0a, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x69, 0x6e, 0x67, 0x12, 0x40,
+	0x0a, 0x07, 0x77, 0x65, 0x62, 0x73, 0x69, 0x74, 0x65, 0x18, 0x22, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x26, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74,
+	0x57, 0x65, 0x62, 0x73, 0x69, 0x74, 0x65, 0x52, 0x07, 0x77, 0x65, 0x62, 0x73, 0x69, 0x74, 0x65,
+	0x1a, 0x39, 0x0a, 0x0b, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12,
+	0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65,
+	0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x5b, 0x0a, 0x1e, 0x42,
+	0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72,
+	0x6f, 0x6c, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x65, 0x61, 0x6d, 0x12, 0x25, 0x0a,
+	0x0e, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x4e, 0x75,
+	0x6d, 0x62, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x65, 0x61, 0x6d, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x61, 0x6d, 0x22, 0xd5, 0x02, 0x0a, 0x13, 0x42, 0x75, 0x63,
+	0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c,
+	0x12, 0x16, 0x0a, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x64, 0x6f, 0x6d, 0x61,
+	0x69, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x64, 0x6f, 0x6d, 0x61, 0x69, 0x6e,
+	0x12, 0x14, 0x0a, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x16, 0x0a, 0x06, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x1b,
+	0x0a, 0x09, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x08, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x65,
+	0x74, 0x61, 0x67, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x65, 0x74, 0x61, 0x67, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b,
+	0x69, 0x6e, 0x64, 0x12, 0x5a, 0x0a, 0x0c, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x74,
+	0x65, 0x61, 0x6d, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x37, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
+	0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73,
+	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x65,
+	0x61, 0x6d, 0x52, 0x0b, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x65, 0x61, 0x6d, 0x12,
+	0x12, 0x0a, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x72,
+	0x6f, 0x6c, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x73, 0x65, 0x6c, 0x66, 0x5f, 0x6c, 0x69, 0x6e, 0x6b,
+	0x18, 0x0b, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x65, 0x6c, 0x66, 0x4c, 0x69, 0x6e, 0x6b,
+	0x22, 0x6e, 0x0a, 0x14, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73,
+	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x73, 0x12, 0x42, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d,
+	0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76,
+	0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x43, 0x6f,
+	0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x12, 0x0a, 0x04,
+	0x6b, 0x69, 0x6e, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64,
+	0x22, 0x51, 0x0a, 0x28, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x50, 0x6c, 0x61,
+	0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x25, 0x0a, 0x0e,
+	0x64, 0x61, 0x74, 0x61, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x09, 0x52, 0x0d, 0x64, 0x61, 0x74, 0x61, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x22, 0x44, 0x0a, 0x28, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x48, 0x69, 0x65, 0x72, 0x61, 0x72,
+	0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x12,
+	0x18, 0x0a, 0x07, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
+	0x52, 0x07, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x22, 0xf7, 0x02, 0x0a, 0x13, 0x42, 0x75,
+	0x63, 0x6b, 0x65, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75,
+	0x74, 0x12, 0x16, 0x0a, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x79, 0x0a, 0x17, 0x63, 0x75, 0x73,
+	0x74, 0x6f, 0x6d, 0x5f, 0x70, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x63, 0x6f,
+	0x6e, 0x66, 0x69, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61,
+	0x67, 0x65, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x50, 0x6c,
+	0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x15, 0x63,
+	0x75, 0x73, 0x74, 0x6f, 0x6d, 0x50, 0x6c, 0x61, 0x63, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f,
+	0x6e, 0x66, 0x69, 0x67, 0x12, 0x78, 0x0a, 0x16, 0x68, 0x69, 0x65, 0x72, 0x61, 0x72, 0x63, 0x68,
+	0x69, 0x63, 0x61, 0x6c, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c,
+	0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42,
+	0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x4c, 0x61, 0x79, 0x6f,
+	0x75, 0x74, 0x48, 0x69, 0x65, 0x72, 0x61, 0x72, 0x63, 0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61,
+	0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x15, 0x68, 0x69, 0x65, 0x72, 0x61, 0x72, 0x63,
+	0x68, 0x69, 0x63, 0x61, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x12, 0x12,
+	0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69,
+	0x6e, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x23,
+	0x0a, 0x0d, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18,
+	0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x54,
+	0x79, 0x70, 0x65, 0x22, 0x7c, 0x0a, 0x07, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x73, 0x12, 0x35,
+	0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x52, 0x05,
+	0x69, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x26, 0x0a, 0x0f, 0x6e, 0x65, 0x78,
+	0x74, 0x5f, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0d, 0x6e, 0x65, 0x78, 0x74, 0x50, 0x61, 0x67, 0x65, 0x54, 0x6f, 0x6b, 0x65,
+	0x6e, 0x22, 0xb5, 0x02, 0x0a, 0x19, 0x42, 0x75, 0x6c, 0x6b, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72,
+	0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x27, 0x0a, 0x0f, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x5f, 0x6f, 0x76, 0x65, 0x72, 0x77, 0x72, 0x69,
+	0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0e, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x4f,
+	0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x12, 0x26, 0x0a, 0x0f, 0x63, 0x6f, 0x70, 0x79,
+	0x5f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x61, 0x63, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x08, 0x52, 0x0d, 0x63, 0x6f, 0x70, 0x79, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x41, 0x63, 0x6c,
+	0x12, 0x1f, 0x0a, 0x0b, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x5f, 0x67, 0x6c, 0x6f, 0x62, 0x73, 0x18,
+	0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0a, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x47, 0x6c, 0x6f, 0x62,
+	0x73, 0x12, 0x51, 0x0a, 0x17, 0x73, 0x6f, 0x66, 0x74, 0x5f, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x64, 0x5f, 0x61, 0x66, 0x74, 0x65, 0x72, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x14,
+	0x73, 0x6f, 0x66, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x41, 0x66, 0x74, 0x65, 0x72,
+	0x54, 0x69, 0x6d, 0x65, 0x12, 0x53, 0x0a, 0x18, 0x73, 0x6f, 0x66, 0x74, 0x5f, 0x64, 0x65, 0x6c,
+	0x65, 0x74, 0x65, 0x64, 0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
+	0x6d, 0x70, 0x52, 0x15, 0x73, 0x6f, 0x66, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x42,
+	0x65, 0x66, 0x6f, 0x72, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0xf0, 0x02, 0x0a, 0x07, 0x43, 0x68,
+	0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12,
+	0x1e, 0x0a, 0x0a, 0x65, 0x78, 0x70, 0x69, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x03, 0x52, 0x0a, 0x65, 0x78, 0x70, 0x69, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b,
+	0x69, 0x6e, 0x64, 0x12, 0x44, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x05, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f,
+	0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x68,
+	0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x45, 0x6e, 0x74, 0x72,
+	0x79, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x70, 0x61, 0x79,
+	0x6c, 0x6f, 0x61, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x70, 0x61, 0x79, 0x6c,
+	0x6f, 0x61, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f,
+	0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72,
+	0x63, 0x65, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x0c, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x5f, 0x75, 0x72, 0x69, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x72, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x55, 0x72, 0x69, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
+	0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x12, 0x0a,
+	0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x79, 0x70,
+	0x65, 0x1a, 0x39, 0x0a, 0x0b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79,
+	0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b,
+	0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x45, 0x0a, 0x13,
+	0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x50, 0x72, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x12, 0x2e, 0x0a, 0x13, 0x69, 0x66, 0x5f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x11, 0x69, 0x66, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x61,
+	0x74, 0x63, 0x68, 0x22, 0xb2, 0x01, 0x0a, 0x1b, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x65, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4f, 0x62, 0x6a, 0x65,
+	0x63, 0x74, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x5f, 0x0a, 0x14, 0x6f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x5f, 0x70, 0x72, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63,
+	0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e,
+	0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x50, 0x72, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x52, 0x13, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x50, 0x72, 0x65, 0x63, 0x6f,
+	0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xc4, 0x01, 0x0a, 0x0e, 0x43, 0x6f, 0x6d,
+	0x70, 0x6f, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x41, 0x0a, 0x0b, 0x64,
+	0x65, 0x73, 0x74, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x1f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e,
+	0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12,
+	0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69,
+	0x6e, 0x64, 0x12, 0x5b, 0x0a, 0x0e, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x6f, 0x62, 0x6a,
+	0x65, 0x63, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73,
+	0x52, 0x0d, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x22,
+	0x7a, 0x0a, 0x04, 0x45, 0x78, 0x70, 0x72, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72,
+	0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65,
+	0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a, 0x0a, 0x65, 0x78, 0x70,
+	0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x65,
+	0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x1a, 0x0a, 0x08, 0x6c, 0x6f, 0x63,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6c, 0x6f, 0x63,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x22, 0x3c, 0x0a, 0x17, 0x46,
+	0x6f, 0x6c, 0x64, 0x65, 0x72, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6e, 0x61,
+	0x6d, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x21, 0x0a, 0x0c, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x6f, 0x70,
+	0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x22, 0xf9, 0x02, 0x0a, 0x06, 0x46, 0x6f,
+	0x6c, 0x64, 0x65, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x12, 0x3b, 0x0a, 0x0b,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0a, 0x63,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e,
+	0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x26, 0x0a,
+	0x0e, 0x6d, 0x65, 0x74, 0x61, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x6d, 0x65, 0x74, 0x61, 0x67, 0x65, 0x6e, 0x65, 0x72,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x06, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x60, 0x0a, 0x13, 0x70, 0x65, 0x6e,
+	0x64, 0x69, 0x6e, 0x67, 0x5f, 0x72, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x5f, 0x69, 0x6e, 0x66, 0x6f,
+	0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x30, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
+	0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31,
+	0x2e, 0x46, 0x6f, 0x6c, 0x64, 0x65, 0x72, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65,
+	0x6e, 0x61, 0x6d, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x11, 0x70, 0x65, 0x6e, 0x64, 0x69, 0x6e,
+	0x67, 0x52, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1b, 0x0a, 0x09, 0x73,
+	0x65, 0x6c, 0x66, 0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
+	0x73, 0x65, 0x6c, 0x66, 0x4c, 0x69, 0x6e, 0x6b, 0x12, 0x3b, 0x0a, 0x0b, 0x75, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
+	0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x7c, 0x0a, 0x07, 0x46, 0x6f, 0x6c, 0x64, 0x65, 0x72, 0x73,
+	0x12, 0x35, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x1f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x46, 0x6f, 0x6c, 0x64, 0x65, 0x72,
+	0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x26, 0x0a, 0x0f, 0x6e,
+	0x65, 0x78, 0x74, 0x5f, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x6e, 0x65, 0x78, 0x74, 0x50, 0x61, 0x67, 0x65, 0x54, 0x6f,
+	0x6b, 0x65, 0x6e, 0x22, 0xba, 0x01, 0x0a, 0x27, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x4c, 0x6f,
+	0x6e, 0x67, 0x72, 0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x70, 0x65,
+	0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6b,
+	0x69, 0x6e, 0x64, 0x12, 0x26, 0x0a, 0x0f, 0x6e, 0x65, 0x78, 0x74, 0x5f, 0x70, 0x61, 0x67, 0x65,
+	0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x6e, 0x65,
+	0x78, 0x74, 0x50, 0x61, 0x67, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x53, 0x0a, 0x0a, 0x6f,
+	0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x33, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x4c, 0x6f, 0x6e, 0x67, 0x72, 0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x22, 0x99, 0x04, 0x0a, 0x1a, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x4c, 0x6f, 0x6e, 0x67, 0x72,
+	0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x12, 0x0a, 0x04, 0x64, 0x6f, 0x6e, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x04, 0x64,
+	0x6f, 0x6e, 0x65, 0x12, 0x3e, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x28, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75,
+	0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x52, 0x70, 0x63, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x05, 0x65, 0x72,
+	0x72, 0x6f, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x5d, 0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64,
+	0x61, 0x74, 0x61, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
 	0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
 	0x2e, 0x76, 0x31, 0x2e, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x4c, 0x6f, 0x6e, 0x67, 0x72, 0x75,
-	0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x72, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x51, 0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
+	0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x4d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x6d, 0x65,
+	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x5d, 0x0a, 0x08, 0x72, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x67,
+	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x73, 0x74, 0x6f, 0x72,
+	0x61, 0x67, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x4c, 0x6f, 0x6e,
+	0x67, 0x72, 0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52,
+	0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x73, 0x65, 0x6c,
+	0x66, 0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x65,
+	0x6c, 0x66, 0x4c, 0x69, 0x6e, 0x6b, 0x1a, 0x51, 0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
 	0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x2a, 0x0a, 0x05, 0x76, 0x61, 0x6c,
 	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
@@ -12632,7 +12863,7 @@ func file_mockgcp_storage_v1_service_proto_rawDescGZIP() []byte {
 	return file_mockgcp_storage_v1_service_proto_rawDescData
 }
 
-var file_mockgcp_storage_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 133)
+var file_mockgcp_storage_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 136)
 var file_mockgcp_storage_v1_service_proto_goTypes = []interface{}{
 	(*AnywhereCache)(nil),                            // 0: google.cloud.storage.v1.AnywhereCache
 	(*AnywhereCaches)(nil),                           // 1: google.cloud.storage.v1.AnywhereCaches
@@ -12645,382 +12876,388 @@ var file_mockgcp_storage_v1_service_proto_goTypes = []interface{}{
 	(*BucketPolicyOnly)(nil),                         // 8: google.cloud.storage.v1.BucketPolicyOnly
 	(*UniformBucketLevelAccess)(nil),                 // 9: google.cloud.storage.v1.UniformBucketLevelAccess
 	(*BucketIamConfiguration)(nil),                   // 10: google.cloud.storage.v1.BucketIamConfiguration
-	(*Action)(nil),                                   // 11: google.cloud.storage.v1.Action
-	(*Condition)(nil),                                // 12: google.cloud.storage.v1.Condition
-	(*Rule)(nil),                                     // 13: google.cloud.storage.v1.Rule
-	(*BucketLifecycle)(nil),                          // 14: google.cloud.storage.v1.BucketLifecycle
-	(*BucketLogging)(nil),                            // 15: google.cloud.storage.v1.BucketLogging
-	(*BucketObjectRetention)(nil),                    // 16: google.cloud.storage.v1.BucketObjectRetention
-	(*BucketOwner)(nil),                              // 17: google.cloud.storage.v1.BucketOwner
-	(*BucketRetentionPolicy)(nil),                    // 18: google.cloud.storage.v1.BucketRetentionPolicy
-	(*BucketSoftDeletePolicy)(nil),                   // 19: google.cloud.storage.v1.BucketSoftDeletePolicy
-	(*BucketVersioning)(nil),                         // 20: google.cloud.storage.v1.BucketVersioning
-	(*BucketWebsite)(nil),                            // 21: google.cloud.storage.v1.BucketWebsite
-	(*Bucket)(nil),                                   // 22: google.cloud.storage.v1.Bucket
-	(*BucketAccessControlProjectTeam)(nil),           // 23: google.cloud.storage.v1.BucketAccessControlProjectTeam
-	(*BucketAccessControl)(nil),                      // 24: google.cloud.storage.v1.BucketAccessControl
-	(*BucketAccessControls)(nil),                     // 25: google.cloud.storage.v1.BucketAccessControls
-	(*BucketStorageLayoutCustomPlacementConfig)(nil), // 26: google.cloud.storage.v1.BucketStorageLayoutCustomPlacementConfig
-	(*BucketStorageLayoutHierarchicalNamespace)(nil), // 27: google.cloud.storage.v1.BucketStorageLayoutHierarchicalNamespace
-	(*BucketStorageLayout)(nil),                      // 28: google.cloud.storage.v1.BucketStorageLayout
-	(*Buckets)(nil),                                  // 29: google.cloud.storage.v1.Buckets
-	(*BulkRestoreObjectsRequest)(nil),                // 30: google.cloud.storage.v1.BulkRestoreObjectsRequest
-	(*Channel)(nil),                                  // 31: google.cloud.storage.v1.Channel
-	(*ObjectPreconditions)(nil),                      // 32: google.cloud.storage.v1.ObjectPreconditions
-	(*ComposeRequestSourceObjects)(nil),              // 33: google.cloud.storage.v1.ComposeRequestSourceObjects
-	(*ComposeRequest)(nil),                           // 34: google.cloud.storage.v1.ComposeRequest
-	(*Expr)(nil),                                     // 35: google.cloud.storage.v1.Expr
-	(*FolderPendingRenameInfo)(nil),                  // 36: google.cloud.storage.v1.FolderPendingRenameInfo
-	(*Folder)(nil),                                   // 37: google.cloud.storage.v1.Folder
-	(*Folders)(nil),                                  // 38: google.cloud.storage.v1.Folders
-	(*GoogleLongrunningListOperationsResponse)(nil),  // 39: google.cloud.storage.v1.GoogleLongrunningListOperationsResponse
-	(*GoogleLongrunningOperation)(nil),               // 40: google.cloud.storage.v1.GoogleLongrunningOperation
-	(*GoogleRpcStatus)(nil),                          // 41: google.cloud.storage.v1.GoogleRpcStatus
-	(*HmacKey)(nil),                                  // 42: google.cloud.storage.v1.HmacKey
-	(*HmacKeyMetadata)(nil),                          // 43: google.cloud.storage.v1.HmacKeyMetadata
-	(*HmacKeysMetadata)(nil),                         // 44: google.cloud.storage.v1.HmacKeysMetadata
-	(*ManagedFolder)(nil),                            // 45: google.cloud.storage.v1.ManagedFolder
-	(*ManagedFolders)(nil),                           // 46: google.cloud.storage.v1.ManagedFolders
-	(*Notification)(nil),                             // 47: google.cloud.storage.v1.Notification
-	(*Notifications)(nil),                            // 48: google.cloud.storage.v1.Notifications
-	(*ObjectCustomerEncryption)(nil),                 // 49: google.cloud.storage.v1.ObjectCustomerEncryption
-	(*ObjectOwner)(nil),                              // 50: google.cloud.storage.v1.ObjectOwner
-	(*ObjectRetention)(nil),                          // 51: google.cloud.storage.v1.ObjectRetention
-	(*Object)(nil),                                   // 52: google.cloud.storage.v1.Object
-	(*ObjectAccessControlProjectTeam)(nil),           // 53: google.cloud.storage.v1.ObjectAccessControlProjectTeam
-	(*ObjectAccessControl)(nil),                      // 54: google.cloud.storage.v1.ObjectAccessControl
-	(*ObjectAccessControls)(nil),                     // 55: google.cloud.storage.v1.ObjectAccessControls
-	(*Objects)(nil),                                  // 56: google.cloud.storage.v1.Objects
-	(*PolicyBindings)(nil),                           // 57: google.cloud.storage.v1.PolicyBindings
-	(*Policy)(nil),                                   // 58: google.cloud.storage.v1.Policy
-	(*RewriteResponse)(nil),                          // 59: google.cloud.storage.v1.RewriteResponse
-	(*ServiceAccount)(nil),                           // 60: google.cloud.storage.v1.ServiceAccount
-	(*TestIamPermissionsResponse)(nil),               // 61: google.cloud.storage.v1.TestIamPermissionsResponse
-	(*DisableAnywhereCacheRequest)(nil),              // 62: google.cloud.storage.v1.DisableAnywhereCacheRequest
-	(*GetAnywhereCacheRequest)(nil),                  // 63: google.cloud.storage.v1.GetAnywhereCacheRequest
-	(*InsertAnywhereCacheRequest)(nil),               // 64: google.cloud.storage.v1.InsertAnywhereCacheRequest
-	(*ListAnywhereCachesRequest)(nil),                // 65: google.cloud.storage.v1.ListAnywhereCachesRequest
-	(*PauseAnywhereCacheRequest)(nil),                // 66: google.cloud.storage.v1.PauseAnywhereCacheRequest
-	(*ResumeAnywhereCacheRequest)(nil),               // 67: google.cloud.storage.v1.ResumeAnywhereCacheRequest
-	(*UpdateAnywhereCacheRequest)(nil),               // 68: google.cloud.storage.v1.UpdateAnywhereCacheRequest
-	(*DeleteBucketAccessControlRequest)(nil),         // 69: google.cloud.storage.v1.DeleteBucketAccessControlRequest
-	(*GetBucketAccessControlRequest)(nil),            // 70: google.cloud.storage.v1.GetBucketAccessControlRequest
-	(*InsertBucketAccessControlRequest)(nil),         // 71: google.cloud.storage.v1.InsertBucketAccessControlRequest
-	(*ListBucketAccessControlsRequest)(nil),          // 72: google.cloud.storage.v1.ListBucketAccessControlsRequest
-	(*PatchBucketAccessControlRequest)(nil),          // 73: google.cloud.storage.v1.PatchBucketAccessControlRequest
-	(*UpdateBucketAccessControlRequest)(nil),         // 74: google.cloud.storage.v1.UpdateBucketAccessControlRequest
-	(*DeleteBucketRequest)(nil),                      // 75: google.cloud.storage.v1.DeleteBucketRequest
-	(*GetBucketRequest)(nil),                         // 76: google.cloud.storage.v1.GetBucketRequest
-	(*GetStorageLayoutBucketRequest)(nil),            // 77: google.cloud.storage.v1.GetStorageLayoutBucketRequest
-	(*InsertBucketRequest)(nil),                      // 78: google.cloud.storage.v1.InsertBucketRequest
-	(*ListBucketsRequest)(nil),                       // 79: google.cloud.storage.v1.ListBucketsRequest
-	(*LockRetentionPolicyBucketRequest)(nil),         // 80: google.cloud.storage.v1.LockRetentionPolicyBucketRequest
-	(*PatchBucketRequest)(nil),                       // 81: google.cloud.storage.v1.PatchBucketRequest
-	(*UpdateBucketRequest)(nil),                      // 82: google.cloud.storage.v1.UpdateBucketRequest
-	(*StopChannelRequest)(nil),                       // 83: google.cloud.storage.v1.StopChannelRequest
-	(*DeleteDefaultObjectAccessControlRequest)(nil),  // 84: google.cloud.storage.v1.DeleteDefaultObjectAccessControlRequest
-	(*GetDefaultObjectAccessControlRequest)(nil),     // 85: google.cloud.storage.v1.GetDefaultObjectAccessControlRequest
-	(*InsertDefaultObjectAccessControlRequest)(nil),  // 86: google.cloud.storage.v1.InsertDefaultObjectAccessControlRequest
-	(*ListDefaultObjectAccessControlsRequest)(nil),   // 87: google.cloud.storage.v1.ListDefaultObjectAccessControlsRequest
-	(*PatchDefaultObjectAccessControlRequest)(nil),   // 88: google.cloud.storage.v1.PatchDefaultObjectAccessControlRequest
-	(*UpdateDefaultObjectAccessControlRequest)(nil),  // 89: google.cloud.storage.v1.UpdateDefaultObjectAccessControlRequest
-	(*DeleteFolderRequest)(nil),                      // 90: google.cloud.storage.v1.DeleteFolderRequest
-	(*GetFolderRequest)(nil),                         // 91: google.cloud.storage.v1.GetFolderRequest
-	(*InsertFolderRequest)(nil),                      // 92: google.cloud.storage.v1.InsertFolderRequest
-	(*ListFoldersRequest)(nil),                       // 93: google.cloud.storage.v1.ListFoldersRequest
-	(*RenameFolderRequest)(nil),                      // 94: google.cloud.storage.v1.RenameFolderRequest
-	(*DeleteManagedFolderRequest)(nil),               // 95: google.cloud.storage.v1.DeleteManagedFolderRequest
-	(*GetManagedFolderRequest)(nil),                  // 96: google.cloud.storage.v1.GetManagedFolderRequest
-	(*InsertManagedFolderRequest)(nil),               // 97: google.cloud.storage.v1.InsertManagedFolderRequest
-	(*ListManagedFoldersRequest)(nil),                // 98: google.cloud.storage.v1.ListManagedFoldersRequest
-	(*DeleteNotificationRequest)(nil),                // 99: google.cloud.storage.v1.DeleteNotificationRequest
-	(*GetNotificationRequest)(nil),                   // 100: google.cloud.storage.v1.GetNotificationRequest
-	(*InsertNotificationRequest)(nil),                // 101: google.cloud.storage.v1.InsertNotificationRequest
-	(*ListNotificationsRequest)(nil),                 // 102: google.cloud.storage.v1.ListNotificationsRequest
-	(*DeleteObjectAccessControlRequest)(nil),         // 103: google.cloud.storage.v1.DeleteObjectAccessControlRequest
-	(*GetObjectAccessControlRequest)(nil),            // 104: google.cloud.storage.v1.GetObjectAccessControlRequest
-	(*InsertObjectAccessControlRequest)(nil),         // 105: google.cloud.storage.v1.InsertObjectAccessControlRequest
-	(*ListObjectAccessControlsRequest)(nil),          // 106: google.cloud.storage.v1.ListObjectAccessControlsRequest
-	(*PatchObjectAccessControlRequest)(nil),          // 107: google.cloud.storage.v1.PatchObjectAccessControlRequest
-	(*UpdateObjectAccessControlRequest)(nil),         // 108: google.cloud.storage.v1.UpdateObjectAccessControlRequest
-	(*BulkRestoreObjectRequest)(nil),                 // 109: google.cloud.storage.v1.BulkRestoreObjectRequest
-	(*ComposeObjectRequest)(nil),                     // 110: google.cloud.storage.v1.ComposeObjectRequest
-	(*CopyObjectRequest)(nil),                        // 111: google.cloud.storage.v1.CopyObjectRequest
-	(*DeleteObjectRequest)(nil),                      // 112: google.cloud.storage.v1.DeleteObjectRequest
-	(*GetObjectRequest)(nil),                         // 113: google.cloud.storage.v1.GetObjectRequest
-	(*InsertObjectRequest)(nil),                      // 114: google.cloud.storage.v1.InsertObjectRequest
-	(*ListObjectsRequest)(nil),                       // 115: google.cloud.storage.v1.ListObjectsRequest
-	(*PatchObjectRequest)(nil),                       // 116: google.cloud.storage.v1.PatchObjectRequest
-	(*RestoreObjectRequest)(nil),                     // 117: google.cloud.storage.v1.RestoreObjectRequest
-	(*RewriteObjectRequest)(nil),                     // 118: google.cloud.storage.v1.RewriteObjectRequest
-	(*UpdateObjectRequest)(nil),                      // 119: google.cloud.storage.v1.UpdateObjectRequest
-	(*WatchAllObjectRequest)(nil),                    // 120: google.cloud.storage.v1.WatchAllObjectRequest
-	(*CreateProjectsHmacKeyRequest)(nil),             // 121: google.cloud.storage.v1.CreateProjectsHmacKeyRequest
-	(*DeleteProjectsHmacKeyRequest)(nil),             // 122: google.cloud.storage.v1.DeleteProjectsHmacKeyRequest
-	(*GetProjectsHmacKeyRequest)(nil),                // 123: google.cloud.storage.v1.GetProjectsHmacKeyRequest
-	(*ListProjectsHmacKeysRequest)(nil),              // 124: google.cloud.storage.v1.ListProjectsHmacKeysRequest
-	(*UpdateProjectsHmacKeyRequest)(nil),             // 125: google.cloud.storage.v1.UpdateProjectsHmacKeyRequest
-	(*GetProjectsServiceAccountRequest)(nil),         // 126: google.cloud.storage.v1.GetProjectsServiceAccountRequest
-	nil,                                              // 127: google.cloud.storage.v1.Bucket.LabelsEntry
-	nil,                                              // 128: google.cloud.storage.v1.Channel.ParamsEntry
-	nil,                                              // 129: google.cloud.storage.v1.GoogleLongrunningOperation.MetadataEntry
-	nil,                                              // 130: google.cloud.storage.v1.GoogleLongrunningOperation.ResponseEntry
-	nil,                                              // 131: google.cloud.storage.v1.Notification.CustomAttributesEntry
-	nil,                                              // 132: google.cloud.storage.v1.Object.MetadataEntry
-	(*timestamp.Timestamp)(nil),                      // 133: google.protobuf.Timestamp
-	(*duration.Duration)(nil),                        // 134: google.protobuf.Duration
-	(*any1.Any)(nil),                                 // 135: google.protobuf.Any
-	(*empty.Empty)(nil),                              // 136: google.protobuf.Empty
+	(*PublicNetworkSource)(nil),                      // 11: google.cloud.storage.v1.PublicNetworkSource
+	(*VpcNetworkSources)(nil),                        // 12: google.cloud.storage.v1.VpcNetworkSources
+	(*BucketIpFilter)(nil),                           // 13: google.cloud.storage.v1.BucketIpFilter
+	(*Action)(nil),                                   // 14: google.cloud.storage.v1.Action
+	(*Condition)(nil),                                // 15: google.cloud.storage.v1.Condition
+	(*Rule)(nil),                                     // 16: google.cloud.storage.v1.Rule
+	(*BucketLifecycle)(nil),                          // 17: google.cloud.storage.v1.BucketLifecycle
+	(*BucketLogging)(nil),                            // 18: google.cloud.storage.v1.BucketLogging
+	(*BucketObjectRetention)(nil),                    // 19: google.cloud.storage.v1.BucketObjectRetention
+	(*BucketOwner)(nil),                              // 20: google.cloud.storage.v1.BucketOwner
+	(*BucketRetentionPolicy)(nil),                    // 21: google.cloud.storage.v1.BucketRetentionPolicy
+	(*BucketSoftDeletePolicy)(nil),                   // 22: google.cloud.storage.v1.BucketSoftDeletePolicy
+	(*BucketVersioning)(nil),                         // 23: google.cloud.storage.v1.BucketVersioning
+	(*BucketWebsite)(nil),                            // 24: google.cloud.storage.v1.BucketWebsite
+	(*Bucket)(nil),                                   // 25: google.cloud.storage.v1.Bucket
+	(*BucketAccessControlProjectTeam)(nil),           // 26: google.cloud.storage.v1.BucketAccessControlProjectTeam
+	(*BucketAccessControl)(nil),                      // 27: google.cloud.storage.v1.BucketAccessControl
+	(*BucketAccessControls)(nil),                     // 28: google.cloud.storage.v1.BucketAccessControls
+	(*BucketStorageLayoutCustomPlacementConfig)(nil), // 29: google.cloud.storage.v1.BucketStorageLayoutCustomPlacementConfig
+	(*BucketStorageLayoutHierarchicalNamespace)(nil), // 30: google.cloud.storage.v1.BucketStorageLayoutHierarchicalNamespace
+	(*BucketStorageLayout)(nil),                      // 31: google.cloud.storage.v1.BucketStorageLayout
+	(*Buckets)(nil),                                  // 32: google.cloud.storage.v1.Buckets
+	(*BulkRestoreObjectsRequest)(nil),                // 33: google.cloud.storage.v1.BulkRestoreObjectsRequest
+	(*Channel)(nil),                                  // 34: google.cloud.storage.v1.Channel
+	(*ObjectPreconditions)(nil),                      // 35: google.cloud.storage.v1.ObjectPreconditions
+	(*ComposeRequestSourceObjects)(nil),              // 36: google.cloud.storage.v1.ComposeRequestSourceObjects
+	(*ComposeRequest)(nil),                           // 37: google.cloud.storage.v1.ComposeRequest
+	(*Expr)(nil),                                     // 38: google.cloud.storage.v1.Expr
+	(*FolderPendingRenameInfo)(nil),                  // 39: google.cloud.storage.v1.FolderPendingRenameInfo
+	(*Folder)(nil),                                   // 40: google.cloud.storage.v1.Folder
+	(*Folders)(nil),                                  // 41: google.cloud.storage.v1.Folders
+	(*GoogleLongrunningListOperationsResponse)(nil),  // 42: google.cloud.storage.v1.GoogleLongrunningListOperationsResponse
+	(*GoogleLongrunningOperation)(nil),               // 43: google.cloud.storage.v1.GoogleLongrunningOperation
+	(*GoogleRpcStatus)(nil),                          // 44: google.cloud.storage.v1.GoogleRpcStatus
+	(*HmacKey)(nil),                                  // 45: google.cloud.storage.v1.HmacKey
+	(*HmacKeyMetadata)(nil),                          // 46: google.cloud.storage.v1.HmacKeyMetadata
+	(*HmacKeysMetadata)(nil),                         // 47: google.cloud.storage.v1.HmacKeysMetadata
+	(*ManagedFolder)(nil),                            // 48: google.cloud.storage.v1.ManagedFolder
+	(*ManagedFolders)(nil),                           // 49: google.cloud.storage.v1.ManagedFolders
+	(*Notification)(nil),                             // 50: google.cloud.storage.v1.Notification
+	(*Notifications)(nil),                            // 51: google.cloud.storage.v1.Notifications
+	(*ObjectCustomerEncryption)(nil),                 // 52: google.cloud.storage.v1.ObjectCustomerEncryption
+	(*ObjectOwner)(nil),                              // 53: google.cloud.storage.v1.ObjectOwner
+	(*ObjectRetention)(nil),                          // 54: google.cloud.storage.v1.ObjectRetention
+	(*Object)(nil),                                   // 55: google.cloud.storage.v1.Object
+	(*ObjectAccessControlProjectTeam)(nil),           // 56: google.cloud.storage.v1.ObjectAccessControlProjectTeam
+	(*ObjectAccessControl)(nil),                      // 57: google.cloud.storage.v1.ObjectAccessControl
+	(*ObjectAccessControls)(nil),                     // 58: google.cloud.storage.v1.ObjectAccessControls
+	(*Objects)(nil),                                  // 59: google.cloud.storage.v1.Objects
+	(*PolicyBindings)(nil),                           // 60: google.cloud.storage.v1.PolicyBindings
+	(*Policy)(nil),                                   // 61: google.cloud.storage.v1.Policy
+	(*RewriteResponse)(nil),                          // 62: google.cloud.storage.v1.RewriteResponse
+	(*ServiceAccount)(nil),                           // 63: google.cloud.storage.v1.ServiceAccount
+	(*TestIamPermissionsResponse)(nil),               // 64: google.cloud.storage.v1.TestIamPermissionsResponse
+	(*DisableAnywhereCacheRequest)(nil),              // 65: google.cloud.storage.v1.DisableAnywhereCacheRequest
+	(*GetAnywhereCacheRequest)(nil),                  // 66: google.cloud.storage.v1.GetAnywhereCacheRequest
+	(*InsertAnywhereCacheRequest)(nil),               // 67: google.cloud.storage.v1.InsertAnywhereCacheRequest
+	(*ListAnywhereCachesRequest)(nil),                // 68: google.cloud.storage.v1.ListAnywhereCachesRequest
+	(*PauseAnywhereCacheRequest)(nil),                // 69: google.cloud.storage.v1.PauseAnywhereCacheRequest
+	(*ResumeAnywhereCacheRequest)(nil),               // 70: google.cloud.storage.v1.ResumeAnywhereCacheRequest
+	(*UpdateAnywhereCacheRequest)(nil),               // 71: google.cloud.storage.v1.UpdateAnywhereCacheRequest
+	(*DeleteBucketAccessControlRequest)(nil),         // 72: google.cloud.storage.v1.DeleteBucketAccessControlRequest
+	(*GetBucketAccessControlRequest)(nil),            // 73: google.cloud.storage.v1.GetBucketAccessControlRequest
+	(*InsertBucketAccessControlRequest)(nil),         // 74: google.cloud.storage.v1.InsertBucketAccessControlRequest
+	(*ListBucketAccessControlsRequest)(nil),          // 75: google.cloud.storage.v1.ListBucketAccessControlsRequest
+	(*PatchBucketAccessControlRequest)(nil),          // 76: google.cloud.storage.v1.PatchBucketAccessControlRequest
+	(*UpdateBucketAccessControlRequest)(nil),         // 77: google.cloud.storage.v1.UpdateBucketAccessControlRequest
+	(*DeleteBucketRequest)(nil),                      // 78: google.cloud.storage.v1.DeleteBucketRequest
+	(*GetBucketRequest)(nil),                         // 79: google.cloud.storage.v1.GetBucketRequest
+	(*GetStorageLayoutBucketRequest)(nil),            // 80: google.cloud.storage.v1.GetStorageLayoutBucketRequest
+	(*InsertBucketRequest)(nil),                      // 81: google.cloud.storage.v1.InsertBucketRequest
+	(*ListBucketsRequest)(nil),                       // 82: google.cloud.storage.v1.ListBucketsRequest
+	(*LockRetentionPolicyBucketRequest)(nil),         // 83: google.cloud.storage.v1.LockRetentionPolicyBucketRequest
+	(*PatchBucketRequest)(nil),                       // 84: google.cloud.storage.v1.PatchBucketRequest
+	(*UpdateBucketRequest)(nil),                      // 85: google.cloud.storage.v1.UpdateBucketRequest
+	(*StopChannelRequest)(nil),                       // 86: google.cloud.storage.v1.StopChannelRequest
+	(*DeleteDefaultObjectAccessControlRequest)(nil),  // 87: google.cloud.storage.v1.DeleteDefaultObjectAccessControlRequest
+	(*GetDefaultObjectAccessControlRequest)(nil),     // 88: google.cloud.storage.v1.GetDefaultObjectAccessControlRequest
+	(*InsertDefaultObjectAccessControlRequest)(nil),  // 89: google.cloud.storage.v1.InsertDefaultObjectAccessControlRequest
+	(*ListDefaultObjectAccessControlsRequest)(nil),   // 90: google.cloud.storage.v1.ListDefaultObjectAccessControlsRequest
+	(*PatchDefaultObjectAccessControlRequest)(nil),   // 91: google.cloud.storage.v1.PatchDefaultObjectAccessControlRequest
+	(*UpdateDefaultObjectAccessControlRequest)(nil),  // 92: google.cloud.storage.v1.UpdateDefaultObjectAccessControlRequest
+	(*DeleteFolderRequest)(nil),                      // 93: google.cloud.storage.v1.DeleteFolderRequest
+	(*GetFolderRequest)(nil),                         // 94: google.cloud.storage.v1.GetFolderRequest
+	(*InsertFolderRequest)(nil),                      // 95: google.cloud.storage.v1.InsertFolderRequest
+	(*ListFoldersRequest)(nil),                       // 96: google.cloud.storage.v1.ListFoldersRequest
+	(*RenameFolderRequest)(nil),                      // 97: google.cloud.storage.v1.RenameFolderRequest
+	(*DeleteManagedFolderRequest)(nil),               // 98: google.cloud.storage.v1.DeleteManagedFolderRequest
+	(*GetManagedFolderRequest)(nil),                  // 99: google.cloud.storage.v1.GetManagedFolderRequest
+	(*InsertManagedFolderRequest)(nil),               // 100: google.cloud.storage.v1.InsertManagedFolderRequest
+	(*ListManagedFoldersRequest)(nil),                // 101: google.cloud.storage.v1.ListManagedFoldersRequest
+	(*DeleteNotificationRequest)(nil),                // 102: google.cloud.storage.v1.DeleteNotificationRequest
+	(*GetNotificationRequest)(nil),                   // 103: google.cloud.storage.v1.GetNotificationRequest
+	(*InsertNotificationRequest)(nil),                // 104: google.cloud.storage.v1.InsertNotificationRequest
+	(*ListNotificationsRequest)(nil),                 // 105: google.cloud.storage.v1.ListNotificationsRequest
+	(*DeleteObjectAccessControlRequest)(nil),         // 106: google.cloud.storage.v1.DeleteObjectAccessControlRequest
+	(*GetObjectAccessControlRequest)(nil),            // 107: google.cloud.storage.v1.GetObjectAccessControlRequest
+	(*InsertObjectAccessControlRequest)(nil),         // 108: google.cloud.storage.v1.InsertObjectAccessControlRequest
+	(*ListObjectAccessControlsRequest)(nil),          // 109: google.cloud.storage.v1.ListObjectAccessControlsRequest
+	(*PatchObjectAccessControlRequest)(nil),          // 110: google.cloud.storage.v1.PatchObjectAccessControlRequest
+	(*UpdateObjectAccessControlRequest)(nil),         // 111: google.cloud.storage.v1.UpdateObjectAccessControlRequest
+	(*BulkRestoreObjectRequest)(nil),                 // 112: google.cloud.storage.v1.BulkRestoreObjectRequest
+	(*ComposeObjectRequest)(nil),                     // 113: google.cloud.storage.v1.ComposeObjectRequest
+	(*CopyObjectRequest)(nil),                        // 114: google.cloud.storage.v1.CopyObjectRequest
+	(*DeleteObjectRequest)(nil),                      // 115: google.cloud.storage.v1.DeleteObjectRequest
+	(*GetObjectRequest)(nil),                         // 116: google.cloud.storage.v1.GetObjectRequest
+	(*InsertObjectRequest)(nil),                      // 117: google.cloud.storage.v1.InsertObjectRequest
+	(*ListObjectsRequest)(nil),                       // 118: google.cloud.storage.v1.ListObjectsRequest
+	(*PatchObjectRequest)(nil),                       // 119: google.cloud.storage.v1.PatchObjectRequest
+	(*RestoreObjectRequest)(nil),                     // 120: google.cloud.storage.v1.RestoreObjectRequest
+	(*RewriteObjectRequest)(nil),                     // 121: google.cloud.storage.v1.RewriteObjectRequest
+	(*UpdateObjectRequest)(nil),                      // 122: google.cloud.storage.v1.UpdateObjectRequest
+	(*WatchAllObjectRequest)(nil),                    // 123: google.cloud.storage.v1.WatchAllObjectRequest
+	(*CreateProjectsHmacKeyRequest)(nil),             // 124: google.cloud.storage.v1.CreateProjectsHmacKeyRequest
+	(*DeleteProjectsHmacKeyRequest)(nil),             // 125: google.cloud.storage.v1.DeleteProjectsHmacKeyRequest
+	(*GetProjectsHmacKeyRequest)(nil),                // 126: google.cloud.storage.v1.GetProjectsHmacKeyRequest
+	(*ListProjectsHmacKeysRequest)(nil),              // 127: google.cloud.storage.v1.ListProjectsHmacKeysRequest
+	(*UpdateProjectsHmacKeyRequest)(nil),             // 128: google.cloud.storage.v1.UpdateProjectsHmacKeyRequest
+	(*GetProjectsServiceAccountRequest)(nil),         // 129: google.cloud.storage.v1.GetProjectsServiceAccountRequest
+	nil,                                              // 130: google.cloud.storage.v1.Bucket.LabelsEntry
+	nil,                                              // 131: google.cloud.storage.v1.Channel.ParamsEntry
+	nil,                                              // 132: google.cloud.storage.v1.GoogleLongrunningOperation.MetadataEntry
+	nil,                                              // 133: google.cloud.storage.v1.GoogleLongrunningOperation.ResponseEntry
+	nil,                                              // 134: google.cloud.storage.v1.Notification.CustomAttributesEntry
+	nil,                                              // 135: google.cloud.storage.v1.Object.MetadataEntry
+	(*timestamp.Timestamp)(nil),                      // 136: google.protobuf.Timestamp
+	(*duration.Duration)(nil),                        // 137: google.protobuf.Duration
+	(*any1.Any)(nil),                                 // 138: google.protobuf.Any
+	(*empty.Empty)(nil),                              // 139: google.protobuf.Empty
 }
 var file_mockgcp_storage_v1_service_proto_depIdxs = []int32{
-	133, // 0: google.cloud.storage.v1.AnywhereCache.create_time:type_name -> google.protobuf.Timestamp
-	134, // 1: google.cloud.storage.v1.AnywhereCache.ttl:type_name -> google.protobuf.Duration
-	133, // 2: google.cloud.storage.v1.AnywhereCache.update_time:type_name -> google.protobuf.Timestamp
+	136, // 0: google.cloud.storage.v1.AnywhereCache.create_time:type_name -> google.protobuf.Timestamp
+	137, // 1: google.cloud.storage.v1.AnywhereCache.ttl:type_name -> google.protobuf.Duration
+	136, // 2: google.cloud.storage.v1.AnywhereCache.update_time:type_name -> google.protobuf.Timestamp
 	0,   // 3: google.cloud.storage.v1.AnywhereCaches.items:type_name -> google.cloud.storage.v1.AnywhereCache
-	133, // 4: google.cloud.storage.v1.BucketAutoclass.terminal_storage_class_update_time:type_name -> google.protobuf.Timestamp
-	133, // 5: google.cloud.storage.v1.BucketAutoclass.toggle_time:type_name -> google.protobuf.Timestamp
-	133, // 6: google.cloud.storage.v1.BucketPolicyOnly.locked_time:type_name -> google.protobuf.Timestamp
-	133, // 7: google.cloud.storage.v1.UniformBucketLevelAccess.locked_time:type_name -> google.protobuf.Timestamp
+	136, // 4: google.cloud.storage.v1.BucketAutoclass.terminal_storage_class_update_time:type_name -> google.protobuf.Timestamp
+	136, // 5: google.cloud.storage.v1.BucketAutoclass.toggle_time:type_name -> google.protobuf.Timestamp
+	136, // 6: google.cloud.storage.v1.BucketPolicyOnly.locked_time:type_name -> google.protobuf.Timestamp
+	136, // 7: google.cloud.storage.v1.UniformBucketLevelAccess.locked_time:type_name -> google.protobuf.Timestamp
 	8,   // 8: google.cloud.storage.v1.BucketIamConfiguration.bucket_policy_only:type_name -> google.cloud.storage.v1.BucketPolicyOnly
 	9,   // 9: google.cloud.storage.v1.BucketIamConfiguration.uniform_bucket_level_access:type_name -> google.cloud.storage.v1.UniformBucketLevelAccess
-	11,  // 10: google.cloud.storage.v1.Rule.action:type_name -> google.cloud.storage.v1.Action
-	12,  // 11: google.cloud.storage.v1.Rule.condition:type_name -> google.cloud.storage.v1.Condition
-	13,  // 12: google.cloud.storage.v1.BucketLifecycle.rule:type_name -> google.cloud.storage.v1.Rule
-	133, // 13: google.cloud.storage.v1.BucketRetentionPolicy.effective_time:type_name -> google.protobuf.Timestamp
-	133, // 14: google.cloud.storage.v1.BucketSoftDeletePolicy.effective_time:type_name -> google.protobuf.Timestamp
-	24,  // 15: google.cloud.storage.v1.Bucket.acl:type_name -> google.cloud.storage.v1.BucketAccessControl
-	2,   // 16: google.cloud.storage.v1.Bucket.autoclass:type_name -> google.cloud.storage.v1.BucketAutoclass
-	3,   // 17: google.cloud.storage.v1.Bucket.billing:type_name -> google.cloud.storage.v1.BucketBilling
-	4,   // 18: google.cloud.storage.v1.Bucket.cors:type_name -> google.cloud.storage.v1.BucketCors
-	5,   // 19: google.cloud.storage.v1.Bucket.custom_placement_config:type_name -> google.cloud.storage.v1.BucketCustomPlacementConfig
-	54,  // 20: google.cloud.storage.v1.Bucket.default_object_acl:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	6,   // 21: google.cloud.storage.v1.Bucket.encryption:type_name -> google.cloud.storage.v1.BucketEncryption
-	7,   // 22: google.cloud.storage.v1.Bucket.hierarchical_namespace:type_name -> google.cloud.storage.v1.BucketHierarchicalNamespace
-	10,  // 23: google.cloud.storage.v1.Bucket.iam_configuration:type_name -> google.cloud.storage.v1.BucketIamConfiguration
-	127, // 24: google.cloud.storage.v1.Bucket.labels:type_name -> google.cloud.storage.v1.Bucket.LabelsEntry
-	14,  // 25: google.cloud.storage.v1.Bucket.lifecycle:type_name -> google.cloud.storage.v1.BucketLifecycle
-	15,  // 26: google.cloud.storage.v1.Bucket.logging:type_name -> google.cloud.storage.v1.BucketLogging
-	16,  // 27: google.cloud.storage.v1.Bucket.object_retention:type_name -> google.cloud.storage.v1.BucketObjectRetention
-	17,  // 28: google.cloud.storage.v1.Bucket.owner:type_name -> google.cloud.storage.v1.BucketOwner
-	18,  // 29: google.cloud.storage.v1.Bucket.retention_policy:type_name -> google.cloud.storage.v1.BucketRetentionPolicy
-	19,  // 30: google.cloud.storage.v1.Bucket.soft_delete_policy:type_name -> google.cloud.storage.v1.BucketSoftDeletePolicy
-	133, // 31: google.cloud.storage.v1.Bucket.time_created:type_name -> google.protobuf.Timestamp
-	133, // 32: google.cloud.storage.v1.Bucket.updated:type_name -> google.protobuf.Timestamp
-	20,  // 33: google.cloud.storage.v1.Bucket.versioning:type_name -> google.cloud.storage.v1.BucketVersioning
-	21,  // 34: google.cloud.storage.v1.Bucket.website:type_name -> google.cloud.storage.v1.BucketWebsite
-	23,  // 35: google.cloud.storage.v1.BucketAccessControl.project_team:type_name -> google.cloud.storage.v1.BucketAccessControlProjectTeam
-	24,  // 36: google.cloud.storage.v1.BucketAccessControls.items:type_name -> google.cloud.storage.v1.BucketAccessControl
-	26,  // 37: google.cloud.storage.v1.BucketStorageLayout.custom_placement_config:type_name -> google.cloud.storage.v1.BucketStorageLayoutCustomPlacementConfig
-	27,  // 38: google.cloud.storage.v1.BucketStorageLayout.hierarchical_namespace:type_name -> google.cloud.storage.v1.BucketStorageLayoutHierarchicalNamespace
-	22,  // 39: google.cloud.storage.v1.Buckets.items:type_name -> google.cloud.storage.v1.Bucket
-	133, // 40: google.cloud.storage.v1.BulkRestoreObjectsRequest.soft_deleted_after_time:type_name -> google.protobuf.Timestamp
-	133, // 41: google.cloud.storage.v1.BulkRestoreObjectsRequest.soft_deleted_before_time:type_name -> google.protobuf.Timestamp
-	128, // 42: google.cloud.storage.v1.Channel.params:type_name -> google.cloud.storage.v1.Channel.ParamsEntry
-	32,  // 43: google.cloud.storage.v1.ComposeRequestSourceObjects.object_preconditions:type_name -> google.cloud.storage.v1.ObjectPreconditions
-	52,  // 44: google.cloud.storage.v1.ComposeRequest.destination:type_name -> google.cloud.storage.v1.Object
-	33,  // 45: google.cloud.storage.v1.ComposeRequest.source_objects:type_name -> google.cloud.storage.v1.ComposeRequestSourceObjects
-	133, // 46: google.cloud.storage.v1.Folder.create_time:type_name -> google.protobuf.Timestamp
-	36,  // 47: google.cloud.storage.v1.Folder.pending_rename_info:type_name -> google.cloud.storage.v1.FolderPendingRenameInfo
-	133, // 48: google.cloud.storage.v1.Folder.update_time:type_name -> google.protobuf.Timestamp
-	37,  // 49: google.cloud.storage.v1.Folders.items:type_name -> google.cloud.storage.v1.Folder
-	40,  // 50: google.cloud.storage.v1.GoogleLongrunningListOperationsResponse.operations:type_name -> google.cloud.storage.v1.GoogleLongrunningOperation
-	41,  // 51: google.cloud.storage.v1.GoogleLongrunningOperation.error:type_name -> google.cloud.storage.v1.GoogleRpcStatus
-	129, // 52: google.cloud.storage.v1.GoogleLongrunningOperation.metadata:type_name -> google.cloud.storage.v1.GoogleLongrunningOperation.MetadataEntry
-	130, // 53: google.cloud.storage.v1.GoogleLongrunningOperation.response:type_name -> google.cloud.storage.v1.GoogleLongrunningOperation.ResponseEntry
-	135, // 54: google.cloud.storage.v1.GoogleRpcStatus.details:type_name -> google.protobuf.Any
-	43,  // 55: google.cloud.storage.v1.HmacKey.metadata:type_name -> google.cloud.storage.v1.HmacKeyMetadata
-	133, // 56: google.cloud.storage.v1.HmacKeyMetadata.time_created:type_name -> google.protobuf.Timestamp
-	133, // 57: google.cloud.storage.v1.HmacKeyMetadata.updated:type_name -> google.protobuf.Timestamp
-	43,  // 58: google.cloud.storage.v1.HmacKeysMetadata.items:type_name -> google.cloud.storage.v1.HmacKeyMetadata
-	133, // 59: google.cloud.storage.v1.ManagedFolder.create_time:type_name -> google.protobuf.Timestamp
-	133, // 60: google.cloud.storage.v1.ManagedFolder.update_time:type_name -> google.protobuf.Timestamp
-	45,  // 61: google.cloud.storage.v1.ManagedFolders.items:type_name -> google.cloud.storage.v1.ManagedFolder
-	131, // 62: google.cloud.storage.v1.Notification.custom_attributes:type_name -> google.cloud.storage.v1.Notification.CustomAttributesEntry
-	47,  // 63: google.cloud.storage.v1.Notifications.items:type_name -> google.cloud.storage.v1.Notification
-	133, // 64: google.cloud.storage.v1.ObjectRetention.retain_until_time:type_name -> google.protobuf.Timestamp
-	54,  // 65: google.cloud.storage.v1.Object.acl:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	133, // 66: google.cloud.storage.v1.Object.custom_time:type_name -> google.protobuf.Timestamp
-	49,  // 67: google.cloud.storage.v1.Object.customer_encryption:type_name -> google.cloud.storage.v1.ObjectCustomerEncryption
-	133, // 68: google.cloud.storage.v1.Object.hard_delete_time:type_name -> google.protobuf.Timestamp
-	132, // 69: google.cloud.storage.v1.Object.metadata:type_name -> google.cloud.storage.v1.Object.MetadataEntry
-	50,  // 70: google.cloud.storage.v1.Object.owner:type_name -> google.cloud.storage.v1.ObjectOwner
-	51,  // 71: google.cloud.storage.v1.Object.retention:type_name -> google.cloud.storage.v1.ObjectRetention
-	133, // 72: google.cloud.storage.v1.Object.retention_expiration_time:type_name -> google.protobuf.Timestamp
-	133, // 73: google.cloud.storage.v1.Object.soft_delete_time:type_name -> google.protobuf.Timestamp
-	133, // 74: google.cloud.storage.v1.Object.time_created:type_name -> google.protobuf.Timestamp
-	133, // 75: google.cloud.storage.v1.Object.time_deleted:type_name -> google.protobuf.Timestamp
-	133, // 76: google.cloud.storage.v1.Object.time_storage_class_updated:type_name -> google.protobuf.Timestamp
-	133, // 77: google.cloud.storage.v1.Object.updated:type_name -> google.protobuf.Timestamp
-	53,  // 78: google.cloud.storage.v1.ObjectAccessControl.project_team:type_name -> google.cloud.storage.v1.ObjectAccessControlProjectTeam
-	54,  // 79: google.cloud.storage.v1.ObjectAccessControls.items:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	52,  // 80: google.cloud.storage.v1.Objects.items:type_name -> google.cloud.storage.v1.Object
-	35,  // 81: google.cloud.storage.v1.PolicyBindings.condition:type_name -> google.cloud.storage.v1.Expr
-	57,  // 82: google.cloud.storage.v1.Policy.bindings:type_name -> google.cloud.storage.v1.PolicyBindings
-	52,  // 83: google.cloud.storage.v1.RewriteResponse.resource:type_name -> google.cloud.storage.v1.Object
-	0,   // 84: google.cloud.storage.v1.InsertAnywhereCacheRequest.anywhere_cache:type_name -> google.cloud.storage.v1.AnywhereCache
-	0,   // 85: google.cloud.storage.v1.UpdateAnywhereCacheRequest.anywhere_cache:type_name -> google.cloud.storage.v1.AnywhereCache
-	24,  // 86: google.cloud.storage.v1.InsertBucketAccessControlRequest.bucket_access_control:type_name -> google.cloud.storage.v1.BucketAccessControl
-	24,  // 87: google.cloud.storage.v1.PatchBucketAccessControlRequest.bucket_access_control:type_name -> google.cloud.storage.v1.BucketAccessControl
-	24,  // 88: google.cloud.storage.v1.UpdateBucketAccessControlRequest.bucket_access_control:type_name -> google.cloud.storage.v1.BucketAccessControl
-	22,  // 89: google.cloud.storage.v1.InsertBucketRequest.bucket:type_name -> google.cloud.storage.v1.Bucket
-	22,  // 90: google.cloud.storage.v1.PatchBucketRequest.bucket:type_name -> google.cloud.storage.v1.Bucket
-	22,  // 91: google.cloud.storage.v1.UpdateBucketRequest.bucket:type_name -> google.cloud.storage.v1.Bucket
-	31,  // 92: google.cloud.storage.v1.StopChannelRequest.channel:type_name -> google.cloud.storage.v1.Channel
-	54,  // 93: google.cloud.storage.v1.InsertDefaultObjectAccessControlRequest.default_object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 94: google.cloud.storage.v1.PatchDefaultObjectAccessControlRequest.default_object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 95: google.cloud.storage.v1.UpdateDefaultObjectAccessControlRequest.default_object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	37,  // 96: google.cloud.storage.v1.InsertFolderRequest.folder:type_name -> google.cloud.storage.v1.Folder
-	45,  // 97: google.cloud.storage.v1.InsertManagedFolderRequest.managed_folder:type_name -> google.cloud.storage.v1.ManagedFolder
-	47,  // 98: google.cloud.storage.v1.InsertNotificationRequest.notification:type_name -> google.cloud.storage.v1.Notification
-	54,  // 99: google.cloud.storage.v1.InsertObjectAccessControlRequest.object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 100: google.cloud.storage.v1.PatchObjectAccessControlRequest.object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 101: google.cloud.storage.v1.UpdateObjectAccessControlRequest.object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
-	30,  // 102: google.cloud.storage.v1.BulkRestoreObjectRequest.object:type_name -> google.cloud.storage.v1.BulkRestoreObjectsRequest
-	34,  // 103: google.cloud.storage.v1.ComposeObjectRequest.object:type_name -> google.cloud.storage.v1.ComposeRequest
-	52,  // 104: google.cloud.storage.v1.CopyObjectRequest.object:type_name -> google.cloud.storage.v1.Object
-	52,  // 105: google.cloud.storage.v1.InsertObjectRequest.object:type_name -> google.cloud.storage.v1.Object
-	52,  // 106: google.cloud.storage.v1.PatchObjectRequest.object:type_name -> google.cloud.storage.v1.Object
-	52,  // 107: google.cloud.storage.v1.RewriteObjectRequest.object:type_name -> google.cloud.storage.v1.Object
-	52,  // 108: google.cloud.storage.v1.UpdateObjectRequest.object:type_name -> google.cloud.storage.v1.Object
-	31,  // 109: google.cloud.storage.v1.WatchAllObjectRequest.object:type_name -> google.cloud.storage.v1.Channel
-	43,  // 110: google.cloud.storage.v1.UpdateProjectsHmacKeyRequest.projects_hmac_key:type_name -> google.cloud.storage.v1.HmacKeyMetadata
-	135, // 111: google.cloud.storage.v1.GoogleLongrunningOperation.MetadataEntry.value:type_name -> google.protobuf.Any
-	135, // 112: google.cloud.storage.v1.GoogleLongrunningOperation.ResponseEntry.value:type_name -> google.protobuf.Any
-	62,  // 113: google.cloud.storage.v1.AnywhereCachesServer.DisableAnywhereCache:input_type -> google.cloud.storage.v1.DisableAnywhereCacheRequest
-	63,  // 114: google.cloud.storage.v1.AnywhereCachesServer.GetAnywhereCache:input_type -> google.cloud.storage.v1.GetAnywhereCacheRequest
-	64,  // 115: google.cloud.storage.v1.AnywhereCachesServer.InsertAnywhereCache:input_type -> google.cloud.storage.v1.InsertAnywhereCacheRequest
-	65,  // 116: google.cloud.storage.v1.AnywhereCachesServer.ListAnywhereCaches:input_type -> google.cloud.storage.v1.ListAnywhereCachesRequest
-	66,  // 117: google.cloud.storage.v1.AnywhereCachesServer.PauseAnywhereCache:input_type -> google.cloud.storage.v1.PauseAnywhereCacheRequest
-	67,  // 118: google.cloud.storage.v1.AnywhereCachesServer.ResumeAnywhereCache:input_type -> google.cloud.storage.v1.ResumeAnywhereCacheRequest
-	68,  // 119: google.cloud.storage.v1.AnywhereCachesServer.UpdateAnywhereCache:input_type -> google.cloud.storage.v1.UpdateAnywhereCacheRequest
-	69,  // 120: google.cloud.storage.v1.BucketAccessControlsServer.DeleteBucketAccessControl:input_type -> google.cloud.storage.v1.DeleteBucketAccessControlRequest
-	70,  // 121: google.cloud.storage.v1.BucketAccessControlsServer.GetBucketAccessControl:input_type -> google.cloud.storage.v1.GetBucketAccessControlRequest
-	71,  // 122: google.cloud.storage.v1.BucketAccessControlsServer.InsertBucketAccessControl:input_type -> google.cloud.storage.v1.InsertBucketAccessControlRequest
-	72,  // 123: google.cloud.storage.v1.BucketAccessControlsServer.ListBucketAccessControls:input_type -> google.cloud.storage.v1.ListBucketAccessControlsRequest
-	73,  // 124: google.cloud.storage.v1.BucketAccessControlsServer.PatchBucketAccessControl:input_type -> google.cloud.storage.v1.PatchBucketAccessControlRequest
-	74,  // 125: google.cloud.storage.v1.BucketAccessControlsServer.UpdateBucketAccessControl:input_type -> google.cloud.storage.v1.UpdateBucketAccessControlRequest
-	75,  // 126: google.cloud.storage.v1.BucketsServer.DeleteBucket:input_type -> google.cloud.storage.v1.DeleteBucketRequest
-	76,  // 127: google.cloud.storage.v1.BucketsServer.GetBucket:input_type -> google.cloud.storage.v1.GetBucketRequest
-	77,  // 128: google.cloud.storage.v1.BucketsServer.GetStorageLayoutBucket:input_type -> google.cloud.storage.v1.GetStorageLayoutBucketRequest
-	78,  // 129: google.cloud.storage.v1.BucketsServer.InsertBucket:input_type -> google.cloud.storage.v1.InsertBucketRequest
-	79,  // 130: google.cloud.storage.v1.BucketsServer.ListBuckets:input_type -> google.cloud.storage.v1.ListBucketsRequest
-	80,  // 131: google.cloud.storage.v1.BucketsServer.LockRetentionPolicyBucket:input_type -> google.cloud.storage.v1.LockRetentionPolicyBucketRequest
-	81,  // 132: google.cloud.storage.v1.BucketsServer.PatchBucket:input_type -> google.cloud.storage.v1.PatchBucketRequest
-	82,  // 133: google.cloud.storage.v1.BucketsServer.UpdateBucket:input_type -> google.cloud.storage.v1.UpdateBucketRequest
-	83,  // 134: google.cloud.storage.v1.ChannelsServer.StopChannel:input_type -> google.cloud.storage.v1.StopChannelRequest
-	84,  // 135: google.cloud.storage.v1.DefaultObjectAccessControlsServer.DeleteDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.DeleteDefaultObjectAccessControlRequest
-	85,  // 136: google.cloud.storage.v1.DefaultObjectAccessControlsServer.GetDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.GetDefaultObjectAccessControlRequest
-	86,  // 137: google.cloud.storage.v1.DefaultObjectAccessControlsServer.InsertDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.InsertDefaultObjectAccessControlRequest
-	87,  // 138: google.cloud.storage.v1.DefaultObjectAccessControlsServer.ListDefaultObjectAccessControls:input_type -> google.cloud.storage.v1.ListDefaultObjectAccessControlsRequest
-	88,  // 139: google.cloud.storage.v1.DefaultObjectAccessControlsServer.PatchDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.PatchDefaultObjectAccessControlRequest
-	89,  // 140: google.cloud.storage.v1.DefaultObjectAccessControlsServer.UpdateDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.UpdateDefaultObjectAccessControlRequest
-	90,  // 141: google.cloud.storage.v1.FoldersServer.DeleteFolder:input_type -> google.cloud.storage.v1.DeleteFolderRequest
-	91,  // 142: google.cloud.storage.v1.FoldersServer.GetFolder:input_type -> google.cloud.storage.v1.GetFolderRequest
-	92,  // 143: google.cloud.storage.v1.FoldersServer.InsertFolder:input_type -> google.cloud.storage.v1.InsertFolderRequest
-	93,  // 144: google.cloud.storage.v1.FoldersServer.ListFolders:input_type -> google.cloud.storage.v1.ListFoldersRequest
-	94,  // 145: google.cloud.storage.v1.FoldersServer.RenameFolder:input_type -> google.cloud.storage.v1.RenameFolderRequest
-	95,  // 146: google.cloud.storage.v1.ManagedFoldersServer.DeleteManagedFolder:input_type -> google.cloud.storage.v1.DeleteManagedFolderRequest
-	96,  // 147: google.cloud.storage.v1.ManagedFoldersServer.GetManagedFolder:input_type -> google.cloud.storage.v1.GetManagedFolderRequest
-	97,  // 148: google.cloud.storage.v1.ManagedFoldersServer.InsertManagedFolder:input_type -> google.cloud.storage.v1.InsertManagedFolderRequest
-	98,  // 149: google.cloud.storage.v1.ManagedFoldersServer.ListManagedFolders:input_type -> google.cloud.storage.v1.ListManagedFoldersRequest
-	99,  // 150: google.cloud.storage.v1.NotificationsServer.DeleteNotification:input_type -> google.cloud.storage.v1.DeleteNotificationRequest
-	100, // 151: google.cloud.storage.v1.NotificationsServer.GetNotification:input_type -> google.cloud.storage.v1.GetNotificationRequest
-	101, // 152: google.cloud.storage.v1.NotificationsServer.InsertNotification:input_type -> google.cloud.storage.v1.InsertNotificationRequest
-	102, // 153: google.cloud.storage.v1.NotificationsServer.ListNotifications:input_type -> google.cloud.storage.v1.ListNotificationsRequest
-	103, // 154: google.cloud.storage.v1.ObjectAccessControlsServer.DeleteObjectAccessControl:input_type -> google.cloud.storage.v1.DeleteObjectAccessControlRequest
-	104, // 155: google.cloud.storage.v1.ObjectAccessControlsServer.GetObjectAccessControl:input_type -> google.cloud.storage.v1.GetObjectAccessControlRequest
-	105, // 156: google.cloud.storage.v1.ObjectAccessControlsServer.InsertObjectAccessControl:input_type -> google.cloud.storage.v1.InsertObjectAccessControlRequest
-	106, // 157: google.cloud.storage.v1.ObjectAccessControlsServer.ListObjectAccessControls:input_type -> google.cloud.storage.v1.ListObjectAccessControlsRequest
-	107, // 158: google.cloud.storage.v1.ObjectAccessControlsServer.PatchObjectAccessControl:input_type -> google.cloud.storage.v1.PatchObjectAccessControlRequest
-	108, // 159: google.cloud.storage.v1.ObjectAccessControlsServer.UpdateObjectAccessControl:input_type -> google.cloud.storage.v1.UpdateObjectAccessControlRequest
-	109, // 160: google.cloud.storage.v1.ObjectsServer.BulkRestoreObject:input_type -> google.cloud.storage.v1.BulkRestoreObjectRequest
-	110, // 161: google.cloud.storage.v1.ObjectsServer.ComposeObject:input_type -> google.cloud.storage.v1.ComposeObjectRequest
-	111, // 162: google.cloud.storage.v1.ObjectsServer.CopyObject:input_type -> google.cloud.storage.v1.CopyObjectRequest
-	112, // 163: google.cloud.storage.v1.ObjectsServer.DeleteObject:input_type -> google.cloud.storage.v1.DeleteObjectRequest
-	113, // 164: google.cloud.storage.v1.ObjectsServer.GetObject:input_type -> google.cloud.storage.v1.GetObjectRequest
-	114, // 165: google.cloud.storage.v1.ObjectsServer.InsertObject:input_type -> google.cloud.storage.v1.InsertObjectRequest
-	115, // 166: google.cloud.storage.v1.ObjectsServer.ListObjects:input_type -> google.cloud.storage.v1.ListObjectsRequest
-	116, // 167: google.cloud.storage.v1.ObjectsServer.PatchObject:input_type -> google.cloud.storage.v1.PatchObjectRequest
-	117, // 168: google.cloud.storage.v1.ObjectsServer.RestoreObject:input_type -> google.cloud.storage.v1.RestoreObjectRequest
-	118, // 169: google.cloud.storage.v1.ObjectsServer.RewriteObject:input_type -> google.cloud.storage.v1.RewriteObjectRequest
-	119, // 170: google.cloud.storage.v1.ObjectsServer.UpdateObject:input_type -> google.cloud.storage.v1.UpdateObjectRequest
-	120, // 171: google.cloud.storage.v1.ObjectsServer.WatchAllObject:input_type -> google.cloud.storage.v1.WatchAllObjectRequest
-	121, // 172: google.cloud.storage.v1.ProjectsHmacKeysServer.CreateProjectsHmacKey:input_type -> google.cloud.storage.v1.CreateProjectsHmacKeyRequest
-	122, // 173: google.cloud.storage.v1.ProjectsHmacKeysServer.DeleteProjectsHmacKey:input_type -> google.cloud.storage.v1.DeleteProjectsHmacKeyRequest
-	123, // 174: google.cloud.storage.v1.ProjectsHmacKeysServer.GetProjectsHmacKey:input_type -> google.cloud.storage.v1.GetProjectsHmacKeyRequest
-	124, // 175: google.cloud.storage.v1.ProjectsHmacKeysServer.ListProjectsHmacKeys:input_type -> google.cloud.storage.v1.ListProjectsHmacKeysRequest
-	125, // 176: google.cloud.storage.v1.ProjectsHmacKeysServer.UpdateProjectsHmacKey:input_type -> google.cloud.storage.v1.UpdateProjectsHmacKeyRequest
-	126, // 177: google.cloud.storage.v1.ProjectsServiceAccountServer.GetProjectsServiceAccount:input_type -> google.cloud.storage.v1.GetProjectsServiceAccountRequest
-	0,   // 178: google.cloud.storage.v1.AnywhereCachesServer.DisableAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
-	0,   // 179: google.cloud.storage.v1.AnywhereCachesServer.GetAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
-	40,  // 180: google.cloud.storage.v1.AnywhereCachesServer.InsertAnywhereCache:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
-	1,   // 181: google.cloud.storage.v1.AnywhereCachesServer.ListAnywhereCaches:output_type -> google.cloud.storage.v1.AnywhereCaches
-	0,   // 182: google.cloud.storage.v1.AnywhereCachesServer.PauseAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
-	0,   // 183: google.cloud.storage.v1.AnywhereCachesServer.ResumeAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
-	40,  // 184: google.cloud.storage.v1.AnywhereCachesServer.UpdateAnywhereCache:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
-	136, // 185: google.cloud.storage.v1.BucketAccessControlsServer.DeleteBucketAccessControl:output_type -> google.protobuf.Empty
-	24,  // 186: google.cloud.storage.v1.BucketAccessControlsServer.GetBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
-	24,  // 187: google.cloud.storage.v1.BucketAccessControlsServer.InsertBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
-	25,  // 188: google.cloud.storage.v1.BucketAccessControlsServer.ListBucketAccessControls:output_type -> google.cloud.storage.v1.BucketAccessControls
-	24,  // 189: google.cloud.storage.v1.BucketAccessControlsServer.PatchBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
-	24,  // 190: google.cloud.storage.v1.BucketAccessControlsServer.UpdateBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
-	136, // 191: google.cloud.storage.v1.BucketsServer.DeleteBucket:output_type -> google.protobuf.Empty
-	22,  // 192: google.cloud.storage.v1.BucketsServer.GetBucket:output_type -> google.cloud.storage.v1.Bucket
-	28,  // 193: google.cloud.storage.v1.BucketsServer.GetStorageLayoutBucket:output_type -> google.cloud.storage.v1.BucketStorageLayout
-	22,  // 194: google.cloud.storage.v1.BucketsServer.InsertBucket:output_type -> google.cloud.storage.v1.Bucket
-	29,  // 195: google.cloud.storage.v1.BucketsServer.ListBuckets:output_type -> google.cloud.storage.v1.Buckets
-	22,  // 196: google.cloud.storage.v1.BucketsServer.LockRetentionPolicyBucket:output_type -> google.cloud.storage.v1.Bucket
-	22,  // 197: google.cloud.storage.v1.BucketsServer.PatchBucket:output_type -> google.cloud.storage.v1.Bucket
-	22,  // 198: google.cloud.storage.v1.BucketsServer.UpdateBucket:output_type -> google.cloud.storage.v1.Bucket
-	136, // 199: google.cloud.storage.v1.ChannelsServer.StopChannel:output_type -> google.protobuf.Empty
-	136, // 200: google.cloud.storage.v1.DefaultObjectAccessControlsServer.DeleteDefaultObjectAccessControl:output_type -> google.protobuf.Empty
-	54,  // 201: google.cloud.storage.v1.DefaultObjectAccessControlsServer.GetDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 202: google.cloud.storage.v1.DefaultObjectAccessControlsServer.InsertDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	55,  // 203: google.cloud.storage.v1.DefaultObjectAccessControlsServer.ListDefaultObjectAccessControls:output_type -> google.cloud.storage.v1.ObjectAccessControls
-	54,  // 204: google.cloud.storage.v1.DefaultObjectAccessControlsServer.PatchDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 205: google.cloud.storage.v1.DefaultObjectAccessControlsServer.UpdateDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	136, // 206: google.cloud.storage.v1.FoldersServer.DeleteFolder:output_type -> google.protobuf.Empty
-	37,  // 207: google.cloud.storage.v1.FoldersServer.GetFolder:output_type -> google.cloud.storage.v1.Folder
-	37,  // 208: google.cloud.storage.v1.FoldersServer.InsertFolder:output_type -> google.cloud.storage.v1.Folder
-	38,  // 209: google.cloud.storage.v1.FoldersServer.ListFolders:output_type -> google.cloud.storage.v1.Folders
-	40,  // 210: google.cloud.storage.v1.FoldersServer.RenameFolder:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
-	136, // 211: google.cloud.storage.v1.ManagedFoldersServer.DeleteManagedFolder:output_type -> google.protobuf.Empty
-	45,  // 212: google.cloud.storage.v1.ManagedFoldersServer.GetManagedFolder:output_type -> google.cloud.storage.v1.ManagedFolder
-	45,  // 213: google.cloud.storage.v1.ManagedFoldersServer.InsertManagedFolder:output_type -> google.cloud.storage.v1.ManagedFolder
-	46,  // 214: google.cloud.storage.v1.ManagedFoldersServer.ListManagedFolders:output_type -> google.cloud.storage.v1.ManagedFolders
-	136, // 215: google.cloud.storage.v1.NotificationsServer.DeleteNotification:output_type -> google.protobuf.Empty
-	47,  // 216: google.cloud.storage.v1.NotificationsServer.GetNotification:output_type -> google.cloud.storage.v1.Notification
-	47,  // 217: google.cloud.storage.v1.NotificationsServer.InsertNotification:output_type -> google.cloud.storage.v1.Notification
-	48,  // 218: google.cloud.storage.v1.NotificationsServer.ListNotifications:output_type -> google.cloud.storage.v1.Notifications
-	136, // 219: google.cloud.storage.v1.ObjectAccessControlsServer.DeleteObjectAccessControl:output_type -> google.protobuf.Empty
-	54,  // 220: google.cloud.storage.v1.ObjectAccessControlsServer.GetObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 221: google.cloud.storage.v1.ObjectAccessControlsServer.InsertObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	55,  // 222: google.cloud.storage.v1.ObjectAccessControlsServer.ListObjectAccessControls:output_type -> google.cloud.storage.v1.ObjectAccessControls
-	54,  // 223: google.cloud.storage.v1.ObjectAccessControlsServer.PatchObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	54,  // 224: google.cloud.storage.v1.ObjectAccessControlsServer.UpdateObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
-	40,  // 225: google.cloud.storage.v1.ObjectsServer.BulkRestoreObject:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
-	52,  // 226: google.cloud.storage.v1.ObjectsServer.ComposeObject:output_type -> google.cloud.storage.v1.Object
-	52,  // 227: google.cloud.storage.v1.ObjectsServer.CopyObject:output_type -> google.cloud.storage.v1.Object
-	136, // 228: google.cloud.storage.v1.ObjectsServer.DeleteObject:output_type -> google.protobuf.Empty
-	52,  // 229: google.cloud.storage.v1.ObjectsServer.GetObject:output_type -> google.cloud.storage.v1.Object
-	52,  // 230: google.cloud.storage.v1.ObjectsServer.InsertObject:output_type -> google.cloud.storage.v1.Object
-	56,  // 231: google.cloud.storage.v1.ObjectsServer.ListObjects:output_type -> google.cloud.storage.v1.Objects
-	52,  // 232: google.cloud.storage.v1.ObjectsServer.PatchObject:output_type -> google.cloud.storage.v1.Object
-	52,  // 233: google.cloud.storage.v1.ObjectsServer.RestoreObject:output_type -> google.cloud.storage.v1.Object
-	59,  // 234: google.cloud.storage.v1.ObjectsServer.RewriteObject:output_type -> google.cloud.storage.v1.RewriteResponse
-	52,  // 235: google.cloud.storage.v1.ObjectsServer.UpdateObject:output_type -> google.cloud.storage.v1.Object
-	31,  // 236: google.cloud.storage.v1.ObjectsServer.WatchAllObject:output_type -> google.cloud.storage.v1.Channel
-	42,  // 237: google.cloud.storage.v1.ProjectsHmacKeysServer.CreateProjectsHmacKey:output_type -> google.cloud.storage.v1.HmacKey
-	136, // 238: google.cloud.storage.v1.ProjectsHmacKeysServer.DeleteProjectsHmacKey:output_type -> google.protobuf.Empty
-	43,  // 239: google.cloud.storage.v1.ProjectsHmacKeysServer.GetProjectsHmacKey:output_type -> google.cloud.storage.v1.HmacKeyMetadata
-	44,  // 240: google.cloud.storage.v1.ProjectsHmacKeysServer.ListProjectsHmacKeys:output_type -> google.cloud.storage.v1.HmacKeysMetadata
-	43,  // 241: google.cloud.storage.v1.ProjectsHmacKeysServer.UpdateProjectsHmacKey:output_type -> google.cloud.storage.v1.HmacKeyMetadata
-	60,  // 242: google.cloud.storage.v1.ProjectsServiceAccountServer.GetProjectsServiceAccount:output_type -> google.cloud.storage.v1.ServiceAccount
-	178, // [178:243] is the sub-list for method output_type
-	113, // [113:178] is the sub-list for method input_type
-	113, // [113:113] is the sub-list for extension type_name
-	113, // [113:113] is the sub-list for extension extendee
-	0,   // [0:113] is the sub-list for field type_name
+	11,  // 10: google.cloud.storage.v1.BucketIpFilter.public_network_source:type_name -> google.cloud.storage.v1.PublicNetworkSource
+	12,  // 11: google.cloud.storage.v1.BucketIpFilter.vpc_network_sources:type_name -> google.cloud.storage.v1.VpcNetworkSources
+	14,  // 12: google.cloud.storage.v1.Rule.action:type_name -> google.cloud.storage.v1.Action
+	15,  // 13: google.cloud.storage.v1.Rule.condition:type_name -> google.cloud.storage.v1.Condition
+	16,  // 14: google.cloud.storage.v1.BucketLifecycle.rule:type_name -> google.cloud.storage.v1.Rule
+	136, // 15: google.cloud.storage.v1.BucketRetentionPolicy.effective_time:type_name -> google.protobuf.Timestamp
+	136, // 16: google.cloud.storage.v1.BucketSoftDeletePolicy.effective_time:type_name -> google.protobuf.Timestamp
+	27,  // 17: google.cloud.storage.v1.Bucket.acl:type_name -> google.cloud.storage.v1.BucketAccessControl
+	2,   // 18: google.cloud.storage.v1.Bucket.autoclass:type_name -> google.cloud.storage.v1.BucketAutoclass
+	3,   // 19: google.cloud.storage.v1.Bucket.billing:type_name -> google.cloud.storage.v1.BucketBilling
+	4,   // 20: google.cloud.storage.v1.Bucket.cors:type_name -> google.cloud.storage.v1.BucketCors
+	5,   // 21: google.cloud.storage.v1.Bucket.custom_placement_config:type_name -> google.cloud.storage.v1.BucketCustomPlacementConfig
+	57,  // 22: google.cloud.storage.v1.Bucket.default_object_acl:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	6,   // 23: google.cloud.storage.v1.Bucket.encryption:type_name -> google.cloud.storage.v1.BucketEncryption
+	7,   // 24: google.cloud.storage.v1.Bucket.hierarchical_namespace:type_name -> google.cloud.storage.v1.BucketHierarchicalNamespace
+	10,  // 25: google.cloud.storage.v1.Bucket.iam_configuration:type_name -> google.cloud.storage.v1.BucketIamConfiguration
+	13,  // 26: google.cloud.storage.v1.Bucket.ip_filter:type_name -> google.cloud.storage.v1.BucketIpFilter
+	130, // 27: google.cloud.storage.v1.Bucket.labels:type_name -> google.cloud.storage.v1.Bucket.LabelsEntry
+	17,  // 28: google.cloud.storage.v1.Bucket.lifecycle:type_name -> google.cloud.storage.v1.BucketLifecycle
+	18,  // 29: google.cloud.storage.v1.Bucket.logging:type_name -> google.cloud.storage.v1.BucketLogging
+	19,  // 30: google.cloud.storage.v1.Bucket.object_retention:type_name -> google.cloud.storage.v1.BucketObjectRetention
+	20,  // 31: google.cloud.storage.v1.Bucket.owner:type_name -> google.cloud.storage.v1.BucketOwner
+	21,  // 32: google.cloud.storage.v1.Bucket.retention_policy:type_name -> google.cloud.storage.v1.BucketRetentionPolicy
+	22,  // 33: google.cloud.storage.v1.Bucket.soft_delete_policy:type_name -> google.cloud.storage.v1.BucketSoftDeletePolicy
+	136, // 34: google.cloud.storage.v1.Bucket.time_created:type_name -> google.protobuf.Timestamp
+	136, // 35: google.cloud.storage.v1.Bucket.updated:type_name -> google.protobuf.Timestamp
+	23,  // 36: google.cloud.storage.v1.Bucket.versioning:type_name -> google.cloud.storage.v1.BucketVersioning
+	24,  // 37: google.cloud.storage.v1.Bucket.website:type_name -> google.cloud.storage.v1.BucketWebsite
+	26,  // 38: google.cloud.storage.v1.BucketAccessControl.project_team:type_name -> google.cloud.storage.v1.BucketAccessControlProjectTeam
+	27,  // 39: google.cloud.storage.v1.BucketAccessControls.items:type_name -> google.cloud.storage.v1.BucketAccessControl
+	29,  // 40: google.cloud.storage.v1.BucketStorageLayout.custom_placement_config:type_name -> google.cloud.storage.v1.BucketStorageLayoutCustomPlacementConfig
+	30,  // 41: google.cloud.storage.v1.BucketStorageLayout.hierarchical_namespace:type_name -> google.cloud.storage.v1.BucketStorageLayoutHierarchicalNamespace
+	25,  // 42: google.cloud.storage.v1.Buckets.items:type_name -> google.cloud.storage.v1.Bucket
+	136, // 43: google.cloud.storage.v1.BulkRestoreObjectsRequest.soft_deleted_after_time:type_name -> google.protobuf.Timestamp
+	136, // 44: google.cloud.storage.v1.BulkRestoreObjectsRequest.soft_deleted_before_time:type_name -> google.protobuf.Timestamp
+	131, // 45: google.cloud.storage.v1.Channel.params:type_name -> google.cloud.storage.v1.Channel.ParamsEntry
+	35,  // 46: google.cloud.storage.v1.ComposeRequestSourceObjects.object_preconditions:type_name -> google.cloud.storage.v1.ObjectPreconditions
+	55,  // 47: google.cloud.storage.v1.ComposeRequest.destination:type_name -> google.cloud.storage.v1.Object
+	36,  // 48: google.cloud.storage.v1.ComposeRequest.source_objects:type_name -> google.cloud.storage.v1.ComposeRequestSourceObjects
+	136, // 49: google.cloud.storage.v1.Folder.create_time:type_name -> google.protobuf.Timestamp
+	39,  // 50: google.cloud.storage.v1.Folder.pending_rename_info:type_name -> google.cloud.storage.v1.FolderPendingRenameInfo
+	136, // 51: google.cloud.storage.v1.Folder.update_time:type_name -> google.protobuf.Timestamp
+	40,  // 52: google.cloud.storage.v1.Folders.items:type_name -> google.cloud.storage.v1.Folder
+	43,  // 53: google.cloud.storage.v1.GoogleLongrunningListOperationsResponse.operations:type_name -> google.cloud.storage.v1.GoogleLongrunningOperation
+	44,  // 54: google.cloud.storage.v1.GoogleLongrunningOperation.error:type_name -> google.cloud.storage.v1.GoogleRpcStatus
+	132, // 55: google.cloud.storage.v1.GoogleLongrunningOperation.metadata:type_name -> google.cloud.storage.v1.GoogleLongrunningOperation.MetadataEntry
+	133, // 56: google.cloud.storage.v1.GoogleLongrunningOperation.response:type_name -> google.cloud.storage.v1.GoogleLongrunningOperation.ResponseEntry
+	138, // 57: google.cloud.storage.v1.GoogleRpcStatus.details:type_name -> google.protobuf.Any
+	46,  // 58: google.cloud.storage.v1.HmacKey.metadata:type_name -> google.cloud.storage.v1.HmacKeyMetadata
+	136, // 59: google.cloud.storage.v1.HmacKeyMetadata.time_created:type_name -> google.protobuf.Timestamp
+	136, // 60: google.cloud.storage.v1.HmacKeyMetadata.updated:type_name -> google.protobuf.Timestamp
+	46,  // 61: google.cloud.storage.v1.HmacKeysMetadata.items:type_name -> google.cloud.storage.v1.HmacKeyMetadata
+	136, // 62: google.cloud.storage.v1.ManagedFolder.create_time:type_name -> google.protobuf.Timestamp
+	136, // 63: google.cloud.storage.v1.ManagedFolder.update_time:type_name -> google.protobuf.Timestamp
+	48,  // 64: google.cloud.storage.v1.ManagedFolders.items:type_name -> google.cloud.storage.v1.ManagedFolder
+	134, // 65: google.cloud.storage.v1.Notification.custom_attributes:type_name -> google.cloud.storage.v1.Notification.CustomAttributesEntry
+	50,  // 66: google.cloud.storage.v1.Notifications.items:type_name -> google.cloud.storage.v1.Notification
+	136, // 67: google.cloud.storage.v1.ObjectRetention.retain_until_time:type_name -> google.protobuf.Timestamp
+	57,  // 68: google.cloud.storage.v1.Object.acl:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	136, // 69: google.cloud.storage.v1.Object.custom_time:type_name -> google.protobuf.Timestamp
+	52,  // 70: google.cloud.storage.v1.Object.customer_encryption:type_name -> google.cloud.storage.v1.ObjectCustomerEncryption
+	136, // 71: google.cloud.storage.v1.Object.hard_delete_time:type_name -> google.protobuf.Timestamp
+	135, // 72: google.cloud.storage.v1.Object.metadata:type_name -> google.cloud.storage.v1.Object.MetadataEntry
+	53,  // 73: google.cloud.storage.v1.Object.owner:type_name -> google.cloud.storage.v1.ObjectOwner
+	54,  // 74: google.cloud.storage.v1.Object.retention:type_name -> google.cloud.storage.v1.ObjectRetention
+	136, // 75: google.cloud.storage.v1.Object.retention_expiration_time:type_name -> google.protobuf.Timestamp
+	136, // 76: google.cloud.storage.v1.Object.soft_delete_time:type_name -> google.protobuf.Timestamp
+	136, // 77: google.cloud.storage.v1.Object.time_created:type_name -> google.protobuf.Timestamp
+	136, // 78: google.cloud.storage.v1.Object.time_deleted:type_name -> google.protobuf.Timestamp
+	136, // 79: google.cloud.storage.v1.Object.time_storage_class_updated:type_name -> google.protobuf.Timestamp
+	136, // 80: google.cloud.storage.v1.Object.updated:type_name -> google.protobuf.Timestamp
+	56,  // 81: google.cloud.storage.v1.ObjectAccessControl.project_team:type_name -> google.cloud.storage.v1.ObjectAccessControlProjectTeam
+	57,  // 82: google.cloud.storage.v1.ObjectAccessControls.items:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	55,  // 83: google.cloud.storage.v1.Objects.items:type_name -> google.cloud.storage.v1.Object
+	38,  // 84: google.cloud.storage.v1.PolicyBindings.condition:type_name -> google.cloud.storage.v1.Expr
+	60,  // 85: google.cloud.storage.v1.Policy.bindings:type_name -> google.cloud.storage.v1.PolicyBindings
+	55,  // 86: google.cloud.storage.v1.RewriteResponse.resource:type_name -> google.cloud.storage.v1.Object
+	0,   // 87: google.cloud.storage.v1.InsertAnywhereCacheRequest.anywhere_cache:type_name -> google.cloud.storage.v1.AnywhereCache
+	0,   // 88: google.cloud.storage.v1.UpdateAnywhereCacheRequest.anywhere_cache:type_name -> google.cloud.storage.v1.AnywhereCache
+	27,  // 89: google.cloud.storage.v1.InsertBucketAccessControlRequest.bucket_access_control:type_name -> google.cloud.storage.v1.BucketAccessControl
+	27,  // 90: google.cloud.storage.v1.PatchBucketAccessControlRequest.bucket_access_control:type_name -> google.cloud.storage.v1.BucketAccessControl
+	27,  // 91: google.cloud.storage.v1.UpdateBucketAccessControlRequest.bucket_access_control:type_name -> google.cloud.storage.v1.BucketAccessControl
+	25,  // 92: google.cloud.storage.v1.InsertBucketRequest.bucket:type_name -> google.cloud.storage.v1.Bucket
+	25,  // 93: google.cloud.storage.v1.PatchBucketRequest.bucket:type_name -> google.cloud.storage.v1.Bucket
+	25,  // 94: google.cloud.storage.v1.UpdateBucketRequest.bucket:type_name -> google.cloud.storage.v1.Bucket
+	34,  // 95: google.cloud.storage.v1.StopChannelRequest.channel:type_name -> google.cloud.storage.v1.Channel
+	57,  // 96: google.cloud.storage.v1.InsertDefaultObjectAccessControlRequest.default_object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 97: google.cloud.storage.v1.PatchDefaultObjectAccessControlRequest.default_object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 98: google.cloud.storage.v1.UpdateDefaultObjectAccessControlRequest.default_object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	40,  // 99: google.cloud.storage.v1.InsertFolderRequest.folder:type_name -> google.cloud.storage.v1.Folder
+	48,  // 100: google.cloud.storage.v1.InsertManagedFolderRequest.managed_folder:type_name -> google.cloud.storage.v1.ManagedFolder
+	50,  // 101: google.cloud.storage.v1.InsertNotificationRequest.notification:type_name -> google.cloud.storage.v1.Notification
+	57,  // 102: google.cloud.storage.v1.InsertObjectAccessControlRequest.object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 103: google.cloud.storage.v1.PatchObjectAccessControlRequest.object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 104: google.cloud.storage.v1.UpdateObjectAccessControlRequest.object_access_control:type_name -> google.cloud.storage.v1.ObjectAccessControl
+	33,  // 105: google.cloud.storage.v1.BulkRestoreObjectRequest.object:type_name -> google.cloud.storage.v1.BulkRestoreObjectsRequest
+	37,  // 106: google.cloud.storage.v1.ComposeObjectRequest.object:type_name -> google.cloud.storage.v1.ComposeRequest
+	55,  // 107: google.cloud.storage.v1.CopyObjectRequest.object:type_name -> google.cloud.storage.v1.Object
+	55,  // 108: google.cloud.storage.v1.InsertObjectRequest.object:type_name -> google.cloud.storage.v1.Object
+	55,  // 109: google.cloud.storage.v1.PatchObjectRequest.object:type_name -> google.cloud.storage.v1.Object
+	55,  // 110: google.cloud.storage.v1.RewriteObjectRequest.object:type_name -> google.cloud.storage.v1.Object
+	55,  // 111: google.cloud.storage.v1.UpdateObjectRequest.object:type_name -> google.cloud.storage.v1.Object
+	34,  // 112: google.cloud.storage.v1.WatchAllObjectRequest.object:type_name -> google.cloud.storage.v1.Channel
+	46,  // 113: google.cloud.storage.v1.UpdateProjectsHmacKeyRequest.projects_hmac_key:type_name -> google.cloud.storage.v1.HmacKeyMetadata
+	138, // 114: google.cloud.storage.v1.GoogleLongrunningOperation.MetadataEntry.value:type_name -> google.protobuf.Any
+	138, // 115: google.cloud.storage.v1.GoogleLongrunningOperation.ResponseEntry.value:type_name -> google.protobuf.Any
+	65,  // 116: google.cloud.storage.v1.AnywhereCachesServer.DisableAnywhereCache:input_type -> google.cloud.storage.v1.DisableAnywhereCacheRequest
+	66,  // 117: google.cloud.storage.v1.AnywhereCachesServer.GetAnywhereCache:input_type -> google.cloud.storage.v1.GetAnywhereCacheRequest
+	67,  // 118: google.cloud.storage.v1.AnywhereCachesServer.InsertAnywhereCache:input_type -> google.cloud.storage.v1.InsertAnywhereCacheRequest
+	68,  // 119: google.cloud.storage.v1.AnywhereCachesServer.ListAnywhereCaches:input_type -> google.cloud.storage.v1.ListAnywhereCachesRequest
+	69,  // 120: google.cloud.storage.v1.AnywhereCachesServer.PauseAnywhereCache:input_type -> google.cloud.storage.v1.PauseAnywhereCacheRequest
+	70,  // 121: google.cloud.storage.v1.AnywhereCachesServer.ResumeAnywhereCache:input_type -> google.cloud.storage.v1.ResumeAnywhereCacheRequest
+	71,  // 122: google.cloud.storage.v1.AnywhereCachesServer.UpdateAnywhereCache:input_type -> google.cloud.storage.v1.UpdateAnywhereCacheRequest
+	72,  // 123: google.cloud.storage.v1.BucketAccessControlsServer.DeleteBucketAccessControl:input_type -> google.cloud.storage.v1.DeleteBucketAccessControlRequest
+	73,  // 124: google.cloud.storage.v1.BucketAccessControlsServer.GetBucketAccessControl:input_type -> google.cloud.storage.v1.GetBucketAccessControlRequest
+	74,  // 125: google.cloud.storage.v1.BucketAccessControlsServer.InsertBucketAccessControl:input_type -> google.cloud.storage.v1.InsertBucketAccessControlRequest
+	75,  // 126: google.cloud.storage.v1.BucketAccessControlsServer.ListBucketAccessControls:input_type -> google.cloud.storage.v1.ListBucketAccessControlsRequest
+	76,  // 127: google.cloud.storage.v1.BucketAccessControlsServer.PatchBucketAccessControl:input_type -> google.cloud.storage.v1.PatchBucketAccessControlRequest
+	77,  // 128: google.cloud.storage.v1.BucketAccessControlsServer.UpdateBucketAccessControl:input_type -> google.cloud.storage.v1.UpdateBucketAccessControlRequest
+	78,  // 129: google.cloud.storage.v1.BucketsServer.DeleteBucket:input_type -> google.cloud.storage.v1.DeleteBucketRequest
+	79,  // 130: google.cloud.storage.v1.BucketsServer.GetBucket:input_type -> google.cloud.storage.v1.GetBucketRequest
+	80,  // 131: google.cloud.storage.v1.BucketsServer.GetStorageLayoutBucket:input_type -> google.cloud.storage.v1.GetStorageLayoutBucketRequest
+	81,  // 132: google.cloud.storage.v1.BucketsServer.InsertBucket:input_type -> google.cloud.storage.v1.InsertBucketRequest
+	82,  // 133: google.cloud.storage.v1.BucketsServer.ListBuckets:input_type -> google.cloud.storage.v1.ListBucketsRequest
+	83,  // 134: google.cloud.storage.v1.BucketsServer.LockRetentionPolicyBucket:input_type -> google.cloud.storage.v1.LockRetentionPolicyBucketRequest
+	84,  // 135: google.cloud.storage.v1.BucketsServer.PatchBucket:input_type -> google.cloud.storage.v1.PatchBucketRequest
+	85,  // 136: google.cloud.storage.v1.BucketsServer.UpdateBucket:input_type -> google.cloud.storage.v1.UpdateBucketRequest
+	86,  // 137: google.cloud.storage.v1.ChannelsServer.StopChannel:input_type -> google.cloud.storage.v1.StopChannelRequest
+	87,  // 138: google.cloud.storage.v1.DefaultObjectAccessControlsServer.DeleteDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.DeleteDefaultObjectAccessControlRequest
+	88,  // 139: google.cloud.storage.v1.DefaultObjectAccessControlsServer.GetDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.GetDefaultObjectAccessControlRequest
+	89,  // 140: google.cloud.storage.v1.DefaultObjectAccessControlsServer.InsertDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.InsertDefaultObjectAccessControlRequest
+	90,  // 141: google.cloud.storage.v1.DefaultObjectAccessControlsServer.ListDefaultObjectAccessControls:input_type -> google.cloud.storage.v1.ListDefaultObjectAccessControlsRequest
+	91,  // 142: google.cloud.storage.v1.DefaultObjectAccessControlsServer.PatchDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.PatchDefaultObjectAccessControlRequest
+	92,  // 143: google.cloud.storage.v1.DefaultObjectAccessControlsServer.UpdateDefaultObjectAccessControl:input_type -> google.cloud.storage.v1.UpdateDefaultObjectAccessControlRequest
+	93,  // 144: google.cloud.storage.v1.FoldersServer.DeleteFolder:input_type -> google.cloud.storage.v1.DeleteFolderRequest
+	94,  // 145: google.cloud.storage.v1.FoldersServer.GetFolder:input_type -> google.cloud.storage.v1.GetFolderRequest
+	95,  // 146: google.cloud.storage.v1.FoldersServer.InsertFolder:input_type -> google.cloud.storage.v1.InsertFolderRequest
+	96,  // 147: google.cloud.storage.v1.FoldersServer.ListFolders:input_type -> google.cloud.storage.v1.ListFoldersRequest
+	97,  // 148: google.cloud.storage.v1.FoldersServer.RenameFolder:input_type -> google.cloud.storage.v1.RenameFolderRequest
+	98,  // 149: google.cloud.storage.v1.ManagedFoldersServer.DeleteManagedFolder:input_type -> google.cloud.storage.v1.DeleteManagedFolderRequest
+	99,  // 150: google.cloud.storage.v1.ManagedFoldersServer.GetManagedFolder:input_type -> google.cloud.storage.v1.GetManagedFolderRequest
+	100, // 151: google.cloud.storage.v1.ManagedFoldersServer.InsertManagedFolder:input_type -> google.cloud.storage.v1.InsertManagedFolderRequest
+	101, // 152: google.cloud.storage.v1.ManagedFoldersServer.ListManagedFolders:input_type -> google.cloud.storage.v1.ListManagedFoldersRequest
+	102, // 153: google.cloud.storage.v1.NotificationsServer.DeleteNotification:input_type -> google.cloud.storage.v1.DeleteNotificationRequest
+	103, // 154: google.cloud.storage.v1.NotificationsServer.GetNotification:input_type -> google.cloud.storage.v1.GetNotificationRequest
+	104, // 155: google.cloud.storage.v1.NotificationsServer.InsertNotification:input_type -> google.cloud.storage.v1.InsertNotificationRequest
+	105, // 156: google.cloud.storage.v1.NotificationsServer.ListNotifications:input_type -> google.cloud.storage.v1.ListNotificationsRequest
+	106, // 157: google.cloud.storage.v1.ObjectAccessControlsServer.DeleteObjectAccessControl:input_type -> google.cloud.storage.v1.DeleteObjectAccessControlRequest
+	107, // 158: google.cloud.storage.v1.ObjectAccessControlsServer.GetObjectAccessControl:input_type -> google.cloud.storage.v1.GetObjectAccessControlRequest
+	108, // 159: google.cloud.storage.v1.ObjectAccessControlsServer.InsertObjectAccessControl:input_type -> google.cloud.storage.v1.InsertObjectAccessControlRequest
+	109, // 160: google.cloud.storage.v1.ObjectAccessControlsServer.ListObjectAccessControls:input_type -> google.cloud.storage.v1.ListObjectAccessControlsRequest
+	110, // 161: google.cloud.storage.v1.ObjectAccessControlsServer.PatchObjectAccessControl:input_type -> google.cloud.storage.v1.PatchObjectAccessControlRequest
+	111, // 162: google.cloud.storage.v1.ObjectAccessControlsServer.UpdateObjectAccessControl:input_type -> google.cloud.storage.v1.UpdateObjectAccessControlRequest
+	112, // 163: google.cloud.storage.v1.ObjectsServer.BulkRestoreObject:input_type -> google.cloud.storage.v1.BulkRestoreObjectRequest
+	113, // 164: google.cloud.storage.v1.ObjectsServer.ComposeObject:input_type -> google.cloud.storage.v1.ComposeObjectRequest
+	114, // 165: google.cloud.storage.v1.ObjectsServer.CopyObject:input_type -> google.cloud.storage.v1.CopyObjectRequest
+	115, // 166: google.cloud.storage.v1.ObjectsServer.DeleteObject:input_type -> google.cloud.storage.v1.DeleteObjectRequest
+	116, // 167: google.cloud.storage.v1.ObjectsServer.GetObject:input_type -> google.cloud.storage.v1.GetObjectRequest
+	117, // 168: google.cloud.storage.v1.ObjectsServer.InsertObject:input_type -> google.cloud.storage.v1.InsertObjectRequest
+	118, // 169: google.cloud.storage.v1.ObjectsServer.ListObjects:input_type -> google.cloud.storage.v1.ListObjectsRequest
+	119, // 170: google.cloud.storage.v1.ObjectsServer.PatchObject:input_type -> google.cloud.storage.v1.PatchObjectRequest
+	120, // 171: google.cloud.storage.v1.ObjectsServer.RestoreObject:input_type -> google.cloud.storage.v1.RestoreObjectRequest
+	121, // 172: google.cloud.storage.v1.ObjectsServer.RewriteObject:input_type -> google.cloud.storage.v1.RewriteObjectRequest
+	122, // 173: google.cloud.storage.v1.ObjectsServer.UpdateObject:input_type -> google.cloud.storage.v1.UpdateObjectRequest
+	123, // 174: google.cloud.storage.v1.ObjectsServer.WatchAllObject:input_type -> google.cloud.storage.v1.WatchAllObjectRequest
+	124, // 175: google.cloud.storage.v1.ProjectsHmacKeysServer.CreateProjectsHmacKey:input_type -> google.cloud.storage.v1.CreateProjectsHmacKeyRequest
+	125, // 176: google.cloud.storage.v1.ProjectsHmacKeysServer.DeleteProjectsHmacKey:input_type -> google.cloud.storage.v1.DeleteProjectsHmacKeyRequest
+	126, // 177: google.cloud.storage.v1.ProjectsHmacKeysServer.GetProjectsHmacKey:input_type -> google.cloud.storage.v1.GetProjectsHmacKeyRequest
+	127, // 178: google.cloud.storage.v1.ProjectsHmacKeysServer.ListProjectsHmacKeys:input_type -> google.cloud.storage.v1.ListProjectsHmacKeysRequest
+	128, // 179: google.cloud.storage.v1.ProjectsHmacKeysServer.UpdateProjectsHmacKey:input_type -> google.cloud.storage.v1.UpdateProjectsHmacKeyRequest
+	129, // 180: google.cloud.storage.v1.ProjectsServiceAccountServer.GetProjectsServiceAccount:input_type -> google.cloud.storage.v1.GetProjectsServiceAccountRequest
+	0,   // 181: google.cloud.storage.v1.AnywhereCachesServer.DisableAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
+	0,   // 182: google.cloud.storage.v1.AnywhereCachesServer.GetAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
+	43,  // 183: google.cloud.storage.v1.AnywhereCachesServer.InsertAnywhereCache:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
+	1,   // 184: google.cloud.storage.v1.AnywhereCachesServer.ListAnywhereCaches:output_type -> google.cloud.storage.v1.AnywhereCaches
+	0,   // 185: google.cloud.storage.v1.AnywhereCachesServer.PauseAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
+	0,   // 186: google.cloud.storage.v1.AnywhereCachesServer.ResumeAnywhereCache:output_type -> google.cloud.storage.v1.AnywhereCache
+	43,  // 187: google.cloud.storage.v1.AnywhereCachesServer.UpdateAnywhereCache:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
+	139, // 188: google.cloud.storage.v1.BucketAccessControlsServer.DeleteBucketAccessControl:output_type -> google.protobuf.Empty
+	27,  // 189: google.cloud.storage.v1.BucketAccessControlsServer.GetBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
+	27,  // 190: google.cloud.storage.v1.BucketAccessControlsServer.InsertBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
+	28,  // 191: google.cloud.storage.v1.BucketAccessControlsServer.ListBucketAccessControls:output_type -> google.cloud.storage.v1.BucketAccessControls
+	27,  // 192: google.cloud.storage.v1.BucketAccessControlsServer.PatchBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
+	27,  // 193: google.cloud.storage.v1.BucketAccessControlsServer.UpdateBucketAccessControl:output_type -> google.cloud.storage.v1.BucketAccessControl
+	139, // 194: google.cloud.storage.v1.BucketsServer.DeleteBucket:output_type -> google.protobuf.Empty
+	25,  // 195: google.cloud.storage.v1.BucketsServer.GetBucket:output_type -> google.cloud.storage.v1.Bucket
+	31,  // 196: google.cloud.storage.v1.BucketsServer.GetStorageLayoutBucket:output_type -> google.cloud.storage.v1.BucketStorageLayout
+	25,  // 197: google.cloud.storage.v1.BucketsServer.InsertBucket:output_type -> google.cloud.storage.v1.Bucket
+	32,  // 198: google.cloud.storage.v1.BucketsServer.ListBuckets:output_type -> google.cloud.storage.v1.Buckets
+	25,  // 199: google.cloud.storage.v1.BucketsServer.LockRetentionPolicyBucket:output_type -> google.cloud.storage.v1.Bucket
+	25,  // 200: google.cloud.storage.v1.BucketsServer.PatchBucket:output_type -> google.cloud.storage.v1.Bucket
+	25,  // 201: google.cloud.storage.v1.BucketsServer.UpdateBucket:output_type -> google.cloud.storage.v1.Bucket
+	139, // 202: google.cloud.storage.v1.ChannelsServer.StopChannel:output_type -> google.protobuf.Empty
+	139, // 203: google.cloud.storage.v1.DefaultObjectAccessControlsServer.DeleteDefaultObjectAccessControl:output_type -> google.protobuf.Empty
+	57,  // 204: google.cloud.storage.v1.DefaultObjectAccessControlsServer.GetDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 205: google.cloud.storage.v1.DefaultObjectAccessControlsServer.InsertDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	58,  // 206: google.cloud.storage.v1.DefaultObjectAccessControlsServer.ListDefaultObjectAccessControls:output_type -> google.cloud.storage.v1.ObjectAccessControls
+	57,  // 207: google.cloud.storage.v1.DefaultObjectAccessControlsServer.PatchDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 208: google.cloud.storage.v1.DefaultObjectAccessControlsServer.UpdateDefaultObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	139, // 209: google.cloud.storage.v1.FoldersServer.DeleteFolder:output_type -> google.protobuf.Empty
+	40,  // 210: google.cloud.storage.v1.FoldersServer.GetFolder:output_type -> google.cloud.storage.v1.Folder
+	40,  // 211: google.cloud.storage.v1.FoldersServer.InsertFolder:output_type -> google.cloud.storage.v1.Folder
+	41,  // 212: google.cloud.storage.v1.FoldersServer.ListFolders:output_type -> google.cloud.storage.v1.Folders
+	43,  // 213: google.cloud.storage.v1.FoldersServer.RenameFolder:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
+	139, // 214: google.cloud.storage.v1.ManagedFoldersServer.DeleteManagedFolder:output_type -> google.protobuf.Empty
+	48,  // 215: google.cloud.storage.v1.ManagedFoldersServer.GetManagedFolder:output_type -> google.cloud.storage.v1.ManagedFolder
+	48,  // 216: google.cloud.storage.v1.ManagedFoldersServer.InsertManagedFolder:output_type -> google.cloud.storage.v1.ManagedFolder
+	49,  // 217: google.cloud.storage.v1.ManagedFoldersServer.ListManagedFolders:output_type -> google.cloud.storage.v1.ManagedFolders
+	139, // 218: google.cloud.storage.v1.NotificationsServer.DeleteNotification:output_type -> google.protobuf.Empty
+	50,  // 219: google.cloud.storage.v1.NotificationsServer.GetNotification:output_type -> google.cloud.storage.v1.Notification
+	50,  // 220: google.cloud.storage.v1.NotificationsServer.InsertNotification:output_type -> google.cloud.storage.v1.Notification
+	51,  // 221: google.cloud.storage.v1.NotificationsServer.ListNotifications:output_type -> google.cloud.storage.v1.Notifications
+	139, // 222: google.cloud.storage.v1.ObjectAccessControlsServer.DeleteObjectAccessControl:output_type -> google.protobuf.Empty
+	57,  // 223: google.cloud.storage.v1.ObjectAccessControlsServer.GetObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 224: google.cloud.storage.v1.ObjectAccessControlsServer.InsertObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	58,  // 225: google.cloud.storage.v1.ObjectAccessControlsServer.ListObjectAccessControls:output_type -> google.cloud.storage.v1.ObjectAccessControls
+	57,  // 226: google.cloud.storage.v1.ObjectAccessControlsServer.PatchObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	57,  // 227: google.cloud.storage.v1.ObjectAccessControlsServer.UpdateObjectAccessControl:output_type -> google.cloud.storage.v1.ObjectAccessControl
+	43,  // 228: google.cloud.storage.v1.ObjectsServer.BulkRestoreObject:output_type -> google.cloud.storage.v1.GoogleLongrunningOperation
+	55,  // 229: google.cloud.storage.v1.ObjectsServer.ComposeObject:output_type -> google.cloud.storage.v1.Object
+	55,  // 230: google.cloud.storage.v1.ObjectsServer.CopyObject:output_type -> google.cloud.storage.v1.Object
+	139, // 231: google.cloud.storage.v1.ObjectsServer.DeleteObject:output_type -> google.protobuf.Empty
+	55,  // 232: google.cloud.storage.v1.ObjectsServer.GetObject:output_type -> google.cloud.storage.v1.Object
+	55,  // 233: google.cloud.storage.v1.ObjectsServer.InsertObject:output_type -> google.cloud.storage.v1.Object
+	59,  // 234: google.cloud.storage.v1.ObjectsServer.ListObjects:output_type -> google.cloud.storage.v1.Objects
+	55,  // 235: google.cloud.storage.v1.ObjectsServer.PatchObject:output_type -> google.cloud.storage.v1.Object
+	55,  // 236: google.cloud.storage.v1.ObjectsServer.RestoreObject:output_type -> google.cloud.storage.v1.Object
+	62,  // 237: google.cloud.storage.v1.ObjectsServer.RewriteObject:output_type -> google.cloud.storage.v1.RewriteResponse
+	55,  // 238: google.cloud.storage.v1.ObjectsServer.UpdateObject:output_type -> google.cloud.storage.v1.Object
+	34,  // 239: google.cloud.storage.v1.ObjectsServer.WatchAllObject:output_type -> google.cloud.storage.v1.Channel
+	45,  // 240: google.cloud.storage.v1.ProjectsHmacKeysServer.CreateProjectsHmacKey:output_type -> google.cloud.storage.v1.HmacKey
+	139, // 241: google.cloud.storage.v1.ProjectsHmacKeysServer.DeleteProjectsHmacKey:output_type -> google.protobuf.Empty
+	46,  // 242: google.cloud.storage.v1.ProjectsHmacKeysServer.GetProjectsHmacKey:output_type -> google.cloud.storage.v1.HmacKeyMetadata
+	47,  // 243: google.cloud.storage.v1.ProjectsHmacKeysServer.ListProjectsHmacKeys:output_type -> google.cloud.storage.v1.HmacKeysMetadata
+	46,  // 244: google.cloud.storage.v1.ProjectsHmacKeysServer.UpdateProjectsHmacKey:output_type -> google.cloud.storage.v1.HmacKeyMetadata
+	63,  // 245: google.cloud.storage.v1.ProjectsServiceAccountServer.GetProjectsServiceAccount:output_type -> google.cloud.storage.v1.ServiceAccount
+	181, // [181:246] is the sub-list for method output_type
+	116, // [116:181] is the sub-list for method input_type
+	116, // [116:116] is the sub-list for extension type_name
+	116, // [116:116] is the sub-list for extension extendee
+	0,   // [0:116] is the sub-list for field type_name
 }
 
 func init() { file_mockgcp_storage_v1_service_proto_init() }
@@ -13162,7 +13399,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Action); i {
+			switch v := v.(*PublicNetworkSource); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13174,7 +13411,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Condition); i {
+			switch v := v.(*VpcNetworkSources); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13186,7 +13423,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Rule); i {
+			switch v := v.(*BucketIpFilter); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13198,7 +13435,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketLifecycle); i {
+			switch v := v.(*Action); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13210,7 +13447,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketLogging); i {
+			switch v := v.(*Condition); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13222,7 +13459,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketObjectRetention); i {
+			switch v := v.(*Rule); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13234,7 +13471,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketOwner); i {
+			switch v := v.(*BucketLifecycle); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13246,7 +13483,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketRetentionPolicy); i {
+			switch v := v.(*BucketLogging); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13258,7 +13495,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketSoftDeletePolicy); i {
+			switch v := v.(*BucketObjectRetention); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13270,7 +13507,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketVersioning); i {
+			switch v := v.(*BucketOwner); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13282,7 +13519,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketWebsite); i {
+			switch v := v.(*BucketRetentionPolicy); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13294,7 +13531,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Bucket); i {
+			switch v := v.(*BucketSoftDeletePolicy); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13306,7 +13543,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketAccessControlProjectTeam); i {
+			switch v := v.(*BucketVersioning); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13318,7 +13555,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketAccessControl); i {
+			switch v := v.(*BucketWebsite); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13330,7 +13567,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketAccessControls); i {
+			switch v := v.(*Bucket); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13342,7 +13579,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketStorageLayoutCustomPlacementConfig); i {
+			switch v := v.(*BucketAccessControlProjectTeam); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13354,7 +13591,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketStorageLayoutHierarchicalNamespace); i {
+			switch v := v.(*BucketAccessControl); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13366,7 +13603,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BucketStorageLayout); i {
+			switch v := v.(*BucketAccessControls); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13378,7 +13615,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Buckets); i {
+			switch v := v.(*BucketStorageLayoutCustomPlacementConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13390,7 +13627,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BulkRestoreObjectsRequest); i {
+			switch v := v.(*BucketStorageLayoutHierarchicalNamespace); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13402,7 +13639,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Channel); i {
+			switch v := v.(*BucketStorageLayout); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13414,7 +13651,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectPreconditions); i {
+			switch v := v.(*Buckets); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13426,7 +13663,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ComposeRequestSourceObjects); i {
+			switch v := v.(*BulkRestoreObjectsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13438,7 +13675,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ComposeRequest); i {
+			switch v := v.(*Channel); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13450,7 +13687,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Expr); i {
+			switch v := v.(*ObjectPreconditions); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13462,7 +13699,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FolderPendingRenameInfo); i {
+			switch v := v.(*ComposeRequestSourceObjects); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13474,7 +13711,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Folder); i {
+			switch v := v.(*ComposeRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13486,7 +13723,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Folders); i {
+			switch v := v.(*Expr); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13498,7 +13735,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GoogleLongrunningListOperationsResponse); i {
+			switch v := v.(*FolderPendingRenameInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13510,7 +13747,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GoogleLongrunningOperation); i {
+			switch v := v.(*Folder); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13522,7 +13759,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GoogleRpcStatus); i {
+			switch v := v.(*Folders); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13534,7 +13771,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HmacKey); i {
+			switch v := v.(*GoogleLongrunningListOperationsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13546,7 +13783,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HmacKeyMetadata); i {
+			switch v := v.(*GoogleLongrunningOperation); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13558,7 +13795,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HmacKeysMetadata); i {
+			switch v := v.(*GoogleRpcStatus); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13570,7 +13807,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ManagedFolder); i {
+			switch v := v.(*HmacKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13582,7 +13819,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ManagedFolders); i {
+			switch v := v.(*HmacKeyMetadata); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13594,7 +13831,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Notification); i {
+			switch v := v.(*HmacKeysMetadata); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13606,7 +13843,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[48].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Notifications); i {
+			switch v := v.(*ManagedFolder); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13618,7 +13855,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectCustomerEncryption); i {
+			switch v := v.(*ManagedFolders); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13630,7 +13867,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectOwner); i {
+			switch v := v.(*Notification); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13642,7 +13879,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[51].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectRetention); i {
+			switch v := v.(*Notifications); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13654,7 +13891,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[52].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Object); i {
+			switch v := v.(*ObjectCustomerEncryption); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13666,7 +13903,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[53].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectAccessControlProjectTeam); i {
+			switch v := v.(*ObjectOwner); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13678,7 +13915,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[54].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectAccessControl); i {
+			switch v := v.(*ObjectRetention); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13690,7 +13927,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[55].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectAccessControls); i {
+			switch v := v.(*Object); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13702,7 +13939,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[56].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Objects); i {
+			switch v := v.(*ObjectAccessControlProjectTeam); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13714,7 +13951,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[57].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PolicyBindings); i {
+			switch v := v.(*ObjectAccessControl); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13726,7 +13963,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[58].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Policy); i {
+			switch v := v.(*ObjectAccessControls); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13738,7 +13975,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[59].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RewriteResponse); i {
+			switch v := v.(*Objects); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13750,7 +13987,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[60].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ServiceAccount); i {
+			switch v := v.(*PolicyBindings); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13762,7 +13999,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[61].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TestIamPermissionsResponse); i {
+			switch v := v.(*Policy); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13774,7 +14011,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[62].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DisableAnywhereCacheRequest); i {
+			switch v := v.(*RewriteResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13786,7 +14023,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[63].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAnywhereCacheRequest); i {
+			switch v := v.(*ServiceAccount); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13798,7 +14035,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[64].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertAnywhereCacheRequest); i {
+			switch v := v.(*TestIamPermissionsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13810,7 +14047,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[65].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListAnywhereCachesRequest); i {
+			switch v := v.(*DisableAnywhereCacheRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13822,7 +14059,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[66].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PauseAnywhereCacheRequest); i {
+			switch v := v.(*GetAnywhereCacheRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13834,7 +14071,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[67].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ResumeAnywhereCacheRequest); i {
+			switch v := v.(*InsertAnywhereCacheRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13846,7 +14083,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[68].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateAnywhereCacheRequest); i {
+			switch v := v.(*ListAnywhereCachesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13858,7 +14095,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[69].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteBucketAccessControlRequest); i {
+			switch v := v.(*PauseAnywhereCacheRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13870,7 +14107,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[70].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetBucketAccessControlRequest); i {
+			switch v := v.(*ResumeAnywhereCacheRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13882,7 +14119,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[71].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertBucketAccessControlRequest); i {
+			switch v := v.(*UpdateAnywhereCacheRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13894,7 +14131,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[72].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListBucketAccessControlsRequest); i {
+			switch v := v.(*DeleteBucketAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13906,7 +14143,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[73].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PatchBucketAccessControlRequest); i {
+			switch v := v.(*GetBucketAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13918,7 +14155,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[74].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateBucketAccessControlRequest); i {
+			switch v := v.(*InsertBucketAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13930,7 +14167,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[75].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteBucketRequest); i {
+			switch v := v.(*ListBucketAccessControlsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13942,7 +14179,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[76].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetBucketRequest); i {
+			switch v := v.(*PatchBucketAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13954,7 +14191,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[77].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetStorageLayoutBucketRequest); i {
+			switch v := v.(*UpdateBucketAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13966,7 +14203,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[78].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertBucketRequest); i {
+			switch v := v.(*DeleteBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13978,7 +14215,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[79].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListBucketsRequest); i {
+			switch v := v.(*GetBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13990,7 +14227,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[80].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LockRetentionPolicyBucketRequest); i {
+			switch v := v.(*GetStorageLayoutBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14002,7 +14239,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[81].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PatchBucketRequest); i {
+			switch v := v.(*InsertBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14014,7 +14251,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[82].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateBucketRequest); i {
+			switch v := v.(*ListBucketsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14026,7 +14263,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[83].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StopChannelRequest); i {
+			switch v := v.(*LockRetentionPolicyBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14038,7 +14275,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[84].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteDefaultObjectAccessControlRequest); i {
+			switch v := v.(*PatchBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14050,7 +14287,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[85].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetDefaultObjectAccessControlRequest); i {
+			switch v := v.(*UpdateBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14062,7 +14299,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[86].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertDefaultObjectAccessControlRequest); i {
+			switch v := v.(*StopChannelRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14074,7 +14311,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[87].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListDefaultObjectAccessControlsRequest); i {
+			switch v := v.(*DeleteDefaultObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14086,7 +14323,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[88].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PatchDefaultObjectAccessControlRequest); i {
+			switch v := v.(*GetDefaultObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14098,7 +14335,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[89].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateDefaultObjectAccessControlRequest); i {
+			switch v := v.(*InsertDefaultObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14110,7 +14347,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[90].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteFolderRequest); i {
+			switch v := v.(*ListDefaultObjectAccessControlsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14122,7 +14359,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[91].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetFolderRequest); i {
+			switch v := v.(*PatchDefaultObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14134,7 +14371,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[92].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertFolderRequest); i {
+			switch v := v.(*UpdateDefaultObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14146,7 +14383,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[93].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListFoldersRequest); i {
+			switch v := v.(*DeleteFolderRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14158,7 +14395,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[94].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RenameFolderRequest); i {
+			switch v := v.(*GetFolderRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14170,7 +14407,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[95].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteManagedFolderRequest); i {
+			switch v := v.(*InsertFolderRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14182,7 +14419,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[96].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetManagedFolderRequest); i {
+			switch v := v.(*ListFoldersRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14194,7 +14431,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[97].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertManagedFolderRequest); i {
+			switch v := v.(*RenameFolderRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14206,7 +14443,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[98].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListManagedFoldersRequest); i {
+			switch v := v.(*DeleteManagedFolderRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14218,7 +14455,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[99].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteNotificationRequest); i {
+			switch v := v.(*GetManagedFolderRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14230,7 +14467,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[100].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetNotificationRequest); i {
+			switch v := v.(*InsertManagedFolderRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14242,7 +14479,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[101].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertNotificationRequest); i {
+			switch v := v.(*ListManagedFoldersRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14254,7 +14491,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[102].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListNotificationsRequest); i {
+			switch v := v.(*DeleteNotificationRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14266,7 +14503,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[103].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteObjectAccessControlRequest); i {
+			switch v := v.(*GetNotificationRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14278,7 +14515,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[104].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetObjectAccessControlRequest); i {
+			switch v := v.(*InsertNotificationRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14290,7 +14527,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[105].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertObjectAccessControlRequest); i {
+			switch v := v.(*ListNotificationsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14302,7 +14539,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[106].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListObjectAccessControlsRequest); i {
+			switch v := v.(*DeleteObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14314,7 +14551,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[107].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PatchObjectAccessControlRequest); i {
+			switch v := v.(*GetObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14326,7 +14563,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[108].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateObjectAccessControlRequest); i {
+			switch v := v.(*InsertObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14338,7 +14575,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[109].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BulkRestoreObjectRequest); i {
+			switch v := v.(*ListObjectAccessControlsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14350,7 +14587,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[110].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ComposeObjectRequest); i {
+			switch v := v.(*PatchObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14362,7 +14599,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[111].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CopyObjectRequest); i {
+			switch v := v.(*UpdateObjectAccessControlRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14374,7 +14611,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[112].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteObjectRequest); i {
+			switch v := v.(*BulkRestoreObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14386,7 +14623,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[113].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetObjectRequest); i {
+			switch v := v.(*ComposeObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14398,7 +14635,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[114].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InsertObjectRequest); i {
+			switch v := v.(*CopyObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14410,7 +14647,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[115].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListObjectsRequest); i {
+			switch v := v.(*DeleteObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14422,7 +14659,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[116].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PatchObjectRequest); i {
+			switch v := v.(*GetObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14434,7 +14671,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[117].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RestoreObjectRequest); i {
+			switch v := v.(*InsertObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14446,7 +14683,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[118].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RewriteObjectRequest); i {
+			switch v := v.(*ListObjectsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14458,7 +14695,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[119].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateObjectRequest); i {
+			switch v := v.(*PatchObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14470,7 +14707,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[120].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WatchAllObjectRequest); i {
+			switch v := v.(*RestoreObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14482,7 +14719,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[121].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateProjectsHmacKeyRequest); i {
+			switch v := v.(*RewriteObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14494,7 +14731,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[122].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteProjectsHmacKeyRequest); i {
+			switch v := v.(*UpdateObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14506,7 +14743,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[123].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetProjectsHmacKeyRequest); i {
+			switch v := v.(*WatchAllObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14518,7 +14755,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[124].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListProjectsHmacKeysRequest); i {
+			switch v := v.(*CreateProjectsHmacKeyRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14530,7 +14767,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[125].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateProjectsHmacKeyRequest); i {
+			switch v := v.(*DeleteProjectsHmacKeyRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -14542,6 +14779,42 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			}
 		}
 		file_mockgcp_storage_v1_service_proto_msgTypes[126].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetProjectsHmacKeyRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_storage_v1_service_proto_msgTypes[127].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListProjectsHmacKeysRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_storage_v1_service_proto_msgTypes[128].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateProjectsHmacKeyRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_storage_v1_service_proto_msgTypes[129].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetProjectsServiceAccountRequest); i {
 			case 0:
 				return &v.state
@@ -14560,7 +14833,7 @@ func file_mockgcp_storage_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_mockgcp_storage_v1_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   133,
+			NumMessages:   136,
 			NumExtensions: 0,
 			NumServices:   13,
 		},
