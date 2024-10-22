@@ -47,6 +47,8 @@ If you have a lot of fields that need to be manually written, you can split the 
 
 ## Exit Criteria
 
+If you are developing a Beta or more stable resource version, you should meet the following requirements: 
+
 * No `MISSING` comments left in the code
 * No `/*NOTYET*/` comments left in the code.
 * Each mapper method shall reflect in the `_http.log` as the value from `create.yaml` and `update.yaml` recorded in the `_http.log` POST and PUT/PATCH method.
