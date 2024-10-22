@@ -194,7 +194,9 @@ func doRecord(ctx context.Context, c client.Client, gvks []schema.GroupVersionKi
 
 func forEach(c client.Client, gvk schema.GroupVersionKind, listOptions *client.ListOptions, fn func(unstructured.Unstructured) error) error {
 	for ok := true; ok; ok = listOptions.Continue != "" {
-		if _, ok := opk8s.IgnoredCRDList[gvkToCRDName(gvk)]; ok {
+		crdName := gvkToCRDName(gvk)
+		if _, ok := opk8s.IgnoredCRDList[crdName]; ok {
+			logger.Info(fmt.Sprintf("Orphaned CRD %s found, you should delete it using 'kubectl delete crd %s'", crdName, crdName))
 			continue
 		}
 		list := unstructured.UnstructuredList{}
