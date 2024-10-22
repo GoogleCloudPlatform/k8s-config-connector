@@ -103,7 +103,7 @@ func NewKMSAutokeyConfigRef(ctx context.Context, reader client.Reader, obj *KMSA
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		id.External = asKMSAutokeyConfigExternal(id.parent)
+		id.External = AsKMSAutokeyConfigExternal(id.parent)
 		return id, nil
 	}
 
@@ -143,7 +143,7 @@ func (p *KMSAutokeyConfigParent) String() string {
 	return "folders/" + p.FolderID
 }
 
-func asKMSAutokeyConfigExternal(parent *KMSAutokeyConfigParent) (external string) {
+func AsKMSAutokeyConfigExternal(parent *KMSAutokeyConfigParent) (external string) {
 	return parent.String() + "/autokeyConfig"
 }
 

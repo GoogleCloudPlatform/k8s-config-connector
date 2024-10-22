@@ -79,20 +79,25 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	id, err := krm.NewKMSAutokeyConfigRef(ctx, reader, obj)
 	if err != nil {
-		return nil, err
-	}
-
-	if err != nil {
 		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s", obj.GetName())
+	}
+	var keyProject *refs.Project
+	if obj.Spec.KeyProject != nil {
+		var err error
+		keyProject, err = refs.ResolveProject(ctx, reader, obj, obj.Spec.KeyProject)
+		if err != nil {
+			return nil, fmt.Errorf("unable to resolve key project for autokeyConfig naem: %s", obj.GetName())
+		}
 	}
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &Adapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:                id,
+		desiredKeyProject: keyProject,
+		gcpClient:         gcpClient,
+		desired:           obj,
 	}, nil
 }
 
@@ -102,14 +107,17 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *krm.KMSAutokeyConfigRef
-	gcpClient *gcp.AutokeyAdminClient
-	desired   *krm.KMSAutokeyConfig
-	actual    *kmspb.AutokeyConfig
+	id                *krm.KMSAutokeyConfigRef
+	desiredKeyProject *refs.Project
+	gcpClient         *gcp.AutokeyAdminClient
+	desired           *krm.KMSAutokeyConfig
+	actual            *kmspb.AutokeyConfig
 }
 
 var _ directbase.Adapter = &Adapter{}
 
+// Find return true if AutokeyConfig exist and user has permission to read it.
+// Else it will return false and error.
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting KMSAutokeyConfig", "name", a.id.External)
@@ -117,9 +125,6 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	req := &kmspb.GetAutokeyConfigRequest{Name: a.id.External}
 	autokeyconfigpb, err := a.gcpClient.GetAutokeyConfig(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("getting KMSAutokeyConfig %q: %w", a.id.External, err)
 	}
 
@@ -128,40 +133,18 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
-
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating AutokeyConfig", "name", a.id.External)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := KMSAutokeyConfigSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	updated, err := a.updateAutokeyConfig(ctx, resource)
-	if err != nil {
-		return err
-	}
-	status := &krm.KMSAutokeyConfigStatus{}
-	status.ObservedState = KMSAutokeyConfigStatusObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = &a.id.External
-	return setStatus(u, status)
+	log.V(2).Info("Create operation not supported for AutokeyConfig resource.")
+	return fmt.Errorf("Create operation not supported for AutokeyConfig resource")
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating AutokeyConfig", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := KMSAutokeyConfigSpec_ToProto(mapCtx, &desired.Spec)
+	resource := KMSAutokeyConfig_FromFields(mapCtx, a.id, a.desiredKeyProject)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -176,7 +159,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return setStatus(u, status)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
@@ -236,29 +219,33 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 }
 
 // Delete implements the Adapter interface.
+// Note: Delete operation is not supported for GCP AutokeyConfig resource.
+// However in KCC, the user has full flexibility to delete the KCC AutokeyConfig resource.
+// To make this KKCC operation effective, as part of KCC AutokeyConfig deletion we will update the AutokeyConfig resource in GCP with empty key_project which will prevent further use of AutokeyConfig.
+// Because of the above decision we will update the observedstate for AutokeyConfig with state = UNINITIALIZED
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting AutokeyConfig", "name", a.id.External)
-
-	log.V(2).Info("no-op, cannot deleted AutokeyConfig", "name", a.id.External)
-
-	return true, nil
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+	_, err := a.Find(ctx)
 	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
+		return false, err
 	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
+	mapCtx := &direct.MapContext{}
+	// make a copy of the a.actual i.e. from krm.AutokeyConfig to kmspb.AutokeyConfig
+	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)
+	resource := AutokeyConfig_ToProto(mapCtx, tempKrmAutokeyResource)
+	updated, err := a.updateAutokeyConfig(ctx, resource)
+	if err != nil {
+		return false, fmt.Errorf("updating AutokeyConfig %s: %w", a.id.External, err)
 	}
-
-	u.Object["status"] = status
-
-	return nil
+	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting the key_project", "name", a.id.External)
+	status := &krm.KMSAutokeyConfigStatus{}
+	// The state in ObservedState is expected to be UNINITIALIZED as we have set the key_project to empty
+	status.ObservedState = KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return false, mapCtx.Err()
+	}
+	// TODO: uncomment once we found a valid solution
+	//deleteOp.UpdateStatus(ctx, status, nil)
+	return true, nil
 }

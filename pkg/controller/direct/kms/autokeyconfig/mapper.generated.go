@@ -76,14 +76,15 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 	return out
 }
 
-func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSAutokeyConfigSpec) *pb.AutokeyConfig {
-	if in == nil {
+func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyConfigRef, keyProject *refs.Project) *pb.AutokeyConfig {
+	out := &pb.AutokeyConfig{}
+	parent, err := id.Parent()
+	if err != nil {
 		return nil
 	}
-	out := &pb.AutokeyConfig{}
-	out.Name = in.FolderRef.External + "/autokeyConfig"
-	if in.KeyProject != nil {
-		out.KeyProject = in.KeyProject.External
+	out.Name = krm.AsKMSAutokeyConfigExternal(parent)
+	if keyProject != nil {
+		out.KeyProject = "projects/" + keyProject.ProjectID // keyProject expects project of the form `projects/<projectId>` or `projects/<projectNumber>`
 	}
 	return out
 }
