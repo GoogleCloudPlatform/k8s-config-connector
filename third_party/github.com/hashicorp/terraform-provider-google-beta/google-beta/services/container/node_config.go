@@ -482,6 +482,7 @@ func schemaNodeConfig() *schema.Schema {
 				"kubelet_config": {
 					Type:        schema.TypeList,
 					Optional:    true,
+					Computed:    true,
 					MaxItems:    1,
 					Description: `Node kubelet configs.`,
 					Elem: &schema.Resource{
