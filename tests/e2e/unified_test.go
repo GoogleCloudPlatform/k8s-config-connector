@@ -87,8 +87,8 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
-					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
-						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUP=%s", s)
+					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
 					}
 				}
 
@@ -157,9 +157,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					continue
 				}
 			}
-			if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
-				if group != s {
-					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUP=%s", fixture.Name, group, s)
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
 					continue
 				}
 			}
@@ -214,6 +215,17 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
 							"pause test should not run against test cases already contain ConfigConnector "+
 							"or ConfigConnectorContext objects", fixture.Name)
+					}
+
+					// If the test contains "${resourceId}", that means it is an acquisition test, which we don't currently support
+					for _, create := range opt.Create {
+						resourceID, _, err := unstructured.NestedString(create.Object, "spec", "resourceID")
+						if err != nil {
+							t.Fatalf("error reading spec.resourceID: %v", err)
+						}
+						if strings.Contains(resourceID, "${resourceId}") {
+							t.Skipf("test has ${resourceId} placeholder in spec.resource, indicating an acquisition test.  Not currently supported here; skipping")
+						}
 					}
 				}
 

@@ -484,10 +484,8 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "BigQueryAnalyticsHubListing",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "alpha",
-			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -3742,8 +3740,20 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "RedisCluster",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc": "true",
-			"cnrm.cloud.google.com/system":         "true",
+			"cnrm.cloud.google.com/managed-by-kcc":  "true",
+			"cnrm.cloud.google.com/stability-level": "beta",
+			"cnrm.cloud.google.com/system":          "true",
+		},
+	},
+	{
+		Group:   "redis.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "RedisCluster",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc":  "true",
+			"cnrm.cloud.google.com/stability-level": "beta",
+			"cnrm.cloud.google.com/system":          "true",
 		},
 	},
 	{
@@ -3828,6 +3838,17 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "securesourcemanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "SecureSourceManagerInstance",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc":  "true",
+			"cnrm.cloud.google.com/stability-level": "alpha",
+			"cnrm.cloud.google.com/system":          "true",
 		},
 	},
 	{

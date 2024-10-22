@@ -213,8 +213,6 @@ import (
 	fakepubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1/fake"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	fakerecaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1/fake"
-	redisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1alpha1"
-	fakeredisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1alpha1/fake"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
 	fakeredisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1/fake"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
@@ -223,6 +221,8 @@ import (
 	fakerunv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1/fake"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	fakesecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1/fake"
+	securesourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1"
+	fakesecuresourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1/fake"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
 	fakesecuritycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1/fake"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
@@ -795,11 +795,6 @@ func (c *Clientset) RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.Reca
 	return &fakerecaptchaenterprisev1beta1.FakeRecaptchaenterpriseV1beta1{Fake: &c.Fake}
 }
 
-// RedisV1alpha1 retrieves the RedisV1alpha1Client
-func (c *Clientset) RedisV1alpha1() redisv1alpha1.RedisV1alpha1Interface {
-	return &fakeredisv1alpha1.FakeRedisV1alpha1{Fake: &c.Fake}
-}
-
 // RedisV1beta1 retrieves the RedisV1beta1Client
 func (c *Clientset) RedisV1beta1() redisv1beta1.RedisV1beta1Interface {
 	return &fakeredisv1beta1.FakeRedisV1beta1{Fake: &c.Fake}
@@ -818,6 +813,11 @@ func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 // SecretmanagerV1beta1 retrieves the SecretmanagerV1beta1Client
 func (c *Clientset) SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface {
 	return &fakesecretmanagerv1beta1.FakeSecretmanagerV1beta1{Fake: &c.Fake}
+}
+
+// SecuresourcemanagerV1alpha1 retrieves the SecuresourcemanagerV1alpha1Client
+func (c *Clientset) SecuresourcemanagerV1alpha1() securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Interface {
+	return &fakesecuresourcemanagerv1alpha1.FakeSecuresourcemanagerV1alpha1{Fake: &c.Fake}
 }
 
 // SecuritycenterV1alpha1 retrieves the SecuritycenterV1alpha1Client

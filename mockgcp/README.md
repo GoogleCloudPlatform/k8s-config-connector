@@ -1,8 +1,8 @@
 # MockGCP 
 
-MockGCP contains stub implementations of GCP APIs, for use with testing KCC.  The implementations
+MockGCP contains stub implementations of GCP APIs, for use with testing Config Connector. The implementations
 don't do anything (there is no "backend") - creating a mock VM does not launch a VM.  Instead, the
-goal is to provide just-enough consistent CRUD operations to test the KCC providers.
+goal is to provide just-enough consistent CRUD operations to test the Config Connector providers.
 If the tests pass, we consider that to be a "good enough" mock for GCP.  When
 we discover an issue that the mocks failed to catch, we should update mockgcp
 to more accurately simulate GCP, ideally triggering the bug and then showing
@@ -35,6 +35,9 @@ Broadly the steps are:
    and add into the Makefile.
 
    * Note: Ensure you pick the same version the controller uses to call the GCP API during GCP resource instantiation.
+
+   * Note: If the Config Connector resource does not map to a GCP resource, please refer to the REST API of the relevant GCP resource and find the proto file that covers the resource's API endpoints.(You may not find a proto file that matches the name of that Config Connector resource)
+
 
    * (Optional) If you determine that the proto file is not up to date, or if it doesn't exist at all, refer to the [Generating Proto](#generating-proto) section
    
@@ -84,7 +87,7 @@ If you are lucky, everything will "just work" and you will see that your new tes
 If something is not behaving as you would expect, you should be able to launch a debugger because it all runs in one process.
 You can also use `ARTIFACTS=artifacts` to get detailed HTTP logs of the traffic, which is useful if you want to see the json requests & responses.
 If you also use `E2E_GCP_TARGET=real` you can run against the real (non-mocked) GCP, and easily see what the actual behaviour should be.
-Usually however, this is not necessary; the most common failure mode is that terraform or KCC expects a field to be automatically populated,
+Usually however, this is not necessary; the most common failure mode is that terraform or Config Connector expects a field to be automatically populated,
 and it normally logs an error like "foo not set" (in this case, simply add that to your mock implementation.)
 
 ## Capture golden object and HTTP golden logs

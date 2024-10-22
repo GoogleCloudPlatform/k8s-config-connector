@@ -255,5 +255,25 @@ func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 }
 
 func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.GKEHubFeatureMembership{}
+	mapCtx := &direct.MapContext{}
+	m := a.actual.MembershipSpecs[a.membershipID]
+	obj.Spec = direct.ValueOf(GKEHubFeatureMembershipSpec_FromProto(mapCtx, &m))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	obj.Spec.ProjectRef = krm.FeatureProjectRef{Name: a.projectID}
+	obj.Spec.Location = a.location
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u.Object = uObj
+	return u, nil
 }

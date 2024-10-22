@@ -22,4 +22,5 @@ resources:
   - ../components/roles
   - ../components/rolebindings
   - ../components/recorder
+  - ../components/unmanageddetector
   - ../components/webhook

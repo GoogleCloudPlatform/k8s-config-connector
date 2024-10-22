@@ -387,6 +387,8 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	if !InstancesMatch(desiredGCP, a.actual) {
+		updateOp.RecordUpdatingEvent()
+
 		// GCP API requires we set the current settings version, otherwise update will fail.
 		desiredGCP.Settings.SettingsVersion = a.actual.Settings.SettingsVersion
 

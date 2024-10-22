@@ -1,32 +1,19 @@
 approvers:
-  - acpana
-  - anhdle-sso
-  - barney-s
   - cheftako
-  - diviner524
-  - gemmahou
-  - jasonvigil
-  - jiefenghe
-  - jingyih
   - justinsb
   - maqiuyujoyce
-  - roycaihw
   - yuwenma
-  - ziyue-101
-  - xiaoweim
 reviewers:
   - acpana
   - anhdle-sso
   - barney-s
   - cheftako
-  - diviner524
   - gemmahou
   - jasonvigil
-  - jiefenghe  
   - jingyih
   - justinsb
   - maqiuyujoyce
-  - roycaihw
   - yuwenma
-  - ziyue-101
   - xiaoweim
+emeritus:
+  - diviner524

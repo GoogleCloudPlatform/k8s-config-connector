@@ -30,12 +30,6 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance) (*api.DatabaseInstance, error) {
 		return nil, fmt.Errorf("cannot convert nil KRM SQLInstance to GCP DatabaseInstance")
 	}
 
-	if in.Spec.CloneSource != nil {
-		// If spec.cloneSource is specified, it's invalid to convert krm.SQLInstance -> api.DatabaseInstance.
-		// Instead, the krm.SQLInstance should be converted to an api.InstancesCloneRequest.
-		return nil, fmt.Errorf("cannot convert SQLInstance with CloneSource specified")
-	}
-
 	out := &api.DatabaseInstance{
 		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
 		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
@@ -549,7 +543,7 @@ func SQLInstanceCloneKRMToGCP(in *krm.SQLInstance) (*api.InstancesCloneRequest, 
 	if in.Spec.CloneSource == nil {
 		// If spec.cloneSource is not specified, it's invalid to convert krm.SQLInstance -> api.InstancesCloneRequest.
 		// Instead, the krm.SQLInstance should be converted to an api.DatabaseInstance.
-		return nil, fmt.Errorf("cannot convert SQLInstance without CloneSource specified")
+		return nil, fmt.Errorf("cannot convert SQLInstance to InstancesCloneRequest without CloneSource specified")
 	}
 
 	out := &api.InstancesCloneRequest{
