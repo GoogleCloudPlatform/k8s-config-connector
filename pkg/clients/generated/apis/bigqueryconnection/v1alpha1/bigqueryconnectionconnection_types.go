@@ -37,14 +37,12 @@ import (
 
 type ConnectionAccessRole struct {
 	/* The user’s AWS IAM Role that trusts the Google-owned AWS IAM user Connection. */
-	// +optional
-	IamRoleID *string `json:"iamRoleID,omitempty"`
+	IamRoleID string `json:"iamRoleID"`
 }
 
 type ConnectionAws struct {
 	/* Authentication using Google owned service account to assume into customer's AWS IAM Role. */
-	// +optional
-	AccessRole *ConnectionAccessRole `json:"accessRole,omitempty"`
+	AccessRole ConnectionAccessRole `json:"accessRole"`
 }
 
 type ConnectionAzure struct {
@@ -57,6 +55,20 @@ type ConnectionAzure struct {
 }
 
 type ConnectionCloudResource struct {
+}
+
+type ConnectionCloudSQL struct {
+	/* Cloud SQL credential. */
+	Credential ConnectionCredential `json:"credential"`
+
+	/* Database name. */
+	Database string `json:"database"`
+
+	/* Reference to the Cloud SQL instance ID. */
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
+	/* Type of the Cloud SQL database. */
+	Type string `json:"type"`
 }
 
 type ConnectionCloudSpanner struct {
@@ -103,24 +115,6 @@ type ConnectionCloudSpanner struct {
 	/* If the serverless analytics service should be used to read data from Cloud Spanner. Note: `use_parallelism` must be set when using serverless analytics. */
 	// +optional
 	UseServerlessAnalytics *bool `json:"useServerlessAnalytics,omitempty"`
-}
-
-type ConnectionCloudSql struct {
-	/* Cloud SQL credential. */
-	// +optional
-	Credential *ConnectionCredential `json:"credential,omitempty"`
-
-	/* Database name. */
-	// +optional
-	Database *string `json:"database,omitempty"`
-
-	/* Reference to the Cloud SQL instance ID. */
-	// +optional
-	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
-
-	/* Type of the Cloud SQL database. */
-	// +optional
-	Type *string `json:"type,omitempty"`
 }
 
 type ConnectionCredential struct {
@@ -177,13 +171,13 @@ type BigQueryConnectionConnectionSpec struct {
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
 
+	/* Cloud SQL properties. */
+	// +optional
+	CloudSQL *ConnectionCloudSQL `json:"cloudSQL,omitempty"`
+
 	/* Cloud Spanner properties. */
 	// +optional
 	CloudSpanner *ConnectionCloudSpanner `json:"cloudSpanner,omitempty"`
-
-	/* Cloud SQL properties. */
-	// +optional
-	CloudSql *ConnectionCloudSql `json:"cloudSql,omitempty"`
 
 	/* User provided description. */
 	// +optional
@@ -257,7 +251,7 @@ type ConnectionCloudResourceStatus struct {
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
 
-type ConnectionCloudSqlStatus struct {
+type ConnectionCloudSQLStatus struct {
 	/* The account ID of the service used for the purpose of this connection.
 
 	When the connection is used in the context of an operation in
@@ -278,7 +272,7 @@ type ConnectionObservedStateStatus struct {
 	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`
 
 	// +optional
-	CloudSql *ConnectionCloudSqlStatus `json:"cloudSql,omitempty"`
+	CloudSQL *ConnectionCloudSQLStatus `json:"cloudSQL,omitempty"`
 
 	/* The description for the connection. */
 	// +optional
