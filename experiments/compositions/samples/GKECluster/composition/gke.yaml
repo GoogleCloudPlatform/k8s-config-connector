@@ -1,0 +1,310 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: gkeclusters.idp.mycompany.com
+spec:
+  conversion:
+    strategy: None
+  group: idp.mycompany.com
+  names:
+    categories:
+    - facade
+    - facades
+    kind: GKECluster
+    listKind: GKEClusterList
+    plural: gkeclusters
+    singular: cloudsql
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GKECluster composition Facade
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: GKEClusterSpec defines the desired state of GKECluster
+            properties:
+              clusterName:
+                type: string
+              securityGroup:
+                type: string
+              location:
+                type: string
+              networkRef:
+                type: string
+              masterIPRange:
+                type: string
+              subnetRef:
+                type: string
+              nodepoolName:
+                type: string
+              maxNodes:
+                type: integer
+            required:
+            - clusterName
+            - nodepoolName
+            - maxNodes
+            - location
+            type: object
+          status:
+            description: status of GKECluster object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: composition.google.com/v1alpha1
+kind: Composition
+metadata:
+  name: sqlha
+  namespace: default
+spec:
+  inputAPIGroup: gkeclusters.idp.mycompany.com
+  expanders:
+  - type: jinja2
+    version: v0.0.1
+    name: enable-services
+    template: |
+      {% set services=[ 'container.googleapis.com' ] %}
+      {% for service in services %}
+      ---
+      apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+      kind: Service
+      metadata:
+        annotations:
+          cnrm.cloud.google.com/deletion-policy: "abandon"
+          cnrm.cloud.google.com/disable-dependent-services: "false"
+        name: {{service}}
+        namespace: {{ gkeclusters.metadata.namespace }}
+      spec:
+        resourceID: {{service}}
+      {% endfor %}
+  - type: jinja2
+    name: cluster
+    version: v0.0.1
+    template: |
+      apiVersion: container.cnrm.cloud.google.com/v1beta1
+      kind: ContainerCluster
+      metadata:
+        name: {{ gkeclusters.spec.clusterName }} # kpt-set: ${cluster-name}
+        namespace: config-control
+        annotations:
+          # Remove the default node pool after bootstrapping.
+          # Explcit node pool configuration allows for more isolation and makes it
+          # easier to replace node pools to change immutable fields.
+          cnrm.cloud.google.com/remove-default-node-pool: "true"
+      spec:
+        addonsConfig:
+          # Enable NodeLocal DNSCache by default, for increased performance and scaling.
+          # https://cloud.google.com/kubernetes-engine/docs/how-to/nodelocal-dns-cache
+          dnsCacheConfig:
+            enabled: true
+          # Enable Compute Engine persistent disk CSI Driver by default, for access to
+          # volume snapshots and encryption with customer-managed encryption keys.
+          # https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/gce-pd-csi-driver
+          gcePersistentDiskCsiDriverConfig:
+            enabled: true
+        # Enable Groups for GKE, to allow role binding to Google Groups.
+        {% if gkeclusters.spec.securityGroup != None and gkeclusters.spec.securityGroup != '' %}
+        authenticatorGroupsConfig:
+          securityGroup: {{ gkeclusters.spec.securityGroup }}
+        {% endif %}
+        # Enable Binary Authorization by default, to allow configuration of constraint
+        # policies and container image attestation.
+        # https://cloud.google.com/binary-authorization/docs/overview
+        enableBinaryAuthorization: true
+        # Enable Shielded GKE Nodes by default, to protect bootstrap credentials.
+        # https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes
+        enableShieldedNodes: true
+        # Must be at least 1 when using remove-default-node-pool.
+        initialNodeCount: 1
+        # Use VPC-native networking by default, with named secondary IP ranges.
+        ipAllocationPolicy:
+          clusterSecondaryRangeName: pods # kpt-set: ${pods-range-name}
+          servicesSecondaryRangeName: services # kpt-set: ${services-range-name}
+        location: {{ gkeclusters.spec.location }} # kpt-set: ${location}
+        # Allow internet access to the GKE control plane by default.
+        # This default is a deliberate compromise for ease of use over security.
+        # For increased security, reduce the CIDR blocks to cover only known clients.
+        masterAuthorizedNetworksConfig:
+          cidrBlocks:
+            - cidrBlock: 0.0.0.0/0
+              displayName: Whole Internet
+        {% if gkeclusters.spec.networkRef != None and gkeclusters.spec.networkRef != '' %}
+        networkRef:
+          external: {{ gkeclusters.spec.networkRef }}
+        {% endif %}
+        privateClusterConfig:
+          # Allow public access to the GKE control plane by default.
+          # This default is a deliberate compromise for ease of use over security.
+          # For increased security, set to true to disable public IP access.
+          enablePrivateEndpoint: false
+          # Default to private nodes (no public IP).
+          enablePrivateNodes: true
+          # Enable global access to the GKE control plane's internal loab balancer.
+          # https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access
+          masterGlobalAccessConfig:
+            enabled: true
+          {% if gkeclusters.spec.masterIPRange != None and gkeclusters.spec.masterIPRange != '' %}
+          masterIpv4CidrBlock: {{ gkeclusters.spec.masterIPRange }} #  10.254.0.0/28
+          {% endif %}
+        # Enable dataplane V2
+        # https://cloud.google.com/kubernetes-engine/docs/concepts/dataplane-v2
+        datapathProvider: ADVANCED_DATAPATH
+        # Enable logging
+        loggingConfig:
+          enableComponents:
+            - "SYSTEM_COMPONENTS"
+            - "WORKLOADS"
+        # Enable monitoring
+        monitoringConfig:
+          enableComponents:
+            - "SYSTEM_COMPONENTS"
+        # Default to the REGULAR channel.
+        # Use RAPID for faster access to features and fixes.
+        # Use STABLE for less disruption.
+        # Use UNSPECIFIED to unenroll from automatic updates.
+        releaseChannel:
+          channel: REGULAR
+        # Use a dedicated subnet by default, to increase isolation and allow for
+        # cluster-specific firewalls.
+        {% if gkeclusters.spec.subnetRef != None and gkeclusters.spec.subnetRef != '' %}
+        subnetworkRef:
+          external: {{ gkeclusters.spec.subnetRef }}
+        {% endif %}
+        # Enable Vertical Pod Autoscaling by default.
+        # https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler
+        verticalPodAutoscaling:
+          enabled: true
+        # Enable workload identity by default.
+        workloadIdentityConfig:
+          identityNamespace: {{ context.spec.project }}.svc.id.goog # kpt-set: ${project-id}.svc.id.goog
+            apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+  - type: jinja2
+    name: node-iam
+    version: v0.0.1
+    template: |
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMServiceAccount
+      metadata:
+        name: gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: gke-${cluster-name}-${nodepool-name}
+        namespace: config-control
+      spec:
+        displayName: gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: gke-${cluster-name}-${nodepool-name}
+      ---
+      # Allow fluentd to send logs to StackDriver
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPolicyMember
+      metadata:
+        name: logwriter-gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: logwriter-gke-${cluster-name}-${nodepool-name}
+        namespace: config-control
+      spec:
+        memberFrom:
+          serviceAccountRef:
+            name: gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: gke-${cluster-name}-${nodepool-name}
+            namespace: config-control
+        resourceRef:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          external: {{context.spec.project}} # kpt-set: ${project-id}
+        role: roles/logging.logWriter
+      ---
+      # Allow fluentd to send metrics to StackDriver
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPolicyMember
+      metadata:
+        name: metricwriter-gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: metricwriter-gke-${cluster-name}-${nodepool-name}
+        namespace: config-control
+      spec:
+        memberFrom:
+          serviceAccountRef:
+            name: gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: gke-${cluster-name}-${nodepool-name}
+            namespace: config-control
+        resourceRef:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          external: {{context.spec.project}} # kpt-set: ${project-id}
+        role: roles/monitoring.metricWriter
+      ---
+      # Allow kubelet/docker/containerd to read all artifacts/images in the project-id project
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPolicyMember
+      metadata:
+        name: artifactreader-gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: artifactreader-gke-${cluster-name}-${nodepool-name}
+        namespace: config-control
+      spec:
+        memberFrom:
+          serviceAccountRef:
+            name: gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: gke-${cluster-name}-${nodepool-name}
+            namespace: config-control
+        resourceRef:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          external: {{context.spec.project}} # kpt-set: ${project-id}
+        role: roles/artifactregistry.reader
+  - type: jinja2
+    name: node-pool
+    version: v0.0.1
+    template: |
+      apiVersion: container.cnrm.cloud.google.com/v1beta1
+      kind: ContainerNodePool
+      metadata:
+        name: {{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: ${cluster-name}-${nodepool-name}
+        namespace: config-control
+      spec:
+        autoscaling:
+          # maxNodeCount is per-zone, for regional clusters
+          maxNodeCount: {{ gkeclusters.spec.maxNodes }} # kpt-set: ${max-node-count}
+          # minNodeCount is per-zone, for regional clusters
+          minNodeCount: 1
+        clusterRef:
+          name:  {{ gkeclusters.spec.clusterName }} # kpt-set: ${cluster-name}
+        # At least one node is required for cluster system components.
+        # initialNodeCount is per-zone, for regional clusters
+        initialNodeCount: 1
+        location: {{ gkeclusters.spec.location }} # kpt-set: ${location}
+        # Enable auto repairs and upgrades by default.
+        # Disable if you have workloads that cannot tollerate disruption.
+        management:
+          autoRepair: true
+          autoUpgrade: true
+        # Default reduced to better fit on e2-standard-16 machines.
+        # 4 pods per vCPU, 8 pods per physical core, ~1 pod per GB of memory. 
+        maxPodsPerNode: 64
+        nodeConfig:
+          labels:
+            gke.io/nodepool: {{ gkeclusters.spec.nodepoolName }} # kpt-set: ${nodepool-name}
+          # diskSizeGb should include enough space for system components and the
+          # container image cache, in addition to space used by user workloads.
+          diskSizeGb: 100
+          # Default to SSD for higher IOPS / $ vs standard disks.
+          diskType: pd-ssd
+          # Default to e2, the most modern & efficient machine type family.
+          machineType: e2-standard-16
+          # Set the scope to cloud platform and use IAM to manage permissions
+          oauthScopes:
+            - https://www.googleapis.com/auth/cloud-platform
+          serviceAccountRef:
+            name: gke-{{ gkeclusters.spec.clusterName }}-{{ gkeclusters.spec.nodepoolName }} # kpt-set: gke-${cluster-name}-${nodepool-name}
