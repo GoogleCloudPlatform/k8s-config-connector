@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube"
+	opk8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
@@ -193,6 +194,9 @@ func doRecord(ctx context.Context, c client.Client, gvks []schema.GroupVersionKi
 
 func forEach(c client.Client, gvk schema.GroupVersionKind, listOptions *client.ListOptions, fn func(unstructured.Unstructured) error) error {
 	for ok := true; ok; ok = listOptions.Continue != "" {
+		if _, ok := opk8s.IgnoredCRDList[gvkToCRDName(gvk)]; ok {
+			continue
+		}
 		list := unstructured.UnstructuredList{}
 		list.SetGroupVersionKind(gvk)
 		err := c.List(context.Background(), &list, listOptions)
@@ -207,6 +211,11 @@ func forEach(c client.Client, gvk schema.GroupVersionKind, listOptions *client.L
 		listOptions.Continue = list.GetContinue()
 	}
 	return nil
+}
+
+func gvkToCRDName(gvk schema.GroupVersionKind) string {
+	pluralLowercaseKind := strings.ToLower(gvk.Kind) + "s"
+	return pluralLowercaseKind + "." + gvk.Group
 }
 
 func recordMetricsForGVK(ctx context.Context, c client.Client, gvk schema.GroupVersionKind) error {
