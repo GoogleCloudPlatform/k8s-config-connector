@@ -94,14 +94,15 @@ and it normally logs an error like "foo not set" (in this case, simply add that 
 
 1. Capture golden object and HTTP golden logs against real GCP.
 
-   1. Run the following command to generate the golden object (`_generated_object_\[testname\].golden.yaml` file):
-      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
+   1. Run the following command to generate the golden object (`_generated_object_\[testname\].golden.yaml` file) and golden request (`_http.log` file):
+      ```
+      hack/record-gcp fixtures/[testname]
+      ```
 
-   1. Run the following command to generate the golden request (`_http.log` file):
-      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
-
-   1. Ensure both `GOLDEN_OBJECT_CHECKS` and `GOLDEN_REQUEST_CHECKS` pass:
-      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
+   1. Ensure recorded goldens pass:
+      ```
+      hack/compare-gcp fixtures/[testname]
+      ```
 
       1. If the test doesn't pass, check the output log and identify diffs. Normalize the values if needed in
          [tests/e2e/normalize.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/v1.120.1/tests/e2e/normalize.go#L66)
@@ -109,8 +110,10 @@ and it normally logs an error like "foo not set" (in this case, simply add that 
          [tests/e2e/unified_test.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/v1.120.1/tests/e2e/unified_test.go#L523)
          for GOLDEN_REQUEST_CHECKS.
 
-1. Ensure the test works when `E2E_GCP_TARGET=mock`:
-   `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
+1. Ensure the test works against mockGCP:
+   ```
+   hack/compare-mock fixtures/[testname]
+   ```
 
    1. If the test doesn't pass, update the CRUD methods in the mock to match the behavior needed by the golden files.
 
