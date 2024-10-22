@@ -6,8 +6,7 @@
           cnrm.cloud.google.com/state-into-spec: merge -> absent
       spec:
         publicAccessPrevention: inherited -> <nil>
-        softDeletePolicy:
-          retentionDurationSeconds: 604800 -> <nil>
+        softDeletePolicy: map[retentionDurationSeconds:604800] -> <nil>
         storageClass: STANDARD -> <nil>
 
 
