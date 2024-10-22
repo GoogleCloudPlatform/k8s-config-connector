@@ -254,7 +254,25 @@ func (a *tagKeyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 }
 
 func (a *tagKeyAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.TagsTagKey{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(TagsTagKeySpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.Object = uObj
+	return u, nil
 }
 
 func (a *tagKeyAdapter) fullyQualifiedName() string {
