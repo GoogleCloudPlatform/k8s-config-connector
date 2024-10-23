@@ -591,14 +591,8 @@ func (in *DiscoveryEngineEngineSpec) DeepCopyInto(out *DiscoveryEngineEngineSpec
 	}
 	if in.DataStoreRefs != nil {
 		in, out := &in.DataStoreRefs, &out.DataStoreRefs
-		*out = make([]*DiscoveryEngineDataStoreRef, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(DiscoveryEngineDataStoreRef)
-				**out = **in
-			}
-		}
+		*out = make([]DiscoveryEngineDataStoreRef, len(*in))
+		copy(*out, *in)
 	}
 	if in.SolutionType != nil {
 		in, out := &in.SolutionType, &out.SolutionType
