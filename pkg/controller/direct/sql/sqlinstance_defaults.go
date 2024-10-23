@@ -20,29 +20,70 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance) {
+func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 	if in.Spec.InstanceType == nil {
+		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
 		out.InstanceType = "CLOUD_SQL_INSTANCE"
 	}
+	if in.Spec.MaintenanceVersion == nil && actual != nil {
+		// If desired maintenanceVersion is not specified, assume user wants the actual.
+		out.MaintenanceVersion = actual.MaintenanceVersion
+	}
 	if in.Spec.Settings.ActivationPolicy == nil {
+		// GCP default ActivationPolicy is ALWAYS.
 		out.Settings.ActivationPolicy = "ALWAYS"
 	}
+	if in.Spec.Settings.AuthorizedGaeApplications == nil {
+		// For some reason, GCP API uses empty slice instead of nil.
+		out.Settings.AuthorizedGaeApplications = make([]string, 0)
+	}
 	if in.Spec.Settings.AvailabilityType == nil {
+		// GCP default AvailailbilityType is ZONAL.
 		out.Settings.AvailabilityType = "ZONAL"
 	}
+	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && !actual.Settings.BackupConfiguration.Enabled {
+		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
+		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
+	}
 	if in.Spec.Settings.ConnectorEnforcement == nil {
+		// GCP default ConnectorEnforcement is NOT_REQUIRED.
 		out.Settings.ConnectorEnforcement = "NOT_REQUIRED"
 	}
 	if in.Spec.Settings.DiskType == nil {
+		// GCP default DiskType is PD_SSD.
 		out.Settings.DataDiskType = "PD_SSD"
 	}
 	if in.Spec.Settings.Edition == nil {
+		// GCP default Edition is ENTERPRISE.
 		out.Settings.Edition = "ENTERPRISE"
 	}
+	if in.Spec.Settings.IpConfiguration == nil {
+		// GCP default IpConfiguration.
+		out.Settings.IpConfiguration = &api.IpConfiguration{
+			Ipv4Enabled:  true,
+			ServerCaMode: "GOOGLE_MANAGED_INTERNAL_CA",
+			SslMode:      "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+		}
+	}
 	if in.Spec.Settings.PricingPlan == nil {
+		// GCP default PricingPlan is PER_USE.
 		out.Settings.PricingPlan = "PER_USE"
 	}
+	if in.Spec.Settings.ReplicationType == nil {
+		// GCP default ReplicationType is SYNCHRONOUS.
+		out.Settings.ReplicationType = "SYNCHRONOUS"
+	}
 	if in.Spec.Settings.DiskAutoresize == nil {
+		// GCP default StorageAutoResize is true.
 		out.Settings.StorageAutoResize = direct.PtrTo(true)
+	}
+	if in.Spec.Settings.DiskSize == nil && actual != nil && *out.Settings.StorageAutoResize {
+		// If desired DiskSize is not specified and StorageAutoResize is enabled, use the actual disk size.
+		// Note: This must be set AFTER setting the default value for StorageAutoResize.
+		out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
+	}
+	if actual != nil {
+		// GCP API requires we set the current settings version, otherwise update will fail.
+		out.Settings.SettingsVersion = actual.Settings.SettingsVersion
 	}
 }
