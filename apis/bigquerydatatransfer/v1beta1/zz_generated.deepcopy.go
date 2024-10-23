@@ -19,8 +19,8 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -148,7 +148,7 @@ func (in *BigQueryDataTransferConfigSpec) DeepCopyInto(out *BigQueryDataTransfer
 	}
 	if in.DatasetRef != nil {
 		in, out := &in.DatasetRef, &out.DatasetRef
-		*out = new(v1beta1.BigQueryDatasetRef)
+		*out = new(refsv1beta1.BigQueryDatasetRef)
 		**out = **in
 	}
 	if in.Disabled != nil {
@@ -173,7 +173,7 @@ func (in *BigQueryDataTransferConfigSpec) DeepCopyInto(out *BigQueryDataTransfer
 	}
 	if in.PubSubTopicRef != nil {
 		in, out := &in.PubSubTopicRef, &out.PubSubTopicRef
-		*out = new(v1beta1.PubSubTopicRef)
+		*out = new(refsv1beta1.PubSubTopicRef)
 		**out = **in
 	}
 	if in.Params != nil {
@@ -201,7 +201,7 @@ func (in *BigQueryDataTransferConfigSpec) DeepCopyInto(out *BigQueryDataTransfer
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1beta1.IAMServiceAccountRef)
+		*out = new(refsv1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
 }
@@ -221,7 +221,7 @@ func (in *BigQueryDataTransferConfigStatus) DeepCopyInto(out *BigQueryDataTransf
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -276,7 +276,7 @@ func (in *EncryptionConfiguration) DeepCopyInto(out *EncryptionConfiguration) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(refsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }
@@ -296,7 +296,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 }
