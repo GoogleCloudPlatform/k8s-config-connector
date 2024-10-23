@@ -530,13 +530,44 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		return s
 	})
 
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "" {
+			return s
+		}
+
+		switch path {
+		case ".spec.organizationRef.external":
+			replacement.PathIDs[s] = "${organizationID}"
+		case ".status.writerIdentity":
+			if strings.HasPrefix(s, "serviceAccount:service-org-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-org-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${organizationID}"
+			}
+			if strings.HasPrefix(s, "serviceAccount:service-folder-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-folder-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${folderID}"
+			}
+		}
+		return s
+	})
+
 	if err := visitor.visitMap(u.Object, ""); err != nil {
 		t.Fatalf("visiting KRM object: %v", err)
 	}
 }
 
-func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
 	replacements := NewReplacements()
+
+	if organizationID != "" {
+		replacements.PathIDs[organizationID] = "${organizationID}"
+	}
+	if folderID != "" {
+		replacements.PathIDs[folderID] = "${testFolderId}"
+	}
+	if uniqueID != "" {
+		replacements.PathIDs[uniqueID] = "${uniqueId}"
+	}
 
 	// Find any URLs
 	for _, event := range events {
