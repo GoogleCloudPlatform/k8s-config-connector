@@ -109,5 +109,5 @@ According to the above principles, you shall decide how to process the following
 
 ### Exit Criteria
 
-* The API PRs shall pass the MockGCP tests. This requires a Dirct controller or a TF/DCL based controller.   
-* All fields shall be covered and properly handled (no `/*NOTYET*/` comments). 
+* The API PRs shall pass the MockGCP tests. This requires a dirct controller or a TF/DCL based controller.
+* For Beta resource, all fields shall be covered and properly handled (no `/*NOTYET*/` comments).

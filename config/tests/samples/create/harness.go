@@ -18,9 +18,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -182,6 +184,55 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		kccConfig.ManagerOptions.Port = env.WebhookInstallOptions.LocalServingPort
 		kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
 		kccConfig.ManagerOptions.CertDir = env.WebhookInstallOptions.LocalServingCertDir
+
+		if pprofPath := os.Getenv("KUBEAPISERVER_CAPTURE_PPROF"); pprofPath != "" {
+			pprofDone := make(chan error)
+			t.Cleanup(func() {
+				err := <-pprofDone
+				if err != nil {
+					t.Errorf("pprof failed: %v", err)
+				}
+			})
+			doPprof := func() error {
+				url := env.ControlPlane.GetAPIServer().SecureServing.URL("https", "debug/pprof/profile")
+				url.RawQuery = "seconds=30"
+				t.Logf("profiling with url %v", url)
+				httpClient, err := rest.HTTPClientFor(restConfig)
+				if err != nil {
+					return fmt.Errorf("building http client: %w", err)
+				}
+				req, err := http.NewRequest("GET", url.String(), nil)
+				if err != nil {
+					return fmt.Errorf("error building request: %w", err)
+				}
+				response, err := httpClient.Do(req)
+				if err != nil {
+					return fmt.Errorf("doing pprof request: %w", err)
+				}
+				defer response.Body.Close()
+
+				if response.StatusCode != 200 {
+					return fmt.Errorf("unexpected response from pprof: %v", response.Status)
+				}
+				b, err := io.ReadAll(response.Body)
+				if err != nil {
+					return fmt.Errorf("reading pprof response: %w", err)
+				}
+				pprofName := strings.ReplaceAll(t.Name(), "/", "-") + ".pprof"
+				pprofPath := filepath.Join(pprofPath, pprofName)
+				if err := os.WriteFile(pprofPath, b, 0644); err != nil {
+					return fmt.Errorf("writing pprof file %q: %w", pprofPath, err)
+				}
+				return nil
+			}
+			go func() {
+				err := doPprof()
+				if err != nil {
+					t.Logf("error from pprof: %v", err)
+				}
+				pprofDone <- err
+			}()
+		}
 	} else if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "mock" {
 		k8s, err := mockkubeapiserver.NewMockKubeAPIServer(":0")
 		if err != nil {
