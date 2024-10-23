@@ -33,10 +33,11 @@ type KMSAutokeyConfigSpec struct {
 	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on folderID for uniqueness.
 
 	// Immutable. The folder that this resource belongs to.
+	// +required
 	FolderRef *refs.FolderRef `json:"folderRef"`
 
 	// +optional
-	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
+	KeyProjectRef *refs.ProjectRef `json:"keyProject,omitempty"`
 }
 
 // KMSAutokeyConfigStatus defines the config connector machine state of KMSAutokeyConfig
@@ -47,8 +48,6 @@ type KMSAutokeyConfigStatus struct {
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-	//KeyProject          *refs.ProjectRef `json:"projectRef,omitempty"`
-	//State              *string          `json:"state,omitempty"`
 
 	// A unique specifier for the KMSAutokeyConfig resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
@@ -67,6 +66,7 @@ type KMSAutokeyConfigObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpkmsautokeyconfig;gcpkmsautokeyconfigs
 // +kubebuilder:resource:categories=gcp
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

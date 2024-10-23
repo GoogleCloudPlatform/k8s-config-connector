@@ -69,7 +69,7 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 		External: parent.String(),
 	}
 	if in.GetKeyProject() != "" {
-		out.KeyProject = &refs.ProjectRef{
+		out.KeyProjectRef = &refs.ProjectRef{
 			External: in.GetKeyProject(),
 		}
 	}

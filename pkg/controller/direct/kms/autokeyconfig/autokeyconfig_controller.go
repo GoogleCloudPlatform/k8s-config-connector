@@ -82,9 +82,9 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s", obj.GetName())
 	}
 	var keyProject *refs.Project
-	if obj.Spec.KeyProject != nil {
+	if obj.Spec.KeyProjectRef != nil {
 		var err error
-		keyProject, err = refs.ResolveProject(ctx, reader, obj, obj.Spec.KeyProject)
+		keyProject, err = refs.ResolveProject(ctx, reader, obj, obj.Spec.KeyProjectRef)
 		if err != nil {
 			return nil, fmt.Errorf("unable to resolve key project for autokeyConfig naem: %s", obj.GetName())
 		}
@@ -221,7 +221,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 // Note: Delete operation is not supported for GCP AutokeyConfig resource.
 // However in KCC, the user has full flexibility to delete the KCC AutokeyConfig resource.
-// To make this KKCC operation effective, as part of KCC AutokeyConfig deletion we will update the AutokeyConfig resource in GCP with empty key_project which will prevent further use of AutokeyConfig.
+// To make this KCC operation effective, as part of KCC AutokeyConfig deletion we will update the AutokeyConfig resource in GCP with empty key_project which will prevent further use of AutokeyConfig.
 // Because of the above decision we will update the observedstate for AutokeyConfig with state = UNINITIALIZED
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)

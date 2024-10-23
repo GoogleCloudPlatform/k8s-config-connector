@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &KMSAutokeyConfigRef{}
 // holds the GCP identifier for the KRM object.
 type KMSAutokeyConfigRef struct {
 	// A reference to an externally managed KMSAutokeyConfig resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/autokeyconfigs/<autokeyconfigID>".
+	// Should be in the format "folders/<folderID>/autokeyConfig".
 	External string `json:"external,omitempty"`
 
 	// The name of a KMSAutokeyConfig resource.
@@ -136,7 +136,6 @@ func (r *KMSAutokeyConfigRef) Parent() (*KMSAutokeyConfigParent, error) {
 
 type KMSAutokeyConfigParent struct {
 	FolderID string
-	Location string
 }
 
 func (p *KMSAutokeyConfigParent) String() string {
@@ -151,7 +150,7 @@ func ParseKMSAutokeyConfigExternal(external string) (parent *KMSAutokeyConfigPar
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 3 || tokens[0] != "folders" || tokens[2] != "autokeyConfig" {
-		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use projects/<projectId>/locations/<location>/autokeyconfigs/<autokeyconfigID>)", external)
+		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use folders/<folderID>/autokeyConfig)", external)
 	}
 	parent = &KMSAutokeyConfigParent{
 		FolderID: tokens[1],
