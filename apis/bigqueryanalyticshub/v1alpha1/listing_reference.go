@@ -167,7 +167,7 @@ func asBigQueryAnalyticsHubListingExternal(parent *BigQueryAnalyticsHubListingPa
 func parseBigQueryAnalyticsHubListingExternal(external string) (parent *BigQueryAnalyticsHubListingParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "listing" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "listings" {
 		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubListing external=%q was not known (use projects/<projectId>/locations/<location>/listings/<listingID>)", external)
 	}
 	parent = &BigQueryAnalyticsHubListingParent{

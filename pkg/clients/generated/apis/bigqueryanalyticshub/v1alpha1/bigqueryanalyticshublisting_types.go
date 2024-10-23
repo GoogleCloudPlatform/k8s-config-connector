@@ -58,12 +58,6 @@ type ListingDataProvider struct {
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
 
-type ListingEnabled struct {
-	/* The bool value. */
-	// +optional
-	Value *bool `json:"value,omitempty"`
-}
-
 type ListingPublisher struct {
 	/* Optional. Name of the listing publisher. */
 	// +optional
@@ -74,36 +68,24 @@ type ListingPublisher struct {
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
 
-type ListingRestrictDirectTableAccess struct {
-	/* The bool value. */
-	// +optional
-	Value *bool `json:"value,omitempty"`
-}
-
-type ListingRestrictQueryResult struct {
-	/* The bool value. */
-	// +optional
-	Value *bool `json:"value,omitempty"`
-}
-
 type ListingRestrictedExportPolicy struct {
 	/* Optional. If true, enable restricted export. */
 	// +optional
-	Enabled *ListingEnabled `json:"enabled,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 
 	/* Optional. If true, restrict direct table access (read api/tabledata.list) on linked table. */
 	// +optional
-	RestrictDirectTableAccess *ListingRestrictDirectTableAccess `json:"restrictDirectTableAccess,omitempty"`
+	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
 
 	/* Optional. If true, restrict export of query result derived from restricted linked dataset table. */
 	// +optional
-	RestrictQueryResult *ListingRestrictQueryResult `json:"restrictQueryResult,omitempty"`
+	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
 }
 
 type ListingSelectedResources struct {
-	/* Optional. Format: For table: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` Example:"projects/test_project/datasets/test_dataset/tables/test_table" */
+	/* Optional. A reference to a BigQueryTable. Format: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` Example:"projects/test_project/datasets/test_dataset/tables/test_table" */
 	// +optional
-	Table *string `json:"table,omitempty"`
+	Table *v1alpha1.ResourceRef `json:"table,omitempty"`
 }
 
 type ListingSource struct {
