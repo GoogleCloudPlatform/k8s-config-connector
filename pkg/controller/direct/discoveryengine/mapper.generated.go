@@ -102,6 +102,30 @@ func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dis
 	// MISSING: StartingSchema
 	return out
 }
+func DiscoveryEngineEngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krm.DiscoveryEngineEngineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineEngineObservedState{}
+	// MISSING: ChatEngineMetadata
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DataStoreIds
+	return out
+}
+func DiscoveryEngineEngineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineEngineObservedState) *pb.Engine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine{}
+	// MISSING: ChatEngineMetadata
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DataStoreIds
+	return out
+}
 func DocumentProcessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig) *krm.DocumentProcessingConfig {
 	if in == nil {
 		return nil
@@ -230,6 +254,80 @@ func DocumentProcessingConfig_ParsingConfig_OcrParsingConfig_ToProto(mapCtx *dir
 	out := &pb.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig{}
 	out.EnhancedDocumentElements = in.EnhancedDocumentElements
 	out.UseNativeText = direct.ValueOf(in.UseNativeText)
+	return out
+}
+func Engine_ChatEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig) *krm.Engine_ChatEngineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Engine_ChatEngineConfig{}
+	out.AgentCreationConfig = Engine_ChatEngineConfig_AgentCreationConfig_FromProto(mapCtx, in.GetAgentCreationConfig())
+	out.DialogflowAgentToLink = direct.LazyPtr(in.GetDialogflowAgentToLink())
+	return out
+}
+func Engine_ChatEngineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_ChatEngineConfig) *pb.Engine_ChatEngineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine_ChatEngineConfig{}
+	out.AgentCreationConfig = Engine_ChatEngineConfig_AgentCreationConfig_ToProto(mapCtx, in.AgentCreationConfig)
+	out.DialogflowAgentToLink = direct.ValueOf(in.DialogflowAgentToLink)
+	return out
+}
+func Engine_ChatEngineConfig_AgentCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig_AgentCreationConfig) *krm.Engine_ChatEngineConfig_AgentCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Engine_ChatEngineConfig_AgentCreationConfig{}
+	out.Business = direct.LazyPtr(in.GetBusiness())
+	out.DefaultLanguageCode = direct.LazyPtr(in.GetDefaultLanguageCode())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+func Engine_ChatEngineConfig_AgentCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_ChatEngineConfig_AgentCreationConfig) *pb.Engine_ChatEngineConfig_AgentCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine_ChatEngineConfig_AgentCreationConfig{}
+	out.Business = direct.ValueOf(in.Business)
+	out.DefaultLanguageCode = direct.ValueOf(in.DefaultLanguageCode)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+func Engine_CommonConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_CommonConfig) *krm.Engine_CommonConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Engine_CommonConfig{}
+	out.CompanyName = direct.LazyPtr(in.GetCompanyName())
+	return out
+}
+func Engine_CommonConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_CommonConfig) *pb.Engine_CommonConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine_CommonConfig{}
+	out.CompanyName = direct.ValueOf(in.CompanyName)
+	return out
+}
+func Engine_SearchEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_SearchEngineConfig) *krm.Engine_SearchEngineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Engine_SearchEngineConfig{}
+	out.SearchTier = direct.Enum_FromProto(mapCtx, in.GetSearchTier())
+	out.SearchAddOns = direct.EnumSlice_FromProto(mapCtx, in.SearchAddOns)
+	return out
+}
+func Engine_SearchEngineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_SearchEngineConfig) *pb.Engine_SearchEngineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine_SearchEngineConfig{}
+	out.SearchTier = direct.Enum_ToProto[pb.SearchTier](mapCtx, in.SearchTier)
+	out.SearchAddOns = direct.EnumSlice_ToProto[pb.SearchAddOn](mapCtx, in.SearchAddOns)
 	return out
 }
 func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
