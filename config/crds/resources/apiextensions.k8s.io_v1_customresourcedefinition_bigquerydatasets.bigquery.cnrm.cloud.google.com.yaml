@@ -74,7 +74,7 @@ spec:
                         its access needs to be granted again via an update operation.'
                       properties:
                         dataset:
-                          description: The dataset this entry applies to
+                          description: The dataset this entry applies to.
                           properties:
                             datasetId:
                               description: Required. A unique Id for this dataset,
@@ -94,6 +94,9 @@ spec:
                           items:
                             type: string
                           type: array
+                      required:
+                      - dataset
+                      - targetTypes
                       type: object
                     domain:
                       description: '[Pick one] A domain to grant access to. Any users
@@ -295,7 +298,7 @@ spec:
                   is 168 hours if this is not set.
                 type: string
               projectRef:
-                description: The project that this resource belongs to. required
+                description: The project that this resource belongs to. Optional.
                 oneOf:
                 - not:
                     required:

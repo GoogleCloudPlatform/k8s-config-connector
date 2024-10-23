@@ -18,5 +18,3 @@ metadata:
   name: bigquerydatasetsample${uniqueId}
 spec: 
   location: us-central1
-  projectRef:
-    external: ${projectId}

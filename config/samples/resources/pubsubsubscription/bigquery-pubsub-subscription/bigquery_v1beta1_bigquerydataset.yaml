@@ -23,5 +23,3 @@ metadata:
 spec:
   resourceID: pubsubsubscriptiondepbigquery
   location: us-central1
-  projectRef:
-    external: ${PROJECT_ID?}

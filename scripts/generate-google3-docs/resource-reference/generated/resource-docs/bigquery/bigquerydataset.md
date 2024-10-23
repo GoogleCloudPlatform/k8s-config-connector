@@ -175,11 +175,11 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>access[].dataset.dataset</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The dataset this entry applies to{% endverbatim %}</p>
+            <p>{% verbatim %}The dataset this entry applies to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -205,7 +205,7 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>access[].dataset.targetTypes</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
@@ -215,7 +215,7 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>access[].dataset.targetTypes[]</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -535,7 +535,7 @@ storageBillingModel: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The project that this resource belongs to. required{% endverbatim %}</p>
+            <p>{% verbatim %}The project that this resource belongs to. Optional.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

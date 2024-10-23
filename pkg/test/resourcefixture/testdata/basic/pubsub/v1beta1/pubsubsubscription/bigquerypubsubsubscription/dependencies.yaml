@@ -62,8 +62,6 @@ metadata:
 spec:
   resourceID: bigquerydataset${uniqueId}
   location: us-central1
-  projectRef:
-    external: ${projectId}
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable

@@ -19,5 +19,3 @@ metadata:
 spec:
   resourceID: bigquerydataset_resourceid_${uniqueId}
   location: us-central1
-  projectRef:
-    external: ${projectId}

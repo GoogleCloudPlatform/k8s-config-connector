@@ -103,7 +103,7 @@ type BigQueryDatasetSpec struct {
 	MaxTimeTravelHours *string `json:"maxTimeTravelHours,omitempty"`
 
 	//	The project that this resource belongs to.
-	//  required
+	//  Optional.
 	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	// Optional. Updates storage_billing_model for the dataset.

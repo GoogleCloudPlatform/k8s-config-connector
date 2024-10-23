@@ -19,5 +19,3 @@ metadata:
 spec:
   friendlyName: bigquerydataset-sample
   location: us-central1
-  projectRef:
-    external: ${projectId}

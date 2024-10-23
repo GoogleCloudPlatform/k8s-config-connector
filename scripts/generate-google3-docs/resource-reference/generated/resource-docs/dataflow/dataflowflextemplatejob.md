@@ -651,8 +651,6 @@ metadata:
   name: dataflowflextemplatejobdepstreaming
 spec:
   location: us-central1
-  projectRef:
-    external: ${PROJECT_ID?}
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable

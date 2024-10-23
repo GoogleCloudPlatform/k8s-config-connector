@@ -77,33 +77,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	// Resolve KMS key reference
-	if obj.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return nil, err
-		}
-		obj.Spec.DefaultEncryptionConfiguration.KmsKeyRef = kmsRef
-	}
-
 	id, err := krm.NewBigQueryDatasetRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -118,6 +91,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		id:         id,
 		gcpService: gcpService,
 		desired:    obj,
+		reader:     reader,
 	}, nil
 }
 
@@ -131,6 +105,7 @@ type Adapter struct {
 	gcpService *api.Service
 	desired    *krm.BigQueryDataset
 	actual     *bigquerypb.Dataset
+	reader     client.Reader
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -176,6 +151,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	parent, _, err := krm.ParseBigQueryDatasetExternal(a.id.External)
 	if err != nil {
 		return fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
+	}
+	// Resolve KMS key reference
+	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
+		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+		if err != nil {
+			return err
+		}
+		desiredDataset.DefaultEncryptionConfiguration.KmsKeyName = kmsRef.External
 	}
 	insertDatasetCall := a.gcpService.Datasets.Insert(parent.ProjectID, desiredDataset)
 	inserted, err := insertDatasetCall.Do()
@@ -236,6 +219,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "default_collation")
 	}
 	if desired.DefaultEncryptionConfiguration != nil && resource.DefaultEncryptionConfiguration != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfiguration, actual.DefaultEncryptionConfiguration) {
+		// Resolve KMS key reference
+		if a.desired.Spec.DefaultEncryptionConfiguration != nil {
+			kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+			if err != nil {
+				return err
+			}
+			desired.DefaultEncryptionConfiguration.KmsKeyName = kmsRef.External
+		}
 		resource.DefaultEncryptionConfiguration.KmsKeyName = direct.LazyPtr(desired.DefaultEncryptionConfiguration.KmsKeyName)
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
 	}

@@ -273,12 +273,14 @@ type Dataset struct {
 
 // +kcc:proto=google.cloud.bigquery.v2.DatasetAccessEntry
 type DatasetAccessEntry struct {
-	// The dataset this entry applies to
+	// The dataset this entry applies to.
+	// +required
 	Dataset *DatasetReference `json:"dataset,omitempty"`
 
 	// Which resources in the dataset this entry applies to. Currently, only
 	//  views are supported, but additional target types may be added in the
 	//  future.
+	// +required
 	TargetTypes []string `json:"targetTypes,omitempty"`
 }
 
