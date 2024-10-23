@@ -45,6 +45,7 @@ go run . generate-mapper \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
 
+
 # DataFlow
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
