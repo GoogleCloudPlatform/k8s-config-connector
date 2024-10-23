@@ -185,21 +185,21 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>access[].dataset.dataset.datasetId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. A unique Id for this dataset, without the project name. The Id must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>access[].dataset.dataset.projectId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The ID of the project containing this dataset.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Id of the project containing this dataset.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -285,31 +285,31 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>access[].routine.datasetId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The ID of the dataset containing this routine.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Id of the dataset containing this routine.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>access[].routine.projectId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The ID of the project containing this routine.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Id of the project containing this routine.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>access[].routine.routineId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The ID of the routine. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 256 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Id of the routine. The Id must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 256 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -352,31 +352,31 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>access[].view.datasetId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The ID of the dataset containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Id of the dataset containing this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>access[].view.projectId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The ID of the project containing this table.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Id of the project containing this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>access[].view.tableId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The ID of the table. The ID can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table ID with a partition decorator, such as `sample_table$20190123`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Id of the table. The Id can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table Id with a partition decorator, such as `sample_table$20190123`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -511,7 +511,7 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -535,7 +535,7 @@ storageBillingModel: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The project that this resource belongs to. optional.{% endverbatim %}</p>
+            <p>{% verbatim %}The project that this resource belongs to. Optional.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

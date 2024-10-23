@@ -19,7 +19,7 @@ metadata:
     label-one: "value-one"
   name: bigqueryjob-${uniqueId}
 spec:
-  location: "US"
+  location: "us-central1"
   jobTimeoutMs: "600000"
   query:
     query: "SELECT state FROM [lookerdata:cdc.project_tycho_reports]"

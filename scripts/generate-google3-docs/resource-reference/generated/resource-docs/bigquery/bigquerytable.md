@@ -1264,6 +1264,7 @@ metadata:
   name: bigquerytabledep
 spec:
   friendlyName: bigquerytable-dep
+  location: us-central1
 ```
 
 
