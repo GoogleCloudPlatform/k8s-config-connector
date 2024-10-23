@@ -1,0 +1,34 @@
+apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1beta1
+kind: BigQueryConnectionConnection
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: bigqueryconnectionconnection-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  cloudSpanner:
+    databaseRef:
+      name: spannerdb-${uniqueId}
+    databaseRole: admin
+    maxParallelism: 150
+    useDataBoost: true
+    useParallelism: true
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be
+  observedGeneration: 2
+  observedState: {}
