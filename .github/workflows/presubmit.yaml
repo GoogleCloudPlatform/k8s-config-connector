@@ -53,8 +53,6 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v1"
       - name: "Run unit tests"
         run: |
           ./scripts/github-actions/ga-unit-test.sh
