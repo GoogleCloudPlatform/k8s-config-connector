@@ -23,7 +23,7 @@ func ComputeGCPLabels(labels map[string]string) map[string]string {
 }
 
 func RemoveByPrefixes(a map[string]string, prefixes ...string) {
-	for k, _ := range a {
+	for k := range a {
 		for i := range prefixes {
 			if strings.HasPrefix(k, prefixes[i]) {
 				delete(a, k)
