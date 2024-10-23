@@ -173,6 +173,24 @@ func WorkstationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	return out
 }
 
+func WorkstationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationClusterObservedState) *pb.WorkstationCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkstationCluster{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ControlPlaneIp = direct.ValueOf(in.ControlPlaneIP)
+	out.Degraded = direct.ValueOf(in.Degraded)
+	out.Conditions = WorkstationClusterGCPConditions_ToProto(mapCtx, in.GCPConditions)
+	return out
+}
+
 func WorkstationClusterClusterHostname_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationCluster_PrivateClusterConfig) *string {
 	if in == nil {
 		return nil
@@ -194,8 +212,21 @@ func WorkstationClusterGCPConditions_FromProto(mapCtx *direct.MapContext, in []*
 	var out []krm.WorkstationClusterGCPCondition
 	for _, c := range in {
 		out = append(out, krm.WorkstationClusterGCPCondition{
-			Code:    direct.LazyPtr(int(c.Code)),
+			Code:    direct.LazyPtr(c.Code),
 			Message: direct.LazyPtr(c.Message),
+		})
+	}
+	return out
+}
+func WorkstationClusterGCPConditions_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationClusterGCPCondition) []*status.Status {
+	if in == nil {
+		return nil
+	}
+	var out []*status.Status
+	for _, c := range in {
+		out = append(out, &status.Status{
+			Code:    direct.ValueOf(c.Code),
+			Message: direct.ValueOf(c.Message),
 		})
 	}
 	return out

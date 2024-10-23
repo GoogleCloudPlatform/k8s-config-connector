@@ -25,8 +25,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 
 	gcp "cloud.google.com/go/workstations/apiv1"
+	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
 	workstationspb "cloud.google.com/go/workstations/apiv1/workstationspb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -44,6 +46,38 @@ const (
 
 func init() {
 	registry.RegisterModel(krm.WorkstationClusterGVK, NewModel)
+	fuzztesting.RegisterKRMFuzzer(workstationclusterFuzzer())
+}
+
+func workstationclusterFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.WorkstationCluster{},
+		WorkstationClusterSpec_FromProto, WorkstationClusterSpec_ToProto,
+		WorkstationClusterObservedState_FromProto, WorkstationClusterObservedState_ToProto,
+	)
+
+	f.UnimplementedFields.Insert(".name")
+
+	f.UnimplementedFields.Insert(".labels")
+	f.UnimplementedFields.Insert(".reconciling")
+	f.UnimplementedFields.Insert(".degraded")
+	f.UnimplementedFields.Insert(".conditions")
+	f.UnimplementedFields.Insert(".private_cluster_config.cluster_hostname")
+	f.UnimplementedFields.Insert(".private_cluster_config.service_attachment_uri")
+
+	f.SpecFields.Insert(".display_name")
+	f.SpecFields.Insert(".private_cluster_config")
+	f.SpecFields.Insert(".annotations")
+	f.SpecFields.Insert(".subnetwork")
+	f.SpecFields.Insert(".network")
+
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".delete_time")
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".control_plane_ip")
+	f.StatusFields.Insert(".etag")
+	f.StatusFields.Insert(".uid")
+
+	return f
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
