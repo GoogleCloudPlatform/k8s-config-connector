@@ -282,7 +282,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				}
 				create.RunCreateDeleteTest(h, opt)
 
-				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" {
+				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					for _, obj := range exportResources {
 						// Get testName from t.Name()
 						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
@@ -347,8 +347,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					verifyKubeWatches(h)
 				}
 
-				// Verify events against golden file
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+				// Verify events against golden file or records events
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
 					networkIDs := map[string]bool{}
