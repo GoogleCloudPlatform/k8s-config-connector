@@ -185,12 +185,14 @@ repo to quickly set up a local dev environment.
 
         ```shell
         make deploy-kcc-standard
+        make install
         ```
     
         For autopilot clusters, please use the following command.
 
         ```shell
         make deploy-kcc-autopilot
+        make install
         ```
 
 ### Validate your environment
