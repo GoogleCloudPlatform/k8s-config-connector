@@ -15,6 +15,7 @@ require (
 	cloud.google.com/go/dataflow v0.10.0
 	cloud.google.com/go/dataform v0.10.0
 	cloud.google.com/go/firestore v1.16.0
+	cloud.google.com/go/gkemulticloud v1.3.0
 	cloud.google.com/go/iam v1.2.0
 	cloud.google.com/go/monitoring v1.21.0
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
