@@ -44,12 +44,18 @@ User-Agent: kcc/controller-manager
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
     "tier": "db-custom-1-3840",
     "userLabels": {
@@ -378,20 +384,38 @@ User-Agent: kcc/controller-manager
   "databaseVersion": "POSTGRES_15",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
   "name": "sqlinstance-connectorenforcement-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
     "connectorEnforcement": "REQUIRED",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
     "tier": "db-custom-1-3840",
@@ -527,6 +551,7 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"

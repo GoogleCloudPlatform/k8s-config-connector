@@ -45,8 +45,14 @@ User-Agent: kcc/controller-manager
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
     "kind": "sql#settings",
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "storageAutoResize": false,
     "tier": "db-n1-standard-1",
     "userLabels": {
@@ -556,17 +562,34 @@ User-Agent: kcc/controller-manager
   "databaseVersion": "MYSQL_5_7",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-mysql-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
     "kind": "sql#settings",
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": false,
     "tier": "db-n1-standard-1",
