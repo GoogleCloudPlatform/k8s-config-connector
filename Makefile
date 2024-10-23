@@ -349,15 +349,15 @@ clean-release-manifests:
 	rm config/installbundle/release-manifests/standard/manifests.yaml
 	rm config/installbundle/release-manifests/autopilot/manifests.yaml
 
-# deploy config connector manifests to a k8s cluster
-# make sure to connect to a k8s cluster first
-.PHONY: deploy-kcc-manifests-standard
-deploy-kcc-manifests-standard: config-connector-manifests-standard
-	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml
+.PHONY: deploy-kcc-standard
+deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest 
+	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml ${CONTEXT_FLAG}
+	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
-.PHONY: deploy-kcc-manifests-autopilot
-deploy-kcc-manifests-autopilot: config-connector-manifests-autopilot
-	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml
+.PHONY: deploy-kcc-autopilot
+deploy-kcc-autopilot: docker-build docker-push config-connector-manifests-autopilot push-operator-manifest
+	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml ${CONTEXT_FLAG}
+	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: powertool-tests
 powertool-tests:
