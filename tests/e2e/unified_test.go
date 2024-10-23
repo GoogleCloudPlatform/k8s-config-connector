@@ -221,9 +221,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					for _, create := range opt.Create {
 						resourceID, _, err := unstructured.NestedString(create.Object, "spec", "resourceID")
 						if err != nil {
-							t.Fatalf("error reading spec.resourceID: %v", err)
-						}
-						if strings.Contains(resourceID, "${resourceId}") {
+							j, _ := json.Marshal(create.Object)
+							t.Logf("error reading spec.resourceID, can't check for acquisition test: %v.  object is %v", err, string(j))
+						} else if strings.Contains(resourceID, "${resourceId}") {
 							t.Skipf("test has ${resourceId} placeholder in spec.resource, indicating an acquisition test.  Not currently supported here; skipping")
 						}
 					}
