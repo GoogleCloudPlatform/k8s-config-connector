@@ -21,6 +21,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+make -C ../proto-to-mapper generate-pb
+
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
@@ -31,6 +33,14 @@ go run . generate-types \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
     --resource DiscoveryEngineDataStore:DataStore
+
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.discoveryengine.v1 \
+    --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind DiscoveryEngineEngine \
+    --proto-resource Engine
 
 # go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/dev/tools/proto-to-mapper/third_party/googleapis/ <<EOF
 # // +kcc:proto=google.cloud.discoveryengine.v1.Engine
