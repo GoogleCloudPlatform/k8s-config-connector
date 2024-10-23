@@ -16,6 +16,9 @@ spec:
     kind: KMSAutokeyConfig
     listKind: KMSAutokeyConfigList
     plural: kmsautokeyconfigs
+    shortNames:
+    - gcpkmsautokeyconfig
+    - gcpkmsautokeyconfigs
     singular: kmsautokeyconfig
   preserveUnknownFields: false
   scope: Namespaced
