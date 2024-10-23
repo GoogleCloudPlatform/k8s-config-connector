@@ -171,7 +171,7 @@ type WorkstationClusterObservedState struct {
 type WorkstationClusterGCPCondition struct {
 	// The status code, which should be an enum value of
 	//  [google.rpc.Code][google.rpc.Code].
-	Code *int `json:"code,omitempty"`
+	Code *int32 `json:"code,omitempty"`
 
 	// A developer-facing error message, which should be in English. Any
 	//  user-facing error message should be localized and sent in the
