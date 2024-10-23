@@ -20,6 +20,7 @@ import (
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 func BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krmv1beta1.BigQueryAnalyticsHubDataExchangeObservedState {
@@ -161,6 +162,23 @@ func Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx *dire
 	}
 	if in.GetRestrictQueryResult() != nil {
 		out.RestrictQueryResult = direct.LazyPtr(in.GetRestrictQueryResult().GetValue())
+	}
+
+	return out
+}
+func Listing_BigQueryDatasetSource_RestrictedExportPolicy_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RestrictedExportPolicy) *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy{}
+	if in.Enabled != nil {
+		out.Enabled = &wrapperspb.BoolValue{Value: *in.Enabled}
+	}
+	if in.RestrictDirectTableAccess != nil {
+		out.RestrictDirectTableAccess = &wrapperspb.BoolValue{Value: *in.RestrictDirectTableAccess}
+	}
+	if in.RestrictQueryResult != nil {
+		out.RestrictQueryResult = &wrapperspb.BoolValue{Value: *in.RestrictQueryResult}
 	}
 
 	return out

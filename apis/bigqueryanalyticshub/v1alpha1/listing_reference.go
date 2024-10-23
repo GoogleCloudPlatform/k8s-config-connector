@@ -154,6 +154,7 @@ func (r *BigQueryAnalyticsHubListingRef) Parent() (*BigQueryAnalyticsHubListingP
 type BigQueryAnalyticsHubListingParent struct {
 	ProjectID string
 	Location  string
+	// todo acpana rework the parent to include the data exchange ref
 }
 
 func (p *BigQueryAnalyticsHubListingParent) String() string {
