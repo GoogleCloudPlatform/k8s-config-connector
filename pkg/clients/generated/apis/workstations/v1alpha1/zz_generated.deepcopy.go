@@ -246,7 +246,7 @@ func (in *WorkstationclusterGcpConditionsStatus) DeepCopyInto(out *Workstationcl
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Message != nil {

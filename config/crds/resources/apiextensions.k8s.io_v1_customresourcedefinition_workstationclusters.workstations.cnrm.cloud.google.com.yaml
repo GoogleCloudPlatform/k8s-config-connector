@@ -330,6 +330,7 @@ spec:
                         code:
                           description: The status code, which should be an enum value
                             of [google.rpc.Code][google.rpc.Code].
+                          format: int32
                           type: integer
                         message:
                           description: A developer-facing error message, which should

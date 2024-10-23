@@ -71,7 +71,7 @@ func (in *WorkstationClusterGCPCondition) DeepCopyInto(out *WorkstationClusterGC
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Message != nil {
