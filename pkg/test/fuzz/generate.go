@@ -118,9 +118,20 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			case "string->message":
 				if field.FullName() == "google.protobuf.Struct.fields" && field.MapValue().Message().FullName() == "google.protobuf.Value" {
 					// currently this is converted to "map[string]string" in "BigQueryDataTransferConfig"
-					// TODO: fill in random strings
+					mapVal := msg.Mutable(field).Map()
+					for j := 0; j < count; j++ {
+						k := randomString(randStream)
+						v := randomString(randStream)
+						el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey()).Message()
+						el.Set(el.Descriptor().Fields().ByName("string_value"), protoreflect.ValueOfString(v))
+					}
 				} else {
-					t.Fatalf("unhandled case for map kind %q: %v", mapType, field)
+					mapVal := msg.Mutable(field).Map()
+					for j := 0; j < count; j++ {
+						k := randomString(randStream)
+						el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey())
+						fillWithRandom0(t, randStream, el.Message())
+					}
 				}
 
 			default:
@@ -323,9 +334,33 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					visitor.VisitPrimitive(mapPath, val, setter)
 					return true
 				})
+			case "string->message":
+				mapVal := msg.Mutable(field).Map()
+				setter := func(v protoreflect.Value) {
+					if v.IsValid() {
+						msg.Set(field, v)
+					} else {
+						msg.Clear(field)
+					}
+				}
+				visitor.VisitMap(path, mapVal, setter)
+
+				// In case the value changes
+				mapVal = msg.Mutable(field).Map()
+				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
+					mapPath := path + "[" + k.String() + "]"
+					setter := func(v protoreflect.Value) {
+						mapVal.Set(k, v)
+					}
+
+					v := mapVal.Get(k)
+					Visit(mapPath, v.Message(), setter, visitor)
+
+					return true
+				})
 
 			default:
-				klog.Fatalf("unhandled map kind %q: %v", mapType, field)
+				klog.Fatalf("unhandled map kind in visitor %q: %v", mapType, field)
 			}
 			return true
 		}
