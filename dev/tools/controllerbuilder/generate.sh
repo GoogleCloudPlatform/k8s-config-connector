@@ -41,6 +41,14 @@ go run . generate-mapper \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 
 
+# go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/dev/tools/proto-to-mapper/third_party/googleapis/ <<EOF
+# // +tool:mockgcp-support
+# // krm.apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+# // krm.kind: DiscoveryEngineChatEngine
+# // proto.service: google.cloud.discoveryengine.v1.EngineService
+# // proto.resource: Engine
+# EOF
+
 # DataFlow
 go run . generate-types \
     --service google.dataflow.v1beta3 \

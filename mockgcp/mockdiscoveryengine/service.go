@@ -18,9 +18,9 @@ import (
 	"context"
 	"net/http"
 
+	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -52,11 +52,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataStoreServiceServer(grpcServer, &dataStoreService{MockService: s})
+	pb.RegisterEngineServiceServer(grpcServer, &engineService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pbhttp.RegisterDataStoreServiceHandler,
+		pbhttp.RegisterEngineServiceHandler,
 	// s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}")
 	)
 	if err != nil {
