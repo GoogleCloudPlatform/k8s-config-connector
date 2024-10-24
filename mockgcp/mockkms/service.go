@@ -17,6 +17,7 @@ package mockkms
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -32,6 +33,7 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
+	v1         *autokeyAdminServer
 }
 
 // New creates a MockService.
@@ -41,6 +43,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
+	s.v1 = &autokeyAdminServer{MockService: s}
 	return s
 }
 
@@ -50,11 +53,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterKeyManagementServiceServer(grpcServer, &kmsServer{MockService: s})
+	pb.RegisterAutokeyAdminServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterKeyManagementServiceHandler,
+		pb.RegisterAutokeyAdminHandler,
 		// TODO: Any LROs on this API?
 		//	s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
@@ -64,10 +69,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
+		if error.Code == 404 && (strings.Contains(error.Message, "KeyRing") || strings.Contains(error.Message, "CryptoKey")) {
 			error.Errors = nil
 		}
 	}
-
 	return mux, nil
 }
