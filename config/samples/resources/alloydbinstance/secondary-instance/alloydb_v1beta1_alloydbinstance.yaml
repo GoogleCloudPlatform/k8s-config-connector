@@ -31,3 +31,8 @@ spec:
     name: alloydbinstance-dep2-secondary
   instanceTypeRef:
     name: alloydbinstance-dep2-secondary
+  queryInsightsConfig:
+    queryPlansPerMinute: 5
+    queryStringLength: 1024
+    recordApplicationTags: false
+    recordClientAddress: false
