@@ -34,20 +34,24 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-denymaintenanceperiod-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-31",
-        "startDate": "12-01",
+        "endDate": "0-1-31",
+        "startDate": "0-12-1",
         "time": "00:00:00"
       }
     ],
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -197,8 +201,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-31",
-        "startDate": "12-01",
+        "endDate": "0-1-31",
+        "startDate": "0-12-1",
         "time": "00:00:00"
       }
     ],
@@ -346,8 +350,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-31",
-        "startDate": "12-01",
+        "endDate": "0-1-31",
+        "startDate": "0-12-1",
         "time": "00:00:00"
       }
     ],
@@ -394,21 +398,23 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "POSTGRES_15",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "kind": "sql#instance",
   "name": "sqlinstance-denymaintenanceperiod-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-15",
-        "startDate": "11-01",
+        "endDate": "0-1-15",
+        "startDate": "0-11-1",
         "time": "01:00:00"
       }
     ],
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -559,8 +565,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "denyMaintenancePeriods": [
       {
-        "endDate": "01-15",
-        "startDate": "11-01",
+        "endDate": "0-1-15",
+        "startDate": "0-11-1",
         "time": "01:00:00"
       }
     ],

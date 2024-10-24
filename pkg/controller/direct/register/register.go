@@ -35,6 +35,8 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/privilegedaccessmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/redis/cluster"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/secretmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securesourcemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
 )

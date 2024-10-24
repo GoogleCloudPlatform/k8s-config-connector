@@ -54,6 +54,12 @@ import (
 
 const controllerName = "configconnectorcontext-controller"
 
+// ReconcilerOptions holds configuration options for the reconciler
+type ReconcilerOptions struct {
+	RepoPath       string
+	ImageTransform *controllers.ImageTransform
+}
+
 // Reconciler reconciles a ConfigConnectorContext object.
 //
 // From the high level, the Reconciler watches `ConfigConnectorContext` kind
@@ -71,8 +77,8 @@ type Reconciler struct {
 	jitterGen            jitter.Generator
 }
 
-func Add(mgr ctrl.Manager, repoPath string) error {
-	r, err := newReconciler(mgr, repoPath)
+func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
+	r, err := newReconciler(mgr, opt)
 	if err != nil {
 		return err
 	}
@@ -93,8 +99,8 @@ func Add(mgr ctrl.Manager, repoPath string) error {
 	return nil
 }
 
-func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
-	repo := cnrmmanifest.NewLocalRepository(repoPath)
+func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
+	repo := cnrmmanifest.NewLocalRepository(opt.RepoPath)
 	manifestLoader := cnrmmanifest.NewPerNamespaceManifestLoader(repo)
 	preflight := preflight.NewCompositePreflight([]declarative.Preflight{
 		preflight.NewNameChecker(mgr.GetClient(), k8s.ConfigConnectorContextAllowedName),
@@ -118,7 +124,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
 			Log:         r.log,
 		})
 
-	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnectorContext{},
+	options := []declarative.ReconcilerOption{
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
 		declarative.WithObjectTransform(r.transformNamespacedComponents()),
@@ -128,7 +134,13 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
-	)
+	}
+
+	if opt.ImageTransform != nil {
+		options = append(options, declarative.WithObjectTransform(opt.ImageTransform.RemapImages))
+	}
+
+	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnectorContext{}, options...)
 	return r, err
 }
 

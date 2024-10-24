@@ -26,7 +26,7 @@ type gcpClient struct {
 	config config.ControllerConfig
 }
 
-func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
+func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 	gcpClient := &gcpClient{
 		config: *config,
 	}

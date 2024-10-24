@@ -161,6 +161,76 @@ func CloudSpannerPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	return out
 }
 
+func SparkPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.SparkPropertiesSpec) *pb.SparkProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SparkProperties{}
+	out.MetastoreServiceConfig = MetastoreServiceConfigSpec_ToProto(mapCtx, in.MetastoreService)
+	out.SparkHistoryServerConfig = SparkHistoryServerConfigSpec_ToProto(mapCtx, in.SparkHistoryServer)
+	return out
+}
+
+func SparkPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.SparkProperties) *krm.SparkPropertiesSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SparkPropertiesSpec{}
+	out.MetastoreService = MetastoreServiceConfigSpec_FromProto(mapCtx, in.GetMetastoreServiceConfig())
+	out.SparkHistoryServer = SparkHistoryServerConfigSpec_FromProto(mapCtx, in.GetSparkHistoryServerConfig())
+	return out
+}
+
+func MetastoreServiceConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreServiceConfigSpec) *pb.MetastoreServiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetastoreServiceConfig{}
+	if in.MetastoreServiceRef != nil {
+		if in.MetastoreServiceRef.External == "" {
+			mapCtx.Errorf("MetastoreService external reference was not pre-resolved")
+		}
+		out.MetastoreService = in.MetastoreServiceRef.External
+	}
+	return out
+}
+
+func MetastoreServiceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetastoreServiceConfig) *krm.MetastoreServiceConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetastoreServiceConfigSpec{}
+	out.MetastoreServiceRef = &refs.MetastoreServiceRef{
+		External: in.MetastoreService,
+	}
+	return out
+}
+
+func SparkHistoryServerConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.SparkHistoryServerConfigSpec) *pb.SparkHistoryServerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SparkHistoryServerConfig{}
+	if in.DataprocClusterRef != nil {
+		if in.DataprocClusterRef.External == "" {
+			mapCtx.Errorf("DataprocCluster external reference was not pre-resolved")
+		}
+		out.DataprocCluster = in.DataprocClusterRef.External
+	}
+	return out
+}
+
+func SparkHistoryServerConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krm.SparkHistoryServerConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SparkHistoryServerConfigSpec{}
+	out.DataprocClusterRef = &refs.DataprocClusterRef{
+		External: in.DataprocCluster,
+	}
+	return out
+}
+
 func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.BigQueryConnectionConnectionObservedState {
 	if in == nil {
 		return nil
@@ -179,7 +249,10 @@ func BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx *direct.Ma
 		out.CloudResource = oneof
 	}
 	if oneof := CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
-		out.CloudSql = oneof
+		out.CloudSQL = oneof
+	}
+	if oneof := SparkPropertiesStatus_FromProto(mapCtx, in.GetSpark()); oneof != nil {
+		out.Spark = oneof
 	}
 	out.HasCredential = direct.LazyPtr(in.GetHasCredential())
 	return out
@@ -209,8 +282,10 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	if oneof := CloudSpannerPropertiesSpec_ToProto(mapCtx, in.CloudSpannerSpec); oneof != nil {
 		out.Properties = &pb.Connection_CloudSpanner{CloudSpanner: oneof}
 	}
+	if oneof := SparkPropertiesSpec_ToProto(mapCtx, in.SparkSpec); oneof != nil {
+		out.Properties = &pb.Connection_Spark{Spark: oneof}
+	}
 
-	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
 	return out
 }

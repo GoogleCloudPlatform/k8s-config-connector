@@ -25,9 +25,8 @@ var ContainerAttachedClusterGVK = GroupVersion.WithKind("ContainerAttachedCluste
 // ContainerAttachedClusterSpec defines the desired state of ContainerAttachedCluster
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedCluster
 type ContainerAttachedClusterSpec struct {
-	/* The ID of the project in which the resource belongs. If it is not provided, the provider project is used. */
-	// +optional
-	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+	/* The ID of the project in which the resource belongs.*/
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable, Optional.

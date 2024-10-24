@@ -15,11 +15,11 @@
 PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
-CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/controller:${SHORT_SHA}
-RECORDER_IMG ?= gcr.io/${PROJECT_ID}/recorder:${SHORT_SHA}
-WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/webhook:${SHORT_SHA}
-DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/deletiondefender:${SHORT_SHA}
-UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/unmanageddetector:${SHORT_SHA}
+CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/controller:${SHORT_SHA}
+RECORDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/recorder:${SHORT_SHA}
+WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/cnrm/webhook:${SHORT_SHA}
+DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/deletiondefender:${SHORT_SHA}
+UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/unmanageddetector:${SHORT_SHA}
 # Detects the location of the user golangci-lint cache.
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
@@ -298,7 +298,7 @@ operator-manager-bin:
 
 # Build kcc manifests for both standard and autopilot clusters
 .PHONY: all-manifests
-all-manifests: crd-manifests rbac-manifests manager-manifests
+all-manifests: crd-manifests rbac-manifests build-operator-manifests
 	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/standard/crds.yaml
 	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/standard/rbac.yaml
 	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
@@ -309,49 +309,55 @@ all-manifests: crd-manifests rbac-manifests manager-manifests
 
 # Build kcc manifests for standard GKE clusters
 .PHONY: config-connector-manifests-standard
-config-connector-manifests-standard: crd-manifests rbac-manifests manager-manifests
+config-connector-manifests-standard: build-crd-manifests build-rbac-manifests build-operator-manifests
 	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/standard/crds.yaml
 	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/standard/rbac.yaml
 	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
 
 # Build kcc manifests for autopilot clusters
 .PHONY: config-connector-manifests-autopilot
-config-connector-manifests-autopilot: crd-manifests rbac-manifests manager-manifests
+config-connector-manifests-autopilot: build-crd-manifests build-rbac-manifests build-operator-manifests
 	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/autopilot/crds.yaml
 	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/autopilot/rbac.yaml
 	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
 
-.PHONY: crd-manifests
-crd-manifests:
+.PHONY: build-crd-manifests
+build-crd-manifests:
 	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
 	kustomize build operator/config/crd -o config/installbundle/release-manifests/crds.yaml
 
-.PHONY: rbac-manifests
-rbac-manifests:
+.PHONY: build-rbac-manifests
+build-rbac-manifests:
 	kustomize build operator/config/rbac -o config/installbundle/release-manifests/rbac.yaml
 
-.PHONY: manager-manifests
-manager-manifests:
+.PHONY: build-operator-manifests
+build-operator-manifests:
 	make -C operator docker-build
 	kustomize build operator/config/autopilot-manager -o config/installbundle/release-manifests/autopilot/manager.yaml
 	kustomize build operator/config/manager -o config/installbundle/release-manifests/standard/manager.yaml
 
-.PHONY: clean-release-manifests
+.PHONY: push-operator-manifest
+push-operator-manifest:
+	make -C operator docker-push
+
+.PHONY: clean-operator-manifests
 clean-release-manifests:
 	rm config/installbundle/release-manifests/crds.yaml
 	rm config/installbundle/release-manifests/rbac.yaml
-	rm config/installbundle/release-manifests/manager.yaml
-	rm config/installbundle/release-manifests/manifests.yaml
+	rm config/installbundle/release-manifests/standard/manager.yaml
+	rm config/installbundle/release-manifests/autopilot/manager.yaml
+	rm config/installbundle/release-manifests/standard/manifests.yaml
+	rm config/installbundle/release-manifests/autopilot/manifests.yaml
 
-# deploy config connector manifests to a k8s cluster
-# make sure to connect to a k8s cluster first
-.PHONY: deploy-kcc-manifests-standard
-deploy-kcc-manifests-standard: config-connector-manifests-standard
-	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml
+.PHONY: deploy-kcc-standard
+deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest 
+	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml ${CONTEXT_FLAG}
+	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
-.PHONY: deploy-kcc-manifests-autopilot
-deploy-kcc-manifests-autopilot: config-connector-manifests-autopilot
-	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml
+.PHONY: deploy-kcc-autopilot
+deploy-kcc-autopilot: docker-build docker-push config-connector-manifests-autopilot push-operator-manifest
+	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml ${CONTEXT_FLAG}
+	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: powertool-tests
 powertool-tests:

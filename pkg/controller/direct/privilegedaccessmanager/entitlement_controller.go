@@ -122,45 +122,6 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, reader client.R
 		}
 	}
 
-	iamAccessResource, err := oneOfContainer(ctx, reader, obj,
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef,
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef,
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef)
-	if err != nil {
-		return nil, fmt.Errorf("error resolving 'obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef', "+
-			"'obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef' and "+
-			"'obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef': %w", err)
-	}
-	switch *obj.Spec.PrivilegedAccess.GcpIAMAccess.ResourceType {
-	case "cloudresourcemanager.googleapis.com/Project":
-		if !strings.HasPrefix(iamAccessResource, "projects/") {
-			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.projectRef' "+
-				"should be configured because the corresponding resourceType is "+
-				"'cloudresourcemanager.googleapis.com/Project', but got resource %s", iamAccessResource)
-		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.ProjectRef.External = iamAccessResource
-	case "cloudresourcemanager.googleapis.com/Folder":
-		if !strings.HasPrefix(iamAccessResource, "folders/") {
-			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.folderRef' "+
-				"should be configured because the corresponding resourceType is "+
-				"'cloudresourcemanager.googleapis.com/Folder', but got resource %s", iamAccessResource)
-		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.FolderRef.External = iamAccessResource
-	case "cloudresourcemanager.googleapis.com/Organization":
-		if !strings.HasPrefix(iamAccessResource, "organizations/") {
-			return nil, fmt.Errorf("only 'spec.privilegedAccess.gcpIAMAccess.organizationRef' "+
-				"should be configured because the corresponding resourceType is "+
-				"'cloudresourcemanager.googleapis.com/Organization', but got resource %s", iamAccessResource)
-		}
-		obj.Spec.PrivilegedAccess.GcpIAMAccess.OrganizationRef.External = iamAccessResource
-	default:
-		return nil, fmt.Errorf("unrecoganizable resourceType: %v; must be one of "+
-			"'cloudresourcemanager.googleapis.com/Project', "+
-			"'cloudresourcemanager.googleapis.com/Folder', "+
-			"'cloudresourcemanager.googleapis.com/Organization'",
-			*obj.Spec.PrivilegedAccess.GcpIAMAccess.ResourceType)
-	}
-
 	if obj.Spec.RequesterJustificationConfig.NotMandatory == nil && obj.Spec.RequesterJustificationConfig.Unstructured == nil {
 		return nil, fmt.Errorf("one and only one of 'spec.requesterJustificationConfig.notMandatory' " +
 			"and 'spec.requesterJustificationConfig.unstructured' should be configured: neither is configured")
@@ -275,6 +236,26 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+func getResourceTypeAndResourceFromContainer(container string) (string, string, error) {
+	tokens := strings.Split(container, "/")
+	if len(tokens) != 2 {
+		return "", "", fmt.Errorf("container should be one of projects/<project>, "+
+			"folders/<folder> or organizations/<organization>, but got %s", container)
+	}
+	resource := fmt.Sprintf("//cloudresourcemanager.googleapis.com/%s", container)
+	switch tokens[0] {
+	case "projects":
+		return "cloudresourcemanager.googleapis.com/Project", resource, nil
+	case "folders":
+		return "cloudresourcemanager.googleapis.com/Folder", resource, nil
+	case "organizations":
+		return "cloudresourcemanager.googleapis.com/Organization", resource, nil
+	default:
+		return "", "", fmt.Errorf("container must start with 'projects', "+
+			"'folders', or 'organizations', but it starts with %v", tokens[0])
+	}
+}
+
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
@@ -283,7 +264,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec)
+	resourceType, resource, err := getResourceTypeAndResourceFromContainer(a.id.Parent.Container)
+	if err != nil {
+		return fmt.Errorf("error getting resourceType and resource from container: %w", err)
+	}
+	hiddenFields := gcpIAMAccessResource{resourceType: resourceType, resource: resource}
+	entitlement := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec, hiddenFields)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -291,7 +277,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	req := &privilegedaccessmanagerpb.CreateEntitlementRequest{
 		Parent:        a.id.Parent.String(),
 		EntitlementId: a.id.Entitlement,
-		Entitlement:   resource,
+		Entitlement:   entitlement,
 	}
 	op, err := a.gcpClient.CreateEntitlement(ctx, req)
 	if err != nil {
@@ -361,16 +347,22 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		status.ObservedState = observedState
 		return setStatus(u, status)
 	}
+
 	desired := a.desired.DeepCopy()
-	resource := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec)
+	resourceType, resource, err := getResourceTypeAndResourceFromContainer(a.id.Parent.Container)
+	if err != nil {
+		return fmt.Errorf("error getting resourceType and resource from container: %w", err)
+	}
+	hiddenFields := gcpIAMAccessResource{resourceType: resourceType, resource: resource}
+	entitlement := PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx, &desired.Spec, hiddenFields)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = a.id.FullyQualifiedName()
-	resource.Etag = a.actual.Etag
+	entitlement.Name = a.id.FullyQualifiedName()
+	entitlement.Etag = a.actual.Etag
 	req := &privilegedaccessmanagerpb.UpdateEntitlementRequest{
 		UpdateMask:  updateMask,
-		Entitlement: resource,
+		Entitlement: entitlement,
 	}
 	op, err := a.gcpClient.UpdateEntitlement(ctx, req)
 	if err != nil {

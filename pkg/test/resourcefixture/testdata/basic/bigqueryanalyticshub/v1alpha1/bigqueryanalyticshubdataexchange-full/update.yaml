@@ -21,7 +21,7 @@ spec:
   description: example data exchange
   primaryContact: another@contact.com
   documentation: an updated documentation
-  discoveryType: DISCOVERY_TYPE_PRIVATE
+  discoveryType: DISCOVERY_TYPE_PUBLIC
   location: US
   projectRef:
     external: ${projectId}

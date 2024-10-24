@@ -15,7 +15,6 @@
 package create
 
 import (
-	"errors"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -228,13 +227,13 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 	if err == nil {
 		return
 	}
-	if !errors.Is(err, wait.ErrWaitTimeout) {
-		t.Errorf("error while polling for ready on %v with name '%v': %v", u.GetKind(), u.GetName(), err)
+	if !wait.Interrupted(err) {
+		t.Error(fmt.Errorf("error while polling for ready on %v with name '%v': %w", u.GetKind(), u.GetName(), err))
 		return
 	}
 	baseMsg := fmt.Sprintf("timed out waiting for ready on %v with name '%v'", u.GetKind(), u.GetName())
 	if err := t.GetClient().Get(t.Ctx, name, u); err != nil {
-		t.Errorf("%v, error retrieving final status.conditions: %v", baseMsg, err)
+		t.Error(fmt.Errorf("%v, error retrieving final status.conditions: %w", baseMsg, err))
 		return
 	}
 	objectStatus := dynamic.GetObjectStatus(t.T, u)

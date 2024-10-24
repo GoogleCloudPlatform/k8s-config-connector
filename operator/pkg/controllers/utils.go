@@ -178,6 +178,22 @@ func ListNamespacedControllerReconcilers(ctx context.Context, c client.Client, n
 	return list.Items, nil
 }
 
+func GetControllerReconciler(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ControllerReconciler, error) {
+	obj := &customizev1alpha1.ControllerReconciler{}
+	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func ListControllerReconcilers(ctx context.Context, c client.Client) ([]customizev1alpha1.ControllerReconciler, error) {
+	list := &customizev1alpha1.ControllerReconcilerList{}
+	if err := c.List(ctx, list); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
+
 // ApplyContainerResourceCustomization applies container resource customizations specified in ControllerResource / NamespacedControllerResource CR.
 func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1beta1.ContainerResourceSpec, replicas *int64) error {
 	if err := checkForDuplicateContainers(containers); err != nil {
@@ -511,7 +527,7 @@ func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, r
 	default:
 		return fmt.Errorf("rate limit customization for %s is not supported. "+
 			"Supported controllers: %s",
-			targetControllerName, strings.Join(customizev1alpha1.SupportedNamespacedControllers, ", "))
+			targetControllerName, strings.Join(customizev1alpha1.ValidRateLimitControllers, ", "))
 	}
 
 	for _, item := range m.Items {

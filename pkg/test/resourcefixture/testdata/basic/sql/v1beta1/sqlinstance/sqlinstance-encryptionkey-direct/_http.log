@@ -3,17 +3,23 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-    "uniqueId": "123456789003"
+    "uniqueId": "12345678"
   }
 }
 
@@ -1030,6 +1036,8 @@ User-Agent: kcc/controller-manager
     "kind": "sql#diskEncryptionConfiguration",
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -1045,6 +1053,7 @@ User-Agent: kcc/controller-manager
       "startTime": "12:00",
       "transactionLogRetentionDays": 5
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -1053,6 +1062,7 @@ User-Agent: kcc/controller-manager
         "value": "on"
       }
     ],
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
@@ -1066,6 +1076,7 @@ User-Agent: kcc/controller-manager
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": true
     },
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-b"
@@ -1455,7 +1466,7 @@ User-Agent: kcc/controller-manager
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "kind": "sql#instance",
   "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -1471,6 +1482,7 @@ User-Agent: kcc/controller-manager
       "startTime": "12:00",
       "transactionLogRetentionDays": 5
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -1479,6 +1491,7 @@ User-Agent: kcc/controller-manager
         "value": "on"
       }
     ],
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
@@ -1492,6 +1505,7 @@ User-Agent: kcc/controller-manager
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "requireSsl": true
     },
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-b"

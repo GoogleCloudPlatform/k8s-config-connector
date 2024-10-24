@@ -1,6 +1,6 @@
 # Add a new field
 
-_<span style="text-decoration:underline;">Note: If this is a TF-based or DCL-based resource, please migrate them to the Direct approach([Alpha](./migrate-tf-resource-alpha.md), [Beta](./migrate-tf-resource-beta.md)) first before running the following steps.</span> _
+_<span style="text-decoration:underline;">Note: If this is a Terraform-based or DCL-based resource, please migrate them to the direct approach([Alpha](./migrate-tf-resource-alpha.md), [Beta](./migrate-tf-resource-beta.md)) first before running the following steps.</span> _
 
 ## 1. Generate the field
 
@@ -32,18 +32,18 @@ The apis directory the contains the existing API types of the resource.
 
     1. Run 3.1 Generate the API and proto mapper to update the mapper files.
     2. Add the fields to `create.yaml `and `update.yaml `in corresponding test suites.
-    3. Modify the MockGCP when necessary. The new fields should show up in `_http.log `and   `_generated_object_<resource>.golden.yaml` 
+    3. Modify the MockGCP when necessary. The new fields should show up in `_http.log` and   `_generated_object_<resource>.golden.yaml` 
 
 ## 2. Resolve resource reference
 
-If the newly added fields contain resource references, you should have a second PR to update the resource reference, following [4.2 resolve resource references](../guides/4-add-controller.md#42-resolve-resource-references)
+If the newly added fields contain resource references, you should have a second PR to update the resource reference, following [4.2 resolve resource references](../deep-dives/4-add-controller.md#42-resolve-resource-references)
 
 Add a new test suite with `dependencies.yaml` to cover the referenced fields.
 
 
 ## Add MockGCP coverage
  
-Follow [Step 1](../guides/1-add-mockgcp-tests.md)
+Follow [Step 1](../deep-dives/1-add-mockgcp-tests.md)
 
 ### PR Reviews
 

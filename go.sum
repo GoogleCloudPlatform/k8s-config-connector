@@ -59,6 +59,8 @@ cloud.google.com/go/datastore v1.1.0/go.mod h1:umbIZjpQpHh4hmRpGhH4tLFup+FVzqBi1
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/firestore v1.16.0 h1:YwmDHcyrxVRErWcgxunzEaZxtNbc8QoFYA/JOEwDPgc=
 cloud.google.com/go/firestore v1.16.0/go.mod h1:+22v/7p+WNBSQwdSwP57vz47aZiY+HrDkrOsJNhk7rg=
+cloud.google.com/go/gkemulticloud v1.3.0 h1:4wJPaNK7HFYLniVqMue+Eo/SpX+yf+aMvRITjUpirgM=
+cloud.google.com/go/gkemulticloud v1.3.0/go.mod h1:XmcOUQ+hJI62fi/klCjEGs6lhQ56Zjs14sGPXsGP0mE=
 cloud.google.com/go/iam v1.2.0 h1:kZKMKVNk/IsSSc/udOb83K0hL/Yh/Gcqpz+oAkoIFN8=
 cloud.google.com/go/iam v1.2.0/go.mod h1:zITGuWgsLZxd8OwAlX+eMFgZDXzBm7icj1PVTYG766Q=
 cloud.google.com/go/longrunning v0.6.0 h1:mM1ZmaNsQsnb+5n1DNPeL0KwQd9jQRqSqSDEkBZr+aI=
@@ -77,6 +79,8 @@ cloud.google.com/go/redis v1.17.0 h1:YItghJ0VY98gJperCaTVEe7g+QZWz1nsN5ioJcSxkDY
 cloud.google.com/go/redis v1.17.0/go.mod h1:pzTdaIhriMLiXu8nn2CgiS52SYko0tO1Du4d3MPOG5I=
 cloud.google.com/go/resourcemanager v1.10.0 h1:oqO6UInOJ1ZBBEYTKPJms2+FKdGmZEYAYBKyt0oqpEI=
 cloud.google.com/go/resourcemanager v1.10.0/go.mod h1:kIx3TWDCjLnUQUdjQ/e8EXsS9GJEzvcY+YMOHpADxrk=
+cloud.google.com/go/secretmanager v1.14.0 h1:P2RRu2NEsQyOjplhUPvWKqzDXUKzwejHLuSUBHI8c4w=
+cloud.google.com/go/secretmanager v1.14.0/go.mod h1:q0hSFHzoW7eRgyYFH8trqEFavgrMeiJI4FETNN78vhM=
 cloud.google.com/go/securesourcemanager v1.1.1 h1:raOxRsR507ALLlc5yG79LK7O2TuDbD7o7IyHwyCoYAE=
 cloud.google.com/go/securesourcemanager v1.1.1/go.mod h1:qMVTY4bzBRhcrUe0B8KvDCK5mhGQD6PyrHbzqOn3TLQ=
 cloud.google.com/go/security v1.18.0 h1:CjBd67GVb+Oenjt4VsUw0RUQktSIgexTJN3UQta7XRE=

@@ -60,8 +60,9 @@ type dataflowFlexTemplateJobAdapter struct {
 	resourceID string
 	jobID      string
 
-	desired *pb.LaunchFlexTemplateParameter
-	actual  *pb.Job
+	desiredObj *krm.DataflowFlexTemplateJob
+	desired    *pb.LaunchFlexTemplateParameter
+	actual     *pb.Job
 
 	flexTemplatesClient *api.FlexTemplatesClient
 	jobsClient          *api.JobsV1Beta3Client
@@ -131,6 +132,7 @@ func (m *dataFlowFlexTemplateJobModel) AdapterForObject(ctx context.Context, kub
 		resourceID:          resourceID,
 		jobID:               jobID,
 		desired:             desired,
+		desiredObj:          obj,
 		flexTemplatesClient: flexTemplatesClient,
 		jobsClient:          jobsClient,
 	}, nil
@@ -306,7 +308,34 @@ func (a *dataflowFlexTemplateJobAdapter) getJob(ctx context.Context, jobID strin
 }
 
 func (a *dataflowFlexTemplateJobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.DataflowFlexTemplateJob{}
+	mapCtx := &direct.MapContext{}
+	actualFlexTemplateParameter, err := toLaunchParameter(ctx, a.resourceID, a.desiredObj)
+	if err != nil {
+		return nil, err
+	}
+
+	obj.Spec = direct.ValueOf(DataflowFlexTemplateJobSpec_FromProto(mapCtx, actualFlexTemplateParameter.Environment))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	obj.Spec.Region = direct.PtrTo(a.location)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u.SetName(a.actual.Id)
+	u.SetGroupVersionKind(krm.DataflowFlexTemplateJobGVK)
+	u.SetLabels(a.actual.Labels)
+
+	u.Object = uObj
+	return u, nil
 }
 
 // Create implements the Adapter interface.

@@ -123,7 +123,7 @@ func BigQueryConnectionConnectionObservedState_FromProto(mapCtx *direct.MapConte
 		out.CloudResource = CloudResourcePropertiesStatus_FromProto(mapCtx, in.GetCloudResource())
 	}
 	if oneof := CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
-		out.CloudSql = CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql())
+		out.CloudSQL = CloudSqlPropertiesStatus_FromProto(mapCtx, in.GetCloudSql())
 	}
 	// MISSING: Spark
 	// MISSING: SalesforceDataCloud
@@ -138,13 +138,16 @@ func BigQueryConnectionConnectionObservedState_ToProto(mapCtx *direct.MapContext
 	// MISSING: Name
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Aws
-	// MISSING: Azure
-	// MISSING: CloudSpanner
+	if oneof := AwsPropertiesStatus_ToProto(mapCtx, in.Aws); oneof != nil {
+		out.Properties = &pb.Connection_Aws{Aws: oneof}
+	}
+	if oneof := AzurePropertiesStatus_ToProto(mapCtx, in.Azure); oneof != nil {
+		out.Properties = &pb.Connection_Azure{Azure: oneof}
+	}
 	if oneof := CloudResourcePropertiesStatus_ToProto(mapCtx, in.CloudResource); oneof != nil {
 		out.Properties = &pb.Connection_CloudResource{CloudResource: oneof}
 	}
-	if oneof := CloudSqlPropertiesStatus_ToProto(mapCtx, in.CloudSql); oneof != nil {
+	if oneof := CloudSqlPropertiesStatus_ToProto(mapCtx, in.CloudSQL); oneof != nil {
 		out.Properties = &pb.Connection_CloudSql{CloudSql: oneof}
 	}
 	// MISSING: Spark
@@ -164,6 +167,9 @@ func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *p
 	if oneof := AwsPropertiesSpec_FromProto(mapCtx, in.GetAws()); oneof != nil {
 		out.AwsSpec = oneof
 	}
+	if oneof := AzurePropertiesSpec_FromProto(mapCtx, in.GetAzure()); oneof != nil {
+		out.AzureSpec = oneof
+	}
 	if oneof := CloudSqlPropertiesSpec_FromProto(mapCtx, in.GetCloudSql()); oneof != nil {
 		out.CloudSQLSpec = oneof
 	}
@@ -173,8 +179,9 @@ func BigQueryConnectionConnectionSpec_FromProto(mapCtx *direct.MapContext, in *p
 	if oneof := CloudSpannerPropertiesSpec_FromProto(mapCtx, in.GetCloudSpanner()); oneof != nil {
 		out.CloudSpannerSpec = oneof
 	}
-	// MISSING: Azure
-	// MISSING: Spark
+	if oneof := SparkPropertiesSpec_FromProto(mapCtx, in.GetSpark()); oneof != nil {
+		out.SparkSpec = oneof
+	}
 	// MISSING: SalesforceDataCloud
 	return out
 }
@@ -202,12 +209,30 @@ func AwsPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AwsProperti
 	out.AccessRole = AwsAccessRoleStatus_FromProto(mapCtx, in.GetAccessRole())
 	return out
 }
+func AwsPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.AwsPropertiesStatus) *pb.AwsProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsProperties{}
+	out.AuthenticationMethod = &pb.AwsProperties_AccessRole{
+		AccessRole: AwsAccessRoleStatus_ToProto(mapCtx, in.AccessRole),
+	}
+	return out
+}
 func AwsAccessRoleStatus_FromProto(mapCtx *direct.MapContext, in *pb.AwsAccessRole) *krm.AwsAccessRoleStatus {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AwsAccessRoleStatus{}
 	out.Identity = direct.PtrTo(in.Identity)
+	return out
+}
+func AwsAccessRoleStatus_ToProto(mapCtx *direct.MapContext, in *krm.AwsAccessRoleStatus) *pb.AwsAccessRole {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsAccessRole{}
+	out.Identity = direct.ValueOf(in.Identity)
 	return out
 }
 func AzurePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AzureProperties) *krm.AzurePropertiesStatus {
@@ -220,6 +245,18 @@ func AzurePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.AzureProp
 	out.ObjectID = direct.LazyPtr(in.ObjectId)
 	out.RedirectUri = direct.LazyPtr(in.RedirectUri)
 	out.Identity = direct.LazyPtr(in.Identity)
+	return out
+}
+func AzurePropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.AzurePropertiesStatus) *pb.AzureProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureProperties{}
+	out.Application = direct.ValueOf(in.Application)
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.RedirectUri = direct.ValueOf(in.RedirectUri)
+	out.ObjectId = direct.ValueOf(in.ObjectID)
+	out.Identity = direct.ValueOf(in.Identity)
 	return out
 }
 func CloudResourcePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.CloudResourceProperties) *krm.CloudResourcePropertiesStatus {
@@ -319,6 +356,22 @@ func CloudSqlPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudSq
 		return nil
 	}
 	out := &pb.CloudSqlProperties{}
+	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	return out
+}
+func SparkPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.SparkProperties) *krm.SparkPropertiesStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SparkPropertiesStatus{}
+	out.ServiceAccountID = direct.LazyPtr(in.ServiceAccountId)
+	return out
+}
+func SparkPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.SparkPropertiesStatus) *pb.SparkProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SparkProperties{}
 	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
 	return out
 }

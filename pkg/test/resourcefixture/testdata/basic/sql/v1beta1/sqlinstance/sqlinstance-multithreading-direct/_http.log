@@ -34,6 +34,8 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-multithreading-direct-${uniqueId}",
   "region": "us-central1",
   "rootPassword": "1234!@#$asdf",
@@ -43,8 +45,10 @@ User-Agent: kcc/controller-manager
       "threadsPerCore": 1
     },
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -448,7 +452,7 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05",
+  "kind": "sql#instance",
   "name": "sqlinstance-multithreading-direct-${uniqueId}",
   "region": "us-central1",
   "rootPassword": "1234!@#$asdf",
@@ -458,8 +462,10 @@ User-Agent: kcc/controller-manager
       "threadsPerCore": 2
     },
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"

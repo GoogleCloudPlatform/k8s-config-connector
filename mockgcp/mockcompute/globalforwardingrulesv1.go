@@ -118,6 +118,14 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 		obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name))
 	}
 
+	if obj.Subnetwork != nil {
+		subnetworkName, err := s.parseSubnetName(obj.GetSubnetwork())
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "subnetwork %q is not valid", obj.GetSubnetwork())
+		}
+		obj.Subnetwork = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/subnetworks/%s", subnetworkName.Project.ID, subnetworkName.Region, subnetworkName.Name))
+	}
+
 	// output only field. This field is only used for internal load balancing.
 	if obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme == "INTERNAL" {
 		if obj.ServiceLabel != nil {
@@ -146,6 +154,44 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: opType,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalForwardingRulesV1) Patch(ctx context.Context, req *pb.PatchGlobalForwardingRuleRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/forwardingRules/" + req.GetForwardingRule()
+	name, err := s.parseGlobalForwardingRuleName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.ForwardingRule{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	proto.Merge(obj, req.GetForwardingRuleResource())
+	// checked GCP log, when AllowGlobalAccess is false, the field will be ignored
+	if obj.AllowGlobalAccess != nil && *obj.AllowGlobalAccess == false {
+		obj.AllowGlobalAccess = nil
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {

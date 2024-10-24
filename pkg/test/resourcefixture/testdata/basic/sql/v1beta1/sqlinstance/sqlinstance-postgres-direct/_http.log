@@ -550,6 +550,8 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_9_6",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -566,6 +568,7 @@ User-Agent: kcc/controller-manager
       "startTime": "12:00",
       "transactionLogRetentionDays": 3
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -582,6 +585,7 @@ User-Agent: kcc/controller-manager
         "value": "8"
       }
     ],
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
@@ -595,8 +599,10 @@ User-Agent: kcc/controller-manager
       "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
     },
+    "kind": "sql#settings",
     "pricingPlan": "PER_USE",
     "storageAutoResize": false,
+    "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
@@ -945,6 +951,7 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "POSTGRES_9_6",
   "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -961,6 +968,7 @@ User-Agent: kcc/controller-manager
       "startTime": "12:00",
       "transactionLogRetentionDays": 3
     },
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -977,6 +985,7 @@ User-Agent: kcc/controller-manager
         "value": "8"
       }
     ],
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
@@ -990,9 +999,11 @@ User-Agent: kcc/controller-manager
       "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
     },
+    "kind": "sql#settings",
     "pricingPlan": "PER_USE",
     "settingsVersion": "123",
     "storageAutoResize": false,
+    "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",

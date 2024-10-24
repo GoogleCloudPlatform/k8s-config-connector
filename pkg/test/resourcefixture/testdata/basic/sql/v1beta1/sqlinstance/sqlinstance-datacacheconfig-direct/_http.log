@@ -34,16 +34,20 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_15",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-datacacheconfig-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataCacheConfig": {
       "dataCacheEnabled": false
     },
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -559,17 +563,19 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "POSTGRES_15",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "kind": "sql#instance",
   "name": "sqlinstance-datacacheconfig-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataCacheConfig": {
       "dataCacheEnabled": true
     },
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE_PLUS",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"

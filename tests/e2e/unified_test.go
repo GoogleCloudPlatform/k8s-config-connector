@@ -87,8 +87,8 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
-					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
-						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUP=%s", s)
+					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
 					}
 				}
 
@@ -157,9 +157,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					continue
 				}
 			}
-			if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
-				if group != s {
-					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUP=%s", fixture.Name, group, s)
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
 					continue
 				}
 			}
@@ -214,6 +215,17 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
 							"pause test should not run against test cases already contain ConfigConnector "+
 							"or ConfigConnectorContext objects", fixture.Name)
+					}
+
+					// If the test contains "${resourceId}", that means it is an acquisition test, which we don't currently support
+					for _, create := range opt.Create {
+						resourceID, _, err := unstructured.NestedString(create.Object, "spec", "resourceID")
+						if err != nil {
+							j, _ := json.Marshal(create.Object)
+							t.Logf("error reading spec.resourceID, can't check for acquisition test: %v.  object is %v", err, string(j))
+						} else if strings.Contains(resourceID, "${resourceId}") {
+							t.Skipf("test has ${resourceId} placeholder in spec.resource, indicating an acquisition test.  Not currently supported here; skipping")
+						}
 					}
 				}
 
@@ -270,7 +282,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				}
 				create.RunCreateDeleteTest(h, opt)
 
-				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" {
+				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					for _, obj := range exportResources {
 						// Get testName from t.Name()
 						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
@@ -335,8 +347,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					verifyKubeWatches(h)
 				}
 
-				// Verify events against golden file
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+				// Verify events against golden file or records events
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
 					networkIDs := map[string]bool{}
@@ -781,6 +793,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("azure.identity", "117243083562690747295")
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
+					addReplacement("spark.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//

@@ -12,7 +12,7 @@ metadata:
   name: bigqueryconnectionconnection-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  cloudSql:
+  cloudSQL:
     credential:
       password: cGFzc3dvcmQ=
       username: sqluser-${uniqueId}
@@ -33,6 +33,6 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be
   observedGeneration: 1
   observedState:
-    cloudSql:
+    cloudSQL:
       serviceAccountID: service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com
     hasCredential: true

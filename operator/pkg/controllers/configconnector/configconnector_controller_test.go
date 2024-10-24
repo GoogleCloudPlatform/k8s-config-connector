@@ -22,6 +22,7 @@ import (
 	"testing"
 	"time"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -1231,6 +1232,111 @@ func TestApplyCustomizations(t *testing.T) {
 			gotStatus := updatedCR.Status
 			if !reflect.DeepEqual(gotStatus, tc.expectedCustomizationCRStatus) {
 				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCustomizationCRStatus))
+			}
+		})
+	}
+}
+
+func TestApplyRateLimitCustomizations(t *testing.T) {
+	tests := []struct {
+		name                             string
+		manifests                        []string
+		controllerReconcilerCR           *customizev1alpha1.ControllerReconciler
+		namespacedControllerReconcilerCR *customizev1alpha1.NamespacedControllerReconciler
+		expectedManifests                []string
+		skipCheckingCRStatus             bool
+		expectedCRStatus                 customizev1alpha1.ControllerReconcilerStatus
+	}{
+		{
+			name:                   "customize the rate limit for cnrm-controller-manager",
+			manifests:              testcontroller.ClusterModeComponents,
+			controllerReconcilerCR: testcontroller.ControllerReconcilerCR,
+			expectedManifests:      testcontroller.ClusterModeComponentsWithRatLimitCustomization,
+			expectedCRStatus: customizev1alpha1.ControllerReconcilerStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
+				},
+			},
+		},
+		{
+			name:                   "customize the rate limit for a unsupported controller fails",
+			manifests:              testcontroller.ClusterModeComponents,
+			controllerReconcilerCR: testcontroller.ControllerReconcilerCRForUnsupportedController,
+			expectedManifests:      testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCRStatus: customizev1alpha1.ControllerReconcilerStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors:  []string{testcontroller.ErrUnsupportedController},
+				},
+			},
+		},
+		{
+			name:                             "namespaced rate limit CR has no effect in cluster mode",
+			manifests:                        testcontroller.ClusterModeComponents,
+			namespacedControllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCR,
+			expectedManifests:                testcontroller.ClusterModeComponents, // same as the input manifests
+			skipCheckingCRStatus:             true,
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			// test setup
+			ctx := context.TODO()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			if tc.controllerReconcilerCR != nil {
+				cr := tc.controllerReconcilerCR
+				if err := c.Create(ctx, cr); err != nil {
+					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				}
+			}
+			if tc.namespacedControllerReconcilerCR != nil {
+				cr := tc.namespacedControllerReconcilerCR
+				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
+				if err := c.Create(ctx, cr); err != nil {
+					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				}
+			}
+			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
+			r := newConfigConnectorReconciler(c)
+
+			// run the test function
+			fn := r.applyCustomizations()
+			if err := fn(ctx, nil, manifests); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// check the resulting manifests
+			gotJSON, err := manifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedManifests := testcontroller.ParseObjects(ctx, t, tc.expectedManifests)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedJSON, err := expectedManifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !reflect.DeepEqual(gotJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJSON, expectedJSON))
+			}
+
+			// check the status of cluster-scoped customization CR
+			if tc.skipCheckingCRStatus {
+				return
+			}
+			updatedCR := &customizev1alpha1.ControllerReconciler{}
+			if err := c.Get(ctx, types.NamespacedName{Name: tc.controllerReconcilerCR.Name}, updatedCR); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			gotStatus := updatedCR.Status
+			if !reflect.DeepEqual(gotStatus, tc.expectedCRStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCRStatus))
 			}
 		})
 	}

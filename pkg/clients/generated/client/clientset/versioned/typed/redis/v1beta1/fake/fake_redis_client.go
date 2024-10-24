@@ -31,6 +31,10 @@ type FakeRedisV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeRedisV1beta1) RedisClusters(namespace string) v1beta1.RedisClusterInterface {
+	return &FakeRedisClusters{c, namespace}
+}
+
 func (c *FakeRedisV1beta1) RedisInstances(namespace string) v1beta1.RedisInstanceInterface {
 	return &FakeRedisInstances{c, namespace}
 }

@@ -53,6 +53,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	monitoringpb.RegisterAlertPolicyServiceServer(grpcServer, &AlertPolicyService{MockService: s})
 	monitoringpb.RegisterGroupServiceServer(grpcServer, &GroupService{MockService: s})
+	monitoringpb.RegisterMetricServiceServer(grpcServer, &metricService{MockService: s})
 	monitoringpb.RegisterNotificationChannelServiceServer(grpcServer, &NotificationChannelService{MockService: s})
 	monitoringpb.RegisterServiceMonitoringServiceServer(grpcServer, &serviceMonitoringService{MockService: s})
 	monitoringpb.RegisterUptimeCheckServiceServer(grpcServer, &UptimeCheckService{MockService: s})
@@ -66,6 +67,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		monitoringpb.RegisterAlertPolicyServiceHandler,
 		monitoringpb.RegisterGroupServiceHandler,
+		monitoringpb.RegisterMetricServiceHandler,
 		monitoringpb.RegisterNotificationChannelServiceHandler,
 		monitoringpb.RegisterServiceMonitoringServiceHandler,
 		monitoringpb.RegisterUptimeCheckServiceHandler,

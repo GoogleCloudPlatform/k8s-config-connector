@@ -69,7 +69,8 @@ type {{ .Kind }}ObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp
+// TODO(user): make sure the pluralizaiton below is correct
+// +kubebuilder:resource:categories=gcp,shortName=gcp{{ .Kind | ToLower }};gcp{{ .Kind | ToLower }}s
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
@@ -83,6 +84,7 @@ type {{ .Kind }} struct {
 	metav1.TypeMeta   ` + "`" + `json:",inline"` + "`" + `
 	metav1.ObjectMeta ` + "`" + `json:"metadata,omitempty"` + "`" + `
 
+	// +required
 	Spec   {{ .Kind }}Spec   ` + "`" + `json:"spec,omitempty"` + "`" + `
 	Status {{ .Kind }}Status ` + "`" + `json:"status,omitempty"` + "`" + `
 }

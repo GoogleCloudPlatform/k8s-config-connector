@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This script downloads the golden output from our golden tests
+# The idea is to make it easier to sync up mockgcp to the real gcp output.
+# This script can currently only be run by googlers,
+# because we don't expose the test results against real GCP publicly. 
+# If you are not a googler and you want the output from a real test
+# for some reason, please let us know!
+# (But these tests are not secret, they just run the scripts in dev/ci/periodics)
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+if [[ -z "${TEST:-}" ]]; then
+  echo "Must specify TEST (e.g. TEST=e2e-service-pubsub)"
+  echo "Listing tests:"
+  gsutil ls gs://cnrm-prow/logs/ | sed -e "s@gs://cnrm-prow/logs/@@g" | sed -e "s@/@@g"
+  exit 1
+fi
+
+echo "Getting latest test run for ${TEST}"
+LATEST=$(gsutil cat gs://cnrm-prow/logs/${TEST}/latest-build.txt)
+
+echo "Getting test results:"
+gsutil cat gs://cnrm-prow/logs/${TEST}/${LATEST}/finished.json | jq .
+
+echo "Downloading golden output"
+gsutil cp gs://cnrm-prow/logs/${TEST}/${LATEST}/artifacts/golden.zip .build/golden.zip
+
+echo "Expanding golden output into testdata directory"
+unzip -o .build/golden.zip "pkg/test/resourcefixture/testdata/*"

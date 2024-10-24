@@ -1,32 +1,34 @@
 # v1.124.0
 
-** This version is not yet released; this document is gathering release notes for the future release **
+* Special shout-outs to @600lyy, @acpana, @anhdle-sso, @benjamin-maynard, @cheftako, @gemmahou, @hankfreund, @jasonvigil, @jingyih, @justinsb, @maqiuyujoyce, @nancynh, @svetakvsundhar, @xiaoweim, @yuwenma for their contributions to this release.
 
-* ...
+## Announcement
 
-* Special shout-outs to ... for their
-  contributions to this release.
-TODO: list contributors with `git log v1.123.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
+### Simplified and More Reliable Resource Development 
 
-## Resources promoted from alpha to beta:
+* We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)   
 
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState.*`
+## New Beta Resources (Direct Reconciler):
 
-* `PlaceholderKind`
-
-## Direct Cloud Reconciler:
-* CertificateManagerDNSAuthorization (v1beta1).
-* ComputeForwardingRule (v1beta1).
-* BigQueryAnalyticsHubDataExchange (v1alpha1).
-
-## New Resources:
-
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* `RedisCluster`
 
 ## New Fields:
 
-* CertificateManagerDNSAuthorization
+* `CertificateManagerDNSAuthorization`
+
   * Added `spec.Location` field.
-* ComputeForwardingRule
-  * Added `spec.target.googleApisBundle` field
+
+* `ComputeForwardingRule`
+
+  * Added `spec.target.googleApisBundle` field (accept value `all-apis` or `vpc-sc`). Note, when configured this field, you are using the new Direct reconciliation.  
+
+## Modified Beta Reconciliation
+
+We migrated the following reconciliation from the TF-based or DCL-based controller to the new Direct controller to enhance the reliability and performance. The resource CRD is unchanged.
+
+* `CertificateManagerDNSAuthorization`
+
+## New Alpha Resources (Direct Reconciler):
+
+* `PrivilegedAccessManagerEntitlement`
+* `BigQueryAnalyticsHubDataExchange`

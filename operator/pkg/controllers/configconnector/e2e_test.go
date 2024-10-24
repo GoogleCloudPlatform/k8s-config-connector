@@ -31,8 +31,10 @@ func TestConfigConnectorE2E(t *testing.T) {
 	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 	defer stop()
 
-	repoPath := "../../../channels"
-	if err := Add(mgr, repoPath); err != nil {
+	opt := &ReconcilerOptions{
+		RepoPath: "../../../channels",
+	}
+	if err := Add(mgr, opt); err != nil {
 		t.Fatalf("error from Add: %v", err)
 	}
 

@@ -19,7 +19,7 @@ spec:
       openAPIV3Schema:
         description: |-
           NamespacedControllerReconciler is the Schema for reconciliation related customization for
-          namespaced config connector controllers.
+          config connector controllers in namespaced mode.
         properties:
           apiVersion:
             description: |-

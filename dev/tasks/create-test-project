@@ -60,6 +60,7 @@ gcloud services enable \
   logging.googleapis.com \
   monitoring.googleapis.com \
   redis.googleapis.com \
+  securesourcemanager.googleapis.com \
   servicenetworking.googleapis.com \
   sqladmin.googleapis.com \
   workstations.googleapis.com

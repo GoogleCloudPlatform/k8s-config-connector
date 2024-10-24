@@ -39,24 +39,9 @@ type SecretManagerSecretSpec struct {
 	//  The replication policy cannot be changed after the Secret has been created.
 	Replication *Replication `json:"replication,omitempty"`
 
-	/*NOTYET
-	// The labels assigned to this Secret.
-	//
-	//  Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
-	//  of maximum 128 bytes, and must conform to the following PCRE regular
-	//  expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
-	//
-	//  Label values must be between 0 and 63 characters long, have a UTF-8
-	//  encoding of maximum 128 bytes, and must conform to the following PCRE
-	//  regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
-	//
-	//  No more than 64 labels can be assigned to a given resource.
-	Labels map[string]string `json:"labels,omitempty"`
-	*/
-
 	// Optional. A list of up to 10 Pub/Sub topics to which messages are published
 	//  when control plane operations are called on the secret or its versions.
-	TopicRefs []TopicRef `json:"topics,omitempty"`
+	TopicRefs []*TopicRef `json:"topics,omitempty"`
 
 	// Optional. Timestamp in UTC when the
 	//  [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to expire.
@@ -123,9 +108,52 @@ type SecretManagerSecretSpec struct {
 	*/
 }
 
+// +kcc:proto=google.cloud.secretmanager.v1.Replication
+type Replication struct {
+	// The Secret will automatically be replicated without any restrictions.
+	LegacyAuto *bool `json:"automatic,omitempty"`
+
+	// The [Secret][google.cloud.secretmanager.v1.Secret] will automatically be
+	//  replicated without any restrictions.
+	LegacyAutomatic *Replication_Automatic `json:"auto,omitempty"`
+
+	// The [Secret][google.cloud.secretmanager.v1.Secret] will only be
+	//  replicated into the locations specified.
+	UserManaged *Replication_UserManaged `json:"userManaged,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.Replication.UserManaged
+type Replication_UserManaged struct {
+	// +required
+	// Required. The list of Replicas for this
+	//  [Secret][google.cloud.secretmanager.v1.Secret].
+	//
+	//  Cannot be empty.
+	Replicas []Replication_UserManaged_Replica `json:"replicas,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.Replication.UserManaged.Replica
+type Replication_UserManaged_Replica struct {
+	// +required
+	// The canonical IDs of the location to replicate data.
+	//  For example: `"us-east1"`.
+	Location *string `json:"location,omitempty"`
+
+	// Optional. The customer-managed encryption configuration of the
+	//  [User-Managed Replica][Replication.UserManaged.Replica]. If no
+	//  configuration is provided, Google-managed default encryption is used.
+	//
+	//  Updates to the [Secret][google.cloud.secretmanager.v1.Secret]
+	//  encryption configuration only apply to
+	//  [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added
+	//  afterwards. They do not apply retroactively to existing
+	//  [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+	CustomerManagedEncryption *CustomerManagedEncryption `json:"customerManagedEncryption,omitempty"`
+}
+
 type TopicRef struct {
 	// +required
-	PubSubTopicRef refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.secretmanager.v1.CustomerManagedEncryption
@@ -144,7 +172,7 @@ type CustomerManagedEncryption struct {
 	//  replication policy type, Cloud KMS CryptoKeys must reside in `global`.
 	//
 	//  The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-	KmsKeyRef refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // SecretManagerSecretStatus defines the config connector machine state of SecretManagerSecret

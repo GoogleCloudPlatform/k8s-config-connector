@@ -108,7 +108,7 @@ func (a *APIScaffolder) AddTypeFile(kind, proto string) error {
 }
 
 func scaffoldTypeFile(path string, cArgs *apis.APIArgs) error {
-	tmpl, err := template.New(cArgs.Kind).Parse(apis.TypesTemplate)
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(apis.TypesTemplate)
 	if err != nil {
 		return fmt.Errorf("parse %s_types.go template: %w", strings.ToLower(cArgs.Kind), err)
 	}

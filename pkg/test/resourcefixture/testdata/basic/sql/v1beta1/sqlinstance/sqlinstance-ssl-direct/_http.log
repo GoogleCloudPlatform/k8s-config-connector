@@ -34,16 +34,20 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "POSTGRES_16",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-ssl-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "requireSsl": true
     },
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -362,18 +366,20 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "kind": "sql#instance",
   "name": "sqlinstance-ssl-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
     },
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"

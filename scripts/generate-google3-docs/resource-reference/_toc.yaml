@@ -431,6 +431,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/gkehub/gkehubmembership.md
 - title: "Memorystore (Redis)"
   section:
+  - title: "RedisCluster"
+    path: /config-connector/docs/reference/resource-docs/redis/rediscluster.md
   - title: "RedisInstance"
     path: /config-connector/docs/reference/resource-docs/redis/redisinstance.md
 - title: "Network Connectivity"

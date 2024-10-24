@@ -34,13 +34,17 @@ User-Agent: kcc/controller-manager
 
 {
   "databaseVersion": "MYSQL_5_7",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
   "name": "sqlinstance-mysql-minimal-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
@@ -777,14 +781,16 @@ User-Agent: kcc/controller-manager
 {
   "databaseVersion": "MYSQL_8_0",
   "instanceType": "CLOUD_SQL_INSTANCE",
-  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "kind": "sql#instance",
   "name": "sqlinstance-mysql-minimal-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
