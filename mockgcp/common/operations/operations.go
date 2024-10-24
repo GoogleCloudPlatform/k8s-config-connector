@@ -135,7 +135,7 @@ func markDone(op *pb.Operation, result proto.Message, err error) error {
 				Message: fmt.Sprintf("error processing operation: %v", err),
 			},
 		}
-	} else {
+	} else if result != nil {
 		resultAny, err := anypb.New(result)
 		if err != nil {
 			klog.Warningf("error building anypb for result: %v", err)

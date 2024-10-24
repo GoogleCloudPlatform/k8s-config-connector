@@ -129,16 +129,6 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 			return "", false
 		}
 
-		// protoPackagePath := string(msg.ParentFile().Package())
-		// protoPackagePath = strings.TrimPrefix(protoPackagePath, "mockgcp.")
-		// protoPackagePath = strings.TrimPrefix(protoPackagePath, "google.")
-		// protoPackagePath = strings.TrimPrefix(protoPackagePath, "cloud.")
-		// protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1")
-		// protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1beta1")
-		// protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v2")
-		// protoPackagePath = strings.TrimSuffix(protoPackagePath, ".admin") // e.g. bigtable.admin.v2
-		// goPackage := strings.Join(strings.Split(protoPackagePath, "."), "/")
-
 		return goPackage, true
 	}
 	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory)
