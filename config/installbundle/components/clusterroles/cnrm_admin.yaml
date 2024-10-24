@@ -512,6 +512,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - discoveryengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - dlp.cnrm.cloud.google.com
   resources:
   - '*'
