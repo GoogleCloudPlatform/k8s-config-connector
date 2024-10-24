@@ -38,8 +38,7 @@ spec:
       roleBindings:
       - conditionExpression: request.time > timestamp("2020-10-31T12:00:00.000Z")
         role: roles/storage.objectViewer
-  requesterJustificationConfig:
-    unstructured: {}
+  requesterJustificationType: UNSTRUCTURED
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

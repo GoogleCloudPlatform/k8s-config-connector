@@ -364,7 +364,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=eligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
+PATCH https://privilegedaccessmanager.googleapis.com/v1/projects/${projectId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=eligibleUsers%2CmaxRequestDuration%2CprivilegedAccess%2CrequesterJustificationConfig
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: entitlement.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
@@ -392,7 +392,7 @@ x-goog-request-params: entitlement.name=projects%2F${projectId}%2Flocations%2Fgl
     }
   },
   "requesterJustificationConfig": {
-    "notMandatory": {}
+    "unstructured": {}
   }
 }
 
@@ -475,7 +475,7 @@ X-Xss-Protection: 0
       }
     },
     "requesterJustificationConfig": {
-      "notMandatory": {}
+      "unstructured": {}
     },
     "state": "AVAILABLE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -524,7 +524,7 @@ X-Xss-Protection: 0
     }
   },
   "requesterJustificationConfig": {
-    "notMandatory": {}
+    "unstructured": {}
   },
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -616,7 +616,7 @@ X-Xss-Protection: 0
       }
     },
     "requesterJustificationConfig": {
-      "notMandatory": {}
+      "unstructured": {}
     },
     "state": "DELETED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
