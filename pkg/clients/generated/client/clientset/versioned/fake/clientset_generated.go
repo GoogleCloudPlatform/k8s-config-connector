@@ -119,6 +119,8 @@ import (
 	fakedialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1/fake"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
 	fakedialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1/fake"
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
+	fakediscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1/fake"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	fakedlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1/fake"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
@@ -558,6 +560,11 @@ func (c *Clientset) DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1In
 // DialogflowcxV1alpha1 retrieves the DialogflowcxV1alpha1Client
 func (c *Clientset) DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface {
 	return &fakedialogflowcxv1alpha1.FakeDialogflowcxV1alpha1{Fake: &c.Fake}
+}
+
+// DiscoveryengineV1alpha1 retrieves the DiscoveryengineV1alpha1Client
+func (c *Clientset) DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface {
+	return &fakediscoveryenginev1alpha1.FakeDiscoveryengineV1alpha1{Fake: &c.Fake}
 }
 
 // DlpV1beta1 retrieves the DlpV1beta1Client
