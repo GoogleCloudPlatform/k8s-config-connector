@@ -668,6 +668,9 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		})
 	}
 
+	// Compute resources
+	visitor.sortSlices.Insert(".subnetworks")
+
 	// Run visitors
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
