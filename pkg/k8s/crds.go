@@ -18,6 +18,7 @@ import (
 	"fmt"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 var scoreForVersion = map[string]int{
@@ -42,6 +43,14 @@ func PreferredVersion(crd *apiextensions.CustomResourceDefinition) *apiextension
 
 	}
 	return preferredVersion
+}
+
+// GetGroupKindFromCRD returns the GroupKind that the CRD defines.
+func GetGroupKindFromCRD(crd *apiextensions.CustomResourceDefinition) schema.GroupKind {
+	return schema.GroupKind{
+		Group: crd.Spec.Group,
+		Kind:  crd.Spec.Names.Kind,
+	}
 }
 
 func GetAPIVersionFromCRD(crd *apiextensions.CustomResourceDefinition) string {

@@ -82,6 +82,7 @@ func TestAllInSeries(t *testing.T) {
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
+				var harnessOptions []create.HarnessOption
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
@@ -90,9 +91,17 @@ func TestAllInSeries(t *testing.T) {
 					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
 					}
+
+					// Record the CRDs we will use, for faster testing
+					keepCRDs := map[schema.GroupKind]bool{}
+					for _, obj := range dummySample.Resources {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
+
 				}
 
-				h := create.NewHarness(ctx, t)
+				h := create.NewHarness(ctx, t, harnessOptions...)
 				project := h.Project
 				s := create.LoadSample(t, sampleKey, project)
 
@@ -201,6 +210,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 }
 
 func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
+	var harnessOptions []create.HarnessOption
+
 	// Extra indentation to avoid merge conflicts
 	{
 		{
@@ -227,12 +238,23 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							t.Skipf("test has ${resourceId} placeholder in spec.resource, indicating an acquisition test.  Not currently supported here; skipping")
 						}
 					}
+
+					// Record the CRDs we will use, for faster testing
+					keepCRDs := map[schema.GroupKind]bool{}
+					for _, obj := range opt.Create {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					for _, obj := range opt.Updates {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
 				}
 
 				// Create test harness
 				var h *create.Harness
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
-					h = create.NewHarnessWithOptions(ctx, t, &create.HarnessOptions{VCRPath: fixture.SourceDir})
+					harnessOptions = append(harnessOptions, create.WithVCRPath(fixture.SourceDir))
+					h = create.NewHarness(ctx, t, harnessOptions...)
 					hash := func(s string) uint64 {
 						h := fnv.New64a()
 						h.Write([]byte(s))
@@ -256,7 +278,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					})
 					configureVCR(t, h)
 				} else {
-					h = create.NewHarness(ctx, t)
+					h = create.NewHarness(ctx, t, harnessOptions...)
 				}
 				project := h.Project
 
@@ -1194,4 +1216,15 @@ func containsCCOrCCC(resources []*unstructured.Unstructured) bool {
 		}
 	}
 	return false
+}
+
+func buildCRDFilter(keepCRDs map[schema.GroupKind]bool) create.HarnessOption {
+	return create.FilterCRDs(func(gk schema.GroupKind) bool {
+		// Allow core CRDs
+		if gk.Group == "core.cnrm.cloud.google.com" {
+			return true
+		}
+		// Otherwise only allow the specified CRDs
+		return keepCRDs[gk]
+	})
 }
