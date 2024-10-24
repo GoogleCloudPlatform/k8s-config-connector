@@ -261,8 +261,7 @@ func (a *dataStoreAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log.V(2).Info("successfully deleted discoveryengine datastore", "name", a.id)
 
 	if !op.Done() {
-		err = op.Wait(ctx)
-		if err != nil {
+		if err := op.Wait(ctx); err != nil {
 			return false, fmt.Errorf("waiting for deletion of discoveryengine datastore %s: %w", a.id.String(), err)
 		}
 	}
