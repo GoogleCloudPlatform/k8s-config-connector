@@ -143,6 +143,8 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 		return false, nil
 	case schema.GroupKind{Group: "securesourcemanager.cnrm.cloud.google.com", Kind: "SecureSourceManagerInstance"}:
 		return false, nil
+	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
+		return false, nil
 	}
 	klog.Warningf("groupKind %v is not recognized as a direct kind for SupportsIAM check", groupKind)
 	return false, nil

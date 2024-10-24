@@ -67,6 +67,10 @@ type DiscoveryEngineDataStoreSpec struct {
 	/* The ID of the project in which the resource belongs.*/
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Collection field is immutable"
+	// Immutable. The collection for the DataStore.
+	Collection string `json:"collection"`
+
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	// Immutable. The location for the resource.
 	Location string `json:"location"`
