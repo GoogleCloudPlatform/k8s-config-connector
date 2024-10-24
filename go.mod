@@ -14,6 +14,7 @@ require (
 	cloud.google.com/go/compute v1.28.0
 	cloud.google.com/go/dataflow v0.10.0
 	cloud.google.com/go/dataform v0.10.0
+	cloud.google.com/go/discoveryengine v1.14.0
 	cloud.google.com/go/firestore v1.16.0
 	cloud.google.com/go/gkemulticloud v1.3.0
 	cloud.google.com/go/iam v1.2.0
