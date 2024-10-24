@@ -8,7 +8,6 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/apikeys v1.1.12
-	cloud.google.com/go/kms v1.20.0
 	cloud.google.com/go/bigquery v1.63.1
 	cloud.google.com/go/certificatemanager v1.9.1
 	cloud.google.com/go/cloudbuild v1.18.0
@@ -18,6 +17,7 @@ require (
 	cloud.google.com/go/firestore v1.17.0
 	cloud.google.com/go/gkemulticloud v1.4.0
 	cloud.google.com/go/iam v1.2.1
+	cloud.google.com/go/kms v1.20.0
 	cloud.google.com/go/monitoring v1.21.1
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
 	cloud.google.com/go/profiler v0.4.1
