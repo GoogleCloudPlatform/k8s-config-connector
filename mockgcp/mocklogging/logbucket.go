@@ -13,10 +13,10 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// apiVersion: logging.cnrm.cloud.google.com/v1beta1
-// kind: LoggingLogBucket
-// service: google.logging.v2.ConfigServiceV2
-// resource: LogBucket
+// krm.apiVersion: logging.cnrm.cloud.google.com/v1beta1
+// krm.kind: LoggingLogBucket
+// proto.service: google.logging.v2.ConfigServiceV2
+// proto.resource: LogBucket
 
 package mocklogging
 
