@@ -26,7 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
 
-func SQLInstanceKRMToGCP(in *krm.SQLInstance) (*api.DatabaseInstance, error) {
+func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance) (*api.DatabaseInstance, error) {
 	if in == nil {
 		return nil, fmt.Errorf("cannot convert nil KRM SQLInstance to GCP DatabaseInstance")
 	}
@@ -52,7 +52,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance) (*api.DatabaseInstance, error) {
 	}
 
 	// Here be dragons.
-	ApplySQLInstanceGCPDefaults(in, out)
+	ApplySQLInstanceGCPDefaults(in, out, actual)
 
 	return out, nil
 }

@@ -46,12 +46,18 @@ User-Agent: kcc/controller-manager
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
     "tier": "db-custom-1-3840",
     "timeZone": "Mountain Standard Time",

@@ -212,7 +212,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 }
 
 func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
 	if err != nil {
 		return err
 	}
@@ -381,16 +381,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Finally, update rest of the fields
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
 	if err != nil {
 		return err
 	}
 
 	if !InstancesMatch(desiredGCP, a.actual) {
 		updateOp.RecordUpdatingEvent()
-
-		// GCP API requires we set the current settings version, otherwise update will fail.
-		desiredGCP.Settings.SettingsVersion = a.actual.Settings.SettingsVersion
 
 		op, err := a.sqlInstancesClient.Update(a.projectID, desiredGCP.Name, desiredGCP).Context(ctx).Do()
 		if err != nil {

@@ -183,11 +183,13 @@ func SettingsMatch(desired *api.Settings, actual *api.Settings) bool {
 	if desired.ReplicationType != actual.ReplicationType {
 		return false
 	}
-	// Ignore SettingsVersion. It is not part of the "desired state".
+	if desired.SettingsVersion != actual.SettingsVersion {
+		return false
+	}
 	if !SqlServerAuditConfigsMatch(desired.SqlServerAuditConfig, actual.SqlServerAuditConfig) {
 		return false
 	}
-	if desired.StorageAutoResize != actual.StorageAutoResize {
+	if !StorageAutoResizesMatch(desired.StorageAutoResize, actual.StorageAutoResize) {
 		return false
 	}
 	if desired.StorageAutoResizeLimit != actual.StorageAutoResizeLimit {
@@ -621,6 +623,19 @@ func SqlServerAuditConfigsMatch(desired *api.SqlServerAuditConfig, actual *api.S
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
+	return true
+}
+
+func StorageAutoResizesMatch(desired *bool, actual *bool) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if *desired != *actual {
+		return false
+	}
 	return true
 }
 

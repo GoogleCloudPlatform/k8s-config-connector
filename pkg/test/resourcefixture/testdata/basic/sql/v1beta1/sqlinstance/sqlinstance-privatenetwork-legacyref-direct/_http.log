@@ -1392,6 +1392,7 @@ User-Agent: kcc/controller-manager
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
     "tier": "db-custom-1-3840",
     "userLabels": {
@@ -1704,12 +1705,24 @@ User-Agent: kcc/controller-manager
   "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "sqlinstance-privatenetwork-legacyref-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
@@ -1724,6 +1737,7 @@ User-Agent: kcc/controller-manager
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
     "tier": "db-custom-1-3840",
@@ -1855,6 +1869,7 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
