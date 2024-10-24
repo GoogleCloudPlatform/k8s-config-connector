@@ -267,7 +267,7 @@ type CloudSqlPropertiesStatus struct {
 	//  When the connection is used in the context of an operation in
 	//  BigQuery, this service account will serve as the identity being used for
 	//  connecting to the CloudSQL instance specified in this connection.
-	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudResourceProperties
@@ -283,7 +283,7 @@ type CloudResourcePropertiesStatus struct {
 	//
 	//  The account ID is in the form of:
 	//    <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
-	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.connection.v1.SparkProperties
@@ -299,7 +299,7 @@ type SparkPropertiesStatus struct {
 	//
 	//  The account ID is in the form of:
 	//  bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
-	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
 
 // +genclient

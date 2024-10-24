@@ -34,5 +34,6 @@ status:
   observedGeneration: 1
   observedState:
     cloudSQL:
-      serviceAccountID: service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com
+      serviceAccountRef:
+        external: service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com
     hasCredential: true

@@ -27,4 +27,5 @@ status:
   observedGeneration: 1
   observedState:
     cloudResource:
-      serviceAccountID: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com
+      serviceAccountRef:
+        external: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com
