@@ -31,6 +31,7 @@ import (
 
 type KmsV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	KMSAutokeyConfigsGetter
 	KMSCryptoKeyVersionsGetter
 	KMSKeyRingImportJobsGetter
 	KMSSecretCiphertextsGetter
@@ -39,6 +40,10 @@ type KmsV1alpha1Interface interface {
 // KmsV1alpha1Client is used to interact with features provided by the kms.cnrm.cloud.google.com group.
 type KmsV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *KmsV1alpha1Client) KMSAutokeyConfigs(namespace string) KMSAutokeyConfigInterface {
+	return newKMSAutokeyConfigs(c, namespace)
 }
 
 func (c *KmsV1alpha1Client) KMSCryptoKeyVersions(namespace string) KMSCryptoKeyVersionInterface {
