@@ -15,6 +15,7 @@
 package e2e
 
 import (
+	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -26,7 +27,11 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
+type Expectations struct {
+	Location bool // location or region
+}
+
+func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectations *Expectations) string {
 	exportURI := ""
 
 	projectID := resolveProjectID(h, obj)
@@ -35,8 +40,13 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
-	// location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
-
+	location, found, err := unstructured.NestedString(obj.Object, "spec", "location")
+	if err != nil {
+		h.T.Error(fmt.Errorf("retrieving location from obj: %w", err))
+	}
+	if !found && expectations.Location {
+		h.T.Error("expected to find location or region in obj but did not find it")
+	}
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
@@ -51,6 +61,10 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
+
+	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
+		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
+
 	}
 
 	if exportURI == "" {
@@ -74,7 +88,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {
-	s := exportResource(h, obj)
+	s := exportResource(h, obj, &Expectations{})
 	if s == "" {
 		return nil
 	}
