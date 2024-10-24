@@ -58,6 +58,22 @@ go run . generate-mapper \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
 
+# KMSCryptoKey
+go run . generate-types  \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.kms.v1 \
+    --version kms.cnrm.cloud.google.com/v1beta1  \
+    --output-api ${APIS_DIR} \
+    --kinds KMSCryptoKey
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.kms.v1 \
+    --version kms.cnrm.cloud.google.com/v1beta1  \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # RedisCluster
 go run . generate-types  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \

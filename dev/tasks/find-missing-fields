@@ -26,6 +26,9 @@ cd ${REPO_ROOT}
 go test -v ./pkg/controller/direct/compute/firewallpolicyrule -fuzz=FuzzComputeFirewallPolicyRuleSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/compute/forwardingrule -fuzz=FuzzComputeForwardingRuleSpec -fuzztime 60s
 
+go test -v ./pkg/controller/direct/kms/ -fuzz=FuzzKMSCryptoKeySpec -fuzztime 60s
+go test -v ./pkg/controller/direct/kms/ -fuzz=FuzzKMSCryptoKeyStatus -fuzztime 60s
+
 go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicySpec -fuzztime 60s
 go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicyObservedState -fuzztime 60s
 

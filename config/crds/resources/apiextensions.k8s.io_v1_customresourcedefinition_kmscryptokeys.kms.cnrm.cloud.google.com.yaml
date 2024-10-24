@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: KMSCryptoKey
+    listKind: KMSCryptoKeyList
     plural: kmscryptokeys
     shortNames:
     - gcpkmscryptokey
@@ -43,24 +44,27 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: KMSCryptoKey is the Schema for the KMSCryptoKey API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: KMSCryptoKeySpec defines the desired state of KMSCryptoKey
             properties:
               destroyScheduledDuration:
-                description: |-
-                  Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED.
+                description: Immutable. The period of time that versions of this key
+                  spend in the [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
+                  state before transitioning to [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED].
                   If not specified at creation time, the default duration is 24 hours.
                 type: string
               importOnly:
@@ -85,22 +89,18 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `KMSKeyRing`
-                      resource.'
+                    description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]`.'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `KMSKeyRing` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `metadata.namespace` field of a `KMSKeyRing`
+                      resource.
                     type: string
                 type: object
               purpose:
-                description: |-
-                  Immutable. The immutable purpose of this CryptoKey. See the
-                  [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-                  for possible inputs.
-                  Default value is "ENCRYPT_DECRYPT".
+                description: Immutable. The immutable purpose of this [CryptoKey][google.cloud.kms.v1.CryptoKey].
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
@@ -109,40 +109,58 @@ spec:
                 type: string
               rotationPeriod:
                 description: |-
-                  Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
-                  The first rotation will take place after the specified period. The rotation period has
-                  the format of a decimal number with up to 9 fractional digits, followed by the
-                  letter 's' (seconds). It must be greater than a day (ie, 86400).
+                  [next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time]
+                   will be advanced by this period when the service automatically rotates a
+                   key. Must be at least 24 hours and at most 876,000 hours.
+
+                   If [rotation_period][google.cloud.kms.v1.CryptoKey.rotation_period] is
+                   set,
+                   [next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time]
+                   must also be set.
+
+                   Keys with [purpose][google.cloud.kms.v1.CryptoKey.purpose]
+                   [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
+                   support automatic rotation. For other keys, this field must be omitted.
                 type: string
               skipInitialVersionCreation:
-                description: |-
-                  Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
-                  You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.
+                description: Immutable. If set to true, the request will create a
+                  CryptoKey without any CryptoKeyVersions.
                 type: boolean
               versionTemplate:
-                description: A template describing settings for new crypto key versions.
+                description: A template describing settings for new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                  instances. The properties of new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                  instances created by either [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
+                  or auto-rotation are controlled by this template.
                 properties:
                   algorithm:
                     description: |-
-                      The algorithm to use when creating a version based on this template.
-                      See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs.
+                      Required.
+                       [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+                       to use when creating a
+                       [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based on this
+                       template.
+
+                       For backwards compatibility, GOOGLE_SYMMETRIC_ENCRYPTION is implied if both
+                       this field is omitted and
+                       [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] is
+                       [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
                     type: string
                   protectionLevel:
-                    description: Immutable. The protection level to use when creating
-                      a version based on this template. Possible values include "SOFTWARE",
-                      "HSM", "EXTERNAL", "EXTERNAL_VPC". Defaults to "SOFTWARE".
+                    description: '[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+                      to use when creating a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                      based on this template. Immutable. Defaults to [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].'
                     type: string
-                required:
-                - algorithm
                 type: object
             required:
             - keyRingRef
             type: object
           status:
+            description: KMSCryptoKeyStatus defines the config connector machine state
+              of KMSCryptoKey
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -172,6 +190,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               selfLink:
                 description: The self link of the created key in the format projects/{project}/locations/{location}/keyRings/{keyRingName}/cryptoKeys/{name}.
@@ -184,9 +203,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
