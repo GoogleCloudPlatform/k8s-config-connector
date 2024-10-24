@@ -55,6 +55,16 @@ type SecureSourceManagerClient interface {
 	// Test IAM permissions on a repository.
 	// IAM permission checks are not required on this method.
 	TestIamPermissionsRepo(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error)
+	// CreateBranchRule creates a branch rule in a given repository.
+	CreateBranchRule(ctx context.Context, in *CreateBranchRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// ListBranchRules lists branch rules in a given repository.
+	ListBranchRules(ctx context.Context, in *ListBranchRulesRequest, opts ...grpc.CallOption) (*ListBranchRulesResponse, error)
+	// GetBranchRule gets a branch rule.
+	GetBranchRule(ctx context.Context, in *GetBranchRuleRequest, opts ...grpc.CallOption) (*BranchRule, error)
+	// UpdateBranchRule updates a branch rule.
+	UpdateBranchRule(ctx context.Context, in *UpdateBranchRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// DeleteBranchRule deletes a branch rule.
+	DeleteBranchRule(ctx context.Context, in *DeleteBranchRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type secureSourceManagerClient struct {
@@ -164,6 +174,51 @@ func (c *secureSourceManagerClient) TestIamPermissionsRepo(ctx context.Context, 
 	return out, nil
 }
 
+func (c *secureSourceManagerClient) CreateBranchRule(ctx context.Context, in *CreateBranchRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/CreateBranchRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *secureSourceManagerClient) ListBranchRules(ctx context.Context, in *ListBranchRulesRequest, opts ...grpc.CallOption) (*ListBranchRulesResponse, error) {
+	out := new(ListBranchRulesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/ListBranchRules", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *secureSourceManagerClient) GetBranchRule(ctx context.Context, in *GetBranchRuleRequest, opts ...grpc.CallOption) (*BranchRule, error) {
+	out := new(BranchRule)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/GetBranchRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *secureSourceManagerClient) UpdateBranchRule(ctx context.Context, in *UpdateBranchRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/UpdateBranchRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *secureSourceManagerClient) DeleteBranchRule(ctx context.Context, in *DeleteBranchRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/DeleteBranchRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SecureSourceManagerServer is the server API for SecureSourceManager service.
 // All implementations must embed UnimplementedSecureSourceManagerServer
 // for forward compatibility
@@ -199,6 +254,16 @@ type SecureSourceManagerServer interface {
 	// Test IAM permissions on a repository.
 	// IAM permission checks are not required on this method.
 	TestIamPermissionsRepo(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error)
+	// CreateBranchRule creates a branch rule in a given repository.
+	CreateBranchRule(context.Context, *CreateBranchRuleRequest) (*longrunningpb.Operation, error)
+	// ListBranchRules lists branch rules in a given repository.
+	ListBranchRules(context.Context, *ListBranchRulesRequest) (*ListBranchRulesResponse, error)
+	// GetBranchRule gets a branch rule.
+	GetBranchRule(context.Context, *GetBranchRuleRequest) (*BranchRule, error)
+	// UpdateBranchRule updates a branch rule.
+	UpdateBranchRule(context.Context, *UpdateBranchRuleRequest) (*longrunningpb.Operation, error)
+	// DeleteBranchRule deletes a branch rule.
+	DeleteBranchRule(context.Context, *DeleteBranchRuleRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedSecureSourceManagerServer()
 }
 
@@ -238,6 +303,21 @@ func (UnimplementedSecureSourceManagerServer) SetIamPolicyRepo(context.Context, 
 }
 func (UnimplementedSecureSourceManagerServer) TestIamPermissionsRepo(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissionsRepo not implemented")
+}
+func (UnimplementedSecureSourceManagerServer) CreateBranchRule(context.Context, *CreateBranchRuleRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBranchRule not implemented")
+}
+func (UnimplementedSecureSourceManagerServer) ListBranchRules(context.Context, *ListBranchRulesRequest) (*ListBranchRulesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBranchRules not implemented")
+}
+func (UnimplementedSecureSourceManagerServer) GetBranchRule(context.Context, *GetBranchRuleRequest) (*BranchRule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBranchRule not implemented")
+}
+func (UnimplementedSecureSourceManagerServer) UpdateBranchRule(context.Context, *UpdateBranchRuleRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBranchRule not implemented")
+}
+func (UnimplementedSecureSourceManagerServer) DeleteBranchRule(context.Context, *DeleteBranchRuleRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBranchRule not implemented")
 }
 func (UnimplementedSecureSourceManagerServer) mustEmbedUnimplementedSecureSourceManagerServer() {}
 
@@ -450,6 +530,96 @@ func _SecureSourceManager_TestIamPermissionsRepo_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SecureSourceManager_CreateBranchRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBranchRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecureSourceManagerServer).CreateBranchRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/CreateBranchRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecureSourceManagerServer).CreateBranchRule(ctx, req.(*CreateBranchRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SecureSourceManager_ListBranchRules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBranchRulesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecureSourceManagerServer).ListBranchRules(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/ListBranchRules",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecureSourceManagerServer).ListBranchRules(ctx, req.(*ListBranchRulesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SecureSourceManager_GetBranchRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBranchRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecureSourceManagerServer).GetBranchRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/GetBranchRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecureSourceManagerServer).GetBranchRule(ctx, req.(*GetBranchRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SecureSourceManager_UpdateBranchRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBranchRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecureSourceManagerServer).UpdateBranchRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/UpdateBranchRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecureSourceManagerServer).UpdateBranchRule(ctx, req.(*UpdateBranchRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SecureSourceManager_DeleteBranchRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBranchRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecureSourceManagerServer).DeleteBranchRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.securesourcemanager.v1.SecureSourceManager/DeleteBranchRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecureSourceManagerServer).DeleteBranchRule(ctx, req.(*DeleteBranchRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SecureSourceManager_ServiceDesc is the grpc.ServiceDesc for SecureSourceManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -500,6 +670,26 @@ var SecureSourceManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TestIamPermissionsRepo",
 			Handler:    _SecureSourceManager_TestIamPermissionsRepo_Handler,
+		},
+		{
+			MethodName: "CreateBranchRule",
+			Handler:    _SecureSourceManager_CreateBranchRule_Handler,
+		},
+		{
+			MethodName: "ListBranchRules",
+			Handler:    _SecureSourceManager_ListBranchRules_Handler,
+		},
+		{
+			MethodName: "GetBranchRule",
+			Handler:    _SecureSourceManager_GetBranchRule_Handler,
+		},
+		{
+			MethodName: "UpdateBranchRule",
+			Handler:    _SecureSourceManager_UpdateBranchRule_Handler,
+		},
+		{
+			MethodName: "DeleteBranchRule",
+			Handler:    _SecureSourceManager_DeleteBranchRule_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

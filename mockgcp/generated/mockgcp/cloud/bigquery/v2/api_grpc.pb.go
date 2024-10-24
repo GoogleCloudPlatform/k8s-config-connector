@@ -23,12 +23,19 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DatasetsServerClient interface {
+	// Deletes the dataset specified by the datasetId value. Before you can delete a dataset, you must delete all its tables, either manually or by specifying deleteContents. Immediately after deletion, you can create another dataset with the same name.
 	DeleteDataset(ctx context.Context, in *DeleteDatasetRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns the dataset specified by datasetID.
 	GetDataset(ctx context.Context, in *GetDatasetRequest, opts ...grpc.CallOption) (*Dataset, error)
+	// Creates a new empty dataset.
 	InsertDataset(ctx context.Context, in *InsertDatasetRequest, opts ...grpc.CallOption) (*Dataset, error)
+	// Lists all datasets in the specified project to which the user has been granted the READER dataset role.
 	ListDatasets(ctx context.Context, in *ListDatasetsRequest, opts ...grpc.CallOption) (*DatasetList, error)
+	// Updates information in an existing dataset. The update method replaces the entire dataset resource, whereas the patch method only replaces fields that are provided in the submitted dataset resource. This method supports RFC5789 patch semantics.
 	PatchDataset(ctx context.Context, in *PatchDatasetRequest, opts ...grpc.CallOption) (*Dataset, error)
+	// Undeletes a dataset which is within time travel window based on datasetId. If a time is specified, the dataset version deleted at that time is undeleted, else the last live version is undeleted.
 	UndeleteDataset(ctx context.Context, in *UndeleteDatasetServiceRequest, opts ...grpc.CallOption) (*Dataset, error)
+	// Updates information in an existing dataset. The update method replaces the entire dataset resource, whereas the patch method only replaces fields that are provided in the submitted dataset resource.
 	UpdateDataset(ctx context.Context, in *UpdateDatasetRequest, opts ...grpc.CallOption) (*Dataset, error)
 }
 
@@ -42,7 +49,7 @@ func NewDatasetsServerClient(cc grpc.ClientConnInterface) DatasetsServerClient {
 
 func (c *datasetsServerClient) DeleteDataset(ctx context.Context, in *DeleteDatasetRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.DatasetsServer/DeleteDataset", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.DatasetsServer/DeleteDataset", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +58,7 @@ func (c *datasetsServerClient) DeleteDataset(ctx context.Context, in *DeleteData
 
 func (c *datasetsServerClient) GetDataset(ctx context.Context, in *GetDatasetRequest, opts ...grpc.CallOption) (*Dataset, error) {
 	out := new(Dataset)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.DatasetsServer/GetDataset", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.DatasetsServer/GetDataset", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +67,7 @@ func (c *datasetsServerClient) GetDataset(ctx context.Context, in *GetDatasetReq
 
 func (c *datasetsServerClient) InsertDataset(ctx context.Context, in *InsertDatasetRequest, opts ...grpc.CallOption) (*Dataset, error) {
 	out := new(Dataset)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.DatasetsServer/InsertDataset", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.DatasetsServer/InsertDataset", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +76,7 @@ func (c *datasetsServerClient) InsertDataset(ctx context.Context, in *InsertData
 
 func (c *datasetsServerClient) ListDatasets(ctx context.Context, in *ListDatasetsRequest, opts ...grpc.CallOption) (*DatasetList, error) {
 	out := new(DatasetList)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.DatasetsServer/ListDatasets", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.DatasetsServer/ListDatasets", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +85,7 @@ func (c *datasetsServerClient) ListDatasets(ctx context.Context, in *ListDataset
 
 func (c *datasetsServerClient) PatchDataset(ctx context.Context, in *PatchDatasetRequest, opts ...grpc.CallOption) (*Dataset, error) {
 	out := new(Dataset)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.DatasetsServer/PatchDataset", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.DatasetsServer/PatchDataset", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +94,7 @@ func (c *datasetsServerClient) PatchDataset(ctx context.Context, in *PatchDatase
 
 func (c *datasetsServerClient) UndeleteDataset(ctx context.Context, in *UndeleteDatasetServiceRequest, opts ...grpc.CallOption) (*Dataset, error) {
 	out := new(Dataset)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.DatasetsServer/UndeleteDataset", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.DatasetsServer/UndeleteDataset", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +103,7 @@ func (c *datasetsServerClient) UndeleteDataset(ctx context.Context, in *Undelete
 
 func (c *datasetsServerClient) UpdateDataset(ctx context.Context, in *UpdateDatasetRequest, opts ...grpc.CallOption) (*Dataset, error) {
 	out := new(Dataset)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.DatasetsServer/UpdateDataset", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.DatasetsServer/UpdateDataset", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -107,12 +114,19 @@ func (c *datasetsServerClient) UpdateDataset(ctx context.Context, in *UpdateData
 // All implementations must embed UnimplementedDatasetsServerServer
 // for forward compatibility
 type DatasetsServerServer interface {
+	// Deletes the dataset specified by the datasetId value. Before you can delete a dataset, you must delete all its tables, either manually or by specifying deleteContents. Immediately after deletion, you can create another dataset with the same name.
 	DeleteDataset(context.Context, *DeleteDatasetRequest) (*empty.Empty, error)
+	// Returns the dataset specified by datasetID.
 	GetDataset(context.Context, *GetDatasetRequest) (*Dataset, error)
+	// Creates a new empty dataset.
 	InsertDataset(context.Context, *InsertDatasetRequest) (*Dataset, error)
+	// Lists all datasets in the specified project to which the user has been granted the READER dataset role.
 	ListDatasets(context.Context, *ListDatasetsRequest) (*DatasetList, error)
+	// Updates information in an existing dataset. The update method replaces the entire dataset resource, whereas the patch method only replaces fields that are provided in the submitted dataset resource. This method supports RFC5789 patch semantics.
 	PatchDataset(context.Context, *PatchDatasetRequest) (*Dataset, error)
+	// Undeletes a dataset which is within time travel window based on datasetId. If a time is specified, the dataset version deleted at that time is undeleted, else the last live version is undeleted.
 	UndeleteDataset(context.Context, *UndeleteDatasetServiceRequest) (*Dataset, error)
+	// Updates information in an existing dataset. The update method replaces the entire dataset resource, whereas the patch method only replaces fields that are provided in the submitted dataset resource.
 	UpdateDataset(context.Context, *UpdateDatasetRequest) (*Dataset, error)
 	mustEmbedUnimplementedDatasetsServerServer()
 }
@@ -165,7 +179,7 @@ func _DatasetsServer_DeleteDataset_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.DatasetsServer/DeleteDataset",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.DatasetsServer/DeleteDataset",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetsServerServer).DeleteDataset(ctx, req.(*DeleteDatasetRequest))
@@ -183,7 +197,7 @@ func _DatasetsServer_GetDataset_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.DatasetsServer/GetDataset",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.DatasetsServer/GetDataset",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetsServerServer).GetDataset(ctx, req.(*GetDatasetRequest))
@@ -201,7 +215,7 @@ func _DatasetsServer_InsertDataset_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.DatasetsServer/InsertDataset",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.DatasetsServer/InsertDataset",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetsServerServer).InsertDataset(ctx, req.(*InsertDatasetRequest))
@@ -219,7 +233,7 @@ func _DatasetsServer_ListDatasets_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.DatasetsServer/ListDatasets",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.DatasetsServer/ListDatasets",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetsServerServer).ListDatasets(ctx, req.(*ListDatasetsRequest))
@@ -237,7 +251,7 @@ func _DatasetsServer_PatchDataset_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.DatasetsServer/PatchDataset",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.DatasetsServer/PatchDataset",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetsServerServer).PatchDataset(ctx, req.(*PatchDatasetRequest))
@@ -255,7 +269,7 @@ func _DatasetsServer_UndeleteDataset_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.DatasetsServer/UndeleteDataset",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.DatasetsServer/UndeleteDataset",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetsServerServer).UndeleteDataset(ctx, req.(*UndeleteDatasetServiceRequest))
@@ -273,7 +287,7 @@ func _DatasetsServer_UpdateDataset_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.DatasetsServer/UpdateDataset",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.DatasetsServer/UpdateDataset",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetsServerServer).UpdateDataset(ctx, req.(*UpdateDatasetRequest))
@@ -285,7 +299,7 @@ func _DatasetsServer_UpdateDataset_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DatasetsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.DatasetsServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.DatasetsServer",
 	HandlerType: (*DatasetsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -325,12 +339,19 @@ var DatasetsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type JobsServerClient interface {
+	// Requests that a job be cancelled. This call will return immediately, and the client will need to poll for the job status to see if the cancel completed successfully. Cancelled jobs may still incur costs.
 	CancelJob(ctx context.Context, in *CancelJobRequest, opts ...grpc.CallOption) (*JobCancelResponse, error)
+	// Requests the deletion of the metadata of a job. This call returns when the job's metadata is deleted.
 	DeleteJob(ctx context.Context, in *DeleteJobRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns information about a specific job. Job information is available for a six month period after creation. Requires that you're the person who ran the job, or have the Is Owner project role.
 	GetJob(ctx context.Context, in *GetJobRequest, opts ...grpc.CallOption) (*Job, error)
+	// RPC to get the results of a query job.
 	GetQueryResultsJob(ctx context.Context, in *GetQueryResultsJobRequest, opts ...grpc.CallOption) (*GetQueryResultsResponse, error)
+	// Starts a new asynchronous job. This API has two different kinds of endpoint URIs, as this method supports a variety of use cases. * The *Metadata* URI is used for most interactions, as it accepts the job configuration directly. * The *Upload* URI is ONLY for the case when you're sending both a load job configuration and a data stream together. In this case, the Upload URI accepts the job configuration and the data as two distinct multipart MIME parts.
 	InsertJob(ctx context.Context, in *InsertJobRequest, opts ...grpc.CallOption) (*Job, error)
+	// Lists all jobs that you started in the specified project. Job information is available for a six month period after creation. The job list is sorted in reverse chronological order, by job creation time. Requires the Can View project role, or the Is Owner project role if you set the allUsers property.
 	ListJobs(ctx context.Context, in *ListJobsRequest, opts ...grpc.CallOption) (*JobList, error)
+	// Runs a BigQuery SQL query synchronously and returns query results if the query completes within a specified timeout.
 	QueryJob(ctx context.Context, in *QueryJobRequest, opts ...grpc.CallOption) (*QueryResponse, error)
 }
 
@@ -344,7 +365,7 @@ func NewJobsServerClient(cc grpc.ClientConnInterface) JobsServerClient {
 
 func (c *jobsServerClient) CancelJob(ctx context.Context, in *CancelJobRequest, opts ...grpc.CallOption) (*JobCancelResponse, error) {
 	out := new(JobCancelResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.JobsServer/CancelJob", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.JobsServer/CancelJob", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -353,7 +374,7 @@ func (c *jobsServerClient) CancelJob(ctx context.Context, in *CancelJobRequest, 
 
 func (c *jobsServerClient) DeleteJob(ctx context.Context, in *DeleteJobRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.JobsServer/DeleteJob", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.JobsServer/DeleteJob", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +383,7 @@ func (c *jobsServerClient) DeleteJob(ctx context.Context, in *DeleteJobRequest, 
 
 func (c *jobsServerClient) GetJob(ctx context.Context, in *GetJobRequest, opts ...grpc.CallOption) (*Job, error) {
 	out := new(Job)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.JobsServer/GetJob", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.JobsServer/GetJob", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -371,7 +392,7 @@ func (c *jobsServerClient) GetJob(ctx context.Context, in *GetJobRequest, opts .
 
 func (c *jobsServerClient) GetQueryResultsJob(ctx context.Context, in *GetQueryResultsJobRequest, opts ...grpc.CallOption) (*GetQueryResultsResponse, error) {
 	out := new(GetQueryResultsResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.JobsServer/GetQueryResultsJob", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.JobsServer/GetQueryResultsJob", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -380,7 +401,7 @@ func (c *jobsServerClient) GetQueryResultsJob(ctx context.Context, in *GetQueryR
 
 func (c *jobsServerClient) InsertJob(ctx context.Context, in *InsertJobRequest, opts ...grpc.CallOption) (*Job, error) {
 	out := new(Job)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.JobsServer/InsertJob", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.JobsServer/InsertJob", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -389,7 +410,7 @@ func (c *jobsServerClient) InsertJob(ctx context.Context, in *InsertJobRequest, 
 
 func (c *jobsServerClient) ListJobs(ctx context.Context, in *ListJobsRequest, opts ...grpc.CallOption) (*JobList, error) {
 	out := new(JobList)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.JobsServer/ListJobs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.JobsServer/ListJobs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -398,7 +419,7 @@ func (c *jobsServerClient) ListJobs(ctx context.Context, in *ListJobsRequest, op
 
 func (c *jobsServerClient) QueryJob(ctx context.Context, in *QueryJobRequest, opts ...grpc.CallOption) (*QueryResponse, error) {
 	out := new(QueryResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.JobsServer/QueryJob", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.JobsServer/QueryJob", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -409,12 +430,19 @@ func (c *jobsServerClient) QueryJob(ctx context.Context, in *QueryJobRequest, op
 // All implementations must embed UnimplementedJobsServerServer
 // for forward compatibility
 type JobsServerServer interface {
+	// Requests that a job be cancelled. This call will return immediately, and the client will need to poll for the job status to see if the cancel completed successfully. Cancelled jobs may still incur costs.
 	CancelJob(context.Context, *CancelJobRequest) (*JobCancelResponse, error)
+	// Requests the deletion of the metadata of a job. This call returns when the job's metadata is deleted.
 	DeleteJob(context.Context, *DeleteJobRequest) (*empty.Empty, error)
+	// Returns information about a specific job. Job information is available for a six month period after creation. Requires that you're the person who ran the job, or have the Is Owner project role.
 	GetJob(context.Context, *GetJobRequest) (*Job, error)
+	// RPC to get the results of a query job.
 	GetQueryResultsJob(context.Context, *GetQueryResultsJobRequest) (*GetQueryResultsResponse, error)
+	// Starts a new asynchronous job. This API has two different kinds of endpoint URIs, as this method supports a variety of use cases. * The *Metadata* URI is used for most interactions, as it accepts the job configuration directly. * The *Upload* URI is ONLY for the case when you're sending both a load job configuration and a data stream together. In this case, the Upload URI accepts the job configuration and the data as two distinct multipart MIME parts.
 	InsertJob(context.Context, *InsertJobRequest) (*Job, error)
+	// Lists all jobs that you started in the specified project. Job information is available for a six month period after creation. The job list is sorted in reverse chronological order, by job creation time. Requires the Can View project role, or the Is Owner project role if you set the allUsers property.
 	ListJobs(context.Context, *ListJobsRequest) (*JobList, error)
+	// Runs a BigQuery SQL query synchronously and returns query results if the query completes within a specified timeout.
 	QueryJob(context.Context, *QueryJobRequest) (*QueryResponse, error)
 	mustEmbedUnimplementedJobsServerServer()
 }
@@ -467,7 +495,7 @@ func _JobsServer_CancelJob_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.JobsServer/CancelJob",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.JobsServer/CancelJob",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobsServerServer).CancelJob(ctx, req.(*CancelJobRequest))
@@ -485,7 +513,7 @@ func _JobsServer_DeleteJob_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.JobsServer/DeleteJob",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.JobsServer/DeleteJob",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobsServerServer).DeleteJob(ctx, req.(*DeleteJobRequest))
@@ -503,7 +531,7 @@ func _JobsServer_GetJob_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.JobsServer/GetJob",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.JobsServer/GetJob",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobsServerServer).GetJob(ctx, req.(*GetJobRequest))
@@ -521,7 +549,7 @@ func _JobsServer_GetQueryResultsJob_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.JobsServer/GetQueryResultsJob",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.JobsServer/GetQueryResultsJob",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobsServerServer).GetQueryResultsJob(ctx, req.(*GetQueryResultsJobRequest))
@@ -539,7 +567,7 @@ func _JobsServer_InsertJob_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.JobsServer/InsertJob",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.JobsServer/InsertJob",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobsServerServer).InsertJob(ctx, req.(*InsertJobRequest))
@@ -557,7 +585,7 @@ func _JobsServer_ListJobs_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.JobsServer/ListJobs",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.JobsServer/ListJobs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobsServerServer).ListJobs(ctx, req.(*ListJobsRequest))
@@ -575,7 +603,7 @@ func _JobsServer_QueryJob_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.JobsServer/QueryJob",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.JobsServer/QueryJob",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobsServerServer).QueryJob(ctx, req.(*QueryJobRequest))
@@ -587,7 +615,7 @@ func _JobsServer_QueryJob_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var JobsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.JobsServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.JobsServer",
 	HandlerType: (*JobsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -627,9 +655,13 @@ var JobsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ModelsServerClient interface {
+	// Deletes the model specified by modelId from the dataset.
 	DeleteModel(ctx context.Context, in *DeleteModelRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Gets the specified model resource by model ID.
 	GetModel(ctx context.Context, in *GetModelRequest, opts ...grpc.CallOption) (*Model, error)
+	// Lists all models in the specified dataset. Requires the READER dataset role. After retrieving the list of models, you can get information about a particular model by calling the models.get method.
 	ListModels(ctx context.Context, in *ListModelsRequest, opts ...grpc.CallOption) (*ListModelsResponse, error)
+	// Patch specific fields in the specified model.
 	PatchModel(ctx context.Context, in *PatchModelRequest, opts ...grpc.CallOption) (*Model, error)
 }
 
@@ -643,7 +675,7 @@ func NewModelsServerClient(cc grpc.ClientConnInterface) ModelsServerClient {
 
 func (c *modelsServerClient) DeleteModel(ctx context.Context, in *DeleteModelRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.ModelsServer/DeleteModel", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.ModelsServer/DeleteModel", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -652,7 +684,7 @@ func (c *modelsServerClient) DeleteModel(ctx context.Context, in *DeleteModelReq
 
 func (c *modelsServerClient) GetModel(ctx context.Context, in *GetModelRequest, opts ...grpc.CallOption) (*Model, error) {
 	out := new(Model)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.ModelsServer/GetModel", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.ModelsServer/GetModel", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -661,7 +693,7 @@ func (c *modelsServerClient) GetModel(ctx context.Context, in *GetModelRequest, 
 
 func (c *modelsServerClient) ListModels(ctx context.Context, in *ListModelsRequest, opts ...grpc.CallOption) (*ListModelsResponse, error) {
 	out := new(ListModelsResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.ModelsServer/ListModels", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.ModelsServer/ListModels", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -670,7 +702,7 @@ func (c *modelsServerClient) ListModels(ctx context.Context, in *ListModelsReque
 
 func (c *modelsServerClient) PatchModel(ctx context.Context, in *PatchModelRequest, opts ...grpc.CallOption) (*Model, error) {
 	out := new(Model)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.ModelsServer/PatchModel", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.ModelsServer/PatchModel", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -681,9 +713,13 @@ func (c *modelsServerClient) PatchModel(ctx context.Context, in *PatchModelReque
 // All implementations must embed UnimplementedModelsServerServer
 // for forward compatibility
 type ModelsServerServer interface {
+	// Deletes the model specified by modelId from the dataset.
 	DeleteModel(context.Context, *DeleteModelRequest) (*empty.Empty, error)
+	// Gets the specified model resource by model ID.
 	GetModel(context.Context, *GetModelRequest) (*Model, error)
+	// Lists all models in the specified dataset. Requires the READER dataset role. After retrieving the list of models, you can get information about a particular model by calling the models.get method.
 	ListModels(context.Context, *ListModelsRequest) (*ListModelsResponse, error)
+	// Patch specific fields in the specified model.
 	PatchModel(context.Context, *PatchModelRequest) (*Model, error)
 	mustEmbedUnimplementedModelsServerServer()
 }
@@ -727,7 +763,7 @@ func _ModelsServer_DeleteModel_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.ModelsServer/DeleteModel",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.ModelsServer/DeleteModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelsServerServer).DeleteModel(ctx, req.(*DeleteModelRequest))
@@ -745,7 +781,7 @@ func _ModelsServer_GetModel_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.ModelsServer/GetModel",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.ModelsServer/GetModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelsServerServer).GetModel(ctx, req.(*GetModelRequest))
@@ -763,7 +799,7 @@ func _ModelsServer_ListModels_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.ModelsServer/ListModels",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.ModelsServer/ListModels",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelsServerServer).ListModels(ctx, req.(*ListModelsRequest))
@@ -781,7 +817,7 @@ func _ModelsServer_PatchModel_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.ModelsServer/PatchModel",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.ModelsServer/PatchModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelsServerServer).PatchModel(ctx, req.(*PatchModelRequest))
@@ -793,7 +829,7 @@ func _ModelsServer_PatchModel_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ModelsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.ModelsServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.ModelsServer",
 	HandlerType: (*ModelsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -821,7 +857,9 @@ var ModelsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsServerClient interface {
+	// RPC to get the service account for a project used for interactions with Google Cloud KMS
 	GetServiceAccountProject(ctx context.Context, in *GetServiceAccountProjectRequest, opts ...grpc.CallOption) (*GetServiceAccountResponse, error)
+	// RPC to list projects to which the user has been granted any project role. Users of this method are encouraged to consider the [Resource Manager](https://cloud.google.com/resource-manager/docs/) API, which provides the underlying data for this method and has more capabilities.
 	ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ProjectList, error)
 }
 
@@ -835,7 +873,7 @@ func NewProjectsServerClient(cc grpc.ClientConnInterface) ProjectsServerClient {
 
 func (c *projectsServerClient) GetServiceAccountProject(ctx context.Context, in *GetServiceAccountProjectRequest, opts ...grpc.CallOption) (*GetServiceAccountResponse, error) {
 	out := new(GetServiceAccountResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.ProjectsServer/GetServiceAccountProject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.ProjectsServer/GetServiceAccountProject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -844,7 +882,7 @@ func (c *projectsServerClient) GetServiceAccountProject(ctx context.Context, in 
 
 func (c *projectsServerClient) ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ProjectList, error) {
 	out := new(ProjectList)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.ProjectsServer/ListProjects", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.ProjectsServer/ListProjects", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -855,7 +893,9 @@ func (c *projectsServerClient) ListProjects(ctx context.Context, in *ListProject
 // All implementations must embed UnimplementedProjectsServerServer
 // for forward compatibility
 type ProjectsServerServer interface {
+	// RPC to get the service account for a project used for interactions with Google Cloud KMS
 	GetServiceAccountProject(context.Context, *GetServiceAccountProjectRequest) (*GetServiceAccountResponse, error)
+	// RPC to list projects to which the user has been granted any project role. Users of this method are encouraged to consider the [Resource Manager](https://cloud.google.com/resource-manager/docs/) API, which provides the underlying data for this method and has more capabilities.
 	ListProjects(context.Context, *ListProjectsRequest) (*ProjectList, error)
 	mustEmbedUnimplementedProjectsServerServer()
 }
@@ -893,7 +933,7 @@ func _ProjectsServer_GetServiceAccountProject_Handler(srv interface{}, ctx conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.ProjectsServer/GetServiceAccountProject",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.ProjectsServer/GetServiceAccountProject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsServerServer).GetServiceAccountProject(ctx, req.(*GetServiceAccountProjectRequest))
@@ -911,7 +951,7 @@ func _ProjectsServer_ListProjects_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.ProjectsServer/ListProjects",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.ProjectsServer/ListProjects",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsServerServer).ListProjects(ctx, req.(*ListProjectsRequest))
@@ -923,7 +963,7 @@ func _ProjectsServer_ListProjects_Handler(srv interface{}, ctx context.Context, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.ProjectsServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.ProjectsServer",
 	HandlerType: (*ProjectsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -943,10 +983,15 @@ var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RoutinesServerClient interface {
+	// Deletes the routine specified by routineId from the dataset.
 	DeleteRoutine(ctx context.Context, in *DeleteRoutineRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Gets the specified routine resource by routine ID.
 	GetRoutine(ctx context.Context, in *GetRoutineRequest, opts ...grpc.CallOption) (*Routine, error)
+	// Creates a new routine in the dataset.
 	InsertRoutine(ctx context.Context, in *InsertRoutineRequest, opts ...grpc.CallOption) (*Routine, error)
+	// Lists all routines in the specified dataset. Requires the READER dataset role.
 	ListRoutines(ctx context.Context, in *ListRoutinesRequest, opts ...grpc.CallOption) (*ListRoutinesResponse, error)
+	// Updates information in an existing routine. The update method replaces the entire Routine resource.
 	UpdateRoutine(ctx context.Context, in *UpdateRoutineRequest, opts ...grpc.CallOption) (*Routine, error)
 }
 
@@ -960,7 +1005,7 @@ func NewRoutinesServerClient(cc grpc.ClientConnInterface) RoutinesServerClient {
 
 func (c *routinesServerClient) DeleteRoutine(ctx context.Context, in *DeleteRoutineRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.RoutinesServer/DeleteRoutine", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RoutinesServer/DeleteRoutine", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -969,7 +1014,7 @@ func (c *routinesServerClient) DeleteRoutine(ctx context.Context, in *DeleteRout
 
 func (c *routinesServerClient) GetRoutine(ctx context.Context, in *GetRoutineRequest, opts ...grpc.CallOption) (*Routine, error) {
 	out := new(Routine)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.RoutinesServer/GetRoutine", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RoutinesServer/GetRoutine", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -978,7 +1023,7 @@ func (c *routinesServerClient) GetRoutine(ctx context.Context, in *GetRoutineReq
 
 func (c *routinesServerClient) InsertRoutine(ctx context.Context, in *InsertRoutineRequest, opts ...grpc.CallOption) (*Routine, error) {
 	out := new(Routine)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.RoutinesServer/InsertRoutine", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RoutinesServer/InsertRoutine", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -987,7 +1032,7 @@ func (c *routinesServerClient) InsertRoutine(ctx context.Context, in *InsertRout
 
 func (c *routinesServerClient) ListRoutines(ctx context.Context, in *ListRoutinesRequest, opts ...grpc.CallOption) (*ListRoutinesResponse, error) {
 	out := new(ListRoutinesResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.RoutinesServer/ListRoutines", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RoutinesServer/ListRoutines", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -996,7 +1041,7 @@ func (c *routinesServerClient) ListRoutines(ctx context.Context, in *ListRoutine
 
 func (c *routinesServerClient) UpdateRoutine(ctx context.Context, in *UpdateRoutineRequest, opts ...grpc.CallOption) (*Routine, error) {
 	out := new(Routine)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.RoutinesServer/UpdateRoutine", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RoutinesServer/UpdateRoutine", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1007,10 +1052,15 @@ func (c *routinesServerClient) UpdateRoutine(ctx context.Context, in *UpdateRout
 // All implementations must embed UnimplementedRoutinesServerServer
 // for forward compatibility
 type RoutinesServerServer interface {
+	// Deletes the routine specified by routineId from the dataset.
 	DeleteRoutine(context.Context, *DeleteRoutineRequest) (*empty.Empty, error)
+	// Gets the specified routine resource by routine ID.
 	GetRoutine(context.Context, *GetRoutineRequest) (*Routine, error)
+	// Creates a new routine in the dataset.
 	InsertRoutine(context.Context, *InsertRoutineRequest) (*Routine, error)
+	// Lists all routines in the specified dataset. Requires the READER dataset role.
 	ListRoutines(context.Context, *ListRoutinesRequest) (*ListRoutinesResponse, error)
+	// Updates information in an existing routine. The update method replaces the entire Routine resource.
 	UpdateRoutine(context.Context, *UpdateRoutineRequest) (*Routine, error)
 	mustEmbedUnimplementedRoutinesServerServer()
 }
@@ -1057,7 +1107,7 @@ func _RoutinesServer_DeleteRoutine_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.RoutinesServer/DeleteRoutine",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RoutinesServer/DeleteRoutine",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutinesServerServer).DeleteRoutine(ctx, req.(*DeleteRoutineRequest))
@@ -1075,7 +1125,7 @@ func _RoutinesServer_GetRoutine_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.RoutinesServer/GetRoutine",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RoutinesServer/GetRoutine",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutinesServerServer).GetRoutine(ctx, req.(*GetRoutineRequest))
@@ -1093,7 +1143,7 @@ func _RoutinesServer_InsertRoutine_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.RoutinesServer/InsertRoutine",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RoutinesServer/InsertRoutine",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutinesServerServer).InsertRoutine(ctx, req.(*InsertRoutineRequest))
@@ -1111,7 +1161,7 @@ func _RoutinesServer_ListRoutines_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.RoutinesServer/ListRoutines",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RoutinesServer/ListRoutines",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutinesServerServer).ListRoutines(ctx, req.(*ListRoutinesRequest))
@@ -1129,7 +1179,7 @@ func _RoutinesServer_UpdateRoutine_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.RoutinesServer/UpdateRoutine",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RoutinesServer/UpdateRoutine",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutinesServerServer).UpdateRoutine(ctx, req.(*UpdateRoutineRequest))
@@ -1141,7 +1191,7 @@ func _RoutinesServer_UpdateRoutine_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RoutinesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.RoutinesServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.RoutinesServer",
 	HandlerType: (*RoutinesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1173,6 +1223,7 @@ var RoutinesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RowAccessPoliciesServerClient interface {
+	// Lists all row access policies on the specified table.
 	ListRowAccessPolicies(ctx context.Context, in *ListRowAccessPoliciesRequest, opts ...grpc.CallOption) (*ListRowAccessPoliciesResponse, error)
 }
 
@@ -1186,7 +1237,7 @@ func NewRowAccessPoliciesServerClient(cc grpc.ClientConnInterface) RowAccessPoli
 
 func (c *rowAccessPoliciesServerClient) ListRowAccessPolicies(ctx context.Context, in *ListRowAccessPoliciesRequest, opts ...grpc.CallOption) (*ListRowAccessPoliciesResponse, error) {
 	out := new(ListRowAccessPoliciesResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.RowAccessPoliciesServer/ListRowAccessPolicies", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/ListRowAccessPolicies", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1197,6 +1248,7 @@ func (c *rowAccessPoliciesServerClient) ListRowAccessPolicies(ctx context.Contex
 // All implementations must embed UnimplementedRowAccessPoliciesServerServer
 // for forward compatibility
 type RowAccessPoliciesServerServer interface {
+	// Lists all row access policies on the specified table.
 	ListRowAccessPolicies(context.Context, *ListRowAccessPoliciesRequest) (*ListRowAccessPoliciesResponse, error)
 	mustEmbedUnimplementedRowAccessPoliciesServerServer()
 }
@@ -1232,7 +1284,7 @@ func _RowAccessPoliciesServer_ListRowAccessPolicies_Handler(srv interface{}, ctx
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.RowAccessPoliciesServer/ListRowAccessPolicies",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/ListRowAccessPolicies",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RowAccessPoliciesServerServer).ListRowAccessPolicies(ctx, req.(*ListRowAccessPoliciesRequest))
@@ -1244,7 +1296,7 @@ func _RowAccessPoliciesServer_ListRowAccessPolicies_Handler(srv interface{}, ctx
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RowAccessPoliciesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.RowAccessPoliciesServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer",
 	HandlerType: (*RowAccessPoliciesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1260,7 +1312,9 @@ var RowAccessPoliciesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TabledataServerClient interface {
+	// Streams data into BigQuery one record at a time without needing to run a load job.
 	InsertAllTabledata(ctx context.Context, in *InsertAllTabledataRequest, opts ...grpc.CallOption) (*TableDataInsertAllResponse, error)
+	// List the content of a table in rows.
 	ListTabledata(ctx context.Context, in *ListTabledataRequest, opts ...grpc.CallOption) (*TableDataList, error)
 }
 
@@ -1274,7 +1328,7 @@ func NewTabledataServerClient(cc grpc.ClientConnInterface) TabledataServerClient
 
 func (c *tabledataServerClient) InsertAllTabledata(ctx context.Context, in *InsertAllTabledataRequest, opts ...grpc.CallOption) (*TableDataInsertAllResponse, error) {
 	out := new(TableDataInsertAllResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TabledataServer/InsertAllTabledata", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TabledataServer/InsertAllTabledata", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1283,7 +1337,7 @@ func (c *tabledataServerClient) InsertAllTabledata(ctx context.Context, in *Inse
 
 func (c *tabledataServerClient) ListTabledata(ctx context.Context, in *ListTabledataRequest, opts ...grpc.CallOption) (*TableDataList, error) {
 	out := new(TableDataList)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TabledataServer/ListTabledata", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TabledataServer/ListTabledata", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1294,7 +1348,9 @@ func (c *tabledataServerClient) ListTabledata(ctx context.Context, in *ListTable
 // All implementations must embed UnimplementedTabledataServerServer
 // for forward compatibility
 type TabledataServerServer interface {
+	// Streams data into BigQuery one record at a time without needing to run a load job.
 	InsertAllTabledata(context.Context, *InsertAllTabledataRequest) (*TableDataInsertAllResponse, error)
+	// List the content of a table in rows.
 	ListTabledata(context.Context, *ListTabledataRequest) (*TableDataList, error)
 	mustEmbedUnimplementedTabledataServerServer()
 }
@@ -1332,7 +1388,7 @@ func _TabledataServer_InsertAllTabledata_Handler(srv interface{}, ctx context.Co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TabledataServer/InsertAllTabledata",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TabledataServer/InsertAllTabledata",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TabledataServerServer).InsertAllTabledata(ctx, req.(*InsertAllTabledataRequest))
@@ -1350,7 +1406,7 @@ func _TabledataServer_ListTabledata_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TabledataServer/ListTabledata",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TabledataServer/ListTabledata",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TabledataServerServer).ListTabledata(ctx, req.(*ListTabledataRequest))
@@ -1362,7 +1418,7 @@ func _TabledataServer_ListTabledata_Handler(srv interface{}, ctx context.Context
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var TabledataServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.TabledataServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.TabledataServer",
 	HandlerType: (*TabledataServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1382,11 +1438,17 @@ var TabledataServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TablesServerClient interface {
+	// Deletes the table specified by tableId from the dataset. If the table contains data, all the data will be deleted.
 	DeleteTable(ctx context.Context, in *DeleteTableRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Gets the specified table resource by table ID. This method does not return the data in the table, it only returns the table resource, which describes the structure of this table.
 	GetTable(ctx context.Context, in *GetTableRequest, opts ...grpc.CallOption) (*Table, error)
+	// Creates a new, empty table in the dataset.
 	InsertTable(ctx context.Context, in *InsertTableRequest, opts ...grpc.CallOption) (*Table, error)
+	// Lists all tables in the specified dataset. Requires the READER dataset role.
 	ListTables(ctx context.Context, in *ListTablesRequest, opts ...grpc.CallOption) (*TableList, error)
+	// Updates information in an existing table. The update method replaces the entire table resource, whereas the patch method only replaces fields that are provided in the submitted table resource. This method supports RFC5789 patch semantics.
 	PatchTable(ctx context.Context, in *PatchTableRequest, opts ...grpc.CallOption) (*Table, error)
+	// Updates information in an existing table. The update method replaces the entire Table resource, whereas the patch method only replaces fields that are provided in the submitted Table resource.
 	UpdateTable(ctx context.Context, in *UpdateTableRequest, opts ...grpc.CallOption) (*Table, error)
 }
 
@@ -1400,7 +1462,7 @@ func NewTablesServerClient(cc grpc.ClientConnInterface) TablesServerClient {
 
 func (c *tablesServerClient) DeleteTable(ctx context.Context, in *DeleteTableRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TablesServer/DeleteTable", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TablesServer/DeleteTable", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1409,7 +1471,7 @@ func (c *tablesServerClient) DeleteTable(ctx context.Context, in *DeleteTableReq
 
 func (c *tablesServerClient) GetTable(ctx context.Context, in *GetTableRequest, opts ...grpc.CallOption) (*Table, error) {
 	out := new(Table)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TablesServer/GetTable", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TablesServer/GetTable", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1418,7 +1480,7 @@ func (c *tablesServerClient) GetTable(ctx context.Context, in *GetTableRequest, 
 
 func (c *tablesServerClient) InsertTable(ctx context.Context, in *InsertTableRequest, opts ...grpc.CallOption) (*Table, error) {
 	out := new(Table)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TablesServer/InsertTable", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TablesServer/InsertTable", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1427,7 +1489,7 @@ func (c *tablesServerClient) InsertTable(ctx context.Context, in *InsertTableReq
 
 func (c *tablesServerClient) ListTables(ctx context.Context, in *ListTablesRequest, opts ...grpc.CallOption) (*TableList, error) {
 	out := new(TableList)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TablesServer/ListTables", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TablesServer/ListTables", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1436,7 +1498,7 @@ func (c *tablesServerClient) ListTables(ctx context.Context, in *ListTablesReque
 
 func (c *tablesServerClient) PatchTable(ctx context.Context, in *PatchTableRequest, opts ...grpc.CallOption) (*Table, error) {
 	out := new(Table)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TablesServer/PatchTable", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TablesServer/PatchTable", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1445,7 +1507,7 @@ func (c *tablesServerClient) PatchTable(ctx context.Context, in *PatchTableReque
 
 func (c *tablesServerClient) UpdateTable(ctx context.Context, in *UpdateTableRequest, opts ...grpc.CallOption) (*Table, error) {
 	out := new(Table)
-	err := c.cc.Invoke(ctx, "/google.cloud.bigquery.v2.TablesServer/UpdateTable", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.TablesServer/UpdateTable", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1456,11 +1518,17 @@ func (c *tablesServerClient) UpdateTable(ctx context.Context, in *UpdateTableReq
 // All implementations must embed UnimplementedTablesServerServer
 // for forward compatibility
 type TablesServerServer interface {
+	// Deletes the table specified by tableId from the dataset. If the table contains data, all the data will be deleted.
 	DeleteTable(context.Context, *DeleteTableRequest) (*empty.Empty, error)
+	// Gets the specified table resource by table ID. This method does not return the data in the table, it only returns the table resource, which describes the structure of this table.
 	GetTable(context.Context, *GetTableRequest) (*Table, error)
+	// Creates a new, empty table in the dataset.
 	InsertTable(context.Context, *InsertTableRequest) (*Table, error)
+	// Lists all tables in the specified dataset. Requires the READER dataset role.
 	ListTables(context.Context, *ListTablesRequest) (*TableList, error)
+	// Updates information in an existing table. The update method replaces the entire table resource, whereas the patch method only replaces fields that are provided in the submitted table resource. This method supports RFC5789 patch semantics.
 	PatchTable(context.Context, *PatchTableRequest) (*Table, error)
+	// Updates information in an existing table. The update method replaces the entire Table resource, whereas the patch method only replaces fields that are provided in the submitted Table resource.
 	UpdateTable(context.Context, *UpdateTableRequest) (*Table, error)
 	mustEmbedUnimplementedTablesServerServer()
 }
@@ -1510,7 +1578,7 @@ func _TablesServer_DeleteTable_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TablesServer/DeleteTable",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TablesServer/DeleteTable",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TablesServerServer).DeleteTable(ctx, req.(*DeleteTableRequest))
@@ -1528,7 +1596,7 @@ func _TablesServer_GetTable_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TablesServer/GetTable",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TablesServer/GetTable",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TablesServerServer).GetTable(ctx, req.(*GetTableRequest))
@@ -1546,7 +1614,7 @@ func _TablesServer_InsertTable_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TablesServer/InsertTable",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TablesServer/InsertTable",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TablesServerServer).InsertTable(ctx, req.(*InsertTableRequest))
@@ -1564,7 +1632,7 @@ func _TablesServer_ListTables_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TablesServer/ListTables",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TablesServer/ListTables",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TablesServerServer).ListTables(ctx, req.(*ListTablesRequest))
@@ -1582,7 +1650,7 @@ func _TablesServer_PatchTable_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TablesServer/PatchTable",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TablesServer/PatchTable",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TablesServerServer).PatchTable(ctx, req.(*PatchTableRequest))
@@ -1600,7 +1668,7 @@ func _TablesServer_UpdateTable_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.bigquery.v2.TablesServer/UpdateTable",
+		FullMethod: "/mockgcp.cloud.bigquery.v2.TablesServer/UpdateTable",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TablesServerServer).UpdateTable(ctx, req.(*UpdateTableRequest))
@@ -1612,7 +1680,7 @@ func _TablesServer_UpdateTable_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var TablesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.bigquery.v2.TablesServer",
+	ServiceName: "mockgcp.cloud.bigquery.v2.TablesServer",
 	HandlerType: (*TablesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
