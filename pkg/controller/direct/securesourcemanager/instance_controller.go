@@ -76,6 +76,13 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
+	mapCtx := &direct.MapContext{}
+	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+
 	// Get securesourcemanager GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -84,7 +91,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 	return &secureSourceManagerInstanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -113,7 +120,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForURL(ctx context.Context, ur
 type secureSourceManagerInstanceAdapter struct {
 	id        *krm.SecureSourceManagerInstanceRef
 	gcpClient *gcp.Client
-	desired   *krm.SecureSourceManagerInstance
+	desired   *securesourcemanagerpb.Instance
 	actual    *securesourcemanagerpb.Instance
 }
 
@@ -139,14 +146,9 @@ func (a *secureSourceManagerInstanceAdapter) Find(ctx context.Context) (bool, er
 func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id.External)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
+	
+	instance := direct.ProtoClone(a.desired)
+	
 	parent, err := a.id.Parent()
 	if err != nil {
 		return err
@@ -159,7 +161,7 @@ func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createO
 
 	req := &pb.CreateInstanceRequest{
 		Parent:     parent.String(),
-		Instance:   resource,
+		Instance:   instance,
 		InstanceId: instanceID,
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
@@ -173,6 +175,7 @@ func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createO
 	log.V(2).Info("successfully created Instance", "name", a.id.External)
 
 	status := &krm.SecureSourceManagerInstanceStatus{}
+	mapCtx := &direct.MapContext{}
 	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
