@@ -4,7 +4,7 @@ Config Connector builds the API using the Google Cloud Client proto.
 
 ## 2.1 Build the Google Cloud Proto (one-off step)
 
-This should be a one-off command only when you need to generate or update the proto.
+This step generates the Google Cloud Client proto in a single file under ./dev/tools/proto-to-mapper/build. This should be a one-off command only when you need to update the proto or the first time you develop the direct resource.
 
 Make sure the` generate-pb` rule in [proto-to-mapper/Makefile](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/dev/tools/proto-to-mapper/Makefile#L2) contains your proto. If not, add one using the file path in [https://github.com/googleapis/googleapis/tree/master](https://github.com/googleapis/googleapis/tree/master). [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/6ce31faf38dfaf6f44dd964802f43f9228d5a869/dev/tools/proto-to-mapper/Makefile#L16)
 
@@ -18,6 +18,8 @@ make generate-pb
 ```
 
 ## 2.2 Generate the Config Connector Types (repeat-run safe) 
+
+This step generates the Config Connector API types you need from the generated proto in 2.1. The generated API is placed under `./apis` together with some other files that the [Kubernetes controller-gen](https://book.kubebuilder.io/reference/controller-gen) can leverage to build the Config Connector CRD and the Controller `runtime.Object`.
 
 Run the following command
 
@@ -61,7 +63,7 @@ The Config Connector apiVersion value, shall be <code><service>.[cnrm.cloud.goog
 
 ## 2.3 Generate CRD (repeat-run safe)
 
-You can run this command repeatedly. This will create or update the `zz_generated.deepcopy.go` and `config/crds` 
+You can run this command repeatedly. This step uses `controller-gen` to create or update the `zz_generated.deepcopy.go` and `config/crds` from the generated API types.
 
 
 ```
@@ -73,41 +75,39 @@ cd $REPO_ROOT
 
 ## 2.4 Edit the Spec and Status
 
+The Config Connector API needs to convert the Google Cloud Client Proto API to a Kubernetes-native declarative API, where that the user configurable fields are placed in the object `spec` field, to desrcibe the user's desired status. And the Config Connector will update the object `status` field to reflect the actual status of the resource. 
+
+This step helps you define the `spec` and `status` to be declarative friendly, following Config Connector's best practice.
+
 **There are 3 scenarios**
 
-1. Add a new SciFi resource (start from Alpha)
-2. Migrate a TF-based or DCL-based Alpha resource 
-3. Migrate a TF-based or DCL-based Beta resource
+1. A new direct resource should follow the best practice as described below.
 
-For scenarios #1 and #2, we accept breaking changes. So it is fine if the CRD outcome in 2.3 is different from the already released CRDs.
+1. Migrating an *existing* Terraform-based or DCL-based Alpha resource should 
+follow the best practice, and change the existing APIs when necessary.   
 
-For scenarios #3, Config Connector has to be backward compatible. So we have to keep the CRD **existing** spec and status the same.
+1. Migrating an *existing* Terraform-based or DCL-based **Beta** resource should keep the existing API and its behavior for backward compatibility reasons, even if it is not following the best practice. To be more specific, 
+    * The API field name must **not** change. You need to manually modify the field if the existing field name mismatches the proto name.
+    * The go comment of the field can be changed. Changing the go comment will update the Google Reference Doc "Fields" description once the resource is released.
 
-* The API field name must **not** change. You need to manually modify the field if it’s changed. 
-* The field go comment is the CRD’s field description, this can be modified.
-* Beta resources must **not** use  `excluded_resources` ([link](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/eca4722eac14047ed5e0879cdd89f313bdbc9d44/dev/tasks/generate-crds#L58)) flag to bypass the presubmit check about the CRD changes. But rather, it should rely on the outcome of the` ./dev/tasks/generate-crds `as the self-development guide to make sure the generated Direct API gives the same CRD output as the existing beta CRD. See [migrate from TF-beta to Direct resource](https://docs.google.com/document/d/1Az2yOr9dGHrj-IGvYEhGxjpajGmcd65mQ4OjsAQSXyE/edit?resourcekey=0-Mf91G-_QDqq6XEVzf_CnQQ&tab=t.0#heading=h.8mqswg27ngyc) for more detailed guide.
-
-According to the above principles, you shall decide how to process the following. Please check out the [Migrate a TF/DCL Beta Resource to SciFi Beta](https://docs.google.com/document/d/1Az2yOr9dGHrj-IGvYEhGxjpajGmcd65mQ4OjsAQSXyE/edit?resourcekey=0-Mf91G-_QDqq6XEVzf_CnQQ&tab=t.0#heading=h.8mqswg27ngyc) and [Bump a TF/DCL Alpha Resource to SciFi Beta](https://docs.google.com/document/d/1Az2yOr9dGHrj-IGvYEhGxjpajGmcd65mQ4OjsAQSXyE/edit?resourcekey=0-Mf91G-_QDqq6XEVzf_CnQQ&tab=t.0#heading=h.t9v0v643cc5f)** **to see the PR review requirements and detailed steps.
+According to the above principles, you can decide how to process the following.
 
 
 * Add the parent field and mark as required
 
     * See detailed [requirements and example](../api-conventions/validations.md#rule-3-parent).
 
-* Replace any field that is a resource reference to `<resource>Ref `and add the resource to `./apis/refs` if not exist.` `
+* If a field refers to a GCP object, replace it from `<resource or any custom name>` to  `<resource>Ref`. If the `<resource>` kind does not exist under `$REPO_ROOT/apis/v1beta1/refs.go`, write the `Resolve<resource>Ref` function and put it under your own resource api `*_reference.go` file.
 
-    * See [direct resource reference validation rules](../api-conventions/resource-reference.md). This validation shall consider the actual resource field’ usage and can be done in follow-up PRs 
+    * See [direct resource reference validation rules](../api-conventions/resource-reference.md). This validation shall consider the actual resource field’ usage.
 
 * Add **non** output-only fields to `spec`, excluding imperative fields.
 
-* Add other CR validations according to the [Direct Resource API Validation Guide](../api-conventions/validations.md)
+* Add other CR validations according to the [CustomResource field validations guide](../api-conventions/validations.md)
 
-* (Only for TF/DCL Beta) Existing `spec` and `status` fields should still be there, except the [output-only spec](https://paste.googleplex.com/4694303066030080) should be removed. 
-
-
-* (Only for TF/DCL Beta) Add the [output-only spec](https://paste.googleplex.com/4694303066030080) fields to `status.observedState`.
+* (Only for Terraform/DCL Beta) Existing `spec` and `status` fields should still be there, except the [output-only spec](https://paste.googleplex.com/4694303066030080) should be removed from `spec` and add to `status.observedState`.
 
 ### Exit Criteria
 
-* The API PRs shall pass the MockGCP tests. This requires a dirct controller or a TF/DCL based controller.
+* The API PRs shall pass the MockGCP tests. This requires a dirct controller or a Terraform/DCL based controller.
 * For Beta resource, all fields shall be covered and properly handled (no `/*NOTYET*/` comments).
