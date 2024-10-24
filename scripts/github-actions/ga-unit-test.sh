@@ -23,8 +23,6 @@ source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 	setup_envs
 
 echo "Running unit tests..."
-# A dummy default project id is required for a few unit test cases
-gcloud config set project foobar
 
 GITHUB_ACTION=1 \
 make test
