@@ -54,6 +54,9 @@ type DatastoreWorkspaceConfig struct {
 }
 
 type DiscoveryEngineDataStoreSpec struct {
+	/* Immutable. The collection for the DataStore. */
+	Collection string `json:"collection"`
+
 	/* Immutable. The content config of the data store. If this field is unset, the server behavior defaults to [ContentConfig.NO_CONTENT][google.cloud.discoveryengine.v1.DataStore.ContentConfig.NO_CONTENT]. */
 	// +optional
 	ContentConfig *string `json:"contentConfig,omitempty"`
