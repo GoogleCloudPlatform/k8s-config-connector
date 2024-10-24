@@ -35,7 +35,6 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
-	// location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
 
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
@@ -46,6 +45,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
 
+	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
+		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
@@ -55,6 +57,36 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 
 	if exportURI == "" {
 		return ""
+	}
+
+	if strings.Contains(exportURI, "{projectID}") {
+		if projectID == "" {
+			h.Errorf("unable to determine projectID")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{projectID}", projectID)
+	}
+
+	if strings.Contains(exportURI, "{resourceID}") {
+		if resourceID == "" {
+			h.Errorf("unable to determine resourceID")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{resourceID}", resourceID)
+	}
+
+	if strings.Contains(exportURI, "{.spec.location}") {
+		location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
+		if location == "" {
+			h.Errorf("unable to determine spec.location")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{.spec.location}", location)
+	}
+
+	if strings.Contains(exportURI, "{.spec.collection}") {
+		collection, _, _ := unstructured.NestedString(obj.Object, "spec", "collection")
+		if collection == "" {
+			h.Errorf("unable to determine spec.collection")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{.spec.collection}", collection)
 	}
 
 	exportParams := h.ExportParams()
