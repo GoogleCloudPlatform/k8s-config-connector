@@ -30,6 +30,7 @@ status:
   observedGeneration: 2
   observedState:
     cloudResource:
-      serviceAccountID: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com
+      serviceAccountRef:
+        external: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com
     description: updated connection for cloud resource
     friendlyName: cloud-resource-connection-updated

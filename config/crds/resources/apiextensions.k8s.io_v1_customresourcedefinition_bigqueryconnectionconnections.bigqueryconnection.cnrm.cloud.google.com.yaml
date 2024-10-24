@@ -423,7 +423,7 @@ spec:
                     type: object
                   cloudResource:
                     properties:
-                      serviceAccountID:
+                      serviceAccountRef:
                         description: |2-
                            The account ID of the service created for the purpose of this
                            connection.
@@ -436,18 +436,68 @@ spec:
 
                            The account ID is in the form of:
                              <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The `email` field of an `IAMServiceAccount`
+                              resource.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
                     type: object
                   cloudSQL:
                     properties:
-                      serviceAccountID:
+                      serviceAccountRef:
                         description: |-
                           The account ID of the service used for the purpose of this connection.
 
                            When the connection is used in the context of an operation in
                            BigQuery, this service account will serve as the identity being used for
                            connecting to the CloudSQL instance specified in this connection.
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The `email` field of an `IAMServiceAccount`
+                              resource.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
                     type: object
                   description:
                     description: The description for the connection.
@@ -461,7 +511,7 @@ spec:
                     type: boolean
                   spark:
                     properties:
-                      serviceAccountID:
+                      serviceAccountRef:
                         description: |2-
                            The account ID of the service created for the purpose of this
                            connection.
@@ -474,7 +524,32 @@ spec:
 
                            The account ID is in the form of:
                            bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The `email` field of an `IAMServiceAccount`
+                              resource.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
                     type: object
                 type: object
             type: object
