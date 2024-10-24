@@ -50,6 +50,11 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	}
 	now := time.Now()
 
+	if name.Collection != "default_collection" {
+		collectionLink := fmt.Sprintf("projects/%d/locations/global/collections/%s", name.Project.Number, name.Collection)
+		return nil, status.Errorf(codes.NotFound, "Collection with name %s does not exist.", collectionLink)
+	}
+
 	fqn := name.String()
 	obj := proto.Clone(req.GetDataStore()).(*pb.DataStore)
 	obj.Name = fqn
@@ -104,9 +109,12 @@ func (s *dataStoreService) UpdateDataStore(ctx context.Context, req *pb.UpdateDa
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	// TODO: support update mask
-
-	proto.Merge(obj, req.GetDataStore())
+	for _, path := range paths {
+		switch path {
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock (full update_mask.paths=%v)", path, paths)
+		}
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
