@@ -24,6 +24,48 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
+function generate_mappers() {
+  proto_service=$1
+  krm_group=$2
+  krm_version=$3
+   
+  go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service ${proto_service} \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR} \
+    --api-version ${krm_group}/${krm_version} \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis
+}
+
+function generate_type() {
+    proto_service=$1
+    proto_resource=$2
+    krm_group=$3
+    krm_version=$4
+    krm_kind=$5
+
+    go run . generate-types \
+        --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+        --service ${proto_service} \
+        --output-api ${APIS_DIR} \
+        --api-version ${krm_group}/${krm_version} \
+        --kind ${krm_kind} \
+        --proto-resource ${proto_resource}
+}
+
+# Monitoring
+PROTO_SERVICE=google.monitoring.v3
+KRM_GROUP=monitoring.cnrm.cloud.google.com
+KRM_VERSION=v1beta1
+
+generate_type ${PROTO_SERVICE} Service ${KRM_GROUP} ${KRM_VERSION} MonitoringService
+
+generate_mappers ${PROTO_SERVICE} ${KRM_GROUP} ${KRM_VERSION}
+
+exit 0
+
+
 # DataFlow
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
