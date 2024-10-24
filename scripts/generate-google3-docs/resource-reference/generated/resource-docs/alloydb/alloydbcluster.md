@@ -133,6 +133,8 @@ projectRef:
   external: string
   name: string
   namespace: string
+pscConfig:
+  pscEnabled: boolean
 resourceID: string
 restoreBackupSource:
   backupNameRef:
@@ -883,6 +885,26 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for Private Service Connect (PSC) for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscConfig.pscEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Create an instance that allows connections from Private Service Connect endpoints to the instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
