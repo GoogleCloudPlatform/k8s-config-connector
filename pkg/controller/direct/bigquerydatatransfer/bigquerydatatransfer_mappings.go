@@ -16,7 +16,7 @@ package bigquerydatatransfer
 
 import (
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
