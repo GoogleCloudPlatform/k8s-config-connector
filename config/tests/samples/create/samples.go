@@ -398,6 +398,7 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${ATTACHED_CLUSTER_PLATFORM_VERSION?}"] = testgcp.TestKCCAttachedClusterPlatformVersion.Get()
 	subs["${KCC_VERTEX_AI_INDEX_TEST_BUCKET?}"] = testgcp.TestKCCVertexAIIndexBucket.Get()
 	subs["${KCC_VERTEX_AI_INDEX_TEST_DATA_URI?}"] = testgcp.TestKCCVertexAIIndexDataURI.Get()
+	subs["${GROUP_EMAIL?}"] = testgcp.TestGroupEmail.Get()
 	return subs
 }
 

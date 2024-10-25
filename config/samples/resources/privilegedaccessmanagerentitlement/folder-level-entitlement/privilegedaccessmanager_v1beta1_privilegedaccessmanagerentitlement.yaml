@@ -15,36 +15,41 @@
 apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
 kind: PrivilegedAccessManagerEntitlement
 metadata:
-  name: privilegedaccessmanagerentitlement-${uniqueId}
+  name: privilegedaccessmanagerentitlement-sample-folder
 spec:
   folderRef:
-    external: folders/${TEST_FOLDER_ID}
+    # Replace ${FOLDER_ID?} with your folder ID.
+    external: folders/${FOLDER_ID?}
   location: global
-  # Use format hhmmss to pass assertObjectContains check.
-  maxRequestDuration: 1h0m0s
+  maxRequestDuration: 1800s
   privilegedAccess:
     gcpIAMAccess:
       roleBindings:
-        - role: roles/storage.objectViewer
-          conditionExpression: "request.time > timestamp(\"2020-10-31T12:00:00.000Z\")"
+        - role: roles/pubsub.viewer
+          conditionExpression: "request.time > timestamp(\"2019-12-31T12:00:00.000Z\")"
   requesterJustificationConfig:
     notMandatory: {}
   eligibleUsers:
     - principals:
-        - serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+        # Replace ${PROJECT_ID?} with your project ID.
+        - serviceAccount:pame-dep1-folder@${PROJECT_ID?}.iam.gserviceaccount.com
   additionalNotificationTargets:
     adminEmailRecipients:
-      - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
-      - gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+      # Replace ${PROJECT_ID?} with your project ID.
+      - pame-dep1-folder@${PROJECT_ID?}.iam.gserviceaccount.com
     requesterEmailRecipients:
-      - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+      # Replace ${PROJECT_ID?} with your project ID.
+      - pame-dep1-folder@${PROJECT_ID?}.iam.gserviceaccount.com
+      - pame-dep2-folder@${PROJECT_ID?}.iam.gserviceaccount.com
   approvalWorkflow:
     manualApprovals:
       requireApproverJustification: true
       step:
         - approvalsNeeded: 1
           approverEmailRecipients:
-            - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+            # Replace ${PROJECT_ID?} with your project ID.
+            - pame-dep2-folder@${PROJECT_ID?}.iam.gserviceaccount.com
           approvers:
             - principals:
-                - group:kcc-team@google.com
+                # Replace ${GROUP_EMAIL?} with your group email.
+                - group:${GROUP_EMAIL?}
