@@ -343,6 +343,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - discoveryengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - dlp.cnrm.cloud.google.com
   resources:
   - '*'
