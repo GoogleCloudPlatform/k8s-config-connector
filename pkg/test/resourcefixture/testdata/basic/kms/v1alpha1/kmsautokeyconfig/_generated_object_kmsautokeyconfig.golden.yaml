@@ -21,6 +21,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: folders/123451001/autokeyConfig
   observedGeneration: 2
   observedState:
     state: ACTIVE
