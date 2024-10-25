@@ -46,7 +46,6 @@ User-Agent: kcc/controller-manager
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "ipv4Enabled": true,
-      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -392,7 +391,6 @@ User-Agent: kcc/controller-manager
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "ipv4Enabled": true,
-      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
