@@ -15,10 +15,11 @@
 apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
 kind: PrivilegedAccessManagerEntitlement
 metadata:
-  name: privilegedaccessmanagerentitlement-${uniqueId}
+  name: privilegedaccessmanagerentitlement-sample-project
 spec:
   projectRef:
-    external: projects/${projectId}
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
   location: global
   maxRequestDuration: 1800s
   privilegedAccess:
@@ -29,4 +30,5 @@ spec:
     notMandatory: {}
   eligibleUsers:
     - principals:
-        - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+        # Replace ${PROJECT_ID?} with your project ID
+        - serviceAccount:pame-dep-project@${PROJECT_ID?}.iam.gserviceaccount.com

@@ -683,6 +683,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate.md">PrivateCACertificateTemplate</a></td>
 </tr>
 <tr>
+  <td><a href="/iam/docs/pam-overview">{{pam_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/privilegedaccessmanager/privilegedaccessmanagerentitlement.md">PrivilegedAccessManagerEntitlement</a></td>
+</tr>
+<tr>
   <td><a href="/pubsub/docs/">{{pubsub_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/pubsub/pubsubschema.md">PubSubSchema</a></td>
 </tr>
