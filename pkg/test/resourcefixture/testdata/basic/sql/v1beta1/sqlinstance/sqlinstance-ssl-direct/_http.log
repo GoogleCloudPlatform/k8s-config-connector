@@ -45,7 +45,9 @@ User-Agent: kcc/controller-manager
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
-      "requireSsl": true
+      "ipv4Enabled": true,
+      "requireSsl": true,
+      "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     },
     "kind": "sql#settings",
     "locationPreference": {
@@ -389,6 +391,7 @@ User-Agent: kcc/controller-manager
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
+      "ipv4Enabled": true,
       "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
     },

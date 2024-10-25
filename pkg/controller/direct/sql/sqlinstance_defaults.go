@@ -15,6 +15,8 @@
 package sql
 
 import (
+	"strings"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/sqladmin/v1beta4"
@@ -60,9 +62,30 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 	if in.Spec.Settings.IpConfiguration == nil {
 		// GCP default IpConfiguration.
 		out.Settings.IpConfiguration = &api.IpConfiguration{
-			Ipv4Enabled:  true,
-			ServerCaMode: "GOOGLE_MANAGED_INTERNAL_CA",
-			SslMode:      "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+			Ipv4Enabled: true,
+			SslMode:     "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+		}
+	}
+	if in.Spec.Settings.IpConfiguration != nil {
+		if in.Spec.Settings.IpConfiguration.Ipv4Enabled == nil {
+			// GCP default IpConfiguration.Ipv4Enabled is true.
+			out.Settings.IpConfiguration.Ipv4Enabled = true
+		}
+		if in.Spec.Settings.IpConfiguration.SslMode == nil {
+			if out.Settings.IpConfiguration.RequireSsl {
+				if strings.HasPrefix(out.DatabaseVersion, "MYSQL") || strings.HasPrefix(out.DatabaseVersion, "POSTGRES") {
+					// If RequireSsl is true, and db version is MySQL or Postgres,
+					// GCP default SslMode is TRUSTED_CLIENT_CERTIFICATE_REQUIRED.
+					out.Settings.IpConfiguration.SslMode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
+				} else {
+					// Otherwise, if RequireSsl is true and db version is SQLSERVER,
+					// GCP default SslMode is ENCRYPTED_ONLY.
+					out.Settings.IpConfiguration.SslMode = "ENCRYPTED_ONLY"
+				}
+			} else {
+				// If RequireSsl is false, GCP default IpConfiguration.SslMode is ALLOW_UNENCRYPTED_AND_ENCRYPTED.
+				out.Settings.IpConfiguration.SslMode = "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+			}
 		}
 	}
 	if in.Spec.Settings.PricingPlan == nil {

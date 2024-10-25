@@ -1074,7 +1074,8 @@ User-Agent: kcc/controller-manager
     "ipConfiguration": {
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-      "requireSsl": true
+      "requireSsl": true,
+      "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     },
     "kind": "sql#settings",
     "locationPreference": {
@@ -1505,7 +1506,8 @@ User-Agent: kcc/controller-manager
     "ipConfiguration": {
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-      "requireSsl": true
+      "requireSsl": true,
+      "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     },
     "kind": "sql#settings",
     "locationPreference": {
