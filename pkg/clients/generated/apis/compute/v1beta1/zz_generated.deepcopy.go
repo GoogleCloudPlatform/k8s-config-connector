@@ -9424,6 +9424,11 @@ func (in *ComputeTargetTCPProxySpec) DeepCopyInto(out *ComputeTargetTCPProxySpec
 		*out = new(string)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.ProxyBind != nil {
 		in, out := &in.ProxyBind, &out.ProxyBind
 		*out = new(bool)
@@ -9465,13 +9470,18 @@ func (in *ComputeTargetTCPProxyStatus) DeepCopyInto(out *ComputeTargetTCPProxySt
 		*out = new(string)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int64)
 		**out = **in
 	}
-	if in.ProxyId != nil {
-		in, out := &in.ProxyId, &out.ProxyId
+	if in.ProxyID != nil {
+		in, out := &in.ProxyID, &out.ProxyID
 		*out = new(int64)
 		**out = **in
 	}
