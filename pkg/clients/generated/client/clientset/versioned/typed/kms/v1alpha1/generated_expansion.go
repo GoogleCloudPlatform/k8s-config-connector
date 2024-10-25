@@ -25,6 +25,8 @@ type KMSAutokeyConfigExpansion interface{}
 
 type KMSCryptoKeyVersionExpansion interface{}
 
+type KMSKeyHandleExpansion interface{}
+
 type KMSKeyRingImportJobExpansion interface{}
 
 type KMSSecretCiphertextExpansion interface{}

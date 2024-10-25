@@ -104,7 +104,7 @@ spec:
               resourceTypeSelector:
                 description: Indicates the resource type that the resulting [CryptoKey][]
                   is meant to protect, e.g. `{SERVICE}.googleapis.com/{TYPE}`. See
-                  documentation for supported resource types.
+                  documentation for supported resource types https://cloud.google.com/kms/docs/autokey-overview#compatible-services.
                 type: string
             type: object
           status:
