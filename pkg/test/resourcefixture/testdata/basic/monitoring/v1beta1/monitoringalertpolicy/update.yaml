@@ -42,6 +42,10 @@ spec:
               - resource.label.instance_id
               - resource.label.zone
   documentation:
+    subject: Alerting on CPU usage - v2
+    links:
+    - displayName: Alerting on CPU usage - v2
+      url: https://cloud.google.com/monitoring/alerts/
     content: |-
       “Just the place for a Snark!” the Bellman cried,
       As he monitored his resources with care;
