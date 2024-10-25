@@ -32,6 +32,7 @@ import (
 type KmsV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	KMSCryptoKeyVersionsGetter
+	KMSKeyHandlesGetter
 	KMSKeyRingImportJobsGetter
 	KMSSecretCiphertextsGetter
 }
@@ -43,6 +44,10 @@ type KmsV1alpha1Client struct {
 
 func (c *KmsV1alpha1Client) KMSCryptoKeyVersions(namespace string) KMSCryptoKeyVersionInterface {
 	return newKMSCryptoKeyVersions(c, namespace)
+}
+
+func (c *KmsV1alpha1Client) KMSKeyHandles(namespace string) KMSKeyHandleInterface {
+	return newKMSKeyHandles(c, namespace)
 }
 
 func (c *KmsV1alpha1Client) KMSKeyRingImportJobs(namespace string) KMSKeyRingImportJobInterface {

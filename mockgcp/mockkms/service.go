@@ -31,10 +31,10 @@ import (
 // MockService represents a mocked kms service.
 type MockService struct {
 	*common.MockEnvironment
-	storage         storage.Storage
-	operations      *operations.Operations
-	v1AutokeyAdminServer              *autokeyAdminServer
-	v1AutokeyServer *autokeyServer
+	storage              storage.Storage
+	operations           *operations.Operations
+	v1AutokeyAdminServer *autokeyAdminServer
+	v1AutokeyServer      *autokeyServer
 }
 
 // New creates a MockService.

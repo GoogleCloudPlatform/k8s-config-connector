@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(KMSCryptoKeyVersion{}).Name(),
 	}
 
+	KMSKeyHandleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(KMSKeyHandle{}).Name(),
+	}
+
 	KMSKeyRingImportJobGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
