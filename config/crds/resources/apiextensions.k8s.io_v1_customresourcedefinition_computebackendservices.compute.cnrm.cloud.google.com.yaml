@@ -1166,7 +1166,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of a `NetworkSecurityClientTLSPolicy`
+                        description: 'Allowed value: string of the format `//networksecurity.googleapis.com/projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{value}}`,
+                          where {{value}} is the `name` field of a `NetworkSecurityClientTLSPolicy`
                           resource.'
                         type: string
                       name:
