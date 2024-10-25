@@ -35,4 +35,11 @@ func init() {
 		SkipDriftDetection: true,
 		SkipDelete:         true,
 	}
+	resourceContextMap["kmskeyhandle"] = ResourceContext{
+		ResourceKind: "KMSKeyHandle",
+		// The KMSKeyHandle resource does not support update and delete operation.
+		SkipDriftDetection: true,
+		SkipUpdate:         true,
+		SkipDelete:         true,
+	}
 }
