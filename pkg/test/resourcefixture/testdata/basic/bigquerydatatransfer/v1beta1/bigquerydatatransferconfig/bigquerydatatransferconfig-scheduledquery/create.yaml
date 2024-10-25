@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigquerydatatransfer.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataTransferConfig
 metadata:
   name: bigquerydatatransferconfig-${uniqueId}
@@ -20,13 +20,14 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  displayName: "updated example of big query data transfer config"
-  dataSourceID: "salesforce"
+  displayName: "example of scheduled query"
+  dataSourceID: "scheduled_query"
   datasetRef:
     name: bigquerydataset${uniqueId}
   params:
-    "connector.authentication.oauth.clientId": "client-id2"
-    "connector.authentication.oauth.clientSecret": "client-secret2"
-    "connector.authentication.oauth.myDomain": "MyDomainName2"
-    "assets": "asset-b"
-  disabled: true
+    destination_table_name_template: "my_table"
+    write_disposition: "WRITE_APPEND"
+    query:  "SELECT name FROM tabl WHERE x = 'y'"
+  schedule: "first sunday of quarter 00:00"
+  serviceAccountRef:
+    name: gsa-${uniqueId}
