@@ -19,8 +19,8 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -494,7 +494,7 @@ func (in *BigQueryConnectionConnectionStatus) DeepCopyInto(out *BigQueryConnecti
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -629,7 +629,7 @@ func (in *CloudSpannerPropertiesSpec) DeepCopyInto(out *CloudSpannerPropertiesSp
 	*out = *in
 	if in.DatabaseRef != nil {
 		in, out := &in.DatabaseRef, &out.DatabaseRef
-		*out = new(v1beta1.SpannerDatabaseRef)
+		*out = new(refsv1beta1.SpannerDatabaseRef)
 		**out = **in
 	}
 	if in.UseParallelism != nil {
@@ -739,7 +739,7 @@ func (in *CloudSqlPropertiesSpec) DeepCopyInto(out *CloudSqlPropertiesSpec) {
 	*out = *in
 	if in.InstanceRef != nil {
 		in, out := &in.InstanceRef, &out.InstanceRef
-		*out = new(v1beta1.SQLInstanceRef)
+		*out = new(refsv1beta1.SQLInstanceRef)
 		**out = **in
 	}
 	if in.Database != nil {
@@ -894,7 +894,7 @@ func (in *MetastoreServiceConfigSpec) DeepCopyInto(out *MetastoreServiceConfigSp
 	*out = *in
 	if in.MetastoreServiceRef != nil {
 		in, out := &in.MetastoreServiceRef, &out.MetastoreServiceRef
-		*out = new(v1beta1.MetastoreServiceRef)
+		*out = new(refsv1beta1.MetastoreServiceRef)
 		**out = **in
 	}
 }
@@ -914,7 +914,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 }
@@ -984,7 +984,7 @@ func (in *SparkHistoryServerConfigSpec) DeepCopyInto(out *SparkHistoryServerConf
 	*out = *in
 	if in.DataprocClusterRef != nil {
 		in, out := &in.DataprocClusterRef, &out.DataprocClusterRef
-		*out = new(v1beta1.DataprocClusterRef)
+		*out = new(refsv1beta1.DataprocClusterRef)
 		**out = **in
 	}
 }
