@@ -694,7 +694,7 @@ type ServiceConnectionMap struct {
 	// Output only. The service class uri this ServiceConnectionMap is for.
 	ServiceClassUri *string `json:"serviceClassUri,omitempty"`
 
-	// The token provided by the consumer. This token authenticates that the consumer can create a connecton within the specified project and network.
+	// The token provided by the consumer. This token authenticates that the consumer can create a connection within the specified project and network.
 	Token *string `json:"token,omitempty"`
 
 	// Output only. Time when the ServiceConnectionMap was updated.
