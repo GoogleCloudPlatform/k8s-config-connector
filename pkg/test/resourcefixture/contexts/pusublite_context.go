@@ -17,6 +17,6 @@ package contexts
 func init() {
 	resourceContextMap["pubsublitereservation"] = ResourceContext{
 		ResourceKind:       "PubSubLiteReservation",
-		SkipDriftDetection: true, // SkipDriftDectection because GCP doesn't allow recreating a pubsublitereservation resource with the same name within 1 hour after its deletion.
+		SkipDriftDetection: true, // SkipDriftDetection because GCP doesn't allow recreating a pubsublitereservation resource with the same name within 1 hour after its deletion.
 	}
 }
