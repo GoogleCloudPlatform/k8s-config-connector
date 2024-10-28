@@ -1952,7 +1952,7 @@ spec:
                                   type: array
                                 ignoreCase:
                                   description: |-
-                                    Specifies that prefixMatch and fullPathMatch matches are case sensitive.
+                                    Specifies that prefixMatch and fullPathMatch matches are case-sensitive.
                                     Defaults to false.
                                   type: boolean
                                 metadataFilters:

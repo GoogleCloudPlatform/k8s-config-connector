@@ -626,7 +626,7 @@ spec:
                             type: array
                           ignoreCase:
                             description: Specifies if prefix_match and full_path_match
-                              matches are case sensitive. The default value is false.
+                              matches are case-sensitive. The default value is false.
                             type: boolean
                           prefixMatch:
                             description: The HTTP request path value must begin with
