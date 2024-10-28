@@ -165,7 +165,7 @@ func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) Sy
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
 	if err != nil {
-		t.Fatalf("error creating a new DCL schema laoder: %v", dclSchemaLoader)
+		t.Fatalf("error creating a new DCL schema loader: %v", dclSchemaLoader)
 	}
 	dclConverter := dclconversion.New(dclSchemaLoader, serviceMetadataLoader)
 	return SystemContext{
