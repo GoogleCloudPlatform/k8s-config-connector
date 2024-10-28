@@ -14,7 +14,7 @@
 
 // This file only contains the mapper for BigQueryDataset Resource.
 // The mapper is created based on cloud.google.com/go/bigquery library.
-// The old library google.golang.org/api/bigquery/v2 is depreacted and
+// The old library google.golang.org/api/bigquery/v2 is deprecated and
 // the recommended cloud.google.com/go/bigquery library has a different
 // schema. Since this is a beta resource, and we want to be backward compatible,
 // we have manually added this custom mapper to accommodate the schema difference.
