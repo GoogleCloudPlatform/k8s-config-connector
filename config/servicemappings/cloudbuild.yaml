@@ -231,7 +231,3 @@ spec:
     - name: google_cloudbuild_workerpool
       kind: CloudBuildWorkerPool
       direct: true
-
-    - name: google_cloudkms_autokeyconfig
-      kind: KMSAutokeyConfig
-      direct: true
