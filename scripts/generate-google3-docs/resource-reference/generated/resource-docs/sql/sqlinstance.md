@@ -1333,7 +1333,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to requireSsl. To change this field, also set the corresponding value in requireSsl if it has been set.{% endverbatim %}</p>
+            <p>{% verbatim %}Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcement options compared to requireSsl. To change this field, also set the corresponding value in requireSsl if it has been set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
