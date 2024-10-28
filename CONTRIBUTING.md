@@ -114,7 +114,7 @@ repo to quickly set up a local dev environment.
     ./docker-setup.sh
     ```
 
-1.  Exit your current session, then SSH back in to the VM. Then run the
+1.  Exit your current session, then SSH back into the VM. Then run the
     following to ensure you have set up sudoless docker correctly:
 
     ```shell
