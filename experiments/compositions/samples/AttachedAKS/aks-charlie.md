@@ -34,7 +34,7 @@ gcloud iam service-accounts add-iam-policy-binding ${TEAM_GSA_EMAIL} \
  --condition None
 ```
 
-## Grant ASO permission for the GCP service accout used by this team
+## Grant ASO permission for the GCP service account used by this team
 
 This step follows the [following documentation](setup-Azure-ASO.md#create-a-gcp-service-account)
 ```
