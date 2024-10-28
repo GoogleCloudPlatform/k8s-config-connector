@@ -66,6 +66,13 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 		if id == "" {
 			break
 		}
+
+		// Remove any "verbs" we might be picking up by mistake
+		// e.g. https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}:move?alt=json&prettyPrint=false
+		if strings.Contains(id, ":") {
+			id = strings.Split(id, ":")[0]
+		}
+
 		switch kind {
 		case "tensorboards":
 			r.PathIDs[id] = "${tensorboardID}"
