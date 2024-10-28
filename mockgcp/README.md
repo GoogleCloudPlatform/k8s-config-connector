@@ -28,7 +28,7 @@ Broadly the steps are:
 
 1. Add the proto to the Makefile and run `make gen-proto` (or just `make`).
 
-   All google services are located in [googleapis Github repo](https://github.com/googleapis/googleapis/tree/master/google),
+   All google services are located in [googleapis GitHub repo](https://github.com/googleapis/googleapis/tree/master/google),
    refer to your resource's API documentation to identify the service name, for example [privateca](https://cloud.google.com/certificate-authority-service/docs/reference/rest#service:-privateca.googleapis.com).
    Once you identify the service, find the proper path to the proto files, for example:
    `cloud/security/privateca/v1/*.proto`. Then replace the prefix `googleapis/google/` to `./third_party/googleapis/mockgcp/`,
