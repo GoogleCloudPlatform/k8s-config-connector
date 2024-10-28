@@ -2777,7 +2777,7 @@ spec:
   projectRef:
     # Replace "${PROJECT_ID?}" with your project ID
     external: "projects/${PROJECT_ID?}"
-  loction: "us-west2"
+  location: "us-west2"
   regex:
     pattern: ".*"
 ```
