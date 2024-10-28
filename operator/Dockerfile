@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This Dockefile builds a thin image containing the manager binary
+# This Dockerfile builds a thin image containing the manager binary
 
 # Build the manager binary
 FROM golang:1.23.2 AS builder
