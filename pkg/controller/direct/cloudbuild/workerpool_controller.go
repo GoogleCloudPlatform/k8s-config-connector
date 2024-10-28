@@ -156,7 +156,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// Format: //cloudbuild.googleapis.com/projects/<project>/lcoations/<location>/workerPools/<id>
+	// Format: //cloudbuild.googleapis.com/projects/<project>/locations/<location>/workerPools/<id>
 	if !strings.HasPrefix(url, "//cloudbuild.googleapis.com/") {
 		return nil, nil
 	}
