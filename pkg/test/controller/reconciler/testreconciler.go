@@ -115,7 +115,7 @@ func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Pro
 	if err := registry.Init(context.TODO(), &config.ControllerConfig{
 		HTTPClient: httpClient,
 	}); err != nil {
-		t.Fatalf("error intializing direct registry: %v", err)
+		t.Fatalf("error initializing direct registry: %v", err)
 	}
 
 	return &TestReconciler{
