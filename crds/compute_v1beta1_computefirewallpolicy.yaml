@@ -206,7 +206,7 @@ spec:
                 type: integer
               ruleTupleCount:
                 description: Total count of all firewall policy rule tuples. A firewall
-                  policy can not exceed a set number of tuples.
+                  policy cannot exceed a set number of tuples.
                 format: int64
                 type: integer
               selfLink:

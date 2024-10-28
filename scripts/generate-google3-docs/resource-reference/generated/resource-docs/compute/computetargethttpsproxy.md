@@ -135,7 +135,7 @@ urlMapRef:
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
 Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
-sslCertificates and certificateManagerCertificates fields can not be defined together.{% endverbatim %}</p>
+sslCertificates and certificateManagerCertificates fields cannot be defined together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -180,7 +180,7 @@ certificate map associated with the given target proxy. This field
 can only be set for global target proxies. This field is only supported
 for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
 For INTERNAL_MANAGED, use certificateManagerCertificates instead.
-sslCertificates and certificateMap fields can not be defined together.{% endverbatim %}</p>
+sslCertificates and certificateMap fields cannot be defined together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
