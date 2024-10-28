@@ -821,7 +821,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Id of the artifact, which the installation and update steps of this recipe can reference. Artifacts in a recipe cannot have the same id.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. ID of the artifact, which the installation and update steps of this recipe can reference. Artifacts in a recipe cannot have the same id.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
