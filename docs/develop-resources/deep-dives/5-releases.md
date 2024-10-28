@@ -50,7 +50,7 @@ We have a script that generates snippet files for Cloud Code using our samples.
 If you created multiple samples (i.e. multiple samples subdirectories), you must
 tell the script which sample to use for generating snippets. Update the
 `preferredSampleForResource` map in
-[pkg/snippet/snippetgeneration/snippetgeneration.go](../../../spkg/snippet/snippetgeneration/snippetgeneration.go).
+[pkg/snippet/snippetgeneration/snippetgeneration.go](../../../pkg/snippet/snippetgeneration/snippetgeneration.go).
 
 ## 5.5 Add reference document 
 
@@ -58,7 +58,7 @@ To add or update the Config Connector
 [reference doc](https://cloud.google.com/config-connector/docs/reference/overview), please do the following.
 
 1.  Copy one of existing files under
-    [scripts/generate-google3-docs/resource-reference/templates](../../../sscripts/generate-google3-docs/resource-reference/templates),
+    [scripts/generate-google3-docs/resource-reference/templates](../../../scripts/generate-google3-docs/resource-reference/templates),
     and name it like `spanner_spannerinstance.tmpl`, (i.e.,
     <service>_<kind>.tmpl).
 1.  Add a paragraph to briefly introduce the resource at the very top of the file.
@@ -79,5 +79,5 @@ To add or update the Config Connector
 
 To generate the new resource doc, run `make resource-docs`. You should see your
 resource generated to the
-[scripts/generate-google3-docs/resource-reference/generated/resource-docs](../../../sscripts/generate-google3-docs/resource-reference/generated/resource-docs)
+[scripts/generate-google3-docs/resource-reference/generated/resource-docs](../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs)
 folder.
