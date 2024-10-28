@@ -43,7 +43,7 @@ type IAMPolicyAuditConfig struct {
 	// audit configs covering both 'allServices' and a specific service, then
 	// the union of the two audit configs is used for that service: the
 	// 'logTypes' specified in each 'auditLogConfig' are enabled, and the
-	// 'exemptedMembers' in each 'auditLogConfg' are exempted.
+	// 'exemptedMembers' in each 'auditLogConfig' are exempted.
 	Service string `json:"service"`
 	// Required. The configuration for logging of each type of permission.
 	AuditLogConfigs []AuditLogConfig `json:"auditLogConfigs"`
