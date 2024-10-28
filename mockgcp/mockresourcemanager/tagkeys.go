@@ -53,7 +53,7 @@ func (s *TagKeys) GetTagKey(ctx context.Context, req *pb.GetTagKeyRequest) (*pb.
 		return nil, err
 	}
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 
 	return obj, nil
 }
@@ -127,7 +127,7 @@ func (s *TagKeys) UpdateTagKey(ctx context.Context, req *pb.UpdateTagKeyRequest)
 		return nil, err
 	}
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 
 	// Fields to be updated. The mask may only contain `description` or
 	// `etag`. If omitted entirely, both `description` and `etag` are assumed to
@@ -163,7 +163,7 @@ func (s *TagKeys) DeleteTagKey(ctx context.Context, req *pb.DeleteTagKeyRequest)
 
 	fqn := name.String()
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 	metadata := &pb.DeleteTagKeyMetadata{}
 	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
 		// TagKey must not have any child TagValues
