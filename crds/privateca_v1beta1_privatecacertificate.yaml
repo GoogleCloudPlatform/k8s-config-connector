@@ -665,7 +665,7 @@ spec:
                         type: object
                     type: object
                   subjectKeyId:
-                    description: Provides a means of identifiying certificates that
+                    description: Provides a means of identifying certificates that
                       contain a particular public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2.
                     properties:
                       keyId:
