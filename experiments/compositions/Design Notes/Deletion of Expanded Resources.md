@@ -25,7 +25,7 @@ reference:
 - https://github.com/kubernetes-sigs/kubebuilder-declarative-pattern/blob/83bd9c05741b108dc854a6b42bf893997b76d090/pkg/patterns/declarative/reconciler.go#L687
 - https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/experiments/compositions/composition/internal/controller/expander_applier.go#L137
 
-## Abandon chioce
+## Abandon choice
 
 We should allow the choice to abandon the expanded resources when the Input API is deleted. This could be done via an annotation on the Input API object. 
 
