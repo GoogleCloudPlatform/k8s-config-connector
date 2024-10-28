@@ -50,7 +50,7 @@ func TestDirectorySink(t *testing.T) {
 	testCases := []struct {
 		name            string
 		sinkConstructor func(*schema.Provider, string) outputsink.OutputSink
-		// the file that will be read, with results passed in to the sink for testing
+		// the file that will be read, with results passed into the sink for testing
 		testCaseFile string
 		// the yaml file to use to pull unstructured schemas
 		unstructuredFile   string
