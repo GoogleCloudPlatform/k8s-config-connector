@@ -147,7 +147,7 @@ spec:
                   Immutable. Whether the VPC peering for the node is set up through Service Networking API.
                   The VPC Peering should be set up before provisioning the node. If this field is set,
                   cidr_block field should not be specified. If the network that you want to peer the
-                  TPU Node to is a Shared VPC network, the node must be created with this this field enabled.
+                  TPU Node to is a Shared VPC network, the node must be created with this field enabled.
                 type: boolean
               zone:
                 description: Immutable. The GCP location for the TPU. If it is not
