@@ -358,7 +358,7 @@ func findDependenciesForMessage(message protoreflect.MessageDescriptor) ([]proto
 	msgs := make(map[string]protoreflect.MessageDescriptor)
 	for i := 0; i < message.Fields().Len(); i++ {
 		field := message.Fields().Get(i)
-		FindDependenciesForField(field, msgs, nil) // TODO: explicity set ignored fields when generating Go types
+		FindDependenciesForField(field, msgs, nil) // TODO: explicitly set ignored fields when generating Go types
 	}
 
 	RemoveNotMappedToGoStruct(msgs)
