@@ -43,7 +43,7 @@ SERVICE_REPLACEMENTS = {
     'url': 'URL',
     'vpcaccess': 'VPCAccess',
     'vpn': 'VPN',
-}  # Replacement map for KCC Kinds. Keys are case insensitive.
+}  # Replacement map for KCC Kinds. Keys are case-insensitive.
 
 
 class colors:
