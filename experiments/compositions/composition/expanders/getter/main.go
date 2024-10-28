@@ -190,7 +190,7 @@ func (g *Getter) GetValues() map[string]interface{} {
 
 // ------------- GRPC Server implementation ----------------
 
-// server is used to implement exander.Evaluator
+// server is used to implement expander.Evaluator
 type grpcServer struct {
 	pb.UnimplementedExpanderServer
 	dynamicClient dynamic.Interface
