@@ -154,7 +154,7 @@ spec:
                 description: |-
                   This field indicates the entry's source system that Data Catalog does not integrate with.
                   userSpecifiedSystem strings must begin with a letter or underscore and can only contain letters, numbers,
-                  and underscores; are case insensitive; must be at least 1 character and at most 64 characters long.
+                  and underscores; are case-insensitive; must be at least 1 character and at most 64 characters long.
                 type: string
               userSpecifiedType:
                 description: |-
@@ -162,7 +162,7 @@ spec:
                   When creating an entry, users should check the enum values first, if nothing matches the entry
                   to be created, then provide a custom value, for example "my_special_type".
                   userSpecifiedType strings must begin with a letter or underscore and can only contain letters,
-                  numbers, and underscores; are case insensitive; must be at least 1 character and at most 64 characters long.
+                  numbers, and underscores; are case-insensitive; must be at least 1 character and at most 64 characters long.
                 type: string
             required:
             - entryGroup
