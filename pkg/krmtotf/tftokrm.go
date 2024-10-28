@@ -170,7 +170,7 @@ func addFieldIfExists(path []string, tfSchemas map[string]*tfschema.Schema, sour
 
 	fieldSchema, ok := tfSchemas[path[0]]
 	if !ok {
-		panic(fmt.Errorf("field %v not existent in the TF schema", path[0]))
+		panic(fmt.Errorf("field %v does not exist in the TF schema", path[0]))
 	}
 	// TODO(b/314841744): Remove after sensitive fields are supported.
 	if tfresource.IsSensitiveField(fieldSchema) {
