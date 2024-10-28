@@ -215,7 +215,7 @@ type iamCustomRoleID struct {
 func parseIAMCustomRoleID(id string) (*iamCustomRoleID, error) {
 	partitions := strings.Split(id, "/")
 	if len(partitions) != 4 {
-		return nil, fmt.Errorf("expected 4 partitions split by '/' for for '%v'", id)
+		return nil, fmt.Errorf("expected 4 partitions split by '/' for '%v'", id)
 	}
 	value := iamCustomRoleID{
 		parentID: partitions[1],
