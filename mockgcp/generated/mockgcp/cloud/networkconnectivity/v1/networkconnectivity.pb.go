@@ -4551,7 +4551,7 @@ type ServiceConnectionMap struct {
 	ServiceClass string `protobuf:"bytes,10,opt,name=service_class,json=serviceClass,proto3" json:"service_class,omitempty"`
 	// Output only. The service class uri this ServiceConnectionMap is for.
 	ServiceClassUri string `protobuf:"bytes,11,opt,name=service_class_uri,json=serviceClassUri,proto3" json:"service_class_uri,omitempty"`
-	// The token provided by the consumer. This token authenticates that the consumer can create a connecton within the specified project and network.
+	// The token provided by the consumer. This token authenticates that the consumer can create a connection within the specified project and network.
 	Token string `protobuf:"bytes,12,opt,name=token,proto3" json:"token,omitempty"`
 	// Output only. Time when the ServiceConnectionMap was updated.
 	UpdateTime *timestamp.Timestamp `protobuf:"bytes,13,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
