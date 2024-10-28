@@ -44,7 +44,8 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     "ipConfiguration": {
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
-      "requireSsl": true
+      "requireSsl": true,
+      "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     },
     "locationPreference": {
       "zone": "us-central1-a"

@@ -1384,7 +1384,8 @@ User-Agent: kcc/controller-manager
       "allocatedIpRange": "computeaddress-${uniqueId}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+      "privateNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
@@ -1729,7 +1730,8 @@ User-Agent: kcc/controller-manager
       "allocatedIpRange": "computeaddress2-${uniqueId}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/computenetwork2-${uniqueId}"
+      "privateNetwork": "projects/${projectId}/global/networks/computenetwork2-${uniqueId}",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {

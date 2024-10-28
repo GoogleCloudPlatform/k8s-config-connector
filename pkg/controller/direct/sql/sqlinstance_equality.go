@@ -16,6 +16,7 @@ package sql
 
 import (
 	"reflect"
+	"sort"
 
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
@@ -477,10 +478,22 @@ func IpConfigurationsMatch(desired *api.IpConfiguration, actual *api.IpConfigura
 	return true
 }
 
+// AclEntriesByName implements sort.Interface for []*api.AclEntry based on the Name field.
+type AclEntriesByName []*api.AclEntry
+
+func (a AclEntriesByName) Len() int           { return len(a) }
+func (a AclEntriesByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a AclEntriesByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
+
 func AclEntryListsMatch(desired []*api.AclEntry, actual []*api.AclEntry) bool {
 	if len(desired) != len(actual) {
 		return false
 	}
+	// We mustiterate over the AclEntry lists in sorted order,
+	// so that the comparison is deterministic.
+	sort.Sort(AclEntriesByName(desired))
+	sort.Sort(AclEntriesByName(actual))
+	// Compare the AclEntry lists.
 	for i := 0; i < len(desired); i++ {
 		if !AclEntriesMatch(desired[i], actual[i]) {
 			return false
