@@ -73,7 +73,7 @@ cd $REPO_ROOT
 
 ## 2.4 Edit the Spec and Status
 
-The Config Connector API needs to convert the Google Cloud Client Proto API to a Kubernetes-native declarative API, where that the user configurable fields are placed in the object `spec` field, to desrcibe the user's desired status. And the Config Connector will update the object `status` field to reflect the actual status of the resource. 
+The Config Connector API needs to convert the Google Cloud Client Proto API to a Kubernetes-native declarative API, where that the user configurable fields are placed in the object `spec` field, to describe the user's desired status. And the Config Connector will update the object `status` field to reflect the actual status of the resource. 
 
 This step helps you define the `spec` and `status` to be declarative friendly, following Config Connector's best practice.
 
