@@ -41,7 +41,7 @@ metadata:
   namespace: config-control
 spec:
 `
-	emptyCELRenderedManifets = ""
+	emptyCELRenderedManifests = ""
 
 	// Simple chart with a static template file (no templating)
 	staticSimpleChart = `apiVersion: composition.google.com/v1alpha1
@@ -61,7 +61,7 @@ spec:
         foo: "3"
         bar: "interface"
 `
-	staticSimpleChartRenderedManifets = `
+	staticSimpleChartRenderedManifests = `
 ---
 apiVersion: v1
 data:
@@ -89,7 +89,7 @@ spec:
         foo: ${sqls.spec.foo}
         car: ${sqls.spec.car}
 `
-	simpleCELConfigRenderedManifets = `
+	simpleCELConfigRenderedManifests = `
 ---
 apiVersion: v1
 data:
@@ -247,8 +247,8 @@ func TestEvaluateNoResourcesConfig(t *testing.T) {
 	if r.GetStatus() != pb.Status_SUCCESS {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
-	if string(r.Manifests) != emptyCELRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyCELRenderedManifets, r.Manifests)
+	if string(r.Manifests) != emptyCELRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyCELRenderedManifests, r.Manifests)
 	}
 }
 
@@ -270,8 +270,8 @@ func TestEvaluateEmptyContext(t *testing.T) {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
 	t.Logf("status returned: %s, %s", r.GetStatus(), r.GetError())
-	if string(r.Manifests) != emptyCELRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyCELRenderedManifets, r.Manifests)
+	if string(r.Manifests) != emptyCELRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyCELRenderedManifests, r.Manifests)
 	}
 }
 
@@ -313,8 +313,8 @@ func TestEvaluateEmptyValue(t *testing.T) {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
 	t.Logf("status returned: %s, %s", r.GetStatus(), r.GetError())
-	if string(r.Manifests) != emptyCELRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyCELRenderedManifets, r.Manifests)
+	if string(r.Manifests) != emptyCELRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyCELRenderedManifests, r.Manifests)
 	}
 }
 
@@ -335,8 +335,8 @@ func TestEvaluateStaticConfig(t *testing.T) {
 	if r.GetStatus() != pb.Status_SUCCESS {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
-	if string(r.Manifests) != staticSimpleChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", staticSimpleChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != staticSimpleChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", staticSimpleChartRenderedManifests, r.Manifests)
 	}
 }
 
@@ -357,8 +357,8 @@ func TestEvaluateUsingFacade(t *testing.T) {
 	if r.GetStatus() != pb.Status_SUCCESS {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
-	if string(r.Manifests) != simpleCELConfigRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", simpleCELConfigRenderedManifets, r.Manifests)
+	if string(r.Manifests) != simpleCELConfigRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", simpleCELConfigRenderedManifests, r.Manifests)
 	}
 }
 
@@ -410,8 +410,8 @@ func TestEvaluateTemplateUsesValues(t *testing.T) {
 		t.Fatalf("want SUCCESS , got: %s", r.GetStatus())
 	}
 
-	if string(r.Manifests) != simpleCELConfigRenderedManifets {
-		t.Fatalf("\nexpected: %s\ngot: %s", simpleCELConfigRenderedManifets, r.Manifests)
+	if string(r.Manifests) != simpleCELConfigRenderedManifests {
+		t.Fatalf("\nexpected: %s\ngot: %s", simpleCELConfigRenderedManifests, r.Manifests)
 	}
 }
 
