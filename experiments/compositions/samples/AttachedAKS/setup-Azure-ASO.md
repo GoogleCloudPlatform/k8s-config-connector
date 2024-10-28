@@ -1,6 +1,6 @@
 # Set up Azure Service Operator v2 (ASO)
 
-Note: ASO support is only availabe for GCP managed [Config
+Note: ASO support is only available for GCP managed [Config
 Connector](https://cloud.google.com/config-connector/docs/overview).
 
 Here is an overview of the ASO setup process:
