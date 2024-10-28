@@ -462,7 +462,7 @@
 - resourceConfigId: ComputeNodeTemplate
 # not supported by asset inventory
 - resourceConfigId: ComputeProjectMetadata
-# TODO: (b/233123518) Config Connector CLI can not currently support ComputeRegionNetworkEndpointGroup.
+# TODO: (b/233123518) Config Connector CLI cannot currently support ComputeRegionNetworkEndpointGroup.
 - resourceConfigId: ComputeRegionNetworkEndpointGroup
 # not supported by asset inventory
 - resourceConfigId: ComputeReservation
