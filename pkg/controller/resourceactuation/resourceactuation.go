@@ -81,7 +81,7 @@ func ShouldSkip(u *unstructured.Unstructured) (bool, error) {
 			for _, condition := range conditions {
 				conditionMap, ok := condition.(map[string]interface{})
 				if !ok {
-					return false, fmt.Errorf("error coverting condition %v to map", condition)
+					return false, fmt.Errorf("error converting condition %v to map", condition)
 				}
 				if status, foundStatus := conditionMap["status"].(string); foundStatus && status == "True" {
 					if reason, foundCondition := conditionMap["reason"].(string); foundCondition && reason == k8s.UpToDate {
