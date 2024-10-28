@@ -15,7 +15,7 @@
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSAutokeyConfig
 metadata:
-  name: autokeyconfig-sample
+  name: kmsautokeyconfig-sample
 spec:
   folderRef:
     external: folders/autokey-kms-project
