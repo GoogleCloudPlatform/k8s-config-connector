@@ -115,7 +115,7 @@ spec:
                   ''allServices'' and a specific service, then the union of the two
                   audit configs is used for that service: the ''logTypes'' specified
                   in each ''auditLogConfig'' are enabled, and the ''exemptedMembers''
-                  in each ''auditLogConfg'' are exempted.'
+                  in each ''auditLogConfig'' are exempted.'
                 type: string
             required:
             - auditLogConfigs
