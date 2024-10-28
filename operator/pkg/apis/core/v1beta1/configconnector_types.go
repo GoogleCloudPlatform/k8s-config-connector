@@ -45,7 +45,7 @@ type ConfigConnectorSpec struct {
 	// This can be either 'Reconciling' or 'Paused'.
 	// In 'Paused', k8s resources are still reconciled with the api server but not actuated onto the cloud provider.
 	// If Config Connector is running in 'namespaced' mode, then the value in ConfigConnectorContext (CCC) takes precedence.
-	// If CCC doesn't define a value but ConfigConnecor (CC) does, we defer to that value. Otherwise,
+	// If CCC doesn't define a value but ConfigConnector (CC) does, we defer to that value. Otherwise,
 	// the default is 'Reconciling' where resources get actuated.
 	//+kubebuilder:validation:Enum=Reconciling;Paused
 	//+kubebuilder:validation:Optional

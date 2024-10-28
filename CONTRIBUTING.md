@@ -2,7 +2,7 @@
 
 We'd love to accept your patches and contributions to this project. We use this
 GitHub project as our primary source of truth and the main development
-repository for Config Connetor. The source code in this project is also
+repository for Config Connector. The source code in this project is also
 mirrored to internal Google repository for the purposes of releases.
 
 ## Contributor License Agreement
