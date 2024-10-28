@@ -145,7 +145,7 @@ func (a *APIScaffolder) AddGroupVersionFile() error {
 		Version:         a.Version,
 		PackageProtoTag: a.PackageProtoTag,
 	}
-	return scaffoldGropuVersionFile(docFilePath, cArgs)
+	return scaffoldGroupVersionFile(docFilePath, cArgs)
 }
 
 func (a *APIScaffolder) DocFileNotExist() bool {
@@ -183,7 +183,7 @@ func scaffoldDocFile(path string, cArgs *apis.APIArgs) error {
 	return nil
 }
 
-func scaffoldGropuVersionFile(path string, cArgs *apis.APIArgs) error {
+func scaffoldGroupVersionFile(path string, cArgs *apis.APIArgs) error {
 	tmpl, err := template.New("groupversioninfo.go").Parse(apis.GroupVersionInfoTemplate)
 	if err != nil {
 		return fmt.Errorf("parse groupversion_info.go template: %w", err)
