@@ -22,7 +22,7 @@ spec:
   settings:
     ipConfiguration:
       # See https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/instances#ipconfiguration
-      # for docs about the different possible `sslMode` field values, and the limiations of the
+      # for docs about the different possible `sslMode` field values, and the limitations of the
       # `requireSsl` field.
       requireSsl: true
       sslMode: "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
