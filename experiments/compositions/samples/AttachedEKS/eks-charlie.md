@@ -1,4 +1,4 @@
-## Apply the compostion
+## Apply the composition
 kubectl apply -f 01-composition.yaml
 
 

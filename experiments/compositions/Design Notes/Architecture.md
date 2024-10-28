@@ -48,4 +48,4 @@ CRD_V/CRD_P ---> |           | ---> [APPLIER JOB] --> apply to cluster ---> [KCC
 For POC we are using `Compositions` as the CRD_T (dry CRD).
 We will have a Composition controller that will reconcile Composition instance. It will also watch the CRD_V (Config/Value CRDs) that correspond to each instance of Composition.
 
-For POC we could club the Compistion and Applier functionality into a single controller.
+For POC we could club the Composition and Applier functionality into a single controller.
