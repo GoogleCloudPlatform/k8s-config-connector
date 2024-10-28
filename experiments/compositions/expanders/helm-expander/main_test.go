@@ -46,7 +46,7 @@ spec:
     description: sample chart
     version: 0.1.0
 `
-	emptyChartRenderedManifets = "\n"
+	emptyChartRenderedManifests = "\n"
 
 	// Simple chart with a static template file (no templating)
 	staticSimpleChart = `apiVersion: composition.google.com/v1alpha1
@@ -71,7 +71,7 @@ spec:
         foo: "3"
         bar: "interface"
 `
-	staticSimpleChartRenderedManifets = `---
+	staticSimpleChartRenderedManifests = `---
 # Source: hello-world/templates/configmap.yaml
 apiVersion: v1
 data:
@@ -104,7 +104,7 @@ spec:
         foo: "{{ .Values.sqls.spec.foo }}"
         car: "{{ .Values.sqls.spec.car }}"
 `
-	simpleChartRenderedManifets = `---
+	simpleChartRenderedManifests = `---
 # Source: hello-world/templates/configmap.yaml
 apiVersion: v1
 data:
@@ -138,7 +138,7 @@ spec:
         car: "{{ .Values.sqls.spec.car }}"
         {{ if eq .Values.sqls.spec.car "sedan" }}trunk: "true"{{ end }}
 `
-	simpleTemplateChartRenderedManifets = `---
+	simpleTemplateChartRenderedManifests = `---
 # Source: hello-world/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -334,8 +334,8 @@ func TestEvaluateNoTemplateConfig(t *testing.T) {
 	if r.GetStatus() != pb.Status_SUCCESS {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
-	if string(r.Manifests) != emptyChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != emptyChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyChartRenderedManifests, r.Manifests)
 	}
 }
 
@@ -357,8 +357,8 @@ func TestEvaluateEmptyContext(t *testing.T) {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
 	t.Logf("status returned: %s, %s", r.GetStatus(), r.GetError())
-	if string(r.Manifests) != emptyChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != emptyChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyChartRenderedManifests, r.Manifests)
 	}
 }
 
@@ -400,8 +400,8 @@ func TestEvaluateEmptyValue(t *testing.T) {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
 	t.Logf("status returned: %s, %s", r.GetStatus(), r.GetError())
-	if string(r.Manifests) != emptyChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != emptyChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyChartRenderedManifests, r.Manifests)
 	}
 }
 
@@ -422,8 +422,8 @@ func TestEvaluateStaticConfig(t *testing.T) {
 	if r.GetStatus() != pb.Status_SUCCESS {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
-	if string(r.Manifests) != staticSimpleChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", staticSimpleChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != staticSimpleChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", staticSimpleChartRenderedManifests, r.Manifests)
 	}
 }
 
@@ -444,8 +444,8 @@ func TestEvaluateUsingFacade(t *testing.T) {
 	if r.GetStatus() != pb.Status_SUCCESS {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
-	if string(r.Manifests) != simpleChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\n got: %s", simpleChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != simpleChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\n got: %s", simpleChartRenderedManifests, r.Manifests)
 	}
 }
 
@@ -466,8 +466,8 @@ func TestEvaluateTemplateUsingFacade(t *testing.T) {
 	if r.GetStatus() != pb.Status_SUCCESS {
 		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
 	}
-	if string(r.Manifests) != simpleTemplateChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\ngot: %s", simpleTemplateChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != simpleTemplateChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\ngot: %s", simpleTemplateChartRenderedManifests, r.Manifests)
 	}
 }
 
@@ -532,8 +532,8 @@ func TestEvaluateTemplateUsesValues(t *testing.T) {
 		t.Fatalf("want SUCCESS , got: %s", r.GetStatus())
 	}
 
-	if string(r.Manifests) != simpleTemplateChartRenderedManifets {
-		t.Fatalf("\nexpected: %s\ngot: %s", simpleTemplateChartRenderedManifets, r.Manifests)
+	if string(r.Manifests) != simpleTemplateChartRenderedManifests {
+		t.Fatalf("\nexpected: %s\ngot: %s", simpleTemplateChartRenderedManifests, r.Manifests)
 	}
 }
 
