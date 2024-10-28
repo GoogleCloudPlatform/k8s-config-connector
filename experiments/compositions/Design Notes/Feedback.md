@@ -17,5 +17,5 @@ Validations for facade input fields at which level (crd, expander, gatekeeper)
 Default values for facade input fields  (crd, expander, gatekeeper)
 Troubleshooting
   - make it easy to detect who needs to act Platform admin or AppTeamOperator
-  - who breaks glass and what is allowed (can appteam mutate generataed resources ? )
+  - who breaks glass and what is allowed (can appteam mutate generated resources ? )
   - who carries the pager (admin & appteam OR appteam OR admin)
