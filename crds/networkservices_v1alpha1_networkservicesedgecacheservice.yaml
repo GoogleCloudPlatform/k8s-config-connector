@@ -610,7 +610,7 @@ spec:
 
                                           Defaults to 86400s (1 day).
 
-                                          Cache directives that attempt to set a max-age or s-maxage higher than this, or an Expires header more than maxTtl seconds in the future will be capped at the value of maxTTL, as if it were the value of an s-maxage Cache-Control directive.
+                                          Cache directives that attempt to set a max-age or s-maxage greater than this, or an Expires header more than maxTtl seconds in the future will be capped at the value of maxTTL, as if it were the value of an s-maxage Cache-Control directive.
 
                                           - The TTL must be >= 0 and <= 31,536,000 seconds (1 year)
                                           - Setting a TTL of "0" means "always revalidate"
