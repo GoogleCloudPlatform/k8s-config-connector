@@ -1288,7 +1288,7 @@ func expandAlloydbInstanceQueryInsightsConfig(v interface{}, d tpgresource.Terra
 	transformed := make(map[string]interface{})
 
 	transformedQueryPlansPerMinute, err :=
-		expandAlloydbInstanceQueryInsightsConfigQueryPlansPerMinute(original["queryPlansPerMinute"], d, config)
+		expandAlloydbInstanceQueryInsightsConfigQueryPlansPerMinute(original["query_plans_per_minute"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1297,7 +1297,7 @@ func expandAlloydbInstanceQueryInsightsConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedQueryStringLength, err := 
-		expandAlloydbInstanceQueryInsightsConfigQueryStringLength(original["queryStringLength"], d, config)
+		expandAlloydbInstanceQueryInsightsConfigQueryStringLength(original["query_string_length"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1306,7 +1306,7 @@ func expandAlloydbInstanceQueryInsightsConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedRecordApplicationTags, err :=
-		expandAlloydbInstanceQueryInsightsConfigRecordApplicationTags(original["recordApplicationTags"], d, config)
+		expandAlloydbInstanceQueryInsightsConfigRecordApplicationTags(original["record_application_tags"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1315,7 +1315,7 @@ func expandAlloydbInstanceQueryInsightsConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedRecordClientAddress, err := 
-		expandAlloydbInstanceQueryInsightsConfigRecordClientAddress(original["recordClientAddress"], d, config)
+		expandAlloydbInstanceQueryInsightsConfigRecordClientAddress(original["record_client_address"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1360,8 +1360,9 @@ func expandAlloydbInstanceObservabilityConfig(v interface{}, d tpgresource.Terra
 	if val := reflect.ValueOf(transformedEnabled); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enabled"] = transformedEnabled
 	}
+
 	transformedPreserveComments, err :=
-		expandAlloydbInstanceObservabilityConfigPreserveComments(original["preserveComments"], d, config)
+		expandAlloydbInstanceObservabilityConfigPreserveComments(original["preserve_comments"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1370,7 +1371,7 @@ func expandAlloydbInstanceObservabilityConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedTrackWaitEvents, err :=
-		expandAlloydbInstanceObservabilityConfigTrackWaitEvents(original["trackWaitEvents"], d, config)
+		expandAlloydbInstanceObservabilityConfigTrackWaitEvents(original["track_wait_events"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1379,7 +1380,7 @@ func expandAlloydbInstanceObservabilityConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedTrackWaitEventTypes, err :=
-		expandAlloydbInstanceObservabilityConfigTrackWaitEventTypes(original["trackWaitEventTypes"], d, config)
+		expandAlloydbInstanceObservabilityConfigTrackWaitEventTypes(original["track_wait_event_types"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1388,7 +1389,7 @@ func expandAlloydbInstanceObservabilityConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedQueryPlansPerMinute, err :=
-		expandAlloydbInstanceObservabilityConfigQueryPlansPerMinute(original["queryPlansPerMinute"], d, config)
+		expandAlloydbInstanceObservabilityConfigQueryPlansPerMinute(original["query_plans_per_minute"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1397,7 +1398,7 @@ func expandAlloydbInstanceObservabilityConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedMaxQueryStringLength, err := 
-		expandAlloydbInstanceObservabilityConfigMaxQueryStringLength(original["maxQueryStringLength"], d, config)
+		expandAlloydbInstanceObservabilityConfigMaxQueryStringLength(original["max_query_string_length"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1406,7 +1407,7 @@ func expandAlloydbInstanceObservabilityConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedRecordApplicationTags, err :=
-		expandAlloydbInstanceObservabilityConfigRecordApplicationTags(original["recordApplicationTags"], d, config)
+		expandAlloydbInstanceObservabilityConfigRecordApplicationTags(original["record_application_tags"], d, config)
 	if err != nil {
 		return nil, err
 	} 
@@ -1415,7 +1416,7 @@ func expandAlloydbInstanceObservabilityConfig(v interface{}, d tpgresource.Terra
 	}
 
 	transformedTrackActiveQueries, err := 
-		expandAlloydbInstanceObservabilityConfigTrackActiveQueries(original["trackActiveQueries"], d, config)
+		expandAlloydbInstanceObservabilityConfigTrackActiveQueries(original["track_active_queries"], d, config)
 	if err != nil {
 		return nil, err
 	} 
