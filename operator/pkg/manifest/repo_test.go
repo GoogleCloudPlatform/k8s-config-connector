@@ -479,7 +479,7 @@ func TestNewLocalRepository_LoadManifest(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			manifestStrs, err := repo.LoadManifest(context.TODO(), "configconnector", "0.0.0-test", tc.cc)
 			if err != nil {
-				t.Fatalf("unexpected error while loadding the manifest: %v", err)
+				t.Fatalf("unexpected error while loading the manifest: %v", err)
 			}
 			if !reflect.DeepEqual(manifestStrs, tc.result) {
 				t.Fatalf("unexpected diff: %v", cmp.Diff(manifestStrs, tc.result))
@@ -507,7 +507,7 @@ func TestNewLocalRepository_LoadNamespacedComponents(t *testing.T) {
 			t.Parallel()
 			manifests, err := repo.LoadNamespacedComponents(context.TODO(), "configconnector", "0.0.0-test")
 			if err != nil {
-				t.Fatalf("unexpected error while loadding the manifest for namespaced components: %v", err)
+				t.Fatalf("unexpected error while loading the manifest for namespaced components: %v", err)
 			}
 			if !reflect.DeepEqual(manifests, tc.result) {
 				t.Fatalf("unexpected diff: %v", cmp.Diff(manifests, tc.result))

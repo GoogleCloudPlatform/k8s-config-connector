@@ -83,7 +83,7 @@ func TestManifestLoader_ResolveManifest(t *testing.T) {
 			t.Parallel()
 			manifestStr, err := ml.ResolveManifest(context.TODO(), tc.cc)
 			if err != nil {
-				t.Fatalf("unexpected error while loadding the manifest for namespaced components: %v", err)
+				t.Fatalf("unexpected error while loading the manifest for namespaced components: %v", err)
 			}
 			if !reflect.DeepEqual(manifestStr, tc.result) {
 				t.Fatalf("unexpected diff: %v", cmp.Diff(manifestStr, tc.result))
