@@ -178,7 +178,7 @@ func OverlayManagedFieldsOntoState(spec, stateAsKRM map[string]interface{}, mana
 	// resource supports hierarchical references. We do this because
 	// overlayManagedFieldsOntoState() strips out the hierarchical reference if
 	// it was defaulted by the KCC webhook/controller. This is because the
-	// resource's managedFields metadata doesn't include the hierarchcial
+	// resource's managedFields metadata doesn't include the hierarchical
 	// reference if it was defaulted by KCC rather than explicitly set by the
 	// user. Since we know that a resource's hierarchical reference is part of
 	// the desired state even if it's not in the managedFields metadata, let's
