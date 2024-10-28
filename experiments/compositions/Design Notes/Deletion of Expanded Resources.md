@@ -27,7 +27,7 @@ reference:
 
 ## Abandon chioce
 
-We should allow the choice to abandon the expanded resources when the Input API is deleted. This could be done via an annotaton on the Input API object. 
+We should allow the choice to abandon the expanded resources when the Input API is deleted. This could be done via an annotation on the Input API object. 
 
 ## POC decisions
 
