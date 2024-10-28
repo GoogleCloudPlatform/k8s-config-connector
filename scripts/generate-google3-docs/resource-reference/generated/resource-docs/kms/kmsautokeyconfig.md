@@ -304,11 +304,11 @@ metadata:
   name: kmsautokeyconfig-sample
 spec:
   folderRef:
-    # Replace "${FOLDER_ID?}" with the numeric ID for your folder
-    external: folders/342684370552
+    # Replace "${FOLDER_ID?}" with the numeric ID for your folder on which you want to configure autokey.
+    external: "${FOLDER_ID?}"
   keyProject:
-    # Replace ${PROJECT_ID?} with your project ID
-    external: projects/kmsproject-abcd
+    # Replace ${PROJECT_ID?} with your kms project ID where kms keys will be automatically created.
+    external: "${PROJECT_ID?}"
 ```
 
 

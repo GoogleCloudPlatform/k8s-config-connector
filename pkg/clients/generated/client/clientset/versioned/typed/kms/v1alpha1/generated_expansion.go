@@ -21,8 +21,6 @@
 
 package v1alpha1
 
-type KMSAutokeyConfigExpansion interface{}
-
 type KMSCryptoKeyVersionExpansion interface{}
 
 type KMSKeyRingImportJobExpansion interface{}
