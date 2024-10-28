@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeBigQueryDataTransferConfigs implements BigQueryDataTransferConfigInterface
 type FakeBigQueryDataTransferConfigs struct {
-	Fake *FakeBigquerydatatransferV1alpha1
+	Fake *FakeBigquerydatatransferV1beta1
 	ns   string
 }
 
-var bigquerydatatransferconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("bigquerydatatransferconfigs")
+var bigquerydatatransferconfigsResource = v1beta1.SchemeGroupVersion.WithResource("bigquerydatatransferconfigs")
 
-var bigquerydatatransferconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("BigQueryDataTransferConfig")
+var bigquerydatatransferconfigsKind = v1beta1.SchemeGroupVersion.WithKind("BigQueryDataTransferConfig")
 
 // Get takes name of the bigQueryDataTransferConfig, and returns the corresponding bigQueryDataTransferConfig object, and an error if there is any.
-func (c *FakeBigQueryDataTransferConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigQueryDataTransferConfig, err error) {
+func (c *FakeBigQueryDataTransferConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigQueryDataTransferConfig, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigquerydatatransferconfigsResource, c.ns, name), &v1alpha1.BigQueryDataTransferConfig{})
+		Invokes(testing.NewGetAction(bigquerydatatransferconfigsResource, c.ns, name), &v1beta1.BigQueryDataTransferConfig{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryDataTransferConfig), err
+	return obj.(*v1beta1.BigQueryDataTransferConfig), err
 }
 
 // List takes label and field selectors, and returns the list of BigQueryDataTransferConfigs that match those selectors.
-func (c *FakeBigQueryDataTransferConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigQueryDataTransferConfigList, err error) {
+func (c *FakeBigQueryDataTransferConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigQueryDataTransferConfigList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigquerydatatransferconfigsResource, bigquerydatatransferconfigsKind, c.ns, opts), &v1alpha1.BigQueryDataTransferConfigList{})
+		Invokes(testing.NewListAction(bigquerydatatransferconfigsResource, bigquerydatatransferconfigsKind, c.ns, opts), &v1beta1.BigQueryDataTransferConfigList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeBigQueryDataTransferConfigs) List(ctx context.Context, opts v1.List
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.BigQueryDataTransferConfigList{ListMeta: obj.(*v1alpha1.BigQueryDataTransferConfigList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BigQueryDataTransferConfigList).Items {
+	list := &v1beta1.BigQueryDataTransferConfigList{ListMeta: obj.(*v1beta1.BigQueryDataTransferConfigList).ListMeta}
+	for _, item := range obj.(*v1beta1.BigQueryDataTransferConfigList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeBigQueryDataTransferConfigs) Watch(ctx context.Context, opts v1.Lis
 }
 
 // Create takes the representation of a bigQueryDataTransferConfig and creates it.  Returns the server's representation of the bigQueryDataTransferConfig, and an error, if there is any.
-func (c *FakeBigQueryDataTransferConfigs) Create(ctx context.Context, bigQueryDataTransferConfig *v1alpha1.BigQueryDataTransferConfig, opts v1.CreateOptions) (result *v1alpha1.BigQueryDataTransferConfig, err error) {
+func (c *FakeBigQueryDataTransferConfigs) Create(ctx context.Context, bigQueryDataTransferConfig *v1beta1.BigQueryDataTransferConfig, opts v1.CreateOptions) (result *v1beta1.BigQueryDataTransferConfig, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigquerydatatransferconfigsResource, c.ns, bigQueryDataTransferConfig), &v1alpha1.BigQueryDataTransferConfig{})
+		Invokes(testing.NewCreateAction(bigquerydatatransferconfigsResource, c.ns, bigQueryDataTransferConfig), &v1beta1.BigQueryDataTransferConfig{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryDataTransferConfig), err
+	return obj.(*v1beta1.BigQueryDataTransferConfig), err
 }
 
 // Update takes the representation of a bigQueryDataTransferConfig and updates it. Returns the server's representation of the bigQueryDataTransferConfig, and an error, if there is any.
-func (c *FakeBigQueryDataTransferConfigs) Update(ctx context.Context, bigQueryDataTransferConfig *v1alpha1.BigQueryDataTransferConfig, opts v1.UpdateOptions) (result *v1alpha1.BigQueryDataTransferConfig, err error) {
+func (c *FakeBigQueryDataTransferConfigs) Update(ctx context.Context, bigQueryDataTransferConfig *v1beta1.BigQueryDataTransferConfig, opts v1.UpdateOptions) (result *v1beta1.BigQueryDataTransferConfig, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigquerydatatransferconfigsResource, c.ns, bigQueryDataTransferConfig), &v1alpha1.BigQueryDataTransferConfig{})
+		Invokes(testing.NewUpdateAction(bigquerydatatransferconfigsResource, c.ns, bigQueryDataTransferConfig), &v1beta1.BigQueryDataTransferConfig{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryDataTransferConfig), err
+	return obj.(*v1beta1.BigQueryDataTransferConfig), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigQueryDataTransferConfigs) UpdateStatus(ctx context.Context, bigQueryDataTransferConfig *v1alpha1.BigQueryDataTransferConfig, opts v1.UpdateOptions) (*v1alpha1.BigQueryDataTransferConfig, error) {
+func (c *FakeBigQueryDataTransferConfigs) UpdateStatus(ctx context.Context, bigQueryDataTransferConfig *v1beta1.BigQueryDataTransferConfig, opts v1.UpdateOptions) (*v1beta1.BigQueryDataTransferConfig, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigquerydatatransferconfigsResource, "status", c.ns, bigQueryDataTransferConfig), &v1alpha1.BigQueryDataTransferConfig{})
+		Invokes(testing.NewUpdateSubresourceAction(bigquerydatatransferconfigsResource, "status", c.ns, bigQueryDataTransferConfig), &v1beta1.BigQueryDataTransferConfig{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryDataTransferConfig), err
+	return obj.(*v1beta1.BigQueryDataTransferConfig), err
 }
 
 // Delete takes name of the bigQueryDataTransferConfig and deletes it. Returns an error if one occurs.
 func (c *FakeBigQueryDataTransferConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigquerydatatransferconfigsResource, c.ns, name, opts), &v1alpha1.BigQueryDataTransferConfig{})
+		Invokes(testing.NewDeleteActionWithOptions(bigquerydatatransferconfigsResource, c.ns, name, opts), &v1beta1.BigQueryDataTransferConfig{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeBigQueryDataTransferConfigs) Delete(ctx context.Context, name strin
 func (c *FakeBigQueryDataTransferConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(bigquerydatatransferconfigsResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.BigQueryDataTransferConfigList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.BigQueryDataTransferConfigList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched bigQueryDataTransferConfig.
-func (c *FakeBigQueryDataTransferConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigQueryDataTransferConfig, err error) {
+func (c *FakeBigQueryDataTransferConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigQueryDataTransferConfig, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigquerydatatransferconfigsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigQueryDataTransferConfig{})
+		Invokes(testing.NewPatchSubresourceAction(bigquerydatatransferconfigsResource, c.ns, name, pt, data, subresources...), &v1beta1.BigQueryDataTransferConfig{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryDataTransferConfig), err
+	return obj.(*v1beta1.BigQueryDataTransferConfig), err
 }

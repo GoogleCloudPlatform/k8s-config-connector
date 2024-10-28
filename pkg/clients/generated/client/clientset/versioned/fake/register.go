@@ -37,7 +37,7 @@ import (
 	bigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1alpha1"
 	bigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1alpha1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
-	bigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1alpha1"
+	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
@@ -169,7 +169,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigqueryanalyticshubv1alpha1.AddToScheme,
 	bigqueryconnectionv1alpha1.AddToScheme,
 	bigquerydatapolicyv1alpha1.AddToScheme,
-	bigquerydatatransferv1alpha1.AddToScheme,
+	bigquerydatatransferv1beta1.AddToScheme,
 	bigqueryreservationv1alpha1.AddToScheme,
 	bigtablev1beta1.AddToScheme,
 	billingbudgetsv1beta1.AddToScheme,
