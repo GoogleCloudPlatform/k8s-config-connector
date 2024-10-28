@@ -86,6 +86,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/bigquery/bigquerytable.md">BigQueryTable</a></td>
 </tr>
 <tr>
+  <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/bigquerydatatransfer/bigquerydatatransferconfig.md">BigQueryDataTransferConfig</a></td>
+</tr>
+<tr>
   <td><a href="/bigtable/docs/">{{bigtable_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigtable/bigtableappprofile.md">BigtableAppProfile</a></td>
 </tr>
