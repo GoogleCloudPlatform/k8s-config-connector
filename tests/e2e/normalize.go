@@ -234,6 +234,13 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if len(tokens) >= 2 {
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
+
+			// Remove any "verbs" we might be picking up by mistake
+			// e.g. https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}:move?alt=json&prettyPrint=false
+			if strings.Contains(id, ":") {
+				id = strings.Split(id, ":")[0]
+			}
+
 			if typeName == "datasets" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${datasetId}")
