@@ -42,7 +42,7 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 		if _, ok := k8s.AsServerGeneratedIDNotFoundError(err); ok {
 			// If the import ID cannot be determined because it requires a server-
 			// generated ID that has not been set, this means the resource has not
-			// yet been created. Return as if the read returned a non-existent
+			// yet been created. Return as if the read returned a nonexistent
 			// resource.
 			state := &terraform.InstanceState{}
 			state = SetBlueprintAttribution(state, resource, provider)
@@ -331,7 +331,7 @@ func setMutableButUnreadableFields(imported, mutableButUnreadableSpec map[string
 				// state so that a diff is generated if the field had been
 				// updated in the spec. If the field still points to the same
 				// Secret in the spec, then the KRM2TF conversion will
-				// appropriately error out due to the non-existent Secret.
+				// appropriately error out due to the nonexistent Secret.
 				continue
 			}
 			// Preset sensitive field only if we can be sure that the
