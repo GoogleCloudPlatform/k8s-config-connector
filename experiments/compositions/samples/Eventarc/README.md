@@ -27,7 +27,7 @@ This configuration utilizes KCC's `GetterConfiguration` and `Context` API to imp
 * **Context API (`Context`)**
 
     The Context API provides a way to define contextual information, such as the project ID, that can be accessed by the composition. This avoids redundant specification of the project ID for each resource and promotes centralized configuration management. 
-    *Note that in the `config-control` namespace, the Context API is pre-populated.*
+    *Note that in the `config-control` namespace, the Context API is prepopulated.*
 
 **Deployment Steps**
 
