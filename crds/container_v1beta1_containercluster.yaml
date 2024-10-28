@@ -1491,7 +1491,7 @@ spec:
                         properties:
                           eventType:
                             description: Can be used to filter what notifications
-                              are sent. Valid values include include UPGRADE_AVAILABLE_EVENT,
+                              are sent. Valid values include UPGRADE_AVAILABLE_EVENT,
                               UPGRADE_EVENT and SECURITY_BULLETIN_EVENT.
                             items:
                               type: string
