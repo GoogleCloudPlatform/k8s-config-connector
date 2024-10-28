@@ -176,25 +176,8 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 	if err != nil {
 		return fmt.Errorf("cloning SQLInstance %s failed: %w", a.desired.Name, err)
 	}
-
-	pollingBackoff := gax.Backoff{
-		Initial:    time.Second,
-		Max:        time.Minute,
-		Multiplier: 2,
-	}
-	for {
-		log.V(2).Info("polling", "op", op)
-
-		if op.Status == "DONE" {
-			break
-		}
-		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-			return fmt.Errorf("waiting for SQLInstance %s clone failed: %w", a.desired.Name, err)
-		}
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
-		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s clone operation %s failed: %w", a.desired.Name, op.Name, err)
-		}
+	if err := a.pollForLROCompletion(ctx, op, "clone"); err != nil {
+		return err
 	}
 
 	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
@@ -221,25 +204,8 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 	if err != nil {
 		return fmt.Errorf("creating SQLInstance %s failed: %w", a.desired.Name, err)
 	}
-
-	pollingBackoff := gax.Backoff{
-		Initial:    time.Second,
-		Max:        time.Minute,
-		Multiplier: 2,
-	}
-	for {
-		log.V(2).Info("polling", "op", op)
-
-		if op.Status == "DONE" {
-			break
-		}
-		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-			return fmt.Errorf("waiting for SQLInstance %s creation failed: %w", a.desired.Name, err)
-		}
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
-		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s create operation %s failed: %w", a.desired.Name, op.Name, err)
-		}
+	if err := a.pollForLROCompletion(ctx, op, "create"); err != nil {
+		return err
 	}
 
 	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
@@ -261,19 +227,8 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 				if err != nil {
 					return fmt.Errorf("deleting SQLInstance %s root user failed: %w", a.desired.Name, err)
 				}
-				for {
-					log.V(2).Info("polling", "op", op)
-
-					if op.Status == "DONE" {
-						break
-					}
-					if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-						return fmt.Errorf("waiting for SQLInstance %s delete user failed: %w", a.desired.Name, err)
-					}
-					op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
-					if err != nil {
-						return fmt.Errorf("getting SQLInstance %s delete root user operation %s failed: %w", a.desired.Name, op.Name, err)
-					}
+				if err := a.pollForLROCompletion(ctx, op, "delete root user"); err != nil {
+					return err
 				}
 			}
 		}
@@ -303,25 +258,8 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if err != nil {
 			return fmt.Errorf("patching SQLInstance %s version failed: %w", a.resourceID, err)
 		}
-
-		pollingBackoff := gax.Backoff{
-			Initial:    time.Second,
-			Max:        time.Minute,
-			Multiplier: 2,
-		}
-		for {
-			log.V(2).Info("polling", "op", op)
-
-			if op.Status == "DONE" {
-				break
-			}
-			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-				return fmt.Errorf("waiting for SQLInstance %s version patch failed: %w", a.resourceID, err)
-			}
-			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
-			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s version patch operation %s failed: %w", a.resourceID, op.Name, err)
-			}
+		if err := a.pollForLROCompletion(ctx, op, "version patch"); err != nil {
+			return err
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
@@ -349,25 +287,8 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if err != nil {
 			return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
 		}
-
-		pollingBackoff := gax.Backoff{
-			Initial:    time.Second,
-			Max:        time.Minute,
-			Multiplier: 2,
-		}
-		for {
-			log.V(2).Info("polling", "op", op)
-
-			if op.Status == "DONE" {
-				break
-			}
-			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-				return fmt.Errorf("waiting for SQLInstance %s edition patch failed: %w", a.resourceID, err)
-			}
-			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
-			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s edition patch operation %s failed: %w", a.resourceID, op.Name, err)
-			}
+		if err := a.pollForLROCompletion(ctx, op, "edition patch"); err != nil {
+			return err
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
@@ -393,25 +314,8 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if err != nil {
 			return fmt.Errorf("updating SQLInstance %s failed: %w", desiredGCP.Name, err)
 		}
-
-		pollingBackoff := gax.Backoff{
-			Initial:    time.Second,
-			Max:        time.Minute,
-			Multiplier: 2,
-		}
-		for {
-			log.V(2).Info("polling", "op", op)
-
-			if op.Status == "DONE" {
-				break
-			}
-			if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-				return fmt.Errorf("waiting for SQLInstance %s update failed: %w", desiredGCP.Name, err)
-			}
-			op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
-			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s update operation %s failed: %w", desiredGCP.Name, op.Name, err)
-			}
+		if err := a.pollForLROCompletion(ctx, op, "update"); err != nil {
+			return err
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
@@ -471,6 +375,33 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	u.SetGroupVersionKind(krm.SQLInstanceGVK)
 
 	return u, nil
+}
+
+func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) error {
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	var err error
+
+	pollingBackoff := gax.Backoff{
+		Initial:    time.Second,
+		Max:        time.Minute,
+		Multiplier: 2,
+	}
+	for {
+		log.V(2).Info("polling", "op", op)
+
+		if op.Status == "DONE" {
+			break
+		}
+		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
+			return fmt.Errorf("waiting for SQLInstance %s %s failed: %w", a.resourceID, verb, err)
+		}
+		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		if err != nil {
+			return fmt.Errorf("getting SQLInstance %s %s operation %s failed: %w", a.resourceID, verb, op.Name, err)
+		}
+	}
+
+	return nil
 }
 
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
