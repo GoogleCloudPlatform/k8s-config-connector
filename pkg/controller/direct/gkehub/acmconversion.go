@@ -35,7 +35,7 @@ func convertKRMtoAPI_ConfigManagement(r *krm.FeaturemembershipConfigmanagement) 
 		apiObj.ConfigSync = val
 	}
 	if r.HierarchyController != nil {
-		apiObj.HierarchyController = convertKRMtoAPI_HierachyController(r.HierarchyController)
+		apiObj.HierarchyController = convertKRMtoAPI_HierarchyController(r.HierarchyController)
 	}
 	if r.PolicyController != nil {
 		val, err := convertKRMtoAPI_ConfigManagementPolicyController(r.PolicyController)
@@ -92,7 +92,7 @@ func convertKRMtoAPI_Monitoring(r *krm.FeaturemembershipMonitoring) *featureapi.
 	return &apiObj
 }
 
-func convertKRMtoAPI_HierachyController(r *krm.FeaturemembershipHierarchyController) *featureapi.ConfigManagementHierarchyControllerConfig {
+func convertKRMtoAPI_HierarchyController(r *krm.FeaturemembershipHierarchyController) *featureapi.ConfigManagementHierarchyControllerConfig {
 	apiObj := featureapi.ConfigManagementHierarchyControllerConfig{}
 	if r.EnableHierarchicalResourceQuota != nil {
 		apiObj.EnableHierarchicalResourceQuota = *r.EnableHierarchicalResourceQuota
