@@ -171,7 +171,7 @@ func isTransientError(t *testing.T, err error) bool {
 	// We don't know the exact error currently, use string matching for now...
 	//
 	// Example error:
-	// reconcile.go:175: error was not considered transient; chain is [[*errors.errorString: Update call failed: error applying desired state: summary: failed pre-requisites: missing permission on "billingAccounts/0162D7-7B0CB6-ED962E": billing.resourceAssociations.create]]
+	// reconcile.go:175: error was not considered transient; chain is [[*errors.errorString: Update call failed: error applying desired state: summary: failed prerequisites: missing permission on "billingAccounts/0162D7-7B0CB6-ED962E": billing.resourceAssociations.create]]
 	if strings.Contains(errorMessage, "missing permission on") {
 		t.Logf("internal error found; considered transient; chain is %v", chain)
 		return true
