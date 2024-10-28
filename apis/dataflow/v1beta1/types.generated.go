@@ -912,7 +912,7 @@ type PubsubLocation struct {
 
 // +kcc:proto=google.dataflow.v1beta3.RuntimeEnvironment
 type RuntimeEnvironment struct {
-	// The initial number of Google Compute Engine instnaces for the job.
+	// The initial number of Google Compute Engine instance for the job.
 	NumWorkers *int32 `json:"numWorkers,omitempty"`
 
 	// The maximum number of Google Compute Engine instances to be made

@@ -19,7 +19,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/ignore-warnings: "true"
 spec:
-  description: Automagically routs requests to the neatest viable nest in an insistance.
+  description: Automagically routs requests to the neatest viable nest in an instance.
   instanceRef:
     name: profiledep${uniqueId}
   singleClusterRouting:
