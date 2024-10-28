@@ -321,7 +321,7 @@ func testParentPathIsFileShouldError(t *testing.T, resourceFormat outputsink.Res
 	output := filepath.Join(f.Name(), "my-file")
 	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), output, resourceFormat)
 	if err == nil {
-		t.Fatalf("exepcted an error, instead got 'nil'")
+		t.Fatalf("expected an error, instead got 'nil'")
 	}
 	expectedMessage := fmt.Sprintf("cannot use output parameter '%v': parent path '%v' exists, but is not a directory",
 		output, f.Name())
