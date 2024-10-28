@@ -105,7 +105,7 @@ func TestGenerateJitteredReenqueuePeriodFromAnnotation(t *testing.T) {
 	t.Parallel()
 	gvk := iamv1beta1.IAMPolicyMemberGVK
 	var iamPolicyMember1 iamv1beta1.IAMPolicyMember
-	expectedMeanDurition1 := time.Duration(5) * time.Second
+	expectedMeanDuration1 := time.Duration(5) * time.Second
 	k8s.SetAnnotation(k8s.ReconcileIntervalInSecondsAnnotation, "5", &iamPolicyMember1)
 
 	var iamPolicyMember2 iamv1beta1.IAMPolicyMember
@@ -120,7 +120,7 @@ func TestGenerateJitteredReenqueuePeriodFromAnnotation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("got unexpected err %v, expected nil", err)
 	}
-	if duration > expectedMeanDurition1/2*3 || duration < expectedMeanDurition1/2 {
+	if duration > expectedMeanDuration1/2*3 || duration < expectedMeanDuration1/2 {
 		t.Fatalf("got unexpected time duration %v for gvk %v", duration, gvk)
 	}
 
