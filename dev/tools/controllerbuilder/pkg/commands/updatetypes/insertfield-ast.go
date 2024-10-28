@@ -89,7 +89,7 @@ func (u *TypeUpdater) insertGoField() error {
 		// if the target Go struct was found, modify the source bytes
 		if endPos != 0 {
 			var newSrcBytes []byte
-			// TODO: ues the same field ordering as in proto message
+			// TODO: use the same field ordering as in proto message
 			newSrcBytes = append(newSrcBytes, srcBytes[:endPos-1]...)        // up to before '}'
 			newSrcBytes = append(newSrcBytes, u.generatedGoField.content...) // insert new field
 			newSrcBytes = append(newSrcBytes, srcBytes[endPos-1:]...)        // include the '}'
