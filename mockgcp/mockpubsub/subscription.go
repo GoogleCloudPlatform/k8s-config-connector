@@ -60,7 +60,7 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 		ctx := context.Background()
 		time.Sleep(2 * time.Second)
 		if err := s.storage.Create(ctx, fqn, obj); err != nil {
-			klog.Errorf("error creaing pubsub Subscription: %v", err)
+			klog.Errorf("error creating pubsub Subscription: %v", err)
 		}
 	}()
 
