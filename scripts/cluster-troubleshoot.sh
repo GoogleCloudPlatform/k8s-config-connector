@@ -121,7 +121,7 @@ function verify_config_connector_operator_installed {
 CONFIG CONNECTOR OPERATOR NOT FOUND
 
 As of 1.33, the operator (or the GKE add-on) is the only supported
-method to install Config Conector.
+method to install Config Connector.
 
 remediation:
 
