@@ -41,7 +41,7 @@ contorller-runtime's Manager interface provides no way to check if a controller 
 `type Manager interface {}` : https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/manager/manager.go#L55
 `type Cluster interface {}` : https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/cluster/cluster.go#L40
 
-We would need to build an intrerface on top of the manager that supports checking if a controller exists in a manager.
+We would need to build an interface on top of the manager that supports checking if a controller exists in a manager.
 
 ## No support for stopping a controller
 
