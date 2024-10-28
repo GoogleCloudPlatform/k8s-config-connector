@@ -26,6 +26,8 @@ spec:
     autoscalingConfig:
       policyRef:
         name: dataprocautoscalingpolicy-${uniqueId}
+    gceClusterConfig:
+      internalIPOnly: false
     masterConfig:
       diskConfig:
         bootDiskType: pd-standard
