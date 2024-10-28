@@ -162,8 +162,8 @@ func (r *DirectoryEventSink) writeToFile(p string, entry *LogEntry) error {
 	if _, err := f.Write(b); err != nil {
 		return fmt.Errorf("failed to write to file %q: %w", p, err)
 	}
-	delimeter := "\n\n---\n\n"
-	if _, err := f.Write([]byte(delimeter)); err != nil {
+	delimiter := "\n\n---\n\n"
+	if _, err := f.Write([]byte(delimiter)); err != nil {
 		return fmt.Errorf("failed to write to file %q: %w", p, err)
 	}
 
