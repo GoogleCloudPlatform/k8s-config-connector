@@ -174,7 +174,7 @@ For example, the `computeForwardingRule` has the `ComputeAddress` reference whic
 
 ### Rule 1
 
-We will continue supporting the existing bebavior when migrating to the Direct Resource. 
+We will continue supporting the existing behavior when migrating to the Direct Resource. 
 
 
 ### Rule 2

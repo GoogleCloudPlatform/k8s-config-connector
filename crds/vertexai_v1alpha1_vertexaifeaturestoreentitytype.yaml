@@ -114,7 +114,7 @@ spec:
                         type: string
                       state:
                         description: |-
-                          Whether to enable / disable / inherite default hebavior for import features analysis. The value must be one of the values below:
+                          Whether to enable / disable / inherite default behavior for import features analysis. The value must be one of the values below:
                           * DEFAULT: The default behavior of whether to enable the monitoring. EntityType-level config: disabled.
                           * ENABLED: Explicitly enables import features analysis. EntityType-level config: by default enables import features analysis for all Features under it.
                           * DISABLED: Explicitly disables import features analysis. EntityType-level config: by default disables import features analysis for all Features under it.

@@ -46,7 +46,7 @@ The `status.externalRef`  shall use the [cloud asset inventory](https://cloud.go
 
 ### Backward compatibiltiy for TF/DCL based reconcilers
 
-The existing TF-based and DCL-based reconciliation treats the `spec.resourceID` as the single Source of Truth to identify a GCP resource. It writes back the `spec.resourceID` after reconciliation. Here are [the known problems](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2765). Config Connector will keep the bahavior of these resources, until they are migrated to the Direct reconciler.
+The existing TF-based and DCL-based reconciliation treats the `spec.resourceID` as the single Source of Truth to identify a GCP resource. It writes back the `spec.resourceID` after reconciliation. Here are [the known problems](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2765). Config Connector will keep the behavior of these resources, until they are migrated to the Direct reconciler.
 
 <!-- Footnotes themselves at the bottom. -->
 
