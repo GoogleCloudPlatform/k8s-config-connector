@@ -27,10 +27,10 @@ import (
 
 // objectWithEtag holds the fields that are relevant to an etag-based change detection.
 type objectWithEtag struct {
-	Status objectWithEtagtatus `json:"status"`
+	Status objectWithEtagStatus `json:"status"`
 }
 
-type objectWithEtagtatus struct {
+type objectWithEtagStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// Used if status.observedState.etag is not set
