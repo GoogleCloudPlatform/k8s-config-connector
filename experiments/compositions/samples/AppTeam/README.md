@@ -50,7 +50,7 @@ spec:
 EOF
 ```
 
-Verify the relevant resources are created succesfully
+Verify the relevant resources are created successfully
 
 ```
 ./get_appteam.sh ${TEAM_NAME}

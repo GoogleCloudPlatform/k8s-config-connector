@@ -30,7 +30,7 @@ spec:
 EOF
 ```
 
-Verify the relevant resources are created succesfully by running:
+Verify the relevant resources are created successfully by running:
 
 ```
 ./get_cloudsql.sh ${NAMESPACE}
