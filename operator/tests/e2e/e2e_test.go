@@ -617,7 +617,7 @@ func TestUpgrade(t *testing.T) {
 	}
 	time.Sleep(120 * time.Second) // Some buffer time for the operator to reconcile on the existing ConfigConnector
 	if err := cluster.waitForConfigConnectorToBeHealthy(k8s.ConfigConnectorAllowedName); err != nil {
-		t.Fatal(fmt.Errorf("error waitting for ConfigConnector to be healthy: %w", err))
+		t.Fatal(fmt.Errorf("error waiting for ConfigConnector to be healthy: %w", err))
 	}
 	checkIfKCCHasUpgradedToTheLatestVersion(t, cluster, log)
 	log.Info("Re-applying ArtifactRegistryRepository")
