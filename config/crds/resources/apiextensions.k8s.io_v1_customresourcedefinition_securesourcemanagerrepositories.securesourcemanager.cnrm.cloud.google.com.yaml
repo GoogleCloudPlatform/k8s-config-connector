@@ -18,7 +18,7 @@ spec:
     plural: securesourcemanagerrepositories
     shortNames:
     - gcpsecuresourcemanagerrepository
-    - gcpsecuresourcemanagerrepositorys
+    - gcpsecuresourcemanagerrepositories
     singular: securesourcemanagerrepository
   preserveUnknownFields: false
   scope: Namespaced
