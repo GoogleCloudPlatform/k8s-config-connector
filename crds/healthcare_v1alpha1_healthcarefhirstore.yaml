@@ -150,7 +150,7 @@ spec:
                 - pubsubTopic
                 type: object
               notificationConfigs:
-                description: A list of notifcation configs that configure the notification
+                description: A list of notification configs that configure the notification
                   for every resource mutation in this FHIR store.
                 items:
                   properties:
