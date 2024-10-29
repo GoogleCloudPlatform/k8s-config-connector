@@ -246,7 +246,7 @@ func (a *tagKeyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		if _, err := op.Wait(ctx); err != nil {
 			return fmt.Errorf("tagKey update failed: %w", err)
 		}
-		// TODO: Do we need to check that the operation succeeeded?
+		// TODO: Do we need to check that the operation succeeded?
 	}
 
 	// TODO: Return updated object status
