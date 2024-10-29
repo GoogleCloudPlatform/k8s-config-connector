@@ -174,7 +174,9 @@ func (v *MapperGenerator) GenerateMappers() error {
 			FileName:  "mapper.generated.go",
 		}
 		out := v.getOutputFile(k)
-		if out.contents.Len() == 0 {
+		out.packageName = lastGoComponent(goPackage)
+		
+		 {
 			pbPackage := pair.ProtoGoPackage
 			krmPackage := pair.KRMType.GoPackage
 
@@ -184,16 +186,13 @@ func (v *MapperGenerator) GenerateMappers() error {
 				pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 			}
 
-			out.contents.WriteString(fmt.Sprintf("package %s\n\n", lastGoComponent(goPackage)))
-			out.contents.WriteString("import (\n")
-			out.contents.WriteString(fmt.Sprintf("\trefs %q\n", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"))
-			out.contents.WriteString(fmt.Sprintf("\tpb %q\n", pbPackage))
-			out.contents.WriteString(fmt.Sprintf("\tkrm %q\n", krmPackage))
-			out.contents.WriteString(fmt.Sprintf("\t%q\n", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"))
-			out.contents.WriteString(")\n")
+			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
+			out.addImport("pb", pbPackage)
+			out.addImport("krm", krmPackage)
+			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
-		v.writeMapFunctionsForPair(&out.contents, out.OutputDir(), &pair)
+		v.writeMapFunctionsForPair(&out.body, out.OutputDir(), &pair)
 	}
 
 	return nil
