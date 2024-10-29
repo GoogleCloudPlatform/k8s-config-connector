@@ -527,7 +527,7 @@ observedState: {}
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the DataformReposity resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the DataformRepository resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
