@@ -114,7 +114,7 @@ func embedPolicyData(spec map[string]interface{}) error {
 
 // An unfortunate reality is that the GVK is not always properly filled in when
 // reading a resource from the K8s API server, and there are functions that
-// need the Kind to be filled in to work (e.g. krmtotf.NewResource,
+// need the Kind to be filled to work (e.g. krmtotf.NewResource,
 // k8s.MarshalAsUnstructured, etc.). The Kind is not set because the TypeMeta
 // is empty. The reason why the TypeMeta is empty is because in
 // k8s.io/apimachinery/pkg/runtime/serializer/versioning/versioning.go the
