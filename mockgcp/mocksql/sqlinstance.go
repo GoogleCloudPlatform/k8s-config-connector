@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -593,7 +593,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 
 		if backupConfiguration.BinaryLogEnabled != nil && backupConfiguration.BinaryLogEnabled.Value {
 			if isPostgres(obj) || isMysql(obj) {
-				backupConfiguration.TransactionalLogStorageState = direct.PtrTo(pb.BackupConfiguration_CLOUD_STORAGE)
+				backupConfiguration.TransactionalLogStorageState = mocks.PtrTo(pb.BackupConfiguration_CLOUD_STORAGE)
 			}
 		}
 	}

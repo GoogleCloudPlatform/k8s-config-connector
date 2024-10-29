@@ -29,7 +29,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/cluster/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 )
 
 type clusterServer struct {
@@ -113,7 +113,7 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 	}
 
 	if obj.DeletionProtectionEnabled == nil {
-		obj.DeletionProtectionEnabled = direct.PtrTo(false)
+		obj.DeletionProtectionEnabled = mocks.PtrTo(false)
 	}
 
 	if obj.NodeType == pb.NodeType_NODE_TYPE_UNSPECIFIED {
@@ -164,7 +164,7 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 	}
 
 	if obj.ReplicaCount == nil {
-		obj.ReplicaCount = direct.PtrTo[int32](0)
+		obj.ReplicaCount = mocks.PtrTo[int32](0)
 	}
 
 	nodeCapacity := float64(1)
@@ -180,8 +180,8 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 	default:
 		return fmt.Errorf("unknown node type %v", obj.GetNodeType())
 	}
-	obj.PreciseSizeGb = direct.PtrTo(float64(nodeCapacity * float64(obj.GetShardCount())))
-	obj.SizeGb = direct.PtrTo(int32(obj.GetPreciseSizeGb()))
+	obj.PreciseSizeGb = mocks.PtrTo(float64(nodeCapacity * float64(obj.GetShardCount())))
+	obj.SizeGb = mocks.PtrTo(int32(obj.GetPreciseSizeGb()))
 
 	if obj.TransitEncryptionMode == pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
 		obj.TransitEncryptionMode = pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_DISABLED
