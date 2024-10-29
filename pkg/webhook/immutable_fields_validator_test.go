@@ -2161,7 +2161,7 @@ var TestCases = []TestCase{
 		},
 		ExpectedResult: []string{"ipAddress"},
 	},
-	// (TODO:maqiuyu): Add a test case for resourceID once supported.
+	// TODO(maqiuyu): Add a test case for resourceID once supported.
 }
 
 func TestUpdateIAMPolicy(t *testing.T) {

@@ -96,7 +96,7 @@ type TypeUpdater struct {
 	opts               *UpdateTypeOptions
 	newField           newProtoField
 	dependentMessages  map[string]protoreflect.MessageDescriptor // key: fully qualified name of proto message
-	generatedGoField   generatedGoField                          // TOOD: support multiple new fields
+	generatedGoField   generatedGoField                          // TODO: support multiple new fields
 	generatedGoStructs []generatedGoStruct
 }
 
