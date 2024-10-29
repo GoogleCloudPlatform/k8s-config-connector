@@ -82,6 +82,7 @@ backendServiceRef:
   name: string
   namespace: string
 description: string
+location: string
 proxyBind: boolean
 proxyHeader: string
 resourceID: string
@@ -111,7 +112,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -121,7 +122,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -131,7 +132,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -146,13 +147,22 @@ resourceID: string
     </tr>
     <tr>
         <td>
+            <p><code>location</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The geographical location of the ComputeTargetTCPProxy. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>proxyBind</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. This field only applies when the forwarding rule that references
-this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -162,8 +172,7 @@ this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endv
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the type of proxy header to append before sending data to
-the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -173,7 +182,7 @@ the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endv
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The ComputeTargetTCPProxy name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -191,6 +200,7 @@ conditions:
   status: string
   type: string
 creationTimestamp: string
+externalRef: string
 observedGeneration: integer
 proxyId: integer
 selfLink: string
@@ -207,7 +217,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -260,6 +270,13 @@ selfLink: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the ComputeTargetTCPProxy resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -277,7 +294,7 @@ selfLink: string
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The SelfLink for the resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
