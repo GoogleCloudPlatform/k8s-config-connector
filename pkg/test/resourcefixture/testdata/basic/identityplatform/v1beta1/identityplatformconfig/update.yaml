@@ -121,4 +121,4 @@ spec:
     forwardInboundCredentials:
       idToken: false
       accessToken: false
-      refereshToken: false
+      refreshToken: false
