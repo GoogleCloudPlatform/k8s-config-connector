@@ -35,7 +35,7 @@ spec:
       startTime: 01:00
       transactionLogRetentionDays: 3
     # Location preference is not actually a required field. However, setting it for tests
-    # helps with with normalizing the GCP responses, because otherwise GCP chooses a zone
+    # helps with normalizing the GCP responses, because otherwise GCP chooses a zone
     # preference based on availability. Therefore it could potentially vary if not
     # explicitly specified.
     locationPreference:
