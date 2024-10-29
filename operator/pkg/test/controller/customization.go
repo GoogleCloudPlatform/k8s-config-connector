@@ -752,7 +752,7 @@ spec:
 // - the "resources" section for cnrm-webhook-manager/webhook container.
 // - the "replicas" field for cnrm-webhook-manger deployment.
 // - the "minReplicas" field for HorizontalPodAutoscaler.
-// - the "maxReplicas" field for HorizontalPodAutoscaler is also updated to match the value of "minReplcias".
+// - the "maxReplicas" field for HorizontalPodAutoscaler is also updated to match the value of "minReplicas".
 // - the "GOMEMLIMIT" environment variable.
 var ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas = []string{`
 apiVersion: v1
