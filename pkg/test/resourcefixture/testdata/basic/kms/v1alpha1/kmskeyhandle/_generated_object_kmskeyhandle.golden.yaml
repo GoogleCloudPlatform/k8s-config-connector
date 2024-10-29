@@ -13,7 +13,6 @@ spec:
   location: us-central1
   projectRef:
     external: projects/autokey-resource
-  resourceID: keyhandle-4
   resourceTypeSelector: compute.googleapis.com/Disk
 status:
   conditions:
@@ -22,6 +21,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/autokey-resource/locations/us-central1/keyHandles/keyhandle-4
+  externalRef: projects/autokey-resource/locations/us-central1/keyHandles/
   observedGeneration: 1
   observedState: {}
