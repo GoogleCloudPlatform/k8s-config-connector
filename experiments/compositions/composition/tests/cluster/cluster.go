@@ -109,7 +109,7 @@ func CreateKindClusters(clusterCount int, images string) {
 				},
 			)
 
-			// Bringup the cluster and install the operator
+			// Bring up the cluster and install the operator
 			err := kc.ClusterUp()
 			if err != nil {
 				log.Fatalf("Error creating kind cluster: %s, %v", name, err)
@@ -155,7 +155,7 @@ func CreateCCClusters(clusterCount int, images string) {
 				},
 			)
 
-			// Bringup the cluster and install the operator
+			// Bring up the cluster and install the operator
 			err := cc.ClusterUp()
 			if err != nil {
 				log.Fatalf("Error creating CC cluster: %s, %v", name, err)
