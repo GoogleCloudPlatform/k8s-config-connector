@@ -45,7 +45,7 @@ func NewImageTransform(imagePrefix string) *ImageTransform {
 }
 
 // Remap images to the specified mirror / alternative location.
-// This function can be used as an object transfomration.
+// This function can be used as an object transformation.
 func (x *ImageTransform) RemapImages(ctx context.Context, o declarative.DeclarativeObject, manifest *manifest.Objects) error {
 	for _, obj := range manifest.Items {
 		if err := x.remapImages(obj); err != nil {
