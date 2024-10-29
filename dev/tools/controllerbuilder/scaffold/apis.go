@@ -90,7 +90,7 @@ func (a *APIScaffolder) TypeFileNotExist(resourceProtoName string) bool {
 }
 
 func (a *APIScaffolder) PathToTypeFile(resourceProtoName string) string {
-	fileName := strings.ToLower(resourceProtoName) + "_reference.go"
+	fileName := strings.ToLower(resourceProtoName) + "_types.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
