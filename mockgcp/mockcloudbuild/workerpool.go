@@ -16,7 +16,6 @@ package mockcloudbuild
 
 import (
 	"context"
-	"reflect"
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -64,6 +63,9 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 
 	obj := proto.Clone(req.GetWorkerPool()).(*pb.WorkerPool)
 	obj.Name = fqn
+	obj.CreateTime = now
+
+	populateDefaultsForWorkerPool(obj)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -73,17 +75,20 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 		CompleteTime: now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.WorkerPool)
-		result.CreateTime = now
-		result.UpdateTime = now
-		result.State = pb.WorkerPool_RUNNING
-		result.Etag = fields.ComputeWeakEtag(result)
-		if err := s.storage.Update(ctx, fqn, result); err != nil { // update resource object when LRO is done
-			return nil, err
-		}
-		return result, nil
+		return obj, nil
 	})
+}
+
+func populateDefaultsForWorkerPool(wp *pb.WorkerPool) {
+	now := timestamppb.Now()
+	network := wp.GetPrivatePoolV1Config().GetNetworkConfig()
+	tokens := strings.Split(network.PeeredNetwork, "/")
+	if len(tokens) == 5 {
+		network.PeeredNetwork = tokens[0] + "/" + "${projectNumber}" + "/" + tokens[2] + "/" + tokens[3] + "/" + tokens[4]
+	}
+	wp.UpdateTime = now
+	wp.State = pb.WorkerPool_RUNNING
+	wp.Etag = fields.ComputeWeakEtag(wp)
 }
 
 func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorkerPoolRequest) (*longrunningpb.Operation, error) {
@@ -92,29 +97,20 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		return nil, err
 	}
 	fqn := name.String()
-	obj := &pb.WorkerPool{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+
+	old := &pb.WorkerPool{}
+	if err := s.storage.Get(ctx, fqn, old); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
-	now := timestamppb.Now()
-	obj.UpdateTime = now
-	source := reflect.ValueOf(req.WorkerPool)
-	target := reflect.ValueOf(obj).Elem()
-	for _, path := range req.UpdateMask.Paths {
-		f := target.FieldByName(path)
-		if f.IsValid() && f.CanSet() {
-			switch f.Kind() {
-			case reflect.Int, reflect.Int64:
-				intVal := source.FieldByName(path).Int()
-				f.SetInt(intVal)
-			case reflect.String:
-				stringVal := source.FieldByName(path).String()
-				f.SetString(stringVal)
-			}
 
-		}
-	}
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	new := proto.Clone(req.WorkerPool).(*pb.WorkerPool)
+	now := timestamppb.Now()
+	populateDefaultsForWorkerPool(new)
+	new.CreateTime = old.GetCreateTime()
+	if err := s.storage.Update(ctx, fqn, new); err != nil {
 		return nil, err
 	}
 	metadata := &pb.UpdateWorkerPoolOperationMetadata{
@@ -123,15 +119,7 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		CompleteTime: now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.WorkerPool)
-		result.UpdateTime = now
-		result.State = pb.WorkerPool_RUNNING
-		result.Etag = fields.ComputeWeakEtag(result)
-		if err := s.storage.Update(ctx, fqn, result); err != nil { // update resource object when LRO is done
-			return nil, err
-		}
-		return result, nil
+		return new, nil
 	})
 }
 

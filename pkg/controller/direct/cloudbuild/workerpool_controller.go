@@ -135,10 +135,20 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
+
+	projectIDAndNum := &refs.ProjectIDAndNum{ID: projectRef.ProjectID}
+	network, found, err := unstructured.NestedString(u.Object, "status", "observedState", "networkConfig", "peeredNetwork")
+	if err == nil && found {
+		tokens := strings.Split(network, "/")
+		if len(tokens) == 5 && tokens[0] == "projects" {
+			projectIDAndNum.Number = tokens[1]
+		}
+	}
 	return &Adapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:              id,
+		gcpClient:       gcpClient,
+		desired:         obj,
+		projectIDAndNum: projectIDAndNum,
 	}, nil
 }
 
@@ -170,10 +180,11 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *CloudBuildWorkerPoolIdentity
-	gcpClient *gcp.Client
-	desired   *krm.CloudBuildWorkerPool
-	actual    *cloudbuildpb.WorkerPool
+	id              *CloudBuildWorkerPoolIdentity
+	gcpClient       *gcp.Client
+	desired         *krm.CloudBuildWorkerPool
+	actual          *cloudbuildpb.WorkerPool
+	projectIDAndNum *refs.ProjectIDAndNum
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -241,6 +252,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	wp.Name = a.id.FullyQualifiedName()
 	wp.Etag = a.actual.Etag
+	// the peered_network has a different HTTP request and response format.
+	// The HTTP request uses ProjectID, in the form of /projects/<projectID>/global/networks/<network>
+	// The HTTP response uses ProjectNumber, in the form of /projects/<ProjectNum>/global/networks/<network>
+	// When comparing the desired and actual fields, we need to align the project format, to avoid updating the
+	// "peered_network" field.
+	// Why we can't just update the "peered_network" field? Because it is immutable. ¯\_(ツ)_/¯
+	network := wp.GetPrivatePoolV1Config().GetNetworkConfig()
+	network.PeeredNetwork = refs.ProjectIDToNumber(a.projectIDAndNum, network.PeeredNetwork)
 
 	paths, err := common.CompareProtoMessage(wp, a.actual, common.BasicDiff)
 
