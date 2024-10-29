@@ -559,7 +559,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForTFBasedResour
 
 			err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForTFBasedResource(&obj, &ns, &rc, fakeTFProvider.ResourcesMap)
 			if tc.ShouldSucceed != (err == nil) {
-				t.Fatalf("expected success to be '%v', instead got error mismsatch: %v", tc.ShouldSucceed, err)
+				t.Fatalf("expected success to be '%v', instead got error mismatch: %v", tc.ShouldSucceed, err)
 			}
 			value, ok := k8s.GetAnnotation(k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation, &obj)
 			if ok || tc.ExpectedObjectAnnotation != "" {
@@ -821,7 +821,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 
 			err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResource(&obj, &ns, tc.Schema)
 			if tc.ShouldSucceed != (err == nil) {
-				t.Fatalf("expected success to be '%v', instead got error mismsatch: %v", tc.ShouldSucceed, err)
+				t.Fatalf("expected success to be '%v', instead got error mismatch: %v", tc.ShouldSucceed, err)
 			}
 			value, ok := k8s.GetAnnotation(k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation, &obj)
 			if ok || tc.ExpectedObjectAnnotation != "" {
