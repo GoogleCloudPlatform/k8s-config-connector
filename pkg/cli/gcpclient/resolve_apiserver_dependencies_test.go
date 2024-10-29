@@ -108,7 +108,7 @@ func convertSensitiveFieldsToValue(t *testing.T, resources []*unstructured.Unstr
 		field.Value = &value
 		var newValue map[string]interface{}
 		if err := util.Marshal(field, &newValue); err != nil {
-			t.Fatalf("error marshalling SenesitiveField '%v' to a object map: %v", field, err)
+			t.Fatalf("error marshalling SensitiveField '%v' to a object map: %v", field, err)
 		}
 		mapValue := obj.(map[string]interface{})
 		for k := range mapValue {
