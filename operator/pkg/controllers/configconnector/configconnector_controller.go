@@ -247,7 +247,7 @@ func (r *Reconciler) handleConfigConnectorLifecycle() declarative.ObjectTransfor
 			if err := r.client.Update(ctx, cc); err != nil {
 				return fmt.Errorf("error adding %v finalizer in ConfigConnector object %v: %w", k8s.OperatorFinalizer, cc.GetName(), err)
 			}
-			// Create the cnrm-systm namespace first; this is done to prevent the creation of components from failing due to the cnrm-system namespace not existing yet.
+			// Create the cnrm-system namespace first; this is done to prevent the creation of components from failing due to the cnrm-system namespace not existing yet.
 			if err := createCNRMSystemNamespace(ctx, r.client, m); err != nil {
 				return fmt.Errorf("error creating %v namespace: %w", k8s.CNRMSystemNamespace, err)
 			}
