@@ -28,7 +28,7 @@ import (
 // ExternalOnlyType is a KCC resource type that KCC does not support as a
 // core resource, but does support referencing externally in IAM.
 type ExternalOnlyType struct {
-	// UnstuctHandler is a function that fills in the external field information
+	// UnstructHandler is a function that fills in the external field information
 	// from the given reference into the given unstructured object.
 	UnstructHandler func(ref iamv1beta1.ResourceReference, u *unstructured.Unstructured) *unstructured.Unstructured
 
