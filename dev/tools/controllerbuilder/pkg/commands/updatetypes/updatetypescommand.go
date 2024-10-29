@@ -238,7 +238,7 @@ func (u *TypeUpdater) generate() error {
 
 	for _, msg := range u.dependentMessages {
 		var buf bytes.Buffer
-		klog.Infof("generate Go code for messge %s", msg.FullName())
+		klog.Infof("generate Go code for message %s", msg.FullName())
 		codegen.WriteMessage(&buf, msg)
 		u.generatedGoStructs = append(u.generatedGoStructs,
 			generatedGoStruct{
