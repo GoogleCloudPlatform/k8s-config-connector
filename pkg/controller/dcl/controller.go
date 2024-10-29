@@ -692,7 +692,7 @@ func (r *Reconciler) isOrphaned(_ context.Context, resource *dcl.Resource) (orph
 }
 
 // getStateHint returns a state hint based on the given resource live state. A
-// state hint is a DCL unstructurd object that represents the live state of the
+// state hint is a DCL unstructured object that represents the live state of the
 // resource.
 //
 // This function returns the given live state (if it's not nil) as a DCL

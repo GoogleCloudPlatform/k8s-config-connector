@@ -333,7 +333,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	})
 
-	return visitor.VisitUnstructued(u)
+	return visitor.VisitUnstructured(u)
 }
 
 func setStringAtPath(m map[string]any, atPath string, newValue string) error {
@@ -502,7 +502,7 @@ func (o *objectWalker) visitString(v string, path string) (string, error) {
 	return v, nil
 }
 
-func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
+func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
 	if err := o.visitMap(v.Object, ""); err != nil {
 		return err
 	}
