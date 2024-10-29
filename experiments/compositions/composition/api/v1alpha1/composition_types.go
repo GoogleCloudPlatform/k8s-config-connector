@@ -139,9 +139,9 @@ type ValidationStatus string
 const (
 	// ValidationStatusUnknown is when it is not validated
 	ValidationStatusUnknown ValidationStatus = "unknown"
-	// ValidationStatusSuccess is when valdiation succeeds
+	// ValidationStatusSuccess is when validation succeeds
 	ValidationStatusSuccess ValidationStatus = "success"
-	// ValidationStatusFailed is when valdiation fails
+	// ValidationStatusFailed is when validation fails
 	ValidationStatusFailed ValidationStatus = "failed"
 	// ValidationStatusError is when validation was not called
 	ValidationStatusError ValidationStatus = "error"
