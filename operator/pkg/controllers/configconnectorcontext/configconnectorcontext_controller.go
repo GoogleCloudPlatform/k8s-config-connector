@@ -378,7 +378,7 @@ func (r *Reconciler) verifyControllerManagerPodForClusterModeIsDeleted(ctx conte
 	r.log.Info("verifying that cluster mode workload is deleted...", "StatefulSet", stsKey, "Pod", podKey)
 	err := r.client.Get(ctx, stsKey, sts)
 	if err == nil {
-		return fmt.Errorf("statefulset %v is not yet deleted, reenquee the reconciliation for another attempt later", stsKey)
+		return fmt.Errorf("statefulset %v is not yet deleted, reenqueue the reconciliation for another attempt later", stsKey)
 	}
 	if !apierrors.IsNotFound(err) {
 		return fmt.Errorf("error getting the StatefulSet %v: %w", stsKey, err)
@@ -386,7 +386,7 @@ func (r *Reconciler) verifyControllerManagerPodForClusterModeIsDeleted(ctx conte
 
 	err = r.client.Get(ctx, podKey, pod)
 	if err == nil {
-		return fmt.Errorf("pod %v is not yet deleted, reenquee the reconciliation for another attempt later", stsKey)
+		return fmt.Errorf("pod %v is not yet deleted, reenqueue the reconciliation for another attempt later", stsKey)
 	}
 	if !apierrors.IsNotFound(err) {
 		return fmt.Errorf("error getting the pod %v: %w", podKey, err)
@@ -403,7 +403,7 @@ func (r *Reconciler) verifyCNRMSystemNamespaceIsActive(ctx context.Context) erro
 	}
 	if err := r.client.Get(ctx, key, n); err != nil {
 		if apierrors.IsNotFound(err) {
-			return fmt.Errorf("ConfigConnector system namespace %v is not created by configconnector controller yet, reenquee the reconciliation for another attempt later", k8s.CNRMSystemNamespace)
+			return fmt.Errorf("ConfigConnector system namespace %v is not created by configconnector controller yet, reenqueue the reconciliation for another attempt later", k8s.CNRMSystemNamespace)
 		}
 
 		return fmt.Errorf("error getting the ConfigConnector system namespace %v: %w", key, err)

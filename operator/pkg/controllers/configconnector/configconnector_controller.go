@@ -434,7 +434,7 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 	if len(podList.Items) == 1 && podList.Items[0].Name == k8s.ControllerManagerPodForClusterMode {
 		return nil
 	}
-	return fmt.Errorf("per-namespace controller manager pods are not yet deleted by configconnectorcontext controller, reenquee the reconciliation for another attempt later; "+
+	return fmt.Errorf("per-namespace controller manager pods are not yet deleted by configconnectorcontext controller, reenqueue the reconciliation for another attempt later; "+
 		"remaining pods include, but may not be limited to %v", podNames)
 }
 
