@@ -317,7 +317,7 @@ spec:
                           properties:
                             numRetries:
                               description: Specifies the allowed number of retries.
-                                This number must be > 0. If not specpfied, default
+                                This number must be > 0. If not specified, default
                                 to 1.
                               format: int64
                               type: integer
