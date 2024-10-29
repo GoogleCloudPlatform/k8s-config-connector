@@ -110,7 +110,7 @@ func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Re
 		return fmt.Errorf("error syncing updated resource metadata: %w", err)
 	}
 	if !u.GetDeletionTimestamp().IsZero() && len(u.GetFinalizers()) == 0 {
-		// This resource is set for garbage collection and any status updates would be racey.
+		// This resource is set for garbage collection and any status updates would be racy.
 		// Status updates for successful deletions must be handled independently.
 		return nil
 	}
