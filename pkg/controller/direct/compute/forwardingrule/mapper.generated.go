@@ -31,7 +31,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	out.AllPorts = in.AllPorts
 	out.AllowGlobalAccess = in.AllowGlobalAccess
 	out.AllowPscGlobalAccess = in.AllowPscGlobalAccess
-	out.BackendServiceRef = ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx, in.GetBackendService())
+	out.BackendServiceRef = ComputeForwardingRuleSpec_BackendServiceRef_FromProto(mapCtx, in.GetBackendService())
 	// MISSING: BaseForwardingRule
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
@@ -73,7 +73,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.AllPorts = in.AllPorts
 	out.AllowGlobalAccess = in.AllowGlobalAccess
 	out.AllowPscGlobalAccess = in.AllowPscGlobalAccess
-	out.BackendService = ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx, in.BackendServiceRef)
+	out.BackendService = ComputeForwardingRuleSpec_BackendServiceRef_ToProto(mapCtx, in.BackendServiceRef)
 	// MISSING: BaseForwardingRule
 	// MISSING: CreationTimestamp
 	out.Description = in.Description

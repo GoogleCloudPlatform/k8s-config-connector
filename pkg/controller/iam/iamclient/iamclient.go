@@ -51,7 +51,7 @@ const (
 	IAMGroup              = "iam.cnrm.cloud.google.com"
 	IAMVersion            = "v1beta1"
 
-	SerivceIdentityKind = "ServiceIdentity"
+	ServiceIdentityKind = "ServiceIdentity"
 	ServiceUsageGroup   = "serviceusage.cnrm.cloud.google.com"
 	ServiceUsageVersion = "v1beta1"
 )
@@ -83,7 +83,7 @@ var (
 	ServiceIdentityGVK = schema.GroupVersionKind{
 		Group:   ServiceUsageGroup,
 		Version: ServiceUsageVersion,
-		Kind:    SerivceIdentityKind,
+		Kind:    ServiceIdentityKind,
 	}
 )
 

@@ -52,7 +52,7 @@ func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *direct.MapContext, in
 	return out
 }
 
-func ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeBackendServiceRef {
+func ComputeForwardingRuleSpec_BackendServiceRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeBackendServiceRef {
 	if in == "" {
 		return nil
 	}
@@ -61,7 +61,7 @@ func ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx *direct.MapCo
 	}
 }
 
-func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeBackendServiceRef) *string {
+func ComputeForwardingRuleSpec_BackendServiceRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeBackendServiceRef) *string {
 	if in == nil {
 		return nil
 	}
