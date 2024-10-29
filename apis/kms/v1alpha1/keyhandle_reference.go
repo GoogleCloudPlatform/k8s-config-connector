@@ -21,6 +21,7 @@ import (
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/google/uuid"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
@@ -102,23 +103,22 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 	id.parent = &KMSKeyHandleParent{ProjectID: projectID, Location: location}
 
 	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	desiredHandleId := valueOf(obj.Spec.ResourceID)
+	if desiredHandleId != "" {
+		if _, err := uuid.Parse(desiredHandleId); err != nil {
+			return nil, fmt.Errorf("spec.resourceID should be in a UUID format, got %s ", desiredHandleId)
+		}
 	}
 
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		id.External = AsKMSKeyHandleExternal(id.parent, resourceID)
+		id.External = AsKMSKeyHandleExternal(id.parent, desiredHandleId)
 		return id, nil
 	}
 
 	// Validate desired with actual
-	actualParent, actualResourceID, err := ParseKMSKeyHandleExternal(externalRef)
+	actualParent, actualHandleId, err := ParseKMSKeyHandleExternal(externalRef)
 	if err != nil {
 		return nil, err
 	}
@@ -128,9 +128,9 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 	if actualParent.Location != location {
 		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 	}
-	if actualResourceID != resourceID {
+	if actualHandleId != desiredHandleId {
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
+			desiredHandleId, actualHandleId)
 	}
 	id.External = externalRef
 	id.parent = &KMSKeyHandleParent{ProjectID: projectID, Location: location}
