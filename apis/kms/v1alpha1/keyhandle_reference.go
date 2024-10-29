@@ -111,8 +111,10 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 	}
 
 	// At this point we are expecting desiredHandleID to be either empty or valid uuid
-	// 1. if desiredHandleID empty --> id.external will be projects/<pid>/locations/<loc>/keyHandles/. i.e without resourceID. A call will be made to find() with invalid externalID
-	// 2. if desiredHandleID is a valid UUID --> id.external will be valid.
+	// 1. if desiredHandleID empty:
+	// id.external will be projects/<pid>/locations/<loc>/keyHandles/. i.e without resourceID.
+	// A call will be made to find() with invalid externalID which will return false.
+	// 2. if desiredHandleID is a valid UUID: id.external will be valid.
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
@@ -131,7 +133,7 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 	if actualParent.Location != location {
 		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 	}
-	if actualHandleId != desiredHandleId {
+	if desiredHandleId != "" && (actualHandleId != desiredHandleId) {
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 			desiredHandleId, actualHandleId)
 	}
