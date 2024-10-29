@@ -164,7 +164,7 @@ func createOrReplaceHelper(c client.Client, obj client.Object, fn mutateFn) erro
 	}
 	err := c.Create(context.Background(), obj)
 	if apierrors.IsAlreadyExists(err) {
-		// TODO: retry mutiple times with backoff if necessary.
+		// TODO: retry multiple times with backoff if necessary.
 		// this cast is not safe per-say but is added to get around the transition from runtime.Object to client.Object
 		existing, ok := obj.DeepCopyObject().(client.Object)
 		if !ok {
