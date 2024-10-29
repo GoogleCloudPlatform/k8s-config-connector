@@ -79,14 +79,14 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	id, err := krm.NewKMSAutokeyConfigRef(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s", obj.GetName())
+		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s, err: %w", obj.GetName(), err)
 	}
 	var keyProject *refs.Project
 	if obj.Spec.KeyProjectRef != nil {
 		var err error
 		keyProject, err = refs.ResolveProject(ctx, reader, obj, obj.Spec.KeyProjectRef)
 		if err != nil {
-			return nil, fmt.Errorf("unable to resolve key project for autokeyConfig naem: %s", obj.GetName())
+			return nil, fmt.Errorf("unable to resolve key project for autokeyConfig naem: %s, err: %w", obj.GetName(), err)
 		}
 	}
 	gcpClient, err := m.client(ctx)
