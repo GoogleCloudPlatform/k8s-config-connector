@@ -33,8 +33,8 @@ func TestValueToDNSSubdomainName(t *testing.T) {
 		},
 		{
 			Name:           "Strip non-alphanumeric",
-			Value:          "this-name-contains-#chars;_that#shouldbe-replaced",
-			ExpectedResult: "this-name-contains--chars--that-shouldbe-replaced",
+			Value:          "this-name-contains-#chars;_that#should-be-replaced",
+			ExpectedResult: "this-name-contains--chars--that-should-be-replaced",
 		},
 		{
 			Name:           "Periods and hyphens",
