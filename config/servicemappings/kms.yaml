@@ -70,6 +70,3 @@ spec:
       containers:
         - type: project
           tfField: project
-    - name: google_kms_autokey_config
-      kind: KMSAutokeyConfig
-      direct: true

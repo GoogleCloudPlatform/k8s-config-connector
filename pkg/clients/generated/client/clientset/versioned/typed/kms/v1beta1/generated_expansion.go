@@ -21,8 +21,6 @@
 
 package v1beta1
 
-type KMSAutokeyConfigExpansion interface{}
-
 type KMSCryptoKeyExpansion interface{}
 
 type KMSKeyRingExpansion interface{}

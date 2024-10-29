@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: kms.cnrm.cloud.google.com/v1beta1
+apiVersion: kms.cnrm.cloud.google.com/v1alpha1
 kind: KMSAutokeyConfig
 metadata:
   #annotations:
