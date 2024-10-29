@@ -317,7 +317,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the DataformReposity resource
+                description: A unique specifier for the DataformRepository resource
                   in GCP.
                 type: string
               observedGeneration:
@@ -620,7 +620,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the DataformReposity resource
+                description: A unique specifier for the DataformRepository resource
                   in GCP.
                 type: string
               observedGeneration:
