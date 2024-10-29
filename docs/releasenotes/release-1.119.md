@@ -22,7 +22,7 @@
 ## New Fields:
 
 * `ComputeForwardingRule`
-  * Added the `spec.target.serviceAttachmentRef` field, allowing a `ComputeForwaringRule` to target a `ComputeServiceAttachment`.
+  * Added the `spec.target.serviceAttachmentRef` field, allowing a `ComputeForwardingRule` to target a `ComputeServiceAttachment`.
 
 * `ContainerCluster`
   * Added previous output-only spec fields to `status.observedState`   
