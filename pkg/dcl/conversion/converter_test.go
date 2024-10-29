@@ -1286,7 +1286,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 								// Read-only sensitive and reference fields are
 								// surfaced onto the spec if they're part of
 								// objects within collections (maps, arrays)
-								// and simply srufaced as strings rather than
+								// and simply surfaced as strings rather than
 								// sensitive or reference structs.
 								"readOnlySensitiveField": "sensitiveVal",
 								"readOnlyReferenceField": "referenceVal",
@@ -1487,7 +1487,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 								// Read-only sensitive and reference fields are
 								// surfaced onto the spec if they're part of
 								// objects within collections (maps, arrays)
-								// and simply srufaced as strings rather than
+								// and simply surfaced as strings rather than
 								// sensitive or reference structs.
 								"readOnlySensitiveField": "sensitiveVal",
 								"readOnlyReferenceField": "referenceVal",
