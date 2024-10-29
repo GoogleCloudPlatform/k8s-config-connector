@@ -32,7 +32,7 @@ func normalize(t *testing.T, obj interface{}) map[string]interface{} {
 	}
 	var ret map[string]interface{}
 	if err := json.Unmarshal(b, &ret); err != nil {
-		t.Fatalf("error unmarshaling JSON bytes: %v", err)
+		t.Fatalf("error unmarshalling JSON bytes: %v", err)
 	}
 	return ret
 }

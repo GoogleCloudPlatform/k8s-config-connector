@@ -243,7 +243,7 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 		sampleName = strings.TrimSuffix(sampleName, "basic") + "autogen"
 
 		if err := insertTestData(create, dependencies, autoGenType, sampleName, generatedSamples); err != nil {
-			errToReturn := fmt.Errorf("error unmarshaling json for TF sample %s: %w", sf, err)
+			errToReturn := fmt.Errorf("error unmarshalling json for TF sample %s: %w", sf, err)
 			klog.Warningf("Failed sample conversion: %v", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
 			continue
@@ -281,7 +281,7 @@ func convertHCLBytesToJSON(raw []byte) (map[string]interface{}, error) {
 	jsonStruct := make(map[string]interface{})
 	err = json.Unmarshal(convertedBytes, &jsonStruct)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshaling json: %w", err)
+		return nil, fmt.Errorf("error unmarshalling json: %w", err)
 	}
 
 	return jsonStruct, nil
