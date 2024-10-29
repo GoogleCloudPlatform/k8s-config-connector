@@ -7,7 +7,7 @@ Here is an overview of the ASO setup process:
 
 1. Create a GCP service account.
 1. Create an Azure managed identity.
-   1. Grant this managed identity the permissions to manage the Azure resouces.
+   1. Grant this managed identity the permissions to manage the Azure resources.
    1. Allow the GCP service account to impersonate the Azure managed identity.
 1. Create the ASO controller with the GCP service account.
 
