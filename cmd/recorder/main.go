@@ -198,8 +198,9 @@ func forEach(ctx context.Context, c client.Client, gvk schema.GroupVersionKind, 
 		crdName := gvkToCRDName(gvk)
 		if _, ok := opk8s.IgnoredCRDList[crdName]; ok {
 			logger.Error(fmt.Errorf("unexpected CRD %s", crdName),
-				fmt.Sprintf("Orphaned CRD %s found, you should delete "+
-					"it using 'kubectl delete crd %s'", crdName, crdName))
+				fmt.Sprintf("please run `kubectl delete crd %s` to "+
+					"delete the orphaned CRD", crdName),
+				"crd", crdName)
 			continue
 		}
 		list := unstructured.UnstructuredList{}
