@@ -32,7 +32,7 @@ type Mapping struct {
 	Mappings []typeMapping
 }
 
-// Map will convert an object from "in" to "out", mapping object subfields recurisvely.
+// Map will convert an object from "in" to "out", mapping object subfields recursively.
 func (m *Mapping) Map(in any, out any) error {
 	inVal := reflect.ValueOf(in)
 	outVal := reflect.ValueOf(out)
