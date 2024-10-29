@@ -199,7 +199,7 @@ func getCurrentCondition(ctx context.Context, c client.Client, u *unstructured.U
 	}
 	resource, err := k8s.NewResource(unstruct)
 	if err != nil {
-		return v1alpha1.Condition{}, false, fmt.Errorf("error marhsalling unstruct to k8s resource: %w", err)
+		return v1alpha1.Condition{}, false, fmt.Errorf("error marshalling unstruct to k8s resource: %w", err)
 	}
 	condition, found = k8s.GetReadyCondition(resource)
 	return condition, found, nil

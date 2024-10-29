@@ -75,7 +75,7 @@ func NewResource(u *unstructured.Unstructured) (*Resource, error) {
 func (r *Resource) MarshalAsUnstructured() (*unstructured.Unstructured, error) {
 	u := &unstructured.Unstructured{}
 	if err := util.Marshal(r, u); err != nil {
-		return nil, fmt.Errorf("error marshing resource to Unstructured %w", err)
+		return nil, fmt.Errorf("error marshalling resource to Unstructured %w", err)
 	}
 	removeNilCreationTimestamp(u.Object)
 	return u, nil
