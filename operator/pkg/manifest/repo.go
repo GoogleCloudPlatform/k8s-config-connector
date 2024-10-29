@@ -100,7 +100,7 @@ func (r *LocalRepository) LoadManifest(_ context.Context, componentName string, 
 		return map[string]string{path: sb.String()}, nil
 	}
 
-	// otherwise we are in namesapce mode
+	// otherwise we are in namespace mode
 	rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode)
 	p = filepath.Join(r.basedir, "packages", componentName, version, "namespaced", cnrmSystemFileName)
 	b, err = os.ReadFile(p)

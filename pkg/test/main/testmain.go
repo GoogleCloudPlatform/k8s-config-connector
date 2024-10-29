@@ -82,7 +82,7 @@ func SetupMultipleEnvironments(m *testing.M, testType test.Type, crds []*apiexte
 		stops = append(stops, stop)
 
 		if err := testcontroller.EnsureNamespaceExists(mgr.GetClient(), k8s.SystemNamespace); err != nil {
-			log.Fatalf("error ensuring namesapce exists: %v", err)
+			log.Fatalf("error ensuring namespace exists: %v", err)
 		}
 		*mp = mgr
 	}
