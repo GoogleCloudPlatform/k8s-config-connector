@@ -36,7 +36,7 @@ func MeanReconcileReenqueuePeriod(gvk schema.GroupVersionKind,
 	if smLoader != nil {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
 		if err == nil && len(rcs) > 0 {
-			// One GVK can map to multiple ResourceConfigs, however these ResournceConfigs will share the same reconcile interval.
+			// One GVK can map to multiple ResourceConfigs, however these ResourceConfigs will share the same reconcile interval.
 			if rcs[0].ReconciliationIntervalInSeconds != nil {
 				return time.Duration(*rcs[0].ReconciliationIntervalInSeconds) * time.Second
 			}
