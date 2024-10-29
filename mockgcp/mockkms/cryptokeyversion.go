@@ -181,10 +181,10 @@ func (r *kmsServer) DestroyCryptoKeyVersion(ctx context.Context, req *pb.Destroy
 		parent = cryptoKey
 	}
 
-	destroyScheuledDuration := parent.GetDestroyScheduledDuration().AsDuration()
+	destroyScheduledDuration := parent.GetDestroyScheduledDuration().AsDuration()
 
 	obj.State = pb.CryptoKeyVersion_DESTROY_SCHEDULED
-	obj.DestroyTime = timestamppb.New(now.Add(destroyScheuledDuration))
+	obj.DestroyTime = timestamppb.New(now.Add(destroyScheduledDuration))
 
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
