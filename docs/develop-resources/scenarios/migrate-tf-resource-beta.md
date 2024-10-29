@@ -13,7 +13,7 @@ Follow [deep-dives Step 1](../deep-dives/1-add-mockgcp-tests.md). We use the Ter
 
 * The 1st git-commit shall contain `create.yaml` and `update.yaml` files with exactly the same config. 
 * The 2nd git-commit shall have `update.yaml` changing all the mutable fields, reflected in the git-diff based on the first commit.
-* The 3rd git-commit (or N-th git-commit) shall run against real GCP. The generated `_generated_object_<resource>.golden.yaml` and `_http.log` is the golden log reflecting the real GCP. The `_generated_obeject_<resource>.golden.yaml` matches the `spec` in `update.yaml`
+* The 3rd git-commit (or N-th git-commit) shall run against real GCP. The generated `_generated_object_<resource>.golden.yaml` and `_http.log` is the golden log reflecting the real GCP. The `_generated_object_<resource>.golden.yaml` matches the `spec` in `update.yaml`
 * The 4rd git-commit (or N+1-th git-commit) shall run against the Mock GCP. The git-diff shows `_generated_object_<resource>.golden.yaml` is unchanged, and the `_http.log` is as much like the real GCP as possible. 
 
 * If the resource has dependencies (`dependencies.yaml`), we should cover all the referenced fields. If the dependency resource does not have mockGCP, you need to implement those dependencies' MockGCP methods as well.
