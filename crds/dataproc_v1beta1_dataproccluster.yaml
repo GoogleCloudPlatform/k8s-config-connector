@@ -1323,7 +1323,7 @@ spec:
                                                 type: integer
                                               acceleratorType:
                                                 description: Immutable. The accelerator
-                                                  type resource namename (see GPUs
+                                                  type resource name (see GPUs
                                                   on Compute Engine).
                                                 type: string
                                               gpuPartitionSize:
