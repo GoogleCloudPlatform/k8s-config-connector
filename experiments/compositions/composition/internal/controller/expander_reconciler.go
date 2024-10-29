@@ -226,9 +226,9 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	_, exist := inputcr.GetAnnotations()["composition-expander-debug-logs"]
 	if exist {
 		expanderDebugLogsEnabled = true
-		logger.Info("annotation'composition-expander-debug-logs' is turned on.")
+		logger.Info("annotation 'composition-expander-debug-logs' is turned on.")
 	}
-	logger.Info("annotation'composition-expander-debug-logs' is turned off.")
+	logger.Info("annotation 'composition-expander-debug-logs' is turned off.")
 
 	// Write out the (in-order) stages to the plan as a reference for later when we need to delete resources.
 	stagesEvaluated := []string{}
