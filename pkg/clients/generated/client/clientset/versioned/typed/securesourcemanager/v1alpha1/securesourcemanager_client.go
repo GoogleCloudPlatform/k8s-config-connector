@@ -32,6 +32,7 @@ import (
 type SecuresourcemanagerV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	SecureSourceManagerInstancesGetter
+	SecureSourceManagerRepositoriesGetter
 }
 
 // SecuresourcemanagerV1alpha1Client is used to interact with features provided by the securesourcemanager.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type SecuresourcemanagerV1alpha1Client struct {
 
 func (c *SecuresourcemanagerV1alpha1Client) SecureSourceManagerInstances(namespace string) SecureSourceManagerInstanceInterface {
 	return newSecureSourceManagerInstances(c, namespace)
+}
+
+func (c *SecuresourcemanagerV1alpha1Client) SecureSourceManagerRepositories(namespace string) SecureSourceManagerRepositoryInterface {
+	return newSecureSourceManagerRepositories(c, namespace)
 }
 
 // NewForConfig creates a new SecuresourcemanagerV1alpha1Client for the given config.
