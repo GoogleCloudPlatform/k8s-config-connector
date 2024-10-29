@@ -67,12 +67,22 @@ type SecureSourceManagerRepositoryStatus struct {
 
 // SecureSourceManagerRepositoryObservedState is the state of the SecureSourceManagerRepository resource as most recently observed in GCP.
 type SecureSourceManagerRepositoryObservedState struct {
+	// // Output only. Create timestamp.
+	// CreateTime *string `json:"createTime,omitempty"`
+
+	// // Output only. Update timestamp.
+	// UpdateTime *string `json:"updateTime,omitempty"
+
+	// Output only. Unique identifier of the repository.
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. URIs for the repository.
+	URIs *Repository_URIs `json:"uris,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
-// +kubebuilder:resource:categories=gcp,shortName=gcpsecuresourcemanagerrepository;gcpsecuresourcemanagerrepositorys
+// +kubebuilder:resource:categories=gcp,shortName=gcpsecuresourcemanagerrepository;gcpsecuresourcemanagerrepositories
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
