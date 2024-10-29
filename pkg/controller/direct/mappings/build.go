@@ -151,7 +151,7 @@ func NewMapping(cloudObj any, krmObj any, fields ...FieldMapping) *MappingBuilde
 	}
 
 	b = b.addKRMToCloudMapping(resourceKRMType, resourceCloudType, true, fields...)
-	b = b.addCloudToKRMMappin(resourceCloudType, resourceKRMType, true, fields...)
+	b = b.addCloudToKRMMapping(resourceCloudType, resourceKRMType, true, fields...)
 	return b
 
 }
@@ -164,7 +164,7 @@ func (b *MappingBuilder) MapNested(cloudObj any, krmObj any, fields ...FieldMapp
 	resourceKRMType := typeOf(krmVal.Type())
 
 	b = b.addKRMToCloudMapping(resourceKRMType, resourceCloudType, false, fields...)
-	b = b.addCloudToKRMMappin(resourceCloudType, resourceKRMType, false, fields...)
+	b = b.addCloudToKRMMapping(resourceCloudType, resourceKRMType, false, fields...)
 	return b
 }
 
@@ -210,8 +210,8 @@ func (b *MappingBuilder) addKRMToCloudMapping(inType *reflectType, outType *refl
 	return b
 }
 
-// addCloudToKRMMappin will add a mapping for mapping from Cloud to KRM objects.
-func (b *MappingBuilder) addCloudToKRMMappin(inType *reflectType, outType *reflectType, hasSpecStatus bool, fields ...FieldMapping) *MappingBuilder {
+// addCloudToKRMMapping will add a mapping for mapping from Cloud to KRM objects.
+func (b *MappingBuilder) addCloudToKRMMapping(inType *reflectType, outType *reflectType, hasSpecStatus bool, fields ...FieldMapping) *MappingBuilder {
 	createMapping := &structTypeMapping{
 		scope:         b.mapping,
 		inType:        inType,
