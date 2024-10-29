@@ -165,7 +165,7 @@ spec:
                           - audioUri
                           type: object
                         telephonyTransferCall:
-                          description: Represents the signal that telles the client
+                          description: Represents the signal that tells the client
                             to transfer the phone call connected to the agent to a
                             third-party endpoint.
                           properties:
@@ -339,7 +339,7 @@ spec:
                                 - audioUri
                                 type: object
                               telephonyTransferCall:
-                                description: Represents the signal that telles the
+                                description: Represents the signal that tells the
                                   client to transfer the phone call connected to the
                                   agent to a third-party endpoint.
                                 properties:
@@ -526,7 +526,7 @@ spec:
                                         - audioUri
                                         type: object
                                       telephonyTransferCall:
-                                        description: Represents the signal that telles
+                                        description: Represents the signal that tells
                                           the client to transfer the phone call connected
                                           to the agent to a third-party endpoint.
                                         properties:
@@ -733,7 +733,7 @@ spec:
                                               type: object
                                             telephonyTransferCall:
                                               description: Represents the signal that
-                                                telles the client to transfer the
+                                                tells the client to transfer the
                                                 phone call connected to the agent
                                                 to a third-party endpoint.
                                               properties:
@@ -986,7 +986,7 @@ spec:
                                 - audioUri
                                 type: object
                               telephonyTransferCall:
-                                description: Represents the signal that telles the
+                                description: Represents the signal that tells the
                                   client to transfer the phone call connected to the
                                   agent to a third-party endpoint.
                                 properties:
