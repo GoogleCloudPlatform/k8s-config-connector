@@ -21,7 +21,7 @@ The pod can be as simple as a kubectl cli or a kpt-cli bundled in, or it can be 
 Since it is not a persistent controller, we cannot implement drift correction.
 
 - Separate pod with kubectl or kpt-cli would take a dependency on an external project and involves security patches for a such image.
-- Don't think we need a separate pod for security reasons yet. Separate reconciler per namespace should cover most secutrity concerns.
+- Don't think we need a separate pod for security reasons yet. Separate reconciler per namespace should cover most security concerns.
 
 ## A persistent pod comms via grpc
 
