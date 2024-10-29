@@ -17,6 +17,7 @@ package keyhandle
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -106,7 +107,10 @@ var _ directbase.Adapter = &Adapter{}
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting KeyHandle", "name", a.id.External)
-
+	if a.id.External == "" {
+		// cannot retrieve the key handle without ServiceGeneratedID, expecting to create a new connection
+		return false, nil
+	}
 	req := &kmspb.GetKeyHandleRequest{Name: a.id.External}
 	keyhandlepb, err := a.gcpClient.GetKeyHandle(ctx, req)
 	if err != nil {
@@ -154,7 +158,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	tokens := strings.Split(created.Name, "/")
+	externalRef := parent.String() + "/keyHandles/" + tokens[5]
+	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -193,7 +199,6 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete operation not supported for KeyHandle, so this operation is a no-op.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("delete operation on KeyHandle resource not supported", "name", a.id.External)
-
+	log.V(2).Error(fmt.Errorf("delete operation not supported on KeyHandle, name: %s", a.id.External), "delete operation on KeyHandle resource not supported,")
 	return false, nil
 }

@@ -17,7 +17,6 @@ kind: KMSKeyHandle
 metadata:
   name: keyhandle-4
 spec:
-  resourceID: keyhandle-4
   projectRef:
     external: projects/autokey-resource
   location: us-central1
