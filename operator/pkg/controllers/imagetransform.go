@@ -23,7 +23,7 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
-// ImageTranform remaps container images in a manifest.
+// ImageTransform remaps container images in a manifest.
 type ImageTransform struct {
 	// ImagePrefix changes the image registry to a different registry, keeping the name.
 	// We strip off all but the last component of the image name, and then add the prefix.
