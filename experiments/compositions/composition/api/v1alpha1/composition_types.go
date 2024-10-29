@@ -137,7 +137,7 @@ type CompositionSpec struct {
 type ValidationStatus string
 
 const (
-	// ValidationStatusUnkown is when it is not validated
+	// ValidationStatusUnknown is when it is not validated
 	ValidationStatusUnknown ValidationStatus = "unknown"
 	// ValidationStatusSuccess is when valdiation succeeds
 	ValidationStatusSuccess ValidationStatus = "success"
