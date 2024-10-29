@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(SecureSourceManagerInstance{}).Name(),
 	}
 
+	SecureSourceManagerRepositoryGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(SecureSourceManagerRepository{}).Name(),
+	}
+
 	securesourcemanagerAPIVersion = SchemeGroupVersion.String()
 )
