@@ -19,12 +19,13 @@ metadata:
 spec:
   location: us-central1
   projectRef:
-    external: ${projectId}
+    # Replace ${PROJECT_ID?} with your project ID
+    external: ${PROJECT_ID?}
   cloudSQL:
     instanceRef:
-      name: sqlinstance-dep
-    database: sqldatabase-dep
+      name: bigqueryconnection-dep
+    database: bigqueryconnection-dep
     type: "MYSQL"
     credential:
-      username: sqluser-dep
+      username: bigqueryconnection-dep
       password: cGFzc3dvcmQ=

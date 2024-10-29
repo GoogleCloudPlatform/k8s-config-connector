@@ -15,7 +15,7 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
-  name: spannerinstance-dep
+  name: bigqueryconnection-dep
 spec:
   config: regional-us-west1
-  displayName: Spanner Database Dependency
+  displayName: BigQueryConnection Dependency

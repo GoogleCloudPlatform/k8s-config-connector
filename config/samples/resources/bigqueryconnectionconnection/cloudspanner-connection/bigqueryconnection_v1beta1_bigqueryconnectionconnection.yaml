@@ -19,5 +19,13 @@ metadata:
 spec:
   location: us-central1
   projectRef:
-    external: ${projectId}
-  spark: {}
+    # Replace ${PROJECT_ID?} with your project ID
+    external: ${PROJECT_ID?}
+  cloudSpanner:
+    databaseRef:
+      name: bigqueryconnection-dep
+    maxParallelism: 100
+    useDataBoost: True
+    useParallelism: True
+    databaseRole: "admin"
+

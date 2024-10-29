@@ -15,9 +15,9 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerDatabase
 metadata:
-  name: spannerdatabase-dep
+  name: bigqueryconnection-dep
 spec:
   instanceRef:
-    name: spannerinstance-dep
+    name: bigqueryconnection-dep
   ddl:
   - "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"

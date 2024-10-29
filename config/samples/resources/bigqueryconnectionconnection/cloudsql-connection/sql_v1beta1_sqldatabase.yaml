@@ -15,8 +15,8 @@
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLDatabase
 metadata:
-  name: sqldatabase-dep
+  name: bigqueryconnection-dep
 spec:
   charset: utf8
   instanceRef:
-    name: sqlinstance-dep
+    name: bigqueryconnection-dep

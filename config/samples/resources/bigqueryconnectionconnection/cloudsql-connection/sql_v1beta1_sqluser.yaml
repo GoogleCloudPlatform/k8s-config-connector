@@ -17,13 +17,13 @@ kind: SQLUser
 metadata:
   labels:
     label-one: "value-one"
-  name: sqluser-dep
+  name: bigqueryconnection-dep
 spec:
   instanceRef:
-    name: sqlinstance-dep
+    name: bigqueryconnection-dep
   host: foo
   password:
     valueFrom:
       secretKeyRef:
-        name: secret-dep
+        name: bigqueryconnection-dep
         key: password

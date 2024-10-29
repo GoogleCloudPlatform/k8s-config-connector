@@ -19,7 +19,8 @@ metadata:
 spec:
   location: "azure-eastus2"
   projectRef:
-    external: ${projectId}
+    # Replace ${PROJECT_ID?} with your project ID
+    external: ${PROJECT_ID?}
   azure:
     customerTenantID: "customer-tenant-id-1111111"
     federatedApplicationClientID: "b43eeeee-eeee-eeee-eeee-a480155501ce"
