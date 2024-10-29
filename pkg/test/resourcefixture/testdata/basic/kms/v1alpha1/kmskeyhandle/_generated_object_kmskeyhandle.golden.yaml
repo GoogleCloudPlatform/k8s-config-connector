@@ -7,12 +7,13 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
-  name: keyhandle-4
+  name: keyhandle-${uniqueId}
   namespace: ${uniqueId}
 spec:
   location: us-central1
   projectRef:
-    external: projects/autokey-resource
+    external: projects/${uniqueId}
+  resourceID: 5fe9854c-4a75-4ec9-8c27-c235754b981d
   resourceTypeSelector: compute.googleapis.com/Disk
 status:
   conditions:
@@ -21,6 +22,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/autokey-resource/locations/us-central1/keyHandles/
+  externalRef: projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d
   observedGeneration: 1
   observedState: {}

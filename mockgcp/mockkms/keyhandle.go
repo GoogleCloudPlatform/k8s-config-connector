@@ -13,10 +13,10 @@
 // limitations under the License.
 
 // +mockgcp-support
-// apiVersion: kms.cnrm.cloud.google.com/v1beta1
-// kind: KMSAutokeyConfig
-// service: google.cloud.kms.v1.AutokeyAdmin
-// resource: AutokeyConfig
+// apiVersion: kms.cnrm.cloud.google.com/v1alpha1
+// kind: KMSKeyHandle
+// service: google.cloud.kms.v1.AutokeyServer
+// resource: KeyHandle
 
 package mockkms
 
@@ -54,11 +54,19 @@ func (r *autokeyServer) GetKeyHandle(ctx context.Context, req *pb.GetKeyHandleRe
 }
 
 func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHandleRequest) (*lro.Operation, error) {
-	parent, resourceID, err := r.parseKeyHandleName(req.KeyHandle.GetName())
+	var reqName string
+	if req.KeyHandleId != "" {
+		reqName = req.Parent + "/keyHandles/" + req.KeyHandleId
+	} else if req.KeyHandle.Name != "" {
+		reqName = req.KeyHandle.Name
+	} else {
+		reqName = req.Parent + "/keyHandles/" + "5fe9854c-4a75-4ec9-8c27-c235754b981d"
+
+	}
+	parent, resourceID, err := r.parseKeyHandleName(reqName)
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := parent.String() + "/keyHandles/" + resourceID
 
 	obj := proto.Clone(req.GetKeyHandle()).(*pb.KeyHandle)
@@ -115,8 +123,8 @@ func (r *autokeyServer) parseParentName(name string) (*parentName, error) {
 	}, nil
 }
 
-// parseAutokeyConfigName parses a string into an AutoKeyConfig name.
-// The expected form is `folders/{FOLDER_NUMBER}/autokeyConfig`.
+// parseKeyHandleName parses a string into an KeyHandle name.
+// The expected form is `projects/{projectId}/locations/<location>/keyHandles/<resourceId>`.
 func (r *autokeyServer) parseKeyHandleName(name string) (*parentName, string, error) {
 	name = strings.TrimPrefix(name, "/")
 	tokens := strings.Split(name, "/")
