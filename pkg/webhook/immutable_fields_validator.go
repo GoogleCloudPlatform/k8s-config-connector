@@ -122,6 +122,9 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 		return validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec)
 	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
 		return validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec)
+	case schema.GroupKind{Group: "privilegedaccessmanager.cnrm.cloud.google.com", Kind: "PrivilegedAccessManagerEntitlement"}:
+		// TODO: The immutability checks for direct resources should be managed under each resource package.
+		return allowedResponse
 	}
 
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
