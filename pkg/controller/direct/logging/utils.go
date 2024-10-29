@@ -276,11 +276,11 @@ func compareLinearBuckets(kccObj *krm.LogmetricLinearBuckets, apiObj *api.Linear
 	apiLinearBuckets := struct {
 		numFiniteBuckets int64
 		offset           float64
-		witdh            float64
+		width            float64
 	}{
 		numFiniteBuckets: apiObj.NumFiniteBuckets,
 		offset:           apiObj.Offset,
-		witdh:            apiObj.Width,
+		width:            apiObj.Width,
 	}
 
 	return reflect.DeepEqual(kccObj, apiLinearBuckets)
