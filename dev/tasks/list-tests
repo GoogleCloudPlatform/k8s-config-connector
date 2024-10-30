@@ -20,17 +20,17 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-dev/tasks/list-tests | xargs -I {} mkdir -p "testlogs/{}"
+for f in $(find ./pkg/test/resourcefixture/testdata -name "create.yaml"); do
+  dir=$(dirname $f)
+  testname=$(basename ${dir})
 
-echo "Downloading envtest assets..."
-export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+  echo "TestAllInSeries/fixtures/^${testname}$"
+done
 
-echo "Prebuilding e2e tests"
-export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
-go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e 
+for f in $(find ./config/samples/resources -name "*.yaml"); do
+  dir=$(dirname $f)
+  testname=$(basename ${dir})
 
-echo "Running tests"
-dev/tasks/list-tests | sort | uniq | xargs -P 40 -I {} /bin/bash -c "echo {}; RUN_TESTS={} dev/tasks/run-e2e > testlogs/{}/log 2>&1"
+  echo "TestAllInSeries/samples/^${testname}$"
+done
 
-echo "Checking for failures"
-rgrep FAIL testlogs/
