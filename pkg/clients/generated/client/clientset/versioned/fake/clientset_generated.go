@@ -53,8 +53,8 @@ import (
 	fakebigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1/fake"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	fakebigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1/fake"
-	bigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1alpha1"
-	fakebigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1alpha1/fake"
+	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
+	fakebigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1/fake"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
 	fakebigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1/fake"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
@@ -119,6 +119,8 @@ import (
 	fakedialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1/fake"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
 	fakedialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1/fake"
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
+	fakediscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1/fake"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	fakedlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1/fake"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
@@ -395,9 +397,9 @@ func (c *Clientset) BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.Bigq
 	return &fakebigquerydatapolicyv1alpha1.FakeBigquerydatapolicyV1alpha1{Fake: &c.Fake}
 }
 
-// BigquerydatatransferV1alpha1 retrieves the BigquerydatatransferV1alpha1Client
-func (c *Clientset) BigquerydatatransferV1alpha1() bigquerydatatransferv1alpha1.BigquerydatatransferV1alpha1Interface {
-	return &fakebigquerydatatransferv1alpha1.FakeBigquerydatatransferV1alpha1{Fake: &c.Fake}
+// BigquerydatatransferV1beta1 retrieves the BigquerydatatransferV1beta1Client
+func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface {
+	return &fakebigquerydatatransferv1beta1.FakeBigquerydatatransferV1beta1{Fake: &c.Fake}
 }
 
 // BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
@@ -558,6 +560,11 @@ func (c *Clientset) DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1In
 // DialogflowcxV1alpha1 retrieves the DialogflowcxV1alpha1Client
 func (c *Clientset) DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface {
 	return &fakedialogflowcxv1alpha1.FakeDialogflowcxV1alpha1{Fake: &c.Fake}
+}
+
+// DiscoveryengineV1alpha1 retrieves the DiscoveryengineV1alpha1Client
+func (c *Clientset) DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface {
+	return &fakediscoveryenginev1alpha1.FakeDiscoveryengineV1alpha1{Fake: &c.Fake}
 }
 
 // DlpV1beta1 retrieves the DlpV1beta1Client

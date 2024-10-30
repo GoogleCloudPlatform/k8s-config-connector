@@ -24,6 +24,27 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
+# DiscoveryEngine
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.discoveryengine.v1 \
+    --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kind DiscoveryEngineDataStore \
+    --proto-resource DataStore
+
+# go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/dev/tools/proto-to-mapper/third_party/googleapis/ <<EOF
+# // +kcc:proto=google.cloud.discoveryengine.v1.Engine
+# EOF
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.discoveryengine.v1 \
+    --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # DataFlow
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \

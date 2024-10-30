@@ -423,7 +423,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 		h.Project = testgcp.GCPProject{
 			ProjectID:     "example-project",
-			ProjectNumber: 12345678,
+			ProjectNumber: 123456789,
 		}
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
@@ -651,6 +651,18 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			t.Errorf("error from mgr.Start: %v", err)
 		}
 	}()
+
+	// Wait for the webhook server to start (mgr.Start runs asynchronously)
+	for {
+		webhookStarted := mgr.GetWebhookServer().StartedChecker()
+		req := &http.Request{}
+		err := webhookStarted(req)
+		if err == nil {
+			break
+		}
+		t.Logf("error waiting for webhook to start: %v", err)
+		time.Sleep(100 * time.Millisecond)
+	}
 
 	return h
 }

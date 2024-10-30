@@ -545,6 +545,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "bigquerydatatransfer.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigQueryDataTransferConfig",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "bigquery.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "BigQueryJob",
@@ -2298,6 +2308,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "alpha",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "discoveryengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DiscoveryEngineDataStore",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{

@@ -26,7 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/google/uuid"
 
 	gcp "cloud.google.com/go/bigquery/connection/apiv1"
 
@@ -70,11 +69,6 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 		return nil, fmt.Errorf("building bigqueryconnection client: %w", err)
 	}
 	return gcpClient, err
-}
-
-func isValidUUID(value string) bool {
-	_, err := uuid.Parse(value)
-	return err == nil
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -273,6 +267,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	obj := &krm.BigQueryConnectionConnection{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(BigQueryConnectionConnectionSpec_FromProto(mapCtx, a.actual))
+	tokens := strings.Split(a.id.External, "connections/")
+	obj.Spec.ResourceID = direct.LazyPtr(tokens[len(tokens)-1])
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

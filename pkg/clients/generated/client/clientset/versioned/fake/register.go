@@ -37,7 +37,7 @@ import (
 	bigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1alpha1"
 	bigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1alpha1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
-	bigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1alpha1"
+	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
@@ -70,6 +70,7 @@ import (
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/deploymentmanager/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/discoveryengine/v1alpha1"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1beta1"
@@ -168,7 +169,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigqueryanalyticshubv1alpha1.AddToScheme,
 	bigqueryconnectionv1alpha1.AddToScheme,
 	bigquerydatapolicyv1alpha1.AddToScheme,
-	bigquerydatatransferv1alpha1.AddToScheme,
+	bigquerydatatransferv1beta1.AddToScheme,
 	bigqueryreservationv1alpha1.AddToScheme,
 	bigtablev1beta1.AddToScheme,
 	billingbudgetsv1beta1.AddToScheme,
@@ -201,6 +202,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	deploymentmanagerv1alpha1.AddToScheme,
 	dialogflowv1alpha1.AddToScheme,
 	dialogflowcxv1alpha1.AddToScheme,
+	discoveryenginev1alpha1.AddToScheme,
 	dlpv1beta1.AddToScheme,
 	dnsv1alpha1.AddToScheme,
 	dnsv1beta1.AddToScheme,

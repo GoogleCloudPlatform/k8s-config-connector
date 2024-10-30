@@ -40,7 +40,7 @@ import (
 	bigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1alpha1"
 	bigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
-	bigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1alpha1"
+	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
@@ -73,6 +73,7 @@ import (
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
@@ -167,7 +168,7 @@ type Interface interface {
 	BigqueryanalyticshubV1alpha1() bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Interface
 	BigqueryconnectionV1alpha1() bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Interface
 	BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Interface
-	BigquerydatatransferV1alpha1() bigquerydatatransferv1alpha1.BigquerydatatransferV1alpha1Interface
+	BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface
 	BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
 	BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface
@@ -200,6 +201,7 @@ type Interface interface {
 	DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface
 	DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1Interface
 	DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface
+	DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface
 	DlpV1beta1() dlpv1beta1.DlpV1beta1Interface
 	DnsV1alpha1() dnsv1alpha1.DnsV1alpha1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
@@ -292,7 +294,7 @@ type Clientset struct {
 	bigqueryanalyticshubV1alpha1    *bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Client
 	bigqueryconnectionV1alpha1      *bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Client
 	bigquerydatapolicyV1alpha1      *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
-	bigquerydatatransferV1alpha1    *bigquerydatatransferv1alpha1.BigquerydatatransferV1alpha1Client
+	bigquerydatatransferV1beta1     *bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Client
 	bigqueryreservationV1alpha1     *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
 	bigtableV1beta1                 *bigtablev1beta1.BigtableV1beta1Client
 	billingbudgetsV1beta1           *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
@@ -325,6 +327,7 @@ type Clientset struct {
 	deploymentmanagerV1alpha1       *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
 	dialogflowV1alpha1              *dialogflowv1alpha1.DialogflowV1alpha1Client
 	dialogflowcxV1alpha1            *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
+	discoveryengineV1alpha1         *discoveryenginev1alpha1.DiscoveryengineV1alpha1Client
 	dlpV1beta1                      *dlpv1beta1.DlpV1beta1Client
 	dnsV1alpha1                     *dnsv1alpha1.DnsV1alpha1Client
 	dnsV1beta1                      *dnsv1beta1.DnsV1beta1Client
@@ -474,9 +477,9 @@ func (c *Clientset) BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.Bigq
 	return c.bigquerydatapolicyV1alpha1
 }
 
-// BigquerydatatransferV1alpha1 retrieves the BigquerydatatransferV1alpha1Client
-func (c *Clientset) BigquerydatatransferV1alpha1() bigquerydatatransferv1alpha1.BigquerydatatransferV1alpha1Interface {
-	return c.bigquerydatatransferV1alpha1
+// BigquerydatatransferV1beta1 retrieves the BigquerydatatransferV1beta1Client
+func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface {
+	return c.bigquerydatatransferV1beta1
 }
 
 // BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
@@ -637,6 +640,11 @@ func (c *Clientset) DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1In
 // DialogflowcxV1alpha1 retrieves the DialogflowcxV1alpha1Client
 func (c *Clientset) DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface {
 	return c.dialogflowcxV1alpha1
+}
+
+// DiscoveryengineV1alpha1 retrieves the DiscoveryengineV1alpha1Client
+func (c *Clientset) DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface {
+	return c.discoveryengineV1alpha1
 }
 
 // DlpV1beta1 retrieves the DlpV1beta1Client
@@ -1103,7 +1111,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.bigquerydatatransferV1alpha1, err = bigquerydatatransferv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.bigquerydatatransferV1beta1, err = bigquerydatatransferv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1232,6 +1240,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.dialogflowcxV1alpha1, err = dialogflowcxv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.discoveryengineV1alpha1, err = discoveryenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1559,7 +1571,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigqueryanalyticshubV1alpha1 = bigqueryanalyticshubv1alpha1.New(c)
 	cs.bigqueryconnectionV1alpha1 = bigqueryconnectionv1alpha1.New(c)
 	cs.bigquerydatapolicyV1alpha1 = bigquerydatapolicyv1alpha1.New(c)
-	cs.bigquerydatatransferV1alpha1 = bigquerydatatransferv1alpha1.New(c)
+	cs.bigquerydatatransferV1beta1 = bigquerydatatransferv1beta1.New(c)
 	cs.bigqueryreservationV1alpha1 = bigqueryreservationv1alpha1.New(c)
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
 	cs.billingbudgetsV1beta1 = billingbudgetsv1beta1.New(c)
@@ -1592,6 +1604,7 @@ func New(c rest.Interface) *Clientset {
 	cs.deploymentmanagerV1alpha1 = deploymentmanagerv1alpha1.New(c)
 	cs.dialogflowV1alpha1 = dialogflowv1alpha1.New(c)
 	cs.dialogflowcxV1alpha1 = dialogflowcxv1alpha1.New(c)
+	cs.discoveryengineV1alpha1 = discoveryenginev1alpha1.New(c)
 	cs.dlpV1beta1 = dlpv1beta1.New(c)
 	cs.dnsV1alpha1 = dnsv1alpha1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)

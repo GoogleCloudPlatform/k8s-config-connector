@@ -19,4 +19,38 @@ func init() {
 		ResourceKind: "BigQueryJob",
 		SkipUpdate:   true,
 	}
+
+	// BigQueryConnectionConnection is a service-generate-ID resource.
+	// Drift-deletion removes the object from the GCP server and test
+	// if Config Connector can recreate the object. This does not fit the
+	// service-generated-ID resource.
+	resourceContextMap["bigqueryconnectionconnectionbasic"] = ResourceContext{
+		ResourceKind: "BigQueryConnectionConnection",
+
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["bigqueryconnectionconnectionfull"] = ResourceContext{
+		ResourceKind:       "BigQueryConnectionConnection",
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["awsconnectionbasic"] = ResourceContext{
+		ResourceKind:       "BigQueryConnectionConnection",
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["azureconnectionbasic"] = ResourceContext{
+		ResourceKind:       "BigQueryConnectionConnection",
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["cloudspannerconnectionbasic"] = ResourceContext{
+		ResourceKind:       "BigQueryConnectionConnection",
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["cloudsqlconnectionbasic"] = ResourceContext{
+		ResourceKind:       "BigQueryConnectionConnection",
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["sparkconnectionbasic"] = ResourceContext{
+		ResourceKind:       "BigQueryConnectionConnection",
+		SkipDriftDetection: true,
+	}
 }

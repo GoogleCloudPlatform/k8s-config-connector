@@ -80,8 +80,8 @@ func scaffoldRefsFile(path string, cArgs *apis.APIArgs) error {
 	return nil
 }
 
-func (a *APIScaffolder) TypeFileNotExist(kind string) bool {
-	typeFilePath := a.PathToTypeFile(kind)
+func (a *APIScaffolder) TypeFileNotExist(resourceProtoName string) bool {
+	typeFilePath := a.PathToTypeFile(resourceProtoName)
 	_, err := os.Stat(typeFilePath)
 	if err == nil {
 		return false
@@ -89,20 +89,20 @@ func (a *APIScaffolder) TypeFileNotExist(kind string) bool {
 	return errors.Is(err, os.ErrNotExist)
 }
 
-func (a *APIScaffolder) PathToTypeFile(kind string) string {
-	fileName := strings.ToLower(kind) + "_types.go"
+func (a *APIScaffolder) PathToTypeFile(resourceProtoName string) string {
+	fileName := strings.ToLower(resourceProtoName) + "_types.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
-func (a *APIScaffolder) AddTypeFile(kind, proto string) error {
-	typeFilePath := a.PathToTypeFile(kind)
+func (a *APIScaffolder) AddTypeFile(resourceProtoName, kind string) error {
+	typeFilePath := a.PathToTypeFile(resourceProtoName)
 	cArgs := &apis.APIArgs{
 		Group:           a.Group,
 		Version:         a.Version,
 		Kind:            kind,
 		PackageProtoTag: a.PackageProtoTag,
-		KindProtoTag:    a.PackageProtoTag + "." + proto,
-		ProtoResource:   proto,
+		KindProtoTag:    a.PackageProtoTag + "." + resourceProtoName,
+		ProtoResource:   resourceProtoName,
 	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
 }

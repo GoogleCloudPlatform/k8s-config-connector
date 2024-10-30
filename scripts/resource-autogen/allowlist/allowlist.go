@@ -58,7 +58,6 @@ var (
 		"bigquery_analytics_hub/google_bigquery_analytics_hub_data_exchange",
 		"bigquery_analytics_hub/google_bigquery_analytics_hub_listing",
 		"bigquery_connection/google_bigquery_connection",
-		"bigquery_data_transfer/google_bigquery_data_transfer_config",
 		"bigquery_datapolicy/google_bigquery_datapolicy_data_policy",
 		"bigquery_reservation/google_bigquery_capacity_commitment",
 		"bigquery_reservation/google_bigquery_reservation",

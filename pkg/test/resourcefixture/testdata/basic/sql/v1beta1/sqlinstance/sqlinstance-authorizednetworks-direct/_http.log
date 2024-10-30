@@ -52,7 +52,9 @@ User-Agent: kcc/controller-manager
           "name": "all",
           "value": "0.0.0.0/0"
         }
-      ]
+      ],
+      "ipv4Enabled": true,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
@@ -409,7 +411,9 @@ User-Agent: kcc/controller-manager
           "name": "my-network",
           "value": "1.2.3.0/24"
         }
-      ]
+      ],
+      "ipv4Enabled": true,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {

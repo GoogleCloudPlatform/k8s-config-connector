@@ -37,8 +37,7 @@ FROM golang:1.23.2 as bins
 WORKDIR /workspace
 
 # Version string to embed in built binary.
-ARG HELM_VERSION=v3.9.0
-ARG KUSTOMIZE_VERSION=v4.5.2
+ARG HELM_VERSION=v3.16.2
 
 # Install Helm
 RUN wget https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O /tmp/helm-${HELM_VERSION}-linux-amd64.tar.gz && \
