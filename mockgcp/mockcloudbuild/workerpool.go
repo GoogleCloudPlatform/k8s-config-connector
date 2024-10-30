@@ -82,9 +82,11 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 func populateDefaultsForWorkerPool(wp *pb.WorkerPool) {
 	now := timestamppb.Now()
 	network := wp.GetPrivatePoolV1Config().GetNetworkConfig()
-	tokens := strings.Split(network.PeeredNetwork, "/")
-	if len(tokens) == 5 {
-		network.PeeredNetwork = tokens[0] + "/" + "${projectNumber}" + "/" + tokens[2] + "/" + tokens[3] + "/" + tokens[4]
+	if network != nil {
+		tokens := strings.Split(network.PeeredNetwork, "/")
+		if len(tokens) == 5 {
+			network.PeeredNetwork = tokens[0] + "/" + "${projectNumber}" + "/" + tokens[2] + "/" + tokens[3] + "/" + tokens[4]
+		}
 	}
 	wp.UpdateTime = now
 	wp.State = pb.WorkerPool_RUNNING
