@@ -600,7 +600,7 @@ samples are created for that resource.
 
 1.  In [config/samples/resources](config/samples/resources), create a new
     directory for the resource's samples: `mkdir spannerinstance`.
-1.  Follow the sample guidelines [here](README.Samples.md) and create sample(s)
+1.  Follow the [sample guidelines](README.Samples.md) and create sample(s)
     for the resource.
 
 ## Run/Disable Sample Tests
