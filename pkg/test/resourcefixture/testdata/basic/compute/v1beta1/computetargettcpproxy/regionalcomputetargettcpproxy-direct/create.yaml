@@ -13,22 +13,16 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeHealthCheck
+kind: ComputeTargetTCPProxy
 metadata:
-  name: computehealthcheck-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: computetargettcpproxy-${uniqueId}
 spec:
-  checkIntervalSec: 10
-  tcpHealthCheck:
-    port: 443
-  location: global
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeBackendService
-metadata:
-  name: computebackendservice-${uniqueId}
-spec:
-  healthChecks:
-    - healthCheckRef:
-        name: computehealthcheck-${uniqueId}
-  location: global
-  protocol: TCP
+  description: "test target tcp proxy"
+  backendServiceRef:
+    name: computebackendservice-${uniqueId}
+  proxyBind: false
+  proxyHeader: NONE
+  location: europe-west4

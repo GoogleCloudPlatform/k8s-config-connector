@@ -32,4 +32,3 @@ spec:
         name: computehealthcheck-${uniqueId}
   location: global
   protocol: TCP
-

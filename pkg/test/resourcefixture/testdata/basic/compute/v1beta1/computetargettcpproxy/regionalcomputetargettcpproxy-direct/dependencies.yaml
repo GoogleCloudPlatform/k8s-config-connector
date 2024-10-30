@@ -20,7 +20,7 @@ spec:
   checkIntervalSec: 10
   tcpHealthCheck:
     port: 443
-  location: global
+  location: europe-west4
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
@@ -30,5 +30,9 @@ spec:
   healthChecks:
     - healthCheckRef:
         name: computehealthcheck-${uniqueId}
-  location: global
+  location: europe-west4
   protocol: TCP
+  # Default loadBalancingScheme for regional backend service is INTERNAL
+  # Set to INTERNAL_MANAGED when being referenced by Regional Target TCP Proxy
+  # googleapi error: Regional Target TCP Proxy cannot be used with BackendServices with schema INTERNAL
+  loadBalancingScheme: INTERNAL_MANAGED
