@@ -75,6 +75,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection.md">BigqueryConnectionConnection</a></td>
+</tr>
+<tr>
+  <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigquery/bigquerydataset.md">BigQueryDataset</a></td>
 </tr>
 <tr>

@@ -45,6 +45,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md
 - title: "BigQuery"
   section:
+  - title: "BigqueryConnectionConnection"
+    path: /config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection.md
   - title: "BigQueryDataset"
     path: /config-connector/docs/reference/resource-docs/bigquery/bigquerydataset.md
   - title: "BigQueryJob"
