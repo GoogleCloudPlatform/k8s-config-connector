@@ -76,8 +76,7 @@ az role assignment create \
 
 ## Set up impersonation
 
-This step allows the GCP service created
-[here](setup-Azure-ASO.md#create-a-gcp-service-account) to impersonate the Azure
+This step allows the [created GCP service](setup-Azure-ASO.md#create-a-gcp-service-account) to impersonate the Azure
 managed identity.
 
 In this example, we use the default GCP service account.
