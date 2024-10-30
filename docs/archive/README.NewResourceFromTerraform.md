@@ -146,8 +146,8 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 **Tip**: You can
 [use the auto-generated service mappings as a reference](#using-the-auto-generated-service-mappings-as-a-reference).
 
-**Tip**: The full list of available properties for a `ResourceConfig` is defined
-[here](pkg/apis/core/v1alpha1/servicemapping_types.go#L46).
+**Tip**: See the [full list of available properties for a
+`ResourceConfig`](pkg/apis/core/v1alpha1/servicemapping_types.go#L46).
 
 1.  Open the Service Mappings file from the previous section for editing. In the
     case of the `Spanner` service the file is named `spanner.yaml`.
