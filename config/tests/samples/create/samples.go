@@ -39,6 +39,7 @@ import (
 	"github.com/ghodss/yaml"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -129,6 +130,66 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 
 	if !opt.CreateInOrder && !opt.SkipWaitForReady {
 		WaitForReady(t, DefaultWaitForReadyTimeout, opt.Create...)
+	}
+
+	if len(opt.Updates) != 0 {
+		// treat as a patch
+		for _, updateUnstruct := range opt.Updates {
+			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+				t.Fatalf("error updating resource: %v", err)
+			}
+			if opt.CreateInOrder && !opt.SkipWaitForReady {
+				waitForReadySingleResource(t, updateUnstruct, DefaultWaitForReadyTimeout)
+			}
+		}
+
+		if !opt.CreateInOrder && !opt.SkipWaitForReady {
+			WaitForReady(t, DefaultWaitForReadyTimeout, opt.Updates...)
+		}
+	}
+
+	// Clean up resources on success if CleanupResources flag is true
+	if opt.CleanupResources {
+		DeleteResources(t, opt)
+	}
+}
+
+func RunCreateNoChangeDeleteTest(t *Harness, opt CreateDeleteTestOptions, primaryResource *unstructured.Unstructured) {
+	ctx := t.Ctx
+
+	// Create and reconcile all resources & dependencies
+	for _, u := range opt.Create {
+		if err := t.GetClient().Create(ctx, u); err != nil {
+			t.Fatalf("error creating resource: %v", err)
+		}
+		if opt.CreateInOrder && !opt.SkipWaitForReady {
+			waitForReadySingleResource(t, u, DefaultWaitForReadyTimeout)
+		}
+	}
+
+	if !opt.CreateInOrder && !opt.SkipWaitForReady {
+		WaitForReady(t, DefaultWaitForReadyTimeout, opt.Create...)
+	}
+
+	eventsNow := test.LogEntries(t.Events.HTTPEvents)
+
+	// Trigger a reconcile with no change in the spec
+	patch := []byte(`{"metadata":{"annotations":{"reconcile-trigger":"true"}}}`)
+	if err := t.GetClient().Patch(ctx, primaryResource, client.RawPatch(types.MergePatchType, patch)); err != nil {
+		t.Fatalf("error patching primary resource to trigger reconcile: %v", err)
+	}
+
+	// Wait for the reconcile to complete
+	waitForReadySingleResource(t, primaryResource, DefaultWaitForReadyTimeout)
+
+	eventsAfter := test.LogEntries(t.Events.HTTPEvents)
+
+	// Assert that no events except GET requests were made as no change should be detected to the resource.
+	for i := len(eventsNow); i < len(eventsAfter); i++ {
+		event := eventsAfter[i]
+		if event.Request.Method != "GET" {
+			t.Fatalf("unexpected HTTP method: %s, only GET is allowed", event.Request.Method)
+		}
 	}
 
 	if len(opt.Updates) != 0 {

@@ -280,7 +280,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Note that this does introduce a dependency that objects are ordered correctly for creation.
 					opt.CreateInOrder = true
 				}
-				create.RunCreateDeleteTest(h, opt)
+				//create.RunCreateDeleteTest(h, opt)
+				create.RunCreateNoChangeDeleteTest(h, opt, primaryResource)
 
 				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					for _, obj := range exportResources {
