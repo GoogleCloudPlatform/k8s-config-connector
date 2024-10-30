@@ -372,9 +372,9 @@ If you are working on a existing resource, test yaml should exist under
 to make sure the test can still pass. Example command:
 
 ```bash
-   # Export the environment variables needed in the dynamic tests if you haven't done it.
-   TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
- ```
+# Export the environment variables needed in the dynamic tests if you haven't done it.
+TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
+```
 Replace `cloudschedulerjob` with your test target.
 
 ### Submit a Pull Request
