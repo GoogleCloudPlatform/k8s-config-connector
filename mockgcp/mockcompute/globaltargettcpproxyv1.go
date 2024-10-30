@@ -41,7 +41,7 @@ func (s *GlobalTargetTcpProxyV1) Get(ctx context.Context, req *pb.GetTargetTcpPr
 
 	obj := &pb.TargetTcpProxy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 	}
 
 	return obj, nil
@@ -126,7 +126,7 @@ func (s *GlobalTargetTcpProxyV1) SetProxyHeader(ctx context.Context, req *pb.Set
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("setProxyHeader"),
+		OperationType: PtrTo("TargetTcpProxySetProxyHeader"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {

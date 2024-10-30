@@ -218,9 +218,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -239,24 +240,24 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetTcpProxy \"projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetTcpProxy \"projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}
 
 {
   "name": "computetargettcpproxy-${uniqueId}",
-  "proxyHeader": "NONE",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 200 OK
@@ -280,15 +281,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${targetTcpProxyID}",
+  "targetId": "${targetTcpProxiesId}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -312,16 +315,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${targetTcpProxyID}",
+  "targetId": "${targetTcpProxiesId}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -339,111 +343,16 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#targetTcpProxy",
   "name": "computetargettcpproxy-${uniqueId}",
-  "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setProxyHeader?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "proxyHeader": "PROXY_V1"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setProxyHeader",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setProxyHeader",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#targetTcpProxy",
-  "name": "computetargettcpproxy-${uniqueId}",
-  "proxyHeader": "PROXY_V1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -466,15 +375,17 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${targetTcpProxyID}",
+  "targetId": "${targetTcpProxiesId}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -498,7 +409,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${targetTcpProxyID}",
+  "targetId": "${targetTcpProxiesId}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
   "user": "user@example.com"
 }
