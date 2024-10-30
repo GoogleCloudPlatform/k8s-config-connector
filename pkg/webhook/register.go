@@ -55,7 +55,7 @@ func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) er
 	fmt.Println("starting up webhooks")
 	whCfgs, err := GetCommonWebhookConfigs()
 	if err != nil {
-		return fmt.Errorf("error getting common wehbook configs: %w", err)
+		return fmt.Errorf("error getting common webhook configs: %w", err)
 	}
 	return register(
 		ValidatingWebhookConfigurationName,

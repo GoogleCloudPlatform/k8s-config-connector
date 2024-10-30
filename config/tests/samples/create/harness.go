@@ -164,7 +164,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "envtest" {
 		whCfgs, err := testwebhook.GetTestCommonWebhookConfigs()
 		if err != nil {
-			h.Fatalf("error getting common wehbook configs: %v", err)
+			h.Fatalf("error getting common webhook configs: %v", err)
 		}
 		webhooks = append(webhooks, whCfgs...)
 
