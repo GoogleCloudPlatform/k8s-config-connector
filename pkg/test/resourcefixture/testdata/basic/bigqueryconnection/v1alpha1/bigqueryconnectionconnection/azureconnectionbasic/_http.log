@@ -63,7 +63,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=friendlyName%2Cdescription
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=azure.customerTenantId%2Cazure.federatedApplicationClientId%2Cname
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
