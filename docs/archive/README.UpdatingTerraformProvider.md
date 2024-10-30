@@ -72,7 +72,7 @@ We are actively evaluating the optimal long-term strategy for managing Terraform
     step following the below recommendations.
     1.  If you understand the bug well and want to unblock the TF provider
         upgrade quickly to delivery some user requested features, follow the
-        instructions [here](README.ChangingTerraform.md) to create a TF provider
+        [instructions](README.ChangingTerraform.md) to create a TF provider
         patch to fix the bug locally. Surface the issue separately to the
         terraform team by creating an
         [issue](https://github.com/hashicorp/terraform-provider-google/issues)
