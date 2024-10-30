@@ -281,9 +281,8 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
     Note: The `containers` field has been deprecated, and
     `hierarchicalReferences` should be used instead.
 
-1.  Follow the resource reference guidelines
-    [here](README.ConfigureResourceReferences.md) to identify and configure
-    potential resource reference fields.
+1.  Follow the [resource reference guidelines](README.ConfigureResourceReferences.md)
+    to identify and configure potential resource reference fields.
 
 1.  Add `observedFields` if a common solution depends on the computed values
     from unspecified fields under `spec`. The field names should be paths of the
