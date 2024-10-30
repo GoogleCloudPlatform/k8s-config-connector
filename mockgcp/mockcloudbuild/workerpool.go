@@ -16,6 +16,7 @@ package mockcloudbuild
 
 import (
 	"context"
+	"strconv"
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -70,9 +71,8 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 		return nil, err
 	}
 	metadata := &pb.CreateWorkerPoolOperationMetadata{
-		WorkerPool:   fqn,
-		CreateTime:   now,
-		CompleteTime: now,
+		WorkerPool: fqn,
+		CreateTime: now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
 		return obj, nil
@@ -89,6 +89,7 @@ func populateDefaultsForWorkerPool(wp *pb.WorkerPool) {
 	wp.UpdateTime = now
 	wp.State = pb.WorkerPool_RUNNING
 	wp.Etag = fields.ComputeWeakEtag(wp)
+	wp.Uid = "11111111111111111111"
 }
 
 func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorkerPoolRequest) (*longrunningpb.Operation, error) {
@@ -114,9 +115,8 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		return nil, err
 	}
 	metadata := &pb.UpdateWorkerPoolOperationMetadata{
-		WorkerPool:   name.String(),
-		CreateTime:   now,
-		CompleteTime: now,
+		WorkerPool: name.String(),
+		CreateTime: now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
 		return new, nil
@@ -157,11 +157,11 @@ type workerPoolName struct {
 }
 
 func (n *workerPoolName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/workerPools/" + n.WorkerPoolName
+	return n.GetParent() + "/workerPools/" + n.WorkerPoolName
 }
 
 func (n *workerPoolName) GetParent() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location
 }
 
 func (s *MockService) parseWorkerPoolName(name string) (*workerPoolName, error) {

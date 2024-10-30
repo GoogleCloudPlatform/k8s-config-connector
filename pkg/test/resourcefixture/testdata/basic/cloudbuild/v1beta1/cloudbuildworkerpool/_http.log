@@ -643,19 +643,18 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.CreateWorkerPoolOperationMetadata",
-    "completeTime": "2024-04-01T12:34:56.123456Z",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+    "workerPool": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
+GET https://cloudbuild.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
+x-goog-request-params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -672,17 +671,16 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.CreateWorkerPoolOperationMetadata",
-    "completeTime": "2024-04-01T12:34:56.123456Z",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+    "workerPool": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "New CloudBuild WorkerPool",
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+    "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
     "privatePoolV1Config": {
       "networkConfig": {
         "egressOption": "NO_PUBLIC_EGRESS",
@@ -695,6 +693,7 @@ X-Xss-Protection: 0
       }
     },
     "state": "RUNNING",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -721,7 +720,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "New CloudBuild WorkerPool",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
       "egressOption": 1,
@@ -734,6 +733,7 @@ X-Xss-Protection: 0
     }
   },
   "state": 2,
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -775,19 +775,18 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.UpdateWorkerPoolOperationMetadata",
-    "completeTime": "2024-04-01T12:34:56.123456Z",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+    "workerPool": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
+GET https://cloudbuild.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
+x-goog-request-params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -804,11 +803,10 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.UpdateWorkerPoolOperationMetadata",
-    "completeTime": "2024-04-01T12:34:56.123456Z",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+    "workerPool": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -827,6 +825,7 @@ X-Xss-Protection: 0
       }
     },
     "state": "RUNNING",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -866,6 +865,7 @@ X-Xss-Protection: 0
     }
   },
   "state": 2,
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -893,9 +893,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.DeleteWorkerPoolOperationMetadata",
     "completeTime": "2024-04-01T12:34:56.123456Z",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+    "workerPool": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
   },
-  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool"
   }
