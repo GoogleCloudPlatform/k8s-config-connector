@@ -600,6 +600,10 @@ User-Agent: kcc/controller-manager
       "sslMode": "ENCRYPTED_ONLY"
     },
     "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-b"
+    },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": false,
@@ -773,7 +777,7 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
+      "zone": "us-central1-b"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
@@ -926,7 +930,7 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
+      "zone": "us-central1-b"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
@@ -1001,6 +1005,10 @@ User-Agent: kcc/controller-manager
       "sslMode": "ENCRYPTED_ONLY"
     },
     "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-b"
+    },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
@@ -1175,7 +1183,7 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
+      "zone": "us-central1-b"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
@@ -1215,6 +1223,37 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
+  "targetId": "sqlinstance-postgres-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
   "targetId": "sqlinstance-postgres-direct-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
   "targetProject": "${projectId}",
