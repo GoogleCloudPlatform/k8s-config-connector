@@ -47,6 +47,12 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}
+	if in.Spec.Settings.BackupConfiguration != nil {
+		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings != nil && in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit == nil {
+			// GCP default retentionUnit is COUNT.
+			out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = "COUNT"
+		}
+	}
 	if in.Spec.Settings.ConnectorEnforcement == nil {
 		// GCP default ConnectorEnforcement is NOT_REQUIRED.
 		out.Settings.ConnectorEnforcement = "NOT_REQUIRED"

@@ -498,6 +498,37 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-clone-minimal-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/controller-manager
 
@@ -626,6 +657,37 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
+  "targetId": "sqlinstance-source-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
   "targetId": "sqlinstance-source-direct-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
   "targetProject": "${projectId}",
