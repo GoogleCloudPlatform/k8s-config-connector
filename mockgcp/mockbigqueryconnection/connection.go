@@ -201,18 +201,8 @@ func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConne
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
-	paths := req.GetUpdateMask().GetPaths()
-	for _, path := range paths {
-		switch path {
-		case "friendlyName":
-			obj.FriendlyName = req.GetConnection().GetFriendlyName()
-		case "description":
-			obj.Description = req.GetConnection().GetDescription()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
-	}
+	obj.FriendlyName = req.GetConnection().GetFriendlyName()
+	obj.Description = req.GetConnection().GetDescription()
 	obj.LastModifiedTime = now.Unix()
 
 	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
