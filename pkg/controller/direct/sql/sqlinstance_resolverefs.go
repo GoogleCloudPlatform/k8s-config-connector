@@ -136,7 +136,12 @@ func resolveMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.
 			return err
 		}
 
-		obj.Spec.MasterInstanceRef.External = masterInstanceName
+		masterInstanceProject, ok := masterInstance.GetAnnotations()[k8s.ProjectIDAnnotation]
+		if !ok {
+			masterInstanceProject = masterInstance.GetNamespace()
+		}
+
+		obj.Spec.MasterInstanceRef.External = fmt.Sprintf("%s:%s", masterInstanceProject, masterInstanceName)
 
 		return nil
 	} else {
