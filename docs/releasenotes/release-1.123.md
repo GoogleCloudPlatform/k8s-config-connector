@@ -8,9 +8,8 @@
 
 * Starting from this version, all the new CRs (CustomResources) will have the `cnrm.cloud.google.com/state-into-spec`
   annotation defaulted to `absent`. This means Config Connector will not populate any unspecified fields into the
-  `spec` after a successful reconciliation of the resource. The behavior of existing CRs will not be impacted. More
-  details about the Absent behavior can be found
-  [here](https://cloud.google.com/config-connector/docs/concepts/ignore-unspecified-fields#absent).
+  `spec` after a successful reconciliation of the resource. The behavior of existing CRs will not be impacted. See [details about the Absent
+  behavior](https://cloud.google.com/config-connector/docs/concepts/ignore-unspecified-fields#absent).
 
 * You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on `DataflowFlexTemplateJob` resource to opt-in
 the Direct Cloud Reconciler, which provides an advanced status update solution for some timeout issues.
