@@ -38,7 +38,7 @@ import (
 	bigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1alpha1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1"
 	bigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1alpha1"
-	bigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1"
+	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
@@ -166,7 +166,7 @@ type Interface interface {
 	BigqueryV1alpha1() bigqueryv1alpha1.BigqueryV1alpha1Interface
 	BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface
 	BigqueryanalyticshubV1alpha1() bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Interface
-	BigqueryconnectionV1alpha1() bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Interface
+	BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Interface
 	BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Interface
 	BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface
 	BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface
@@ -292,7 +292,7 @@ type Clientset struct {
 	bigqueryV1alpha1               *bigqueryv1alpha1.BigqueryV1alpha1Client
 	bigqueryV1beta1                *bigqueryv1beta1.BigqueryV1beta1Client
 	bigqueryanalyticshubV1alpha1   *bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Client
-	bigqueryconnectionV1alpha1     *bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Client
+	bigqueryconnectionV1beta1      *bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Client
 	bigquerydatapolicyV1alpha1     *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
 	bigquerydatatransferV1beta1    *bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Client
 	bigqueryreservationV1alpha1    *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
@@ -467,9 +467,9 @@ func (c *Clientset) BigqueryanalyticshubV1alpha1() bigqueryanalyticshubv1alpha1.
 	return c.bigqueryanalyticshubV1alpha1
 }
 
-// BigqueryconnectionV1alpha1 retrieves the BigqueryconnectionV1alpha1Client
-func (c *Clientset) BigqueryconnectionV1alpha1() bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Interface {
-	return c.bigqueryconnectionV1alpha1
+// BigqueryconnectionV1beta1 retrieves the BigqueryconnectionV1beta1Client
+func (c *Clientset) BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Interface {
+	return c.bigqueryconnectionV1beta1
 }
 
 // BigquerydatapolicyV1alpha1 retrieves the BigquerydatapolicyV1alpha1Client
@@ -1103,7 +1103,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.bigqueryconnectionV1alpha1, err = bigqueryconnectionv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.bigqueryconnectionV1beta1, err = bigqueryconnectionv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1569,7 +1569,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigqueryV1alpha1 = bigqueryv1alpha1.New(c)
 	cs.bigqueryV1beta1 = bigqueryv1beta1.New(c)
 	cs.bigqueryanalyticshubV1alpha1 = bigqueryanalyticshubv1alpha1.New(c)
-	cs.bigqueryconnectionV1alpha1 = bigqueryconnectionv1alpha1.New(c)
+	cs.bigqueryconnectionV1beta1 = bigqueryconnectionv1beta1.New(c)
 	cs.bigquerydatapolicyV1alpha1 = bigquerydatapolicyv1alpha1.New(c)
 	cs.bigquerydatatransferV1beta1 = bigquerydatatransferv1beta1.New(c)
 	cs.bigqueryreservationV1alpha1 = bigqueryreservationv1alpha1.New(c)
