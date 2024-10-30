@@ -1,4 +1,4 @@
-apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1beta1
 kind: BigQueryAnalyticsHubDataExchange
 metadata:
   annotations:
@@ -6,18 +6,14 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: bigqueryanalyticshubdataexchange${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: example data exchange
-  discoveryType: DISCOVERY_TYPE_PUBLIC
   displayName: my_data_exchange
-  documentation: an updated documentation
   location: US
-  primaryContact: another@contact.com
   projectRef:
     external: ${projectId}
   resourceID: bigqueryanalyticshubdataexchange${uniqueId}
@@ -29,5 +25,5 @@ status:
     status: "True"
     type: Ready
   externalRef: //bigqueryanalyticshub.googleapis.com/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 1
   observedState: {}

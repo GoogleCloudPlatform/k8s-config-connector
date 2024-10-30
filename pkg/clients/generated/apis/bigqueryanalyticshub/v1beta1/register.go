@@ -28,13 +28,13 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1alpha1 contains API Schema definitions for the bigqueryanalyticshub v1alpha1 API group.
+// Package v1beta1 contains API Schema definitions for the bigqueryanalyticshub v1beta1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/bigqueryanalyticshub
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=bigqueryanalyticshub.cnrm.cloud.google.com
-package v1alpha1
+package v1beta1
 
 import (
 	"reflect"
@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
@@ -53,10 +53,10 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	BigQueryAnalyticsHubListingGVK = schema.GroupVersionKind{
+	BigQueryAnalyticsHubDataExchangeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryAnalyticsHubListing{}).Name(),
+		Kind:    reflect.TypeOf(BigQueryAnalyticsHubDataExchange{}).Name(),
 	}
 
 	bigqueryanalyticshubAPIVersion = SchemeGroupVersion.String()
