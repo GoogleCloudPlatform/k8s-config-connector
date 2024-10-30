@@ -65,8 +65,17 @@ func GetVersionFromCRD(crd *apiextensions.CustomResourceDefinition) string {
 	return PreferredVersion(crd).Name
 }
 
+func GetCRDVersionDefinition(crd *apiextensions.CustomResourceDefinition, version string) *apiextensions.CustomResourceDefinitionVersion {
+	for _, v := range crd.Spec.Versions {
+		if v.Name == version {
+			return &v
+		}
+	}
+	panic(fmt.Sprintf("version %q not found", version))
+}
+
+// Deprecated: only returns the preferred version
 func GetOpenAPIV3SchemaFromCRD(crd *apiextensions.CustomResourceDefinition) *apiextensions.JSONSchemaProps {
-	panicIfNoVersionPresent(crd)
 	// Currently KCC CRDs only support one version.
 	return PreferredVersion(crd).Schema.OpenAPIV3Schema
 }
