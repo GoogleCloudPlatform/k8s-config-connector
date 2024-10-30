@@ -42,9 +42,16 @@ User-Agent: kcc/controller-manager
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
     "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 3,
+        "retentionUnit": "COUNT"
+      },
       "enabled": true,
       "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": true
+      "location": "us-central1",
+      "pointInTimeRecoveryEnabled": true,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 2
     },
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
@@ -189,15 +196,16 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 3,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "us-central1",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 2,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
@@ -425,15 +433,16 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 3,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "us-central1",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 2,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
@@ -592,15 +601,16 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 3,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "us-central1",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 2,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
