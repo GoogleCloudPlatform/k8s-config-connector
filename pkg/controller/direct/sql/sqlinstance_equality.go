@@ -135,9 +135,7 @@ func SettingsMatch(desired *api.Settings, actual *api.Settings) bool {
 	if desired.ConnectorEnforcement != actual.ConnectorEnforcement {
 		return false
 	}
-	if desired.CrashSafeReplicationEnabled != actual.CrashSafeReplicationEnabled {
-		return false
-	}
+	// Ignore CrashSafeReplicationEnabled. It is only applicable to first-gen instances.
 	if !DataCacheConfigsMatch(desired.DataCacheConfig, actual.DataCacheConfig) {
 		return false
 	}
