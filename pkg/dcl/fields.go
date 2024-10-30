@@ -54,7 +54,7 @@ func TrimNilFields(m map[string]interface{}) {
 	}
 }
 
-// An interface value strictly equals to nil only if the V (actual value) and T (type) are both unset;
+// An interface value is strictly equal to nil only if the V (actual value) and T (type) are both unset;
 // we want to treat interface values like (T=[]interface{}, V=nil) as nil too since the actual value is nil.
 func IsNil(v interface{}) bool {
 	if v == nil {
