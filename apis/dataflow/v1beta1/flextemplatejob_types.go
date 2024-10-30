@@ -256,7 +256,7 @@ type DataflowFlexTemplateJobObservedState struct {
 	//  Flexible resource scheduling jobs are started with some delay after job
 	//  creation, so start_time is unset before start and is updated when the
 	//  job is started by the Cloud Dataflow service. For other jobs, start_time
-	//  always equals to create_time and is immutable and set by the Cloud Dataflow
+	//  always equals create_time and is immutable and set by the Cloud Dataflow
 	//  service.
 	StartTime *string `json:"startTime,omitempty"`
 

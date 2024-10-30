@@ -99,7 +99,7 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 func (s *SpannerInstanceV1) populateDefaultsForSpannerInstance(update, obj *pb.Instance) {
 	// At most one of either node_count or processing_units should be present.
 	// https://cloud.google.com/spanner/docs/compute-capacity
-	// 1 nodeCount equals to 1000 processingUnits
+	// 1 nodeCount equals 1000 processingUnits
 	if 1000*update.NodeCount > update.ProcessingUnits {
 		obj.ProcessingUnits = 1000 * update.NodeCount
 		obj.NodeCount = update.NodeCount
