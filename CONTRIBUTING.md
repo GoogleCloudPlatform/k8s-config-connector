@@ -232,8 +232,7 @@ by creating an Artifact Registry resource through Config Connector.
 
 #### Looking for error logs
 
-You can look for error logs by checking the controller logs following the steps
-[here](https://cloud.google.com/config-connector/docs/troubleshooting#check-controller-logs).
+You can look for error logs by checking the controller logs following the [troubleshooting](https://cloud.google.com/config-connector/docs/troubleshooting#check-controller-logs).
 
 #### Pods fail to pull image
 When the cluster is created without providing a service account, a Compute Engine service account is created for the cluster. Users must grant the service account permission to pull images from the project registry.
