@@ -16,7 +16,7 @@ package bigqueryanalyticshub
 
 import (
 	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
