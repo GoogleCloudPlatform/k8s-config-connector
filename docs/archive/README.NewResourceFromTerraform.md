@@ -854,10 +854,9 @@ projects, folders, and billing accounts.**
 *   All the resource names should be `[lowercase(Kind)]-${uniqueId}`, e.g.
     `cloudschedulerjob-${uniqueId}`, `pubsubtopic-${uniqueId}`.
 
-    *   ${uniqueId} is a 20-char unique ID generated
-        [here](pkg/test/resourcefixture/variable/variables.go#16). We always
-        want to use the `-${uniqueId}` as the suffix for the resource name in
-        testdata.
+    *   ${uniqueId} is a [generated](pkg/test/resourcefixture/variable/variables.go#16)
+        20-char unique ID. We always want to use the `-${uniqueId}` as the
+        suffix for the resource name in testdata.
 
     *   If there are multiple resources of the same kind used in the same test
         cases, the resource names should be
