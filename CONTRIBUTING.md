@@ -200,7 +200,7 @@ repo to quickly set up a local dev environment.
 The script `gcp-setup.sh` annotates your `default` namespace in the GKE cluster
 with a
 [project-id](https://cloud.google.com/config-connector/docs/how-to/organizing-resources/project-scoped-resources#annotate_namespace_configuration)
-annotation equals to your default GCP project id in gcloud. This enables Config
+annotation equal to your default GCP project id in gcloud. This enables Config
 Connector to create GCP resources in that default GCP project. We can validate
 by creating an Artifact Registry resource through Config Connector.
 
