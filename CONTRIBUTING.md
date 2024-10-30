@@ -387,5 +387,5 @@ you can first validate the change locally:
 make ready-pr
 ```
 
-You can then commit your change and make a pull request. See more details
-[here](https://docs.github.com/en/get-started/quickstart/contributing-to-projects#making-and-pushing-changes).
+You can then commit your change and make a pull request. See [GitHub's contributing
+to projects: making and pushing changes](https://docs.github.com/en/get-started/quickstart/contributing-to-projects#making-and-pushing-changes).
