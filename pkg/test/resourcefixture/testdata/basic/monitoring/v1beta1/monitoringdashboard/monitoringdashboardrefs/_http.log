@@ -33,7 +33,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "name": "A monitored project",
   "parent": {
-    "id": "${testFolderId}",
+    "id": "${folderID}",
     "type": "folder"
   },
   "projectId": "other${uniqueId}"
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectNumber}",
-    "parent": "folders/${testFolderId}",
+    "parent": "folders/${folderID}",
     "projectId": "other${uniqueId}",
     "state": "ACTIVE"
   }
@@ -118,7 +118,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "A monitored project",
   "parent": {
-    "id": "${testFolderId}",
+    "id": "${folderID}",
     "type": "folder"
   },
   "projectId": "other${uniqueId}",
@@ -1028,7 +1028,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "A monitored project",
   "parent": {
-    "id": "${testFolderId}",
+    "id": "${folderID}",
     "type": "folder"
   },
   "projectId": "other${uniqueId}",
