@@ -25,3 +25,6 @@ kubectl apply -f composition_role_binding.yaml
 SAMPLES
 each of composition and facade has a sample directory with sample yaml to test
 the controllers.
+
+
+**Note: It can take up to 5 minutes for the `InputReconciler` to create resources accessible by `kubectl` commands. Please wait for that duration to examine if resources have been created as intended.**

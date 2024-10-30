@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,11 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package contexts
 
-import "k8s.io/apimachinery/pkg/runtime/schema"
-
-var (
-	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1"}
-)
+func init() {
+	resourceContextMap["bigquerydatatransferconfig-salesforce"] = ResourceContext{
+		ResourceKind:       "BigQueryDataTransferConfig", // this direct resource has service-generated ID
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["bigquerydatatransferconfig-scheduledquery"] = ResourceContext{
+		ResourceKind:       "BigQueryDataTransferConfig", // this direct resource has service-generated ID
+		SkipDriftDetection: true,
+	}
+}

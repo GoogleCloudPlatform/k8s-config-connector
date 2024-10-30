@@ -26,6 +26,8 @@
 
 * For resource that is purely direct controller based, add the resource name to `pureDirectResources` in `IsPureDirectResource` function in [sets.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/test/resourcefixture/sets.go).
 
+* If the resource is found in the resource-autogen [allowlist](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/6e9579347aadd08c07cfb0f1bd1747c4c9f4b197/scripts/resource-autogen/allowlist/allowlist.go#L31), remove it from the list.
+
 ## 5.4 Add samples 
 
 1.  In [config/samples/resources](config/samples/resources), create a new
