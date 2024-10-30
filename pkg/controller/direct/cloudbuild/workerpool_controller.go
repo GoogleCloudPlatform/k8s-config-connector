@@ -136,19 +136,22 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, err
 	}
 
-	projectIDAndNum := &refs.ProjectIDAndNum{ID: projectRef.ProjectID}
+	projectIDAndNumer := &refs.ProjectIDAndNumer{ID: projectRef.ProjectID}
 	network, found, err := unstructured.NestedString(u.Object, "status", "observedState", "networkConfig", "peeredNetwork")
 	if err == nil && found {
 		tokens := strings.Split(network, "/")
 		if len(tokens) == 5 && tokens[0] == "projects" {
-			projectIDAndNum.Number = tokens[1]
+			projectIDAndNumer.Number = tokens[1]
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 	return &Adapter{
 		id:              id,
 		gcpClient:       gcpClient,
 		desired:         obj,
-		projectIDAndNum: projectIDAndNum,
+		projectIDAndNum: projectIDAndNumer,
 	}, nil
 }
 
@@ -184,7 +187,7 @@ type Adapter struct {
 	gcpClient       *gcp.Client
 	desired         *krm.CloudBuildWorkerPool
 	actual          *cloudbuildpb.WorkerPool
-	projectIDAndNum *refs.ProjectIDAndNum
+	projectIDAndNum *refs.ProjectIDAndNumer
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -259,8 +262,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// "peered_network" field.
 	// Why we can't just update the "peered_network" field? Because it is immutable. ¯\_(ツ)_/¯
 	network := wp.GetPrivatePoolV1Config().GetNetworkConfig()
-	network.PeeredNetwork = refs.ProjectIDToNumber(a.projectIDAndNum, network.PeeredNetwork)
-
+	var err error
+	network.PeeredNetwork, err = refs.ProjectIDToNumber(a.projectIDAndNum, network.PeeredNetwork)
+	if err != nil {
+		return err
+	}
 	paths, err := common.CompareProtoMessage(wp, a.actual, common.BasicDiff)
 
 	if err != nil {
@@ -306,7 +312,6 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: *a.id.AsExternalRef()}
 	obj.Spec.Location = a.id.location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
