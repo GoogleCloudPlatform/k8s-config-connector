@@ -14,7 +14,7 @@ We are actively evaluating the optimal long-term strategy for managing Terraform
 2.  Run `git subtree pull --prefix third_party/github.com/hashicorp/terraform-provider-google-beta https://github.com/hashicorp/terraform-provider-google-beta.git v5.X.Y --squash` from the repo’s root. This will update the provider code to the specified version.
 3.  Git may prompt you on merge CONFLICT, carefully review and resolve the CONFLICT to complete the git merge.
 4.  Run `make vet` to check if the updated code compiles. 
-5.  Run `make generate manifests resource-docs generate-go-client` to update all
+5.  Run `make generate manifests resource-docs` to update all
     the generated files.
 6.  Run `python3
     scripts/generate-field-diffs-tf-upgrade/generate_field_changes.py` to
@@ -51,7 +51,6 @@ We are actively evaluating the optimal long-term strategy for managing Terraform
         IAM support and it can’t be added, make a tracking GitHub issue and
         block it temporarily in the [service mapping test code](config/tests/servicemapping/servicemapping_test.go).
     1.  If any new directive fields are added, you might run into issues with
-        ResourceSkeleton’s `TestNewFromAsset` and `TestNewFromURI` tests. Any
         lingering fields in the expected vs. actual resource skeleton will
         indicate which fields are suspect. If it makes sense for the field to
         become a directive, add it to the resource’s corresponding

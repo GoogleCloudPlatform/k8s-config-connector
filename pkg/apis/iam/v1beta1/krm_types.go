@@ -16,12 +16,6 @@ package v1beta1
 
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
-// *** PLEASE READ THE FOLLOWING COMMENT BEFORE MAKING CHANGES ***
-// This ResourceReference definition is duplicated in the scripts/generate-go-crd-clients/k8s/ directory.
-// If you're making modifications to this definition, please make sure to modify
-// the corresponding struct in `types.go` (IAMResourceRef), so the generated
-// go-clients have an accurate representation of this struct.
-// ResourceReference defines a relationship to another resource
 type ResourceReference struct {
 	Kind       string `json:"kind"`
 	Namespace  string `json:"namespace,omitempty"`

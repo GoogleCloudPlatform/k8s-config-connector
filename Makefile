@@ -133,7 +133,6 @@ vet:
 .PHONY: generate
 generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
-	# This path will be covered by `generate-go-client` target specifically.
 	go work vendor -o temp-vendor # So we can load DCL resources
 	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
@@ -221,11 +220,6 @@ install: manifests
 deploy-controller: docker-build docker-push
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
-# Generate CRD go clients
-.PHONY: generate-go-client
-generate-go-client:
-	./scripts/generate-go-crd-clients/generate-clients.sh
-
 # Generate google3 docs
 .PHONY: resource-docs
 resource-docs:
@@ -244,7 +238,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs generate-go-client ensure
+ready-pr: lint manifests resource-docs ensure
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl

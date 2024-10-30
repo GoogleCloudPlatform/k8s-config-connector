@@ -14,12 +14,6 @@
 
 package v1alpha1
 
-// *** DISCLAIMER ***
-// This file is duplicated in the scripts/generate-go-crd-clients/k8s/ directory.
-// If you're making modifications to this file, please make sure to modify the
-// corresponding file (`types.go`) so the generated go-clients have an accurate
-// representation of this package.
-
 import (
 	v1 "k8s.io/api/core/v1"
 )
