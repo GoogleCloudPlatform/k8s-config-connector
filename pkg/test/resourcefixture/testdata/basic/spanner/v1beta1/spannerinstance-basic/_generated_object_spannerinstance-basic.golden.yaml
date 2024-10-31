@@ -8,15 +8,16 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
+    label-two: value-two
   name: spannerinstance-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
   config: regional-us-west1
-  displayName: Spanner Instance Sample
+  displayName: New Spanner Instance Sample
   resourceID: spannerinstance-sample-${uniqueId}
 status:
   conditions:
@@ -25,5 +26,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3
   state: READY
