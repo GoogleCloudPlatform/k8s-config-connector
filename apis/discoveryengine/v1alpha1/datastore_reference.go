@@ -41,30 +41,37 @@ type DiscoveryEngineDataStoreRef struct {
 
 	// The namespace of a DiscoveryEngineDataStore resource.
 	Namespace string `json:"namespace,omitempty"`
+}
 
-	parent *DiscoveryEngineDataStoreParent
+// DiscoveryEngineDataStoreRef defines the resource reference to DiscoveryEngineDataStore, which "External" field
+// holds the GCP identifier for the KRM object.
+type DiscoveryEngineDataStoreID struct {
+	*CollectionLink
+	DataStore string
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on DiscoveryEngineDataStore.
 // If the "External" is given in the other resource's spec.DiscoveryEngineDataStoreRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual DiscoveryEngineDataStore object from the cluster.
-func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, reader client.Reader, defaultNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", DiscoveryEngineDataStoreGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := parseDiscoveryEngineDataStoreExternal(r.External); err != nil {
+		id, err := ParseDiscoveryEngineDataStoreExternal(r.External)
+		if err != nil {
 			return "", err
 		}
+		r.External = id.String()
 		return r.External, nil
 	}
 
 	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(DiscoveryEngineDataStoreGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
@@ -86,9 +93,7 @@ func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, re
 }
 
 // New builds a DiscoveryEngineDataStoreRef from the Config Connector DiscoveryEngineDataStore object.
-func NewDiscoveryEngineDataStoreRef(ctx context.Context, reader client.Reader, obj *DiscoveryEngineDataStore) (*DiscoveryEngineDataStoreRef, error) {
-	id := &DiscoveryEngineDataStoreRef{}
-
+func NewDiscoveryEngineDataStoreIDFromObject(ctx context.Context, reader client.Reader, obj *DiscoveryEngineDataStore) (*DiscoveryEngineDataStoreID, error) {
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
@@ -98,8 +103,16 @@ func NewDiscoveryEngineDataStoreRef(ctx context.Context, reader client.Reader, o
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
+
 	location := obj.Spec.Location
-	id.parent = &DiscoveryEngineDataStoreParent{ProjectID: projectID, Location: location}
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	collectionID := obj.Spec.Collection
+	if collectionID == "" {
+		return nil, fmt.Errorf("cannot resolve collection")
+	}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -110,72 +123,74 @@ func NewDiscoveryEngineDataStoreRef(ctx context.Context, reader client.Reader, o
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	id := &DiscoveryEngineDataStoreID{
+		CollectionLink: &CollectionLink{
+			ProjectAndLocation: &ProjectAndLocation{
+				ProjectID: projectID,
+				Location:  location,
+			},
+			Collection: collectionID,
+		},
+		DataStore: resourceID,
+	}
+
+	// Validate the status.externalRef, if set
 	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = asDiscoveryEngineDataStoreExternal(id.parent, resourceID)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseDiscoveryEngineDataStoreExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-	}
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	id.parent = &DiscoveryEngineDataStoreParent{ProjectID: projectID, Location: location}
-	return id, nil
-}
-
-func (r *DiscoveryEngineDataStoreRef) Parent() (*DiscoveryEngineDataStoreParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, _, err := parseDiscoveryEngineDataStoreExternal(r.External)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusID, err := ParseDiscoveryEngineDataStoreExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		return parent, nil
+		if statusID.String() != id.String() {
+			return nil, fmt.Errorf("cannot change object key after creation; status=%q, new=%q",
+				statusID.String(), id.String())
+		}
 	}
-	return nil, fmt.Errorf("DiscoveryEngineDataStoreRef not initialized from `NewDiscoveryEngineDataStoreRef` or `NormalizedExternal`")
+	return id, nil
 }
 
-type DiscoveryEngineDataStoreParent struct {
+type ProjectAndLocation struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *DiscoveryEngineDataStoreParent) String() string {
+func (p *ProjectAndLocation) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-func asDiscoveryEngineDataStoreExternal(parent *DiscoveryEngineDataStoreParent, resourceID string) (external string) {
-	return parent.String() + "/datastores/" + resourceID
+type CollectionLink struct {
+	*ProjectAndLocation
+	Collection string
 }
 
-func parseDiscoveryEngineDataStoreExternal(external string) (parent *DiscoveryEngineDataStoreParent, resourceID string, err error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "datastore" {
-		return nil, "", fmt.Errorf("format of DiscoveryEngineDataStore external=%q was not known (use projects/<projectId>/locations/<location>/datastores/<datastoreID>)", external)
+func (p *CollectionLink) String() string {
+	return p.ProjectAndLocation.String() + "/collections/" + p.Collection
+}
+
+func (p *DiscoveryEngineDataStoreID) String() string {
+	return p.CollectionLink.String() + "/dataStores/" + p.DataStore
+}
+
+func ParseDiscoveryEngineDataStoreExternal(external string) (*DiscoveryEngineDataStoreID, error) {
+	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
+	s = strings.TrimPrefix(s, "/")
+	tokens := strings.Split(s, "/")
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "dataStores" {
+		projectAndLocation := &ProjectAndLocation{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+		collection := &CollectionLink{
+			ProjectAndLocation: projectAndLocation,
+			Collection:         tokens[5],
+		}
+		return &DiscoveryEngineDataStoreID{
+			CollectionLink: collection,
+			DataStore:      tokens[7],
+		}, nil
 	}
-	parent = &DiscoveryEngineDataStoreParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return nil, fmt.Errorf("format of DiscoveryEngineDataStore external=%q was not known (use projects/<projectId>/locations/<location>/dataStores/<engineID>)", external)
 }
 
 func valueOf[T any](t *T) T {

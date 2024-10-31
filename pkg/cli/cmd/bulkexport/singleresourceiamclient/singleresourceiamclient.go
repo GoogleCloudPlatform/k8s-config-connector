@@ -55,7 +55,7 @@ func (i *iamClient) SupportsIAM(unstructured *unstructured.Unstructured) (bool, 
 
 	rc, err := i.smLoader.GetResourceConfig(unstructured)
 	if err != nil {
-		return false, fmt.Errorf("error getting resource config for %v with name '%v': %w",
+		return false, fmt.Errorf("error getting resource config for %q with name %q: %w",
 			unstructured.GetKind(), unstructured.GetName(), err)
 	}
 	return krmtotf.SupportsIAM(rc), nil
