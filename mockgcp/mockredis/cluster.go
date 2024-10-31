@@ -17,6 +17,7 @@ package mockredis
 import (
 	"context"
 	"fmt"
+	"math/rand/v2"
 	"strings"
 	"time"
 
@@ -123,7 +124,8 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 	if obj.DiscoveryEndpoints == nil {
 		for _, pscConfig := range obj.PscConfigs {
 			discoveryEndpoint := &pb.DiscoveryEndpoint{
-				Address: "10.128.0.3",
+				// The assigned addresses are (seemingly) not deterministic
+				Address: fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
 				Port:    6379,
 				PscConfig: &pb.PscConfig{
 					Network: pscConfig.Network,
@@ -145,7 +147,8 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 				pscConnectionID++
 				forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
 				pscConnection := &pb.PscConnection{
-					Address:         fmt.Sprintf("10.128.0.%d", 2+i),
+					// The assigned addresses are (seemingly) not deterministic
+					Address:         fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
 					ForwardingRule:  fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
 					Network:         pscConfig.Network,
 					ProjectId:       network.Project.ID,
