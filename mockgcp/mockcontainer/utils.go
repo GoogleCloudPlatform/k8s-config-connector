@@ -14,6 +14,8 @@
 
 package mockcontainer
 
+import "strings"
+
 func PtrTo[T any](t T) *T {
 	return &t
 }
@@ -24,4 +26,30 @@ func ValueOf[T any](t *T) T {
 		return zeroVal
 	}
 	return *t
+}
+
+// AsZonalLink will convert a "location" link to a "zonal" link, if the location is a zone.
+// For example, projects/${projectNumber}/locations/us-central1-a/operations/${operationID}
+// will be converted to projects/${projectNumber}/zones/us-central1-a/operations/${operationID}
+func AsZonalLink(link string) string {
+	tokens := strings.Split(link, "/")
+
+	for i := 0; i+1 < len(tokens); i++ {
+		switch tokens[i] {
+		case "locations":
+			location := tokens[i+1]
+			if isZone(location) {
+				tokens[i] = "zones"
+			}
+		}
+	}
+
+	return strings.Join(tokens, "/")
+}
+
+// isZone returns true if the location appears to be a GCP zone (as oppposed to a region)
+// The logic is pretty simple right now, based on the number of hyphens.
+func isZone(location string) bool {
+	tokens := strings.Split(location, "-")
+	return len(tokens) == 3
 }
