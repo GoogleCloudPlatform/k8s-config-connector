@@ -226,6 +226,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	connection := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &desired.Spec)
+	connection.Name = a.actual.Name
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
