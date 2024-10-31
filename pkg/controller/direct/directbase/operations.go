@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -99,6 +100,51 @@ func NewDeleteOperation(client client.Client, object *unstructured.Unstructured)
 
 func (o *DeleteOperation) GetUnstructured() *unstructured.Unstructured {
 	return o.object
+}
+
+func (o *operationBase) BeforeLRO(ctx context.Context) error {
+	readyCondition := &v1alpha1.Condition{
+		Type:    v1alpha1.ReadyConditionType,
+		Status:  v1.ConditionFalse,
+		Reason:  k8s.Updating,
+		Message: k8s.UpdatingMessage,
+	}
+	return o.updateReadyCondition(ctx, readyCondition)
+}
+
+func (o *operationBase) updateReadyCondition(ctx context.Context, readyCondition *v1alpha1.Condition) error {
+	status, _, _ := unstructured.NestedMap(o.object.Object, "status")
+
+	status["observedGeneration"] = o.object.GetGeneration()
+
+	// Note: we do _not_ set HasSetReadyCondition
+	// o.HasSetReadyCondition = true
+
+	var statusWithConditions statusWithConditions
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(status, &statusWithConditions); err != nil {
+		return fmt.Errorf("error converting status.conditions from structured: %w", err)
+	}
+
+	// Must be non-nil (for unclear reasons!)
+	if statusWithConditions.Conditions == nil {
+		statusWithConditions.Conditions = []v1alpha1.Condition{}
+	}
+	SetStatusCondition(&statusWithConditions.Conditions, *readyCondition)
+
+	unstructuredStatusWithConditions, err := runtime.DefaultUnstructuredConverter.ToUnstructured(&statusWithConditions)
+	if err != nil {
+		return fmt.Errorf("error converting status.conditions to unstructured: %w", err)
+	}
+
+	status["conditions"] = unstructuredStatusWithConditions["conditions"]
+
+	o.object.Object["status"] = status
+
+	if err := o.client.Status().Update(ctx, o.object); err != nil {
+		return fmt.Errorf("updating object status: %w", err)
+	}
+
+	return nil
 }
 
 // UpdateStatus writes the status and ready condition to the object's status subresource.

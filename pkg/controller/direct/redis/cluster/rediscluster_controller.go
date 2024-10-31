@@ -301,6 +301,8 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 				return err
 			}
 
+			updateOp.BeforeLRO(ctx)
+
 			updated, err := op.Wait(ctx)
 			if err != nil {
 				return fmt.Errorf("waiting for redisCluster update %s: %w", a.fullyQualifiedName(), err)
