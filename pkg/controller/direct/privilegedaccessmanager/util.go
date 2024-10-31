@@ -21,7 +21,13 @@ import (
 )
 
 func sortArrayFieldsInSpec(spec *krm.PrivilegedAccessManagerEntitlementSpec) {
+	if spec == nil {
+		return
+	}
 	sortAccessControlEntrySlice(spec.EligibleUsers)
+	if spec.ApprovalWorkflow == nil || spec.ApprovalWorkflow.ManualApprovals == nil {
+		return
+	}
 	for _, step := range spec.ApprovalWorkflow.ManualApprovals.Steps {
 		sortAccessControlEntrySlice(step.Approvers)
 	}
