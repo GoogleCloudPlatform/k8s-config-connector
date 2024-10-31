@@ -30,241 +30,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 411.157446ms
-    - id: 1
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 339
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: |
-            {"databaseVersion":"MYSQL_5_7","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","settings":{"activationPolicy":"ALWAYS","availabilityType":"ZONAL","dataDiskType":"PD_SSD","edition":"ENTERPRISE","pricingPlan":"PER_USE","storageAutoResize":true,"tier":"db-n1-standard-1","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"}}}
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances?alt=json&prettyPrint=false
-        method: POST
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","status":"PENDING","user":"user@google.com","insertTime":"2024-09-26T21:29:36.635Z","operationType":"CREATE","name":"627a3b12-c185-4a4c-b646-8d8900000032","targetId":"sqluser-dep-3vxr1tn21m3yp","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/627a3b12-c185-4a4c-b646-8d8900000032","targetProject":"example-project"}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 1.05331032s
-    - id: 2
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/627a3b12-c185-4a4c-b646-8d8900000032?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","status":"DONE","user":"user@google.com","insertTime":"2024-09-26T21:29:36.635Z","startTime":"2024-09-26T21:29:36.775Z","endTime":"2024-09-26T21:32:18.364Z","operationType":"CREATE","name":"627a3b12-c185-4a4c-b646-8d8900000032","targetId":"sqluser-dep-3vxr1tn21m3yp","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/627a3b12-c185-4a4c-b646-8d8900000032","targetProject":"example-project"}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 207.185172ms
-    - id: 3
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#usersList","items":[{"kind":"sql#user","etag":"f5971a01d0e03cb8f2cf4937b38d5f862147f17f4c0ee493b57b96dc2289097e","name":"root","host":"%","instance":"sqluser-dep-3vxr1tn21m3yp","project":"example-project","passwordPolicy":{"status":{}}}]}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 263.968887ms
-    - id: 4
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&host=%25&name=root&prettyPrint=false
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","status":"DONE","user":"user@google.com","insertTime":"2024-09-26T21:32:25.447Z","startTime":"2024-09-26T21:32:25.468Z","endTime":"2024-09-26T21:32:25.585Z","operationType":"DELETE_USER","name":"78aa7608-b53d-45f1-b24d-af5700000032","targetId":"sqluser-dep-3vxr1tn21m3yp","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/78aa7608-b53d-45f1-b24d-af5700000032","targetProject":"example-project"}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 402.221939ms
-    - id: 5
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-a","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"19:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"75087759295ba59c7069f27b5b5ea696f440fc3897f5452110d48043eae8979a","ipAddresses":[{"type":"PRIMARY","ipAddress":"35.226.125.225"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQyNGE1\nMThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQwOTI2MjEyOTM0WhcNMzQwOTI0MjEzMDM0WjB3MS0wKwYD\nVQQuEyQyNGE1MThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC8B1QprtTsr51X1Ak4ptTnEn4ZQUOuymEtZOUkuXU9Sl3cCVNFoVl2ljJ9zscV\nYhHfeNNF8XBPeuPnQO2y068KT42isPhM4uC2tIZKbu6qPlkpkutJoMsUG1+dkHCu\nhMTxl+k6q8NJRcClxyYp00ZRflpETpcEgGqGa51bsH1T2vXug5/Scd23HPQIWxsm\nQ2/yhEW8xmNjU+BkSwlT5f4Hsq8MTGHcCZjbnJ0DAhLA6jRMwjOtyNLGmABEQcLu\nTeIgDcFpGfWR3Pv0nYRuNrbsfloTo+JgYJxFsKWhfX5VyWJt+/QAY+OvJQ2eWjCb\nH03lmknkrjE7CwJznGceOA0nAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAGh87FxMIhWnfKb9bff9g+LUCaFxUwuhvM9yA1oA\nz68OvspI/yhmpWzUjMh6I4FJaCdYkW93rGMeOcqANtQHz76F3JJIMRSIYU9yLDA3\n/vE8S/qzU2AM1Z9hHdjn+F7rMEtjAKChohUKjRURzHQmuOipQBOUMR9/6j8LD+D4\nQ4RyoquALZAFOCSgewi7f1eGed/AlP2ueyPOUxzo/N/j1AJoi45i4HuoG1XkDveC\n9hzhywH11o3RWKgIS5idq0Ze3dMP07+n9XTfaw3HUUE4JhjExHECVbOLCdmQOWKn\nZ9y+GwdA+Eq3xBux04S0IA7ajwO8J5Vv+0dvaQ0BhfpXLU8=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=24a518be-7f13-404c-96a7-f6659179ccb6","sha1Fingerprint":"cf6f88e7ba64c738ce7174205ff2aea9ad6f7556","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-09-26T21:29:34.906Z","expirationTime":"2034-09-24T21:30:34.906Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-6pwkl8@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-a","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20240527.01_12","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-09-26T21:29:36.224Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":true}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 224.848668ms
-    - id: 6
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-a","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"19:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"75087759295ba59c7069f27b5b5ea696f440fc3897f5452110d48043eae8979a","ipAddresses":[{"type":"PRIMARY","ipAddress":"35.226.125.225"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQyNGE1\nMThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQwOTI2MjEyOTM0WhcNMzQwOTI0MjEzMDM0WjB3MS0wKwYD\nVQQuEyQyNGE1MThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC8B1QprtTsr51X1Ak4ptTnEn4ZQUOuymEtZOUkuXU9Sl3cCVNFoVl2ljJ9zscV\nYhHfeNNF8XBPeuPnQO2y068KT42isPhM4uC2tIZKbu6qPlkpkutJoMsUG1+dkHCu\nhMTxl+k6q8NJRcClxyYp00ZRflpETpcEgGqGa51bsH1T2vXug5/Scd23HPQIWxsm\nQ2/yhEW8xmNjU+BkSwlT5f4Hsq8MTGHcCZjbnJ0DAhLA6jRMwjOtyNLGmABEQcLu\nTeIgDcFpGfWR3Pv0nYRuNrbsfloTo+JgYJxFsKWhfX5VyWJt+/QAY+OvJQ2eWjCb\nH03lmknkrjE7CwJznGceOA0nAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAGh87FxMIhWnfKb9bff9g+LUCaFxUwuhvM9yA1oA\nz68OvspI/yhmpWzUjMh6I4FJaCdYkW93rGMeOcqANtQHz76F3JJIMRSIYU9yLDA3\n/vE8S/qzU2AM1Z9hHdjn+F7rMEtjAKChohUKjRURzHQmuOipQBOUMR9/6j8LD+D4\nQ4RyoquALZAFOCSgewi7f1eGed/AlP2ueyPOUxzo/N/j1AJoi45i4HuoG1XkDveC\n9hzhywH11o3RWKgIS5idq0Ze3dMP07+n9XTfaw3HUUE4JhjExHECVbOLCdmQOWKn\nZ9y+GwdA+Eq3xBux04S0IA7ajwO8J5Vv+0dvaQ0BhfpXLU8=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=24a518be-7f13-404c-96a7-f6659179ccb6","sha1Fingerprint":"cf6f88e7ba64c738ce7174205ff2aea9ad6f7556","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-09-26T21:29:34.906Z","expirationTime":"2034-09-24T21:30:34.906Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-6pwkl8@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-a","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20240527.01_12","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-09-26T21:29:36.224Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":true}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 193.943066ms
-    - id: 7
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
+                - gl-go/1.22.5 gdcl/0.203.0
         url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
         method: GET
       response:
@@ -281,8 +47,8 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 234.418585ms
-    - id: 8
+        duration: 501.701573ms
+    - id: 1
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -297,7 +63,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
+                - gl-go/1.22.5 gdcl/0.203.0
         url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
         method: GET
       response:
@@ -308,14 +74,14 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-a","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"19:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"75087759295ba59c7069f27b5b5ea696f440fc3897f5452110d48043eae8979a","ipAddresses":[{"type":"PRIMARY","ipAddress":"35.226.125.225"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQyNGE1\nMThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQwOTI2MjEyOTM0WhcNMzQwOTI0MjEzMDM0WjB3MS0wKwYD\nVQQuEyQyNGE1MThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC8B1QprtTsr51X1Ak4ptTnEn4ZQUOuymEtZOUkuXU9Sl3cCVNFoVl2ljJ9zscV\nYhHfeNNF8XBPeuPnQO2y068KT42isPhM4uC2tIZKbu6qPlkpkutJoMsUG1+dkHCu\nhMTxl+k6q8NJRcClxyYp00ZRflpETpcEgGqGa51bsH1T2vXug5/Scd23HPQIWxsm\nQ2/yhEW8xmNjU+BkSwlT5f4Hsq8MTGHcCZjbnJ0DAhLA6jRMwjOtyNLGmABEQcLu\nTeIgDcFpGfWR3Pv0nYRuNrbsfloTo+JgYJxFsKWhfX5VyWJt+/QAY+OvJQ2eWjCb\nH03lmknkrjE7CwJznGceOA0nAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAGh87FxMIhWnfKb9bff9g+LUCaFxUwuhvM9yA1oA\nz68OvspI/yhmpWzUjMh6I4FJaCdYkW93rGMeOcqANtQHz76F3JJIMRSIYU9yLDA3\n/vE8S/qzU2AM1Z9hHdjn+F7rMEtjAKChohUKjRURzHQmuOipQBOUMR9/6j8LD+D4\nQ4RyoquALZAFOCSgewi7f1eGed/AlP2ueyPOUxzo/N/j1AJoi45i4HuoG1XkDveC\n9hzhywH11o3RWKgIS5idq0Ze3dMP07+n9XTfaw3HUUE4JhjExHECVbOLCdmQOWKn\nZ9y+GwdA+Eq3xBux04S0IA7ajwO8J5Vv+0dvaQ0BhfpXLU8=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=24a518be-7f13-404c-96a7-f6659179ccb6","sha1Fingerprint":"cf6f88e7ba64c738ce7174205ff2aea9ad6f7556","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-09-26T21:29:34.906Z","expirationTime":"2034-09-24T21:30:34.906Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-6pwkl8@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-a","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20240527.01_12","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-09-26T21:29:36.224Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":true}'
+        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-f","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"06:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"84ebde2dcd95e694bd6ab9e751fcecb0f7a534668e1f651ae072fc16d8947e07","ipAddresses":[{"type":"PRIMARY","ipAddress":"34.45.128.76"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyRhNjE3\nMzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQxMDMxMjIyMjM2WhcNMzQxMDI5MjIyMzM2WjB3MS0wKwYD\nVQQuEyRhNjE3MzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQDQYEdlyWx8FelnP66lkQBLoCDkz8CqK84vKOSqgzNQ4+lCC8QqiHyy0XHx05V2\nD3X36K6nLM+/X5kqFhyoAgor6MAErQLdwkmEB0eGJkJdaZQKiSoQMlczxhH9xtVb\n1pLj0DjMONd77ShoPQMzI2ZoCYJQZvsRRGpTBeihoMsgoYkB0OET1/m3lbB+6VuF\nJb+SWJA7sJUbXkREEQwlTWQ+roAgd/GJi48Rk7U15AJIXmyfwwc7CB9lbg0hIos5\ncz+DE+g6WvNMxNPZSpVtufHcJWop/mvDRlylP2htg1/L49p2jn4/0p6sgJsU9/UZ\nfqjqfDTqu87tt64LyBZJJMj7AgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAEdja3jsVry0iB99KSkiQh1XJXnz36tUkINTjSHS\n3Mf5vPepXtIOd+TziVCD7Xl4UHxdV8w4VeEGgFlkMZgMHUsZHcZD5nhYdUkQamWy\np0jMbILeSz6Px3KfcCeCvxbbRehX5TEsHVqWiJXSFYkDF/5mVn3Nt2BsilyvhrG8\nv/oD3a4T92LaKyuZCPiDlGi0JsMVbnCDg70o8cD6yUAzSsIaQqYgHSFYoH19ndsu\n/86Sij1dKw2lDip2LItY3Kumd2pNjkZPHVDFIPht/2FIlEdUxRLPxH0PnNtWxHrO\nK81kO8BjFRQYlANu0yCBvDWdH/TJ1AO2x7m+NIzpdSrg/es=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=a6173438-354b-4b4b-8279-e07030793eb1","sha1Fingerprint":"59b96df7a6515f96a276dc06c582d61a6f1c05f9","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-10-31T22:22:36.384Z","expirationTime":"2034-10-29T22:23:36.384Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-bugj8g@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-f","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20241020.00_00","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_39","displayName":"MySQL 8.0.39"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-10-31T22:22:33.212Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":false}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 226.879717ms
-    - id: 9
+        duration: 198.966612ms
+    - id: 2
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -330,7 +96,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
+                - gl-go/1.22.5 gdcl/0.203.0
         url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
         method: GET
       response:
@@ -341,14 +107,14 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-a","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"19:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"75087759295ba59c7069f27b5b5ea696f440fc3897f5452110d48043eae8979a","ipAddresses":[{"type":"PRIMARY","ipAddress":"35.226.125.225"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQyNGE1\nMThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQwOTI2MjEyOTM0WhcNMzQwOTI0MjEzMDM0WjB3MS0wKwYD\nVQQuEyQyNGE1MThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC8B1QprtTsr51X1Ak4ptTnEn4ZQUOuymEtZOUkuXU9Sl3cCVNFoVl2ljJ9zscV\nYhHfeNNF8XBPeuPnQO2y068KT42isPhM4uC2tIZKbu6qPlkpkutJoMsUG1+dkHCu\nhMTxl+k6q8NJRcClxyYp00ZRflpETpcEgGqGa51bsH1T2vXug5/Scd23HPQIWxsm\nQ2/yhEW8xmNjU+BkSwlT5f4Hsq8MTGHcCZjbnJ0DAhLA6jRMwjOtyNLGmABEQcLu\nTeIgDcFpGfWR3Pv0nYRuNrbsfloTo+JgYJxFsKWhfX5VyWJt+/QAY+OvJQ2eWjCb\nH03lmknkrjE7CwJznGceOA0nAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAGh87FxMIhWnfKb9bff9g+LUCaFxUwuhvM9yA1oA\nz68OvspI/yhmpWzUjMh6I4FJaCdYkW93rGMeOcqANtQHz76F3JJIMRSIYU9yLDA3\n/vE8S/qzU2AM1Z9hHdjn+F7rMEtjAKChohUKjRURzHQmuOipQBOUMR9/6j8LD+D4\nQ4RyoquALZAFOCSgewi7f1eGed/AlP2ueyPOUxzo/N/j1AJoi45i4HuoG1XkDveC\n9hzhywH11o3RWKgIS5idq0Ze3dMP07+n9XTfaw3HUUE4JhjExHECVbOLCdmQOWKn\nZ9y+GwdA+Eq3xBux04S0IA7ajwO8J5Vv+0dvaQ0BhfpXLU8=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=24a518be-7f13-404c-96a7-f6659179ccb6","sha1Fingerprint":"cf6f88e7ba64c738ce7174205ff2aea9ad6f7556","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-09-26T21:29:34.906Z","expirationTime":"2034-09-24T21:30:34.906Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-6pwkl8@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-a","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20240527.01_12","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-09-26T21:29:36.224Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":true}'
+        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-f","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"06:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"84ebde2dcd95e694bd6ab9e751fcecb0f7a534668e1f651ae072fc16d8947e07","ipAddresses":[{"type":"PRIMARY","ipAddress":"34.45.128.76"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyRhNjE3\nMzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQxMDMxMjIyMjM2WhcNMzQxMDI5MjIyMzM2WjB3MS0wKwYD\nVQQuEyRhNjE3MzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQDQYEdlyWx8FelnP66lkQBLoCDkz8CqK84vKOSqgzNQ4+lCC8QqiHyy0XHx05V2\nD3X36K6nLM+/X5kqFhyoAgor6MAErQLdwkmEB0eGJkJdaZQKiSoQMlczxhH9xtVb\n1pLj0DjMONd77ShoPQMzI2ZoCYJQZvsRRGpTBeihoMsgoYkB0OET1/m3lbB+6VuF\nJb+SWJA7sJUbXkREEQwlTWQ+roAgd/GJi48Rk7U15AJIXmyfwwc7CB9lbg0hIos5\ncz+DE+g6WvNMxNPZSpVtufHcJWop/mvDRlylP2htg1/L49p2jn4/0p6sgJsU9/UZ\nfqjqfDTqu87tt64LyBZJJMj7AgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAEdja3jsVry0iB99KSkiQh1XJXnz36tUkINTjSHS\n3Mf5vPepXtIOd+TziVCD7Xl4UHxdV8w4VeEGgFlkMZgMHUsZHcZD5nhYdUkQamWy\np0jMbILeSz6Px3KfcCeCvxbbRehX5TEsHVqWiJXSFYkDF/5mVn3Nt2BsilyvhrG8\nv/oD3a4T92LaKyuZCPiDlGi0JsMVbnCDg70o8cD6yUAzSsIaQqYgHSFYoH19ndsu\n/86Sij1dKw2lDip2LItY3Kumd2pNjkZPHVDFIPht/2FIlEdUxRLPxH0PnNtWxHrO\nK81kO8BjFRQYlANu0yCBvDWdH/TJ1AO2x7m+NIzpdSrg/es=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=a6173438-354b-4b4b-8279-e07030793eb1","sha1Fingerprint":"59b96df7a6515f96a276dc06c582d61a6f1c05f9","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-10-31T22:22:36.384Z","expirationTime":"2034-10-29T22:23:36.384Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-bugj8g@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-f","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20241020.00_00","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_39","displayName":"MySQL 8.0.39"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-10-31T22:22:33.212Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":false}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 216.68143ms
-    - id: 10
+        duration: 196.708952ms
+    - id: 3
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -366,7 +132,7 @@ interactions:
             Content-Type:
                 - application/json
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
+                - gl-go/1.22.5 gdcl/0.203.0
         url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
         method: POST
       response:
@@ -377,13 +143,244 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","status":"DONE","user":"user@google.com","insertTime":"2024-09-26T21:32:28.098Z","startTime":"2024-09-26T21:32:28.107Z","endTime":"2024-09-26T21:32:28.186Z","operationType":"CREATE_USER","name":"45c18645-fa03-4b1e-8394-2b6d00000032","targetId":"sqluser-dep-3vxr1tn21m3yp","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/45c18645-fa03-4b1e-8394-2b6d00000032","targetProject":"example-project"}'
+        body: '{"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","status":"DONE","user":"user@google.com","insertTime":"2024-10-31T22:25:37.970Z","startTime":"2024-10-31T22:25:37.975Z","endTime":"2024-10-31T22:25:38.062Z","operationType":"CREATE_USER","name":"71294ad2-e1f2-404b-9c7c-a50400000032","targetId":"sqluser-dep-3vxr1tn21m3yp","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/71294ad2-e1f2-404b-9c7c-a50400000032","targetProject":"example-project"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 315.250213ms
+        duration: 325.51099ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sqladmin.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.5 gdcl/0.203.0
+        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"sql#usersList","items":[{"kind":"sql#user","etag":"27fb2bd1c46ff46e18b53fd76b5f68ae8da245d4b535c4485d168377b4191f5c","name":"sqluser-3vxr1tn21m3yp","host":"foo","instance":"sqluser-dep-3vxr1tn21m3yp","project":"example-project","passwordPolicy":{"status":{}}}]}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 234.755998ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sqladmin.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.5 gdcl/0.203.0
+        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-f","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"06:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"84ebde2dcd95e694bd6ab9e751fcecb0f7a534668e1f651ae072fc16d8947e07","ipAddresses":[{"type":"PRIMARY","ipAddress":"34.45.128.76"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyRhNjE3\nMzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQxMDMxMjIyMjM2WhcNMzQxMDI5MjIyMzM2WjB3MS0wKwYD\nVQQuEyRhNjE3MzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQDQYEdlyWx8FelnP66lkQBLoCDkz8CqK84vKOSqgzNQ4+lCC8QqiHyy0XHx05V2\nD3X36K6nLM+/X5kqFhyoAgor6MAErQLdwkmEB0eGJkJdaZQKiSoQMlczxhH9xtVb\n1pLj0DjMONd77ShoPQMzI2ZoCYJQZvsRRGpTBeihoMsgoYkB0OET1/m3lbB+6VuF\nJb+SWJA7sJUbXkREEQwlTWQ+roAgd/GJi48Rk7U15AJIXmyfwwc7CB9lbg0hIos5\ncz+DE+g6WvNMxNPZSpVtufHcJWop/mvDRlylP2htg1/L49p2jn4/0p6sgJsU9/UZ\nfqjqfDTqu87tt64LyBZJJMj7AgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAEdja3jsVry0iB99KSkiQh1XJXnz36tUkINTjSHS\n3Mf5vPepXtIOd+TziVCD7Xl4UHxdV8w4VeEGgFlkMZgMHUsZHcZD5nhYdUkQamWy\np0jMbILeSz6Px3KfcCeCvxbbRehX5TEsHVqWiJXSFYkDF/5mVn3Nt2BsilyvhrG8\nv/oD3a4T92LaKyuZCPiDlGi0JsMVbnCDg70o8cD6yUAzSsIaQqYgHSFYoH19ndsu\n/86Sij1dKw2lDip2LItY3Kumd2pNjkZPHVDFIPht/2FIlEdUxRLPxH0PnNtWxHrO\nK81kO8BjFRQYlANu0yCBvDWdH/TJ1AO2x7m+NIzpdSrg/es=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=a6173438-354b-4b4b-8279-e07030793eb1","sha1Fingerprint":"59b96df7a6515f96a276dc06c582d61a6f1c05f9","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-10-31T22:22:36.384Z","expirationTime":"2034-10-29T22:23:36.384Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-bugj8g@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-f","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20241020.00_00","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_39","displayName":"MySQL 8.0.39"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-10-31T22:22:33.212Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 207.187941ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sqladmin.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.5 gdcl/0.203.0
+        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"sql#usersList","items":[{"kind":"sql#user","etag":"27fb2bd1c46ff46e18b53fd76b5f68ae8da245d4b535c4485d168377b4191f5c","name":"sqluser-3vxr1tn21m3yp","host":"foo","instance":"sqluser-dep-3vxr1tn21m3yp","project":"example-project","passwordPolicy":{"status":{}}}]}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 217.86544ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sqladmin.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.5 gdcl/0.203.0
+        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-f","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"06:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"84ebde2dcd95e694bd6ab9e751fcecb0f7a534668e1f651ae072fc16d8947e07","ipAddresses":[{"type":"PRIMARY","ipAddress":"34.45.128.76"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyRhNjE3\nMzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQxMDMxMjIyMjM2WhcNMzQxMDI5MjIyMzM2WjB3MS0wKwYD\nVQQuEyRhNjE3MzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQDQYEdlyWx8FelnP66lkQBLoCDkz8CqK84vKOSqgzNQ4+lCC8QqiHyy0XHx05V2\nD3X36K6nLM+/X5kqFhyoAgor6MAErQLdwkmEB0eGJkJdaZQKiSoQMlczxhH9xtVb\n1pLj0DjMONd77ShoPQMzI2ZoCYJQZvsRRGpTBeihoMsgoYkB0OET1/m3lbB+6VuF\nJb+SWJA7sJUbXkREEQwlTWQ+roAgd/GJi48Rk7U15AJIXmyfwwc7CB9lbg0hIos5\ncz+DE+g6WvNMxNPZSpVtufHcJWop/mvDRlylP2htg1/L49p2jn4/0p6sgJsU9/UZ\nfqjqfDTqu87tt64LyBZJJMj7AgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAEdja3jsVry0iB99KSkiQh1XJXnz36tUkINTjSHS\n3Mf5vPepXtIOd+TziVCD7Xl4UHxdV8w4VeEGgFlkMZgMHUsZHcZD5nhYdUkQamWy\np0jMbILeSz6Px3KfcCeCvxbbRehX5TEsHVqWiJXSFYkDF/5mVn3Nt2BsilyvhrG8\nv/oD3a4T92LaKyuZCPiDlGi0JsMVbnCDg70o8cD6yUAzSsIaQqYgHSFYoH19ndsu\n/86Sij1dKw2lDip2LItY3Kumd2pNjkZPHVDFIPht/2FIlEdUxRLPxH0PnNtWxHrO\nK81kO8BjFRQYlANu0yCBvDWdH/TJ1AO2x7m+NIzpdSrg/es=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=a6173438-354b-4b4b-8279-e07030793eb1","sha1Fingerprint":"59b96df7a6515f96a276dc06c582d61a6f1c05f9","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-10-31T22:22:36.384Z","expirationTime":"2034-10-29T22:23:36.384Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-bugj8g@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-f","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20241020.00_00","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_39","displayName":"MySQL 8.0.39"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-10-31T22:22:33.212Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 177.256194ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sqladmin.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.5 gdcl/0.203.0
+        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"sql#usersList","items":[{"kind":"sql#user","etag":"27fb2bd1c46ff46e18b53fd76b5f68ae8da245d4b535c4485d168377b4191f5c","name":"sqluser-3vxr1tn21m3yp","host":"foo","instance":"sqluser-dep-3vxr1tn21m3yp","project":"example-project","passwordPolicy":{"status":{}}}]}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 241.900348ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sqladmin.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.5 gdcl/0.203.0
+        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-f","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"06:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"84ebde2dcd95e694bd6ab9e751fcecb0f7a534668e1f651ae072fc16d8947e07","ipAddresses":[{"type":"PRIMARY","ipAddress":"34.45.128.76"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyRhNjE3\nMzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQxMDMxMjIyMjM2WhcNMzQxMDI5MjIyMzM2WjB3MS0wKwYD\nVQQuEyRhNjE3MzQzOC0zNTRiLTRiNGItODI3OS1lMDcwMzA3OTNlYjExIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQDQYEdlyWx8FelnP66lkQBLoCDkz8CqK84vKOSqgzNQ4+lCC8QqiHyy0XHx05V2\nD3X36K6nLM+/X5kqFhyoAgor6MAErQLdwkmEB0eGJkJdaZQKiSoQMlczxhH9xtVb\n1pLj0DjMONd77ShoPQMzI2ZoCYJQZvsRRGpTBeihoMsgoYkB0OET1/m3lbB+6VuF\nJb+SWJA7sJUbXkREEQwlTWQ+roAgd/GJi48Rk7U15AJIXmyfwwc7CB9lbg0hIos5\ncz+DE+g6WvNMxNPZSpVtufHcJWop/mvDRlylP2htg1/L49p2jn4/0p6sgJsU9/UZ\nfqjqfDTqu87tt64LyBZJJMj7AgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAEdja3jsVry0iB99KSkiQh1XJXnz36tUkINTjSHS\n3Mf5vPepXtIOd+TziVCD7Xl4UHxdV8w4VeEGgFlkMZgMHUsZHcZD5nhYdUkQamWy\np0jMbILeSz6Px3KfcCeCvxbbRehX5TEsHVqWiJXSFYkDF/5mVn3Nt2BsilyvhrG8\nv/oD3a4T92LaKyuZCPiDlGi0JsMVbnCDg70o8cD6yUAzSsIaQqYgHSFYoH19ndsu\n/86Sij1dKw2lDip2LItY3Kumd2pNjkZPHVDFIPht/2FIlEdUxRLPxH0PnNtWxHrO\nK81kO8BjFRQYlANu0yCBvDWdH/TJ1AO2x7m+NIzpdSrg/es=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=a6173438-354b-4b4b-8279-e07030793eb1","sha1Fingerprint":"59b96df7a6515f96a276dc06c582d61a6f1c05f9","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-10-31T22:22:36.384Z","expirationTime":"2034-10-29T22:23:36.384Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-bugj8g@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-f","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20241020.00_00","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_39","displayName":"MySQL 8.0.39"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-10-31T22:22:33.212Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 180.910014ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: sqladmin.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.5 gdcl/0.203.0
+        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&host=foo&name=sqluser-3vxr1tn21m3yp&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 403 Forbidden
+        code: 403
+        duration: 170.640814ms
     - id: 11
       request:
         proto: HTTP/1.1
@@ -399,206 +396,8 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
+                - gl-go/1.22.5 gdcl/0.203.0
         url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#usersList","items":[{"kind":"sql#user","etag":"27fb2bd1c46ff46e18b53fd76b5f68ae8da245d4b535c4485d168377b4191f5c","name":"sqluser-3vxr1tn21m3yp","host":"foo","instance":"sqluser-dep-3vxr1tn21m3yp","project":"example-project","passwordPolicy":{"status":{}}}]}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 253.685321ms
-    - id: 12
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-a","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"19:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"75087759295ba59c7069f27b5b5ea696f440fc3897f5452110d48043eae8979a","ipAddresses":[{"type":"PRIMARY","ipAddress":"35.226.125.225"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQyNGE1\nMThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQwOTI2MjEyOTM0WhcNMzQwOTI0MjEzMDM0WjB3MS0wKwYD\nVQQuEyQyNGE1MThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC8B1QprtTsr51X1Ak4ptTnEn4ZQUOuymEtZOUkuXU9Sl3cCVNFoVl2ljJ9zscV\nYhHfeNNF8XBPeuPnQO2y068KT42isPhM4uC2tIZKbu6qPlkpkutJoMsUG1+dkHCu\nhMTxl+k6q8NJRcClxyYp00ZRflpETpcEgGqGa51bsH1T2vXug5/Scd23HPQIWxsm\nQ2/yhEW8xmNjU+BkSwlT5f4Hsq8MTGHcCZjbnJ0DAhLA6jRMwjOtyNLGmABEQcLu\nTeIgDcFpGfWR3Pv0nYRuNrbsfloTo+JgYJxFsKWhfX5VyWJt+/QAY+OvJQ2eWjCb\nH03lmknkrjE7CwJznGceOA0nAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAGh87FxMIhWnfKb9bff9g+LUCaFxUwuhvM9yA1oA\nz68OvspI/yhmpWzUjMh6I4FJaCdYkW93rGMeOcqANtQHz76F3JJIMRSIYU9yLDA3\n/vE8S/qzU2AM1Z9hHdjn+F7rMEtjAKChohUKjRURzHQmuOipQBOUMR9/6j8LD+D4\nQ4RyoquALZAFOCSgewi7f1eGed/AlP2ueyPOUxzo/N/j1AJoi45i4HuoG1XkDveC\n9hzhywH11o3RWKgIS5idq0Ze3dMP07+n9XTfaw3HUUE4JhjExHECVbOLCdmQOWKn\nZ9y+GwdA+Eq3xBux04S0IA7ajwO8J5Vv+0dvaQ0BhfpXLU8=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=24a518be-7f13-404c-96a7-f6659179ccb6","sha1Fingerprint":"cf6f88e7ba64c738ce7174205ff2aea9ad6f7556","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-09-26T21:29:34.906Z","expirationTime":"2034-09-24T21:30:34.906Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-6pwkl8@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-a","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20240527.01_12","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-09-26T21:29:36.224Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":true}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 206.363143ms
-    - id: 13
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#usersList","items":[{"kind":"sql#user","etag":"27fb2bd1c46ff46e18b53fd76b5f68ae8da245d4b535c4485d168377b4191f5c","name":"sqluser-3vxr1tn21m3yp","host":"foo","instance":"sqluser-dep-3vxr1tn21m3yp","project":"example-project","passwordPolicy":{"status":{}}}]}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 258.428589ms
-    - id: 14
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-a","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"19:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"75087759295ba59c7069f27b5b5ea696f440fc3897f5452110d48043eae8979a","ipAddresses":[{"type":"PRIMARY","ipAddress":"35.226.125.225"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQyNGE1\nMThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQwOTI2MjEyOTM0WhcNMzQwOTI0MjEzMDM0WjB3MS0wKwYD\nVQQuEyQyNGE1MThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC8B1QprtTsr51X1Ak4ptTnEn4ZQUOuymEtZOUkuXU9Sl3cCVNFoVl2ljJ9zscV\nYhHfeNNF8XBPeuPnQO2y068KT42isPhM4uC2tIZKbu6qPlkpkutJoMsUG1+dkHCu\nhMTxl+k6q8NJRcClxyYp00ZRflpETpcEgGqGa51bsH1T2vXug5/Scd23HPQIWxsm\nQ2/yhEW8xmNjU+BkSwlT5f4Hsq8MTGHcCZjbnJ0DAhLA6jRMwjOtyNLGmABEQcLu\nTeIgDcFpGfWR3Pv0nYRuNrbsfloTo+JgYJxFsKWhfX5VyWJt+/QAY+OvJQ2eWjCb\nH03lmknkrjE7CwJznGceOA0nAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAGh87FxMIhWnfKb9bff9g+LUCaFxUwuhvM9yA1oA\nz68OvspI/yhmpWzUjMh6I4FJaCdYkW93rGMeOcqANtQHz76F3JJIMRSIYU9yLDA3\n/vE8S/qzU2AM1Z9hHdjn+F7rMEtjAKChohUKjRURzHQmuOipQBOUMR9/6j8LD+D4\nQ4RyoquALZAFOCSgewi7f1eGed/AlP2ueyPOUxzo/N/j1AJoi45i4HuoG1XkDveC\n9hzhywH11o3RWKgIS5idq0Ze3dMP07+n9XTfaw3HUUE4JhjExHECVbOLCdmQOWKn\nZ9y+GwdA+Eq3xBux04S0IA7ajwO8J5Vv+0dvaQ0BhfpXLU8=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=24a518be-7f13-404c-96a7-f6659179ccb6","sha1Fingerprint":"cf6f88e7ba64c738ce7174205ff2aea9ad6f7556","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-09-26T21:29:34.906Z","expirationTime":"2034-09-24T21:30:34.906Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-6pwkl8@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-a","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20240527.01_12","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-09-26T21:29:36.224Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":true}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 200.615905ms
-    - id: 15
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#instance","state":"RUNNABLE","databaseVersion":"MYSQL_5_7","settings":{"authorizedGaeApplications":[],"tier":"db-n1-standard-1","kind":"sql#settings","userLabels":{"cnrm-test":"true","managed-by-cnrm":"true"},"availabilityType":"ZONAL","pricingPlan":"PER_USE","replicationType":"SYNCHRONOUS","activationPolicy":"ALWAYS","ipConfiguration":{"authorizedNetworks":[],"sslMode":"ALLOW_UNENCRYPTED_AND_ENCRYPTED","ipv4Enabled":true,"requireSsl":false,"serverCaMode":"GOOGLE_MANAGED_INTERNAL_CA"},"locationPreference":{"zone":"us-central1-a","kind":"sql#locationPreference"},"dataDiskType":"PD_SSD","backupConfiguration":{"startTime":"19:00","kind":"sql#backupConfiguration","backupRetentionSettings":{"retentionUnit":"COUNT","retainedBackups":7},"enabled":false,"transactionLogRetentionDays":7,"transactionalLogStorageState":"TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"},"edition":"ENTERPRISE","connectorEnforcement":"NOT_REQUIRED","settingsVersion":"1","storageAutoResizeLimit":"0","storageAutoResize":true,"dataDiskSizeGb":"10","deletionProtectionEnabled":false},"etag":"75087759295ba59c7069f27b5b5ea696f440fc3897f5452110d48043eae8979a","ipAddresses":[{"type":"PRIMARY","ipAddress":"35.226.125.225"}],"serverCaCert":{"kind":"sql#sslCert","certSerialNumber":"0","cert":"-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQyNGE1\nMThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjQwOTI2MjEyOTM0WhcNMzQwOTI0MjEzMDM0WjB3MS0wKwYD\nVQQuEyQyNGE1MThiZS03ZjEzLTQwNGMtOTZhNy1mNjY1OTE3OWNjYjYxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC8B1QprtTsr51X1Ak4ptTnEn4ZQUOuymEtZOUkuXU9Sl3cCVNFoVl2ljJ9zscV\nYhHfeNNF8XBPeuPnQO2y068KT42isPhM4uC2tIZKbu6qPlkpkutJoMsUG1+dkHCu\nhMTxl+k6q8NJRcClxyYp00ZRflpETpcEgGqGa51bsH1T2vXug5/Scd23HPQIWxsm\nQ2/yhEW8xmNjU+BkSwlT5f4Hsq8MTGHcCZjbnJ0DAhLA6jRMwjOtyNLGmABEQcLu\nTeIgDcFpGfWR3Pv0nYRuNrbsfloTo+JgYJxFsKWhfX5VyWJt+/QAY+OvJQ2eWjCb\nH03lmknkrjE7CwJznGceOA0nAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAGh87FxMIhWnfKb9bff9g+LUCaFxUwuhvM9yA1oA\nz68OvspI/yhmpWzUjMh6I4FJaCdYkW93rGMeOcqANtQHz76F3JJIMRSIYU9yLDA3\n/vE8S/qzU2AM1Z9hHdjn+F7rMEtjAKChohUKjRURzHQmuOipQBOUMR9/6j8LD+D4\nQ4RyoquALZAFOCSgewi7f1eGed/AlP2ueyPOUxzo/N/j1AJoi45i4HuoG1XkDveC\n9hzhywH11o3RWKgIS5idq0Ze3dMP07+n9XTfaw3HUUE4JhjExHECVbOLCdmQOWKn\nZ9y+GwdA+Eq3xBux04S0IA7ajwO8J5Vv+0dvaQ0BhfpXLU8=\n-----END CERTIFICATE-----","commonName":"C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=24a518be-7f13-404c-96a7-f6659179ccb6","sha1Fingerprint":"cf6f88e7ba64c738ce7174205ff2aea9ad6f7556","instance":"sqluser-dep-3vxr1tn21m3yp","createTime":"2024-09-26T21:29:34.906Z","expirationTime":"2034-09-24T21:30:34.906Z"},"instanceType":"CLOUD_SQL_INSTANCE","project":"example-project","serviceAccountEmailAddress":"p123456789-6pwkl8@gcp-sa-cloud-sql.iam.gserviceaccount.com","backendType":"SECOND_GEN","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","connectionName":"example-project:us-central1:sqluser-dep-3vxr1tn21m3yp","name":"sqluser-dep-3vxr1tn21m3yp","region":"us-central1","gceZone":"us-central1-a","databaseInstalledVersion":"MYSQL_5_7_44","maintenanceVersion":"MYSQL_5_7_44.R20240527.01_12","upgradableDatabaseVersions":[{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0","displayName":"MySQL 8.0"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_18","displayName":"MySQL 8.0.18"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_26","displayName":"MySQL 8.0.26"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_27","displayName":"MySQL 8.0.27"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_28","displayName":"MySQL 8.0.28"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_29","displayName":"MySQL 8.0.29"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_30","displayName":"MySQL 8.0.30"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_31","displayName":"MySQL 8.0.31"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_32","displayName":"MySQL 8.0.32"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_33","displayName":"MySQL 8.0.33"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_34","displayName":"MySQL 8.0.34"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_35","displayName":"MySQL 8.0.35"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_36","displayName":"MySQL 8.0.36"},{"majorVersion":"MYSQL_8_0","name":"MYSQL_8_0_37","displayName":"MySQL 8.0.37"}],"geminiConfig":{"entitled":false,"activeQueryEnabled":false,"indexAdvisorEnabled":false,"flagRecommenderEnabled":false},"createTime":"2024-09-26T21:29:36.224Z","sqlNetworkArchitecture":"NEW_NETWORK_ARCHITECTURE","satisfiesPzi":true}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 193.754277ms
-    - id: 16
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp/users?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#usersList","items":[{"kind":"sql#user","etag":"27fb2bd1c46ff46e18b53fd76b5f68ae8da245d4b535c4485d168377b4191f5c","name":"sqluser-3vxr1tn21m3yp","host":"foo","instance":"sqluser-dep-3vxr1tn21m3yp","project":"example-project","passwordPolicy":{"status":{}}}]}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 232.003596ms
-    - id: 17
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
         method: GET
       response:
         proto: HTTP/2.0
@@ -612,72 +411,6 @@ interactions:
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-        status: 404 Not Found
-        code: 404
-        duration: 181.54353ms
-    - id: 18
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp?alt=json&prettyPrint=false
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","status":"PENDING","user":"user@google.com","insertTime":"2024-09-26T21:32:31.971Z","operationType":"DELETE","name":"5139b458-f82c-4288-b24e-38c700000032","targetId":"sqluser-dep-3vxr1tn21m3yp","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/5139b458-f82c-4288-b24e-38c700000032","targetProject":"example-project"}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 428.924212ms
-    - id: 19
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: sqladmin.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.196.0
-        url: https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/5139b458-f82c-4288-b24e-38c700000032?alt=json&prettyPrint=false
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: '{"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/instances/sqluser-dep-3vxr1tn21m3yp","status":"DONE","user":"user@google.com","insertTime":"2024-09-26T21:32:31.971Z","startTime":"2024-09-26T21:32:32.193Z","endTime":"2024-09-26T21:34:01.225Z","operationType":"DELETE","name":"5139b458-f82c-4288-b24e-38c700000032","targetId":"sqluser-dep-3vxr1tn21m3yp","selfLink":"https://sqladmin.googleapis.com/sql/v1beta4/projects/example-project/operations/5139b458-f82c-4288-b24e-38c700000032","targetProject":"example-project"}'
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 201.884629ms
+        status: 403 Forbidden
+        code: 403
+        duration: 146.598236ms

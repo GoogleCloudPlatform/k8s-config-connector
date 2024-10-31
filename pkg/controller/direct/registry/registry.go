@@ -93,7 +93,7 @@ func Init(ctx context.Context, config *config.ControllerConfig) error {
 }
 
 func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc) {
-	rg := &predicate.OptInToDirectReconciliation{}
+	rg := &predicate.ChooseReconciler{}
 	RegisterModelWithReconcileGate(gvk, modelFn, rg)
 }
 

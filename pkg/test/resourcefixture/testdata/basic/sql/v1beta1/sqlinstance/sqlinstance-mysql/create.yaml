@@ -18,6 +18,8 @@ metadata:
   labels:
     label-one: "value-one"
   name: sqlinstance-mysql-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: legacy
 spec:
   region: us-central1
   databaseVersion: MYSQL_5_7

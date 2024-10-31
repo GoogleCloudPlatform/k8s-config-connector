@@ -16,6 +16,8 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: sqlinstance-sqlserver-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: legacy
 spec:
   databaseVersion: SQLSERVER_2019_EXPRESS
   region: us-central1

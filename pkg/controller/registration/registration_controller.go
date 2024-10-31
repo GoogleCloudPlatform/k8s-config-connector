@@ -240,8 +240,8 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 		}
 
 		hasDirectController := registry.IsDirectByGK(gvk.GroupKind())
-		hasTerraformController := crd.Labels[crdgeneration.TF2CRDLabel] == "true"
-		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true"
+		hasTerraformController := crd.Labels[crdgeneration.TF2CRDLabel] == "true" || crd.Labels[k8s.LegacyControllerLabel] == "tf"
+		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true" || crd.Labels[k8s.LegacyControllerLabel] == "dcl"
 
 		var useDirectReconcilerPredicate predicate.Predicate
 		var useLegacyPredicate predicate.Predicate

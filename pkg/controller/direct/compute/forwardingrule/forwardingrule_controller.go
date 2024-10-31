@@ -49,7 +49,7 @@ func NewForwardingRuleModel(ctx context.Context, config *config.ControllerConfig
 }
 
 type ForwardingRuleReconcileGate struct {
-	optIn kccpredicate.OptInToDirectReconciliation
+	optIn kccpredicate.ChooseReconciler
 }
 
 var _ kccpredicate.ReconcileGate = &ForwardingRuleReconcileGate{}

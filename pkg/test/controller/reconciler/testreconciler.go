@@ -209,8 +209,8 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, erro
 		return ReconcilerTypeIAMAuditConfig, nil
 	default:
 		hasDirectController := registry.IsDirectByGK(objectGVK.GroupKind())
-		hasTerraformController := gvkMetadata.Labels[k8s.TF2CRDLabel] == "true"
-		hasDCLController := gvkMetadata.Labels[k8s.DCL2CRDLabel] == "true"
+		hasTerraformController := gvkMetadata.Labels[k8s.TF2CRDLabel] == "true" || gvkMetadata.Labels[k8s.LegacyControllerLabel] == "tf"
+		hasDCLController := gvkMetadata.Labels[k8s.DCL2CRDLabel] == "true" || gvkMetadata.Labels[k8s.LegacyControllerLabel] == "dcl"
 
 		useDirectReconciler := false
 

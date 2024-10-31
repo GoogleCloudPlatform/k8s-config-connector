@@ -18,6 +18,8 @@ metadata:
   labels:
     label-one: "value-one"
   name: sqlinstance-encryptionkey-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: legacy
 spec:
   databaseVersion: POSTGRES_15
   encryptionKMSCryptoKeyRef:
@@ -34,8 +36,8 @@ spec:
       startTime: "01:00"
       transactionLogRetentionDays: 5
     databaseFlags:
-    - name: cloudsql.iam_authentication
-      value: "on"
+      - name: cloudsql.iam_authentication
+        value: "on"
     deletionProtectionEnabled: false
     diskAutoresize: true
     diskSize: 100

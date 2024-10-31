@@ -16,8 +16,6 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: sqlinstance-privatenetwork-direct-${uniqueId}
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   databaseVersion: POSTGRES_16
   region: us-central1
