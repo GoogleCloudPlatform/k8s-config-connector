@@ -16,11 +16,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    app.kubernetes.io/component: composition-controller-manager
+    app.kubernetes.io/component: manager
     app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: composition-controller-manager-system
+    app.kubernetes.io/instance: system
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: composition-controller-manager-namespace
+    app.kubernetes.io/name: namespace
     app.kubernetes.io/part-of: composition
     control-plane: controller-manager
   name: composition-system
@@ -70,38 +70,57 @@ spec:
               expanders:
                 items:
                   properties:
-                    configref:
-                      description: ConfigReference - For BYO Expanders, we can extend
-                        it
-                      properties:
-                        name:
-                          type: string
-                        namespace:
-                          type: string
-                      required:
-                      - name
-                      type: object
-                    jinja2:
-                      description: Built in expanders
-                      properties:
-                        template:
-                          type: string
-                      required:
-                      - template
-                      type: object
                     name:
                       type: string
                     template:
-                      description: For BYO Expanders use generic template or ref for
-                        external config
                       type: string
                     type:
                       default: jinja2
                       type: string
+                    valuesFrom:
+                      items:
+                        properties:
+                          fieldRef:
+                            items:
+                              properties:
+                                as:
+                                  type: string
+                                path:
+                                  type: string
+                              required:
+                              - as
+                              - path
+                              type: object
+                            type: array
+                          name:
+                            type: string
+                          resourceRef:
+                            properties:
+                              group:
+                                description: OPTION 2
+                                type: string
+                              kind:
+                                type: string
+                              name:
+                                type: string
+                              nameSuffix:
+                                type: string
+                              version:
+                                type: string
+                            required:
+                            - kind
+                            type: object
+                        required:
+                        - fieldRef
+                        - name
+                        - resourceRef
+                        type: object
+                      type: array
                     version:
                       default: latest
                       type: string
                   required:
+                  - template
                   - type
                   type: object
                 minItems: 1
@@ -193,21 +212,6 @@ spec:
                   - type
                   type: object
                 type: array
-              generation:
-                format: int64
-                type: integer
-              stages:
-                additionalProperties:
-                  description: StageStatus captures the status of a stage
-                  properties:
-                    message:
-                      type: string
-                    reason:
-                      type: string
-                    validationStatus:
-                      type: string
-                  type: object
-                type: object
             type: object
         type: object
     served: true
@@ -308,37 +312,9 @@ spec:
           spec:
             description: ExpanderVersionSpec defines the desired state of ExpanderVersion
             properties:
-              config:
-                description: ExpanderConfig GVK
-                properties:
-                  group:
-                    type: string
-                  kind:
-                    type: string
-                  version:
-                    type: string
-                required:
-                - group
-                - kind
-                - version
-                type: object
-              image:
-                description: Image if different from removePrefix(expanderversion.name
-                  , "composition-")
-                type: string
               imageRegistry:
                 description: ImageRegistry is the designated registry for where to
                   pull the named expander image
-                type: string
-              type:
-                default: job
-                description: |-
-                  Type indicates what sort of expander:
-                    job - job based expander. ephemeral
-                    grpc - grpc service expander. persistent
-                enum:
-                - job
-                - grpc
                 type: string
               validVersions:
                 description: ValidVersions is a list of valid versions of the named
@@ -352,80 +328,6 @@ spec:
             type: object
           status:
             description: ExpanderVersionStatus defines the observed state of ExpanderVersion
-            properties:
-              conditions:
-                items:
-                  description: "Condition contains details for one aspect of the current
-                    state of this API Resource.\n---\nThis struct is intended for
-                    direct use as an array at the field path .status.conditions.  For
-                    example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the
-                    observations of a foo's current state.\n\t    // Known .status.conditions.type
-                    are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    //
-                    +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t
-                    \   // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\"
-                    patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t
-                    \   // other fields\n\t}"
-                  properties:
-                    lastTransitionTime:
-                      description: |-
-                        lastTransitionTime is the last time the condition transitioned from one status to another.
-                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-                      format: date-time
-                      type: string
-                    message:
-                      description: |-
-                        message is a human readable message indicating details about the transition.
-                        This may be an empty string.
-                      maxLength: 32768
-                      type: string
-                    observedGeneration:
-                      description: |-
-                        observedGeneration represents the .metadata.generation that the condition was set based upon.
-                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-                        with respect to the current state of the instance.
-                      format: int64
-                      minimum: 0
-                      type: integer
-                    reason:
-                      description: |-
-                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
-                        Producers of specific condition types may define expected values and meanings for this field,
-                        and whether the values are considered a guaranteed API.
-                        The value should be a CamelCase string.
-                        This field may not be empty.
-                      maxLength: 1024
-                      minLength: 1
-                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
-                      type: string
-                    status:
-                      description: status of the condition, one of True, False, Unknown.
-                      enum:
-                      - "True"
-                      - "False"
-                      - Unknown
-                      type: string
-                    type:
-                      description: |-
-                        type of condition in CamelCase or in foo.example.com/CamelCase.
-                        ---
-                        Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-                        useful (see .node.status.conditions), the ability to deconflict is important.
-                        The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-                      maxLength: 316
-                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
-                      type: string
-                  required:
-                  - lastTransitionTime
-                  - message
-                  - reason
-                  - status
-                  - type
-                  type: object
-                type: array
-              versionMap:
-                additionalProperties:
-                  type: string
-                type: object
             type: object
         type: object
     served: true
@@ -567,170 +469,6 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: getterconfigurations.composition.google.com
-spec:
-  group: composition.google.com
-  names:
-    kind: GetterConfiguration
-    listKind: GetterConfigurationList
-    plural: getterconfigurations
-    singular: getterconfiguration
-  scope: Namespaced
-  versions:
-  - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        description: GetterConfiguration is the Schema for the getters API
-        properties:
-          apiVersion:
-            description: |-
-              APIVersion defines the versioned schema of this representation of an object.
-              Servers should convert recognized schemas to the latest internal value, and
-              may reject unrecognized values.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-            type: string
-          kind:
-            description: |-
-              Kind is a string value representing the REST resource this object represents.
-              Servers may infer this from the endpoint the client submits requests to.
-              Cannot be updated.
-              In CamelCase.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-            type: string
-          metadata:
-            type: object
-          spec:
-            description: GetterConfigurationSpec defines the desired state of GetterConfiguration
-            properties:
-              valuesFrom:
-                items:
-                  properties:
-                    fieldRef:
-                      items:
-                        properties:
-                          as:
-                            type: string
-                          path:
-                            type: string
-                        required:
-                        - as
-                        - path
-                        type: object
-                      type: array
-                    name:
-                      type: string
-                    resourceRef:
-                      properties:
-                        group:
-                          description: OPTION 2
-                          type: string
-                        kind:
-                          type: string
-                        name:
-                          description: OneOf validation needed for Name and NameSuffix
-                            in CRD Definition
-                          type: string
-                        nameSuffix:
-                          type: string
-                        resource:
-                          type: string
-                        version:
-                          type: string
-                      required:
-                      - kind
-                      - resource
-                      type: object
-                  required:
-                  - fieldRef
-                  - name
-                  - resourceRef
-                  type: object
-                type: array
-            type: object
-          status:
-            description: GetterConfigurationStatus defines the observed state of GetterConfiguration
-            properties:
-              conditions:
-                items:
-                  description: "Condition contains details for one aspect of the current
-                    state of this API Resource.\n---\nThis struct is intended for
-                    direct use as an array at the field path .status.conditions.  For
-                    example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the
-                    observations of a foo's current state.\n\t    // Known .status.conditions.type
-                    are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    //
-                    +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t
-                    \   // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\"
-                    patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t
-                    \   // other fields\n\t}"
-                  properties:
-                    lastTransitionTime:
-                      description: |-
-                        lastTransitionTime is the last time the condition transitioned from one status to another.
-                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-                      format: date-time
-                      type: string
-                    message:
-                      description: |-
-                        message is a human readable message indicating details about the transition.
-                        This may be an empty string.
-                      maxLength: 32768
-                      type: string
-                    observedGeneration:
-                      description: |-
-                        observedGeneration represents the .metadata.generation that the condition was set based upon.
-                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-                        with respect to the current state of the instance.
-                      format: int64
-                      minimum: 0
-                      type: integer
-                    reason:
-                      description: |-
-                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
-                        Producers of specific condition types may define expected values and meanings for this field,
-                        and whether the values are considered a guaranteed API.
-                        The value should be a CamelCase string.
-                        This field may not be empty.
-                      maxLength: 1024
-                      minLength: 1
-                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
-                      type: string
-                    status:
-                      description: status of the condition, one of True, False, Unknown.
-                      enum:
-                      - "True"
-                      - "False"
-                      - Unknown
-                      type: string
-                    type:
-                      description: |-
-                        type of condition in CamelCase or in foo.example.com/CamelCase.
-                        ---
-                        Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-                        useful (see .node.status.conditions), the ability to deconflict is important.
-                        The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-                      maxLength: 316
-                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
-                      type: string
-                  required:
-                  - lastTransitionTime
-                  - message
-                  - reason
-                  - status
-                  - type
-                  type: object
-                type: array
-            type: object
-        type: object
-    served: true
-    storage: true
-    subresources:
-      status: {}
----
-apiVersion: apiextensions.k8s.io/v1
-kind: CustomResourceDefinition
-metadata:
-  annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
   name: plans.composition.google.com
 spec:
   group: composition.google.com
@@ -779,13 +517,6 @@ spec:
           status:
             description: PlanStatus defines the observed state of Plan
             properties:
-              compositionGeneration:
-                description: Composition generation last succesfully reconciled
-                format: int64
-                type: integer
-              compositionUID:
-                description: Composition UID
-                type: string
               conditions:
                 items:
                   description: "Condition contains details for one aspect of the current
@@ -855,73 +586,14 @@ spec:
                   - type
                   type: object
                 type: array
-              generation:
-                description: Plan generation we last successfully reconciled
-                format: int64
-                type: integer
-              inputGeneration:
-                description: Facade's generation last succesfully reconciled
-                format: int64
-                type: integer
-              lastPruned:
-                items:
-                  properties:
-                    group:
-                      type: string
-                    health:
-                      type: string
-                    kind:
-                      type: string
-                    name:
-                      type: string
-                    namespace:
-                      type: string
-                    status:
-                      type: string
-                    version:
-                      type: string
-                  required:
-                  - health
-                  - kind
-                  type: object
-                type: array
               stages:
                 additionalProperties:
                   description: StageStatus captures the status of a stage
                   properties:
-                    appliedCount:
-                      type: integer
-                    lastApplied:
-                      items:
-                        properties:
-                          group:
-                            type: string
-                          health:
-                            type: string
-                          kind:
-                            type: string
-                          name:
-                            type: string
-                          namespace:
-                            type: string
-                          status:
-                            type: string
-                          version:
-                            type: string
-                        required:
-                        - health
-                        - kind
-                        type: object
-                      type: array
                     resourceCount:
                       type: integer
-                  required:
-                  - resourceCount
                   type: object
                 type: object
-            required:
-            - compositionGeneration
-            - inputGeneration
             type: object
         type: object
     served: true
@@ -940,19 +612,6 @@ metadata:
     app.kubernetes.io/name: serviceaccount
     app.kubernetes.io/part-of: composition
   name: composition-controller-manager
-  namespace: composition-system
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: getter-expander-sa
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: serviceaccount
-    app.kubernetes.io/part-of: composition
-  name: composition-getter-expander
   namespace: composition-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -1084,27 +743,6 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: composition-getter-expander
-rules:
-- apiGroups:
-  - apiextensions.k8s.io
-  resources:
-  - customresourcedefinitions
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
   name: composition-manager-role
 rules:
 - apiGroups:
@@ -1125,17 +763,10 @@ rules:
   - list
   - patch
 - apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
   - apiextensions.k8s.io
   resources:
   - customresourcedefinitions
   verbs:
-  - create
   - get
   - list
   - watch
@@ -1153,11 +784,6 @@ rules:
   - composition.google.com
   resources:
   - compositions
-  - contexts
-  - expanderversions
-  - facades
-  - getterconfigurations
-  - plans
   verbs:
   - create
   - delete
@@ -1261,32 +887,6 @@ rules:
 - apiGroups:
   - composition.google.com
   resources:
-  - getterconfigurations
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - composition.google.com
-  resources:
-  - getterconfigurations/finalizers
-  verbs:
-  - update
-- apiGroups:
-  - composition.google.com
-  resources:
-  - getterconfigurations/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - composition.google.com
-  resources:
   - plans
   verbs:
   - create
@@ -1309,25 +909,6 @@ rules:
   verbs:
   - get
   - patch
-  - update
-- apiGroups:
-  - facade.compositions.google.com
-  resources:
-  - '*'
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - facade.compositions.google.com
-  resources:
-  - '*/status'
-  verbs:
-  - get
   - update
 - apiGroups:
   - facade.facade
@@ -1429,26 +1010,6 @@ metadata:
   labels:
     app.kubernetes.io/component: rbac
     app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: getter-expander-rolebinding
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: clusterrolebinding
-    app.kubernetes.io/part-of: composition
-  name: composition-getter-expander-rolebinding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: composition-getter-expander
-subjects:
-- kind: ServiceAccount
-  name: composition-getter-expander
-  namespace: composition-system
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: composition
     app.kubernetes.io/instance: manager-rolebinding
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrolebinding
@@ -1505,59 +1066,15 @@ spec:
   selector:
     control-plane: controller-manager
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: expanders
-    app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: getter-v0.0.1
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: service
-    app.kubernetes.io/part-of: composition
-    control-plane: expander-getter
-  name: composition-getter-v0-0-1
-  namespace: composition-system
-spec:
-  ports:
-  - name: grpc
-    port: 8443
-    protocol: TCP
-    targetPort: 8443
-  selector:
-    control-plane: expander-getter-v0.0.1
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: expanders
-    app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: jinja2-v0.0.1
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: service
-    app.kubernetes.io/part-of: composition
-    control-plane: expander-jinja2
-  name: composition-jinja2-v0-0-1
-  namespace: composition-system
-spec:
-  ports:
-  - name: grpc
-    port: 8443
-    protocol: TCP
-    targetPort: 8443
-  selector:
-    control-plane: expander-jinja2-v0.0.1
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: composition-controller-manager
+    app.kubernetes.io/component: manager
     app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: composition-controller-manager
+    app.kubernetes.io/instance: controller-manager
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: composition-controller-manager
+    app.kubernetes.io/name: deployment
     app.kubernetes.io/part-of: composition
     control-plane: controller-manager
   name: composition-controller-manager
@@ -1602,10 +1119,10 @@ spec:
         - --health-probe-bind-address=:8081
         - --metrics-bind-address=127.0.0.1:8080
         - --leader-elect
+        - --image-registry=gcr.io/krmapihosting-release
         command:
         - /manager
-        image: gcr.io/krmapihosting-release/composition:0.0.406
-        imagePullPolicy: Always
+        image: gcr.io/krmapihosting-release/composition:v0.0.1.alpha
         livenessProbe:
           httpGet:
             path: /healthz
@@ -1635,140 +1152,3 @@ spec:
         runAsNonRoot: true
       serviceAccountName: composition-controller-manager
       terminationGracePeriodSeconds: 10
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: expanders
-    app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: getter-v0.0.1
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: deployment
-    app.kubernetes.io/part-of: composition
-    control-plane: expander-getter-v0.0.1
-  name: composition-getter-v0.0.1
-  namespace: composition-system
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      control-plane: expander-getter-v0.0.1
-  template:
-    metadata:
-      annotations:
-        kubectl.kubernetes.io/default-container: expander
-      labels:
-        control-plane: expander-getter-v0.0.1
-    spec:
-      containers:
-      - args:
-        - --port=8443
-        command:
-        - /expander
-        image: gcr.io/krmapihosting-release/expander-getter:v0.0.1
-        name: getter
-        resources:
-          limits:
-            cpu: 500m
-            memory: 512Mi
-          requests:
-            cpu: 10m
-            memory: 128Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-      serviceAccountName: composition-getter-expander
-      terminationGracePeriodSeconds: 10
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: expanders
-    app.kubernetes.io/created-by: composition
-    app.kubernetes.io/instance: jinja2-v0.0.1
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: deployment
-    app.kubernetes.io/part-of: composition
-    control-plane: expander-jinja2-v0.0.1
-  name: composition-jinja2-v0.0.1
-  namespace: composition-system
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      control-plane: expander-jinja2-v0.0.1
-  template:
-    metadata:
-      annotations:
-        kubectl.kubernetes.io/default-container: expander
-      labels:
-        control-plane: expander-jinja2-v0.0.1
-    spec:
-      containers:
-      - args:
-        - --port=8443
-        command:
-        - /expander
-        image: gcr.io/krmapihosting-release/expander-jinja2:v0.0.1
-        name: jinja2
-        resources:
-          limits:
-            cpu: 500m
-            memory: 512Mi
-          requests:
-            cpu: 10m
-            memory: 128Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-      terminationGracePeriodSeconds: 10
----
-apiVersion: composition.google.com/v1alpha1
-kind: ExpanderVersion
-metadata:
-  name: composition-getter
-  namespace: composition-system
-spec:
-  config:
-    group: composition.google.com
-    kind: GetterConfiguration
-    version: v1alpha1
-  type: grpc
-  validVersions:
-  - v0.0.1
----
-apiVersion: composition.google.com/v1alpha1
-kind: ExpanderVersion
-metadata:
-  name: composition-jinja2
-  namespace: composition-system
-spec:
-  type: grpc
-  validVersions:
-  - v0.0.1
-  - v0.0.0
----
-apiVersion: composition.google.com/v1alpha1
-kind: ExpanderVersion
-metadata:
-  name: composition-jinja2-job
-  namespace: composition-system
-spec:
-  image: expander-jinja2
-  imageRegistry: gcr.io/krmapihosting-release
-  type: job
-  validVersions:
-  - v0.0.115
-  - v0.0.114
-  - v0.0.113
-  - v0.0.112
-  - v0.0.111
-  - v0.0.110
-  - v0.0.1
-  - v0.0.0

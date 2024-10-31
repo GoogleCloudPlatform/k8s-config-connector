@@ -203,6 +203,28 @@ spec:
                       to disable this, please also clear the list of the authorized
                       external networks set on the same instance.
                     type: boolean
+              pscInstanceConfig:
+                description: Configuration for Private Service Connect (PSC) for the
+                  instance.
+                properties:
+                  allowedConsumerProjects:
+                    description: |-
+                      List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+                      These should be specified as project numbers only.
+                    items:
+                      type: string
+                    type: array
+                  pscDnsName:
+                    description: |-
+                      The DNS name of the instance for PSC connectivity.
+                      Name convention: <uid>.<uid>.<region>.alloydb-psc.goog.
+                    type: string
+                  serviceAttachmentLink:
+                    description: |-
+                      The service attachment created when Private Service Connect (PSC) is enabled for the instance.
+                      The name of the resource will be in the format of
+                      'projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>'.
+                    type: string
                 type: object
               readPoolConfig:
                 description: Read pool specific config. If the instance type is READ_POOL,
@@ -458,6 +480,7 @@ spec:
                     description: The number of CPU's in the VM instance.
                     type: integer
                 type: object
+<<<<<<< HEAD
               networkConfig:
                 description: Instance level network configuration.
                 properties:
@@ -481,6 +504,30 @@ spec:
                       to disable this, please also clear the list of the authorized
                       external networks set on the same instance.
                     type: boolean
+=======
+              pscInstanceConfig:
+                description: Configuration for Private Service Connect (PSC) for the
+                  instance.
+                properties:
+                  allowedConsumerProjects:
+                    description: |-
+                      List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+                      These should be specified as project numbers only.
+                    items:
+                      type: string
+                    type: array
+                  pscDnsName:
+                    description: |-
+                      The DNS name of the instance for PSC connectivity.
+                      Name convention: <uid>.<uid>.<region>.alloydb-psc.goog.
+                    type: string
+                  serviceAttachmentLink:
+                    description: |-
+                      The service attachment created when Private Service Connect (PSC) is enabled for the instance.
+                      The name of the resource will be in the format of
+                      'projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>'.
+                    type: string
+>>>>>>> 57e5c4ac3 (test files and generated files)
                 type: object
               readPoolConfig:
                 description: Read pool specific config. If the instance type is READ_POOL,

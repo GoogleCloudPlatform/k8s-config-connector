@@ -90,6 +90,11 @@ networkConfig:
   - cidrRange: string
   enableOutboundPublicIp: boolean
   enablePublicIp: boolean
+pscInstanceConfig:
+  allowedConsumerProjects:
+  - string
+  pscDnsName: string
+  serviceAttachmentLink: string
 readPoolConfig:
   nodeCount: integer
 resourceID: string
