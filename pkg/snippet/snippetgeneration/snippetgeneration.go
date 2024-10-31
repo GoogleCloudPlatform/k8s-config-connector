@@ -86,7 +86,7 @@ var preferredSampleForResource = map[string]string{
 	"iamauditconfig":                     "project-level-audit-config",
 	"iamcustomrole":                      "project-role",
 	"iampolicy":                          "external-project-level-policy",
-	"iampartialpolicy":                   "project-level-policy",
+	"iampartialpolicy":                   "project-level-iampartialpolicy",
 	"iampolicymember":                    "external-project-level-policy-member",
 	"iamworkforcepoolprovider":           "oidc-workforce-pool-provider",
 	"iamworkloadidentitypoolprovider":    "oidc-workload-identity-pool-provider",
