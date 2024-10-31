@@ -1087,7 +1087,7 @@ metadata:
   name: iampolicymember-dep-memberref
 ```
 
-### Pubsub Admin Policy Member
+### PubSub Admin Policy Member
 ```yaml
 # Copyright 2020 Google LLC
 #

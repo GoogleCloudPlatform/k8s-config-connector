@@ -863,7 +863,7 @@ observedGeneration: integer
 
 ## Sample YAML(s)
 
-### Basic Pubsub Subscription
+### Basic PubSub Subscription
 ```yaml
 # Copyright 2020 Google LLC
 #
@@ -906,7 +906,7 @@ metadata:
   name: pubsubsubscription-dep2-basic
 ```
 
-### BigQuery Pubsub Subscription
+### BigQuery PubSub Subscription
 ```yaml
 # Copyright 2022 Google LLC
 #

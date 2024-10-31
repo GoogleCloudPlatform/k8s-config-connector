@@ -375,7 +375,7 @@ observedState:
 
 ## Sample YAML(s)
 
-### Vertexai Endpoint Encryptionkey
+### VertexAI Endpoint Encryptionkey
 ```yaml
 # Copyright 2024 Google LLC
 #
@@ -453,7 +453,7 @@ spec:
   resourceID: aiplatform.googleapis.com
 ```
 
-### Vertexai Endpoint Network
+### VertexAI Endpoint Network
 ```yaml
 # Copyright 2024 Google LLC
 #

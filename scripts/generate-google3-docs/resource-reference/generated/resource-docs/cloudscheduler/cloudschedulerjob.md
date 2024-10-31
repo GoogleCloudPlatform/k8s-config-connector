@@ -873,7 +873,7 @@ spec:
   displayName: Example Service Account
 ```
 
-### Scheduler Job Pubsub
+### Scheduler Job PubSub
 ```yaml
 # Copyright 2020 Google LLC
 #
