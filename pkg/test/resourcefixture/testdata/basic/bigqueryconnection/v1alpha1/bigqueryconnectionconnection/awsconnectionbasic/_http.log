@@ -66,7 +66,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=aws.accessRole.iamRoleId%2Caws.accessRole.identity%2Cname
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=aws.accessRole.iamRoleId%2Caws.accessRole.identity
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
@@ -76,7 +76,8 @@ x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%
     "accessRole": {
       "iamRoleId": "arn:aws:iam::199999999999:role/basicrole"
     }
-  }
+  },
+  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 200 OK
