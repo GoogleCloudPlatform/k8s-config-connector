@@ -560,7 +560,7 @@ spec:
   enabled: false
 ```
 
-### Pubsub Monitoring Notification Channel
+### PubSub Monitoring Notification Channel
 ```yaml
 # Copyright 2022 Google LLC
 #

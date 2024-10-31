@@ -326,7 +326,7 @@ observedState:
 
 ## Sample YAML(s)
 
-### Vertexai Dataset Basic
+### VertexAI Dataset Basic
 ```yaml
 # Copyright 2024 Google LLC
 #
@@ -355,7 +355,7 @@ spec:
     external: ${PROJECT_ID?}
 ```
 
-### Vertexai Dataset Encryptionkey
+### VertexAI Dataset Encryptionkey
 ```yaml
 # Copyright 2024 Google LLC
 #
