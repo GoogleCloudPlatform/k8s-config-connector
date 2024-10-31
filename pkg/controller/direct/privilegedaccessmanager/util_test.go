@@ -220,6 +220,70 @@ func TestSortArrayFieldsInSpec(t *testing.T) {
 		expected *krm.PrivilegedAccessManagerEntitlementSpec
 	}{
 		{
+			testName: "nil spec",
+			unsorted: nil,
+			expected: nil,
+		},
+		{
+			testName: "empty spec with no EligibleUsers nor ApprovalWorkflow",
+			unsorted: &krm.PrivilegedAccessManagerEntitlementSpec{},
+			expected: &krm.PrivilegedAccessManagerEntitlementSpec{},
+		},
+		{
+			testName: "nil ApprovalWorkflow.ManualApprovals",
+			unsorted: &krm.PrivilegedAccessManagerEntitlementSpec{
+				EligibleUsers: []krm.AccessControlEntry{
+					{
+						Principals: []string{
+							"user:abc@test.com",
+							"serviceAccount:xyz@gservicaccount.com",
+						},
+					},
+				},
+				ApprovalWorkflow: &krm.ApprovalWorkflow{},
+			},
+			expected: &krm.PrivilegedAccessManagerEntitlementSpec{
+				EligibleUsers: []krm.AccessControlEntry{
+					{
+						Principals: []string{
+							"serviceAccount:xyz@gservicaccount.com",
+							"user:abc@test.com",
+						},
+					},
+				},
+				ApprovalWorkflow: &krm.ApprovalWorkflow{},
+			},
+		},
+		{
+			testName: "nil ApprovalWorkflow.ManualApprovals.Steps",
+			unsorted: &krm.PrivilegedAccessManagerEntitlementSpec{
+				EligibleUsers: []krm.AccessControlEntry{
+					{
+						Principals: []string{
+							"user:abc@test.com",
+							"serviceAccount:xyz@gservicaccount.com",
+						},
+					},
+				},
+				ApprovalWorkflow: &krm.ApprovalWorkflow{
+					ManualApprovals: &krm.ManualApprovals{},
+				},
+			},
+			expected: &krm.PrivilegedAccessManagerEntitlementSpec{
+				EligibleUsers: []krm.AccessControlEntry{
+					{
+						Principals: []string{
+							"serviceAccount:xyz@gservicaccount.com",
+							"user:abc@test.com",
+						},
+					},
+				},
+				ApprovalWorkflow: &krm.ApprovalWorkflow{
+					ManualApprovals: &krm.ManualApprovals{},
+				},
+			},
+		},
+		{
 			testName: "EligibleUsers and ApprovalWorkflow.ManualApprovals.Steps.Approvers are sorted",
 			unsorted: &krm.PrivilegedAccessManagerEntitlementSpec{
 				EligibleUsers: []krm.AccessControlEntry{
