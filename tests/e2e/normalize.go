@@ -29,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
 )
 
 func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
@@ -101,6 +102,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Redis
 	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
 	visitor.replacePaths[".status.observedState.pscConnections[].pscConnectionID"] = "${pscConnectionID}"
+	visitor.replacePaths[".status.observedState.pscConnections[].address"] = "10.11.12.13"
+	visitor.replacePaths[".status.observedState.discoveryEndpoints[].address"] = "10.11.12.13"
 
 	// Specific to VertexAI
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
@@ -349,6 +352,14 @@ func newObjectWalker() *objectWalker {
 		sortAndDeduplicateSlices: sets.New[string](),
 		replacePaths:             make(map[string]any),
 	}
+}
+
+func (o *objectWalker) ReplacePath(path string, v string) {
+	if _, found := o.replacePaths[path]; found {
+		klog.Fatalf("objectWalker has duplicate ReplacePath %q", path)
+	}
+
+	o.replacePaths[path] = v
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
@@ -641,11 +652,11 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	// Specific to DataFlow
 	{
-		visitor.replacePaths[".job.startTime"] = "2024-04-01T12:34:56.123456Z"
-		visitor.replacePaths[".job.createTime"] = "2024-04-01T12:34:56.123456Z"
-		visitor.replacePaths[".currentStateTime"] = "2024-04-01T12:34:56.123456Z"
+		visitor.ReplacePath(".job.startTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".job.createTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".currentStateTime", "2024-04-01T12:34:56.123456Z")
 		// The pipelineUrl includes a long random ID that does not appear elsewhere
-		visitor.replacePaths[".environment.sdkPipelineOptions.options.pipelineUrl"] = "${pipelineUrl}"
+		visitor.ReplacePath(".environment.sdkPipelineOptions.options.pipelineUrl", "${pipelineUrl}")
 		visitor.sortAndDeduplicateSlices.Insert(".environment.experiments")
 		visitor.sortAndDeduplicateSlices.Insert(".environment.sdkPipelineOptions.options.experiments")
 
@@ -673,6 +684,14 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 			}
 			return a
 		})
+	}
+
+	// Specific to Redis
+	{
+		visitor.ReplacePath(".pscConnections[].address", "10.11.12.13")
+		visitor.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
+		visitor.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
+		visitor.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
 	}
 
 	// Run visitors
