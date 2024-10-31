@@ -454,7 +454,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 			t.Fatalf("GCP resource has a nil spec even though it was created using a resource with a non-nil spec")
 		}
 		changedSpecFields := getChangedFields(initialUnstruct.Object, reconciledUnstruct.Object, "spec")
-		removeSensitiveFeilds(reconciledUnstruct, changedSpecFields) // remove sensitive fields which are reacted by the GCP API
+		removeSensitiveFields(reconciledUnstruct, changedSpecFields) // remove sensitive fields which are reacted by the GCP API
 		assertObjectContains(t, gcpUnstruct.Object["spec"].(map[string]interface{}), changedSpecFields)
 	}
 
@@ -890,7 +890,7 @@ func containsResourceIDTestVar(t *testing.T, u *unstructured.Unstructured) bool 
 	return strings.Contains(string(b), resourceIDTestVar)
 }
 
-func removeSensitiveFeilds(unstruct *unstructured.Unstructured, changedSpecFields map[string]interface{}) {
+func removeSensitiveFields(unstruct *unstructured.Unstructured, changedSpecFields map[string]interface{}) {
 	switch unstruct.GetKind() {
 	case "BigQueryDataTransferConfig":
 		// remove these fields which are reacted by the GCP API when reading.
