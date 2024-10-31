@@ -263,7 +263,6 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Connection{}
-	// MISSING: Name
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
 
