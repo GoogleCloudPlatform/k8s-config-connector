@@ -56,7 +56,6 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "displayName": "Spanner Instance Sample",
-      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -73,7 +72,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-west1",
       "state": "READY"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -105,9 +103,7 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "Spanner Instance Sample",
-      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -116,7 +112,6 @@ X-Xss-Protection: 0
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
-      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -128,7 +123,6 @@ X-Xss-Protection: 0
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Spanner Instance Sample",
-    "instanceType": "PROVISIONED",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
@@ -137,7 +131,6 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 1,
     "processingUnits": 1000,
-    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -163,7 +156,6 @@ X-Xss-Protection: 0
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Spanner Instance Sample",
-  "instanceType": "PROVISIONED",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -172,7 +164,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 1,
   "processingUnits": 1000,
-  "resourceLocation": "us-west1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
