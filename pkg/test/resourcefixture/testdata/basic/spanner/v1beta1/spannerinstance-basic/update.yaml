@@ -17,7 +17,8 @@ kind: SpannerInstance
 metadata:
   labels:
     label-one: "value-one"
+    label-two: "value-two"
   name: spannerinstance-sample-${uniqueId}
 spec:
   config: regional-us-west1
-  displayName: Spanner Instance Sample
+  displayName: New Spanner Instance Sample
