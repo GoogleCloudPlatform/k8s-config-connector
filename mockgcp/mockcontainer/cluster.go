@@ -45,6 +45,9 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 
 	obj := &pb.Cluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: %s.", AsZonalLink(fqn))
+		}
 		return nil, err
 	}
 
@@ -77,6 +80,14 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	}
 
 	obj.SelfLink = fmt.Sprintf("https://container.googleapis.com/v1beta1/projects/%s/locations/%s/clusters/%s", name.Project.ID, name.Location, name.Cluster)
+	obj.SelfLink = AsZonalLink(obj.SelfLink)
+
+	if obj.Network == "" {
+		obj.Network = "default"
+	}
+	if obj.Subnetwork == "" {
+		obj.Subnetwork = "default"
+	}
 
 	if obj.NetworkConfig == nil {
 		obj.NetworkConfig = &pb.NetworkConfig{}
@@ -90,9 +101,21 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	if obj.NetworkConfig.Subnetwork == "" {
 		obj.NetworkConfig.Subnetwork = obj.Subnetwork
 		if obj.NetworkConfig.Subnetwork == "" {
-			obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, "default")
+			obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
 		}
 	}
+	// On output, Network and Subnetwork show the ID instead of the ful name
+	obj.Network = lastComponent(obj.Network)
+	obj.Subnetwork = lastComponent(obj.Subnetwork)
+
+	if isZone(obj.Location) {
+		obj.Zone = obj.Location
+	}
+
+	// PrivateCluster is now the default??
+	obj.PrivateCluster = true
+
+	obj.ServicesIpv4Cidr = "34.118.224.0/20"
 
 	if err := s.populateClusterDefaults(obj); err != nil {
 		return nil, err
@@ -111,7 +134,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	for i, nodePool := range obj.NodePools {
 		nodePoolObj := proto.Clone(nodePool).(*pb.NodePool)
-		if err := s.populateNodePoolDefaults(nodePoolObj); err != nil {
+		if err := s.populateNodePoolDefaults(obj, nodePoolObj); err != nil {
 			return nil, err
 		}
 		obj.NodePools[i] = nodePoolObj
@@ -131,9 +154,19 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_CREATE_CLUSTER,
-		TargetLink:    obj.SelfLink,
+		TargetLink:    buildTargetLink(name),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		op.Progress = &pb.OperationProgress{
+			Metrics: []*pb.OperationProgress_Metric{
+				{Name: "CLUSTER_CONFIGURING", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 10}},
+				{Name: "CLUSTER_CONFIGURING_TOTAL", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 10}},
+				{Name: "CLUSTER_DEPLOYING", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 12}},
+				{Name: "CLUSTER_DEPLOYING_TOTAL", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 12}},
+				{Name: "CLUSTER_HEALTHCHECKING", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 1}},
+				{Name: "CLUSTER_HEALTHCHECKING_TOTAL", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 2}},
+			},
+		}
 		return obj, nil
 	})
 }
@@ -270,7 +303,7 @@ func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClus
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_DELETE_CLUSTER,
-		TargetLink:    oldObj.SelfLink,
+		TargetLink:    buildTargetLink(name),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return oldObj, nil
@@ -278,6 +311,17 @@ func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClus
 }
 
 func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
+	if obj.NodeConfig == nil {
+		obj.NodeConfig = &pb.NodeConfig{}
+	}
+	if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
+		return err
+	}
+
+	if obj.InitialClusterVersion == "" {
+		obj.InitialClusterVersion = "1.30.5-gke.1014001"
+	}
+
 	if obj.AddonsConfig == nil {
 		obj.AddonsConfig = &pb.AddonsConfig{}
 	}
@@ -305,6 +349,22 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		obj.Autoscaling.AutoscalingProfile = pb.ClusterAutoscaling_BALANCED
 	}
 
+	if obj.Autoscaling.AutoprovisioningNodePoolDefaults == nil {
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults = &pb.AutoprovisioningNodePoolDefaults{}
+	}
+
+	if err := s.populateAutoprovisioningNodePoolDefaults(obj.Autoscaling.AutoprovisioningNodePoolDefaults); err != nil {
+		return err
+	}
+
+	if obj.BinaryAuthorization == nil {
+		obj.BinaryAuthorization = &pb.BinaryAuthorization{}
+	}
+
+	if obj.ClusterIpv4Cidr == "" {
+		obj.ClusterIpv4Cidr = "10.92.0.0/14"
+	}
+
 	if obj.ClusterTelemetry == nil {
 		obj.ClusterTelemetry = &pb.ClusterTelemetry{}
 	}
@@ -313,12 +373,33 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		obj.ClusterTelemetry.Type = pb.ClusterTelemetry_ENABLED
 	}
 
+	if obj.CurrentMasterVersion == "" {
+		obj.CurrentMasterVersion = obj.InitialClusterVersion
+	}
+	if obj.CurrentNodeVersion == "" {
+		obj.CurrentNodeVersion = obj.InitialClusterVersion
+	}
+
+	if obj.CurrentNodeCount == 0 {
+		obj.CurrentNodeCount = 1
+	}
+
 	if obj.DatabaseEncryption == nil {
 		obj.DatabaseEncryption = &pb.DatabaseEncryption{}
 	}
 
 	if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
 		obj.DatabaseEncryption.State = pb.DatabaseEncryption_DECRYPTED
+	}
+	if obj.DatabaseEncryption.CurrentState == nil {
+		obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+	}
+
+	if obj.DefaultMaxPodsConstraint == nil {
+		obj.DefaultMaxPodsConstraint = &pb.MaxPodsConstraint{}
+	}
+	if obj.DefaultMaxPodsConstraint.MaxPodsPerNode == 0 {
+		obj.DefaultMaxPodsConstraint.MaxPodsPerNode = 110
 	}
 
 	if obj.EnterpriseConfig == nil {
@@ -344,6 +425,17 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		}
 	}
 
+	if obj.LoggingService == "" {
+		obj.LoggingService = "logging.googleapis.com/kubernetes"
+	}
+
+	if obj.MasterAuthorizedNetworksConfig == nil {
+		obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+	}
+	if obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled == nil {
+		obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
+	}
+
 	if obj.MonitoringConfig == nil {
 		obj.MonitoringConfig = &pb.MonitoringConfig{}
 	}
@@ -366,6 +458,33 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		obj.MonitoringConfig.ManagedPrometheusConfig = &pb.ManagedPrometheusConfig{
 			Enabled: true,
 		}
+	}
+
+	if obj.MonitoringService == "" {
+		obj.MonitoringService = "monitoring.googleapis.com/kubernetes"
+	}
+
+	if obj.PrivateClusterConfig == nil {
+		obj.PrivateClusterConfig = &pb.PrivateClusterConfig{}
+	}
+	if obj.PrivateClusterConfig.PrivateEndpoint == "" {
+		obj.PrivateClusterConfig.PrivateEndpoint = "10.128.0.2"
+	}
+	if obj.PrivateClusterConfig.PublicEndpoint == "" {
+		obj.PrivateClusterConfig.PublicEndpoint = "8.8.8.8"
+	}
+
+	if obj.ProtectConfig == nil {
+		obj.ProtectConfig = &pb.ProtectConfig{}
+	}
+	if obj.ProtectConfig.WorkloadConfig == nil {
+		obj.ProtectConfig.WorkloadConfig = &pb.WorkloadConfig{}
+	}
+	if obj.ProtectConfig.WorkloadConfig.AuditMode == nil {
+		obj.ProtectConfig.WorkloadConfig.AuditMode = PtrTo(pb.WorkloadConfig_BASIC)
+	}
+	if obj.ProtectConfig.WorkloadVulnerabilityMode == nil {
+		obj.ProtectConfig.WorkloadVulnerabilityMode = PtrTo(pb.ProtectConfig_WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED)
 	}
 
 	if obj.ReleaseChannel == nil {
@@ -399,6 +518,10 @@ func (n *clusterName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Cluster
 }
 
+func (n *clusterName) LinkWithNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/clusters/%s", n.Project.Number, n.Location, n.Cluster)
+}
+
 func (n *clusterName) NodePool(nodePool string) *nodePoolName {
 	return &nodePoolName{
 		Project:  n.Project,
@@ -429,4 +552,12 @@ func (s *MockService) parseClusterName(name string) (*clusterName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func buildTargetLink(name *clusterName) string {
+	return "https://container.googleapis.com/v1beta1/" + AsZonalLink(name.LinkWithNumber())
+}
+
+func lastComponent(s string) string {
+	return s[strings.LastIndex(s, "/")+1:]
 }
