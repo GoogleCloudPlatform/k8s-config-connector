@@ -183,9 +183,10 @@ func expandFieldTemplate(template string, r *Resource, c client.Client, smLoader
 			return val
 		}
 
-		// todo(yuhou): Special handling to resolve project from DCL-based resource
-		// Only used for fixtures/globalcomputebackendservicesecuritysettings test for now
-		if path == "project" {
+		// Special handling to resolve project from DCL-based resource
+		// Only applied to a referenced NetworkSecurityClientTLSPolicy resource
+		// and tested by fixtures/globalcomputebackendservicesecuritysettings test for now
+		if path == "project" && r.Kind == "NetworkSecurityClientTLSPolicy" {
 			dclPath := "projectRef.external"
 			if val, exists, _ := unstructured.NestedString(r.Spec, strings.Split(dclPath, ".")...); exists {
 				return val

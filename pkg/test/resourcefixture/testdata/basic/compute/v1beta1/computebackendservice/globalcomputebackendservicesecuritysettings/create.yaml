@@ -22,7 +22,7 @@ spec:
   # global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED
   securitySettings:
     clientTLSPolicyRef:
-      name: clienttlspolicy-${uniqueId}
+      name: networksecurityclienttlspolicy-${uniqueId}
     subjectAltNames:
       - spiffe://junk.svc.id.goog/ns/test/sa/frontend
   timeoutSec: 10
