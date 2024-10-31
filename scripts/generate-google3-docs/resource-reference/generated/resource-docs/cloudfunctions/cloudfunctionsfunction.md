@@ -724,7 +724,7 @@ results in a new version of a function being created.{% endverbatim %}</p>
 
 ## Sample YAML(s)
 
-### Eventtrigger With Pubsubtopic
+### Eventtrigger With PubSubTopic
 ```yaml
 # Copyright 2022 Google LLC
 #
@@ -804,7 +804,7 @@ spec:
     external: "projects/${PROJECT_ID?}"
 ```
 
-### Eventtrigger With Storagebucket
+### Eventtrigger With StorageBucket
 ```yaml
 # Copyright 2022 Google LLC
 #

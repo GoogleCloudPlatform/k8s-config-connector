@@ -646,7 +646,7 @@ observedState:
 
 ## Sample YAML(s)
 
-### Bigquerydatatransferconfig Salesforce
+### BigQueryDataTransferConfig Salesforce
 ```yaml
 # Copyright 2024 Google LLC
 #
@@ -690,7 +690,7 @@ spec:
   location: us-central1
 ```
 
-### Bigquerydatatransferconfig Scheduledquery
+### BigQueryDataTransferConfig Scheduledquery
 ```yaml
 # Copyright 2024 Google LLC
 #
