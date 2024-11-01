@@ -101,19 +101,20 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 	}
 	fqn := name.String()
 
-	old := &pb.WorkerPool{}
-	if err := s.storage.Get(ctx, fqn, old); err != nil {
+	obj := &pb.WorkerPool{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
 		}
 		return nil, err
 	}
-
-	new := proto.Clone(req.WorkerPool).(*pb.WorkerPool)
+	if err := fields.UpdateByFieldMask(obj, req.WorkerPool, req.UpdateMask.Paths); err != nil {
+		return nil, err
+	}
 	now := timestamppb.Now()
-	populateDefaultsForWorkerPool(new)
-	new.CreateTime = old.GetCreateTime()
-	if err := s.storage.Update(ctx, fqn, new); err != nil {
+	populateDefaultsForWorkerPool(obj)
+	obj.CreateTime = obj.GetCreateTime()
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 	metadata := &pb.UpdateWorkerPoolOperationMetadata{
@@ -121,7 +122,7 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		CreateTime: now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		return new, nil
+		return obj, nil
 	})
 }
 
