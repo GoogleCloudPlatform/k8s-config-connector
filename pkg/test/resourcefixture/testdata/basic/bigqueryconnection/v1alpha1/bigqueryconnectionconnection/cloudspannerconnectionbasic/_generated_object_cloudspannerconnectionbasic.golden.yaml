@@ -15,10 +15,10 @@ spec:
   cloudSpanner:
     databaseRef:
       name: spannerdb-${uniqueId}
-    databaseRole: admin
+    databaseRole: user
     maxParallelism: 150
-    useDataBoost: true
-    useParallelism: true
+    useDataBoost: false
+    useParallelism: false
   location: us-central1
   projectRef:
     external: ${projectId}
