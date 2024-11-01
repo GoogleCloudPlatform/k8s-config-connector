@@ -27,4 +27,4 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    defaultSchemaId: default_schema
+    defaultSchemaID: default_schema
