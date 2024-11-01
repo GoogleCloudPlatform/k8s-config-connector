@@ -288,3 +288,26 @@ func BigQueryConnectionConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: SalesforceDataCloud
 	return out
 }
+
+func CloudSqlCredential_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlCredential) *krm.CloudSqlCredential {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSqlCredential{}
+	// This is sensitive data, input-only field.
+	// out.Username = direct.LazyPtr(in.GetUsername())
+	// out.Password = direct.LazyPtr(in.GetPassword())
+	return out
+}
+
+func CloudSqlCredential_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlCredential) *pb.CloudSqlCredential {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlCredential{}
+	if in.SecretRef != nil {
+		out.Username = in.SecretRef.Username
+		out.Password = in.SecretRef.Password
+	}
+	return out
+}

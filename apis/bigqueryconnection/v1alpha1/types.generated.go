@@ -141,15 +141,6 @@ type CloudSpannerProperties struct {
 	DatabaseRole *string `json:"databaseRole,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlCredential
-type CloudSqlCredential struct {
-	// The username for the credential.
-	Username *string `json:"username,omitempty"`
-
-	// The password for the credential.
-	Password *string `json:"password,omitempty"`
-}
-
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlProperties
 type CloudSqlProperties struct {
 	// Cloud SQL instance ID in the form `project:location:instance`.

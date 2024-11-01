@@ -100,12 +100,22 @@ spec:
                   credential:
                     description: Cloud SQL credential.
                     properties:
-                      password:
-                        description: The password for the credential.
-                        type: string
-                      username:
-                        description: The username for the credential.
-                        type: string
+                      secretRef:
+                        description: The Kubernetes Secret object that stores the
+                          "username" and "password" information. The Secret type has
+                          to be `kubernetes.io/basic-auth`.
+                        properties:
+                          name:
+                            description: The `metadata.name` field of a Kubernetes
+                              `Secret`
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a Kubernetes
+                              `Secret`.
+                            type: string
+                        required:
+                        - name
+                        type: object
                     type: object
                   database:
                     description: Database name.
