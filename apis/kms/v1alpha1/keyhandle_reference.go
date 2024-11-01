@@ -117,28 +117,29 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 	// 2. if desiredHandleID is a valid UUID: id.external will be valid.
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = AsKMSKeyHandleExternal(id.parent, desiredHandleId)
+	if externalRef != "" {
+		actualParent, actualHandleId, err := ParseKMSKeyHandleExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+		// Validate desired with actual
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		}
+		if actualParent.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		}
+		if desiredHandleId != "" && (actualHandleId != desiredHandleId) {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				desiredHandleId, actualHandleId)
+		}
+		id.External = externalRef
 		return id, nil
 	}
-
-	// Validate desired with actual
-	actualParent, actualHandleId, err := ParseKMSKeyHandleExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-	}
-	if desiredHandleId != "" && (actualHandleId != desiredHandleId) {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			desiredHandleId, actualHandleId)
-	}
-	id.External = externalRef
 	id.parent = &KMSKeyHandleParent{ProjectID: projectID, Location: location}
+	if desiredHandleId != "" {
+		id.External = id.parent.String() + "/keyHandles/" + desiredHandleId
+	}
 	return id, nil
 }
 
