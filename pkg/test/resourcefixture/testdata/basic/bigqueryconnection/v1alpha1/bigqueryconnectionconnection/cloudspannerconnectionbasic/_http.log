@@ -415,7 +415,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=cloudSpanner.maxParallelism
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=cloudSpanner.databaseRole%2CcloudSpanner.maxParallelism%2CcloudSpanner.useDataBoost%2CcloudSpanner.useParallelism
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
@@ -423,10 +423,8 @@ x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 {
   "cloudSpanner": {
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "databaseRole": "admin",
-    "maxParallelism": 150,
-    "useDataBoost": true,
-    "useParallelism": true
+    "databaseRole": "user",
+    "maxParallelism": 150
   },
   "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
@@ -445,10 +443,8 @@ X-Xss-Protection: 0
 {
   "cloudSpanner": {
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "databaseRole": "admin",
-    "maxParallelism": 150,
-    "useDataBoost": true,
-    "useParallelism": true
+    "databaseRole": "user",
+    "maxParallelism": 150
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
@@ -476,10 +472,8 @@ X-Xss-Protection: 0
 {
   "cloudSpanner": {
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "databaseRole": "admin",
-    "maxParallelism": 150,
-    "useDataBoost": true,
-    "useParallelism": true
+    "databaseRole": "user",
+    "maxParallelism": 150
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
