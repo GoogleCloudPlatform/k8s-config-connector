@@ -812,7 +812,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Updated CloudBuild WorkerPool",
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+    "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
     "privatePoolV1Config": {
       "networkConfig": {
         "egressOption": "PUBLIC_EGRESS",
@@ -852,7 +852,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Updated CloudBuild WorkerPool",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
       "egressOption": 2,
