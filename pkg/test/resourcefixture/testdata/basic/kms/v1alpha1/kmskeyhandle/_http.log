@@ -1,43 +1,9 @@
-GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d?%24alt=json%3Benum-encoding%3Dint
+POST https://cloudkms.googleapis.com/v1/projects/autokey-resource/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5fe9854c-4a75-4ec9-8c27-c235754b981d
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+x-goog-request-params: parent=projects%2Fautokey-resource%2Flocations%2Fus-central1
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "keyHandle \"projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "keyHandle \"projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d\" not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${uniqueId}%2Flocations%2Fus-central1
-
-{
-  "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d",
   "resourceTypeSelector": "compute.googleapis.com/Disk"
 }
 
@@ -53,15 +19,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "projects/${uniqueId}/locations/us-central1/operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.kms.v1.CreateKeyHandleMetadata"
+  },
+  "name": "projects/autokey-resource/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/operations/${operationID}
+GET https://cloudkms.googleapis.com/v1/projects/autokey-resource/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+x-goog-request-params: name=projects%2Fautokey-resource%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -76,20 +45,21 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${uniqueId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/autokey-resource/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.kms.v1.KeyHandle",
-    "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d",
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/autokey/cryptoKeys/190012159962-compute-disk-78d515aaefe53b68",
+    "name": "projects/autokey-resource/locations/us-central1/keyHandles/22542ecb-fd0a-4d25-a2bf-caf8834cfba9",
     "resourceTypeSelector": "compute.googleapis.com/Disk"
   }
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/autokey-resource/locations/us-central1/keyHandles/22542ecb-fd0a-4d25-a2bf-caf8834cfba9?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5fe9854c-4a75-4ec9-8c27-c235754b981d
+x-goog-request-params: name=projects%2Fautokey-resource%2Flocations%2Fus-central1%2FkeyHandles%2F22542ecb-fd0a-4d25-a2bf-caf8834cfba9
 
 200 OK
 Cache-Control: private
@@ -103,6 +73,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d",
+  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/autokey/cryptoKeys/190012159962-compute-disk-78d515aaefe53b68",
+  "name": "projects/autokey-resource/locations/us-central1/keyHandles/22542ecb-fd0a-4d25-a2bf-caf8834cfba9",
   "resourceTypeSelector": "compute.googleapis.com/Disk"
 }

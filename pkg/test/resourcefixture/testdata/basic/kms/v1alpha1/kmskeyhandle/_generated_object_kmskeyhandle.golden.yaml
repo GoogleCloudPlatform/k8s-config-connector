@@ -12,8 +12,7 @@ metadata:
 spec:
   location: us-central1
   projectRef:
-    external: projects/${uniqueId}
-  resourceID: 5fe9854c-4a75-4ec9-8c27-c235754b981d
+    external: projects/autokey-resource
   resourceTypeSelector: compute.googleapis.com/Disk
 status:
   conditions:
@@ -22,6 +21,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d
+  externalRef: projects/autokey-resource/locations/us-central1/keyHandles/22542ecb-fd0a-4d25-a2bf-caf8834cfba9
   observedGeneration: 1
-  observedState: {}
+  observedState:
+    kmsKey: projects/${projectId}/locations/us-central1/keyRings/autokey/cryptoKeys/190012159962-compute-disk-78d515aaefe53b68
