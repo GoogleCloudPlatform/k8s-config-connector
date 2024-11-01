@@ -24,6 +24,7 @@ spec:
     databaseRef:
       name: spannerdb-${uniqueId}
     maxParallelism: 150
-    useDataBoost: False
-    useParallelism: False
+    # `useDataBoost` and `useParallelism` has to be true when use `maxParallelism` 
+    useDataBoost: True
+    useParallelism: True
     databaseRole: "user"
