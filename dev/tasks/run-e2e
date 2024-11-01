@@ -81,11 +81,12 @@ echo "Using TEST_TIMEOUT=${TEST_TIMEOUT}"
 
 if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
   echo "Prebuilding e2e tests"
-  PREBUILT_TEST_BINARY=.build/tests-e2e
+  PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
   go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 fi
 
 # Run e2e tests
+cd tests/e2e
 GOLDEN_REQUEST_CHECKS=1 \
 GOLDEN_OBJECT_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \

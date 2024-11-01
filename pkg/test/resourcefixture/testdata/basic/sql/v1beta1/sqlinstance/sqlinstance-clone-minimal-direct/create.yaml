@@ -26,8 +26,14 @@ spec:
   region: us-central1
   settings:
     backupConfiguration:
+      backupRetentionSettings:
+        retainedBackups: 3
+        retentionUnit: COUNT
       enabled: true
+      location: us-central1
       pointInTimeRecoveryEnabled: true
+      startTime: 00:00
+      transactionLogRetentionDays: 2
     # Location preference is not actually a required field. However, setting it for tests
     # helps with with normalizing the GCP responses, because otherwise GCP chooses a zone
     # preference based on availability. Therefore it could potentially vary if not

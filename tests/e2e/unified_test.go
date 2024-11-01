@@ -901,7 +901,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
 					if testgcp.TestFolderID.Get() != "" {
-						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
+						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${folderID}"))
 					}
 					if organizationID := testgcp.TestOrgID.Get(); organizationID != "" {
 						normalizers = append(normalizers, ReplaceString("organizations/"+organizationID, "organizations/${organizationID}"))

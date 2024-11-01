@@ -60,7 +60,11 @@ gcloud services enable \
   logging.googleapis.com \
   monitoring.googleapis.com \
   redis.googleapis.com \
-  securesourcemanager.googleapis.com \
   servicenetworking.googleapis.com \
   sqladmin.googleapis.com \
   workstations.googleapis.com
+
+# Some APIs are behind an allowlist, so we only enable them if we are specifically testing them.
+if [[ "${ONLY_TEST_APIGROUPS:-}" == "securesourcemanager.cnrm.cloud.google.com" ]]; then
+  gcloud services enable securesourcemanager.googleapis.com
+fi
