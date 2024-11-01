@@ -94,8 +94,7 @@ X-Xss-Protection: 0
 {
   "aws": {
     "accessRole": {
-      "iamRoleId": "arn:aws:iam::199999999999:role/basicrole",
-      "identity": "048077221682493034546"
+      "iamRoleId": "arn:aws:iam::199999999999:role/basicrole"
     }
   },
   "creationTime": "123456789",
@@ -124,8 +123,7 @@ X-Xss-Protection: 0
 {
   "aws": {
     "accessRole": {
-      "iamRoleId": "arn:aws:iam::199999999999:role/basicrole",
-      "identity": "048077221682493034546"
+      "iamRoleId": "arn:aws:iam::199999999999:role/basicrole"
     }
   },
   "creationTime": "123456789",
