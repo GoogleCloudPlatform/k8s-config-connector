@@ -241,5 +241,13 @@ go run . generate-mapper \
    --output-dir $REPO_ROOT/pkg/controller/direct/ \
    --api-dir $REPO_ROOT/apis/
 
+
+go run main.go generate-types \
+    --service google.spanner.admin.instance.v1 \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --output-api $REPO_ROOT/apis \
+    --kind SpannerInstance \
+    --proto-resource Instance \
+    --api-version "spanner.cnrm.cloud.google.com/v1beta1"
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

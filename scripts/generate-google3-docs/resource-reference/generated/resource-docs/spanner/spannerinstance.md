@@ -119,12 +119,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the instance's configuration (similar but not
-quite the same as a region) which defines the geographic placement and
-replication of your databases in this instance. It determines where your data
-is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc.
-In order to obtain a valid list please consult the
-[Configuration section of the docs](https://cloud.google.com/spanner/docs/instances).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. It determines where your data is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc. In order to obtain a valid list please consult the [Configuration section of the docs](https://cloud.google.com/spanner/docs/instances).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -134,8 +129,7 @@ In order to obtain a valid list please consult the
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The descriptive name for this instance as it appears in UIs. Must be
-unique per project and between 4 and 30 characters in length.{% endverbatim %}</p>
+            <p>{% verbatim %}The descriptive name for this instance as it appears in UIs. Must be unique per project and between 4 and 30 characters in length.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -165,7 +159,7 @@ unique per project and between 4 and 30 characters in length.{% endverbatim %}</
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The SpannerInstance name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -182,6 +176,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
 state: string
 ```
@@ -197,7 +192,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the SpannerInstance's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -240,6 +235,13 @@ state: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type is the type of the condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the SpannerInstance resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
