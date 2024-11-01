@@ -21,6 +21,8 @@ spec:
   settings:
     diskAutoresize: false
     diskSize: 20
+    locationPreference:
+      zone: us-central1-b
     tier: db-n1-standard-1
 status:
   conditions:

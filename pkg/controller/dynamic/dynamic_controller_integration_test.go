@@ -452,8 +452,9 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 		if gcpUnstruct.Object["spec"] == nil {
 			t.Fatalf("GCP resource has a nil spec even though it was created using a resource with a non-nil spec")
 		}
-		changedFields := getChangedFields(initialUnstruct.Object, reconciledUnstruct.Object, "spec")
-		assertObjectContains(t, gcpUnstruct.Object["spec"].(map[string]interface{}), changedFields)
+		changedSpecFields := getChangedFields(initialUnstruct.Object, reconciledUnstruct.Object, "spec")
+		removeSensitiveFeilds(reconciledUnstruct, changedSpecFields) // remove sensitive fields which are reacted by the GCP API
+		assertObjectContains(t, gcpUnstruct.Object["spec"].(map[string]interface{}), changedSpecFields)
 	}
 
 	// Check that an "Updating" event was recorded, indicating that the
@@ -872,6 +873,15 @@ func containsResourceIDTestVar(t *testing.T, u *unstructured.Unstructured) bool 
 		t.Fatalf("error marshalling unstruct to bytes: %v", err)
 	}
 	return strings.Contains(string(b), resourceIDTestVar)
+}
+
+func removeSensitiveFeilds(unstruct *unstructured.Unstructured, changedSpecFields map[string]interface{}) {
+	switch unstruct.GetKind() {
+	case "BigQueryDataTransferConfig":
+		// remove these fields which are reacted by the GCP API when reading.
+		unstructured.RemoveNestedField(changedSpecFields, "params", "connector.authentication.oauth.clientId")
+		unstructured.RemoveNestedField(changedSpecFields, "params", "connector.authentication.oauth.clientSecret")
+	}
 }
 
 func TestMain(m *testing.M) {

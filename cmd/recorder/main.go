@@ -192,9 +192,15 @@ func doRecord(ctx context.Context, c client.Client, gvks []schema.GroupVersionKi
 	return nil
 }
 
-func forEach(c client.Client, gvk schema.GroupVersionKind, listOptions *client.ListOptions, fn func(unstructured.Unstructured) error) error {
+func forEach(ctx context.Context, c client.Client, gvk schema.GroupVersionKind, listOptions *client.ListOptions, fn func(unstructured.Unstructured) error) error {
+	logger := klog.FromContext(ctx)
 	for ok := true; ok; ok = listOptions.Continue != "" {
-		if _, ok := opk8s.IgnoredCRDList[gvkToCRDName(gvk)]; ok {
+		crdName := gvkToCRDName(gvk)
+		if _, ok := opk8s.IgnoredCRDList[crdName]; ok {
+			logger.Error(fmt.Errorf("unexpected CRD %s", crdName),
+				fmt.Sprintf("please run `kubectl delete crd %s` to "+
+					"delete the orphaned CRD", crdName),
+				"crd", crdName)
 			continue
 		}
 		list := unstructured.UnstructuredList{}
@@ -226,7 +232,7 @@ func recordMetricsForGVK(ctx context.Context, c client.Client, gvk schema.GroupV
 		Raw:   &v1.ListOptions{},
 	}
 	statsNamespaceMap := make(map[string]*Stats)
-	if err := forEach(c, gvk, opts, func(obj unstructured.Unstructured) error {
+	if err := forEach(ctx, c, gvk, opts, func(obj unstructured.Unstructured) error {
 		namespace := obj.GetNamespace()
 		s := statsNamespaceMap[namespace]
 		if s == nil {

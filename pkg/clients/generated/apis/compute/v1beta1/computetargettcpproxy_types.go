@@ -43,17 +43,19 @@ type ComputeTargetTCPProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. This field only applies when the forwarding rule that references
-	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
+	/* The geographical location of the ComputeTargetTCPProxy. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
 	// +optional
 	ProxyBind *bool `json:"proxyBind,omitempty"`
 
-	/* Specifies the type of proxy header to append before sending data to
-	the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
+	/* Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. The ComputeTargetTCPProxy name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -66,6 +68,10 @@ type ComputeTargetTCPProxyStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
+	/* A unique specifier for the ComputeTargetTCPProxy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -74,6 +80,7 @@ type ComputeTargetTCPProxyStatus struct {
 	// +optional
 	ProxyId *int64 `json:"proxyId,omitempty"`
 
+	/* The SelfLink for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }

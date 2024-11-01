@@ -22,7 +22,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?alt=json&prettyPrint=false
+POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -129,7 +129,7 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001"
+  "billingAccountName": "billingAccounts/${billingAccountID}"
 }
 
 200 OK
@@ -144,7 +144,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
   "name": "projects/example-project-01/billingInfo",
   "projectId": "example-project-01"
@@ -167,7 +167,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
   "name": "projects/example-project-01/billingInfo",
   "projectId": "example-project-01"
@@ -222,7 +222,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
   "name": "projects/example-project-01/billingInfo",
   "projectId": "example-project-01"

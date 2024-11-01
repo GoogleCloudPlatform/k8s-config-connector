@@ -699,7 +699,11 @@ x-goog-request-params: parent=projects%2F${projectId}
     "managed-by-cnrm": "true"
   },
   "replication": {
-    "automatic": {}
+    "automatic": {
+      "customerManagedEncryption": {
+        "kmsKeyName": "projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      }
+    }
   },
   "rotation": {
     "nextRotationTime": "2025-10-02T15:01:23Z",
@@ -737,7 +741,11 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
-    "automatic": {}
+    "automatic": {
+      "customerManagedEncryption": {
+        "kmsKeyName": "projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      }
+    }
   },
   "rotation": {
     "nextRotationTime": "2025-10-02T15:01:23Z",
@@ -782,7 +790,11 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
-    "automatic": {}
+    "automatic": {
+      "customerManagedEncryption": {
+        "kmsKeyName": "projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      }
+    }
   },
   "rotation": {
     "nextRotationTime": "2025-10-02T15:01:23Z",
@@ -816,7 +828,11 @@ x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretman
   },
   "name": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
-    "automatic": {}
+    "automatic": {
+      "customerManagedEncryption": {
+        "kmsKeyName": "projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      }
+    }
   },
   "rotation": {
     "nextRotationTime": "2025-10-03T15:01:23Z",
@@ -855,7 +871,11 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
-    "automatic": {}
+    "automatic": {
+      "customerManagedEncryption": {
+        "kmsKeyName": "projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      }
+    }
   },
   "rotation": {
     "nextRotationTime": "2025-10-03T15:01:23Z",
@@ -901,7 +921,11 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
-    "automatic": {}
+    "automatic": {
+      "customerManagedEncryption": {
+        "kmsKeyName": "projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      }
+    }
   },
   "rotation": {
     "nextRotationTime": "2025-10-03T15:01:23Z",
