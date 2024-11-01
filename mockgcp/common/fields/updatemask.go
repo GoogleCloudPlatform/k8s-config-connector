@@ -23,58 +23,70 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func UpdateByFieldMask(old, new proto.Message, updatePaths []string) error {
+// UpdateByFieldMask updates the `original` Message with the `update` Message value in the given `updatePaths` fields
+func UpdateByFieldMask(original, update proto.Message, updatePaths []string) error {
 	var errs []error
 	for _, path := range updatePaths {
-		if err := walk(old, new, path); err != nil {
+		if err := walk(original, update, path); err != nil {
 			errs = append(errs, err)
 		}
 	}
 	return errors.Join(errs...)
 }
 
-func walk(old, new proto.Message, path string) error {
-	segments := strings.Split(path, ".")
+func walk(original, update proto.Message, path string) error {
+	originalRm := original.ProtoReflect()
+	updateRm := update.ProtoReflect()
+	segments := strings.SplitN(path, ".", 2)
 	if len(segments) == 1 {
-		return replace(old, new, segments[0])
+		return replace(originalRm, updateRm, segments[0])
 	}
-
-	subPath := strings.TrimPrefix(path, segments[0]+".")
-	return walk(childMessage(old, segments[0]), childMessage(new, segments[0]), subPath)
+	return walk(originalChildMessage(originalRm, segments[0]), updateChildMessage(updateRm, segments[0]), segments[1])
 }
 
-func replace(old, new proto.Message, fieldName string) error {
-	oldFd := old.ProtoReflect().Descriptor().Fields().ByJSONName(fieldName)
-	oldVal := old.ProtoReflect().Get(oldFd)
-	newFd := new.ProtoReflect().Descriptor().Fields().ByJSONName(fieldName)
-	newVal := new.ProtoReflect().Get(newFd)
+func replace(original, update protoreflect.Message, fieldName string) error {
+	originalFd := original.Descriptor().Fields().ByJSONName(fieldName)
+	originalVal := original.Get(originalFd)
+	updateFd := update.Descriptor().Fields().ByJSONName(fieldName)
+	updateVal := update.Get(updateFd)
 
-	if oldFd.Kind() != protoreflect.MessageKind {
-		m := old.ProtoReflect()
-		if !m.IsValid() {
+	if originalFd.Kind() != protoreflect.MessageKind {
+		if !original.IsValid() {
 			return fmt.Errorf("%s is read-only or empty", fieldName)
 		}
-		m.Set(newFd, newVal)
+		original.Set(updateFd, updateVal)
+		return nil
 	}
 	// Update Map
-	if oldFd.IsMap() {
-		newVal.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
-			oldVal.Map().Set(k, v)
+	if originalFd.IsMap() {
+		originalVal.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
+			originalVal.Map().Clear(k)
 			return true
 		})
+		updateVal.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
+			originalVal.Map().Set(k, v)
+			return true
+		})
+		return nil
 	}
 	// Update List
-	if oldFd.IsList() {
-		oldVal.List().Truncate(0)
-		for i := 0; i < newVal.List().Len(); i++ {
-			oldVal.List().Append(newVal.List().Get(i))
+	if originalFd.IsList() {
+		originalVal.List().Truncate(0)
+		for i := 0; i < updateVal.List().Len(); i++ {
+			originalVal.List().Append(updateVal.List().Get(i))
 		}
+		return nil
 	}
-	return nil
+	return fmt.Errorf("unhandled type for field %v", fieldName)
 }
 
-func childMessage(m proto.Message, fieldName string) proto.Message {
-	fd := m.ProtoReflect().Descriptor().Fields().ByJSONName(fieldName)
-	v := m.ProtoReflect().Get(fd)
-	return v.Message().Interface()
+// originalChildMessage get the orignal Message's mutable reference to the `fieldName“ composite.
+func originalChildMessage(m protoreflect.Message, fieldName string) proto.Message {
+	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	return m.Mutable(fd).Message().Interface()
+}
+
+func updateChildMessage(m protoreflect.Message, fieldName string) proto.Message {
+	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	return m.Get(fd).Message().Interface()
 }
