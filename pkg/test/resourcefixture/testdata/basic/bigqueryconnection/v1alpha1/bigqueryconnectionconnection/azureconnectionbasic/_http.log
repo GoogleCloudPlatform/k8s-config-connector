@@ -89,8 +89,8 @@ X-Xss-Protection: 0
 
 {
   "azure": {
-    "customerTenantId": "customer-tenant-id-1111111",
-    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce",
+    "customerTenantId": "customer-tenant-id-2222222",
+    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce-001",
     "identity": "117243083562690747295"
   },
   "creationTime": "123456789",
@@ -118,8 +118,8 @@ X-Xss-Protection: 0
 
 {
   "azure": {
-    "customerTenantId": "customer-tenant-id-1111111",
-    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce",
+    "customerTenantId": "customer-tenant-id-2222222",
+    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce-001",
     "identity": "117243083562690747295"
   },
   "creationTime": "123456789",
