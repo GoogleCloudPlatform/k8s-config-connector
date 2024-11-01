@@ -49,6 +49,8 @@ spec:
         name: computenetwork-${uniqueId}
       requireSsl: false
       sslMode: ENCRYPTED_ONLY
+    locationPreference:
+      zone: us-central1-b
     tier: db-custom-1-3840
 status:
   conditions:

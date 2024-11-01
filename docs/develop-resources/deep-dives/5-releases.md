@@ -13,12 +13,17 @@
 ## 5.2 Bump from v1alpha1 to v1beta1
 
 * Copy-paste `./apis/service>/v1alpha1 `to` ./apis/service>/v1beta1 `using `git mv` (this is for PR review) and make sure the `./apis/service>/v1alpha1 `is still there.
+  * NOTE: if you have more than one resource in your service, only copy the files relevant to your resource for now. You will need to re-run `dev/tasks/generate-crds` for the `deepcopy` file. 
 
-* Update the new folder apiVersion to `v1beta1`
+* Update the new package version to `v1beta1`
 
-* Update all imports and update the MockGCP test suite to use `v1beta1`
+* Update all direct controller imports to use  the `v1beta1` api of your resource
+
+* For all the fixtures tests under [pkg/test/resourcefixture/testdata](pkg/test/resourcefixture/testdata) make sure your resources use the `v1beta1` version.
 
 * Add `kubebuilder:storageversion` tag to `v1beta1 `API. [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/1b19153411653329177f4ba0991c982f36970707/apis/cloudbuild/v1beta1/workerpool_types.go#L155)
+
+* Run `dev/taks/generate-crds` to patch your resource's CRD with the `v1beta1` version.
 
 ## 5.3 Turn on doc auto-generation (direct resource only)
 
@@ -32,7 +37,7 @@
 
 1.  In [config/samples/resources](config/samples/resources), create a new
     directory for the resource's samples: `mkdir spannerinstance`.
-1.  Follow the sample guidelines [here](../../../README.Samples.md) and create sample(s) for the resource.
+1.  Follow the sample guidelines [here](./../../../README.Samples.md) and create sample(s) for the resource.
 
 ### Run/Disable Sample Tests
 

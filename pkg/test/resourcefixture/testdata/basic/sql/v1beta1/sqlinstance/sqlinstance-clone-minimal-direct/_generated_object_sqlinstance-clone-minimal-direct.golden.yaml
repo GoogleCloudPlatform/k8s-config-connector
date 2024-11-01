@@ -21,8 +21,14 @@ spec:
   region: us-central1
   settings:
     backupConfiguration:
+      backupRetentionSettings:
+        retainedBackups: 3
+        retentionUnit: COUNT
       enabled: true
+      location: us-central1
       pointInTimeRecoveryEnabled: true
+      startTime: "00:00"
+      transactionLogRetentionDays: 2
     locationPreference:
       zone: us-central1-a
     tier: db-custom-1-3840

@@ -175,7 +175,7 @@ X-Xss-Protection: 0
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -191,7 +191,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
+    "message": "Resource 'folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -201,7 +201,7 @@ X-Xss-Protection: 0
 POST https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: parent=folders%2F${testFolderId}%2Flocations%2Fglobal
+x-goog-request-params: parent=folders%2F${folderID}%2Flocations%2Fglobal
 
 {
   "additionalNotificationTargets": {
@@ -242,7 +242,7 @@ x-goog-request-params: parent=folders%2F${testFolderId}%2Flocations%2Fglobal
   "maxRequestDuration": "1800s",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
       "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
@@ -275,10 +275,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "create"
   },
-  "name": "folders/${testFolderId}/locations/global/operations/${operationID}"
+  "name": "folders/${folderID}/locations/global/operations/${operationID}"
 }
 
 ---
@@ -286,7 +286,7 @@ X-Xss-Protection: 0
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -307,10 +307,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "create"
   },
-  "name": "folders/${testFolderId}/locations/global/operations/${operationID}",
+  "name": "folders/${folderID}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
     "additionalNotificationTargets": {
@@ -351,10 +351,10 @@ X-Xss-Protection: 0
     ],
     "etag": "abcdef0123A=",
     "maxRequestDuration": "1800s",
-    "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "privilegedAccess": {
       "gcpIamAccess": {
-        "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+        "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
         "resourceType": "cloudresourcemanager.googleapis.com/Folder",
         "roleBindings": [
           {
@@ -377,7 +377,7 @@ X-Xss-Protection: 0
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -429,10 +429,10 @@ X-Xss-Protection: 0
   ],
   "etag": "abcdef0123A=",
   "maxRequestDuration": "1800s",
-  "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
       "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
@@ -454,7 +454,7 @@ X-Xss-Protection: 0
 PATCH https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=additionalNotificationTargets%2CapprovalWorkflow%2CeligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: entitlement.name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: entitlement.name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 {
   "additionalNotificationTargets": {
@@ -495,10 +495,10 @@ x-goog-request-params: entitlement.name=folders%2F${testFolderId}%2Flocations%2F
   ],
   "etag": "abcdef0123A=",
   "maxRequestDuration": "3600s",
-  "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
       "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
@@ -531,10 +531,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "update"
   },
-  "name": "folders/${testFolderId}/locations/global/operations/${operationID}"
+  "name": "folders/${folderID}/locations/global/operations/${operationID}"
 }
 
 ---
@@ -542,7 +542,7 @@ X-Xss-Protection: 0
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -563,10 +563,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "update"
   },
-  "name": "folders/${testFolderId}/locations/global/operations/${operationID}",
+  "name": "folders/${folderID}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
     "additionalNotificationTargets": {
@@ -608,10 +608,10 @@ X-Xss-Protection: 0
     ],
     "etag": "abcdef0123A=",
     "maxRequestDuration": "3600s",
-    "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "privilegedAccess": {
       "gcpIamAccess": {
-        "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+        "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
         "resourceType": "cloudresourcemanager.googleapis.com/Folder",
         "roleBindings": [
           {
@@ -634,7 +634,7 @@ X-Xss-Protection: 0
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -687,10 +687,10 @@ X-Xss-Protection: 0
   ],
   "etag": "abcdef0123A=",
   "maxRequestDuration": "3600s",
-  "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
       "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
@@ -712,7 +712,7 @@ X-Xss-Protection: 0
 DELETE https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -732,10 +732,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "delete"
   },
-  "name": "folders/${testFolderId}/locations/global/operations/${operationID}"
+  "name": "folders/${folderID}/locations/global/operations/${operationID}"
 }
 
 ---
@@ -743,7 +743,7 @@ X-Xss-Protection: 0
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${testFolderId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -764,10 +764,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "delete"
   },
-  "name": "folders/${testFolderId}/locations/global/operations/${operationID}",
+  "name": "folders/${folderID}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
     "additionalNotificationTargets": {
@@ -809,10 +809,10 @@ X-Xss-Protection: 0
     ],
     "etag": "abcdef0123A=",
     "maxRequestDuration": "3600s",
-    "name": "folders/${testFolderId}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "privilegedAccess": {
       "gcpIamAccess": {
-        "resource": "//cloudresourcemanager.googleapis.com/folders/${testFolderId}",
+        "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
         "resourceType": "cloudresourcemanager.googleapis.com/Folder",
         "roleBindings": [
           {

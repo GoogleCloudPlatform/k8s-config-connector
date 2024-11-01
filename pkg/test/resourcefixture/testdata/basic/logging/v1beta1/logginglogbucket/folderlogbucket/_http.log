@@ -1,4 +1,4 @@
-GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dfolders%2F${testFolderId}+AND+displayName%3D%22Bucket+${uniqueId}%22
+GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dfolders%2F${folderID}+AND+displayName%3D%22Bucket+${uniqueId}%22
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -22,7 +22,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 
 {
   "displayName": "Bucket ${uniqueId}",
-  "parent": "folders/${testFolderId}"
+  "parent": "folders/${folderID}"
 }
 
 200 OK
@@ -66,7 +66,7 @@ X-Xss-Protection: 0
     "displayName": "Bucket ${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "folders/${folderID}",
-    "parent": "folders/${testFolderId}",
+    "parent": "folders/${folderID}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -97,7 +97,7 @@ X-Xss-Protection: 0
     "displayName": "Bucket ${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "folders/${folderID}",
-    "parent": "folders/${testFolderId}",
+    "parent": "folders/${folderID}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -124,7 +124,7 @@ X-Xss-Protection: 0
   "displayName": "Bucket ${uniqueId}",
   "etag": "abcdef0123A=",
   "name": "folders/${folderID}",
-  "parent": "folders/${testFolderId}",
+  "parent": "folders/${folderID}",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -282,7 +282,7 @@ X-Xss-Protection: 0
   "displayName": "Bucket ${uniqueId}",
   "etag": "abcdef0123A=",
   "name": "folders/${folderID}",
-  "parent": "folders/${testFolderId}",
+  "parent": "folders/${folderID}",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -311,7 +311,7 @@ X-Xss-Protection: 0
     "displayName": "Bucket ${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "folders/${folderID}",
-    "parent": "folders/${testFolderId}",
+    "parent": "folders/${folderID}",
     "state": "DELETE_REQUESTED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }

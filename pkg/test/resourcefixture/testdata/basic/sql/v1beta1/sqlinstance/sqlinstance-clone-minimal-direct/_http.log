@@ -42,9 +42,16 @@ User-Agent: kcc/controller-manager
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
     "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 3,
+        "retentionUnit": "COUNT"
+      },
       "enabled": true,
       "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": true
+      "location": "us-central1",
+      "pointInTimeRecoveryEnabled": true,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 2
     },
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskType": "PD_SSD",
@@ -189,15 +196,16 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 3,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "us-central1",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 2,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
@@ -425,15 +433,16 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 3,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "us-central1",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 2,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
@@ -490,6 +499,37 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
+  "targetId": "sqlinstance-clone-minimal-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
   "targetId": "sqlinstance-clone-minimal-direct-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
   "targetProject": "${projectId}",
@@ -561,15 +601,16 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 3,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "us-central1",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 2,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
@@ -626,6 +667,37 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
+  "targetId": "sqlinstance-source-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
   "targetId": "sqlinstance-source-direct-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
   "targetProject": "${projectId}",

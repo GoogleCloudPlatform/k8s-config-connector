@@ -347,6 +347,9 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	if err != nil {
 		return false, fmt.Errorf("deleting SQLInstance %s failed: %w", a.resourceID, err)
 	}
+	if err := a.pollForLROCompletion(ctx, op, "delete"); err != nil {
+		return false, err
+	}
 
 	log.V(2).Info("deleted SQLInstance", "op", op)
 

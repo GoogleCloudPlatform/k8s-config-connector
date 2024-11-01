@@ -26,8 +26,11 @@ echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
 echo "Prebuilding e2e tests"
-export PREBUILT_TEST_BINARY=.build/tests-e2e
+export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
 go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e 
 
 echo "Running tests"
-dev/tasks/list-tests | xargs -P 40 -I {} /bin/bash -c "echo {}; RUN_TESTS={} dev/tasks/run-e2e > testlogs/{}/log 2>&1"
+dev/tasks/list-tests | sort | uniq | xargs -P 40 -I {} /bin/bash -c "echo {}; RUN_TESTS={} dev/tasks/run-e2e > testlogs/{}/log 2>&1"
+
+echo "Checking for failures"
+rgrep FAIL testlogs/

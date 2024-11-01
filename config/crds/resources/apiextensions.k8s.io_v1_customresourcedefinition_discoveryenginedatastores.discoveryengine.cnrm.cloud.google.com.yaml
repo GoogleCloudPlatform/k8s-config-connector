@@ -61,6 +61,12 @@ spec:
             description: DiscoveryEngineDataStoreSpec defines the desired state of
               DiscoveryEngineDataStore
             properties:
+              collection:
+                description: Immutable. The collection for the DataStore.
+                type: string
+                x-kubernetes-validations:
+                - message: Collection field is immutable
+                  rule: self == oldSelf
               contentConfig:
                 description: Immutable. The content config of the data store. If this
                   field is unset, the server behavior defaults to [ContentConfig.NO_CONTENT][google.cloud.discoveryengine.v1.DataStore.ContentConfig.NO_CONTENT].
@@ -155,6 +161,7 @@ spec:
                     type: string
                 type: object
             required:
+            - collection
             - location
             - projectRef
             type: object
