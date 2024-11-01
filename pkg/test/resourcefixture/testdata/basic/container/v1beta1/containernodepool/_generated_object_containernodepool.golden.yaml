@@ -36,4 +36,4 @@ status:
     type: Ready
   observedGeneration: 3
   observedState:
-    version: ""
+    version: 1.30.5-gke.1014001
