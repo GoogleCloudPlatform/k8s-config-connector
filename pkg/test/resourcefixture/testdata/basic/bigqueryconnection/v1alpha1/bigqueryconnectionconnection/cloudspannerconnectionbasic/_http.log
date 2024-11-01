@@ -55,7 +55,6 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "displayName": "Spanner Database Dependency",
-      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -71,7 +70,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-west1",
       "state": "READY"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -103,9 +101,7 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "Spanner Database Dependency",
-      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -113,7 +109,6 @@ X-Xss-Protection: 0
       "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
-      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -125,7 +120,6 @@ X-Xss-Protection: 0
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Spanner Database Dependency",
-    "instanceType": "PROVISIONED",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -133,7 +127,6 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
     "nodeCount": 1,
     "processingUnits": 1000,
-    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -159,7 +152,6 @@ X-Xss-Protection: 0
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Spanner Database Dependency",
-  "instanceType": "PROVISIONED",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -167,7 +159,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
   "nodeCount": 1,
   "processingUnits": 1000,
-  "resourceLocation": "us-west1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -191,7 +182,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Database not found: projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "message": "database \"projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -251,7 +242,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseDialect": "GOOGLE_STANDARD_SQL",
-    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
     "state": "READY",
     "versionRetentionPeriod": "1h"
@@ -283,23 +273,9 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
-    "actions": [
-      {
-        "action": "CREATE",
-        "entityNames": [
-          "t1"
-        ],
-        "entityType": "TABLE"
-      }
-    ],
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "progress": [
-      {
-        "startTime": "2024-04-01T12:34:56.123456Z"
-      }
-    ],
     "statements": [
-      "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
+      "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
     ]
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}"
@@ -325,33 +301,19 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
-    "actions": [
-      {
-        "action": "CREATE",
-        "entityNames": [
-          "t1"
-        ],
-        "entityType": "TABLE"
-      }
-    ],
-    "commitTimestamps": [
-      "2024-04-01T12:34:56.123456Z"
-    ],
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "progress": [
-      {
-        "endTime": "2024-04-01T12:34:56.123456Z",
-        "progressPercent": 100,
-        "startTime": "2024-04-01T12:34:56.123456Z"
-      }
-    ],
     "statements": [
-      "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
+      "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
     ]
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
+    "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseDialect": "GOOGLE_STANDARD_SQL",
+    "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "state": "READY",
+    "versionRetentionPeriod": "1h"
   }
 }
 
@@ -374,12 +336,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
-  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
-  "encryptionInfo": [
-    {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-    }
-  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -423,15 +379,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F95acef57-3337-4fb3-8ff8-47a849cf5e1f
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -454,15 +410,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f?%24alt=json%3Benum-encoding%3Dint&updateMask=cloudSpanner.databaseRole%2CcloudSpanner.maxParallelism
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=cloudSpanner.databaseRole%2CcloudSpanner.maxParallelism
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F95acef57-3337-4fb3-8ff8-47a849cf5e1f
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 {
   "cloudSpanner": {
@@ -472,7 +428,7 @@ x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
     "useDataBoost": true,
     "useParallelism": true
   },
-  "name": "projects/${projectNumber}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 200 OK
@@ -496,15 +452,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F95acef57-3337-4fb3-8ff8-47a849cf5e1f
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -527,15 +483,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/95acef57-3337-4fb3-8ff8-47a849cf5e1f?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F95acef57-3337-4fb3-8ff8-47a849cf5e1f
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -569,12 +525,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
-  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
-  "encryptionInfo": [
-    {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-    }
-  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -618,7 +568,6 @@ X-Xss-Protection: 0
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Spanner Database Dependency",
-  "instanceType": "PROVISIONED",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -626,7 +575,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
   "nodeCount": 1,
   "processingUnits": 1000,
-  "resourceLocation": "us-west1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
