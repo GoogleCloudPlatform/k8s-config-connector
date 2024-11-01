@@ -93,7 +93,7 @@ func convertConfig(config map[string]interface{}, path []string, schema *openapi
 		return config, nil
 	}
 	if schema.Type != "object" {
-		return nil, fmt.Errorf("expect the schame type to be 'object', but got %v", schema.Type)
+		return nil, fmt.Errorf("expect the schema type to be 'object', but got %v", schema.Type)
 	}
 	for f, s := range schema.Properties {
 		if dclextension.IsReferenceField(s) {
