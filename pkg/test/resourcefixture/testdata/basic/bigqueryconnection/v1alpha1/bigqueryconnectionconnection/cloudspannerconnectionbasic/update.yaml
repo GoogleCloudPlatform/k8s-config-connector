@@ -24,6 +24,6 @@ spec:
     databaseRef:
       name: spannerdb-${uniqueId}
     maxParallelism: 150
-    useDataBoost: True
-    useParallelism: True
-    databaseRole: "admin"
+    useDataBoost: False
+    useParallelism: False
+    databaseRole: "user"
