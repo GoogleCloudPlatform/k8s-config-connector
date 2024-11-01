@@ -21,9 +21,6 @@ import (
 
 var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // LoggingLinkSpec defines the desired state of LoggingLink
 // +kcc:proto=google.logging.v2.Link
 type LoggingLinkSpec struct {
@@ -31,6 +28,26 @@ type LoggingLinkSpec struct {
 	// Immutable.
 	// The LoggingLink name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Describes this link.
+	//
+	//  The maximum length of the description is 8000 characters.
+	Description *string `json:"description,omitempty"`
+
+	// The reference to the Log Bucket is linked to a dataset.
+	/* Only `external` field is supported to configure the reference for now. */
+	// +required
+	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+
+        Parent `json:",inline"`
+}
+
+type Parent struct {
+    // +required      
+    ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+
+    // +required
+    Location string `json:"location"`
 }
 
 // LoggingLinkStatus defines the config connector machine state of LoggingLink
