@@ -168,24 +168,3 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructur
 
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
 }
-
-type ProjectIDAndNumer struct {
-	ID     string
-	Number string
-}
-
-func ProjectIDToNumber(p *ProjectIDAndNumer, valWithProjectID string) (string, error) {
-	replaced := strings.Replace(valWithProjectID, "projects/"+p.ID, "projects/"+p.Number, -1)
-	if replaced == valWithProjectID {
-		return "", fmt.Errorf("project ID was not found in %q", valWithProjectID)
-	}
-	return replaced, nil
-}
-
-func ProjectNumberToID(p *ProjectIDAndNumer, valWithProjectNum string) (string, error) {
-	replaced := strings.Replace(valWithProjectNum, "projects/"+p.Number, "projects/"+p.ID, -1)
-	if replaced == valWithProjectNum {
-		return "", fmt.Errorf("project Number was not found in %q", valWithProjectNum)
-	}
-	return replaced, nil
-}

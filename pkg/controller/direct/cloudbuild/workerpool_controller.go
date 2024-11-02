@@ -121,13 +121,24 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get computeNetwork
-	if obj.Spec.PrivatePoolConfig.NetworkConfig != nil {
-		networkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
+	networkSpec := obj.Spec.PrivatePoolConfig.NetworkConfig
+	if networkSpec != nil {
+		peeredNetworkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &networkSpec.PeeredNetworkRef)
 		if err != nil {
 			return nil, err
 
 		}
-		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = networkRef.String()
+		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = peeredNetworkRef.String()
+		if obj.Status.ObservedState != nil {
+			fromStatus := obj.Status.ObservedState.NetworkConfig.PeeredNetwork
+			if fromStatus != nil {
+				projectNumber, _, err := refs.ParseComputeNetworkExternal(*fromStatus)
+				if err != nil {
+					return nil, err
+				}
+				networkSpec.PeeredNetworkRef.ProjectNumber = projectNumber
+			}
+		}
 	}
 
 	// Get CloudBuild GCP client
@@ -135,23 +146,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
-
-	projectIDAndNumer := &refs.ProjectIDAndNumer{ID: projectRef.ProjectID}
-	network, found, err := unstructured.NestedString(u.Object, "status", "observedState", "networkConfig", "peeredNetwork")
-	if err == nil && found {
-		tokens := strings.Split(network, "/")
-		if len(tokens) == 5 && tokens[0] == "projects" {
-			projectIDAndNumer.Number = tokens[1]
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
 	return &Adapter{
-		id:              id,
-		gcpClient:       gcpClient,
-		desired:         obj,
-		projectIDAndNum: projectIDAndNumer,
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   obj,
 	}, nil
 }
 
@@ -183,11 +181,10 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id              *CloudBuildWorkerPoolIdentity
-	gcpClient       *gcp.Client
-	desired         *krm.CloudBuildWorkerPool
-	actual          *cloudbuildpb.WorkerPool
-	projectIDAndNum *refs.ProjectIDAndNumer
+	id        *CloudBuildWorkerPoolIdentity
+	gcpClient *gcp.Client
+	desired   *krm.CloudBuildWorkerPool
+	actual    *cloudbuildpb.WorkerPool
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -261,12 +258,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// When comparing the desired and actual fields, we need to align the project format, to avoid updating the
 	// "peered_network" field.
 	// Why we can't just update the "peered_network" field? Because it is immutable. ¯\_(ツ)_/¯
-	network := wp.GetPrivatePoolV1Config().GetNetworkConfig()
-	var err error
-	network.PeeredNetwork, err = refs.ProjectIDToNumber(a.projectIDAndNum, network.PeeredNetwork)
-	if err != nil {
-		return err
-	}
+	wp.GetPrivatePoolV1Config().NetworkConfig.PeeredNetwork = desired.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.WithProjectNumber()
 	paths, err := common.CompareProtoMessage(wp, a.actual, common.BasicDiff)
 
 	if err != nil {
