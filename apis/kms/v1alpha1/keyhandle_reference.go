@@ -130,7 +130,7 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
 		if desiredHandleId != "" && (actualHandleId != desiredHandleId) {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already assigned to %s",
 				desiredHandleId, actualHandleId)
 		}
 		id.External = externalRef
