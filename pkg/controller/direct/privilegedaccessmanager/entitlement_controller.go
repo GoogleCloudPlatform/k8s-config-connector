@@ -17,6 +17,7 @@ package privilegedaccessmanager
 import (
 	"context"
 	"fmt"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"reflect"
 	"strings"
 
@@ -312,9 +313,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("error generating update mask: %w", mapCtx.Err())
 	}
-	sortArrayFieldsInSpec(parsedActual)
+	//sortArrayFieldsInSpec(parsedActual)
 	parsedDesired := a.desired.DeepCopy()
-	sortArrayFieldsInSpec(&parsedDesired.Spec)
+	//sortArrayFieldsInSpec(&parsedDesired.Spec)
 
 	if !reflect.DeepEqual(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets) {
 		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets))
@@ -324,10 +325,23 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow))
 		updateMask.Paths = append(updateMask.Paths, "approval_workflow")
 	}
-	if !reflect.DeepEqual(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers) {
+	actualEligibleUsers := sets.New[*krm.AccessControlEntry]()
+	for _, eu := range parsedActual.EligibleUsers {
+		actualEligibleUsers.Insert(&eu)
+	}
+	desiredEligibleUsers := sets.New[*krm.AccessControlEntry]()
+	for _, eu := range a.desired.Spec.EligibleUsers {
+		desiredEligibleUsers.Insert(&eu)
+	}
+	if !actualEligibleUsers.Equal(desiredEligibleUsers) {
 		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers))
+		fmt.Printf("'spec.eligibleUsers' field is updated (-old +new): %+v", cmp.Diff(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers))
 		updateMask.Paths = append(updateMask.Paths, "eligible_users")
 	}
+	//if !reflect.DeepEqual(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers) {
+	//	log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers))
+	//	updateMask.Paths = append(updateMask.Paths, "eligible_users")
+	//}
 	if !reflect.DeepEqual(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, parsedDesired.Spec.MaxRequestDuration).AsDuration()) {
 		log.V(2).Info("'spec.maxRequestDuration' field is updated (-old +new)", cmp.Diff(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, parsedDesired.Spec.MaxRequestDuration).AsDuration()))
 		updateMask.Paths = append(updateMask.Paths, "max_request_duration")
@@ -342,6 +356,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("underlying PrivilegedAccessManagerEntitlement already up to date", "name", a.id.FullyQualifiedName())
+		fmt.Printf("underlying PrivilegedAccessManagerEntitlement already up to date, name: %v", a.id.FullyQualifiedName())
 
 		status := &krm.PrivilegedAccessManagerEntitlementStatus{}
 		observedState := PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx, a.actual)

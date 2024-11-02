@@ -30,3 +30,4 @@ spec:
   eligibleUsers:
     - principals:
         - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+        - user:[REDACT]
