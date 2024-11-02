@@ -28,4 +28,4 @@ spec:
     type: "MYSQL"
     credential:
       secretRef: 
-        name: bigqueryconnectionconnection-${uniqueId}
+        name:  secret-${uniqueId}
