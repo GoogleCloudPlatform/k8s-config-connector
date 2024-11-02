@@ -65,7 +65,7 @@ func (s *ClusterManagerV1) startLRO(ctx context.Context, project *projects.Proje
 	}
 
 	fqn := name.String()
-	op.SelfLink = "https://container.googleapis.com/v1beta1/" + fqn
+	op.SelfLink = "https://container.googleapis.com/v1beta1/" + AsZonalLink(fqn)
 
 	op.Status = pb.Operation_RUNNING
 
@@ -80,6 +80,9 @@ func (s *ClusterManagerV1) startLRO(ctx context.Context, project *projects.Proje
 			klog.Warningf("error getting LRO: %v", err2)
 			return
 		}
+
+		// Progress might have been updated by callback
+		finished.Progress = op.Progress
 
 		finished.Status = pb.Operation_DONE
 		if err != nil {

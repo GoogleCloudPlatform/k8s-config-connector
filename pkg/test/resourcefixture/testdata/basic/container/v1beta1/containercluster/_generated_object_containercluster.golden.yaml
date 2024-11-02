@@ -69,5 +69,11 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  masterVersion: 1.30.5-gke.1014001
   observedGeneration: 3
-  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}
+  observedState:
+    privateClusterConfig:
+      privateEndpoint: 10.128.0.2
+      publicEndpoint: 8.8.8.8
+  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}
+  servicesIpv4Cidr: 34.118.224.0/20
