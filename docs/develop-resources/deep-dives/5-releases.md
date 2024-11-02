@@ -57,7 +57,9 @@ We have a script that generates snippet files for Cloud Code using our samples.
 If you created multiple samples (i.e. multiple samples subdirectories), you must
 tell the script which sample to use for generating snippets. Update the
 `preferredSampleForResource` map in
-[pkg/snippet/snippetgeneration/snippetgeneration.go](../../../pkg/snippet/snippetgeneration/snippetgeneration.go).
+
+[pkg/snippet/snippetgeneration/snippetgeneration.go](./../../../pkg/snippet/snippetgeneration/snippetgeneration.go).
+
 
 ## 5.5 Add reference document 
 
@@ -65,26 +67,26 @@ To add or update the Config Connector
 [reference doc](https://cloud.google.com/config-connector/docs/reference/overview), please do the following.
 
 1.  Copy one of existing files under
-    [scripts/generate-google3-docs/resource-reference/templates](../../../scripts/generate-google3-docs/resource-reference/templates),
+    [scripts/generate-google3-docs/resource-reference/templates](./../../../scripts/generate-google3-docs/resource-reference/templates),
     and name it like `spanner_spannerinstance.tmpl`, (i.e.,
     <service>_<kind>.tmpl).
 1.  Add a paragraph to briefly introduce the resource at the very top of the file.
 1.  If additional setup is necessary before the newly added resource can be applied successfully, 
     and the setup can't be done via the Config Connector resources or features, add a "Prerequisites" section to explain
     the prerequisites steps,
-    E.g. [scripts/generate-google3-docs/resource-reference/generated/resource-docs/containerattached/containerattachedcluster.md](../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs/containerattached/containerattachedcluster.md)
+    E.g. [scripts/generate-google3-docs/resource-reference/generated/resource-docs/containerattached/containerattachedcluster.md](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs/containerattached/containerattachedcluster.md)
     and
-    [scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md](../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md)
+    [scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md)
 1.  Update
-    [scripts/generate-google3-docs/resource-reference/overview.md](../../../scripts/generate-google3-docs/resource-reference/overview.md)
+    [scripts/generate-google3-docs/resource-reference/overview.md](./../../../scripts/generate-google3-docs/resource-reference/overview.md)
     by adding a row for your resource to the resource table.
     
 1.  Update
-    [scripts/generate-google3-docs/resource-reference/_toc.yaml](../../../scripts/generate-google3-docs/resource-reference/_toc.yaml)
+    [scripts/generate-google3-docs/resource-reference/_toc.yaml](./../../../scripts/generate-google3-docs/resource-reference/_toc.yaml)
     by adding an entry and path to the corresponding API section. If there is no
     entry for the API, add one.
 
 To generate the new resource doc, run `make resource-docs`. You should see your
 resource generated to the
-[scripts/generate-google3-docs/resource-reference/generated/resource-docs](../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs)
+[scripts/generate-google3-docs/resource-reference/generated/resource-docs](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs)
 folder.

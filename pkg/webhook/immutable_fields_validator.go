@@ -294,6 +294,9 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("couldn't get ResourceConfig for kind %v: %w", obj.GetKind(), err))
 	}
+	if rc.Direct && rc.Name != "google_sql_database_instance" {
+		return allowedResponse
+	}
 
 	if err := validateContainerAnnotationsForResource(obj.GetKind(), obj.GetAnnotations(), oldObj.GetAnnotations(), rc.Containers, rc.HierarchicalReferences); err != nil {
 		return admission.Errored(http.StatusBadRequest,

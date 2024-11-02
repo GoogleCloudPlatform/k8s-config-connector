@@ -30,6 +30,15 @@ func init() {
 		SkipUpdate:   true,
 	}
 
+	resourceContextMap["globalcomputebackendservicesecuritysettings"] = ResourceContext{
+		ResourceKind: "ComputeBackendService",
+		// Underlying API changes dependency resource's project id to number after successful creation.
+		// For now TF servicemapping does not have a way to resolve dependency DCL resources' project number.
+		// Skip checking no change after creation(testNoChangeAfterCreate) to bypass this temporarily.
+		// See https://buganizer.corp.google.com/issues/374166656#comment11 for details.
+		SkipNoChange: true,
+	}
+
 	resourceContextMap["computeexternalvpngateway"] = ResourceContext{
 		ResourceKind: "ComputeExternalVPNGateway",
 		SkipUpdate:   true,

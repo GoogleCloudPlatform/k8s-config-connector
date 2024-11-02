@@ -172,6 +172,7 @@ spec:
             kind: NetworkSecurityClientTLSPolicy
             version: v1beta1
             group: networksecurity.cnrm.cloud.google.com
+          valueTemplate: "//networksecurity.googleapis.com/projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{value}}"
           dclBasedResource: true
         - tfField: iap.oauth2_client_id
           description: OAuth2 Client ID for IAP.
