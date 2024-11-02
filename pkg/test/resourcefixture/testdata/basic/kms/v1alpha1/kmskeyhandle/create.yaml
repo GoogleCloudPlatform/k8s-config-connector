@@ -17,7 +17,6 @@ kind: KMSKeyHandle
 metadata:
   name: keyhandle-${uniqueId}
 spec:
-  resourceID: 5fe9854c-4a75-4ec9-8c27-c235754b981d
   projectRef:
     external: projects/${uniqueId}
   location: us-central1
