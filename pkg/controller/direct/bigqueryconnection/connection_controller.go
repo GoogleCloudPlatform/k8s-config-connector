@@ -17,13 +17,13 @@ package bigqueryconnection
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -35,6 +35,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -197,7 +198,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	created, err := a.gcpClient.CreateConnection(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Connection %s: %w", *&created.Name, err)
+		return fmt.Errorf("creating Connection %s: %w", a.id.External, err)
 	}
 	log.V(2).Info("successfully created Connection", "name", created.Name)
 
@@ -223,26 +224,25 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating Connection", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
-
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.FriendlyName, a.actual.FriendlyName) {
-		updateMask.Paths = append(updateMask.Paths, "friendly_name")
-	}
-	if !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-
 	desired := a.desired.DeepCopy()
-	resource := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &desired.Spec)
+	connection := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &desired.Spec)
+	connection.Name = a.actual.Name
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
+	paths, err := common.CompareProtoMessage(connection, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.External)
+		return nil
+	}
 	fqn := a.id.External
 	req := &bigqueryconnectionpb.UpdateConnectionRequest{
 		Name:       fqn,
-		Connection: resource,
-		UpdateMask: updateMask,
+		Connection: connection,
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 	}
 	updated, err := a.gcpClient.UpdateConnection(ctx, req)
 	if err != nil {

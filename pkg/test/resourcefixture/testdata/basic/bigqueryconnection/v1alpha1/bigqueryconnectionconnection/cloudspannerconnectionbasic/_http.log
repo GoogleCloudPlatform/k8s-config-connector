@@ -415,7 +415,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=friendlyName%2Cdescription
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=cloudSpanner.databaseRole%2CcloudSpanner.maxParallelism
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
@@ -423,11 +423,12 @@ x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 {
   "cloudSpanner": {
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "databaseRole": "admin",
+    "databaseRole": "user",
     "maxParallelism": 150,
     "useDataBoost": true,
     "useParallelism": true
-  }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 200 OK
@@ -444,7 +445,7 @@ X-Xss-Protection: 0
 {
   "cloudSpanner": {
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "databaseRole": "admin",
+    "databaseRole": "user",
     "maxParallelism": 150,
     "useDataBoost": true,
     "useParallelism": true
@@ -475,7 +476,7 @@ X-Xss-Protection: 0
 {
   "cloudSpanner": {
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "databaseRole": "admin",
+    "databaseRole": "user",
     "maxParallelism": 150,
     "useDataBoost": true,
     "useParallelism": true

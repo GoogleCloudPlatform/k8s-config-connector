@@ -63,7 +63,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=friendlyName%2Cdescription
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=azure.customerTenantId%2Cazure.federatedApplicationClientId
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
@@ -72,7 +72,8 @@ x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%
   "azure": {
     "customerTenantId": "customer-tenant-id-2222222",
     "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce-001"
-  }
+  },
+  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 200 OK
@@ -88,8 +89,8 @@ X-Xss-Protection: 0
 
 {
   "azure": {
-    "customerTenantId": "customer-tenant-id-1111111",
-    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce",
+    "customerTenantId": "customer-tenant-id-2222222",
+    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce-001",
     "identity": "117243083562690747295"
   },
   "creationTime": "123456789",
@@ -117,8 +118,8 @@ X-Xss-Protection: 0
 
 {
   "azure": {
-    "customerTenantId": "customer-tenant-id-1111111",
-    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce",
+    "customerTenantId": "customer-tenant-id-2222222",
+    "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce-001",
     "identity": "117243083562690747295"
   },
   "creationTime": "123456789",
