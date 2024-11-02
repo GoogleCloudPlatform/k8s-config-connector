@@ -20,38 +20,37 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-var _ SecretRef = &BasicAuthSecret{}
+var _ SecretRef = &BasicAuthSecretRef{}
 
-type BasicAuthSecret struct {
+type BasicAuthSecretRef struct {
 	// +required
 	// The `metadata.name` field of a Kubernetes `Secret`
 	Name string `json:"name,omitempty"`
 	// The `metadata.namespace` field of a Kubernetes `Secret`.
 	Namespace string `json:"namespace,omitempty"`
 
+	// The public field with json:"-" tag is to skip the field
+	// in the CRD, and bypass "the unexported field error"
+	// when controller-gen parses the Unstructured object to a typed object.
 	Username string `json:"-"`
 	Password string `json:"-"`
 }
 
-func (b *BasicAuthSecret) GetName() string {
+func (b *BasicAuthSecretRef) GetName() string {
 	return b.Name
 }
-func (b *BasicAuthSecret) GetNamespace() string {
+func (b *BasicAuthSecretRef) GetNamespace() string {
 	return b.Namespace
 }
 
-func (b *BasicAuthSecret) Set(secret *corev1.Secret) error {
+func (b *BasicAuthSecretRef) Set(secret *corev1.Secret) error {
 	if secret.Type != corev1.SecretTypeBasicAuth {
-		return fmt.Errorf("the referenced Secret in `spec.cloudSQL.credential.secretRef` should use type %s, got %s",
-			corev1.SecretTypeBasicAuth, secret.Type)
+		return fmt.Errorf("the referenced Secret %s should use type %s, got %s",
+			b.Name, corev1.SecretTypeBasicAuth, secret.Type)
 	}
 	if secret.Data != nil {
 		b.Username = string(secret.Data["username"])
 		b.Password = string(secret.Data["password"])
-	}
-	if secret.StringData != nil {
-		b.Username = secret.StringData["username"]
-		b.Password = secret.StringData["password"]
 	}
 	return nil
 }

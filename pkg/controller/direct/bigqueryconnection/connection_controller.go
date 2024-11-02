@@ -94,7 +94,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}, nil
 }
 
-func (a *Adapter) NormalizeReference(ctx context.Context) error {
+func (a *Adapter) normalizeReference(ctx context.Context) error {
 	obj := a.desired
 	// Resolve SQLInstanceRef
 	if obj.Spec.CloudSQLSpec != nil {
@@ -192,7 +192,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating Connection", "name", a.id.External)
 
-	if err := a.NormalizeReference(ctx); err != nil {
+	if err := a.normalizeReference(ctx); err != nil {
 		return err
 	}
 	mapCtx := &direct.MapContext{}
@@ -238,7 +238,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating Connection", "name", a.id.External)
 
-	if err := a.NormalizeReference(ctx); err != nil {
+	if err := a.normalizeReference(ctx); err != nil {
 		return err
 	}
 	mapCtx := &direct.MapContext{}
