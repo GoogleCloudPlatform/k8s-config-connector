@@ -15,7 +15,7 @@ spec:
   cloudSQL:
     credential:
       secretRef:
-        name: bigqueryconnectionconnection-${uniqueId}
+        name: secret-${uniqueId}
     database: sqldatabase-sample-${uniqueId}
     instanceRef:
       name: sqlinstance-sample-${uniqueId}
