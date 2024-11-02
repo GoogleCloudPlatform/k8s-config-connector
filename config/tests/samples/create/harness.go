@@ -660,7 +660,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		if err == nil {
 			break
 		}
-		t.Logf("error waiting for webhook to start: %v", err)
+		t.Logf("waiting for webhook to start (%v)", err)
 		time.Sleep(100 * time.Millisecond)
 	}
 
