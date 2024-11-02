@@ -111,15 +111,13 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 	if err := fields.UpdateByFieldMask(obj, req.WorkerPool, req.UpdateMask.Paths); err != nil {
 		return nil, err
 	}
-	now := timestamppb.Now()
 	populateDefaultsForWorkerPool(obj)
-	obj.CreateTime = obj.GetCreateTime()
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 	metadata := &pb.UpdateWorkerPoolOperationMetadata{
 		WorkerPool: name.String(),
-		CreateTime: now,
+		CreateTime: timestamppb.Now(),
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
 		return obj, nil
