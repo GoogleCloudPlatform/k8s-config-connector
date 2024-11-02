@@ -12,23 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1alpha1
+apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
 kind: PrivilegedAccessManagerEntitlement
 metadata:
-  name: privilegedaccessmanagerentitlement-sample-project
+  name: privilegedaccessmanagerentitlement-sample-org
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
+  organizationRef:
+    # Replace ${ORG_ID?} with your organization ID.
+    external: organizations/${ORG_ID?}
   location: global
   maxRequestDuration: 1800s
   privilegedAccess:
     gcpIAMAccess:
       roleBindings:
-        - role: roles/pubsub.admin
+        - role: roles/pubsub.viewer
+          conditionExpression: "request.time > timestamp(\"2019-12-31T12:00:00.000Z\")"
   requesterJustificationConfig:
-    notMandatory: {}
+    unstructured: {}
   eligibleUsers:
     - principals:
-        # Replace ${PROJECT_ID?} with your project ID
-        - serviceAccount:pame-dep-project@${PROJECT_ID?}.iam.gserviceaccount.com
+        # Replace ${PROJECT_ID?} with your project ID.
+        - serviceAccount:pame-dep-org@${PROJECT_ID?}.iam.gserviceaccount.com
