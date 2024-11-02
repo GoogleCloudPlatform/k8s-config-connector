@@ -159,6 +159,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = &a.id.External
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
