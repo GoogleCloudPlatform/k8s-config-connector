@@ -23,6 +23,7 @@ import (
 
 	gcp "cloud.google.com/go/cloudbuild/apiv1/v2"
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
@@ -66,6 +67,19 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 		return nil, fmt.Errorf("building cloudbuild client: %w", err)
 	}
 	return gcpClient, err
+}
+
+func (m *model) projectsClient(ctx context.Context) (*cloudresourcemanager.ProjectsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	crmClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building cloudresourcemanager client: %w", err)
+	}
+	return crmClient, err
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -123,21 +137,17 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	// Get computeNetwork
 	networkSpec := obj.Spec.PrivatePoolConfig.NetworkConfig
 	if networkSpec != nil {
-		peeredNetworkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &networkSpec.PeeredNetworkRef)
+		if err := networkSpec.PeeredNetworkRef.Normalize(ctx, reader, obj); err != nil {
+			return nil, err
+		}
+
+		projectsClient, err := m.projectsClient(ctx)
 		if err != nil {
 			return nil, err
-
 		}
-		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = peeredNetworkRef.String()
-		if obj.Status.ObservedState != nil {
-			fromStatus := obj.Status.ObservedState.NetworkConfig.PeeredNetwork
-			if fromStatus != nil {
-				projectNumber, _, err := refs.ParseComputeNetworkExternal(*fromStatus)
-				if err != nil {
-					return nil, err
-				}
-				networkSpec.PeeredNetworkRef.ProjectNumber = projectNumber
-			}
+
+		if err := networkSpec.PeeredNetworkRef.ConvertToProjectNumber(ctx, projectsClient); err != nil {
+			return nil, err
 		}
 	}
 
@@ -252,15 +262,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	wp.Name = a.id.FullyQualifiedName()
 	wp.Etag = a.actual.Etag
-	// the peered_network has a different HTTP request and response format.
-	// The HTTP request uses ProjectID, in the form of /projects/<projectID>/global/networks/<network>
-	// The HTTP response uses ProjectNumber, in the form of /projects/<ProjectNum>/global/networks/<network>
-	// When comparing the desired and actual fields, we need to align the project format, to avoid updating the
-	// "peered_network" field.
-	// Why we can't just update the "peered_network" field? Because it is immutable. ¯\_(ツ)_/¯
-	wp.GetPrivatePoolV1Config().NetworkConfig.PeeredNetwork = desired.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.WithProjectNumber()
-	paths, err := common.CompareProtoMessage(wp, a.actual, common.BasicDiff)
 
+	paths, err := common.CompareProtoMessage(wp, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}

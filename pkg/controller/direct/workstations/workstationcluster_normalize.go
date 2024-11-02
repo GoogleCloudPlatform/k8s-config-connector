@@ -25,11 +25,9 @@ import (
 
 func NormalizeWorkstationCluster(ctx context.Context, kube client.Reader, obj *krm.WorkstationCluster) error {
 	// Resolve network.
-	network, err := refs.ResolveComputeNetwork(ctx, kube, obj, &obj.Spec.NetworkRef)
-	if err != nil {
+	if err := obj.Spec.NetworkRef.Normalize(ctx, kube, obj); err != nil {
 		return err
 	}
-	obj.Spec.NetworkRef.External = network.String()
 
 	// Resolve subnetwork.
 	subnet, err := refs.ResolveComputeSubnetwork(ctx, kube, obj, &obj.Spec.SubnetworkRef)
