@@ -186,17 +186,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
 
-	// Specific to CloudBuild workerpool
-	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-		if path == ".status.observedState.networkConfig.peeredNetwork" {
-			tokens := strings.Split(s, "/")
-			if len(tokens) == 5 && tokens[0] == "projects" {
-				s = strings.ReplaceAll(s, tokens[1], "${projectNumber}")
-			}
-		}
-		return s
-	})
-
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
