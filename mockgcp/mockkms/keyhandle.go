@@ -29,7 +29,6 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type autokeyServer struct {
@@ -79,27 +78,6 @@ func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHa
 		result := proto.Clone(obj).(*pb.KeyHandle)
 		return result, nil
 	})
-}
-
-func (r *autokeyServer) ListKeyHandles(ctx context.Context, req *pb.ListKeyHandlesRequest) (*pb.ListKeyHandlesResponse, error) {
-	parentName, err := r.parseParentName(req.GetParent())
-	if err != nil {
-		return nil, err
-	}
-	namePrefix := parentName.String() + "/keyHandles/"
-
-	response := &pb.ListKeyHandlesResponse{}
-	keyHandleKind := (&pb.KeyHandle{}).ProtoReflect().Descriptor()
-	if err := r.storage.List(ctx, keyHandleKind, storage.ListOptions{}, func(obj proto.Message) error {
-		keyHandle := obj.(*pb.KeyHandle)
-		if strings.HasPrefix(keyHandle.GetName(), namePrefix) {
-			response.KeyHandles = append(response.KeyHandles, keyHandle)
-		}
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-	return response, nil
 }
 
 type parentName struct {

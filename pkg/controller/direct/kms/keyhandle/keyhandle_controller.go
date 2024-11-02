@@ -17,7 +17,6 @@ package keyhandle
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -126,7 +125,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating KeyHandle", "name", a.id.External)
+	log.V(2).Info("creating KeyHandle")
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -158,8 +157,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	tokens := strings.Split(created.Name, "/")
-	externalRef := parent.String() + "/keyHandles/" + tokens[5]
+	externalRef := created.Name
 	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
