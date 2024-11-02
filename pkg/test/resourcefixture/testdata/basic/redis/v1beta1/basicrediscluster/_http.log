@@ -613,7 +613,7 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
       {
-        "address": "10.128.0.3",
+        "address": "10.11.12.13",
         "port": 6379,
         "pscConfig": {
           "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
@@ -628,14 +628,14 @@ X-Xss-Protection: 0
     "preciseSizeGb": 39,
     "pscConnections": [
       {
-        "address": "10.128.0.2",
+        "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
-        "address": "10.128.0.3",
+        "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
         "projectId": "${projectId}",
@@ -678,7 +678,7 @@ X-Xss-Protection: 0
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [
     {
-      "address": "10.128.0.3",
+      "address": "10.11.12.13",
       "port": 6379,
       "pscConfig": {
         "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
@@ -693,14 +693,14 @@ X-Xss-Protection: 0
   "preciseSizeGb": 39,
   "pscConnections": [
     {
-      "address": "10.128.0.2",
+      "address": "10.11.12.13",
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
     },
     {
-      "address": "10.128.0.3",
+      "address": "10.11.12.13",
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "projectId": "${projectId}",
@@ -796,7 +796,7 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
       {
-        "address": "10.128.0.3",
+        "address": "10.11.12.13",
         "port": 6379,
         "pscConfig": {
           "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
@@ -811,14 +811,14 @@ X-Xss-Protection: 0
     "preciseSizeGb": 130,
     "pscConnections": [
       {
-        "address": "10.128.0.2",
+        "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
-        "address": "10.128.0.3",
+        "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
         "projectId": "${projectId}",
@@ -861,7 +861,7 @@ X-Xss-Protection: 0
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [
     {
-      "address": "10.128.0.3",
+      "address": "10.11.12.13",
       "port": 6379,
       "pscConfig": {
         "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
@@ -876,14 +876,14 @@ X-Xss-Protection: 0
   "preciseSizeGb": 130,
   "pscConnections": [
     {
-      "address": "10.128.0.2",
+      "address": "10.11.12.13",
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
     },
     {
-      "address": "10.128.0.3",
+      "address": "10.11.12.13",
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "projectId": "${projectId}",

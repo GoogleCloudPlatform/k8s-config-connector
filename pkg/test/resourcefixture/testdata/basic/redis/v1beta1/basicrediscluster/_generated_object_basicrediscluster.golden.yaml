@@ -30,18 +30,18 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     discoveryEndpoints:
-    - address: 10.128.0.3
+    - address: 10.11.12.13
       port: 6379
       pscConfig:
         network: projects/${projectId}/global/networks/${networkID}
     preciseSizeGb: 130
     pscConnections:
-    - address: 10.128.0.2
+    - address: 10.11.12.13
       forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
       network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
-    - address: 10.128.0.3
+    - address: 10.11.12.13
       forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
       network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
