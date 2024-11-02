@@ -675,7 +675,7 @@ func (in *CloudSqlCredential) DeepCopyInto(out *CloudSqlCredential) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secret.BasicAuthSecret)
+		*out = new(secret.BasicAuthSecretRef)
 		**out = **in
 	}
 }

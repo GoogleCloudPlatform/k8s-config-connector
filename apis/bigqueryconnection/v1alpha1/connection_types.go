@@ -307,7 +307,7 @@ type SparkPropertiesStatus struct {
 type CloudSqlCredential struct {
 	// The Kubernetes Secret object that stores the "username" and "password" information.
 	// The Secret type has to be `kubernetes.io/basic-auth`.
-	SecretRef *refsv1beta1secret.BasicAuthSecret `json:"secretRef,omitempty"`
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 }
 
 // +genclient
