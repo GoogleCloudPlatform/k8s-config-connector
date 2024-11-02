@@ -38,10 +38,10 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     etag: abcdef123456
     networkConfig:
-      egressOption: NO_PUBLIC_EGRESS
-      peeredNetwork: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      egressOption: PUBLIC_EGRESS
+      peeredNetwork: projects/${projectNumber}/global/networks/computenetwork-${uniqueId}
       peeredNetworkIPRange: /29
     updateTime: "1970-01-01T00:00:00Z"
     workerConfig:
-      diskSizeGb: 100
-      machineType: e2-medium
+      diskSizeGb: 150
+      machineType: e2-highmem-4
