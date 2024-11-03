@@ -2487,7 +2487,7 @@ spec:
       name: runservice-dep-serviceaccount
 ```
 
-### Run Service Vpcaccess
+### Run Service VPCAccess
 ```yaml
 # Copyright 2022 Google LLC
 #

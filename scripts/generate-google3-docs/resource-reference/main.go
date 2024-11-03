@@ -16,6 +16,7 @@ package main
 
 import (
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -487,7 +488,7 @@ func buildSamples(kind, sampleDirPath string, smLoader *servicemappingloader.Ser
 			if err != nil {
 				return nil, fmt.Errorf("error building sample at %v: %w", subDirPath, err)
 			}
-			name := formatDirectoryName(subDir.Name(), smLoader.GetServiceMappings())
+			name := titleForSample(subDir, smLoader.GetServiceMappings())
 			sampleYAMLs[name] = sample
 		}
 	} else {
@@ -766,31 +767,37 @@ func referencesSupportedByIAMAuditConfig(smLoader *servicemappingloader.ServiceM
 	return refs, nil
 }
 
-func formatDirectoryName(s string, serviceMappings []v1alpha1.ServiceMapping) string {
-	nameToSm := make(map[string]v1alpha1.ServiceMapping)
+// titleForSample returns the title that should be used for the sample
+func titleForSample(dir fs.FileInfo, serviceMappings []v1alpha1.ServiceMapping) string {
+	serviceMappingNames := make(map[string]v1alpha1.ServiceMapping)
+	resourceKinds := make(map[string]v1alpha1.ResourceConfig)
 	for _, sm := range serviceMappings {
-		nameToSm[sm.Spec.Name] = sm
+		serviceMappingNames[strings.ToLower(sm.Spec.Name)] = sm
+
+		for _, resource := range sm.Spec.Resources {
+			resourceKinds[strings.ToLower(resource.Kind)] = resource
+		}
 	}
-	split := strings.Split(s, "-")
-	ret := ""
-	for i, v := range split {
-		title := strings.Title(v)
-		if _, ok := nameToSm[strings.ToUpper(title)]; ok {
-			// value is IAM, KMS, etc, don't use strings.Title(v) as it will result in Kms or Iam
-			title = strings.ToUpper(title)
+	split := strings.Split(dir.Name(), "-")
+	var words []string
+	for _, v := range split {
+		word := strings.Title(v)
+		if serviceMapping, ok := serviceMappingNames[strings.ToLower(word)]; ok {
+			// If it's a well-known service, use its correctly capitalized name (PubSub, VertexAI etc)
+			word = serviceMapping.Spec.Name
+		}
+		if resource, ok := resourceKinds[strings.ToLower(word)]; ok {
+			// If it's a well-known kind, use the correct capitalization
+			word = resource.Kind
 		}
 		for _, s := range allowedSpellings {
-			if strings.ToLower(s) == strings.ToLower(title) {
-				title = s
+			if strings.EqualFold(s, word) {
+				word = s
 			}
 		}
-		if i != len(split)-1 {
-			ret += title + " "
-		} else {
-			ret += title
-		}
+		words = append(words, word)
 	}
-	return ret
+	return strings.Join(words, " ")
 }
 
 func resourceSupportsIAMPolicyAndPolicyMember(rc *v1alpha1.ResourceConfig) bool {

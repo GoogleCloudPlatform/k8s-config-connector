@@ -1890,7 +1890,7 @@ spec:
     - launch_stage
 ```
 
-### Job With Iamserviceaccount
+### Job With IAMServiceAccount
 ```yaml
 # Copyright 2023 Google LLC
 #
@@ -1930,7 +1930,7 @@ spec:
   displayName: runjob-dep-iamserviceaccount
 ```
 
-### Job With Kmscryptokey
+### Job With KMSCryptoKey
 ```yaml
 # Copyright 2023 Google LLC
 #
@@ -2043,7 +2043,7 @@ spec:
     tier: db-n1-standard-1
 ```
 
-### Job With Secretmanagersecret
+### Job With SecretManagerSecret
 ```yaml
 # Copyright 2023 Google LLC
 #

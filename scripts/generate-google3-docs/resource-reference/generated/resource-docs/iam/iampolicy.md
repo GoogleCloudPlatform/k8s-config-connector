@@ -1080,7 +1080,7 @@ spec:
     external: "${ORG_ID?}"
 ```
 
-### Pubsub Admin Policy
+### PubSub Admin Policy
 ```yaml
 # Copyright 2020 Google LLC
 #

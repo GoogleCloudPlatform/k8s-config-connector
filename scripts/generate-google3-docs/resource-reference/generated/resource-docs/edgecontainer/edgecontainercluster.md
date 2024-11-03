@@ -1056,7 +1056,7 @@ if the cluster does not have any worker nodes.{% endverbatim %}</p>
 
 ## Sample YAML(s)
 
-### Edgecontainercluster Local Control Plane
+### EdgeContainerCluster Local Control Plane
 ```yaml
 # Copyright 2023 Google LLC
 #
@@ -1106,7 +1106,7 @@ spec:
     - ${EXTERNAL_LOAD_BALANCER_IPV4_CIDR?}
 ```
 
-### Edgecontainercluster Remote Control Plane
+### EdgeContainerCluster Remote Control Plane
 ```yaml
 # Copyright 2023 Google LLC
 #
