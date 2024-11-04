@@ -36,40 +36,19 @@ func BigQueryDataset_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataset)
 	out.DatasetId = direct.ValueOf(in.DatasetID)
 	return out
 }
-func Link_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Link {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Link{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())
-	out.BigqueryDataset = BigQueryDataset_FromProto(mapCtx, in.GetBigqueryDataset())
-	return out
-}
-func Link_ToProto(mapCtx *direct.MapContext, in *krm.Link) *pb.Link {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Link{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.LifecycleState = direct.Enum_ToProto[pb.LifecycleState](mapCtx, in.LifecycleState)
-	out.BigqueryDataset = BigQueryDataset_ToProto(mapCtx, in.BigqueryDataset)
-	return out
-}
 func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.LoggingLinkSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+pkg/control
 	// MISSING: LifecycleState
+	// ^ I couldnt find any other resources with this output only field
 	// MISSING: BigqueryDataset
+	// maybe something like https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/4102337c62452f3badd63e5ed9672681f05a6286/pkg/controller/direct/bigquerydataset/bigquerydataset_mappings.go#L109
 	return out
 }
 func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {
@@ -77,10 +56,12 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 		return nil
 	}
 	out := &pb.Link{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+        out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// MISSING: LifecycleState
+	// ^ I couldnt find any other resources with this output only field
 	// MISSING: BigqueryDataset
+	// maybe something like https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/4102337c62452f3badd63e5ed9672681f05a6286/pkg/controller/direct/bigquerydataset/bigquerydataset_mappings.go#L109
 	return out
 }
