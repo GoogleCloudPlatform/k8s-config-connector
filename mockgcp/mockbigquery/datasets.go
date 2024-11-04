@@ -31,6 +31,8 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
+var defaultMaxTimeTravelHours = int64(168)
+
 type datasetsServer struct {
 	*MockService
 	pb.UnimplementedDatasetsServerServer
@@ -50,6 +52,10 @@ func (s *datasetsServer) GetDataset(ctx context.Context, req *pb.GetDatasetReque
 			return nil, status.Errorf(codes.NotFound, "Not found: Dataset %s:%s", name.Project.ID, name.DatasetID)
 		}
 		return nil, err
+	}
+
+	if obj.MaxTimeTravelHours == nil {
+		obj.MaxTimeTravelHours = &defaultMaxTimeTravelHours
 	}
 
 	return obj, nil
