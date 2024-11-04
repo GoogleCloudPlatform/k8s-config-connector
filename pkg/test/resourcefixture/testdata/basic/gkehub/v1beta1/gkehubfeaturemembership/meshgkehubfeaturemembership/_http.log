@@ -62,7 +62,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "name": "Dependent Project",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "example-project-01"
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "Dependent Project",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "example-project-01",

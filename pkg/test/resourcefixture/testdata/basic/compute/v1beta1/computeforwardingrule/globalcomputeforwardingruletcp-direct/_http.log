@@ -427,7 +427,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 404 Not Found
 Cache-Control: private
@@ -533,7 +533,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 200 OK
 Cache-Control: private
@@ -562,7 +562,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 404 Not Found
 Cache-Control: private
@@ -668,7 +668,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 200 OK
 Cache-Control: private
@@ -697,7 +697,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Cache-Control: private
@@ -811,7 +811,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -846,7 +846,7 @@ X-Xss-Protection: 0
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&resource=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&resource=${forwardingRuleID}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -889,7 +889,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -929,7 +929,7 @@ X-Xss-Protection: 0
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&resource=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&resource=${forwardingRuleID}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -972,7 +972,7 @@ X-Xss-Protection: 0
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setTarget
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 {
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}"
@@ -1043,7 +1043,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1083,7 +1083,7 @@ X-Xss-Protection: 0
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1150,7 +1150,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 200 OK
 Cache-Control: private
@@ -1179,7 +1179,7 @@ X-Xss-Protection: 0
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 200 OK
 Cache-Control: private
@@ -1246,7 +1246,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 200 OK
 Cache-Control: private
@@ -1275,7 +1275,7 @@ X-Xss-Protection: 0
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
+x-goog-request-params: project=${projectId}&target_tcp_proxy=${targetTcpProxyID}
 
 200 OK
 Cache-Control: private
