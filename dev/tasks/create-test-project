@@ -57,6 +57,7 @@ gcloud services enable \
   cloudbuild.googleapis.com \
   cloudkms.googleapis.com \
   dataflow.googleapis.com \
+  discoveryengine.googleapis.com \
   firestore.googleapis.com \
   logging.googleapis.com \
   monitoring.googleapis.com \
