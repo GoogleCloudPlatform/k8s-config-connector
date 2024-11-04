@@ -73,6 +73,23 @@ type SecureSourceManagerRepositorySpec struct {
 }
 
 type RepositoryObservedStateStatus struct {
+	/* Output only. URIs for the repository. */
+	// +optional
+	Uris *RepositoryUrisStatus `json:"uris,omitempty"`
+}
+
+type RepositoryUrisStatus struct {
+	/* Output only. API is the URI for API access. */
+	// +optional
+	Api *string `json:"api,omitempty"`
+
+	/* Output only. git_https is the git HTTPS URI for git operations. */
+	// +optional
+	GitHTTPS *string `json:"gitHTTPS,omitempty"`
+
+	/* Output only. HTML is the URI for user to view the repository in a browser. */
+	// +optional
+	Html *string `json:"html,omitempty"`
 }
 
 type SecureSourceManagerRepositoryStatus struct {
@@ -94,7 +111,7 @@ type SecureSourceManagerRepositoryStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpsecuresourcemanagerrepository;gcpsecuresourcemanagerrepositorys
+// +kubebuilder:resource:categories=gcp,shortName=gcpsecuresourcemanagerrepository;gcpsecuresourcemanagerrepositories
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"

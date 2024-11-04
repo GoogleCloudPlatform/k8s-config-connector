@@ -71,10 +71,7 @@ type SecureSourceManagerRepositoryObservedState struct {
 	// CreateTime *string `json:"createTime,omitempty"`
 
 	// // Output only. Update timestamp.
-	// UpdateTime *string `json:"updateTime,omitempty"
-
-	// Output only. Unique identifier of the repository.
-	Uid *string `json:"uid,omitempty"`
+	// UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. URIs for the repository.
 	URIs *Repository_URIs `json:"uris,omitempty"`
