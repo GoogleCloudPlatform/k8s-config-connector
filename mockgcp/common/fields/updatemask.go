@@ -73,7 +73,7 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	}
 
 	switch originalFd.Kind() {
-	case protoreflect.MessageKind, protoreflect.StringKind, protoreflect.DoubleKind, protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.BoolKind, protoreflect.EnumKind:
+	case protoreflect.MessageKind, protoreflect.StringKind, protoreflect.DoubleKind, protoreflect.Int32Kind, protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.BoolKind, protoreflect.EnumKind:
 		if !original.IsValid() {
 			return fmt.Errorf("%s is read-only or empty", fieldName)
 		}
