@@ -39,6 +39,10 @@ type LoggingLinkSpec struct {
 	// +required
 	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
+	// The BigQuery target dataset id.
+	// This field should be generated from the bucket name and project name
+	DatasetRef *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
+
         Parent `json:",inline"`
 }
 
