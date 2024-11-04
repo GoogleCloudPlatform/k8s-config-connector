@@ -151,6 +151,18 @@ func (r *SecureSourceManagerRepositoryRef) Parent() (*SecureSourceManagerReposit
 	return nil, fmt.Errorf("SecureSourceManagerRepositoryRef not initialized from `NewSecureSourceManagerRepositoryRef` or `NormalizedExternal`")
 }
 
+func (r *SecureSourceManagerRepositoryRef) ResourceID() (string, error) {
+	if r.External == "" {
+		return "", fmt.Errorf("reference has not been normalized (external is empty)")
+	}
+
+	_, resourceID, err := parseSecureSourceManagerRepositoryExternal(r.External)
+	if err != nil {
+		return "", err
+	}
+	return resourceID, nil
+}
+
 type SecureSourceManagerRepositoryParent struct {
 	ProjectID string
 	Location  string

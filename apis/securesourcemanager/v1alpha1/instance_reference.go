@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -41,6 +42,12 @@ type SecureSourceManagerInstanceRef struct {
 
 	// The namespace of a SecureSourceManagerInstance resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+type SecureSourceManagerInstanceID struct {
+	ProjectID  string
+	Location   string
+	InstanceID string
 }
 
 func ParseSecureSourceManagerInstanceRef(url string) (*SecureSourceManagerInstanceRef, error) {
@@ -183,6 +190,10 @@ func (r *SecureSourceManagerInstanceRef) ResourceID() (string, error) {
 	return resourceID, nil
 }
 
+func (r *SecureSourceManagerInstanceID) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/instances/%s", r.ProjectID, r.Location, r.InstanceID)
+}
+
 // +k8s:deepcopy-gen=false
 type ProjectIDAndLocation struct {
 	ProjectID string
@@ -199,4 +210,75 @@ func valueOf[T any](t *T) T {
 		return zeroVal
 	}
 	return *t
+}
+
+func ResolveSecureSourceManagerInstanceRef(ctx context.Context, reader client.Reader, obj client.Object, ref *SecureSourceManagerInstanceRef) (*SecureSourceManagerInstanceID, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.Name == "" && ref.External == "" {
+		return nil, fmt.Errorf("must specify either name or external on instanceRef")
+	}
+	if ref.External != "" && ref.Name != "" {
+		return nil, fmt.Errorf("cannot specify both spec.instanceRef.name and spec.instanceRef.external")
+	}
+
+	if ref.External != "" {
+		// External should be in the `projects/[projectID]/locations/[Location]/instances/[instanceName]` format.
+		tokens := strings.Split(ref.External, "/")
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
+			return &SecureSourceManagerInstanceID{
+				ProjectID:  tokens[1],
+				Location:   tokens[3],
+				InstanceID: tokens[5],
+			}, nil
+		}
+		return nil, fmt.Errorf("format of securesourcemanagerinstance external=%q was not known (use projects/<projectId>/locations/[Location]/instances/<instanceName>)", ref.External)
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = obj.GetNamespace()
+	}
+
+	ssminstance := &unstructured.Unstructured{}
+	ssminstance.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "securesourcemanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "SecureSourceManagerInstance",
+	})
+	if err := reader.Get(ctx, key, ssminstance); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced SecureSourceManagerInstance %v not found", key)
+		}
+		return nil, fmt.Errorf("error reading referenced SecureSourceManagerInstance %v: %w", key, err)
+	}
+
+	resourceID, _, err := unstructured.NestedString(ssminstance.Object, "spec", "resourceID")
+	if err != nil {
+		return nil, fmt.Errorf("reading spec.resourceID from SecureSourceManagerInstance %s/%s: %w", ssminstance.GetNamespace(), ssminstance.GetName(), err)
+	}
+	if resourceID == "" {
+		resourceID = ssminstance.GetName()
+	}
+
+	location, _, err := unstructured.NestedString(ssminstance.Object, "spec", "location")
+	if err != nil {
+		return nil, fmt.Errorf("reading spec.location from SecureSourceManagerInstance %s/%s: %w", ssminstance.GetNamespace(), ssminstance.GetName(), err)
+	}
+
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, ssminstance)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SecureSourceManagerInstanceID{
+		ProjectID:  projectID,
+		Location:   location,
+		InstanceID: resourceID,
+	}, nil
 }
