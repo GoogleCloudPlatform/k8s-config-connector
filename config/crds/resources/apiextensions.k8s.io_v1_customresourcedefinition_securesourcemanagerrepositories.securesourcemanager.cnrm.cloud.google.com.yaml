@@ -324,6 +324,22 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  uris:
+                    description: Output only. URIs for the repository.
+                    properties:
+                      api:
+                        description: Output only. API is the URI for API access.
+                        type: string
+                      gitHTTPS:
+                        description: Output only. git_https is the git HTTPS URI for
+                          git operations.
+                        type: string
+                      html:
+                        description: Output only. HTML is the URI for user to view
+                          the repository in a browser.
+                        type: string
+                    type: object
                 type: object
             type: object
         required:
