@@ -571,10 +571,20 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 	}
 }
 
-func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
 	normalizer := NewNormalizer(uniqueID, project)
 
 	normalizer.Preprocess(events)
+
+	if organizationID != "" {
+		normalizer.Replacements.PathIDs[organizationID] = "${organizationID}"
+	}
+	if folderID != "" {
+		normalizer.Replacements.PathIDs[folderID] = "${folderID}"
+	}
+	if uniqueID != "" {
+		normalizer.Replacements.PathIDs[uniqueID] = "${uniqueId}"
+	}
 
 	// Find any URLs
 	for _, event := range events {

@@ -17,6 +17,7 @@ package e2e
 import (
 	"fmt"
 	"slices"
+	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -26,6 +27,11 @@ import (
 type Replacements struct {
 	PathIDs      map[string]string
 	OperationIDs map[string]bool
+}
+
+type replacement struct {
+	find    string
+	replace string
 }
 
 // NewReplacements is a constructor for Replacements
@@ -40,17 +46,37 @@ func (r *Replacements) ApplyReplacementsToHTTPEvents(events test.LogEntries) {
 	for _, event := range events {
 		event.Request.Body = r.ApplyReplacements(event.Request.Body)
 		event.Request.URL = r.ApplyReplacements(event.Request.URL)
+
+		for headerKey, headerValues := range event.Request.Header {
+			for i, headerValue := range headerValues {
+				headerValues[i] = r.ApplyReplacements(headerValue)
+			}
+			event.Request.Header[headerKey] = headerValues
+		}
+
 		event.Response.Body = r.ApplyReplacements(event.Response.Body)
 	}
 }
 
 func (r *Replacements) ApplyReplacements(s string) string {
+	// We sort to replace the longest values first, to avoid non-determinism with nested values
+	var replacements []replacement
+
 	normalizers := []func(string) string{}
 	for k, v := range r.PathIDs {
-		normalizers = append(normalizers, ReplaceString(k, v))
+		replacements = append(replacements, replacement{find: k, replace: v})
 	}
 	for k := range r.OperationIDs {
-		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+		replacements = append(replacements, replacement{find: k, replace: "${operationID}"})
+	}
+
+	// Apply longest replacements first
+	sort.Slice(replacements, func(i, j int) bool {
+		return len(replacements[i].find) > len(replacements[j].find)
+	})
+
+	for _, replacement := range replacements {
+		normalizers = append(normalizers, ReplaceString(replacement.find, replacement.replace))
 	}
 	for _, normalizer := range normalizers {
 		s = normalizer(s)
