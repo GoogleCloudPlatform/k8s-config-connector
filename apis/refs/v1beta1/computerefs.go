@@ -44,6 +44,13 @@ type ComputeNetworkRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeNetwork` resource. */
 	Namespace string `json:"namespace,omitempty"`
+
+	ProjectNumber string `json:"-"`
+}
+
+func (networkRef *ComputeNetworkRef) WithProjectNumber() string {
+	_, id, _ := ParseComputeNetworkExternal(networkRef.External)
+	return buildNetworkExternal(networkRef.ProjectNumber, id)
 }
 
 type ComputeNetwork struct {
@@ -52,7 +59,23 @@ type ComputeNetwork struct {
 }
 
 func (c *ComputeNetwork) String() string {
-	return fmt.Sprintf("projects/%s/global/networks/%s", c.Project, c.ComputeNetworkID)
+	return buildNetworkExternal(c.Project, c.ComputeNetworkID)
+}
+
+func buildNetworkExternal(project, network string) string {
+	return fmt.Sprintf("projects/%s/global/networks/%s", project, network)
+}
+
+func ParseComputeNetworkExternal(external string) (string, string, error) {
+	if external == "" {
+		return "", "", fmt.Errorf("parse empty ComputeNetwork external value")
+	}
+	external = fixStaleExternalFormat(external)
+	tokens := strings.Split(external, "/")
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
+		return tokens[1], tokens[4], nil
+	}
+	return "", "", fmt.Errorf("format of computenetwork external=%q was not known (use projects/<project>/global/networks/<networkid>)", external)
 }
 
 func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeNetworkRef) (*ComputeNetwork, error) {
@@ -60,19 +83,18 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		return nil, nil
 	}
 
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
-		}
+	if ref.External != "" && ref.Name != "" {
+		return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
+	}
 
-		ref.External = fixStaleExternalFormat(ref.External)
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
-			return &ComputeNetwork{
-				Project:          tokens[1],
-				ComputeNetworkID: tokens[4]}, nil
+	if ref.External != "" {
+		project, networkID, err := ParseComputeNetworkExternal(ref.External)
+		if err != nil {
+			return nil, err
 		}
-		return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/<projectId>/global/networks/<networkid>)", ref.External)
+		return &ComputeNetwork{
+			Project:          project,
+			ComputeNetworkID: networkID}, nil
 	}
 
 	if ref.Name == "" {

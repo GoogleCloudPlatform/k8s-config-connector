@@ -110,6 +110,9 @@ func TestIAMPolicyMappings(t *testing.T) {
 			if rc.Kind == "ComputeBackendService" {
 				continue
 			}
+			if rc.Direct { // Do not check for direct resource
+				continue
+			}
 			t.Run(rc.Kind, func(t *testing.T) {
 				t.Parallel()
 				// IAMConfig is not supported for the auto-generated v1alpha1 CRDs.

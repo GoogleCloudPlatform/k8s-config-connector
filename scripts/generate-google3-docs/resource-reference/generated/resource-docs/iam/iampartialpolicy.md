@@ -1064,7 +1064,7 @@ observedGeneration: integer
 
 ## Sample YAML(s)
 
-### Project Level Policy
+### Project Level Iampartialpolicy
 ```yaml
 # Copyright 2020 Google LLC
 #
@@ -1120,7 +1120,7 @@ spec:
     external: "${ORG_ID?}"
 ```
 
-### Pubsub Admin Policy
+### PubSub Admin Iampartialpolicy
 ```yaml
 # Copyright 2020 Google LLC
 #

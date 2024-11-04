@@ -3103,6 +3103,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "kms.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "KMSKeyHandle",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "KMSKeyRingImportJob",
 	}: {
 		Labels: map[string]string{
@@ -3659,6 +3669,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "privilegedaccessmanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PrivilegedAccessManagerEntitlement",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "resourcemanager.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "Project",
@@ -4009,10 +4029,9 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "SpannerInstance",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "stable",
-			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+			"cnrm.cloud.google.com/tf2crd":         "true",
 		},
 	},
 	{

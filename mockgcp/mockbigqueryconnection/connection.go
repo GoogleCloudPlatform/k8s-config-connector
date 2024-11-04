@@ -28,6 +28,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/connection/v1"
 )
@@ -202,35 +203,10 @@ func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConne
 		return nil, err
 	}
 
-	paths := req.GetUpdateMask().GetPaths()
-	for _, path := range paths {
-		switch path {
-		case "friendlyName":
-			obj.FriendlyName = req.GetConnection().GetFriendlyName()
-		case "description":
-			obj.Description = req.GetConnection().GetDescription()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
+	if err := fields.UpdateByFieldMask(obj, req.Connection, req.UpdateMask.Paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
 	}
 	obj.LastModifiedTime = now.Unix()
-
-	if _, ok := (req.Connection.Properties).(*pb.Connection_Aws); ok {
-		if mod := req.Connection.GetAws(); mod != nil {
-			obj.GetAws().GetAccessRole().IamRoleId = mod.GetAccessRole().IamRoleId
-		}
-	}
-
-	if _, ok := (req.Connection.Properties).(*pb.Connection_CloudSpanner); ok {
-		if mod := req.Connection.GetCloudSpanner(); mod != nil {
-			obj.GetCloudSpanner().Database = mod.Database
-			obj.GetCloudSpanner().UseDataBoost = mod.UseDataBoost
-			obj.GetCloudSpanner().UseParallelism = mod.UseParallelism
-			obj.GetCloudSpanner().MaxParallelism = mod.MaxParallelism
-			obj.GetCloudSpanner().DatabaseRole = mod.DatabaseRole
-		}
-	}
-
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

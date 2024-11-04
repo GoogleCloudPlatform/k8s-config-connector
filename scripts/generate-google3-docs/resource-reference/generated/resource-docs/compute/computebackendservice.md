@@ -2150,7 +2150,7 @@ service resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `NetworkSecurityClientTLSPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `//networksecurity.googleapis.com/projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityClientTLSPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
