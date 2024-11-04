@@ -14,8 +14,8 @@ metadata:
 spec:
   cloudSQL:
     credential:
-      password: cGFzc3dvcmQ=
-      username: sqluser-${uniqueId}
+      secretRef:
+        name: secret-${uniqueId}
     database: sqldatabase-sample-${uniqueId}
     instanceRef:
       name: sqlinstance-sample-${uniqueId}

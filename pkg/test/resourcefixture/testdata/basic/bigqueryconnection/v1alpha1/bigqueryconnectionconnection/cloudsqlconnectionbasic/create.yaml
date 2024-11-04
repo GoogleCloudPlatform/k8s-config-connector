@@ -27,5 +27,5 @@ spec:
     database: sqldatabase-sample-${uniqueId}
     type: "MYSQL"
     credential:
-      username: sqluser-${uniqueId}
-      password: cGFzc3dvcmQ=
+      secretRef: 
+        name:  secret-${uniqueId}

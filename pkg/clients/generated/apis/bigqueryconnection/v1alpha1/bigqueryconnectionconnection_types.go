@@ -118,13 +118,9 @@ type ConnectionCloudSpanner struct {
 }
 
 type ConnectionCredential struct {
-	/* The password for the credential. */
+	/* The Kubernetes Secret object that stores the "username" and "password" information. The Secret type has to be `kubernetes.io/basic-auth`. */
 	// +optional
-	Password *string `json:"password,omitempty"`
-
-	/* The username for the credential. */
-	// +optional
-	Username *string `json:"username,omitempty"`
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type ConnectionMetastoreService struct {

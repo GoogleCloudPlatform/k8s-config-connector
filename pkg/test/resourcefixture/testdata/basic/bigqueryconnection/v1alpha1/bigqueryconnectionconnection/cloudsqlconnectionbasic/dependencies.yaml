@@ -11,12 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: v1
 kind: Secret
 metadata:
   name: secret-${uniqueId}
-data:
+type: kubernetes.io/basic-auth
+stringData:
+  username: sqluser-${uniqueId}
   password: cGFzc3dvcmQ=
 ---
 apiVersion: sql.cnrm.cloud.google.com/v1beta1

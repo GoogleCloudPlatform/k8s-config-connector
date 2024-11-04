@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -300,6 +301,13 @@ type SparkPropertiesStatus struct {
 	//  The account ID is in the form of:
 	//  bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlCredential
+type CloudSqlCredential struct {
+	// The Kubernetes Secret object that stores the "username" and "password" information.
+	// The Secret type has to be `kubernetes.io/basic-auth`.
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 }
 
 // +genclient
