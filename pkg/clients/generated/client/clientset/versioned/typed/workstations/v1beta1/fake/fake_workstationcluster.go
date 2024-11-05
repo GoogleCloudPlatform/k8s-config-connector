@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeWorkstationClusters implements WorkstationClusterInterface
 type FakeWorkstationClusters struct {
-	Fake *FakeWorkstationsV1alpha1
+	Fake *FakeWorkstationsV1beta1
 	ns   string
 }
 
-var workstationclustersResource = v1alpha1.SchemeGroupVersion.WithResource("workstationclusters")
+var workstationclustersResource = v1beta1.SchemeGroupVersion.WithResource("workstationclusters")
 
-var workstationclustersKind = v1alpha1.SchemeGroupVersion.WithKind("WorkstationCluster")
+var workstationclustersKind = v1beta1.SchemeGroupVersion.WithKind("WorkstationCluster")
 
 // Get takes name of the workstationCluster, and returns the corresponding workstationCluster object, and an error if there is any.
-func (c *FakeWorkstationClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.WorkstationCluster, err error) {
+func (c *FakeWorkstationClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.WorkstationCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(workstationclustersResource, c.ns, name), &v1alpha1.WorkstationCluster{})
+		Invokes(testing.NewGetAction(workstationclustersResource, c.ns, name), &v1beta1.WorkstationCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.WorkstationCluster), err
+	return obj.(*v1beta1.WorkstationCluster), err
 }
 
 // List takes label and field selectors, and returns the list of WorkstationClusters that match those selectors.
-func (c *FakeWorkstationClusters) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.WorkstationClusterList, err error) {
+func (c *FakeWorkstationClusters) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.WorkstationClusterList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(workstationclustersResource, workstationclustersKind, c.ns, opts), &v1alpha1.WorkstationClusterList{})
+		Invokes(testing.NewListAction(workstationclustersResource, workstationclustersKind, c.ns, opts), &v1beta1.WorkstationClusterList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeWorkstationClusters) List(ctx context.Context, opts v1.ListOptions)
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.WorkstationClusterList{ListMeta: obj.(*v1alpha1.WorkstationClusterList).ListMeta}
-	for _, item := range obj.(*v1alpha1.WorkstationClusterList).Items {
+	list := &v1beta1.WorkstationClusterList{ListMeta: obj.(*v1beta1.WorkstationClusterList).ListMeta}
+	for _, item := range obj.(*v1beta1.WorkstationClusterList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeWorkstationClusters) Watch(ctx context.Context, opts v1.ListOptions
 }
 
 // Create takes the representation of a workstationCluster and creates it.  Returns the server's representation of the workstationCluster, and an error, if there is any.
-func (c *FakeWorkstationClusters) Create(ctx context.Context, workstationCluster *v1alpha1.WorkstationCluster, opts v1.CreateOptions) (result *v1alpha1.WorkstationCluster, err error) {
+func (c *FakeWorkstationClusters) Create(ctx context.Context, workstationCluster *v1beta1.WorkstationCluster, opts v1.CreateOptions) (result *v1beta1.WorkstationCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(workstationclustersResource, c.ns, workstationCluster), &v1alpha1.WorkstationCluster{})
+		Invokes(testing.NewCreateAction(workstationclustersResource, c.ns, workstationCluster), &v1beta1.WorkstationCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.WorkstationCluster), err
+	return obj.(*v1beta1.WorkstationCluster), err
 }
 
 // Update takes the representation of a workstationCluster and updates it. Returns the server's representation of the workstationCluster, and an error, if there is any.
-func (c *FakeWorkstationClusters) Update(ctx context.Context, workstationCluster *v1alpha1.WorkstationCluster, opts v1.UpdateOptions) (result *v1alpha1.WorkstationCluster, err error) {
+func (c *FakeWorkstationClusters) Update(ctx context.Context, workstationCluster *v1beta1.WorkstationCluster, opts v1.UpdateOptions) (result *v1beta1.WorkstationCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(workstationclustersResource, c.ns, workstationCluster), &v1alpha1.WorkstationCluster{})
+		Invokes(testing.NewUpdateAction(workstationclustersResource, c.ns, workstationCluster), &v1beta1.WorkstationCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.WorkstationCluster), err
+	return obj.(*v1beta1.WorkstationCluster), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeWorkstationClusters) UpdateStatus(ctx context.Context, workstationCluster *v1alpha1.WorkstationCluster, opts v1.UpdateOptions) (*v1alpha1.WorkstationCluster, error) {
+func (c *FakeWorkstationClusters) UpdateStatus(ctx context.Context, workstationCluster *v1beta1.WorkstationCluster, opts v1.UpdateOptions) (*v1beta1.WorkstationCluster, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(workstationclustersResource, "status", c.ns, workstationCluster), &v1alpha1.WorkstationCluster{})
+		Invokes(testing.NewUpdateSubresourceAction(workstationclustersResource, "status", c.ns, workstationCluster), &v1beta1.WorkstationCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.WorkstationCluster), err
+	return obj.(*v1beta1.WorkstationCluster), err
 }
 
 // Delete takes name of the workstationCluster and deletes it. Returns an error if one occurs.
 func (c *FakeWorkstationClusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(workstationclustersResource, c.ns, name, opts), &v1alpha1.WorkstationCluster{})
+		Invokes(testing.NewDeleteActionWithOptions(workstationclustersResource, c.ns, name, opts), &v1beta1.WorkstationCluster{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeWorkstationClusters) Delete(ctx context.Context, name string, opts 
 func (c *FakeWorkstationClusters) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(workstationclustersResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.WorkstationClusterList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.WorkstationClusterList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched workstationCluster.
-func (c *FakeWorkstationClusters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.WorkstationCluster, err error) {
+func (c *FakeWorkstationClusters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.WorkstationCluster, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(workstationclustersResource, c.ns, name, pt, data, subresources...), &v1alpha1.WorkstationCluster{})
+		Invokes(testing.NewPatchSubresourceAction(workstationclustersResource, c.ns, name, pt, data, subresources...), &v1beta1.WorkstationCluster{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.WorkstationCluster), err
+	return obj.(*v1beta1.WorkstationCluster), err
 }

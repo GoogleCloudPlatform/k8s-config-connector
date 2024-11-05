@@ -113,6 +113,7 @@ var preferredSampleForResource = map[string]string{
 	"vpcaccessconnector":                 "cidr-connector",
 	"vertexaidataset":                    "vertexai-dataset-encryptionkey",
 	"vertexaiendpoint":                   "vertexai-endpoint-network",
+	"workstationcluster":                 "basic-workstationcluster",
 }
 
 type Snippet struct {
