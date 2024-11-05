@@ -258,7 +258,8 @@ DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/dataset
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
-204 No Content
+404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -268,6 +269,20 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "dataset \"projects/${projectId}/datasets/bigquerydataset${uniqueId}/routines/bigqueryroutine${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "dataset \"projects/${projectId}/datasets/bigquerydataset${uniqueId}/routines/bigqueryroutine${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
 
 ---
 
