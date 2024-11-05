@@ -15,34 +15,30 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbinstance-${uniqueId}
+  name: alloydbinstance-test20241105
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   clusterRef: 
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-test20241105
   instanceTypeRef:
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-test20241105
   machineConfig:
     cpuCount: 2
-  resourceID: alloydbinstance${uniqueId}
-  databaseFlags:
-    password.enforce_complexity: "on"
-  networkConfig:
-    enablePublicIp: true
-    enableOutboundPublicIp: true
-    authorizedExternalNetworks:
-    - cidrRange: 8.8.8.8/30
-    - cidrRange: 8.8.4.4/30
-  queryInsightsConfig:
-    queryPlansPerMinute: 5
-    queryStringLength: 1024
-    recordApplicationTags: false
-    recordClientAddress: false
+  resourceID: alloydbinstancetest20241105
+  availabilityType: REGIONAL
   observabilityConfig:
-    enabled: false
-    preserveComments: false
+    enabled: false # Useless
+    preserveComments: true
     trackWaitEvents: true
     trackWaitEventTypes: true
     maxQueryStringLength: 10240
-    recordApplicationTags: false
+    recordApplicationTags: true
     queryPlansPerMinute: 20
-    trackActiveQueries: false
+    trackActiveQueries: true
+    trackClientAddress: true
+  queryInsightsConfig:
+    recordApplicationTags: true
+    recordClientAddress: true
+    queryStringLength: 1024
+    queryPlansPerMinute: 5

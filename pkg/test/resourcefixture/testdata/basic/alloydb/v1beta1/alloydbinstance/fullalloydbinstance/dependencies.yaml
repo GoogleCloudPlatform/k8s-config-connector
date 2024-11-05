@@ -12,48 +12,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
-metadata:
-  name: computenetwork-${uniqueId}
-spec:
-  autoCreateSubnetworks: false
----
+#apiVersion: compute.cnrm.cloud.google.com/v1beta1
+#kind: ComputeNetwork
+#metadata:
+#  name: computenetwork-${uniqueId}
+#spec:
+#  autoCreateSubnetworks: false
+#---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-${uniqueId}
+  name: alloydbcluster-test20241105
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   initialUser:
     password:
       value: alloydb-pg
   location: europe-north1
-  networkRef:
-    external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  networkConfig:
+    networkRef:
+      external: projects/${projectId}/global/networks/computenetwork-2t5nhev6t5pqtfi
   projectRef:
     external: ${projectId}
-  resourceID: alloydbcluster${uniqueId}
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeAddress
-metadata:
-  name: computeaddress-${uniqueId}
-spec:
-  location: global
-  addressType: INTERNAL
-  networkRef:
-    name: computenetwork-${uniqueId}
-  prefixLength: 16
-  purpose: VPC_PEERING
-  resourceID: computeaddress${uniqueId}
----
-apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
-kind: ServiceNetworkingConnection
-metadata:
-  name: servicenetworkingconnection-${uniqueId}
-spec:
-  networkRef:
-    name: computenetwork-${uniqueId}
-  reservedPeeringRanges:
-  - name: computeaddress-${uniqueId}
-  service: servicenetworking.googleapis.com
+  resourceID: alloydbcluster-2t5nhev6t5pqtfi
+#---
+#apiVersion: compute.cnrm.cloud.google.com/v1beta1
+#kind: ComputeAddress
+#metadata:
+#  name: computeaddress-${uniqueId}
+#spec:
+#  location: global
+#  addressType: INTERNAL
+#  networkRef:
+#    name: computenetwork-${uniqueId}
+#  prefixLength: 16
+#  purpose: VPC_PEERING
+#  resourceID: computeaddress${uniqueId}
+#---
+#apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+#kind: ServiceNetworkingConnection
+#metadata:
+#  name: servicenetworkingconnection-${uniqueId}
+#spec:
+#  networkRef:
+#    name: computenetwork-${uniqueId}
+#  reservedPeeringRanges:
+#  - name: computeaddress-${uniqueId}
+#  service: servicenetworking.googleapis.com
