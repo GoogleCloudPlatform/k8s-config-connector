@@ -120,7 +120,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		External: fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", projectID, resourceID)}, nil
 }
 
-func ResolveIAMSetviceAccount(ctx context.Context, reader client.Reader, src client.Object, ref *refs.IAMServiceAccountRef) (*refs.IAMServiceAccountRef, error) {
+func ResolveIAMServiceAccount(ctx context.Context, reader client.Reader, src client.Object, ref *refs.IAMServiceAccountRef) (*refs.IAMServiceAccountRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -199,7 +199,7 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 	var targetServiceAccounts []*refs.IAMServiceAccountRef
 	if obj.Spec.TargetServiceAccounts != nil {
 		for _, targetServiceAccount := range obj.Spec.TargetServiceAccounts {
-			iamServiceAccount, err := ResolveIAMSetviceAccount(ctx, reader, obj, targetServiceAccount)
+			iamServiceAccount, err := ResolveIAMServiceAccount(ctx, reader, obj, targetServiceAccount)
 			if err != nil {
 				return err
 			}

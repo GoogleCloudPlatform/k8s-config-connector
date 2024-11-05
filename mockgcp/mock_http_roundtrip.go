@@ -333,8 +333,7 @@ func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 		// I got the "missing form body" error. Ref: https://go.dev/src/net/http/request.go?s=41070:41129 line 1340
 		// So instead of sending a nil request body, send an empty request body to ensure successful processing of the remove rule request.
 		body := &bytes.Buffer{}
-		b := body.Bytes()
-		req.Body = io.NopCloser(bytes.NewBuffer(b))
+		req.Body = io.NopCloser(body)
 	}
 	return nil
 }
