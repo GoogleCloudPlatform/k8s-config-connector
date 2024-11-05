@@ -52,4 +52,4 @@ spec:
           approvers:
             - principals:
                 # Replace ${GROUP_EMAIL?} with your group email.
-                - group:${GROUP_EMAIL?}
+                - "group:${GROUP_EMAIL?}"

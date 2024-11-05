@@ -756,7 +756,7 @@ spec:
           approvers:
             - principals:
                 # Replace ${GROUP_EMAIL?} with your group email.
-                - group:${GROUP_EMAIL?}
+                - "group:${GROUP_EMAIL?}"
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
