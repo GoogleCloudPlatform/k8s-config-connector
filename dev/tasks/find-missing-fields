@@ -44,3 +44,5 @@ go test -v ./pkg/controller/direct/dataform/ -fuzz=FuzzDataformRepositorySpec -f
 go test -v ./pkg/controller/direct/bigquerydatatransfer/ -fuzz=FuzzBigQueryDataTransferConfigSpec -fuzztime 60s
 
 go test -v ./pkg/controller/direct/certificatemanager/ -fuzz=FuzzDNSAuthorizationSpec -fuzztime 60s
+
+go test -v ./pkg/controller/direct/bigqueryanalyticshub/ -fuzz=FuzzBigQueryAnalyticsHubDataExchangeSpec -fuzztime 60s
