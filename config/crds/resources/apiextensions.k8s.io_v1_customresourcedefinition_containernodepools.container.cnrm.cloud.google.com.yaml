@@ -799,6 +799,13 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              queuedProvisioning:
+                description: QueuedProvisioning defines the queued provisioning used by the node pool.
+                type: object
+                properties:
+                  enabled:
+                    description: Denotes that this nodepool is QRM specific, meaning nodes can be only obtained through queuing via the Cluster Autoscaler ProvisioningRequest API.
+                    type: boolean
               upgradeSettings:
                 description: Specify node upgrade settings to change how many nodes
                   GKE attempts to upgrade at once. The number of nodes upgraded simultaneously

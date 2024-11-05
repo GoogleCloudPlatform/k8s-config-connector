@@ -405,6 +405,12 @@ type NodepoolPodCidrOverprovisionConfig struct {
 	Disabled bool `json:"disabled"`
 }
 
+type NodepoolQueuedProvisioning struct {
+	/* Denotes that this nodepool is QRM specific, meaning nodes can be only obtained through queuing via the Cluster Autoscaler ProvisioningRequest API. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type NodepoolReservationAffinity struct {
 	/* Immutable. Corresponds to the type of reservation consumption. */
 	ConsumeReservationType string `json:"consumeReservationType"`
@@ -536,6 +542,10 @@ type ContainerNodePoolSpec struct {
 	/* Immutable. Specifies the node placement policy. */
 	// +optional
 	PlacementPolicy *NodepoolPlacementPolicy `json:"placementPolicy,omitempty"`
+
+	/* QueuedProvisioning defines the queued provisioning used by the node pool. */
+	// +optional
+	QueuedProvisioning *NodepoolQueuedProvisioning `json:"queuedProvisioning,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
