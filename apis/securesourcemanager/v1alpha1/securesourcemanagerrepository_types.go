@@ -40,7 +40,7 @@ type SecureSourceManagerRepositorySpec struct {
 	// The SecureSourceManagerRepository name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Immutable. The name of the instance in which the repository is hosted, formatted as
+	// The name of the instance in which the repository is hosted, formatted as
 	// `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
 	// +required
 	InstanceRef *SecureSourceManagerInstanceRef `json:"instanceRef,omitempty"`
