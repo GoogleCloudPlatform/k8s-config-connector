@@ -30,6 +30,17 @@ func BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx *direct.MapC
 	return out
 }
 
+func BigQueryAnalyticsHubDataExchangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryAnalyticsHubDataExchangeObservedState) *pb.DataExchange {
+	if in == nil {
+		return nil
+	}
+
+	out := &pb.DataExchange{}
+	out.ListingCount = int32(direct.ValueOf(in.ListingCount))
+	// MISSING: SharingEnvironmentConfig // not yet
+	return out
+}
+
 func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.BigQueryAnalyticsHubDataExchangeSpec {
 	if in == nil {
 		return nil
