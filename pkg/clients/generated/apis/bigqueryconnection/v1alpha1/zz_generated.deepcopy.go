@@ -366,6 +366,7 @@ func (in *ConnectionCloudResourceStatus) DeepCopy() *ConnectionCloudResourceStat
 func (in *ConnectionCloudSQL) DeepCopyInto(out *ConnectionCloudSQL) {
 	*out = *in
 	in.Credential.DeepCopyInto(&out.Credential)
+	out.DatabaseRef = in.DatabaseRef
 	out.InstanceRef = in.InstanceRef
 	return
 }
