@@ -61,8 +61,8 @@ type ConnectionCloudSQL struct {
 	/* Cloud SQL credential. */
 	Credential ConnectionCredential `json:"credential"`
 
-	/* Database name. */
-	Database string `json:"database"`
+	/* Reference to the SQL Database. */
+	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
 
 	/* Reference to the Cloud SQL instance ID. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
