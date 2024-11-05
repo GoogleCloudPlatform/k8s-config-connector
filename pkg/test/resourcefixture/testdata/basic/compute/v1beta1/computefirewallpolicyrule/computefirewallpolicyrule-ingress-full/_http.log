@@ -621,10 +621,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyId}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 400 Bad Request
 Cache-Control: private
@@ -646,14 +645,14 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/addRule
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/addRule?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyId}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "action": "deny",
   "direction": "INGRESS",
+  "firewallPolicy": "locations/global/firewallPolicies/${firewallPolicyId}",
   "match": {
     "destIpRanges": [
       "10.100.0.1/32"
@@ -719,10 +718,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: operation=${operationID}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -753,10 +751,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyId}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -814,10 +811,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/patchRule?priority=9000
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/patchRule?alt=json&priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyId}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "action": "allow",
@@ -887,10 +883,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: operation=${operationID}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -921,10 +916,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyId}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -983,10 +977,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/removeRule?priority=9000
+POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/removeRule?alt=json&priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyId}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -1016,10 +1009,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: operation=${operationID}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -1050,10 +1042,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
+GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyId}
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 400 Bad Request
 Cache-Control: private

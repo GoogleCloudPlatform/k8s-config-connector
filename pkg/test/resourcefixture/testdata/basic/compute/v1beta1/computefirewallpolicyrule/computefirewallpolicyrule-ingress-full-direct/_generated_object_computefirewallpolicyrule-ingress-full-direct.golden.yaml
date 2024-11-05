@@ -2,8 +2,8 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicyRule
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -14,27 +14,27 @@ metadata:
   namespace: ${uniqueId}
 spec:
   action: allow
-  direction: EGRESS
+  direction: INGRESS
   firewallPolicyRef:
     name: firewallpolicy-${uniqueId}
   match:
-    destAddressGroups:
-    - organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup-2
-    destFqdns:
-    - www.github.com
     destIPRanges:
-    - 11.100.0.2/32
-    destRegionCodes:
-    - AU
-    destThreatIntelligences:
-    - iplist-known-malicious-ips
-    - iplist-tor-exit-nodes
+    - 10.100.0.2/32
     layer4Configs:
     - ipProtocol: udp
       ports:
       - "8081"
+    srcAddressGroups:
+    - organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup-2
+    srcFqdns:
+    - www.github.com
     srcIPRanges:
-    - 10.100.0.2/32
+    - 11.100.0.2/32
+    srcRegionCodes:
+    - AU
+    srcThreatIntelligences:
+    - iplist-known-malicious-ips
+    - iplist-tor-exit-nodes
   priority: 9000
   targetResources:
   - name: network-2-${uniqueId}

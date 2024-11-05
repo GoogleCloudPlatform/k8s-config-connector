@@ -52,7 +52,7 @@ var _ directbase.Model = &firewallPolicyRuleModel{}
 
 type firewallPolicyRuleAdapter struct {
 	firewallPolicy         string
-	priority               int64
+	priority               int32
 	firewallPoliciesClient *gcp.FirewallPoliciesClient
 	desired                *krm.ComputeFirewallPolicyRule
 	actual                 *computepb.FirewallPolicyRule
@@ -80,9 +80,6 @@ func (m *firewallPolicyRuleModel) AdapterForObject(ctx context.Context, reader c
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Set label managed-by-cnrm: true
-	obj.ObjectMeta.Labels["managed-by-cnrm"] = "true"
-
 	// Get firewall policy
 	firewallPolicyRef, err := ResolveComputeFirewallPolicy(ctx, reader, obj, obj.Spec.FirewallPolicyRef)
 	if err != nil {
@@ -93,7 +90,7 @@ func (m *firewallPolicyRuleModel) AdapterForObject(ctx context.Context, reader c
 	firewallPolicy := obj.Spec.FirewallPolicyRef.External
 
 	// Get priority
-	priority := obj.Spec.Priority
+	priority := int32(obj.Spec.Priority)
 
 	firewallPolicyRuleAdapter := &firewallPolicyRuleAdapter{
 		firewallPolicy: firewallPolicy,
@@ -118,7 +115,7 @@ func (m *firewallPolicyRuleModel) AdapterForURL(ctx context.Context, url string)
 }
 
 func (a *firewallPolicyRuleAdapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ComputeFirewallPolicyRule", "priority", a.priority)
 
 	firewallPolicyRule, err := a.get(ctx)
@@ -136,14 +133,12 @@ func (a *firewallPolicyRuleAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	var err error
-
-	err = resolveDependencies(ctx, a.reader, a.desired)
+	err := resolveDependencies(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ComputeFirewallPolicyRule", "priority", a.priority)
 	mapCtx := &direct.MapContext{}
 
@@ -172,8 +167,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 	log.V(2).Info("successfully created ComputeFirewallPolicyRule", "priority", a.priority)
 
 	// Get the created resource
-	created := &computepb.FirewallPolicyRule{}
-	created, err = a.get(ctx)
+	created, err := a.get(ctx)
 	if err != nil {
 		return fmt.Errorf("getting ComputeFirewallPolicyRule %d: %w", a.priority, err)
 	}
@@ -191,7 +185,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		return err
 	}
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeFirewallPolicyRule", "priority", a.priority)
 	mapCtx := &direct.MapContext{}
 
@@ -209,7 +203,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	updateReq := &computepb.PatchRuleFirewallPolicyRequest{
 		FirewallPolicyRuleResource: firewallPolicyRule,
 		FirewallPolicy:             a.firewallPolicy,
-		Priority:                   direct.PtrTo(int32(a.priority)),
+		Priority:                   direct.PtrTo(a.priority),
 	}
 	op, err := a.firewallPoliciesClient.PatchRule(ctx, updateReq)
 	if err != nil {
@@ -246,9 +240,7 @@ func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.U
 		return nil, fmt.Errorf("error converting firewallPolicyRule spec to unstructured: %w", err)
 	}
 
-	u := &unstructured.Unstructured{
-		Object: make(map[string]interface{}),
-	}
+	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(krm.ComputeFirewallPolicyRuleGVK)
 
 	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
@@ -260,15 +252,14 @@ func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.U
 
 // Delete implements the Adapter interface.
 func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ComputeFirewallPolicyRule", "priority", a.priority)
 
 	delReq := &computepb.RemoveRuleFirewallPolicyRequest{
 		FirewallPolicy: a.firewallPolicy,
-		Priority:       direct.PtrTo(int32(a.priority)),
+		Priority:       direct.PtrTo(a.priority),
 	}
 	op, err := a.firewallPoliciesClient.RemoveRule(ctx, delReq)
-
 	if err != nil {
 		return false, fmt.Errorf("deleting ComputeFirewallPolicyRule %d: %w", a.priority, err)
 	}
@@ -291,7 +282,7 @@ func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *direct
 func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepb.FirewallPolicyRule, error) {
 	getReq := &computepb.GetRuleFirewallPolicyRequest{
 		FirewallPolicy: a.firewallPolicy,
-		Priority:       direct.PtrTo(int32(a.priority)),
+		Priority:       direct.PtrTo(a.priority),
 	}
 	return a.firewallPoliciesClient.GetRule(ctx, getReq)
 }
