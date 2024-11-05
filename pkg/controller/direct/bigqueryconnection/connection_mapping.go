@@ -101,8 +101,6 @@ func CloudSqlPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlP
 		return nil
 	}
 	out := &pb.CloudSqlProperties{}
-	// out.InstanceId = direct.ValueOf(in.InstanceID)
-	out.Database = direct.ValueOf(in.Database)
 	out.Type = direct.Enum_ToProto[pb.CloudSqlProperties_DatabaseType](mapCtx, in.Type)
 	out.Credential = CloudSqlCredential_ToProto(mapCtx, in.Credential)
 	if in.InstanceRef != nil {
@@ -110,6 +108,12 @@ func CloudSqlPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlP
 			mapCtx.Errorf("SQLInstance external reference was not pre-resolved")
 		}
 		out.InstanceId = in.InstanceRef.External
+	}
+	if in.DatabaseRef != nil {
+		if in.DatabaseRef.External == "" {
+			mapCtx.Errorf("SQLInstance external reference was not pre-resolved")
+		}
+		out.Database = in.DatabaseRef.External
 	}
 	return out
 }
@@ -122,7 +126,9 @@ func CloudSqlPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudSql
 	out.InstanceRef = &refs.SQLInstanceRef{
 		External: in.InstanceId,
 	}
-	out.Database = direct.LazyPtr(in.Database)
+	out.DatabaseRef = &refs.SQLDatabaseRef{
+		External: in.Database,
+	}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Credential = CloudSqlCredential_FromProto(mapCtx, in.GetCredential())
 	return out
@@ -139,7 +145,7 @@ func CloudSpannerPropertiesSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	out.DatabaseRole = direct.ValueOf(in.DatabaseRole)
 	if in.DatabaseRef != nil {
 		if in.DatabaseRef.External == "" {
-			mapCtx.Errorf("SQLInstance external reference was not pre-resolved")
+			mapCtx.Errorf("Spanner Instance external reference was not pre-resolved")
 		}
 		out.Database = in.DatabaseRef.External
 	}

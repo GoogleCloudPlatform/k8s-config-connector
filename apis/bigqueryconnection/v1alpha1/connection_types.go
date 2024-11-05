@@ -144,9 +144,9 @@ type CloudSqlPropertiesSpec struct {
 	// +required
 	InstanceRef *refv1beta1.SQLInstanceRef `json:"instanceRef,omitempty"`
 
-	// Database name.
+	// Reference to the SQL Database.
 	// +required
-	Database *string `json:"database,omitempty"`
+	DatabaseRef *refv1beta1.SQLDatabaseRef `json:"databaseRef,omitempty"`
 
 	// Type of the Cloud SQL database.
 	// +required

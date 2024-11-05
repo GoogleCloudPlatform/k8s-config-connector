@@ -16,7 +16,8 @@ spec:
     credential:
       secretRef:
         name: secret-${uniqueId}
-    database: sqldatabase-sample-${uniqueId}
+    databaseRef:
+      name: sqldatabase-sample-${uniqueId}
     instanceRef:
       name: sqlinstance-sample-${uniqueId}
     type: MYSQL

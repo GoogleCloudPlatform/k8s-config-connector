@@ -96,7 +96,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 func (a *Adapter) normalizeReference(ctx context.Context) error {
 	obj := a.desired
-	// Resolve SQLInstanceRef
+	// Resolve SQLInstanceRef and SQLDatabaseRef
 	if obj.Spec.CloudSQLSpec != nil {
 		sql := obj.Spec.CloudSQLSpec
 		if sql.InstanceRef != nil {
@@ -105,6 +105,13 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 				return err
 			}
 			sql.InstanceRef.External = instance.ConnectionName()
+		}
+		if sql.DatabaseRef != nil {
+			database, err := refs.ResolveSQLDatabaseRef(ctx, a.reader, obj, sql.DatabaseRef)
+			if err != nil {
+				return err
+			}
+			sql.DatabaseRef.External = database.String()
 		}
 		if sql.Credential != nil {
 			if err := refsv1beta1secret.NormalizedSecret(ctx, sql.Credential.SecretRef, a.reader, a.namespace); err != nil {
