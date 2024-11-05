@@ -1,4 +1,4 @@
-apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1beta1
 kind: BigQueryConnectionConnection
 metadata:
   annotations:
