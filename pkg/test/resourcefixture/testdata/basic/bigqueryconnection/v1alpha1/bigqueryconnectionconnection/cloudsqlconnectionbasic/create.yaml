@@ -24,7 +24,8 @@ spec:
     instanceRef:
       # external: "projects/${projectId}/locations/us-central1/instances/sqlinstance-sample-001"
       name: sqlinstance-sample-${uniqueId}
-    database: sqldatabase-sample-${uniqueId}
+    databaseRef: 
+      name: sqldatabase-sample-${uniqueId}
     type: "MYSQL"
     credential:
       secretRef: 

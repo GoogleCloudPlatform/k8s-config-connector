@@ -1169,7 +1169,7 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
       "password": "cGFzc3dvcmQ=",
       "username": "sqluser-${uniqueId}"
     },
-    "database": "sqldatabase-sample-${uniqueId}",
+    "database": "projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
     "instanceId": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
     "type": 2
   }
@@ -1188,7 +1188,7 @@ X-Xss-Protection: 0
 
 {
   "cloudSql": {
-    "database": "sqldatabase-sample-${uniqueId}",
+    "database": "projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
     "instanceId": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
     "serviceAccountId": "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com",
     "type": 2
@@ -1219,7 +1219,7 @@ X-Xss-Protection: 0
 
 {
   "cloudSql": {
-    "database": "sqldatabase-sample-${uniqueId}",
+    "database": "projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
     "instanceId": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
     "serviceAccountId": "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com",
     "type": 2
