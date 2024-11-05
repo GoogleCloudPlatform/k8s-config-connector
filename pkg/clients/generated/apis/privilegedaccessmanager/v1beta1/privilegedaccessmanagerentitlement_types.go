@@ -72,7 +72,7 @@ type EntitlementManualApprovals struct {
 
 	/* Optional. List of approval steps in this workflow. These steps are followed in the specified order sequentially. Only 1 step is supported. */
 	// +optional
-	Step []EntitlementStep `json:"step,omitempty"`
+	Steps []EntitlementSteps `json:"steps,omitempty"`
 }
 
 type EntitlementNotMandatory struct {
@@ -109,7 +109,7 @@ type EntitlementRoleBindings struct {
 	Role string `json:"role"`
 }
 
-type EntitlementStep struct {
+type EntitlementSteps struct {
 	/* Required. How many users from the above list need to approve. If there aren't enough distinct users in the list, then the workflow indefinitely blocks. Should always be greater than 0. 1 is the only supported value. */
 	ApprovalsNeeded int32 `json:"approvalsNeeded"`
 
