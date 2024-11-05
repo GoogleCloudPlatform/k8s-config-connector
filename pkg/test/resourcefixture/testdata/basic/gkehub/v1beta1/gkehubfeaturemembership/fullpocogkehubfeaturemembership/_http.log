@@ -1,0 +1,1991 @@
+GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+403 Forbidden
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "permissions": [
+    "billing.resourceAssociations.create"
+  ]
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "permissions": [
+    "billing.resourceAssociations.create"
+  ]
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "Dependent Project",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "example-project-01"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Dependent Project",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectNumber}",
+    "parent": "organizations/${organizationID}",
+    "projectId": "example-project-01",
+    "state": "ACTIVE"
+  }
+}
+
+---
+
+PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/example-project-01/billingInfo",
+  "projectId": "example-project-01"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/example-project-01/billingInfo",
+  "projectId": "example-project-01"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "example-project-01",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/example-project-01/billingInfo",
+  "projectId": "example-project-01"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/container.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/gkehub.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/anthospolicycontroller.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/anthos.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1-a/clusters?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "cluster": {
+    "autopilot": {
+      "enabled": false
+    },
+    "autoscaling": {
+      "enableNodeAutoprovisioning": false
+    },
+    "binaryAuthorization": {
+      "enabled": false
+    },
+    "initialNodeCount": 1,
+    "ipAllocationPolicy": {
+      "stackType": "IPV4",
+      "useIpAliases": false
+    },
+    "legacyAbac": {
+      "enabled": false
+    },
+    "maintenancePolicy": {
+      "window": {}
+    },
+    "masterAuthorizedNetworksConfig": {},
+    "name": "gke-full-poco-${uniqueId}",
+    "network": "projects/example-project-01/global/networks/default",
+    "networkConfig": {},
+    "networkPolicy": {},
+    "nodeConfig": {
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/devstorage.read_only",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring",
+        "https://www.googleapis.com/auth/service.management.readonly",
+        "https://www.googleapis.com/auth/servicecontrol",
+        "https://www.googleapis.com/auth/trace.append"
+      ]
+    },
+    "notificationConfig": {
+      "pubsub": {}
+    },
+    "resourceLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "shieldedNodes": {
+      "enabled": true
+    },
+    "workloadIdentityConfig": {
+      "workloadPool": "example-project-01.svc.id.goog"
+    }
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "${operationID}",
+  "operationType": "CREATE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+  "zone": "us-west1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "${operationID}",
+  "operationType": "CREATE_CLUSTER",
+  "progress": {
+    "metrics": [
+      {
+        "intValue": "10",
+        "name": "CLUSTER_CONFIGURING"
+      },
+      {
+        "intValue": "10",
+        "name": "CLUSTER_CONFIGURING_TOTAL"
+      },
+      {
+        "intValue": "12",
+        "name": "CLUSTER_DEPLOYING"
+      },
+      {
+        "intValue": "12",
+        "name": "CLUSTER_DEPLOYING_TOTAL"
+      },
+      {
+        "intValue": "1",
+        "name": "CLUSTER_HEALTHCHECKING"
+      },
+      {
+        "intValue": "2",
+        "name": "CLUSTER_HEALTHCHECKING_TOTAL"
+      }
+    ]
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+  "zone": "us-west1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    }
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoprovisioningNodePoolDefaults": {
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "upgradeSettings": {
+        "strategy": "SURGE"
+      }
+    },
+    "autoscalingProfile": "BALANCED"
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.92.0.0/14",
+  "clusterTelemetry": {
+    "type": "ENABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.30.5-gke.1014001",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "enterpriseConfig": {
+    "clusterTier": "STANDARD"
+  },
+  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialNodeCount": 1,
+  "ipAllocationPolicy": {
+    "stackType": "IPV4"
+  },
+  "legacyAbac": {},
+  "location": "us-west1-a",
+  "locations": [
+    "us-west1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "loggingService": "logging.googleapis.com/kubernetes",
+  "maintenancePolicy": {
+    "window": {}
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "gke-full-poco-${uniqueId}",
+  "network": "default",
+  "networkConfig": {
+    "network": "projects/example-project-01/global/networks/default",
+    "subnetwork": "default"
+  },
+  "networkPolicy": {},
+  "nodeConfig": {
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "imageType": "COS_CONTAINERD",
+    "machineType": "e2-medium",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {}
+  },
+  "nodePools": [
+    {
+      "config": {
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "imageType": "COS_CONTAINERD",
+        "machineType": "e2-medium",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {}
+      },
+      "initialNodeCount": 1,
+      "locations": [
+        "us-west1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "enablePrivateNodes": false,
+        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4RangeUtilization": 0.001,
+        "podRange": "default-pool-pods-12345678"
+      },
+      "podIpv4CidrSize": 24,
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.30.5-gke.1014001"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {}
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "10.128.0.2",
+    "publicEndpoint": "8.8.8.8"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "default",
+  "workloadIdentityConfig": {
+    "workloadPool": "example-project-01.svc.id.goog"
+  },
+  "zone": "us-west1-a"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/policycontroller\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features?alt=json&featureId=policycontroller
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/example-project-01/locations/global/features/policycontroller",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships?alt=json&membershipId=gkehubmembership-full-poco-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "authority": {
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}"
+  },
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}"
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}"
+  },
+  "name": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}"
+  },
+  "name": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership",
+    "authority": {
+      "identityProvider": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+      "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+      "workloadIdentityPool": "${projectId}.svc.id.goog"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A sample GKE Hub membership",
+    "endpoint": {
+      "gkeCluster": {
+        "resourceLink": "//container.googleapis.com/projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}"
+      }
+    },
+    "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+    "infrastructureType": "MULTI_CLOUD",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}",
+    "state": {
+      "code": "READY"
+    },
+    "uniqueId": "12345678",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authority": {
+    "identityProvider": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+    "workloadIdentityPool": "${projectId}.svc.id.goog"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}"
+    }
+  },
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}",
+  "state": {
+    "code": "READY"
+  },
+  "uniqueId": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller"
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+      "policycontroller": {
+        "policyControllerHubConfig": {
+          "auditIntervalSeconds": "10",
+          "constraintViolationLimit": "20",
+          "exemptableNamespaces": [
+            "test-namespace"
+          ],
+          "installSpec": "INSTALL_SPEC_ENABLED",
+          "monitoring": {
+            "backends": [
+              "PROMETHEUS"
+            ]
+          },
+          "policyContent": {
+            "templateLibrary": {
+              "installation": "NOT_INSTALLED"
+            }
+          }
+        },
+        "version": "1.18.0"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+        "policycontroller": {
+          "policyControllerHubConfig": {
+            "auditIntervalSeconds": "10",
+            "constraintViolationLimit": "20",
+            "exemptableNamespaces": [
+              "test-namespace"
+            ],
+            "installSpec": "INSTALL_SPEC_ENABLED",
+            "monitoring": {
+              "backends": [
+                "PROMETHEUS"
+              ]
+            },
+            "policyContent": {
+              "templateLibrary": {
+                "installation": "NOT_INSTALLED"
+              }
+            }
+          },
+          "version": "1.18.0"
+        }
+      }
+    },
+    "name": "projects/example-project-01/locations/global/features/policycontroller",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+      "policycontroller": {
+        "policyControllerHubConfig": {
+          "auditIntervalSeconds": "10",
+          "constraintViolationLimit": "20",
+          "exemptableNamespaces": [
+            "test-namespace"
+          ],
+          "installSpec": "INSTALL_SPEC_ENABLED",
+          "monitoring": {
+            "backends": [
+              "PROMETHEUS"
+            ]
+          },
+          "policyContent": {
+            "templateLibrary": {
+              "installation": "NOT_INSTALLED"
+            }
+          }
+        },
+        "version": "1.18.0"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+      "policycontroller": {
+        "policyControllerHubConfig": {
+          "auditIntervalSeconds": "15",
+          "constraintViolationLimit": "25",
+          "exemptableNamespaces": [
+            "test-namespace-two"
+          ],
+          "installSpec": "INSTALL_SPEC_SUSPENDED",
+          "logDeniesEnabled": true,
+          "monitoring": {
+            "backends": [
+              "CLOUD_MONITORING"
+            ]
+          },
+          "mutationEnabled": true,
+          "policyContent": {
+            "templateLibrary": {
+              "installation": "ALL"
+            }
+          },
+          "referentialRulesEnabled": true
+        },
+        "version": "1.18.0"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+        "policycontroller": {
+          "policyControllerHubConfig": {
+            "auditIntervalSeconds": "15",
+            "constraintViolationLimit": "25",
+            "exemptableNamespaces": [
+              "test-namespace-two"
+            ],
+            "installSpec": "INSTALL_SPEC_SUSPENDED",
+            "logDeniesEnabled": true,
+            "monitoring": {
+              "backends": [
+                "CLOUD_MONITORING"
+              ]
+            },
+            "mutationEnabled": true,
+            "policyContent": {
+              "templateLibrary": {
+                "installation": "ALL"
+              }
+            },
+            "referentialRulesEnabled": true
+          },
+          "version": "1.18.0"
+        }
+      }
+    },
+    "name": "projects/example-project-01/locations/global/features/policycontroller",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+      "policycontroller": {
+        "policyControllerHubConfig": {
+          "auditIntervalSeconds": "15",
+          "constraintViolationLimit": "25",
+          "exemptableNamespaces": [
+            "test-namespace-two"
+          ],
+          "installSpec": "INSTALL_SPEC_SUSPENDED",
+          "logDeniesEnabled": true,
+          "monitoring": {
+            "backends": [
+              "CLOUD_MONITORING"
+            ]
+          },
+          "mutationEnabled": true,
+          "policyContent": {
+            "templateLibrary": {
+              "installation": "ALL"
+            }
+          },
+          "referentialRulesEnabled": true
+        },
+        "version": "1.18.0"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {}
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/policycontroller"
+  },
+  "name": "projects/example-project-01/locations/global/features/policycontroller/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-full-poco-${uniqueId}": {}
+    },
+    "name": "projects/example-project-01/locations/global/features/policycontroller",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authority": {
+    "identityProvider": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+    "workloadIdentityPool": "${projectId}.svc.id.goog"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}"
+    }
+  },
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}",
+  "state": {
+    "code": "READY"
+  },
+  "uniqueId": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}"
+  },
+  "name": "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    }
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoprovisioningNodePoolDefaults": {
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "upgradeSettings": {
+        "strategy": "SURGE"
+      }
+    },
+    "autoscalingProfile": "BALANCED"
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.92.0.0/14",
+  "clusterTelemetry": {
+    "type": "ENABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.30.5-gke.1014001",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "enterpriseConfig": {
+    "clusterTier": "STANDARD"
+  },
+  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialNodeCount": 1,
+  "ipAllocationPolicy": {
+    "stackType": "IPV4"
+  },
+  "legacyAbac": {},
+  "location": "us-west1-a",
+  "locations": [
+    "us-west1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "loggingService": "logging.googleapis.com/kubernetes",
+  "maintenancePolicy": {
+    "window": {}
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "gke-full-poco-${uniqueId}",
+  "network": "default",
+  "networkConfig": {
+    "network": "projects/example-project-01/global/networks/default",
+    "subnetwork": "default"
+  },
+  "networkPolicy": {},
+  "nodeConfig": {
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "imageType": "COS_CONTAINERD",
+    "machineType": "e2-medium",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {}
+  },
+  "nodePools": [
+    {
+      "config": {
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "imageType": "COS_CONTAINERD",
+        "machineType": "e2-medium",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {}
+      },
+      "initialNodeCount": 1,
+      "locations": [
+        "us-west1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "enablePrivateNodes": false,
+        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4RangeUtilization": 0.001,
+        "podRange": "default-pool-pods-12345678"
+      },
+      "podIpv4CidrSize": 24,
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.30.5-gke.1014001"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {}
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "10.128.0.2",
+    "publicEndpoint": "8.8.8.8"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "default",
+  "workloadIdentityConfig": {
+    "workloadPool": "example-project-01.svc.id.goog"
+  },
+  "zone": "us-west1-a"
+}
+
+---
+
+DELETE https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1-a/clusters/gke-full-poco-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "${operationID}",
+  "operationType": "DELETE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+  "zone": "us-west1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "${operationID}",
+  "operationType": "DELETE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-west1-a/clusters/gke-full-poco-${uniqueId}",
+  "zone": "us-west1-a"
+}

@@ -59,7 +59,7 @@ func convertKRMtoAPI_PolicycontrollerHubConfig(r krm.FeaturemembershipPolicyCont
 	if r.ReferentialRulesEnabled != nil {
 		apiObj.ReferentialRulesEnabled = *r.ReferentialRulesEnabled
 	}
-	return nil
+	return apiObj
 }
 
 func convertKRMtoAPI_FeaturemembershipMonitoring(r *krm.FeaturemembershipMonitoring) *featureapi.PolicyControllerMonitoringConfig {
