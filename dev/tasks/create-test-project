@@ -53,6 +53,7 @@ echo "Setting default project to ${GCP_PROJECT_ID}"
 gcloud config set project "${GCP_PROJECT_ID}"
 
 gcloud services enable \
+  apigee.googleapis.com \
   compute.googleapis.com \
   cloudbuild.googleapis.com \
   cloudkms.googleapis.com \
