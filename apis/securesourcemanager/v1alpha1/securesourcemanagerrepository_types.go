@@ -32,6 +32,7 @@ type SecureSourceManagerRepositorySpec struct {
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
 	/* Immutable. Location of the instance. */
+	// +required
 	Location string `json:"location"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"

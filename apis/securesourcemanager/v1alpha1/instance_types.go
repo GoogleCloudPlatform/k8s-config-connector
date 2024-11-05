@@ -30,6 +30,7 @@ type SecureSourceManagerInstanceSpec struct {
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
 	/* Immutable. Location of the instance. */
+	// +required
 	Location string `json:"location"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
