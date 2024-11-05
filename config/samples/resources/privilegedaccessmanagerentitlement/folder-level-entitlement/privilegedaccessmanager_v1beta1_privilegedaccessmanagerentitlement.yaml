@@ -44,7 +44,7 @@ spec:
   approvalWorkflow:
     manualApprovals:
       requireApproverJustification: true
-      step:
+      steps:
         - approvalsNeeded: 1
           approverEmailRecipients:
             # Replace ${PROJECT_ID?} with your project ID.

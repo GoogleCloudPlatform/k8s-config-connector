@@ -87,7 +87,7 @@ spec:
                         description: Optional. Whether the approvers need to provide
                           a justification for their actions.
                         type: boolean
-                      step:
+                      steps:
                         description: Optional. List of approval steps in this workflow.
                           These steps are followed in the specified order sequentially.
                           Only 1 step is supported.
@@ -454,7 +454,7 @@ spec:
                         description: Optional. Whether the approvers need to provide
                           a justification for their actions.
                         type: boolean
-                      step:
+                      steps:
                         description: Optional. List of approval steps in this workflow.
                           These steps are followed in the specified order sequentially.
                           Only 1 step is supported.
