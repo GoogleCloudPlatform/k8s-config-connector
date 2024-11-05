@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeBigQueryConnectionConnections implements BigQueryConnectionConnectionInterface
 type FakeBigQueryConnectionConnections struct {
-	Fake *FakeBigqueryconnectionV1alpha1
+	Fake *FakeBigqueryconnectionV1beta1
 	ns   string
 }
 
-var bigqueryconnectionconnectionsResource = v1alpha1.SchemeGroupVersion.WithResource("bigqueryconnectionconnections")
+var bigqueryconnectionconnectionsResource = v1beta1.SchemeGroupVersion.WithResource("bigqueryconnectionconnections")
 
-var bigqueryconnectionconnectionsKind = v1alpha1.SchemeGroupVersion.WithKind("BigQueryConnectionConnection")
+var bigqueryconnectionconnectionsKind = v1beta1.SchemeGroupVersion.WithKind("BigQueryConnectionConnection")
 
 // Get takes name of the bigQueryConnectionConnection, and returns the corresponding bigQueryConnectionConnection object, and an error if there is any.
-func (c *FakeBigQueryConnectionConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigQueryConnectionConnection, err error) {
+func (c *FakeBigQueryConnectionConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigQueryConnectionConnection, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigqueryconnectionconnectionsResource, c.ns, name), &v1alpha1.BigQueryConnectionConnection{})
+		Invokes(testing.NewGetAction(bigqueryconnectionconnectionsResource, c.ns, name), &v1beta1.BigQueryConnectionConnection{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryConnectionConnection), err
+	return obj.(*v1beta1.BigQueryConnectionConnection), err
 }
 
 // List takes label and field selectors, and returns the list of BigQueryConnectionConnections that match those selectors.
-func (c *FakeBigQueryConnectionConnections) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigQueryConnectionConnectionList, err error) {
+func (c *FakeBigQueryConnectionConnections) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigQueryConnectionConnectionList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigqueryconnectionconnectionsResource, bigqueryconnectionconnectionsKind, c.ns, opts), &v1alpha1.BigQueryConnectionConnectionList{})
+		Invokes(testing.NewListAction(bigqueryconnectionconnectionsResource, bigqueryconnectionconnectionsKind, c.ns, opts), &v1beta1.BigQueryConnectionConnectionList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeBigQueryConnectionConnections) List(ctx context.Context, opts v1.Li
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.BigQueryConnectionConnectionList{ListMeta: obj.(*v1alpha1.BigQueryConnectionConnectionList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BigQueryConnectionConnectionList).Items {
+	list := &v1beta1.BigQueryConnectionConnectionList{ListMeta: obj.(*v1beta1.BigQueryConnectionConnectionList).ListMeta}
+	for _, item := range obj.(*v1beta1.BigQueryConnectionConnectionList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeBigQueryConnectionConnections) Watch(ctx context.Context, opts v1.L
 }
 
 // Create takes the representation of a bigQueryConnectionConnection and creates it.  Returns the server's representation of the bigQueryConnectionConnection, and an error, if there is any.
-func (c *FakeBigQueryConnectionConnections) Create(ctx context.Context, bigQueryConnectionConnection *v1alpha1.BigQueryConnectionConnection, opts v1.CreateOptions) (result *v1alpha1.BigQueryConnectionConnection, err error) {
+func (c *FakeBigQueryConnectionConnections) Create(ctx context.Context, bigQueryConnectionConnection *v1beta1.BigQueryConnectionConnection, opts v1.CreateOptions) (result *v1beta1.BigQueryConnectionConnection, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigqueryconnectionconnectionsResource, c.ns, bigQueryConnectionConnection), &v1alpha1.BigQueryConnectionConnection{})
+		Invokes(testing.NewCreateAction(bigqueryconnectionconnectionsResource, c.ns, bigQueryConnectionConnection), &v1beta1.BigQueryConnectionConnection{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryConnectionConnection), err
+	return obj.(*v1beta1.BigQueryConnectionConnection), err
 }
 
 // Update takes the representation of a bigQueryConnectionConnection and updates it. Returns the server's representation of the bigQueryConnectionConnection, and an error, if there is any.
-func (c *FakeBigQueryConnectionConnections) Update(ctx context.Context, bigQueryConnectionConnection *v1alpha1.BigQueryConnectionConnection, opts v1.UpdateOptions) (result *v1alpha1.BigQueryConnectionConnection, err error) {
+func (c *FakeBigQueryConnectionConnections) Update(ctx context.Context, bigQueryConnectionConnection *v1beta1.BigQueryConnectionConnection, opts v1.UpdateOptions) (result *v1beta1.BigQueryConnectionConnection, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigqueryconnectionconnectionsResource, c.ns, bigQueryConnectionConnection), &v1alpha1.BigQueryConnectionConnection{})
+		Invokes(testing.NewUpdateAction(bigqueryconnectionconnectionsResource, c.ns, bigQueryConnectionConnection), &v1beta1.BigQueryConnectionConnection{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryConnectionConnection), err
+	return obj.(*v1beta1.BigQueryConnectionConnection), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigQueryConnectionConnections) UpdateStatus(ctx context.Context, bigQueryConnectionConnection *v1alpha1.BigQueryConnectionConnection, opts v1.UpdateOptions) (*v1alpha1.BigQueryConnectionConnection, error) {
+func (c *FakeBigQueryConnectionConnections) UpdateStatus(ctx context.Context, bigQueryConnectionConnection *v1beta1.BigQueryConnectionConnection, opts v1.UpdateOptions) (*v1beta1.BigQueryConnectionConnection, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigqueryconnectionconnectionsResource, "status", c.ns, bigQueryConnectionConnection), &v1alpha1.BigQueryConnectionConnection{})
+		Invokes(testing.NewUpdateSubresourceAction(bigqueryconnectionconnectionsResource, "status", c.ns, bigQueryConnectionConnection), &v1beta1.BigQueryConnectionConnection{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryConnectionConnection), err
+	return obj.(*v1beta1.BigQueryConnectionConnection), err
 }
 
 // Delete takes name of the bigQueryConnectionConnection and deletes it. Returns an error if one occurs.
 func (c *FakeBigQueryConnectionConnections) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigqueryconnectionconnectionsResource, c.ns, name, opts), &v1alpha1.BigQueryConnectionConnection{})
+		Invokes(testing.NewDeleteActionWithOptions(bigqueryconnectionconnectionsResource, c.ns, name, opts), &v1beta1.BigQueryConnectionConnection{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeBigQueryConnectionConnections) Delete(ctx context.Context, name str
 func (c *FakeBigQueryConnectionConnections) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(bigqueryconnectionconnectionsResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.BigQueryConnectionConnectionList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.BigQueryConnectionConnectionList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched bigQueryConnectionConnection.
-func (c *FakeBigQueryConnectionConnections) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigQueryConnectionConnection, err error) {
+func (c *FakeBigQueryConnectionConnections) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigQueryConnectionConnection, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigqueryconnectionconnectionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigQueryConnectionConnection{})
+		Invokes(testing.NewPatchSubresourceAction(bigqueryconnectionconnectionsResource, c.ns, name, pt, data, subresources...), &v1beta1.BigQueryConnectionConnection{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryConnectionConnection), err
+	return obj.(*v1beta1.BigQueryConnectionConnection), err
 }
