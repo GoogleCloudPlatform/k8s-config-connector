@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeBigQueryAnalyticsHubDataExchanges implements BigQueryAnalyticsHubDataExchangeInterface
 type FakeBigQueryAnalyticsHubDataExchanges struct {
-	Fake *FakeBigqueryanalyticshubV1alpha1
+	Fake *FakeBigqueryanalyticshubV1beta1
 	ns   string
 }
 
-var bigqueryanalyticshubdataexchangesResource = v1alpha1.SchemeGroupVersion.WithResource("bigqueryanalyticshubdataexchanges")
+var bigqueryanalyticshubdataexchangesResource = v1beta1.SchemeGroupVersion.WithResource("bigqueryanalyticshubdataexchanges")
 
-var bigqueryanalyticshubdataexchangesKind = v1alpha1.SchemeGroupVersion.WithKind("BigQueryAnalyticsHubDataExchange")
+var bigqueryanalyticshubdataexchangesKind = v1beta1.SchemeGroupVersion.WithKind("BigQueryAnalyticsHubDataExchange")
 
 // Get takes name of the bigQueryAnalyticsHubDataExchange, and returns the corresponding bigQueryAnalyticsHubDataExchange object, and an error if there is any.
-func (c *FakeBigQueryAnalyticsHubDataExchanges) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigQueryAnalyticsHubDataExchange, err error) {
+func (c *FakeBigQueryAnalyticsHubDataExchanges) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigQueryAnalyticsHubDataExchange, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigqueryanalyticshubdataexchangesResource, c.ns, name), &v1alpha1.BigQueryAnalyticsHubDataExchange{})
+		Invokes(testing.NewGetAction(bigqueryanalyticshubdataexchangesResource, c.ns, name), &v1beta1.BigQueryAnalyticsHubDataExchange{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryAnalyticsHubDataExchange), err
+	return obj.(*v1beta1.BigQueryAnalyticsHubDataExchange), err
 }
 
 // List takes label and field selectors, and returns the list of BigQueryAnalyticsHubDataExchanges that match those selectors.
-func (c *FakeBigQueryAnalyticsHubDataExchanges) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigQueryAnalyticsHubDataExchangeList, err error) {
+func (c *FakeBigQueryAnalyticsHubDataExchanges) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigQueryAnalyticsHubDataExchangeList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigqueryanalyticshubdataexchangesResource, bigqueryanalyticshubdataexchangesKind, c.ns, opts), &v1alpha1.BigQueryAnalyticsHubDataExchangeList{})
+		Invokes(testing.NewListAction(bigqueryanalyticshubdataexchangesResource, bigqueryanalyticshubdataexchangesKind, c.ns, opts), &v1beta1.BigQueryAnalyticsHubDataExchangeList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeBigQueryAnalyticsHubDataExchanges) List(ctx context.Context, opts v
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.BigQueryAnalyticsHubDataExchangeList{ListMeta: obj.(*v1alpha1.BigQueryAnalyticsHubDataExchangeList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BigQueryAnalyticsHubDataExchangeList).Items {
+	list := &v1beta1.BigQueryAnalyticsHubDataExchangeList{ListMeta: obj.(*v1beta1.BigQueryAnalyticsHubDataExchangeList).ListMeta}
+	for _, item := range obj.(*v1beta1.BigQueryAnalyticsHubDataExchangeList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeBigQueryAnalyticsHubDataExchanges) Watch(ctx context.Context, opts 
 }
 
 // Create takes the representation of a bigQueryAnalyticsHubDataExchange and creates it.  Returns the server's representation of the bigQueryAnalyticsHubDataExchange, and an error, if there is any.
-func (c *FakeBigQueryAnalyticsHubDataExchanges) Create(ctx context.Context, bigQueryAnalyticsHubDataExchange *v1alpha1.BigQueryAnalyticsHubDataExchange, opts v1.CreateOptions) (result *v1alpha1.BigQueryAnalyticsHubDataExchange, err error) {
+func (c *FakeBigQueryAnalyticsHubDataExchanges) Create(ctx context.Context, bigQueryAnalyticsHubDataExchange *v1beta1.BigQueryAnalyticsHubDataExchange, opts v1.CreateOptions) (result *v1beta1.BigQueryAnalyticsHubDataExchange, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigqueryanalyticshubdataexchangesResource, c.ns, bigQueryAnalyticsHubDataExchange), &v1alpha1.BigQueryAnalyticsHubDataExchange{})
+		Invokes(testing.NewCreateAction(bigqueryanalyticshubdataexchangesResource, c.ns, bigQueryAnalyticsHubDataExchange), &v1beta1.BigQueryAnalyticsHubDataExchange{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryAnalyticsHubDataExchange), err
+	return obj.(*v1beta1.BigQueryAnalyticsHubDataExchange), err
 }
 
 // Update takes the representation of a bigQueryAnalyticsHubDataExchange and updates it. Returns the server's representation of the bigQueryAnalyticsHubDataExchange, and an error, if there is any.
-func (c *FakeBigQueryAnalyticsHubDataExchanges) Update(ctx context.Context, bigQueryAnalyticsHubDataExchange *v1alpha1.BigQueryAnalyticsHubDataExchange, opts v1.UpdateOptions) (result *v1alpha1.BigQueryAnalyticsHubDataExchange, err error) {
+func (c *FakeBigQueryAnalyticsHubDataExchanges) Update(ctx context.Context, bigQueryAnalyticsHubDataExchange *v1beta1.BigQueryAnalyticsHubDataExchange, opts v1.UpdateOptions) (result *v1beta1.BigQueryAnalyticsHubDataExchange, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigqueryanalyticshubdataexchangesResource, c.ns, bigQueryAnalyticsHubDataExchange), &v1alpha1.BigQueryAnalyticsHubDataExchange{})
+		Invokes(testing.NewUpdateAction(bigqueryanalyticshubdataexchangesResource, c.ns, bigQueryAnalyticsHubDataExchange), &v1beta1.BigQueryAnalyticsHubDataExchange{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryAnalyticsHubDataExchange), err
+	return obj.(*v1beta1.BigQueryAnalyticsHubDataExchange), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigQueryAnalyticsHubDataExchanges) UpdateStatus(ctx context.Context, bigQueryAnalyticsHubDataExchange *v1alpha1.BigQueryAnalyticsHubDataExchange, opts v1.UpdateOptions) (*v1alpha1.BigQueryAnalyticsHubDataExchange, error) {
+func (c *FakeBigQueryAnalyticsHubDataExchanges) UpdateStatus(ctx context.Context, bigQueryAnalyticsHubDataExchange *v1beta1.BigQueryAnalyticsHubDataExchange, opts v1.UpdateOptions) (*v1beta1.BigQueryAnalyticsHubDataExchange, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigqueryanalyticshubdataexchangesResource, "status", c.ns, bigQueryAnalyticsHubDataExchange), &v1alpha1.BigQueryAnalyticsHubDataExchange{})
+		Invokes(testing.NewUpdateSubresourceAction(bigqueryanalyticshubdataexchangesResource, "status", c.ns, bigQueryAnalyticsHubDataExchange), &v1beta1.BigQueryAnalyticsHubDataExchange{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryAnalyticsHubDataExchange), err
+	return obj.(*v1beta1.BigQueryAnalyticsHubDataExchange), err
 }
 
 // Delete takes name of the bigQueryAnalyticsHubDataExchange and deletes it. Returns an error if one occurs.
 func (c *FakeBigQueryAnalyticsHubDataExchanges) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigqueryanalyticshubdataexchangesResource, c.ns, name, opts), &v1alpha1.BigQueryAnalyticsHubDataExchange{})
+		Invokes(testing.NewDeleteActionWithOptions(bigqueryanalyticshubdataexchangesResource, c.ns, name, opts), &v1beta1.BigQueryAnalyticsHubDataExchange{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeBigQueryAnalyticsHubDataExchanges) Delete(ctx context.Context, name
 func (c *FakeBigQueryAnalyticsHubDataExchanges) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(bigqueryanalyticshubdataexchangesResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.BigQueryAnalyticsHubDataExchangeList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.BigQueryAnalyticsHubDataExchangeList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched bigQueryAnalyticsHubDataExchange.
-func (c *FakeBigQueryAnalyticsHubDataExchanges) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigQueryAnalyticsHubDataExchange, err error) {
+func (c *FakeBigQueryAnalyticsHubDataExchanges) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigQueryAnalyticsHubDataExchange, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigqueryanalyticshubdataexchangesResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigQueryAnalyticsHubDataExchange{})
+		Invokes(testing.NewPatchSubresourceAction(bigqueryanalyticshubdataexchangesResource, c.ns, name, pt, data, subresources...), &v1beta1.BigQueryAnalyticsHubDataExchange{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.BigQueryAnalyticsHubDataExchange), err
+	return obj.(*v1beta1.BigQueryAnalyticsHubDataExchange), err
 }
