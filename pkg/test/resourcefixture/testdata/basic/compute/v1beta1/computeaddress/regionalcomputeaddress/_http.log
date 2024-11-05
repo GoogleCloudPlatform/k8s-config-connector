@@ -381,11 +381,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}' was not found"
   }
 }
 

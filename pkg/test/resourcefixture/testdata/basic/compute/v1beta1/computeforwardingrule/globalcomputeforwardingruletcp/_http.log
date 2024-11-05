@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/global/addresses/computeaddress-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/global/addresses/computeaddress-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found"
   }
 }
 

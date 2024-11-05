@@ -236,11 +236,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/global/addresses/${addressID}\" not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/global/addresses/${addressID}\" not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found"
   }
 }
 
