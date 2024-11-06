@@ -18,3 +18,4 @@ metadata:
   name: bigquerydataset-resourceid-${uniqueId}
 spec:
   resourceID: bigquerydataset_resourceid_${uniqueId}
+  location: us-central1
