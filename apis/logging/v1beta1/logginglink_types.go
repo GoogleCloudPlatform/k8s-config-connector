@@ -17,6 +17,8 @@ package v1beta1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 )
 
 var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
@@ -30,11 +32,11 @@ type LoggingLinkSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Describes this link.
-	//
 	//  The maximum length of the description is 8000 characters.
 	Description *string `json:"description,omitempty"`
 
-	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+	// Placeholder description 
+	LoggingLogBucketRef *refs.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 
 }
 
@@ -68,7 +70,7 @@ type LoggingLinkObservedState struct {
 
 	// this field is just a string, but its an object(string)
 	// https://github.com/googleapis/googleapis/blob/master/google/logging/v2/logging_config.proto#L1063
-	BigQueryDataset *BigQueryDataset `json:bigQueryDataset"createTime,omitempty"`
+	BigQueryDataset *BigQueryDataset `json:"bigQueryDataset,omitempty"`
 
 }
 
@@ -94,9 +96,9 @@ type LoggingLink struct {
 }
 
 type BigQueryDataset struct {
-	string dataset_id `json:"datasetID,omitempty"`
+	// descripotoin 
+	DatasetID *string `json:"datasetID,omitempty"`
 }
-
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // LoggingLinkList contains a list of LoggingLink
