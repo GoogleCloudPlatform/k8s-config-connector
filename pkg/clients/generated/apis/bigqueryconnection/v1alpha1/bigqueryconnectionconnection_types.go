@@ -244,7 +244,7 @@ type ConnectionCloudResourceStatus struct {
 	The account ID is in the form of:
 	<service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com */
 	// +optional
-	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type ConnectionCloudSQLStatus struct {
@@ -254,7 +254,7 @@ type ConnectionCloudSQLStatus struct {
 	BigQuery, this service account will serve as the identity being used for
 	connecting to the CloudSQL instance specified in this connection. */
 	// +optional
-	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type ConnectionObservedStateStatus struct {
@@ -299,7 +299,7 @@ type ConnectionSparkStatus struct {
 	The account ID is in the form of:
 	bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com */
 	// +optional
-	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type BigQueryConnectionConnectionStatus struct {

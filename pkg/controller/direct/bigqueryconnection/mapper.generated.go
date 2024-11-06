@@ -17,6 +17,7 @@ package bigqueryconnection
 import (
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -264,7 +265,11 @@ func CloudResourcePropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.C
 		return nil
 	}
 	out := &krm.CloudResourcePropertiesStatus{}
-	out.ServiceAccountID = direct.LazyPtr(in.GetServiceAccountId())
+	if in.GetServiceAccountId() != "" {
+		out.ServiceAccountRef = &refs.IAMServiceAccountRef{
+			External: in.GetServiceAccountId(),
+		}
+	}
 	return out
 }
 func CloudResourcePropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudResourcePropertiesStatus) *pb.CloudResourceProperties {
@@ -272,7 +277,9 @@ func CloudResourcePropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.Cl
 		return nil
 	}
 	out := &pb.CloudResourceProperties{}
-	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccountId = in.ServiceAccountRef.External
+	}
 	return out
 }
 func CloudSpannerProperties_FromProto(mapCtx *direct.MapContext, in *pb.CloudSpannerProperties) *krm.CloudSpannerProperties {
@@ -330,7 +337,11 @@ func CloudSqlPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.CloudS
 		return nil
 	}
 	out := &krm.CloudSqlPropertiesStatus{}
-	out.ServiceAccountID = direct.LazyPtr(in.GetServiceAccountId())
+	if in.GetServiceAccountId() != "" {
+		out.ServiceAccountRef = &refs.IAMServiceAccountRef{
+			External: in.GetServiceAccountId(),
+		}
+	}
 	return out
 }
 func CloudSqlPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlPropertiesStatus) *pb.CloudSqlProperties {
@@ -338,7 +349,9 @@ func CloudSqlPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudSq
 		return nil
 	}
 	out := &pb.CloudSqlProperties{}
-	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccountId = in.ServiceAccountRef.External
+	}
 	return out
 }
 func SparkPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.SparkProperties) *krm.SparkPropertiesStatus {
@@ -346,7 +359,11 @@ func SparkPropertiesStatus_FromProto(mapCtx *direct.MapContext, in *pb.SparkProp
 		return nil
 	}
 	out := &krm.SparkPropertiesStatus{}
-	out.ServiceAccountID = direct.LazyPtr(in.ServiceAccountId)
+	if in.GetServiceAccountId() != "" {
+		out.ServiceAccountRef = &refs.IAMServiceAccountRef{
+			External: in.GetServiceAccountId(),
+		}
+	}
 	return out
 }
 func SparkPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.SparkPropertiesStatus) *pb.SparkProperties {
@@ -354,7 +371,9 @@ func SparkPropertiesStatus_ToProto(mapCtx *direct.MapContext, in *krm.SparkPrope
 		return nil
 	}
 	out := &pb.SparkProperties{}
-	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccountId = in.ServiceAccountRef.External
+	}
 	return out
 }
 func Connection_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.Connection {
