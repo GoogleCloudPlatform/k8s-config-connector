@@ -218,6 +218,8 @@ placementPolicy:
     namespace: string
   tpuTopology: string
   type: string
+queuedProvisioning:
+  enabled: boolean
 resourceID: string
 upgradeSettings:
   blueGreenSettings:
@@ -1659,6 +1661,26 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type defines the type of placement policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queuedProvisioning</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Specifies the configuration of queued provisioning.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queuedProvisioning.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether nodes in this node pool are obtainable solely through the ProvisioningRequest API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
