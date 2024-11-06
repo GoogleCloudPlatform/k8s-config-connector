@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -41,8 +40,15 @@ type SQLDatabase struct {
 	DatabaseID string
 }
 
+func (s *SQLDatabase) Name() string {
+	return s.DatabaseID
+}
+
 func (s *SQLDatabase) String() string {
-	return "projects/" + s.ProjectID + "/instances/" + s.InstanceID + "/databases/" + s.DatabaseID
+	if s.ProjectID != "" && s.InstanceID != "" {
+		return "projects/" + s.ProjectID + "/instances/" + s.InstanceID + "/databases/" + s.DatabaseID
+	}
+	return s.DatabaseID
 }
 
 func ResolveSQLDatabaseRef(ctx context.Context, reader client.Reader, obj client.Object, ref *SQLDatabaseRef) (*SQLDatabase, error) {
@@ -58,17 +64,10 @@ func ResolveSQLDatabaseRef(ctx context.Context, reader client.Reader, obj client
 	}
 
 	if ref.External != "" {
-		// External must be in form `projects/<projectID>/instances/<instanceName>/databases/<databaseName>`.
-		// see https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/databases/get
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "instances" && tokens[4] == "databases" {
-			return &SQLDatabase{
-				ProjectID:  tokens[1],
-				InstanceID: tokens[3],
-				DatabaseID: tokens[5],
-			}, nil
-		}
-		return nil, fmt.Errorf("format of SQLinstance external=%q was not known (use projects/<projectID>/instances/<instanceName>/databases/<databaseName>)", ref.External)
+		// External is the name of the sql database
+		return &SQLDatabase{
+			DatabaseID: ref.External,
+		}, nil
 	}
 
 	key := types.NamespacedName{
