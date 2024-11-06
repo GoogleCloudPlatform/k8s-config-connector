@@ -133,9 +133,6 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}"
     }
   ],
@@ -227,7 +224,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -240,7 +236,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20241020.00_00",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -369,11 +365,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
     }
   ]
 }
@@ -401,11 +392,12 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not Found.",
+        "message": "database \"projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "Not Found"
+    "message": "database \"projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -549,7 +541,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -562,7 +553,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20241020.00_00",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -691,11 +682,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
     }
   ]
 }
@@ -793,9 +779,6 @@ X-Xss-Protection: 0
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "password": "cGFzc3dvcmQ=",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}"
     }
   ],
@@ -827,7 +810,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -840,7 +822,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20241020.00_00",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -969,11 +951,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
     }
   ]
 }
@@ -1003,9 +980,6 @@ X-Xss-Protection: 0
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "password": "cGFzc3dvcmQ=",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}"
     }
   ],
@@ -1037,7 +1011,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -1050,7 +1023,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20241020.00_00",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -1179,11 +1152,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
     }
   ]
 }
@@ -1307,9 +1275,6 @@ X-Xss-Protection: 0
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "password": "cGFzc3dvcmQ=",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}"
     }
   ],
@@ -1341,7 +1306,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -1354,7 +1318,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20241020.00_00",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -1483,11 +1447,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
     }
   ]
 }
@@ -1666,7 +1625,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -1679,7 +1637,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20241020.00_00",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-sample-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -1808,11 +1766,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
     }
   ]
 }

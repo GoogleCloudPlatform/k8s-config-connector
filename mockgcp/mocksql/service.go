@@ -82,17 +82,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 				error.Message = "The Cloud SQL instance does not exist."
 				error.Status = ""
 			}
-
-			for errIdx := range error.Errors {
-				if strings.HasPrefix(error.Errors[errIdx].Message, "database ") {
-					error.Errors[errIdx].Message = "Not Found."
-					error.Errors[errIdx].Reason = "notFound"
-				}
-			}
-			if strings.HasPrefix(error.Message, "database ") {
-				error.Message = "Not Found"
-				error.Status = ""
-			}
 		}
 	}
 
