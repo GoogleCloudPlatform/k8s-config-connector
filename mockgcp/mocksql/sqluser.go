@@ -92,6 +92,11 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 	obj.Project = name.Project.ID
 	obj.Instance = name.Instance
 	obj.Kind = "sql#user"
+	if obj.GetPasswordPolicy() == nil {
+		obj.PasswordPolicy = &pb.UserPasswordValidationPolicy{
+			Status: &pb.PasswordStatus{},
+		}
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
