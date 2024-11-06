@@ -287,7 +287,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 	switch obj.DatabaseVersion {
 	case pb.SqlDatabaseVersion_MYSQL_5_7:
 		obj.DatabaseInstalledVersion = "MYSQL_5_7_44"
-		obj.MaintenanceVersion = "MYSQL_5_7_44.R20231105.01_03"
+		obj.MaintenanceVersion = "MYSQL_5_7_44.R20241020.00_00"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				DisplayName:  asRef("MySQL 8.0"),
@@ -358,6 +358,11 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				DisplayName:  asRef("MySQL 8.0.37"),
 				MajorVersion: asRef("MYSQL_8_0"),
 				Name:         asRef("MYSQL_8_0_37"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.39"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_39"),
 			},
 		}
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
@@ -521,6 +526,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 				Entitled:               asRef(false),
 				FlagRecommenderEnabled: asRef(false),
 				IndexAdvisorEnabled:    asRef(false),
+				ActiveQueryEnabled:     asRef(false),
 			}
 		} else if isPostgres(obj) {
 			obj.GeminiConfig = &pb.GeminiInstanceConfig{
