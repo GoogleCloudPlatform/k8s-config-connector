@@ -204,8 +204,8 @@ spec:
                     type: string
                 type: object
               instanceRef:
-                description: Immutable. The name of the instance in which the repository
-                  is hosted, formatted as `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
+                description: The name of the instance in which the repository is hosted,
+                  formatted as `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
                 oneOf:
                 - not:
                     required:
