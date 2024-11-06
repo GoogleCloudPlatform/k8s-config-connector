@@ -34,24 +34,8 @@ type LoggingLinkSpec struct {
 	//  The maximum length of the description is 8000 characters.
 	Description *string `json:"description,omitempty"`
 
-	// The reference to the Log Bucket is linked to a dataset.
-	/* Only `external` field is supported to configure the reference for now. */
-	// +required
 	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
-	// The BigQuery target dataset id.
-	// This field should be generated from the bucket name and project name
-	DatasetRef *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
-
-        Parent `json:",inline"`
-}
-
-type Parent struct {
-    // +required      
-    ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-
-    // +required
-    Location string `json:"location"`
 }
 
 // LoggingLinkStatus defines the config connector machine state of LoggingLink
@@ -72,6 +56,20 @@ type LoggingLinkStatus struct {
 
 // LoggingLinkObservedState is the state of the LoggingLink resource as most recently observed in GCP.
 type LoggingLinkObservedState struct {
+	// We need to add a reference here to lifecycle state and Bigquery Dataset here since they are in the proto
+
+	// +optional
+	// +kubebuilder:validation:Format=date-time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// the lifecycle state might be something more complicated
+	// this is an ENUM, should be safe to use a string
+	LifecycleState *string `json:"lifecycleState,omitempty"`
+
+	// this field is just a string, but its an object(string)
+	// https://github.com/googleapis/googleapis/blob/master/google/logging/v2/logging_config.proto#L1063
+	BigQueryDataset *BigQueryDataset `json:bigQueryDataset"createTime,omitempty"`
+
 }
 
 // +genclient
@@ -94,6 +92,11 @@ type LoggingLink struct {
 	Spec   LoggingLinkSpec   `json:"spec,omitempty"`
 	Status LoggingLinkStatus `json:"status,omitempty"`
 }
+
+type BigQueryDataset struct {
+	string dataset_id `json:"datasetID,omitempty"`
+}
+
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // LoggingLinkList contains a list of LoggingLink
