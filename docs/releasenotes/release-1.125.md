@@ -13,6 +13,11 @@ TODO: list contributors with `git log v1.124.0... | grep Merge | grep from | awk
 * `RedisCluster` is now a v1beta1 resource.
 * `BigQueryAnlayticsHubDataExchange` is now a v1beta1 resource.
 
+## Direct Cloud Reconciler:
+
+* `BigQueryDataset` (v1beta1)
+  * You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on this resource to opt-in the Direct Cloud Reconciler.
+
 ## New Resources:
 
 * Added support for `PlaceholderKind` (v1beta1) resource.
