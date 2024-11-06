@@ -94,6 +94,10 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 			}
 		}
 	}
+	if in.Spec.Settings.LocationPreference == nil && actual != nil {
+		// Use GCP specified locationPreference.
+		out.Settings.LocationPreference = actual.Settings.LocationPreference
+	}
 	if in.Spec.Settings.PricingPlan == nil {
 		// GCP default PricingPlan is PER_USE.
 		out.Settings.PricingPlan = "PER_USE"
