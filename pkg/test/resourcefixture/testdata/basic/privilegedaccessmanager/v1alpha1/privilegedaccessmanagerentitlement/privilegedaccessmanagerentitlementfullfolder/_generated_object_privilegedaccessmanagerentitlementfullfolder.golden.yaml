@@ -21,7 +21,7 @@ spec:
   approvalWorkflow:
     manualApprovals:
       requireApproverJustification: true
-      step:
+      steps:
       - approvalsNeeded: 1
         approverEmailRecipients:
         - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com

@@ -77,7 +77,7 @@ additionalNotificationTargets:
 approvalWorkflow:
   manualApprovals:
     requireApproverJustification: boolean
-    step:
+    steps:
     - approvalsNeeded: integer
       approverEmailRecipients:
       - string
@@ -200,7 +200,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -210,7 +210,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[]</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -220,7 +220,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[].approvalsNeeded</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[].approvalsNeeded</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -230,7 +230,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[].approverEmailRecipients</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[].approverEmailRecipients</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -240,7 +240,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[].approverEmailRecipients[]</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[].approverEmailRecipients[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -250,7 +250,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[].approvers</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[].approvers</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -260,7 +260,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[].approvers[]</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[].approvers[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -270,7 +270,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[].approvers[].principals</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[].approvers[].principals</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -280,7 +280,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>approvalWorkflow.manualApprovals.step[].approvers[].principals[]</code></p>
+            <p><code>approvalWorkflow.manualApprovals.steps[].approvers[].principals[]</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -748,7 +748,7 @@ spec:
   approvalWorkflow:
     manualApprovals:
       requireApproverJustification: true
-      step:
+      steps:
         - approvalsNeeded: 1
           approverEmailRecipients:
             # Replace ${PROJECT_ID?} with your project ID.
