@@ -51,4 +51,5 @@ If you are developing a Beta or more stable resource version, you should meet th
 
 * No `MISSING` comments left in the code
 * No `/*NOTYET*/` comments left in the code.
+* A fuzzer test exists for both Spec and Status of the resource. [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/f313b00c52f09c4a52a2eb5fe2c15fa4b30a05fd/pkg/controller/direct/discoveryengine/fuzzers.go#L26-L47)
 * Each mapper method shall reflect in the `_http.log` as the value from `create.yaml` and `update.yaml` recorded in the `_http.log` POST and PUT/PATCH method.
