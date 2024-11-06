@@ -58,7 +58,7 @@ type SecureSourceManagerRepositorySpec struct {
 	// +optional
 	InitialConfig *RepositoryInitialConfig `json:"initialConfig,omitempty"`
 
-	/* Immutable. The name of the instance in which the repository is hosted, formatted as `projects/{project_number}/locations/{location_id}/instances/{instance_id}` */
+	/* The name of the instance in which the repository is hosted, formatted as `projects/{project_number}/locations/{location_id}/instances/{instance_id}` */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* Immutable. Location of the instance. */
