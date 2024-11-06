@@ -215,8 +215,9 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 
 	tokens := strings.Split(a.id.External, "/")
 	priority, err := strconv.ParseInt(tokens[5], 10, 32)
+	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
 	if err != nil {
-		return fmt.Errorf("get ComputeFirewallPolicyRule priority %s: %w", a.id.External, err)
+		return fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id.External, err)
 	}
 
 	updateReq := &computepb.PatchRuleFirewallPolicyRequest{
@@ -281,10 +282,10 @@ func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *direct
 
 	tokens := strings.Split(a.id.External, "/")
 	priority, err := strconv.ParseInt(tokens[5], 10, 32)
+	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
 	if err != nil {
-		return false, fmt.Errorf("get ComputeFirewallPolicyRule parent %s: %w", a.id.External, err)
+		return false, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id.External, err)
 	}
-
 	delReq := &computepb.RemoveRuleFirewallPolicyRequest{
 		FirewallPolicy: parent.FirewallPolicy,
 		Priority:       direct.PtrTo(int32(priority)),
@@ -317,8 +318,9 @@ func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepb.Firewal
 
 	tokens := strings.Split(a.id.External, "/")
 	priority, err := strconv.ParseInt(tokens[5], 10, 32)
+	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
 	if err != nil {
-		return nil, fmt.Errorf("get ComputeFirewallPolicyRule parent %s: %w", a.id.External, err)
+		return nil, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id.External, err)
 	}
 
 	getReq := &computepb.GetRuleFirewallPolicyRequest{
