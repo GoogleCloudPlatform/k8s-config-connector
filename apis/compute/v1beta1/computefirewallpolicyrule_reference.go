@@ -102,7 +102,7 @@ func NewComputeFirewallPolicyRuleRef(ctx context.Context, reader client.Reader, 
 	id.parent = &ComputeFirewallPolicyRuleParent{FirewallPolicy: firewallPolicy}
 
 	// Get priority. Priority is a required field
-	priority := strconv.Itoa(int(obj.Spec.Priority))
+	priority := obj.Spec.Priority
 
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
@@ -120,7 +120,7 @@ func NewComputeFirewallPolicyRuleRef(ctx context.Context, reader client.Reader, 
 		return nil, fmt.Errorf("spec.firewallPolicyRef changed, expect %s, got %s", actualParent.FirewallPolicy, firewallPolicy)
 	}
 	if actualPriority != priority {
-		return nil, fmt.Errorf("cannot reset `spec.priority` to %s, since it has already assigned to %s",
+		return nil, fmt.Errorf("cannot reset `spec.priority` to %d, since it has already assigned to %d",
 			priority, actualPriority)
 	}
 	id.External = externalRef
@@ -150,18 +150,23 @@ func (p *ComputeFirewallPolicyRuleParent) String() string {
 	return "locations/global/firewallPolicies/" + p.FirewallPolicy
 }
 
-func asComputeFirewallPolicyRuleExternal(parent *ComputeFirewallPolicyRuleParent, priority string) (external string) {
-	return parent.String() + "/rules/" + priority
+func asComputeFirewallPolicyRuleExternal(parent *ComputeFirewallPolicyRuleParent, priority int64) (external string) {
+	p := strconv.Itoa(int(priority))
+	return parent.String() + "/rules/" + p
 }
 
-func parseComputeFirewallPolicyRuleExternal(external string) (parent *ComputeFirewallPolicyRuleParent, priority string, err error) {
+func parseComputeFirewallPolicyRuleExternal(external string) (parent *ComputeFirewallPolicyRuleParent, priority int64, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "locations" || tokens[2] != "firewallPolicies" || tokens[4] != "rules" {
-		return nil, "", fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use firewallPolicies/<firewallPolicy>/rules/<priority>)", external)
+		return nil, -1, fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use firewallPolicies/<firewallPolicy>/rules/<priority>)", external)
 	}
 	parent = &ComputeFirewallPolicyRuleParent{
 		FirewallPolicy: tokens[3],
 	}
-	priority = tokens[5]
+	p, err := strconv.ParseInt(tokens[5], 10, 32)
+	if err != nil {
+		return nil, -1, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule external=%q to an integer: %w", tokens[5], external, err)
+	}
+	priority = p
 	return parent, priority, nil
 }
