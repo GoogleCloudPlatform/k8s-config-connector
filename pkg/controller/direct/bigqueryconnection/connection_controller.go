@@ -111,7 +111,7 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 			if err != nil {
 				return err
 			}
-			sql.DatabaseRef.External = database.String()
+			sql.DatabaseRef.External = database.Name()
 		}
 		if sql.Credential != nil {
 			if err := refsv1beta1secret.NormalizedSecret(ctx, sql.Credential.SecretRef, a.reader, a.namespace); err != nil {
