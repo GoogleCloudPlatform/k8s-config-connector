@@ -119,3 +119,36 @@ func ResolveSQLInstanceRef(ctx context.Context, reader client.Reader, obj client
 		SQLInstanceName: resourceID,
 	}, nil
 }
+
+func ResolveSQLInstanceID(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
+	instanceRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "instanceRef", "external")
+	if instanceRefExternal != "" {
+		instanceRef := &SQLInstanceRef{
+			External: instanceRefExternal,
+		}
+		instance, err := ResolveSQLInstanceRef(ctx, reader, obj, instanceRef)
+		if err != nil {
+			return "", fmt.Errorf("cannot parse instanceRef.external %q in %v %v/%v: %w", instanceRefExternal, obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
+		}
+		return instance.SQLInstanceName, nil
+	}
+
+	instanceRefName, _, _ := unstructured.NestedString(obj.Object, "spec", "instanceRef", "name")
+	if instanceRefName != "" {
+		namespace, _, _ := unstructured.NestedString(obj.Object, "spec", "instanceRef", "namespace")
+		instanceRef := &SQLInstanceRef{
+			Name:      instanceRefName,
+			Namespace: namespace,
+		}
+		if instanceRef.Namespace == "" {
+			instanceRef.Namespace = obj.GetNamespace()
+		}
+		instance, err := ResolveSQLInstanceRef(ctx, reader, obj, instanceRef)
+		if err != nil {
+			return "", fmt.Errorf("cannot parse instanceRef.name %q in %v %v/%v: %w", instanceRefName, obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
+		}
+		return instance.SQLInstanceName, nil
+	}
+
+	return "", fmt.Errorf("cannot find instance id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
+}

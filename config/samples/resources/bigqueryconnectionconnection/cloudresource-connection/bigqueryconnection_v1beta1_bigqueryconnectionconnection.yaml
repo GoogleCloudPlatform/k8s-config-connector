@@ -19,7 +19,6 @@ metadata:
 spec:
   location: us-central1
   projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
     external: ${PROJECT_ID?}
-  description: "BigQueryConnection CloudResource Connection"
-  cloudResource:
-    serviceAccountId: ""
+  cloudResource: {}

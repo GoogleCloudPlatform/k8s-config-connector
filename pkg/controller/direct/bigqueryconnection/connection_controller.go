@@ -21,7 +21,7 @@ import (
 
 	gcp "cloud.google.com/go/bigquery/connection/apiv1"
 	bigqueryconnectionpb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -96,7 +96,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 func (a *Adapter) normalizeReference(ctx context.Context) error {
 	obj := a.desired
-	// Resolve SQLInstanceRef
+	// Resolve SQLInstanceRef and SQLDatabaseRef
 	if obj.Spec.CloudSQLSpec != nil {
 		sql := obj.Spec.CloudSQLSpec
 		if sql.InstanceRef != nil {
@@ -105,6 +105,13 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 				return err
 			}
 			sql.InstanceRef.External = instance.ConnectionName()
+		}
+		if sql.DatabaseRef != nil {
+			database, err := refs.ResolveSQLDatabaseRef(ctx, a.reader, obj, sql.DatabaseRef)
+			if err != nil {
+				return err
+			}
+			sql.DatabaseRef.External = database.Name()
 		}
 		if sql.Credential != nil {
 			if err := refsv1beta1secret.NormalizedSecret(ctx, sql.Credential.SecretRef, a.reader, a.namespace); err != nil {

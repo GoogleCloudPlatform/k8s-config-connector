@@ -39,6 +39,7 @@ var preferredSampleForResource = map[string]string{
 	"bigtableappprofile":                 "multicluster-bigtable-app-profile",
 	"bigtableinstance":                   "replicated-instance",
 	"bigquerydatatransferconfig":         "bigquerydatatransferconfig-scheduledquery",
+	"bigqueryconnectionconnection":       "cloudresource-connection",
 	"billingbudgetsbudget":               "calendar-budget",
 	"binaryauthorizationpolicy":          "cluster-policy",
 	"certificatemanagercertificate":      "self-managed-certificate",
