@@ -91,11 +91,10 @@ type BigQueryDatasetSpec struct {
 	//  references.
 	IsCaseInsensitive *bool `json:"isCaseInsensitive,omitempty"`
 
-	// The geographic location where the dataset should reside. See
+	// Optional. The geographic location where the dataset should reside. See
 	//  https://cloud.google.com/bigquery/docs/locations for supported
 	//  locations.
-	// +required
-	Location *string `json:"location"`
+	Location *string `json:"location,omitempty"`
 
 	// Optional. Defines the time travel window in hours. The value can be from 48
 	//  to 168 hours (2 to 7 days). The default value is 168 hours if this is not
@@ -136,11 +135,17 @@ type BigQueryDatasetStatus struct {
 	// Output only. A URL that can be used to access the resource again. You can
 	//  use this URL in Get or Update requests to the resource.
 	SelfLink *string `json:"selfLink,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *BigQueryDatasetObservedState `json:"observedState,omitempty"`
 }
 
-// BigQueryDatasetSpec defines the desired state of BigQueryDataset
+// BigQueryDatasetObservedState defines the desired state of BigQueryDataset
 // +kcc:proto=google.cloud.bigquery.v2.dataset
 type BigQueryDatasetObservedState struct {
+
+	// Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.
+	Location *string `json:"location,omitempty"`
 }
 
 // +genclient

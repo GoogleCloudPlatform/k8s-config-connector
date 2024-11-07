@@ -98,8 +98,7 @@ func NewBigQueryDatasetRef(ctx context.Context, reader client.Reader, obj *BigQu
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
-	id.parent = &BigQueryDatasetParent{ProjectID: projectID, Location: valueOf(location)}
+	id.parent = &BigQueryDatasetParent{ProjectID: projectID}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -125,15 +124,12 @@ func NewBigQueryDatasetRef(ctx context.Context, reader client.Reader, obj *BigQu
 	if actualParent.ProjectID != projectID {
 		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 	}
-	if actualParent.Location != valueOf(location) {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, valueOf(location))
-	}
 	if actualResourceID != resourceID {
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 			resourceID, actualResourceID)
 	}
 	id.External = externalRef
-	id.parent = &BigQueryDatasetParent{ProjectID: projectID, Location: valueOf(location)}
+	id.parent = &BigQueryDatasetParent{ProjectID: projectID}
 	return id, nil
 }
 
@@ -153,28 +149,27 @@ func (r *BigQueryDatasetRef) Parent() (*BigQueryDatasetParent, error) {
 
 type BigQueryDatasetParent struct {
 	ProjectID string
-	Location  string
 }
 
 func (p *BigQueryDatasetParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID
 }
 
 func asBigQueryDatasetExternal(parent *BigQueryDatasetParent, resourceID string) (external string) {
+	// Link Reference https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get
 	return parent.String() + "/datasets/" + resourceID
 }
 
 func ParseBigQueryDatasetExternal(external string) (parent *BigQueryDatasetParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "datasets" {
-		return nil, "", fmt.Errorf("format of BigQueryDataset external=%q was not known (use projects/<projectId>/locations/<location>/datasets/<datasetID>)", external)
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "datasets" {
+		return nil, "", fmt.Errorf("format of BigQueryDataset external=%q was not known (use projects/<projectId>/datasets/<datasetID>)", external)
 	}
 	parent = &BigQueryDatasetParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
 

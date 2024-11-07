@@ -43,7 +43,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "us-central1"
+  "location": "US"
 }
 
 200 OK
@@ -90,7 +90,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }
@@ -145,7 +145,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
@@ -184,7 +184,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "us-central1",
+  "location": "US",
   "maxTimeTravelHours": "168"
 }
 
@@ -232,7 +232,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
@@ -288,7 +288,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"

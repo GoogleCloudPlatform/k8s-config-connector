@@ -20,4 +20,3 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   friendlyName: bigquerydataset-sample
-  location: us-central1
