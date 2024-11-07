@@ -39,7 +39,7 @@ Each Config Connector resource `spec` field shall be validated by at least one 
 
 Required field should use tag `+required`. 
 
-Optional field does not need the tag.
+Optional field does not need the tag, make sure it has `omitempty` json tag.
 
 
 ```
@@ -57,8 +57,18 @@ type CloudBuildWorkerPoolSpec struct {
 
 Validates the immutability in the controller runtime, by comparing the difference between `spec` and `status`, together with the corresponding proto field "IMMUTABLE" **field_behavior**. (default behavior if using the direct auto-generated code)
 
-To see if you can use this approach, check if the resource proto supports **field_behavior** (See [AIP 203](https://google.aip.dev/203)). 
-If so, you just need to make sure
+All google services are located in [googleapis Github repo](https://github.com/googleapis/googleapis/tree/master/google),
+refer to your resource's API documentation to identify the service name, for example: [compute](https://cloud.google.com/compute/docs/reference/rest/v1).
+Once you identify the service, find the proper path to the proto files, for example:
+[`google/cloud/compute/v1/compute.proto`](https://github.com/googleapis/googleapis/blob/master/google/cloud/compute/v1/compute.proto).
+To see if you can use this approach, check if the resource proto supports **field_behavior** (See [AIP 203](https://google.aip.dev/203)).
+
+Search for the resource name, like `message TargetTcpProxy`, this resource does not support immutable field_behavior.
+SecureSourceManagerInstance resource, for example `message Instance` in [secure_source_manager.proto](https://github.com/googleapis/googleapis/blob/master/google/cloud/securesourcemanager/v1/secure_source_manager.proto),
+field [`kms_key`](https://github.com/googleapis/googleapis/blob/master/google/cloud/securesourcemanager/v1/secure_source_manager.proto#L398)(KCC type KmsKeyRef) 
+has `(google.api.field_behavior) = IMMUTABLE`.
+
+If the resource proto supports field_behavior, you need to make sure
 1. Those immutable fields are added in both `spec` and `status.observedState`.
 1. Your controller calls the `CompareProtoMessage` function in `AdapterForObject.Update`. 
 
