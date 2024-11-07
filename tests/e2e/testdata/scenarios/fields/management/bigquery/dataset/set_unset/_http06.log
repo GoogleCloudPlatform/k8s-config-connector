@@ -49,7 +49,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -60,22 +60,18 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "specialGroup": "projectOwners"
     }
   ],
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}"
-  },
   "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
-  "defaultPartitionExpirationMs": 3600000,
-  "defaultTableExpirationMs": 3600000,
+  "defaultPartitionExpirationMs": "3600000",
+  "defaultTableExpirationMs": "3600000",
   "description": "Fully Configured BigQuery Dataset unset",
   "friendlyName": "bigquerydataset-fullyconfigured",
   "isCaseInsensitive": true,
   "labels": {
     "managed-by-cnrm": "true"
   },
-  "location": "US",
   "maxTimeTravelHours": "72"
 }
 
