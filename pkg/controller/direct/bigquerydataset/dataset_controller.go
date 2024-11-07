@@ -185,7 +185,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	resource := clone.Clone(a.actual).(*api.Dataset)
 
 	// Check for immutable fields
-	if !reflect.DeepEqual(desired.Location, resource.Location) {
+	if desired.Location != "" && !reflect.DeepEqual(desired.Location, resource.Location) {
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
 	}
 
@@ -286,7 +286,6 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
-	obj.Spec.Location = &parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

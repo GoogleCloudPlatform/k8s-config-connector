@@ -88,9 +88,10 @@ func BigQueryDatasetStatus_FromAPI(mapCtx *direct.MapContext, in *api.Dataset) *
 	out.CreationTime = direct.LazyPtr(in.CreationTime)
 	out.LastModifiedTime = direct.LazyPtr(in.LastModifiedTime)
 	out.SelfLink = direct.LazyPtr(in.SelfLink)
+	out.ObservedState = &krm.BigQueryDatasetObservedState{Location: direct.LazyPtr(in.Location)}
 	return out
 }
-func BigQueryDatasetStatusObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.BigQueryDatasetStatus) *api.Dataset {
+func BigQueryDatasetStatus_ToAPI(mapCtx *direct.MapContext, in *krm.BigQueryDatasetStatus) *api.Dataset {
 	if in == nil {
 		return nil
 	}
@@ -99,6 +100,7 @@ func BigQueryDatasetStatusObservedState_ToAPI(mapCtx *direct.MapContext, in *krm
 	out.CreationTime = direct.ValueOf(in.CreationTime)
 	out.LastModifiedTime = direct.ValueOf(in.LastModifiedTime)
 	out.SelfLink = direct.ValueOf(in.SelfLink)
+	out.Location = direct.ValueOf(in.ObservedState.Location)
 	return out
 }
 func Access_ToAPI(mapCtx *direct.MapContext, in *krm.Access) *api.DatasetAccess {
