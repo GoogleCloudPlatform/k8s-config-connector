@@ -117,9 +117,34 @@ spec:
                         - name
                         type: object
                     type: object
-                  database:
-                    description: Database name.
-                    type: string
+                  databaseRef:
+                    description: Reference to the SQL Database.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQL Database name, when not managed by Config
+                          Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLDatabase` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLDatabase` resource.
+                        type: string
+                    type: object
                   instanceRef:
                     description: Reference to the Cloud SQL instance ID.
                     oneOf:
@@ -153,7 +178,7 @@ spec:
                     type: string
                 required:
                 - credential
-                - database
+                - databaseRef
                 - instanceRef
                 - type
                 type: object
@@ -605,8 +630,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQL Database selfLink, when not managed by
-                          Config Connector.
+                        description: The SQL Database name, when not managed by Config
+                          Connector.
                         type: string
                       name:
                         description: The `name` field of a `SQLDatabase` resource.
