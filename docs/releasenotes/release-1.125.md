@@ -10,8 +10,9 @@ TODO: list contributors with `git log v1.124.0... | grep Merge | grep from | awk
 
 ## Resources promoted from alpha to beta:
 
-* `RedisCluster` is now a v1beta1 resource.
 * `BigQueryAnlayticsHubDataExchange` is now a v1beta1 resource.
+* `PrivilegedAccessManagerEntitlement` is now a v1beta1 resource.
+* `RedisCluster` is now a v1beta1 resource.
 
 ## New Resources:
 
@@ -19,8 +20,9 @@ TODO: list contributors with `git log v1.124.0... | grep Merge | grep from | awk
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* `AlloyDBInstance`
+  * Added `spec.networkConfig.enableOutboundPublicIp` field.
+  * Added `status.outboundPublicIpAddresses` field.
 
 ## New features:
 
