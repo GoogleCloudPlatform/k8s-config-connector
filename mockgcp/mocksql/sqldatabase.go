@@ -45,7 +45,9 @@ func (s *sqlDatabaseServer) Insert(ctx context.Context, req *pb.SqlDatabasesInse
 	obj.Name = name.DatabaseName
 	obj.Project = name.Project.ID
 	obj.Kind = "sql#database"
-	obj.Collation = "utf8_general_ci"
+	if obj.Collation == "" {
+		obj.Collation = "utf8_general_ci"
+	}
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	obj.SelfLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/databases/%s",
@@ -58,6 +60,7 @@ func (s *sqlDatabaseServer) Insert(ctx context.Context, req *pb.SqlDatabasesInse
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_CREATE_DATABASE,
+		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
@@ -75,6 +78,9 @@ func (s *sqlDatabaseServer) Get(ctx context.Context, req *pb.SqlDatabasesGetRequ
 
 	obj := &pb.Database{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not Found")
+		}
 		return nil, err
 	}
 

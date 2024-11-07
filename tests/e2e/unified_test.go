@@ -519,7 +519,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("oauth2ClientId", "888888888888888888888")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
@@ -558,8 +557,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to Compute
-					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("user", "user@example.com")
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("labelFingerprint", "abcdef0123A=")
 					addReplacement("fingerprint", "abcdef0123A=")
@@ -600,7 +597,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to AlloyDB
 					addReplacement("uid", "111111111111111111111")
 					addReplacement("response.uid", "111111111111111111111")
-					addReplacement("endTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("ipAddress", "10.1.2.3")
@@ -668,17 +664,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".mutationRecord.mutatedBy", "user@example.com")
 					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
-
-					// Specific to Sql
-					addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
-					addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
-					addReplacement("serverCaCert.commonName", "common-name")
-					addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("serverCaCert.sha1Fingerprint", "12345678")
-					addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
-					addReplacement("settings.backupConfiguration.startTime", "12:00")
-					addReplacement("settings.settingsVersion", "123")
 
 					// Specific to CertificateManager
 					addReplacement("response.dnsResourceRecord.data", uniqueID)
