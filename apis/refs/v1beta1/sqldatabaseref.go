@@ -26,7 +26,7 @@ import (
 )
 
 type SQLDatabaseRef struct {
-	/* The SQL Database selfLink, when not managed by Config Connector. */
+	/* The SQL Database name, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `SQLDatabase` resource. */
 	Name string `json:"name,omitempty"`
