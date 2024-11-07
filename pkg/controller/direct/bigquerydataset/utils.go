@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -54,4 +55,50 @@ func convertAPIToProto[V protoreflect.ProtoMessage](u any, pV *V) error {
 	}
 	*pV = v
 	return nil
+}
+func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.DatasetMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &bigquery.DatasetMetadata{}
+	acccessList := []*bigquery.AccessEntry{}
+	for _, access := range in.Access {
+		acccessList = append(acccessList, access)
+	}
+	out.Access = acccessList
+	if in.DefaultEncryptionConfig != nil {
+		out.DefaultEncryptionConfig = &bigquery.EncryptionConfig{
+			KMSKeyName: in.DefaultEncryptionConfig.KMSKeyName,
+		}
+	}
+	out.Location = in.Location
+	// if the value to explicitly set to empty in the update request, we set the value.
+	// Otherwise, we drop the value.
+	if in.DefaultCollation != "" {
+		out.DefaultCollation = in.DefaultCollation
+	}
+	if in.DefaultPartitionExpiration != 0 {
+		out.DefaultPartitionExpiration = in.DefaultPartitionExpiration
+	}
+	if in.DefaultTableExpiration != 0 {
+		out.DefaultTableExpiration = in.DefaultTableExpiration
+	}
+	if in.Description != "" {
+		out.Description = in.Description
+	}
+	if in.MaxTimeTravel != 0 {
+		out.MaxTimeTravel = in.MaxTimeTravel
+	}
+	out.IsCaseInsensitive = in.IsCaseInsensitive
+	if in.Name != "" {
+		out.Name = in.Name
+	}
+	if in.StorageBillingModel != "" {
+		out.StorageBillingModel = in.StorageBillingModel
+	}
+	out.CreationTime = in.CreationTime
+	out.LastModifiedTime = in.LastModifiedTime
+	out.ETag = in.ETag
+	out.FullID = in.FullID
+	return out
 }
