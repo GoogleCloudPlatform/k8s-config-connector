@@ -209,6 +209,43 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 	return updated, err
 }
 
+func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetRequest) (*pb.Dataset, error) {
+	name, err := s.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.Dataset{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+
+	updated := req.GetDataset()
+	updated.DatasetReference = existing.DatasetReference
+
+	updated.CreationTime = existing.CreationTime
+	updated.LastModifiedTime = PtrTo(now.UnixMilli())
+	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
+	updated.Kind = PtrTo("bigquery#dataset")
+	updated.Location = existing.Location
+	updated.Type = existing.Type
+	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+
+	sortAccess(updated)
+
+	updated.Etag = PtrTo(computeEtag(updated))
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	return updated, err
+}
+
 func (s *datasetsServer) DeleteDataset(ctx context.Context, req *pb.DeleteDatasetRequest) (*empty.Empty, error) {
 	name, err := s.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
 	if err != nil {

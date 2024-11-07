@@ -554,9 +554,10 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+If-Match: abcdef0123A=
+User-Agent: kcc/controller-manager
 
 {
   "access": [
@@ -577,31 +578,21 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "userByEmail": "user@google.com"
     }
   ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
+  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "defaultPartitionExpirationMs": "3800000",
   "defaultTableExpirationMs": "3800000",
   "description": "Fully Configured BigQuery Dataset updated",
-  "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
+  "isCaseInsensitive": false,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastModifiedTime": "123456789",
-  "location": "US",
   "maxTimeTravelHours": "96",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "storageBillingModel": "LOGICAL",
-  "type": "DEFAULT"
+  "storageBillingModel": "LOGICAL"
 }
 
 200 OK
@@ -639,6 +630,7 @@ X-Xss-Protection: 0
     "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}"
   },
+  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
@@ -648,6 +640,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -702,6 +695,7 @@ X-Xss-Protection: 0
     "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}"
   },
+  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
@@ -711,6 +705,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -764,6 +759,7 @@ X-Xss-Protection: 0
     "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}"
   },
+  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
@@ -773,6 +769,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -788,8 +785,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=true&prettyPrint=false
+User-Agent: kcc/controller-manager
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
