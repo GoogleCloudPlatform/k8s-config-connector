@@ -15,6 +15,9 @@
 package securesourcemanager
 
 import (
+	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -57,4 +60,21 @@ func OperationMetadata_EndTime_FromProto(mapCtx *direct.MapContext, in *timestam
 func OperationMetadata_EndTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.Errorf("OperationMetadata_EndTime_ToProto not implemented")
 	return nil
+}
+
+func SecureSourceManagerRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.SecureSourceManagerRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecureSourceManagerRepositoryObservedState{}
+	out.URIs = Repository_URIs_FromProto(mapCtx, in.GetUris())
+	return out
+}
+func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerRepositoryObservedState) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	out.Uris = Repository_URIs_ToProto(mapCtx, in.URIs)
+	return out
 }
