@@ -258,7 +258,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The SQL Database selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The SQL Database name, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
