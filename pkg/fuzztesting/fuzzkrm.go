@@ -141,6 +141,9 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 
+	// This clear will remove any non roundtrippable fields
+	fuzz.Visit("", p2.ProtoReflect(), nil, clearFields)
+
 	if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
 		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Logf("p2 = %v", prototext.Format(p2))
