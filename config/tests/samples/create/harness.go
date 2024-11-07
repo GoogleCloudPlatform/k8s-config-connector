@@ -653,12 +653,17 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}()
 
 	// Wait for the webhook server to start (mgr.Start runs asynchronously)
+	webhookWaitStart := time.Now()
+	webhookTimeout := 10 * time.Second
 	for {
 		webhookStarted := mgr.GetWebhookServer().StartedChecker()
 		req := &http.Request{}
 		err := webhookStarted(req)
 		if err == nil {
 			break
+		}
+		if time.Since(webhookWaitStart) > webhookTimeout {
+			t.Fatalf("webhook did not start within %v timeout", webhookTimeout)
 		}
 		t.Logf("waiting for webhook to start (%v)", err)
 		time.Sleep(100 * time.Millisecond)
@@ -811,6 +816,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringMonitoredProject"}:
 			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringNotificationChannel"}:
 			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringService"}:
+			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringServiceLevelObjective"}:
 			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringUptimeCheckConfig"}:
 
 			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityServiceConnectionPolicy"}:

@@ -49,6 +49,8 @@ import (
 	fakebigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1/fake"
 	bigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1alpha1"
 	fakebigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1alpha1/fake"
+	bigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1beta1"
+	fakebigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1beta1/fake"
 	bigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1"
 	fakebigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1/fake"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
@@ -263,8 +265,8 @@ import (
 	fakevpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1/fake"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
 	fakeworkflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1/fake"
-	workstationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1alpha1"
-	fakeworkstationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1alpha1/fake"
+	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
+	fakeworkstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -385,6 +387,11 @@ func (c *Clientset) BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface {
 // BigqueryanalyticshubV1alpha1 retrieves the BigqueryanalyticshubV1alpha1Client
 func (c *Clientset) BigqueryanalyticshubV1alpha1() bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Interface {
 	return &fakebigqueryanalyticshubv1alpha1.FakeBigqueryanalyticshubV1alpha1{Fake: &c.Fake}
+}
+
+// BigqueryanalyticshubV1beta1 retrieves the BigqueryanalyticshubV1beta1Client
+func (c *Clientset) BigqueryanalyticshubV1beta1() bigqueryanalyticshubv1beta1.BigqueryanalyticshubV1beta1Interface {
+	return &fakebigqueryanalyticshubv1beta1.FakeBigqueryanalyticshubV1beta1{Fake: &c.Fake}
 }
 
 // BigqueryconnectionV1alpha1 retrieves the BigqueryconnectionV1alpha1Client
@@ -922,7 +929,7 @@ func (c *Clientset) WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Inter
 	return &fakeworkflowsv1alpha1.FakeWorkflowsV1alpha1{Fake: &c.Fake}
 }
 
-// WorkstationsV1alpha1 retrieves the WorkstationsV1alpha1Client
-func (c *Clientset) WorkstationsV1alpha1() workstationsv1alpha1.WorkstationsV1alpha1Interface {
-	return &fakeworkstationsv1alpha1.FakeWorkstationsV1alpha1{Fake: &c.Fake}
+// WorkstationsV1beta1 retrieves the WorkstationsV1beta1Client
+func (c *Clientset) WorkstationsV1beta1() workstationsv1beta1.WorkstationsV1beta1Interface {
+	return &fakeworkstationsv1beta1.FakeWorkstationsV1beta1{Fake: &c.Fake}
 }

@@ -21,6 +21,4 @@
 
 package v1alpha1
 
-type BigQueryAnalyticsHubDataExchangeExpansion interface{}
-
 type BigQueryAnalyticsHubListingExpansion interface{}

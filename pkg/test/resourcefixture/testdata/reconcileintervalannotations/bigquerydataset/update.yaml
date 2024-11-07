@@ -20,3 +20,4 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds : "10"
 spec:
   friendlyName: bigquerydataset-sample-updated
+  location: us-central1

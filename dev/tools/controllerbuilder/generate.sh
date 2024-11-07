@@ -211,7 +211,7 @@ go run . generate-types \
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.workstations.v1 \
-    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --api-version workstations.cnrm.cloud.google.com/v1beta1 \
     --output-api ${APIS_DIR} \
     --kind WorkstationCluster \
     --proto-resource WorkstationCluster
@@ -219,7 +219,7 @@ go run . generate-types \
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.workstations.v1 \
-    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --api-version workstations.cnrm.cloud.google.com/v1beta1 \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}

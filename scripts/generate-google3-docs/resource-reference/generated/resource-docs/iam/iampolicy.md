@@ -931,7 +931,7 @@ spec:
         # Replace ${GSA_EMAIL?} with the Config Connector service account's
         # email address. This ensures that the Config Connector service account
         # can continue to manage the referenced project.
-        - serviceAccount:${GSA_EMAIL?}
+        - "serviceAccount:${GSA_EMAIL?}"
       role: roles/owner
     - members:
         - serviceAccount:iampolicy-dep-external-project@iampolicy-dep-external-project.iam.gserviceaccount.com
@@ -1044,7 +1044,7 @@ spec:
         # Replace ${GSA_EMAIL?} with the Config Connector service account's
         # email address. This ensures that the Config Connector service account
         # can continue to manage the referenced project.
-        - serviceAccount:${GSA_EMAIL?}
+        - "serviceAccount:${GSA_EMAIL?}"
       role: roles/owner
     - members:
         - serviceAccount:iampolicy-dep-project@iampolicy-dep-project.iam.gserviceaccount.com

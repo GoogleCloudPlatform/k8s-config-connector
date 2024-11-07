@@ -43,6 +43,10 @@ toc:
   section:
   - title: "ArtifactRegistryRepository"
     path: /config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md
+- title: "BigQueryAnalyticsHub"
+  section:
+  - title: "BigQueryAnalyticsHubDataExchange"
+    path: /config-connector/docs/reference/resource-docs/bigqueranalyticshub/bigqueranalyticshubydataexchange.md
 - title: "BigQuery"
   section:
   - title: "BigQueryDataset"

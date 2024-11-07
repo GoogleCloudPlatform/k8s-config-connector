@@ -31,10 +31,6 @@ type FakeBigqueryanalyticshubV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeBigqueryanalyticshubV1alpha1) BigQueryAnalyticsHubDataExchanges(namespace string) v1alpha1.BigQueryAnalyticsHubDataExchangeInterface {
-	return &FakeBigQueryAnalyticsHubDataExchanges{c, namespace}
-}
-
 func (c *FakeBigqueryanalyticshubV1alpha1) BigQueryAnalyticsHubListings(namespace string) v1alpha1.BigQueryAnalyticsHubListingInterface {
 	return &FakeBigQueryAnalyticsHubListings{c, namespace}
 }

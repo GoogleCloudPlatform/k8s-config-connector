@@ -47,20 +47,20 @@ interactions:
                 - application/json; charset=UTF-8
         status: 404 Not Found
         code: 404
-        duration: 615.256925ms
+        duration: 249.604457ms
     - id: 1
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 142
+        content_length: 151
         transfer_encoding: []
         trailer: {}
         host: bigquery.googleapis.com
         remote_addr: ""
         request_uri: ""
         body: |
-            {"datasetReference":{"datasetId":"bigquerydatasetsamplel7b81f5rgmgk"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"location":"US"}
+            {"datasetReference":{"datasetId":"bigquerydatasetsamplel7b81f5rgmgk"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"location":"us-central1"}
         form: {}
         headers:
             Content-Type:
@@ -78,7 +78,7 @@ interactions:
         body: |
             {
               "kind": "bigquery#dataset",
-              "etag": "pYo/zUITYaROvtieJn/Efg==",
+              "etag": "uJ2Ltq8bm7J0FUJdKMsN4Q==",
               "id": "example-project:bigquerydatasetsamplel7b81f5rgmgk",
               "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk",
               "datasetReference": {
@@ -100,16 +100,16 @@ interactions:
                 },
                 {
                   "role": "OWNER",
-                  "userByEmail": "andylu@pisces.joonix.net"
+                  "userByEmail": "xiaoweim@google.com"
                 },
                 {
                   "role": "READER",
                   "specialGroup": "projectReaders"
                 }
               ],
-              "creationTime": "1720515934342",
-              "lastModifiedTime": "1720515934342",
-              "location": "US",
+              "creationTime": "1729233685041",
+              "lastModifiedTime": "1729233685041",
+              "location": "us-central1",
               "type": "DEFAULT"
             }
         headers:
@@ -117,7 +117,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 705.821848ms
+        duration: 455.813917ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -147,7 +147,7 @@ interactions:
         body: |
             {
               "kind": "bigquery#dataset",
-              "etag": "pYo/zUITYaROvtieJn/Efg==",
+              "etag": "uJ2Ltq8bm7J0FUJdKMsN4Q==",
               "id": "example-project:bigquerydatasetsamplel7b81f5rgmgk",
               "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk",
               "datasetReference": {
@@ -169,24 +169,25 @@ interactions:
                 },
                 {
                   "role": "OWNER",
-                  "userByEmail": "andylu@pisces.joonix.net"
+                  "userByEmail": "xiaoweim@google.com"
                 },
                 {
                   "role": "READER",
                   "specialGroup": "projectReaders"
                 }
               ],
-              "creationTime": "1720515934342",
-              "lastModifiedTime": "1720515934342",
-              "location": "US",
-              "type": "DEFAULT"
+              "creationTime": "1729233685041",
+              "lastModifiedTime": "1729233685041",
+              "location": "us-central1",
+              "type": "DEFAULT",
+              "maxTimeTravelHours": "168"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 444.121271ms
+        duration: 155.125015ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -202,7 +203,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: GET
       response:
@@ -219,7 +220,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 404 Not Found
         code: 404
-        duration: 212.578131ms
+        duration: 124.971748ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -249,7 +250,7 @@ interactions:
         body: |
             {
               "kind": "bigquery#dataset",
-              "etag": "pYo/zUITYaROvtieJn/Efg==",
+              "etag": "uJ2Ltq8bm7J0FUJdKMsN4Q==",
               "id": "example-project:bigquerydatasetsamplel7b81f5rgmgk",
               "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk",
               "datasetReference": {
@@ -271,30 +272,31 @@ interactions:
                 },
                 {
                   "role": "OWNER",
-                  "userByEmail": "andylu@pisces.joonix.net"
+                  "userByEmail": "xiaoweim@google.com"
                 },
                 {
                   "role": "READER",
                   "specialGroup": "projectReaders"
                 }
               ],
-              "creationTime": "1720515934342",
-              "lastModifiedTime": "1720515934342",
-              "location": "US",
-              "type": "DEFAULT"
+              "creationTime": "1729233685041",
+              "lastModifiedTime": "1729233685041",
+              "location": "us-central1",
+              "type": "DEFAULT",
+              "maxTimeTravelHours": "168"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 419.825033ms
+        duration: 224.821628ms
     - id: 5
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 507
+        content_length: 509
         transfer_encoding: []
         trailer: {}
         host: bigquery.googleapis.com
@@ -307,7 +309,7 @@ interactions:
             Content-Type:
                 - application/json
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables?alt=json&prettyPrint=false
         method: POST
       response:
@@ -318,13 +320,13 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"bigquery#table","etag":"ZYaCcTJ8PF5Tok2MBL096Q==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1720515936786","lastModifiedTime":"1720515937237","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"US","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        body: '{"kind":"bigquery#table","etag":"KksuznIrRtc4MrfLoiTYlQ==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1729233686287","lastModifiedTime":"1729233686562","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"us-central1","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 689.112379ms
+        duration: 437.450628ms
     - id: 6
       request:
         proto: HTTP/1.1
@@ -340,7 +342,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: GET
       response:
@@ -351,13 +353,13 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"bigquery#table","etag":"ZYaCcTJ8PF5Tok2MBL096Q==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1720515936786","lastModifiedTime":"1720515937237","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"US","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        body: '{"kind":"bigquery#table","etag":"KksuznIrRtc4MrfLoiTYlQ==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1729233686287","lastModifiedTime":"1729233686562","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"us-central1","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 326.434921ms
+        duration: 221.730449ms
     - id: 7
       request:
         proto: HTTP/1.1
@@ -373,7 +375,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: GET
       response:
@@ -384,13 +386,13 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"bigquery#table","etag":"ZYaCcTJ8PF5Tok2MBL096Q==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1720515936786","lastModifiedTime":"1720515937237","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"US","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        body: '{"kind":"bigquery#table","etag":"KksuznIrRtc4MrfLoiTYlQ==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1729233686287","lastModifiedTime":"1729233686562","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"us-central1","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 441.704191ms
+        duration: 227.818618ms
     - id: 8
       request:
         proto: HTTP/1.1
@@ -406,7 +408,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: GET
       response:
@@ -417,19 +419,19 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"bigquery#table","etag":"ZYaCcTJ8PF5Tok2MBL096Q==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1720515936786","lastModifiedTime":"1720515937237","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"US","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        body: '{"kind":"bigquery#table","etag":"KksuznIrRtc4MrfLoiTYlQ==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1729233686287","lastModifiedTime":"1729233686562","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"us-central1","requirePartitionFilter":true,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 448.04455ms
+        duration: 147.233476ms
     - id: 9
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 1575
+        content_length: 1577
         transfer_encoding: []
         trailer: {}
         host: bigquery.googleapis.com
@@ -442,7 +444,7 @@ interactions:
             Content-Type:
                 - application/json
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: PUT
       response:
@@ -453,13 +455,13 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"bigquery#table","etag":"BMni8WOOCXFgFa5BC/jfkg==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample-updated","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1720515936786","lastModifiedTime":"1720515940935","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"US","requirePartitionFilter":false,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        body: '{"kind":"bigquery#table","etag":"rCwyhaRq2nEw0eAFProieQ==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample-updated","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1729233686287","lastModifiedTime":"1729233689324","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"us-central1","requirePartitionFilter":false,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 329.29309ms
+        duration: 232.683408ms
     - id: 10
       request:
         proto: HTTP/1.1
@@ -475,7 +477,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: GET
       response:
@@ -486,13 +488,13 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"bigquery#table","etag":"BMni8WOOCXFgFa5BC/jfkg==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample-updated","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1720515936786","lastModifiedTime":"1720515940935","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"US","requirePartitionFilter":false,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        body: '{"kind":"bigquery#table","etag":"rCwyhaRq2nEw0eAFProieQ==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample-updated","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1729233686287","lastModifiedTime":"1729233689324","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"us-central1","requirePartitionFilter":false,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 282.727165ms
+        duration: 276.581644ms
     - id: 11
       request:
         proto: HTTP/1.1
@@ -522,7 +524,7 @@ interactions:
         body: |
             {
               "kind": "bigquery#dataset",
-              "etag": "pYo/zUITYaROvtieJn/Efg==",
+              "etag": "uJ2Ltq8bm7J0FUJdKMsN4Q==",
               "id": "example-project:bigquerydatasetsamplel7b81f5rgmgk",
               "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk",
               "datasetReference": {
@@ -544,24 +546,25 @@ interactions:
                 },
                 {
                   "role": "OWNER",
-                  "userByEmail": "andylu@pisces.joonix.net"
+                  "userByEmail": "xiaoweim@google.com"
                 },
                 {
                   "role": "READER",
                   "specialGroup": "projectReaders"
                 }
               ],
-              "creationTime": "1720515934342",
-              "lastModifiedTime": "1720515934342",
-              "location": "US",
-              "type": "DEFAULT"
+              "creationTime": "1729233685041",
+              "lastModifiedTime": "1729233685041",
+              "location": "us-central1",
+              "type": "DEFAULT",
+              "maxTimeTravelHours": "168"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 327.354671ms
+        duration: 145.635566ms
     - id: 12
       request:
         proto: HTTP/1.1
@@ -577,7 +580,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: GET
       response:
@@ -588,13 +591,13 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-        body: '{"kind":"bigquery#table","etag":"BMni8WOOCXFgFa5BC/jfkg==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample-updated","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1720515936786","lastModifiedTime":"1720515940935","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"US","requirePartitionFilter":false,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
+        body: '{"kind":"bigquery#table","etag":"rCwyhaRq2nEw0eAFProieQ==","id":"example-project:bigquerydatasetsamplel7b81f5rgmgk.bigquerytablesamplel7b81f5rgmgk","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk","tableReference":{"projectId":"example-project","datasetId":"bigquerydatasetsamplel7b81f5rgmgk","tableId":"bigquerytablesamplel7b81f5rgmgk"},"friendlyName":"bigquerytable-sample-updated","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"schema":{"fields":[{"name":"string_field_0","type":"STRING","mode":"NULLABLE"},{"name":"string_field_1","type":"STRING","mode":"NULLABLE"},{"name":"string_field_2","type":"STRING","mode":"NULLABLE"},{"name":"string_field_3","type":"STRING","mode":"NULLABLE"},{"name":"string_field_4","type":"STRING","mode":"NULLABLE"},{"name":"string_field_5","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_6","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_7","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_8","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_9","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_10","type":"STRING","mode":"NULLABLE"},{"name":"int64_field_11","type":"INTEGER","mode":"NULLABLE"},{"name":"int64_field_12","type":"INTEGER","mode":"NULLABLE"},{"name":"string_field_13","type":"STRING","mode":"NULLABLE"}]},"numBytes":"0","numLongTermBytes":"0","numRows":"0","creationTime":"1729233686287","lastModifiedTime":"1729233689324","type":"EXTERNAL","externalDataConfiguration":{"sourceUris":["gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"],"sourceFormat":"CSV","autodetect":true,"compression":"NONE"},"location":"us-central1","requirePartitionFilter":false,"numTotalLogicalBytes":"0","numActiveLogicalBytes":"0","numLongTermLogicalBytes":"0"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 371.806487ms
+        duration: 182.848192ms
     - id: 13
       request:
         proto: HTTP/1.1
@@ -627,7 +630,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 400 Bad Request
         code: 400
-        duration: 287.000684ms
+        duration: 138.945657ms
     - id: 14
       request:
         proto: HTTP/1.1
@@ -643,7 +646,7 @@ interactions:
         form: {}
         headers:
             X-Goog-Api-Client:
-                - gl-go/1.22.5 gdcl/0.187.0
+                - gl-go/1.23.0--20240626-RC01 cl/646990413 +5a18e79687 X:fieldtrack,boringcrypto gdcl/0.196.0
         url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk/tables/bigquerytablesamplel7b81f5rgmgk?alt=json&prettyPrint=false
         method: DELETE
       response:
@@ -662,7 +665,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 204 No Content
         code: 204
-        duration: 316.441881ms
+        duration: 205.179181ms
     - id: 15
       request:
         proto: HTTP/1.1
@@ -692,7 +695,7 @@ interactions:
         body: |
             {
               "kind": "bigquery#dataset",
-              "etag": "pYo/zUITYaROvtieJn/Efg==",
+              "etag": "uJ2Ltq8bm7J0FUJdKMsN4Q==",
               "id": "example-project:bigquerydatasetsamplel7b81f5rgmgk",
               "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydatasetsamplel7b81f5rgmgk",
               "datasetReference": {
@@ -714,24 +717,25 @@ interactions:
                 },
                 {
                   "role": "OWNER",
-                  "userByEmail": "andylu@pisces.joonix.net"
+                  "userByEmail": "xiaoweim@google.com"
                 },
                 {
                   "role": "READER",
                   "specialGroup": "projectReaders"
                 }
               ],
-              "creationTime": "1720515934342",
-              "lastModifiedTime": "1720515934342",
-              "location": "US",
-              "type": "DEFAULT"
+              "creationTime": "1729233685041",
+              "lastModifiedTime": "1729233685041",
+              "location": "us-central1",
+              "type": "DEFAULT",
+              "maxTimeTravelHours": "168"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 436.728931ms
+        duration: 163.479275ms
     - id: 16
       request:
         proto: HTTP/1.1
@@ -766,4 +770,4 @@ interactions:
                 - application/json; charset=UTF-8
         status: 204 No Content
         code: 204
-        duration: 391.253016ms
+        duration: 191.252482ms

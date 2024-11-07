@@ -25,7 +25,7 @@ var BigQueryDatasetGVK = GroupVersion.WithKind("BigQueryDataset")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // BigQueryDatasetSpec defines the desired state of BigQueryDataset
-// +kcc:proto=google.cloud.bigquery.v2.dataset
+// +kcc:proto=google.cloud.bigquery.v2.Dataset
 type BigQueryDatasetSpec struct {
 	// The BigQueryDataset name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -94,15 +94,15 @@ type BigQueryDatasetSpec struct {
 	// The geographic location where the dataset should reside. See
 	//  https://cloud.google.com/bigquery/docs/locations for supported
 	//  locations.
-	Location *string `json:"location,omitempty"`
+	// +required
+	Location *string `json:"location"`
 
 	// Optional. Defines the time travel window in hours. The value can be from 48
 	//  to 168 hours (2 to 7 days). The default value is 168 hours if this is not
 	//  set.
 	MaxTimeTravelHours *string `json:"maxTimeTravelHours,omitempty"`
 
-	//	The project that this resource belongs to.
-	//  optional.
+	//  Optional. The project that this resource belongs to.
 	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	// Optional. Updates storage_billing_model for the dataset.
@@ -121,6 +121,9 @@ type BigQueryDatasetStatus struct {
 
 	// Output only. A hash of the resource.
 	Etag *string `json:"etag,omitempty"`
+
+	// A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Output only. The date when this dataset was last modified, in milliseconds
 	//  since the epoch.

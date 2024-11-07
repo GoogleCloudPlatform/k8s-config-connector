@@ -35,6 +35,7 @@ import (
 	bigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquery/v1alpha1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquery/v1beta1"
 	bigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1alpha1"
+	bigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1beta1"
 	bigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1alpha1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
@@ -142,7 +143,7 @@ import (
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vpcaccess/v1beta1"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workflows/v1alpha1"
-	workstationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1alpha1"
+	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -167,6 +168,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigqueryv1alpha1.AddToScheme,
 	bigqueryv1beta1.AddToScheme,
 	bigqueryanalyticshubv1alpha1.AddToScheme,
+	bigqueryanalyticshubv1beta1.AddToScheme,
 	bigqueryconnectionv1alpha1.AddToScheme,
 	bigquerydatapolicyv1alpha1.AddToScheme,
 	bigquerydatatransferv1beta1.AddToScheme,
@@ -274,7 +276,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	vertexaiv1beta1.AddToScheme,
 	vpcaccessv1beta1.AddToScheme,
 	workflowsv1alpha1.AddToScheme,
-	workstationsv1alpha1.AddToScheme,
+	workstationsv1beta1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

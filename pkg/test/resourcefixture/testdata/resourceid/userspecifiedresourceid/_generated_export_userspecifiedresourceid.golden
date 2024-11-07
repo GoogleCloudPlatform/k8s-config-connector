@@ -18,7 +18,8 @@ spec:
   - role: WRITER
     specialGroup: projectWriters
   friendlyName: bigquerydataset-sample-updated
-  location: US
+  location: us-central1
+  maxTimeTravelHours: "168"
   projectRef:
     external: ${projectId}
   resourceID: bigquerydataset_${uniqueId}

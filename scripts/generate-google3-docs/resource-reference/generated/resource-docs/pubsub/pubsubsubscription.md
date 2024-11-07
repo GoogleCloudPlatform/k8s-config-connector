@@ -947,6 +947,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
   resourceID: pubsubsubscriptiondepbigquery
+  location: us-central1
 ---
 # Replace ${PROJECT_ID?} below with your desired project ID.
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1

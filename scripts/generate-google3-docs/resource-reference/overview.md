@@ -74,6 +74,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeorganization.md">ApigeeOrganization</a></td>
 </tr>
 <tr>
+  <td><a href="/bigquery/docs/query-overview">{{analytics_hub_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/bigqueranalyticshub/bigqueryanalyticshubdataexchange.md">BigQueryAnalyticsHubDataExchange</a></td>
+</tr>
+<tr>
   <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigquery/bigquerydataset.md">BigQueryDataset</a></td>
 </tr>

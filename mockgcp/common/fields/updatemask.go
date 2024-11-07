@@ -21,6 +21,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/klog/v2"
 )
 
 // UpdateByFieldMask updates the `original` Message with the `update` Message value in the given `updatePaths` fields
@@ -50,13 +51,6 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	updateFd := update.Descriptor().Fields().ByJSONName(fieldName)
 	updateVal := update.Get(updateFd)
 
-	if originalFd.Kind() != protoreflect.MessageKind {
-		if !original.IsValid() {
-			return fmt.Errorf("%s is read-only or empty", fieldName)
-		}
-		original.Set(updateFd, updateVal)
-		return nil
-	}
 	// Update Map
 	if originalFd.IsMap() {
 		originalVal.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
@@ -77,7 +71,18 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 		}
 		return nil
 	}
-	return fmt.Errorf("unhandled type for field %v", fieldName)
+
+	switch originalFd.Kind() {
+	case protoreflect.MessageKind, protoreflect.StringKind, protoreflect.DoubleKind, protoreflect.Int32Kind, protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.BoolKind, protoreflect.EnumKind:
+		if !original.IsValid() {
+			return fmt.Errorf("%s is read-only or empty", fieldName)
+		}
+		original.Set(updateFd, updateVal)
+		return nil
+	default:
+		klog.Warningf("unhandled type %v for field %v", originalFd.Kind(), fieldName)
+		return fmt.Errorf("unhandled type %v for field %v", originalFd.Kind(), fieldName)
+	}
 }
 
 // originalChildMessage get the orignal Message's mutable reference to the `fieldName“ composite.

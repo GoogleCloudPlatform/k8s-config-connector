@@ -696,7 +696,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "host": "10.1.2.3",
   "instance": "sqlinstance-sample-${uniqueId}",
   "name": "sqluser-${uniqueId}",
-  "password": "password"
+  "password": "cGFzc3dvcmQ="
 }
 
 200 OK
@@ -778,7 +778,7 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "password": "password",
+      "password": "cGFzc3dvcmQ=",
       "project": "${projectId}"
     }
   ],
@@ -979,7 +979,7 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "password": "password",
+      "password": "cGFzc3dvcmQ=",
       "project": "${projectId}"
     }
   ],
@@ -1274,7 +1274,7 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "password": "password",
+      "password": "cGFzc3dvcmQ=",
       "project": "${projectId}"
     }
   ],

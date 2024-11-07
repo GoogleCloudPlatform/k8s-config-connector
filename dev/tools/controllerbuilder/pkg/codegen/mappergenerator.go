@@ -132,6 +132,8 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	switch protoGoPackage {
 	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
 		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
+		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
 	}
 
 	for _, goType := range goTypes {

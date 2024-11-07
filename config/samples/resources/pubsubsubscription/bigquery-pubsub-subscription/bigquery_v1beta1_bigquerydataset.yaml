@@ -22,3 +22,4 @@ metadata:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
   resourceID: pubsubsubscriptiondepbigquery
+  location: us-central1

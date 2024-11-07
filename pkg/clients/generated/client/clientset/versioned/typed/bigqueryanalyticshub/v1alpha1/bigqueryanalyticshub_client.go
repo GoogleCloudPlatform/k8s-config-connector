@@ -31,17 +31,12 @@ import (
 
 type BigqueryanalyticshubV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	BigQueryAnalyticsHubDataExchangesGetter
 	BigQueryAnalyticsHubListingsGetter
 }
 
 // BigqueryanalyticshubV1alpha1Client is used to interact with features provided by the bigqueryanalyticshub.cnrm.cloud.google.com group.
 type BigqueryanalyticshubV1alpha1Client struct {
 	restClient rest.Interface
-}
-
-func (c *BigqueryanalyticshubV1alpha1Client) BigQueryAnalyticsHubDataExchanges(namespace string) BigQueryAnalyticsHubDataExchangeInterface {
-	return newBigQueryAnalyticsHubDataExchanges(c, namespace)
 }
 
 func (c *BigqueryanalyticshubV1alpha1Client) BigQueryAnalyticsHubListings(namespace string) BigQueryAnalyticsHubListingInterface {

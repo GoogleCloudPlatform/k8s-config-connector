@@ -99,7 +99,7 @@ type ManualApprovals struct {
 	// Optional. List of approval steps in this workflow. These steps are followed
 	// in the specified order sequentially. Only 1 step is supported.
 	// +optional
-	Steps []Step `json:"step,omitempty"`
+	Steps []Step `json:"steps,omitempty"`
 }
 
 // Step represents a logical step in a manual approval workflow.

@@ -95,6 +95,8 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"PrivilegedAccessManagerEntitlement",
 		"RedisCluster",
 		"KMSAutokeyConfig",
+		"BigQueryAnalyticsHubDataExchange",
+		"WorkstationCluster",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }

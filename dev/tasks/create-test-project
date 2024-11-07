@@ -53,14 +53,18 @@ echo "Setting default project to ${GCP_PROJECT_ID}"
 gcloud config set project "${GCP_PROJECT_ID}"
 
 gcloud services enable \
+  apigee.googleapis.com \
   compute.googleapis.com \
-  dataflow.googleapis.com \
+  cloudbuild.googleapis.com \
   cloudkms.googleapis.com \
+  dataflow.googleapis.com \
+  discoveryengine.googleapis.com \
   firestore.googleapis.com \
   logging.googleapis.com \
   monitoring.googleapis.com \
   redis.googleapis.com \
   servicenetworking.googleapis.com \
+  serviceusage.googleapis.com \
   sqladmin.googleapis.com \
   workstations.googleapis.com
 

@@ -301,24 +301,6 @@ func CloudSpannerProperties_ToProto(mapCtx *direct.MapContext, in *krm.CloudSpan
 	out.DatabaseRole = direct.ValueOf(in.DatabaseRole)
 	return out
 }
-func CloudSqlCredential_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlCredential) *krm.CloudSqlCredential {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudSqlCredential{}
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	return out
-}
-func CloudSqlCredential_ToProto(mapCtx *direct.MapContext, in *krm.CloudSqlCredential) *pb.CloudSqlCredential {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudSqlCredential{}
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
-	return out
-}
 func CloudSqlProperties_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlProperties) *krm.CloudSqlProperties {
 	if in == nil {
 		return nil

@@ -44,7 +44,7 @@ spec:
   approvalWorkflow:
     manualApprovals:
       requireApproverJustification: true
-      step:
+      steps:
         - approvalsNeeded: 1
           approverEmailRecipients:
             # Replace ${PROJECT_ID?} with your project ID.
@@ -52,4 +52,4 @@ spec:
           approvers:
             - principals:
                 # Replace ${GROUP_EMAIL?} with your group email.
-                - group:${GROUP_EMAIL?}
+                - "group:${GROUP_EMAIL?}"

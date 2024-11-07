@@ -21,314 +21,208 @@
 package bigquerydataset
 
 import (
-	"fmt"
-	"time"
+	"strconv"
 
-	pb "cloud.google.com/go/bigquery"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	api "google.golang.org/api/bigquery/v2"
 )
 
-func Access_FromProto(mapCtx *direct.MapContext, in *pb.AccessEntry) *krm.Access {
+func BigQueryDatasetSpec_ToAPI(mapCtx *direct.MapContext, in *krm.BigQueryDatasetSpec, name string) *api.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &api.Dataset{}
+	acccessList := []*api.DatasetAccess{}
+	for _, access := range in.Access {
+		curAccess := Access_ToAPI(mapCtx, direct.LazyPtr(access))
+		acccessList = append(acccessList, curAccess)
+	}
+	out.Access = acccessList
+	out.DefaultCollation = direct.ValueOf(in.DefaultCollation)
+	out.DefaultPartitionExpirationMs = direct.ValueOf(in.DefaultPartitionExpirationMs)
+	out.DefaultTableExpirationMs = direct.ValueOf(in.DefaultTableExpirationMs)
+	out.DefaultEncryptionConfiguration = EncryptionConfiguration_ToAPI(mapCtx, in.DefaultEncryptionConfiguration)
+	out.Description = direct.ValueOf(in.Description)
+	out.FriendlyName = direct.ValueOf(in.FriendlyName)
+	out.DatasetReference = DatasetReference_ToAPI(mapCtx, in, name)
+	out.Location = direct.ValueOf(in.Location)
+	out.IsCaseInsensitive = direct.ValueOf(in.IsCaseInsensitive)
+	if in.MaxTimeTravelHours != nil {
+		out.MaxTimeTravelHours, _ = strconv.ParseInt(direct.ValueOf(in.MaxTimeTravelHours), 10, 64)
+	}
+	out.StorageBillingModel = direct.ValueOf(in.StorageBillingModel)
+	return out
+}
+func BigQueryDatasetSpec_FromAPI(mapCtx *direct.MapContext, in *api.Dataset) *krm.BigQueryDatasetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryDatasetSpec{}
+	accessList := []krm.Access{}
+	for _, access := range in.Access {
+		curAccess := Access_FromAPI(mapCtx, access)
+		accessList = append(accessList, direct.ValueOf(curAccess))
+	}
+	out.Access = accessList
+	out.DefaultCollation = direct.LazyPtr(in.DefaultCollation)
+	out.DefaultPartitionExpirationMs = direct.LazyPtr(in.DefaultPartitionExpirationMs)
+	out.DefaultTableExpirationMs = direct.LazyPtr(in.DefaultTableExpirationMs)
+	out.DefaultEncryptionConfiguration = EncryptionConfiguration_FromAPI(mapCtx, in.DefaultEncryptionConfiguration)
+	out.Description = direct.LazyPtr(in.Description)
+	out.FriendlyName = direct.LazyPtr(in.FriendlyName)
+	out.Location = direct.LazyPtr(in.Location)
+	out.IsCaseInsensitive = direct.LazyPtr(in.IsCaseInsensitive)
+	maxTime := strconv.FormatInt(in.MaxTimeTravelHours, 10)
+	out.MaxTimeTravelHours = direct.LazyPtr(maxTime)
+	out.StorageBillingModel = direct.LazyPtr(in.StorageBillingModel)
+	return out
+}
+func BigQueryDatasetStatus_FromAPI(mapCtx *direct.MapContext, in *api.Dataset) *krm.BigQueryDatasetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryDatasetStatus{}
+	out.Etag = direct.LazyPtr(in.Etag)
+	out.CreationTime = direct.LazyPtr(in.CreationTime)
+	out.LastModifiedTime = direct.LazyPtr(in.LastModifiedTime)
+	out.SelfLink = direct.LazyPtr(in.SelfLink)
+	return out
+}
+func BigQueryDatasetStatusObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.BigQueryDatasetStatus) *api.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &api.Dataset{}
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreationTime = direct.ValueOf(in.CreationTime)
+	out.LastModifiedTime = direct.ValueOf(in.LastModifiedTime)
+	out.SelfLink = direct.ValueOf(in.SelfLink)
+	return out
+}
+func Access_ToAPI(mapCtx *direct.MapContext, in *krm.Access) *api.DatasetAccess {
+	if in == nil {
+		return nil
+	}
+	out := &api.DatasetAccess{}
+	out.Domain = direct.ValueOf(in.Domain)
+	out.GroupByEmail = direct.ValueOf(in.GroupByEmail)
+	out.IamMember = direct.ValueOf(in.IamMember)
+	out.UserByEmail = direct.ValueOf(in.UserByEmail)
+	out.SpecialGroup = direct.ValueOf(in.SpecialGroup)
+	out.Role = direct.ValueOf(in.Role)
+	out.Dataset = DatasetAccessEntry_ToAPI(mapCtx, in.Dataset)
+	out.Routine = RoutineReference_ToAPI(mapCtx, in.Routine)
+	out.View = TableReference_ToAPI(mapCtx, in.View)
+	return out
+}
+func Access_FromAPI(mapCtx *direct.MapContext, in *api.DatasetAccess) *krm.Access {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Access{}
-	out.Role = direct.LazyPtr(fmt.Sprintf("%s", in.Role))
-	switch in.EntityType {
-	case 1:
-		out.Domain = direct.LazyPtr(in.Entity)
-	case 2:
-		out.GroupByEmail = direct.LazyPtr(in.Entity)
-	case 3:
-		out.UserByEmail = direct.LazyPtr(in.Entity)
-	case 4:
-		out.SpecialGroup = direct.LazyPtr(in.Entity)
-	case 6:
-		out.IamMember = direct.LazyPtr(in.Entity)
-	}
-	out.View = TableReference_FromProto(mapCtx, in.View)
-	out.Routine = RoutineReference_FromProto(mapCtx, in.Routine)
-	out.Dataset = DatasetAccessEntry_FromProto(mapCtx, in.Dataset)
+	out.Domain = direct.LazyPtr(in.Domain)
+	out.GroupByEmail = direct.LazyPtr(in.GroupByEmail)
+	out.IamMember = direct.LazyPtr(in.IamMember)
+	out.UserByEmail = direct.LazyPtr(in.UserByEmail)
+	out.SpecialGroup = direct.LazyPtr(in.SpecialGroup)
+	out.Role = direct.LazyPtr(in.Role)
+	out.Dataset = DatasetAccessEntry_FromAPI(mapCtx, in.Dataset)
+	out.Routine = RoutineReference_FromAPI(mapCtx, in.Routine)
+	out.View = TableReference_FromAPI(mapCtx, in.View)
 	return out
 }
-func Access_ToProto(mapCtx *direct.MapContext, in *krm.Access) *pb.AccessEntry {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AccessEntry{}
-	out.Role = pb.AccessRole(direct.ValueOf(in.Role))
-	if in.Domain != nil {
-		out.EntityType = 1
-		out.Entity = direct.ValueOf(in.Domain)
-	}
-	if in.GroupByEmail != nil {
-		out.EntityType = 2
-		out.Entity = direct.ValueOf(in.GroupByEmail)
-	}
-	if in.UserByEmail != nil {
-		out.EntityType = 3
-		out.Entity = direct.ValueOf(in.UserByEmail)
-	}
-	if in.SpecialGroup != nil {
-		out.EntityType = 4
-		out.Entity = direct.ValueOf(in.SpecialGroup)
-	}
-	if in.IamMember != nil {
-		out.EntityType = 6
-		out.Entity = direct.ValueOf(in.IamMember)
-	}
-	out.View = TableReference_ToProto(mapCtx, in.View)
-	out.Routine = RoutineReference_ToProto(mapCtx, in.Routine)
-	out.Dataset = DatasetAccessEntry_ToProto(mapCtx, in.Dataset)
-	return out
-}
-func Dataset_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMetadata) *krm.Dataset {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Dataset{}
-	out.Kind = direct.LazyPtr("BigQueryDataset")
-	out.Etag = direct.LazyPtr(in.ETag)
-	out.ID = direct.LazyPtr(in.FullID)
-	out.FriendlyName = direct.LazyPtr(in.Name)
-	out.Description = direct.LazyPtr(in.Description)
-	defaultTableExpirationMs := int64(in.DefaultTableExpiration / time.Millisecond)
-	out.DefaultTableExpirationMs = &defaultTableExpirationMs
-	defaultPartitionExpirationMs := int64(in.DefaultPartitionExpiration / time.Millisecond)
-	out.DefaultPartitionExpirationMs = &defaultPartitionExpirationMs
-	out.Labels = in.Labels
-	out.Access = direct.Slice_FromProto(mapCtx, in.Access, Access_FromProto)
-	//TODO: convert from time.Time to int64
-	// out.CreationTime = in.CreationTime
-	// out.LastModifiedTime = in.LastModifiedTime
-	time.Now().UnixNano()
-	out.Location = direct.LazyPtr(in.Location)
-	out.DefaultEncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.DefaultEncryptionConfig)
-	out.ExternalDatasetReference = ExternalDatasetReference_FromProto(mapCtx, in.ExternalDatasetReference)
-	out.DefaultCollation = direct.LazyPtr(in.DefaultCollation)
-	maxTimeTravelHours := (int64)(in.MaxTimeTravel / time.Hour)
-	out.MaxTimeTravelHours = &maxTimeTravelHours
-	out.Tags = direct.Slice_FromProto(mapCtx, in.Tags, DatasetTag_FromProto)
-	out.StorageBillingModel = direct.LazyPtr(in.StorageBillingModel)
-	return out
-}
-func Dataset_ToProto(mapCtx *direct.MapContext, in *krm.Dataset) *pb.DatasetMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DatasetMetadata{}
-	out.ETag = direct.ValueOf(in.Etag)
-	out.FullID = direct.ValueOf(in.ID)
-	out.Name = direct.ValueOf(in.FriendlyName)
-	out.Description = direct.ValueOf(in.Description)
-	out.DefaultTableExpiration = time.Duration(*in.DefaultTableExpirationMs) * time.Millisecond
-	out.DefaultPartitionExpiration = time.Duration(*in.DefaultPartitionExpirationMs) * time.Millisecond
-	out.Labels = in.Labels
-	out.Access = direct.Slice_ToProto(mapCtx, in.Access, Access_ToProto)
-	out.CreationTime = time.UnixMilli(*in.CreationTime)
-	out.LastModifiedTime = time.UnixMilli(*in.LastModifiedTime)
-	out.Location = direct.ValueOf(in.Location)
-	out.DefaultEncryptionConfig = EncryptionConfiguration_ToProto(mapCtx, in.DefaultEncryptionConfiguration)
-	out.ExternalDatasetReference = ExternalDatasetReference_ToProto(mapCtx, in.ExternalDatasetReference)
-	out.DefaultCollation = *in.DefaultCollation
-	out.MaxTimeTravel = time.Duration(*in.MaxTimeTravelHours) * time.Hour
-	out.Tags = direct.Slice_ToProto(mapCtx, in.Tags, DatasetTag_ToProto)
-	out.StorageBillingModel = direct.ValueOf(in.StorageBillingModel)
-	return out
-}
-func DatasetAccessEntry_FromProto(mapCtx *direct.MapContext, in *pb.DatasetAccessEntry) *krm.DatasetAccessEntry {
+func DatasetAccessEntry_FromAPI(mapCtx *direct.MapContext, in *api.DatasetAccessEntry) *krm.DatasetAccessEntry {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DatasetAccessEntry{}
-	out.Dataset = DatasetReference_FromProto(mapCtx, in.Dataset)
+	out.Dataset = &krm.DatasetReference{
+		DatasetId: direct.LazyPtr(in.Dataset.DatasetId),
+		ProjectId: direct.LazyPtr(in.Dataset.ProjectId),
+	}
 	out.TargetTypes = in.TargetTypes
 	return out
 }
-func DatasetAccessEntry_ToProto(mapCtx *direct.MapContext, in *krm.DatasetAccessEntry) *pb.DatasetAccessEntry {
+func DatasetAccessEntry_ToAPI(mapCtx *direct.MapContext, in *krm.DatasetAccessEntry) *api.DatasetAccessEntry {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DatasetAccessEntry{}
-	out.Dataset = DatasetReference_ToProto(mapCtx, in.Dataset)
+	out := &api.DatasetAccessEntry{}
+	out.Dataset = &api.DatasetReference{
+		DatasetId: direct.ValueOf(in.Dataset.DatasetId),
+		ProjectId: direct.ValueOf(in.Dataset.ProjectId),
+	}
 	out.TargetTypes = in.TargetTypes
 	return out
 }
-func DatasetList_FromProto(mapCtx *direct.MapContext, in *pb.DatasetIterator) *krm.DatasetList {
+func DatasetReference_ToAPI(mapCtx *direct.MapContext, in *krm.BigQueryDatasetSpec, name string) *api.DatasetReference {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatasetList{}
-	in.ListHidden = true
-	out.Kind = direct.LazyPtr("BigQueryDataset")
-	var datasets []krm.ListFormatDataset
-	var next *pb.Dataset
-	next, _ = in.Next()
-	for next != nil {
-		datasets = append(datasets, *ListFormatDataset_FromProto(mapCtx, next))
-		next, _ = in.Next()
+	out := &api.DatasetReference{}
+	out.DatasetId = name
+	return out
+}
+func EncryptionConfiguration_ToAPI(mapCtx *direct.MapContext, in *krm.EncryptionConfiguration) *api.EncryptionConfiguration {
+	if in == nil {
+		return nil
 	}
-	out.Datasets = datasets
+	out := &api.EncryptionConfiguration{}
+	if in.KmsKeyRef != nil {
+		out.KmsKeyName = in.KmsKeyRef.External
+	}
+	return out
+}
 
-	return out
-}
-func DatasetList_ToProto(mapCtx *direct.MapContext, in *krm.DatasetList) *pb.DatasetIterator {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DatasetIterator{}
-	// Missing
-	return out
-}
-func DatasetReference_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.DatasetReference {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatasetReference{}
-	out.DatasetId = &in.DatasetID
-	out.ProjectId = &in.ProjectID
-	return out
-}
-func DatasetReference_ToProto(mapCtx *direct.MapContext, in *krm.DatasetReference) *pb.Dataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Dataset{}
-	out.DatasetID = *in.DatasetId
-	out.ProjectID = *in.ProjectId
-	return out
-}
-func DatasetTag_FromProto(mapCtx *direct.MapContext, in *pb.DatasetTag) *krm.GcpTag {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GcpTag{}
-	out.TagKey = direct.LazyPtr(in.TagKey)
-	out.TagValue = direct.LazyPtr(in.TagValue)
-	return out
-}
-func DatasetTag_ToProto(mapCtx *direct.MapContext, in *krm.GcpTag) *pb.DatasetTag {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DatasetTag{}
-	out.TagKey = direct.ValueOf(in.TagKey)
-	out.TagValue = direct.ValueOf(in.TagValue)
-	return out
-}
-func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfiguration {
+func EncryptionConfiguration_FromAPI(mapCtx *direct.MapContext, in *api.EncryptionConfiguration) *krm.EncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
 	out := &krm.EncryptionConfiguration{}
 	out.KmsKeyRef = &v1beta1.KMSCryptoKeyRef{
-		Name: in.KMSKeyName,
+		External: in.KmsKeyName,
 	}
 	return out
 }
-
-func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfiguration) *pb.EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionConfig{}
-	out.KMSKeyName = in.KmsKeyRef.Name
-	return out
-}
-func ErrorProto_FromProto(mapCtx *direct.MapContext, in *pb.Error) *krm.ErrorProto {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ErrorProto{}
-	out.Reason = direct.LazyPtr(in.Reason)
-	out.Location = direct.LazyPtr(in.Location)
-	out.Message = direct.LazyPtr(in.Message)
-	return out
-}
-func ErrorProto_ToProto(mapCtx *direct.MapContext, in *krm.ErrorProto) *pb.Error {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Error{}
-	out.Reason = direct.ValueOf(in.Reason)
-	out.Location = direct.ValueOf(in.Location)
-	out.Message = direct.ValueOf(in.Message)
-	return out
-}
-func ExternalDatasetReference_FromProto(mapCtx *direct.MapContext, in *pb.ExternalDatasetReference) *krm.ExternalDatasetReference {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExternalDatasetReference{}
-	out.ExternalSource = direct.LazyPtr(in.ExternalSource)
-	out.Connection = direct.LazyPtr(in.Connection)
-	return out
-}
-func ExternalDatasetReference_ToProto(mapCtx *direct.MapContext, in *krm.ExternalDatasetReference) *pb.ExternalDatasetReference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExternalDatasetReference{}
-	out.ExternalSource = direct.ValueOf(in.ExternalSource)
-	out.Connection = direct.ValueOf(in.Connection)
-	return out
-}
-func ListFormatDataset_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.ListFormatDataset {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ListFormatDataset{}
-	out.Kind = direct.LazyPtr("BigQueryDataset")
-	out.DatasetReference = DatasetReference_FromProto(mapCtx, in)
-	return out
-}
-func ListFormatDataset_ToProto(mapCtx *direct.MapContext, in *krm.ListFormatDataset) *pb.Dataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Dataset{}
-	out = DatasetReference_ToProto(mapCtx, in.DatasetReference)
-	return out
-}
-func RoutineReference_FromProto(mapCtx *direct.MapContext, in *pb.Routine) *krm.RoutineReference {
+func RoutineReference_FromAPI(mapCtx *direct.MapContext, in *api.RoutineReference) *krm.RoutineReference {
 	if in == nil {
 		return nil
 	}
 	out := &krm.RoutineReference{}
-	out.DatasetId = &in.DatasetID
-	out.ProjectId = &in.ProjectID
-	out.RoutineId = &in.RoutineID
+	out.DatasetId = direct.LazyPtr(in.DatasetId)
+	out.ProjectId = direct.LazyPtr(in.ProjectId)
+	out.RoutineId = direct.LazyPtr(in.RoutineId)
 	return out
 }
-func RoutineReference_ToProto(mapCtx *direct.MapContext, in *krm.RoutineReference) *pb.Routine {
+func RoutineReference_ToAPI(mapCtx *direct.MapContext, in *krm.RoutineReference) *api.RoutineReference {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Routine{}
-	out.DatasetID = *in.DatasetId
-	out.ProjectID = *in.ProjectId
-	out.RoutineID = *in.RoutineId
+	out := &api.RoutineReference{}
+	out.DatasetId = direct.ValueOf(in.DatasetId)
+	out.ProjectId = direct.ValueOf(in.ProjectId)
+	out.RoutineId = direct.ValueOf(in.RoutineId)
 	return out
 }
-func TableReference_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.TableReference {
+func TableReference_FromAPI(mapCtx *direct.MapContext, in *api.TableReference) *krm.TableReference {
 	if in == nil {
 		return nil
 	}
 	out := &krm.TableReference{}
-	out.DatasetId = &in.DatasetID
-	out.ProjectId = &in.ProjectID
-	out.TableId = &in.TableID
+	out.DatasetId = direct.LazyPtr(in.DatasetId)
+	out.ProjectId = direct.LazyPtr(in.ProjectId)
+	out.TableId = direct.LazyPtr(in.TableId)
 	return out
 }
-func TableReference_ToProto(mapCtx *direct.MapContext, in *krm.TableReference) *pb.Table {
+func TableReference_ToAPI(mapCtx *direct.MapContext, in *krm.TableReference) *api.TableReference {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Table{}
-	out.DatasetID = *in.DatasetId
-	out.ProjectID = *in.ProjectId
-	out.TableID = *in.TableId
+	out := &api.TableReference{}
+	out.DatasetId = direct.ValueOf(in.DatasetId)
+	out.ProjectId = direct.ValueOf(in.ProjectId)
+	out.TableId = direct.ValueOf(in.TableId)
 	return out
 }

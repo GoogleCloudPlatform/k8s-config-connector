@@ -20,7 +20,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
 )
 
 func NormalizeWorkstationCluster(ctx context.Context, kube client.Reader, obj *krm.WorkstationCluster) error {

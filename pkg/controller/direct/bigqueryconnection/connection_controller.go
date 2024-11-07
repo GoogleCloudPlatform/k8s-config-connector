@@ -19,17 +19,16 @@ import (
 	"fmt"
 	"strings"
 
+	gcp "cloud.google.com/go/bigquery/connection/apiv1"
+	bigqueryconnectionpb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-
-	gcp "cloud.google.com/go/bigquery/connection/apiv1"
-
-	bigqueryconnectionpb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -77,57 +76,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-
-	// Resolve SQLInstanceRef
-	if obj.Spec.CloudSQLSpec != nil {
-		if obj.Spec.CloudSQLSpec.InstanceRef != nil {
-			instance, err := refs.ResolveSQLInstanceRef(ctx, reader, obj, obj.Spec.CloudSQLSpec.InstanceRef)
-			if err != nil {
-				return nil, err
-			}
-			obj.Spec.CloudSQLSpec.InstanceRef.External = instance.ConnectionName()
-		}
-	}
-
-	// Resolve SpannerDatabaseRef
-	if obj.Spec.CloudSpannerSpec != nil {
-		if obj.Spec.CloudSpannerSpec.DatabaseRef != nil {
-			database, err := refs.ResolveSpannerDatabaseRef(ctx, reader, obj, obj.Spec.CloudSpannerSpec.DatabaseRef)
-			if err != nil {
-				return nil, err
-			}
-			obj.Spec.CloudSpannerSpec.DatabaseRef.External = database.String()
-		}
-	}
-
-	// Resolve Spark.DataprocClusterRef and Spark.MetastoreServiceRef
-	if obj.Spec.SparkSpec != nil {
-		if obj.Spec.SparkSpec.SparkHistoryServer != nil {
-			if obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef != nil {
-				cluster, err := refs.ResolveDataprocClusterRef(ctx, reader, obj, obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef)
-				if err != nil {
-					return nil, err
-				}
-				obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef.External = cluster.String()
-			}
-		}
-
-		if obj.Spec.SparkSpec.MetastoreService != nil {
-			if obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef != nil {
-				service, err := refs.ResolveMetastoreServiceRef(ctx, reader, obj, obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef)
-				if err != nil {
-					return nil, err
-				}
-				obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef.External = service.String()
-			}
-		}
-	}
-
 	connectionRef, err := krm.NewBigQueryConnectionConnectionRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-
 	// Get bigqueryconnection GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -137,7 +89,64 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		id:        connectionRef,
 		gcpClient: gcpClient,
 		desired:   obj,
+		reader:    reader,
+		namespace: obj.Namespace,
 	}, nil
+}
+
+func (a *Adapter) normalizeReference(ctx context.Context) error {
+	obj := a.desired
+	// Resolve SQLInstanceRef
+	if obj.Spec.CloudSQLSpec != nil {
+		sql := obj.Spec.CloudSQLSpec
+		if sql.InstanceRef != nil {
+			instance, err := refs.ResolveSQLInstanceRef(ctx, a.reader, obj, sql.InstanceRef)
+			if err != nil {
+				return err
+			}
+			sql.InstanceRef.External = instance.ConnectionName()
+		}
+		if sql.Credential != nil {
+			if err := refsv1beta1secret.NormalizedSecret(ctx, sql.Credential.SecretRef, a.reader, a.namespace); err != nil {
+				return err
+			}
+		}
+	}
+
+	// Resolve SpannerDatabaseRef
+	if obj.Spec.CloudSpannerSpec != nil {
+		if obj.Spec.CloudSpannerSpec.DatabaseRef != nil {
+			database, err := refs.ResolveSpannerDatabaseRef(ctx, a.reader, obj, obj.Spec.CloudSpannerSpec.DatabaseRef)
+			if err != nil {
+				return err
+			}
+			obj.Spec.CloudSpannerSpec.DatabaseRef.External = database.String()
+		}
+	}
+
+	// Resolve Spark.DataprocClusterRef and Spark.MetastoreServiceRef
+	if obj.Spec.SparkSpec != nil {
+		if obj.Spec.SparkSpec.SparkHistoryServer != nil {
+			if obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef != nil {
+				cluster, err := refs.ResolveDataprocClusterRef(ctx, a.reader, obj, obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef)
+				if err != nil {
+					return err
+				}
+				obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef.External = cluster.String()
+			}
+		}
+
+		if obj.Spec.SparkSpec.MetastoreService != nil {
+			if obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef != nil {
+				service, err := refs.ResolveMetastoreServiceRef(ctx, a.reader, obj, obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef)
+				if err != nil {
+					return err
+				}
+				obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef.External = service.String()
+			}
+		}
+	}
+	return nil
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -149,6 +158,8 @@ type Adapter struct {
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryConnectionConnection
 	actual    *bigqueryconnectionpb.Connection
+	reader    client.Reader
+	namespace string
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -180,8 +191,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating Connection", "name", a.id.External)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReference(ctx); err != nil {
+		return err
+	}
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -223,6 +237,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating Connection", "name", a.id.External)
+
+	if err := a.normalizeReference(ctx); err != nil {
+		return err
+	}
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	connection := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &desired.Spec)
