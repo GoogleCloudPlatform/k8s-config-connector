@@ -577,9 +577,12 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 
 	if settings.LocationPreference == nil {
 		settings.LocationPreference = &pb.LocationPreference{
-			Kind: "sql#locationPreference",
 			Zone: obj.Region + "-a",
 		}
+	}
+
+	if settings.LocationPreference.Kind == "" {
+		settings.LocationPreference.Kind = "sql#locationPreference"
 	}
 
 	backupConfiguration := settings.BackupConfiguration
