@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -18,14 +18,14 @@ X-Xss-Protection: 0
   "description": "Default network for the project",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -55,7 +55,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "user": "user@example.com"
 }
 
@@ -87,13 +87,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -113,14 +113,14 @@ X-Xss-Protection: 0
   "description": "Default network for the project",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -150,7 +150,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "user": "user@example.com"
 }
 
@@ -182,13 +182,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -208,14 +208,14 @@ X-Xss-Protection: 0
   "description": "Default network for the project",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -236,11 +236,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/global/addresses/${networkID}\" not found",
+        "message": "address \"projects/${projectId}/global/addresses/${addressID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/global/addresses/${networkID}\" not found"
+    "message": "address \"projects/${projectId}/global/addresses/${addressID}\" not found"
   }
 }
 
@@ -257,8 +257,8 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${networkID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "name": "${addressID}",
+  "network": "projects/${projectId}/global/networks/${addressID}",
   "purpose": "PRIVATE_SERVICE_CONNECT"
 }
 
@@ -283,8 +283,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${addressesId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -315,14 +315,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${addressesId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -348,15 +348,15 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${networkID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "name": "${addressID}",
+  "network": "projects/${projectId}/global/networks/${addressID}",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -392,7 +392,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -418,10 +418,10 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${networkID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "name": "${addressID}",
+  "network": "projects/${projectId}/global/networks/${addressID}",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -468,7 +468,7 @@ x-goog-request-params: project=${projectId}
   "description": "A global forwarding rule",
   "loadBalancingScheme": "",
   "name": "rule${uniqueId}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${addressID}",
   "target": "all-apis"
 }
 
@@ -493,7 +493,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
   "user": "user@example.com"
 }
@@ -527,7 +527,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
   "user": "user@example.com"
 }
@@ -560,7 +560,7 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "name": "rule${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
@@ -611,7 +611,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
   "user": "user@example.com"
 }
@@ -649,7 +649,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "rule${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
@@ -700,7 +700,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
   "user": "user@example.com"
 }
@@ -738,7 +738,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "rule${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
@@ -779,7 +779,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
   "user": "user@example.com"
 }
@@ -813,7 +813,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/rule${uniqueId}",
   "user": "user@example.com"
 }

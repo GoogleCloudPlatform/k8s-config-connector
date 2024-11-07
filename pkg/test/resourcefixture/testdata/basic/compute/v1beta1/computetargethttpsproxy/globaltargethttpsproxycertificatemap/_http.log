@@ -522,7 +522,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -586,7 +586,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }
@@ -618,14 +618,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -655,7 +655,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}/setQuicOverride?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}/setQuicOverride?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -684,7 +684,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }
@@ -716,14 +716,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/targetHttpsProxies/computetargethttpsproxy-${uniqueId}/setUrlMap?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/targetHttpsProxies/${targetHttpsProxyID}/setUrlMap?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -752,7 +752,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }
@@ -784,14 +784,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -821,7 +821,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -846,7 +846,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }
@@ -878,7 +878,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${targetHttpsProxiesId}",
+  "targetId": "${targetHttpsProxyID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
   "user": "user@example.com"
 }

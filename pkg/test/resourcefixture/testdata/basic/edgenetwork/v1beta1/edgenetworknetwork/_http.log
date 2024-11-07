@@ -13,7 +13,7 @@ Content-Type: application/json
 
 ---
 
-POST https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks?alt=json&networkId=edgenetworknetwork-${uniqueId}
+POST https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks?alt=json&networkId=${networkID}
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
