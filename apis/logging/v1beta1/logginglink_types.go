@@ -95,11 +95,6 @@ type LoggingLink struct {
 	Status LoggingLinkStatus `json:"status,omitempty"`
 }
 
-type BigQueryDataset struct {
-	// descripotoin 
-	DatasetID *string `json:"datasetID,omitempty"`
-}
-
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // LoggingLinkList contains a list of LoggingLink
 type LoggingLinkList struct {
