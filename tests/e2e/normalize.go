@@ -571,11 +571,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 }
 
 func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
-	replacements := NewReplacements()
+	normalizer := NewNormalizer(uniqueID, project)
+
+	normalizer.Preprocess(events)
 
 	// Find any URLs
 	for _, event := range events {
-		findLinksInEvent(t, replacements, event)
+		findLinksInEvent(t, normalizer.Replacements, event)
 	}
 
 	// Remove headers that just aren't very relevant to testing
@@ -629,7 +631,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	})
 
 	// Apply replacements
-	replacements.ApplyReplacementsToHTTPEvents(events)
+	normalizer.Replacements.ApplyReplacementsToHTTPEvents(events)
 }
 
 func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {

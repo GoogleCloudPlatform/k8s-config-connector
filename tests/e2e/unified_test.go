@@ -567,59 +567,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
 
-					// Extract resource targetID numbers from compute operations
-					for _, event := range events {
-						body := event.Response.ParseBody()
-						targetLink, _, _ := unstructured.NestedString(body, "targetLink")
-						targetId, _, _ := unstructured.NestedString(body, "targetId")
-						if targetLink != "" && targetId != "" {
-							tokens := strings.Split(targetLink, "/")
-							n := len(tokens)
-							if n >= 2 {
-								kind := tokens[n-2]
-								switch kind {
-								case "addresses":
-									r.PathIDs[targetId] = "${addressesId}"
-								case "backendServices":
-									r.PathIDs[targetId] = "${backendServicesId}"
-								case "firewallPolicies":
-									r.PathIDs[targetId] = "${firewallPolicyId}"
-								case "forwardingRules":
-									r.PathIDs[targetId] = "${forwardingRulesId}"
-								case "healthChecks":
-									r.PathIDs[targetId] = "${healthChecksId}"
-								case "serviceAttachments":
-									r.PathIDs[targetId] = "${serviceAttachmentsId}"
-								case "sslCertificates":
-									r.PathIDs[targetId] = "${sslCertificatesId}"
-								case "subnetworks":
-									r.PathIDs[targetId] = "${subnetworkNumber}"
-								case "targetGrpcProxies":
-									r.PathIDs[targetId] = "${targetGrpcProxiesId}"
-								case "targetHttpsProxies":
-									r.PathIDs[targetId] = "${targetHttpsProxiesId}"
-								case "targetSslProxies":
-									r.PathIDs[targetId] = "${targetSslProxiesId}"
-								case "targetTcpProxies":
-									r.PathIDs[targetId] = "${targetTcpProxiesId}"
-								case "urlMaps":
-									r.PathIDs[targetId] = "${urlMapsId}"
-								}
-							}
-						}
-
-						u := event.Request.URL
-						// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
-						// This special handling to avoid diffs in http logs.
-						// This can be removed once all Compute resources are migrated to direct controller.
-						basePath := "https://compute.googleapis.com/compute"
-						if strings.HasPrefix(u, basePath+"/beta/") {
-							u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
-						}
-						event.Request.URL = u
-
-					}
-
 					// Specific to IAM/policy
 					addReplacement("policy.etag", "abcdef0123A=")
 
