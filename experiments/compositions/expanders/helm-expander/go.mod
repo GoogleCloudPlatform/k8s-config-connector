@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositi
 
 go 1.22.4
 
-toolchain go1.23.2
+toolchain go1.23.3
 
 require (
 	github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20240701212443-eb03df209286

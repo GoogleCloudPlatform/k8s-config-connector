@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kubectl-p
 
 go 1.22
 
-toolchain go1.23.2
+toolchain go1.23.3
 
 require (
 	github.com/google/go-cmp v0.6.0

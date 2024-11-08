@@ -2,7 +2,7 @@
 
 # ----------------- Build Container ---------------------------
 # Build the go app.
-FROM golang:1.23.2 AS build-stage
+FROM golang:1.23.3 AS build-stage
 
 # Set destination for COPY
 WORKDIR /go/src/app
