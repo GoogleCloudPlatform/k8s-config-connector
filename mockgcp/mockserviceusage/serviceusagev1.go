@@ -23,6 +23,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -46,7 +47,8 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 
 	// Verify that this is a known service
 	if !isKnownService(name.ServiceName) {
-		klog.Errorf("enabling service %q not implemented in mock", name.ServiceName)
+		// Deliberately panic because this makes it more obvious, when implementing a new service
+		klog.Fatalf("enabling service %q not implemented in mock", name.ServiceName)
 		return nil, status.Errorf(codes.PermissionDenied, "Not found or permission denied for service(s): %v", name.ServiceName)
 	}
 
@@ -70,16 +72,21 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 		if err := s.storage.Create(ctx, fqn, service); err != nil {
 			return nil, err
 		}
-
-		return s.operations.NewLRO(ctx)
+	} else {
+		service.State = pb.State_ENABLED
+		if err := s.storage.Update(ctx, fqn, service); err != nil {
+			return nil, err
+		}
 	}
 
-	service.State = pb.State_ENABLED
-	if err := s.storage.Update(ctx, fqn, service); err != nil {
-		return nil, err
-	}
-
-	return s.operations.NewLRO(ctx)
+	prefix := ""
+	metadata := &emptypb.Empty{}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		response := &pb.EnableServiceResponse{
+			Service: service,
+		}
+		return response, nil
+	})
 }
 
 func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServiceRequest) (*longrunning.Operation, error) {
@@ -114,7 +121,14 @@ func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServ
 		}
 	}
 
-	return s.operations.NewLRO(ctx)
+	prefix := ""
+	metadata := &emptypb.Empty{}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		response := &pb.DisableServiceResponse{
+			Service: service,
+		}
+		return response, nil
+	})
 }
 
 func (s *ServiceUsageV1) GetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.Service, error) {
