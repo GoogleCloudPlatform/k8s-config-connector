@@ -43,7 +43,7 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.WorkstationClusterGVK, NewModel)
+	registry.RegisterModel(krm.WorkstationClusterGVK, NewWorkstationClusterModel)
 	fuzztesting.RegisterKRMFuzzer(workstationclusterFuzzer())
 }
 
@@ -78,17 +78,17 @@ func workstationclusterFuzzer() fuzztesting.KRMFuzzer {
 	return f
 }
 
-func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &model{config: *config}, nil
+func NewWorkstationClusterModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelWorkstationCluster{config: *config}, nil
 }
 
-var _ directbase.Model = &model{}
+var _ directbase.Model = &modelWorkstationCluster{}
 
-type model struct {
+type modelWorkstationCluster struct {
 	config config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelWorkstationCluster) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -101,7 +101,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelWorkstationCluster) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.WorkstationCluster{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -168,7 +168,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}, nil
 }
 
-func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *modelWorkstationCluster) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
