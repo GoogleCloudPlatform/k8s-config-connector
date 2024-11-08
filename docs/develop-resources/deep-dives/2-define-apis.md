@@ -30,7 +30,7 @@ go run main.go generate-types \
      --service google.storage.v1  \
      --proto-source-path ../proto-to-mapper/build/googleapis.pb \
      --output-api $REPO_ROOT/apis \
-     --kind StorageNotification  \ 
+     --kind StorageNotification  \
      --proto-resource Notification \
      --api-version "storage.cnrm.cloud.google.com/v1beta1"
 ```
