@@ -51,8 +51,8 @@ import (
 	fakebigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1alpha1/fake"
 	bigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1beta1"
 	fakebigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1beta1/fake"
-	bigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1"
-	fakebigqueryconnectionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1/fake"
+	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
+	fakebigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1/fake"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	fakebigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1/fake"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
@@ -394,9 +394,9 @@ func (c *Clientset) BigqueryanalyticshubV1beta1() bigqueryanalyticshubv1beta1.Bi
 	return &fakebigqueryanalyticshubv1beta1.FakeBigqueryanalyticshubV1beta1{Fake: &c.Fake}
 }
 
-// BigqueryconnectionV1alpha1 retrieves the BigqueryconnectionV1alpha1Client
-func (c *Clientset) BigqueryconnectionV1alpha1() bigqueryconnectionv1alpha1.BigqueryconnectionV1alpha1Interface {
-	return &fakebigqueryconnectionv1alpha1.FakeBigqueryconnectionV1alpha1{Fake: &c.Fake}
+// BigqueryconnectionV1beta1 retrieves the BigqueryconnectionV1beta1Client
+func (c *Clientset) BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Interface {
+	return &fakebigqueryconnectionv1beta1.FakeBigqueryconnectionV1beta1{Fake: &c.Fake}
 }
 
 // BigquerydatapolicyV1alpha1 retrieves the BigquerydatapolicyV1alpha1Client

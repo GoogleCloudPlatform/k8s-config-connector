@@ -762,9 +762,6 @@
         external: bigquerydatasetsamplehnf4t2squ1g1ghnendt0
   ResourceConfigId: BigQueryTable
   URI: "https://bigquery.googleapis.com/bigquery/v2/projects/kcc-test/datasets/bigquerydatasetsamplehnf4t2squ1g1ghnendt0/tables/bigquerytablesamplehnf4t2squ1g1ghnendt0"
-- ExpectedSkeleton: null
-  ResourceConfigId: BigQueryConnectionConnection
-  URI: "https://bigqueryconnection.googleapis.com/v1/projects/kcc-test/locations/us-central1/connections/my-connection"
 - ExpectedSkeleton:
     apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
     kind: SecretManagerSecret

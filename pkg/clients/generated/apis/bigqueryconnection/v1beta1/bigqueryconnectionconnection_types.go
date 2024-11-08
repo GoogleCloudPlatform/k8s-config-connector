@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -61,8 +61,8 @@ type ConnectionCloudSQL struct {
 	/* Cloud SQL credential. */
 	Credential ConnectionCredential `json:"credential"`
 
-	/* Database name. */
-	Database string `json:"database"`
+	/* Reference to the SQL Database. */
+	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
 
 	/* Reference to the Cloud SQL instance ID. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`

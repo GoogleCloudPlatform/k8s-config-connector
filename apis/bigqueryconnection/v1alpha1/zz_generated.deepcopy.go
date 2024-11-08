@@ -738,9 +738,9 @@ func (in *CloudSqlPropertiesSpec) DeepCopyInto(out *CloudSqlPropertiesSpec) {
 		*out = new(v1beta1.SQLInstanceRef)
 		**out = **in
 	}
-	if in.Database != nil {
-		in, out := &in.Database, &out.Database
-		*out = new(string)
+	if in.DatabaseRef != nil {
+		in, out := &in.DatabaseRef, &out.DatabaseRef
+		*out = new(v1beta1.SQLDatabaseRef)
 		**out = **in
 	}
 	if in.Type != nil {
