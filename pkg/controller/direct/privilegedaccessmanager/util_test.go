@@ -18,7 +18,7 @@ import (
 	"reflect"
 	"testing"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1beta1"
 
 	"github.com/google/go-cmp/cmp"
 )

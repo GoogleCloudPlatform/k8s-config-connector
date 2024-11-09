@@ -17,7 +17,7 @@ package privilegedaccessmanager
 import (
 	"sort"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1beta1"
 )
 
 func sortPrincipalsInSpec(spec *krm.PrivilegedAccessManagerEntitlementSpec) {
