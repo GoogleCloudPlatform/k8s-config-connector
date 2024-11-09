@@ -43,8 +43,6 @@ type {{.Kind}}Ref struct {
 
 	// The namespace of a {{.Kind}} resource.
 	Namespace string ` + "`" + `json:"namespace,omitempty"` + "`" + `
-
-	parent *{{.Kind}}Parent
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on {{.Kind}}.
@@ -101,7 +99,6 @@ func New{{.Kind}}Ref(ctx context.Context, reader client.Reader, obj *{{.Kind}}) 
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-	id.parent = &{{.Kind}}Parent{ProjectID: projectID, Location: location}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -115,7 +112,8 @@ func New{{.Kind}}Ref(ctx context.Context, reader client.Reader, obj *{{.Kind}}) 
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		id.External = as{{.Kind}}External(id.parent, resourceID)
+		parent := &{{.Kind}}Parent{ProjectID: projectID, Location: location}
+		id.External = as{{.Kind}}External(parent, resourceID)
 		return id, nil
 	}
 
@@ -135,14 +133,10 @@ func New{{.Kind}}Ref(ctx context.Context, reader client.Reader, obj *{{.Kind}}) 
 			resourceID, actualResourceID)
 	}
 	id.External = externalRef
-	id.parent = &{{.Kind}}Parent{ProjectID: projectID, Location: location}
 	return id, nil
 }
 
 func (r *{{.Kind}}Ref) Parent() (*{{.Kind}}Parent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
 	if r.External != "" {
 		parent, _, err := parse{{.Kind}}External(r.External)
 		if err != nil {
