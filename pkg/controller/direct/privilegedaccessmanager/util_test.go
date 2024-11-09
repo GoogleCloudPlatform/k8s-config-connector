@@ -123,59 +123,10 @@ func TestSortAccessControlEntrySlice(t *testing.T) {
 			expected: []krm.AccessControlEntry{
 				{
 					Principals: []string{
-						"user:abc@test.com",
-					},
-				},
-				{
-					Principals: []string{
-						"serviceAccount:xyz2@gservicaccount.com",
-						"user:abc@test.com",
-					},
-				},
-				{
-					Principals: []string{
 						"serviceAccount:xyz@gservicaccount.com",
 						"user:abc@test.com",
 					},
 				},
-				{
-					Principals: []string{
-						"serviceAccount:xyz2@gservicaccount.com",
-						"serviceAccount:xyz@gservicaccount.com",
-						"user:abc@test.com",
-					},
-				},
-			},
-		},
-		{
-			testName: "sort multiple entries",
-			unsorted: []krm.AccessControlEntry{
-				{
-					Principals: []string{
-						"user:abc@test.com",
-						"serviceAccount:xyz@gservicaccount.com",
-					},
-				},
-				{
-					Principals: []string{
-						"user:abc@test.com",
-					},
-				},
-				{
-					Principals: []string{
-						"user:abc@test.com",
-						"serviceAccount:xyz2@gservicaccount.com",
-					},
-				},
-				{
-					Principals: []string{
-						"user:abc@test.com",
-						"serviceAccount:xyz@gservicaccount.com",
-						"serviceAccount:xyz2@gservicaccount.com",
-					},
-				},
-			},
-			expected: []krm.AccessControlEntry{
 				{
 					Principals: []string{
 						"user:abc@test.com",
@@ -184,12 +135,6 @@ func TestSortAccessControlEntrySlice(t *testing.T) {
 				{
 					Principals: []string{
 						"serviceAccount:xyz2@gservicaccount.com",
-						"user:abc@test.com",
-					},
-				},
-				{
-					Principals: []string{
-						"serviceAccount:xyz@gservicaccount.com",
 						"user:abc@test.com",
 					},
 				},
@@ -205,9 +150,9 @@ func TestSortAccessControlEntrySlice(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.testName, func(t *testing.T) {
-			sortAccessControlEntrySlice(tc.unsorted)
+			sortPrincipals(tc.unsorted)
 			if !reflect.DeepEqual(tc.unsorted, tc.expected) {
-				t.Fatalf("unexpected diff running sortAccessControlEntrySlice (-want +got): \n%v", cmp.Diff(tc.expected, tc.unsorted))
+				t.Fatalf("unexpected diff running sortPrincipals (-want +got): \n%v", cmp.Diff(tc.expected, tc.unsorted))
 			}
 		})
 	}
@@ -337,18 +282,18 @@ func TestSortArrayFieldsInSpec(t *testing.T) {
 				EligibleUsers: []krm.AccessControlEntry{
 					{
 						Principals: []string{
+							"serviceAccount:xyz@gservicaccount.com",
+							"user:abc@test.com",
+						},
+					},
+					{
+						Principals: []string{
 							"user:abc@test.com",
 						},
 					},
 					{
 						Principals: []string{
 							"serviceAccount:xyz2@gservicaccount.com",
-							"user:abc@test.com",
-						},
-					},
-					{
-						Principals: []string{
-							"serviceAccount:xyz@gservicaccount.com",
 							"user:abc@test.com",
 						},
 					},
@@ -360,18 +305,18 @@ func TestSortArrayFieldsInSpec(t *testing.T) {
 								Approvers: []krm.AccessControlEntry{
 									{
 										Principals: []string{
+											"serviceAccount:xyz@gservicaccount.com",
+											"user:abc@test.com",
+										},
+									},
+									{
+										Principals: []string{
 											"user:abc@test.com",
 										},
 									},
 									{
 										Principals: []string{
 											"serviceAccount:xyz2@gservicaccount.com",
-											"user:abc@test.com",
-										},
-									},
-									{
-										Principals: []string{
-											"serviceAccount:xyz@gservicaccount.com",
 											"user:abc@test.com",
 										},
 									},
@@ -385,9 +330,9 @@ func TestSortArrayFieldsInSpec(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.testName, func(t *testing.T) {
-			sortArrayFieldsInSpec(tc.unsorted)
+			sortPrincipalsInSpec(tc.unsorted)
 			if !reflect.DeepEqual(tc.unsorted, tc.expected) {
-				t.Fatalf("unexpected diff running sortArrayFieldsInSpec (-want +got): \n%v", cmp.Diff(tc.expected, tc.unsorted))
+				t.Fatalf("unexpected diff running sortPrincipalsInSpec (-want +got): \n%v", cmp.Diff(tc.expected, tc.unsorted))
 			}
 		})
 	}

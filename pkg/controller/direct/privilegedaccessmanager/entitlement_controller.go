@@ -312,9 +312,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("error generating update mask: %w", mapCtx.Err())
 	}
-	sortArrayFieldsInSpec(parsedActual)
+	sortPrincipalsInSpec(parsedActual)
 	parsedDesired := a.desired.DeepCopy()
-	sortArrayFieldsInSpec(&parsedDesired.Spec)
+	sortPrincipalsInSpec(&parsedDesired.Spec)
 
 	if !reflect.DeepEqual(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets) {
 		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets))

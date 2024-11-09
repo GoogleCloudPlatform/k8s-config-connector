@@ -20,36 +20,22 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1alpha1"
 )
 
-func sortArrayFieldsInSpec(spec *krm.PrivilegedAccessManagerEntitlementSpec) {
+func sortPrincipalsInSpec(spec *krm.PrivilegedAccessManagerEntitlementSpec) {
 	if spec == nil {
 		return
 	}
-	sortAccessControlEntrySlice(spec.EligibleUsers)
+
+	sortPrincipals(spec.EligibleUsers)
 	if spec.ApprovalWorkflow == nil || spec.ApprovalWorkflow.ManualApprovals == nil {
 		return
 	}
 	for _, step := range spec.ApprovalWorkflow.ManualApprovals.Steps {
-		sortAccessControlEntrySlice(step.Approvers)
+		sortPrincipals(step.Approvers)
 	}
 }
 
-func sortAccessControlEntrySlice(accessControlEntries []krm.AccessControlEntry) {
+func sortPrincipals(accessControlEntries []krm.AccessControlEntry) {
 	for _, eu := range accessControlEntries {
 		sort.Strings(eu.Principals)
 	}
-	sort.Slice(accessControlEntries, func(i, j int) bool {
-		lenA := len(accessControlEntries[i].Principals)
-		lenB := len(accessControlEntries[j].Principals)
-		if lenA != lenB || lenA == 0 {
-			return lenA < lenB
-		}
-		for x := 0; x < lenA; x++ {
-			pA := accessControlEntries[i].Principals[x]
-			pB := accessControlEntries[j].Principals[x]
-			if pA != pB {
-				return pA < pB
-			}
-		}
-		return lenA < lenB
-	})
 }
