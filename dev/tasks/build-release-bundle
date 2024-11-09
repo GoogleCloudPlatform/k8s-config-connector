@@ -34,6 +34,12 @@ mkdir -p "${BIN_DIR}"
 
 LICENSING_SCRIPT=${REPO_ROOT}/scripts/add-license-header-to-yaml.sh
 
+function add_license() {
+  file=$1
+  $LICENSING_SCRIPT ${file} > ${file}.tmp
+  mv ${file}.tmp ${file}
+}
+
 GOBIN=${BIN_DIR}/ go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 export PATH=${BIN_DIR}/:$PATH
 
@@ -102,17 +108,22 @@ sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/*
 # Build the namespaced-mode install bundle (uses workload identity)
 NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-namespaced
 mkdir -p ${NAMESPACED_BUNDLE_DIR}
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/shared-components) > ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components) |\
+kustomize build config/installbundle/releases/scopes/namespaced/shared-components > ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+add_license ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components |\
   sed -e 's/mynamespace/${NAMESPACE?}/g' > ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+add_license ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 cp $CRDS_FILE ${NAMESPACED_BUNDLE_DIR}/crds.yaml
 sed -i "s/0.0.0-dev/${VERSION}/g" ${NAMESPACED_BUNDLE_DIR}/*
+
 # Create the autopilot variant of the namespaced-mode install bundle
 AUTOPILOT_NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-namespaced
 mkdir -p ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/autopilot-shared-components) > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components) |\
+kustomize build config/installbundle/releases/scopes/namespaced/autopilot-shared-components > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+add_license ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components |\
   sed -e 's/mynamespace/${NAMESPACE?}/g' > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+add_license ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 cp $CRDS_FILE ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/crds.yaml
 sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
 
