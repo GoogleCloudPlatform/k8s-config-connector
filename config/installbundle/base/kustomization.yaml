@@ -22,5 +22,6 @@ resources:
   - ../components/roles
   - ../components/rolebindings
   - ../components/recorder
-  - ../components/unmanageddetector
   - ../components/webhook
+  # Note: unmanageddetector is only used in namespaced mode
+  #- ../components/unmanageddetector
