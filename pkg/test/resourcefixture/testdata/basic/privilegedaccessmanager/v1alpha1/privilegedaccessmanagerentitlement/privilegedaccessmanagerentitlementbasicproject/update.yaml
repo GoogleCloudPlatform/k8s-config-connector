@@ -20,14 +20,14 @@ spec:
   projectRef:
     external: projects/${projectId}
   location: global
-  # Use format hhmmss to pass assertObjectContains check.
-  maxRequestDuration: 1h0m0s
+  maxRequestDuration: 1800s
   privilegedAccess:
     gcpIAMAccess:
       roleBindings:
-        - role: roles/storage.admin
+        - role: roles/pubsub.admin
   requesterJustificationConfig:
     notMandatory: {}
   eligibleUsers:
     - principals:
-        - serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+        - user:[REDACT]
+        - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
