@@ -700,7 +700,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
@@ -733,7 +733,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
@@ -846,7 +846,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -879,7 +879,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -992,7 +992,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1025,7 +1025,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1144,7 +1144,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1179,7 +1179,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1259,7 +1259,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1721,7 +1721,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1798,7 +1798,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${serviceAttachmentsId}",
+  "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1832,14 +1832,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${serviceAttachmentsId}",
+  "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1881,7 +1881,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}?alt=json
+PATCH https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1926,7 +1926,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${serviceAttachmentsId}",
+  "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
@@ -1960,14 +1960,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${serviceAttachmentsId}",
+  "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -2009,7 +2009,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}?alt=json
+DELETE https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -2035,7 +2035,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${serviceAttachmentsId}",
+  "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2069,14 +2069,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${serviceAttachmentsId}",
+  "targetId": "${serviceAttachmentID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -2321,7 +2321,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2356,7 +2356,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${forwardingRulesId}",
+  "targetId": "${forwardingRuleID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2427,7 +2427,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2460,7 +2460,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2531,7 +2531,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2564,7 +2564,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2635,7 +2635,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
@@ -2668,7 +2668,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${subnetworkNumber}",
+  "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }

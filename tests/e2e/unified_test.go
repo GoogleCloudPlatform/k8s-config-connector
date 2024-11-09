@@ -519,7 +519,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("oauth2ClientId", "888888888888888888888")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
@@ -558,67 +557,12 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to Compute
-					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("user", "user@example.com")
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("labelFingerprint", "abcdef0123A=")
 					addReplacement("fingerprint", "abcdef0123A=")
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
-
-					// Extract resource targetID numbers from compute operations
-					for _, event := range events {
-						body := event.Response.ParseBody()
-						targetLink, _, _ := unstructured.NestedString(body, "targetLink")
-						targetId, _, _ := unstructured.NestedString(body, "targetId")
-						if targetLink != "" && targetId != "" {
-							tokens := strings.Split(targetLink, "/")
-							n := len(tokens)
-							if n >= 2 {
-								kind := tokens[n-2]
-								switch kind {
-								case "addresses":
-									r.PathIDs[targetId] = "${addressesId}"
-								case "backendServices":
-									r.PathIDs[targetId] = "${backendServicesId}"
-								case "firewallPolicies":
-									r.PathIDs[targetId] = "${firewallPolicyId}"
-								case "forwardingRules":
-									r.PathIDs[targetId] = "${forwardingRulesId}"
-								case "healthChecks":
-									r.PathIDs[targetId] = "${healthChecksId}"
-								case "serviceAttachments":
-									r.PathIDs[targetId] = "${serviceAttachmentsId}"
-								case "sslCertificates":
-									r.PathIDs[targetId] = "${sslCertificatesId}"
-								case "subnetworks":
-									r.PathIDs[targetId] = "${subnetworkNumber}"
-								case "targetGrpcProxies":
-									r.PathIDs[targetId] = "${targetGrpcProxiesId}"
-								case "targetHttpsProxies":
-									r.PathIDs[targetId] = "${targetHttpsProxiesId}"
-								case "targetSslProxies":
-									r.PathIDs[targetId] = "${targetSslProxiesId}"
-								case "targetTcpProxies":
-									r.PathIDs[targetId] = "${targetTcpProxiesId}"
-								case "urlMaps":
-									r.PathIDs[targetId] = "${urlMapsId}"
-								}
-							}
-						}
-
-						u := event.Request.URL
-						// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
-						// This special handling to avoid diffs in http logs.
-						// This can be removed once all Compute resources are migrated to direct controller.
-						basePath := "https://compute.googleapis.com/compute"
-						if strings.HasPrefix(u, basePath+"/beta/") {
-							u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
-						}
-						event.Request.URL = u
-
-					}
 
 					// Specific to IAM/policy
 					addReplacement("policy.etag", "abcdef0123A=")
@@ -653,7 +597,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to AlloyDB
 					addReplacement("uid", "111111111111111111111")
 					addReplacement("response.uid", "111111111111111111111")
-					addReplacement("endTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("ipAddress", "10.1.2.3")
@@ -721,17 +664,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".mutationRecord.mutatedBy", "user@example.com")
 					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
-
-					// Specific to Sql
-					addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
-					addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
-					addReplacement("serverCaCert.commonName", "common-name")
-					addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("serverCaCert.sha1Fingerprint", "12345678")
-					addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
-					addReplacement("settings.backupConfiguration.startTime", "12:00")
-					addReplacement("settings.settingsVersion", "123")
 
 					// Specific to CertificateManager
 					addReplacement("response.dnsResourceRecord.data", uniqueID)

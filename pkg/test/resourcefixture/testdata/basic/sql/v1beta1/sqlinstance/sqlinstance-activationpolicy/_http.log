@@ -226,6 +226,7 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
@@ -440,6 +441,7 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",

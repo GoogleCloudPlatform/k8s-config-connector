@@ -15,6 +15,8 @@
 package e2e
 
 import (
+	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -56,9 +58,100 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	return s
 }
 
+// placeholderForGCPResource returns the placeholder we use for the value, if we recognize the GCP resource type
+func (r *Replacements) placeholderForGCPResource(resource string) string {
+	switch resource {
+	case "addresses":
+		return "${addressID}"
+	case "tensorboards":
+		return "${tensorboardID}"
+	case "tagKeys":
+		return "${tagKeyID}"
+	case "tagValues":
+		return "${tagValueID}"
+	case "datasets":
+		return "${datasetID}"
+	case "networks":
+		return "${networkID}"
+	case "subnetworks":
+		return "${subnetworkID}"
+	case "notificationChannels":
+		return "${notificationChannelID}"
+	case "alertPolicies":
+		return "${alertPolicyID}"
+	case "billingAccounts":
+		return "${billingAccountID}"
+	case "conditions":
+		return "${conditionID}"
+	case "exclusions":
+		return "${exclusionID}"
+	case "forwardingRules":
+		return "${forwardingRuleID}"
+	case "groups":
+		return "${groupID}"
+	case "jobs":
+		return "${jobID}"
+	case "uptimeCheckConfigs":
+		return "${uptimeCheckConfigID}"
+	case "operations":
+		return "${operationID}"
+	case "transferConfigs":
+		return "${transferConfigID}"
+	case "firewallPolicies":
+		return "${firewallPolicyID}"
+	case "folders":
+		return "${folderID}"
+	case "sslCertificates":
+		return "${sslCertificateID}"
+	case "serviceAttachments":
+		return "${serviceAttachmentID}"
+	case "targetGrpcProxies":
+		return "${targetGrpcProxyID}"
+	case "targetTcpProxies":
+		return "${targetTcpProxyID}"
+	case "targetHttpsProxies":
+		return "${targetHttpsProxyID}"
+	case "targetSslProxies":
+		return "${targetSslProxyID}"
+	default:
+		return ""
+	}
+}
+
 // ExtractIDsFromLinks parses the URL or partial URL, and extracts generated IDs from it.
 func (r *Replacements) ExtractIDsFromLinks(link string) {
+	u, _ := ParseGCPLink(link)
+	if u != nil {
+		for _, item := range u.PathItems {
+			placeholder := r.placeholderForGCPResource(item.Resource)
+			if placeholder != "" {
+				r.PathIDs[item.Name] = placeholder
+			}
+
+			// Special case for operations
+			// TODO: Can we get rid of this?
+			if item.Resource == "operations" {
+				r.OperationIDs[item.Name] = true
+			}
+		}
+	}
+}
+
+type GCPLink struct {
+	PathItems []PathItem
+}
+
+type PathItem struct {
+	Resource string
+	Name     string
+}
+
+func ParseGCPLink(link string) (*GCPLink, error) {
+	ret := &GCPLink{}
+
 	tokens := strings.Split(link, "/")
+
+	// Consider the last two tokens, in pairs
 	for len(tokens) >= 2 {
 		n := len(tokens)
 		kind := tokens[n-2]
@@ -73,47 +166,22 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			id = strings.Split(id, ":")[0]
 		}
 
-		switch kind {
-		case "tensorboards":
-			r.PathIDs[id] = "${tensorboardID}"
-		case "tagKeys":
-			r.PathIDs[id] = "${tagKeyID}"
-		case "tagValues":
-			r.PathIDs[id] = "${tagValueID}"
-		case "datasets":
-			r.PathIDs[id] = "${datasetID}"
-		case "networks":
-			r.PathIDs[id] = "${networkID}"
-		case "subnetworks":
-			r.PathIDs[id] = "${subnetworkID}"
-		case "notificationChannels":
-			r.PathIDs[id] = "${notificationChannelID}"
-		case "alertPolicies":
-			r.PathIDs[id] = "${alertPolicyID}"
-		case "billingAccounts":
-			r.PathIDs[id] = "${billingAccountID}"
-		case "conditions":
-			r.PathIDs[id] = "${conditionID}"
-		case "exclusions":
-			r.PathIDs[id] = "${exclusionID}"
-		case "forwardingRules":
-			r.PathIDs[id] = "${forwardingRuleID}"
-		case "groups":
-			r.PathIDs[id] = "${groupID}"
-		case "jobs":
-			r.PathIDs[id] = "${jobID}"
-		case "uptimeCheckConfigs":
-			r.PathIDs[id] = "${uptimeCheckConfigId}"
-		case "operations":
-			r.OperationIDs[id] = true
-			r.PathIDs[id] = "${operationID}"
-		case "transferConfigs":
-			r.PathIDs[id] = "${transferConfigID}"
-		case "firewallPolicies":
-			r.PathIDs[id] = "${firewallPolicyID}"
-		case "folders":
-			r.PathIDs[id] = "${folderID}"
+		// Advance by 2 tokens, unless this is one of the special-case GCP resources
+		if id == "global" {
+			tokens = tokens[:n-1]
+			ret.PathItems = append(ret.PathItems, PathItem{Resource: "", Name: "global"})
+		} else {
+			tokens = tokens[:n-2]
+			ret.PathItems = append(ret.PathItems, PathItem{Resource: kind, Name: id})
 		}
-		tokens = tokens[:n-2]
 	}
+
+	if len(ret.PathItems) == 0 {
+		return nil, fmt.Errorf("no items found in link %q", link)
+	}
+
+	// Return in path order
+	slices.Reverse(ret.PathItems)
+
+	return ret, nil
 }

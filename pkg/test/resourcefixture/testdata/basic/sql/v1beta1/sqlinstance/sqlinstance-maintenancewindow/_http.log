@@ -231,6 +231,7 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "maintenanceWindow": {
@@ -455,6 +456,7 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "kind": "sql#locationPreference",
       "zone": "us-central1-a"
     },
     "maintenanceWindow": {

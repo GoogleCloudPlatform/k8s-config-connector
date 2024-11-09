@@ -67,11 +67,15 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 		// StartTime is set when transitions to RUNNING
 		op.StartTime = timestamppb.New(now)
 	}
-	// if op.Status == pb.Operation_DONE {
-	// 	// StartTime is set when transitions to RUNNING
-	// 	op.StartTime = timestamppb.New(now)
-	// 	op.EndTime = timestamppb.New(now)
-	// }
+
+	if op.Status == pb.Operation_DONE {
+		if op.StartTime == nil {
+			op.StartTime = timestamppb.New(now)
+		}
+		if op.EndTime == nil {
+			op.EndTime = timestamppb.New(now)
+		}
+	}
 
 	op.InsertTime = timestamppb.New(now)
 	op.Name = string(uuid.NewUUID())

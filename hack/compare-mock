@@ -21,7 +21,16 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 # Run the tests specified on the command line
-export RUN_TESTS=TestAllInSeries/$1
+if [[ $1 =~ TestE2EScript.* ]]; then
+  # Prefix looks good
+  RUN_TESTS=$1
+elif [[ $1 =~ TestAllInSeries.* ]]; then
+  # Prefix looks good
+  RUN_TESTS=$1
+else
+  RUN_TESTS=TestAllInSeries/$1
+fi
+export RUN_TESTS
 
 # Clear existing artifacts
 rm -rf $(pwd)/artifactz/mock

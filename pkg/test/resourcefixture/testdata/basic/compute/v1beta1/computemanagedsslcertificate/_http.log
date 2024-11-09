@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -64,7 +64,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${sslCertificatesId}",
+  "targetId": "${sslCertificateID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
   "user": "user@example.com"
 }
@@ -96,14 +96,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${sslCertificatesId}",
+  "targetId": "${sslCertificateID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -134,7 +134,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -159,7 +159,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${sslCertificatesId}",
+  "targetId": "${sslCertificateID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
   "user": "user@example.com"
 }
@@ -191,7 +191,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${sslCertificatesId}",
+  "targetId": "${sslCertificateID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
   "user": "user@example.com"
 }
