@@ -23,6 +23,7 @@ var allServices = []string{
 	"gkehub.googleapis.com",
 	"anthos.googleapis.com",
 	"anthosconfigmanagement.googleapis.com",
+	"anthospolicycontroller.googleapis.com",
 	"multiclusteringress.googleapis.com",
 	"multiclusterservicediscovery.googleapis.com",
 	"mesh.googleapis.com",
