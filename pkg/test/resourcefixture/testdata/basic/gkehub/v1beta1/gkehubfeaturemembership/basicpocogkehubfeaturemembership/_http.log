@@ -1261,7 +1261,7 @@ User-Agent: kcc/controller-manager
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10"
@@ -1326,7 +1326,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
+      "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
         "policycontroller": {
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "10"
@@ -1365,7 +1365,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10"
@@ -1390,7 +1390,7 @@ User-Agent: kcc/controller-manager
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
@@ -1471,7 +1471,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
+      "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
         "policycontroller": {
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "15",
@@ -1525,7 +1525,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
@@ -1565,7 +1565,7 @@ User-Agent: kcc/controller-manager
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {}
+    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {}
   },
   "name": "projects/example-project-01/locations/global/features/policycontroller",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1624,7 +1624,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-poco-${uniqueId}": {}
+      "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-basic-poco-${uniqueId}": {}
     },
     "name": "projects/example-project-01/locations/global/features/policycontroller",
     "resourceState": {

@@ -20,7 +20,7 @@ spec:
   projectRef:
     name: gkehubfm-${uniqueId}
   location: global
-  membershipLocation: us-central1
+  membershipLocation: us-west1
   membershipRef:
     name: gkehubmembership-full-poco-${uniqueId}
   featureRef:
