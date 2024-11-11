@@ -31,7 +31,8 @@ import (
 )
 
 var (
-	ulog = ctrl.Log.WithName("UpgradeChecker")
+	ulog       = ctrl.Log.WithName("UpgradeChecker")
+	devVersion = semver.MustParse("0.0.0-dev")
 )
 
 // NewUpgradeChecker provides an implementation of declarative.Preflight that
@@ -95,6 +96,10 @@ func (u *UpgradeChecker) Preflight(ctx context.Context, o declarative.Declarativ
 }
 
 func compareMajorOnly(v, w semver.Version) int {
+	if v.Equals(devVersion) {
+		// If we are using a dev controller ignore semver drift.
+		return 0
+	}
 	if v.Major != w.Major {
 		if v.Major > w.Major {
 			return 1
