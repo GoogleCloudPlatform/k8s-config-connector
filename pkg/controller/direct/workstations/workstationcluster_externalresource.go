@@ -42,21 +42,16 @@ func (c *WorkstationClusterIdentity) FullyQualifiedName() string {
 
 // AsExternalRef builds a externalRef from a WorkstationCluster
 func (c *WorkstationClusterIdentity) AsExternalRef() *string {
-	e := serviceDomain + "/" + c.FullyQualifiedName()
+	e := c.FullyQualifiedName()
 	return &e
 }
 
 // asID builds a WorkstationClusterIdentity from a `status.externalRef`
 func asID(externalRef string) (*WorkstationClusterIdentity, error) {
-	if !strings.HasPrefix(externalRef, serviceDomain) {
-		return nil, fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
-	}
-	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
-	tokens := strings.Split(path, "/")
-
+	tokens := strings.Split(externalRef, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" {
-		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/workstationClusters/<WorkstationCluster>, got %s",
-			serviceDomain, externalRef)
+		return nil, fmt.Errorf("externalRef should be projects/<project>/locations/<location>/workstationClusters/<WorkstationCluster>, got %s",
+			externalRef)
 	}
 	return &WorkstationClusterIdentity{
 		Parent:             parent{Project: tokens[1], Location: tokens[3]},
