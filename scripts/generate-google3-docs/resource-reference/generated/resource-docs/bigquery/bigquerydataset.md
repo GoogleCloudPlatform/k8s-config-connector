@@ -511,11 +511,11 @@ storageBillingModel: string
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -619,6 +619,8 @@ etag: string
 externalRef: string
 lastModifiedTime: integer
 observedGeneration: integer
+observedState:
+  location: string
 selfLink: string
 ```
 
@@ -711,6 +713,20 @@ selfLink: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.location</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

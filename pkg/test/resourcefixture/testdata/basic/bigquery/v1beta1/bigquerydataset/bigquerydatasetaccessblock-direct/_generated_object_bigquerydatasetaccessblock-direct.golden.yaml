@@ -35,7 +35,9 @@ status:
     type: Ready
   creationTime: "1970-01-01T00:00:00Z"
   etag: abcdef123456
-  externalRef: projects/${projectId}/locations/US/datasets/bigquerydataset${uniqueId}
+  externalRef: projects/${projectId}/datasets/bigquerydataset${uniqueId}
   lastModifiedTime: "1970-01-01T00:00:00Z"
   observedGeneration: 2
+  observedState:
+    location: US
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}
