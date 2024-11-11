@@ -38,8 +38,8 @@ type Parent struct {
 type BigQueryConnectionConnectionSpec struct {
 	Parent `json:",inline"`
 
-	// The BigQuery ConnectionID. This is a server-generated ID in the UUID format.
-	// If not provided, ConfigConnector will create a new Connection and store the UUID in `status.serviceGeneratedID` field.
+	// The BigQuery ConnectionID. If not given, the metadata.name is used.
+	// To acquire a service-generated connection which ID is in UUID format, you can only use this field.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// User provided display name for the connection.

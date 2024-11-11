@@ -176,10 +176,6 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 	log.V(2).Info("getting BigQueryConnectionConnection", "name", a.id.External)
 
-	if a.id.External == "" {
-		// Cannot retrieve the Connection without ServiceGeneratedID, expecting to create a new Connection.
-		return false, nil
-	}
 	req := &bigqueryconnectionpb.GetConnectionRequest{Name: a.id.External}
 	connectionpb, err := a.gcpClient.GetConnection(ctx, req)
 	if err != nil {
@@ -209,13 +205,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent()
+	parent, id, err := krm.ParseExternal(a.id.External)
 	if err != nil {
-		return fmt.Errorf("get BigQueryConnectionConnection parent %s: %w", a.id.External, err)
+		return err
 	}
 	req := &bigqueryconnectionpb.CreateConnectionRequest{
-		Parent:     parent,
-		Connection: resource,
+		Parent:       parent,
+		Connection:   resource,
+		ConnectionId: id,
 	}
 	created, err := a.gcpClient.CreateConnection(ctx, req)
 	if err != nil {
@@ -228,14 +225,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	tokens := strings.Split(created.Name, "/")
-	parent, err = a.id.Parent()
-	if err != nil {
-		return err
-	}
-	externalRef := parent + "/connections/" + tokens[5]
-	status.ExternalRef = &externalRef
+	status.ExternalRef = &a.id.External
 	return setStatus(u, status)
 }
 
@@ -297,9 +287,9 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent, err := a.id.Parent()
+	parent, _, err := krm.ParseExternal(a.id.External)
 	if err != nil {
-		return nil, fmt.Errorf("BigQueryConnectionConnection %s parent unset: %w", a.id.External, err)
+		return nil, err
 	}
 	if parent != "" {
 		tokens := strings.Split(parent, "/")

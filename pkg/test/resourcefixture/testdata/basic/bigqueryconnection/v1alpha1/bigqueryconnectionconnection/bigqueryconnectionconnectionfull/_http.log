@@ -1,4 +1,30 @@
-POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Connection projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint&connectionId=bigqueryconnectionconnection-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
@@ -28,15 +54,15 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -57,21 +83,21 @@ X-Xss-Protection: 0
   "description": "test connection for cloud resource",
   "friendlyName": "cloud-resource-connection",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CfriendlyName
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CfriendlyName
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 {
   "cloudResource": {},
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 200 OK
@@ -93,15 +119,15 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -122,15 +148,15 @@ X-Xss-Protection: 0
   "description": "updated connection for cloud resource",
   "friendlyName": "cloud-resource-connection-updated",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 200 OK
 Cache-Control: private

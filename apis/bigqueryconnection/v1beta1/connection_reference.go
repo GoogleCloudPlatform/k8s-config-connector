@@ -22,7 +22,6 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/google/uuid"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
@@ -46,44 +45,31 @@ func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reade
 
 	// Get desired service-generated ID from spec
 	desiredServiceID := direct.ValueOf(obj.Spec.ResourceID)
-	if desiredServiceID != "" {
-		if _, err := uuid.Parse(desiredServiceID); err != nil {
-			return nil, fmt.Errorf("spec.resourceID should be in a UUID format, got %s ", desiredServiceID)
-		}
+	if desiredServiceID == "" {
+		desiredServiceID = obj.GetName()
 	}
-
-	// Get externalReference
+	// validate status.externalRef
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		tokens := strings.Split(externalRef, "/")
-
-		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-			return nil, fmt.Errorf("externalRef should be projects/<project>/locations/<location>/connections/<Connection>, got %s", externalRef)
+		actualProject, actualLocation, actualID, err := parseExternal(externalRef)
+		if err != nil {
+			return nil, err
 		}
-		id.parent = "projects/" + tokens[1] + "/locations/" + tokens[3]
-
 		// Validate spec parent and resourceID field if the resource is already reconcilied with a GCP Connection resource.
-		if tokens[1] != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s",
-				tokens[1], projectID)
+		if projectID != actualProject {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", projectID, actualProject)
 		}
-		if tokens[3] != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s",
-				tokens[3], location)
+		if location != actualLocation {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", location, actualLocation)
 		}
-		if desiredServiceID != "" && tokens[5] != desiredServiceID {
+		if desiredServiceID != actualID {
 			// Service generated ID shall not be reset in the same BigQueryConnectionConnection.
 			// TODO: what if multiple BigQueryConnectionConnection points to the same GCP Connection?
 			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already acquired the Connection %s",
-				desiredServiceID, tokens[5])
+				desiredServiceID, actualID)
 		}
-		id.External = externalRef
-		return id, nil
 	}
-	id.parent = "projects/" + projectID + "/locations/" + location
-	if desiredServiceID != "" {
-		id.External = id.parent + "/connections/" + desiredServiceID
-	}
+	id.External = "projects/" + projectID + "/locations/" + location + "/connections/" + desiredServiceID
 	return id, nil
 }
 
@@ -100,24 +86,22 @@ type BigQueryConnectionConnectionRef struct {
 	Name string `json:"name,omitempty"`
 	// The `namespace` of a `BigQueryConnectionConnection` resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent string
 }
 
-func (r *BigQueryConnectionConnectionRef) Parent() (string, error) {
-	if r.parent != "" {
-		return r.parent, nil
+func ParseExternal(external string) (string, string, error) {
+	project, location, id, err := parseExternal(external)
+	if err != nil {
+		return "", "", err
 	}
-	if r.External != "" {
-		r.External = strings.TrimPrefix(r.External, "/")
-		tokens := strings.Split(r.External, "/")
-		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
-		}
-		r.parent = "projects/" + tokens[1] + "/locations/" + tokens[3]
-		return r.parent, nil
+	return "projects/" + project + "/locations/" + location, id, nil
+}
+
+func parseExternal(external string) (string, string, string, error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
+		return "", "", "", fmt.Errorf("external should be projects/<project>/locations/<location>/connections/<Connection>, got %s", external)
 	}
-	return "", fmt.Errorf("BigQueryConnectionConnectionRef not normalized to External form or not created from `New()`")
+	return tokens[1], tokens[3], tokens[5], nil
 }
 
 // NormalizedExternal provision the "External" value.
@@ -127,9 +111,8 @@ func (r *BigQueryConnectionConnectionRef) NormalizedExternal(ctx context.Context
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryConnectionConnectionGVK.Kind)
 	}
 	if r.External != "" {
-		r.External = strings.TrimPrefix(r.External, "/")
-		tokens := strings.Split(r.External, "/")
-		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
+		_, _, err := ParseExternal(r.External)
+		if err != nil {
 			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
 		}
 		return r.External, nil
