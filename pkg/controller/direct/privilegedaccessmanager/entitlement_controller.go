@@ -312,28 +312,32 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("error generating update mask: %w", mapCtx.Err())
 	}
-	if !reflect.DeepEqual(parsedActual.AdditionalNotificationTargets, a.desired.Spec.AdditionalNotificationTargets) {
-		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, a.desired.Spec.AdditionalNotificationTargets))
+	sortPrincipalsInSpec(parsedActual)
+	parsedDesired := a.desired.DeepCopy()
+	sortPrincipalsInSpec(&parsedDesired.Spec)
+
+	if !reflect.DeepEqual(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets) {
+		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets))
 		updateMask.Paths = append(updateMask.Paths, "additional_notification_targets")
 	}
-	if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, a.desired.Spec.ApprovalWorkflow) {
-		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, a.desired.Spec.ApprovalWorkflow))
+	if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow) {
+		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow))
 		updateMask.Paths = append(updateMask.Paths, "approval_workflow")
 	}
-	if !reflect.DeepEqual(parsedActual.EligibleUsers, a.desired.Spec.EligibleUsers) {
-		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(parsedActual.EligibleUsers, a.desired.Spec.EligibleUsers))
+	if !reflect.DeepEqual(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers) {
+		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers))
 		updateMask.Paths = append(updateMask.Paths, "eligible_users")
 	}
-	if !reflect.DeepEqual(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, a.desired.Spec.MaxRequestDuration).AsDuration()) {
-		log.V(2).Info("'spec.maxRequestDuration' field is updated (-old +new)", cmp.Diff(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, a.desired.Spec.MaxRequestDuration).AsDuration()))
+	if !reflect.DeepEqual(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, parsedDesired.Spec.MaxRequestDuration).AsDuration()) {
+		log.V(2).Info("'spec.maxRequestDuration' field is updated (-old +new)", cmp.Diff(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, parsedDesired.Spec.MaxRequestDuration).AsDuration()))
 		updateMask.Paths = append(updateMask.Paths, "max_request_duration")
 	}
-	if !reflect.DeepEqual(parsedActual.PrivilegedAccess, a.desired.Spec.PrivilegedAccess) {
-		log.V(2).Info("'spec.privilegedAccess' field is updated (-old +new)", cmp.Diff(parsedActual.PrivilegedAccess, a.desired.Spec.PrivilegedAccess))
+	if !reflect.DeepEqual(parsedActual.PrivilegedAccess, parsedDesired.Spec.PrivilegedAccess) {
+		log.V(2).Info("'spec.privilegedAccess' field is updated (-old +new)", cmp.Diff(parsedActual.PrivilegedAccess, parsedDesired.Spec.PrivilegedAccess))
 		updateMask.Paths = append(updateMask.Paths, "privileged_access")
 	}
-	if !reflect.DeepEqual(parsedActual.RequesterJustificationConfig, a.desired.Spec.RequesterJustificationConfig) {
-		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(parsedActual.RequesterJustificationConfig, a.desired.Spec.RequesterJustificationConfig))
+	if !reflect.DeepEqual(parsedActual.RequesterJustificationConfig, parsedDesired.Spec.RequesterJustificationConfig) {
+		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(parsedActual.RequesterJustificationConfig, parsedDesired.Spec.RequesterJustificationConfig))
 		updateMask.Paths = append(updateMask.Paths, "requester_justification_config")
 	}
 	if len(updateMask.Paths) == 0 {

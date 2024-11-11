@@ -60,8 +60,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -89,7 +89,7 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#firewallPolicy",
-  "name": "${firewallPolicyId}",
+  "name": "${firewallPolicyID}",
   "parent": "organizations/${organizationID}",
   "ruleTupleCount": 8,
   "rules": [
@@ -170,8 +170,8 @@ X-Xss-Protection: 0
       "ruleTupleCount": 2
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}/${firewallPolicyId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/${firewallPolicyID}",
   "shortName": "firewallpolicy-${uniqueId}"
 }
 
@@ -652,7 +652,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 {
   "action": "deny",
   "direction": "EGRESS",
-  "firewallPolicy": "locations/global/firewallPolicies/${firewallPolicyId}",
+  "firewallPolicy": "locations/global/firewallPolicies/${firewallPolicyID}",
   "match": {
     "destAddressGroups": [
       "organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup"
@@ -711,8 +711,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -744,8 +744,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -876,8 +876,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -909,8 +909,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -1002,8 +1002,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -1035,8 +1035,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -1364,7 +1364,7 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#firewallPolicy",
-  "name": "${firewallPolicyId}",
+  "name": "${firewallPolicyID}",
   "parent": "organizations/${organizationID}",
   "ruleTupleCount": 8,
   "rules": [
@@ -1445,8 +1445,8 @@ X-Xss-Protection: 0
       "ruleTupleCount": 2
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}/${firewallPolicyId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/${firewallPolicyID}",
   "shortName": "firewallpolicy-${uniqueId}"
 }
 
@@ -1477,8 +1477,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -1510,8 +1510,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${firewallPolicyId}",
-  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyId}",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}",
   "user": "user@example.com"
 }
 
@@ -1538,10 +1538,10 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyId}' was not found",
+        "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyId}' was not found"
+    "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyID}' was not found"
   }
 }

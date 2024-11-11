@@ -154,6 +154,7 @@ func (s *sqlUsersService) Delete(ctx context.Context, req *pb.SqlUsersDeleteRequ
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_DELETE_USER,
+		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
 	}
 	return s.operations.startLRO(ctx, op, deleted, func() (proto.Message, error) {
 		return deleted, nil

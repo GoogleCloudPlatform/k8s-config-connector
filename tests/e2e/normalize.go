@@ -514,6 +514,7 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 	linkPaths := sets.New(
 		".response.pscConnections[].forwardingRule",
 		".response.pscConnections[].network",
+		".selfLink",
 	)
 
 	wellKnownPaths := map[string]string{
@@ -571,11 +572,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 }
 
 func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
-	replacements := NewReplacements()
+	normalizer := NewNormalizer(uniqueID, project)
+
+	normalizer.Preprocess(events)
 
 	// Find any URLs
 	for _, event := range events {
-		findLinksInEvent(t, replacements, event)
+		findLinksInEvent(t, normalizer.Replacements, event)
 	}
 
 	// Remove headers that just aren't very relevant to testing
@@ -629,7 +632,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	})
 
 	// Apply replacements
-	replacements.ApplyReplacementsToHTTPEvents(events)
+	normalizer.Replacements.ApplyReplacementsToHTTPEvents(events)
 }
 
 func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
@@ -643,6 +646,11 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.uniqueId"] = "12345678"
+
+	// Misc Operations
+	visitor.replacePaths[".insertTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".endTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".user"] = "user@example.com"
 
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
@@ -709,6 +717,19 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
 		visitor.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
 		visitor.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
+	}
+
+	// Specific to Sql
+	{
+		visitor.ReplacePath(".ipAddresses[].ipAddress", "10.1.2.3")
+		visitor.ReplacePath(".serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
+		visitor.ReplacePath(".serverCaCert.commonName", "common-name")
+		visitor.ReplacePath(".serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".serverCaCert.sha1Fingerprint", "12345678")
+		visitor.ReplacePath(".serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
+		visitor.ReplacePath(".settings.backupConfiguration.startTime", "12:00")
+		visitor.ReplacePath(".settings.settingsVersion", "123")
 	}
 
 	// Run visitors

@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -160,6 +161,17 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
 	addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to Sql
+	addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
+	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
+	addReplacement("serverCaCert.commonName", "common-name")
+	addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("serverCaCert.sha1Fingerprint", "12345678")
+	addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
+	addReplacement("settings.backupConfiguration.startTime", "12:00")
+	addReplacement("settings.settingsVersion", "123")
+
 	// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 	//
 	//     "response": {
@@ -260,6 +272,39 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
+	// Extract resource IDs / numbers from compute operations.
+	// The number / id is in the targetID field, we infer the type from the targetLink field.
+	for _, event := range events {
+		if !isGetOperation(event) {
+			continue
+		}
+		body := event.Response.ParseBody()
+		targetLink, _, _ := unstructured.NestedString(body, "targetLink")
+		targetId, _, _ := unstructured.NestedString(body, "targetId")
+		if targetLink != "" && targetId != "" {
+			u, _ := ParseGCPLink(targetLink)
+			if u != nil {
+				kind := u.PathItems[len(u.PathItems)-1].Resource
+
+				placeholder := x.placeholderForGCPResource(kind)
+				if placeholder != "" {
+					// We _should_ differentiate between ID and number.
+					// But this causes too many diffs right now.
+					// if isNumber(targetId) {
+					// 	x.PathIDs[targetId] = strings.Replace(placeholder, "ID", "Number", 1)
+					// } else {
+					// 	x.PathIDs[targetId] = placeholder
+					// }
+					x.PathIDs[targetId] = placeholder
+				}
+			}
+		}
+	}
+}
+
+func isNumber(s string) bool {
+	_, err := strconv.ParseInt(s, 10, 64)
+	return err == nil
 }
 
 // ReplaceString is a normalization function that replaces a string, useful for e.g. project IDs.

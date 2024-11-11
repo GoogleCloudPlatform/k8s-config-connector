@@ -23,7 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
+	"os"
 	"path"
 	"strings"
 
@@ -32,6 +32,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -48,6 +49,15 @@ const (
 
 func main() {
 	ctx := context.Background()
+	if err := run(ctx); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func run(ctx context.Context) error {
+	log := klog.FromContext(ctx)
+
 	cc := &corev1beta1.ConfigConnector{
 		Spec: corev1beta1.ConfigConnectorSpec{
 			Mode:                 k8s.NamespacedMode,
@@ -58,37 +68,38 @@ func main() {
 	r := cnrmmanifest.NewLocalRepository(path.Join(operatorSrcRoot, "channels"))
 	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
 	if err != nil {
-		log.Fatalf("error loading %v channel: %v", k8s.StableChannel, err)
+		return fmt.Errorf("error loading %v channel: %w", k8s.StableChannel, err)
 	}
 	version, err := channel.Latest(ctx, cc.ComponentName())
 	if err != nil {
-		log.Fatalf("error resolving the version to deploy: %v", err)
+		return fmt.Errorf("error resolving the version to deploy: %w", err)
 	}
 	if version == nil {
-		log.Fatalf("could not find the latest version in channel %v", k8s.StableChannel)
+		return fmt.Errorf("could not find the latest version in channel %v", k8s.StableChannel)
 	}
 
+	log.Info("got latest version from channel", "version", version.Version)
 	manifestStrs, err := r.LoadManifest(ctx, cc.ComponentName(), version.Version, cc)
 	if err != nil {
-		log.Fatalf("error loading manifest for package %v of version %v: %v", version.Package, version.Version, err)
+		return fmt.Errorf("error loading manifest for package %v of version %v: %w", version.Package, version.Version, err)
 	}
 	objects := make([]*manifest.Object, 0)
 	for _, str := range manifestStrs {
 		m, err := manifest.ParseObjects(ctx, str)
 		if err != nil {
-			log.Fatalf("parsing manifest: %v", err)
+			return fmt.Errorf("parsing manifest: %w", err)
 		}
 		objects = append(objects, m.Items...)
 	}
 
 	namespacedStrs, err := r.LoadNamespacedComponents(ctx, cc.ComponentName(), version.Version)
 	if err != nil {
-		log.Fatalf("error loading namespaced components for package %v of version %v: %v", version.Package, version.Version, err)
+		return fmt.Errorf("error loading namespaced components for package %v of version %v: %w", version.Package, version.Version, err)
 	}
 	for _, str := range namespacedStrs {
 		m, err := manifest.ParseObjects(ctx, str)
 		if err != nil {
-			log.Fatalf("parsing manifest: %v", err)
+			return fmt.Errorf("parsing manifest: %w", err)
 		}
 		objects = append(objects, m.Items...)
 	}
@@ -113,11 +124,13 @@ func main() {
 	}
 
 	for _, obj := range objects {
+		log.Info("found object", "kind", obj.Kind, "name", obj.GetName())
+
 		// controller image
 		if obj.Kind == "StatefulSet" && strings.Contains(obj.GetName(), "cnrm-controller-manager") {
 			image, err := extractImageFromStatefulSet(obj.UnstructuredObject(), "manager")
 			if err != nil {
-				log.Fatalf("error resolving manager image: %v", err)
+				return fmt.Errorf("error resolving manager image: %w", err)
 			}
 			cm.Data["cnrm.controller"] = image
 		}
@@ -125,7 +138,7 @@ func main() {
 		if obj.Kind == "StatefulSet" && obj.GetName() == "cnrm-deletiondefender" {
 			image, err := extractImageFromStatefulSet(obj.UnstructuredObject(), "deletiondefender")
 			if err != nil {
-				log.Fatalf("error resolving manager image: %v", err)
+				return fmt.Errorf("error resolving manager image: %w", err)
 			}
 			cm.Data["cnrm.deletiondefender"] = image
 		}
@@ -133,7 +146,7 @@ func main() {
 		if obj.Kind == "StatefulSet" && obj.GetName() == "cnrm-unmanaged-detector" {
 			image, err := extractImageFromStatefulSet(obj.UnstructuredObject(), "unmanageddetector")
 			if err != nil {
-				log.Fatalf("error resolving manager image: %v", err)
+				return fmt.Errorf("error resolving manager image: %w", err)
 			}
 			cm.Data["cnrm.unmanageddetector"] = image
 		}
@@ -141,7 +154,7 @@ func main() {
 		if obj.Kind == "Deployment" && obj.GetName() == "cnrm-webhook-manager" {
 			image, err := extractImageFromDeployment(obj.UnstructuredObject(), "webhook")
 			if err != nil {
-				log.Fatalf("error resolving webhook image: %v", err)
+				return fmt.Errorf("error resolving webhook image: %w", err)
 			}
 			cm.Data["cnrm.webhook"] = image
 		}
@@ -149,7 +162,7 @@ func main() {
 		if obj.Kind == "Deployment" && obj.GetName() == "cnrm-resource-stats-recorder" {
 			image, err := extractImageFromDeployment(obj.UnstructuredObject(), "recorder")
 			if err != nil {
-				log.Fatalf("error resolving recorder image: %v", err)
+				return fmt.Errorf("error resolving recorder image: %w", err)
 			}
 			cm.Data["cnrm.recorder"] = image
 		}
@@ -157,16 +170,17 @@ func main() {
 		if obj.Kind == "Deployment" && obj.GetName() == "cnrm-resource-stats-recorder" {
 			image, err := extractImageFromDeployment(obj.UnstructuredObject(), "prom-to-sd")
 			if err != nil {
-				log.Fatalf("error resolving prom-to-sd sidecar image: %v", err)
+				return fmt.Errorf("error resolving prom-to-sd sidecar image: %w", err)
 			}
 			cm.Data["prom-to-sd"] = image
 		}
 	}
 	outputFilepath := path.Join(operatorSrcRoot, outputDir, outputFilename)
 	if err := outputConfigMapToFile(&cm, outputFilepath); err != nil {
-		log.Fatalf("error writing ConfigMap %v to file: %v", cm, err)
+		return fmt.Errorf("error writing ConfigMap %v to file: %w", cm, err)
 	}
-	log.Println("successfully generated the image_configmaps.yaml")
+	log.Info("successfully generated the image configmap", "path", outputFilepath)
+	return nil
 }
 
 func extractImageFromStatefulSet(obj *unstructured.Unstructured, containerName string) (string, error) {
