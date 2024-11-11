@@ -35,6 +35,10 @@ func (c *FakeSecuresourcemanagerV1alpha1) SecureSourceManagerInstances(namespace
 	return &FakeSecureSourceManagerInstances{c, namespace}
 }
 
+func (c *FakeSecuresourcemanagerV1alpha1) SecureSourceManagerRepositories(namespace string) v1alpha1.SecureSourceManagerRepositoryInterface {
+	return &FakeSecureSourceManagerRepositories{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeSecuresourcemanagerV1alpha1) RESTClient() rest.Interface {
