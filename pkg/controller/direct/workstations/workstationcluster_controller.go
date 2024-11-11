@@ -40,8 +40,7 @@ import (
 )
 
 const (
-	ctrlName      = "workstations-controller"
-	serviceDomain = "//workstations.googleapis.com"
+	ctrlName = "workstations-controller"
 )
 
 func init() {
