@@ -26,7 +26,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: //workstations.googleapis.com/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}
   observedGeneration: 1
   observedState:
     controlPlaneIP: 10.0.0.2
