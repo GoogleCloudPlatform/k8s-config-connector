@@ -19,7 +19,6 @@ import (
 	// "crypto/tls"
 	"errors"
 	"fmt"
-	"log"
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/containerattached/v1beta1"
@@ -33,13 +32,11 @@ import (
 
 	containerattachedpb "cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb"
 	"github.com/googleapis/gax-go/v2/apierror"
-	"google.golang.org/api/option"
+
 	// "google.golang.org/grpc/credentials"
-	"google.golang.org/grpc"
+
+	"google.golang.org/api/option"
 	"google.golang.org/grpc/status"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -62,38 +59,11 @@ type modelContainerAttachedCluster struct {
 	config config.ControllerConfig
 }
 
-func loggingUnaryInterceptor() grpc.UnaryClientInterceptor {
-	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-			err := invoker(ctx, method, req, reply, cc, opts...)
-			log.Printf(":HF: Invoked method: %v, %+v", method, err)
-			md, ok := metadata.FromOutgoingContext(ctx)
-			log.Printf(":HF: md: %+v, ok: %t", md, ok)
-			if ok {
-					log.Println("Metadata:")
-					for k, v := range md {
-							log.Printf("Key: %v, Value: %v", k, v)
-					}
-			}
-			reqb, merr := protojson.Marshal(req.(protoreflect.ProtoMessage))
-			if merr == nil {
-					log.Printf(":HF: Request: %s", reqb)
-			}
-			log.Printf(":HF: merr: %+v", merr)
-			return err
-	}
-}
-
 func (m *modelContainerAttachedCluster) client(ctx context.Context, endpoint string) (*gcp.AttachedClustersClient, error) {
-	var opts []option.ClientOption
-	// Not working ("WithHTTPClient is incompatible with gRPC dial options"). GRPCClientOptions() gives the same error, and
-	// the implementation looks functionally identical.
-	// opts, err := m.config.GRPCClientOptions()
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// Added an interceptor to add more logging, but couldn't find anything useful.
-	// opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(loggingUnaryInterceptor())))
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewAttachedClustersClient(ctx, opts...)
 	// gcpClient, err := gcp.NewAttachedClustersClient(ctx)
@@ -162,15 +132,15 @@ func (a *ContainerAttachedClusterAdapter) Find(ctx context.Context) (bool, error
 
 		var ae *apierror.APIError
 		if errors.As(err, &ae) {
-				log.V(0).Info(ae.Reason())
-				log.V(0).Info(":HF:", "help", ae.Details().Help.GetLinks())
+			log.V(0).Info(ae.Reason())
+			log.V(0).Info(":HF:", "help", ae.Details().Help.GetLinks())
 		}
 		if s, ok := status.FromError(err); ok {
-      log.V(0).Info(s.Message())
-      for _, d := range s.Proto().Details {
-         log.V(0).Info(":HF:", "d", d)
-      }
-   }
+			log.V(0).Info(s.Message())
+			for _, d := range s.Proto().Details {
+				log.V(0).Info(":HF:", "d", d)
+			}
+		}
 
 		if direct.IsNotFound(err) {
 			return false, nil
