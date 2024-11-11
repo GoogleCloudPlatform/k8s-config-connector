@@ -13,6 +13,7 @@ TODO: list contributors with `git log v1.124.0... | grep Merge | grep from | awk
 * `BigQueryAnlayticsHubDataExchange` is now a v1beta1 resource.
 * `PrivilegedAccessManagerEntitlement` is now a v1beta1 resource.
 * `RedisCluster` is now a v1beta1 resource.
+* `WorkstationCluster` is now a v1beta1 resource.
 
 ## Modified Beta Reconciliation
 
@@ -22,6 +23,12 @@ We migrated the following reconciliation from the TF-based or DCL-based controll
 
   * You can use the alpha.cnrm.cloud.google.com/reconciler: direct annotation on ComputeFirewallPolicyRule resource to opt-in
     the Direct Cloud Reconciler, which fixes the issue when updating `targetResources`.
+
+* `SQLInstance`
+
+  * You can use the alpha.cnrm.cloud.google.com/reconciler: direct annotation on SQLInstance resources to opt-in
+    the Direct Cloud Reconciler, which fixes issues with updating from ENTERPRISE -> ENTERPRISE_PLUS edition and allows
+    "create from clone" functionality.
 
 ## New Resources:
 
