@@ -15,7 +15,7 @@ spec:
   featureRef:
     name: gkehubfeature-basic-poco-${uniqueId}
   location: global
-  membershipLocation: us-central1
+  membershipLocation: us-west1
   membershipRef:
     name: gkehubmembership-basic-poco-${uniqueId}
   policycontroller:
