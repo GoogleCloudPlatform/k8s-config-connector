@@ -74,7 +74,7 @@ func (m *modelSecureSourceManagerRepository) AdapterForObject(ctx context.Contex
 
 	// Resolve SecureSourceManagerInstanceRef
 	instanceRef := obj.Spec.InstanceRef
-	normalizedExternal, err := instanceRef.NormalizedExternal(ctx, reader, instanceRef.Namespace)
+	normalizedExternal, err := instanceRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
 		return nil, err
 	}
