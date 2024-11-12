@@ -38,8 +38,11 @@ type Parent struct {
 type BigQueryConnectionConnectionSpec struct {
 	Parent `json:",inline"`
 
-	// The BigQuery ConnectionID. This is a server-generated ID in the UUID format.
-	// If not provided, ConfigConnector will create a new Connection and store the UUID in `status.serviceGeneratedID` field.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
+	// Immutable. Optional.
+	// The BigQuery Connection ID used for resource creation or acquisition.
+	// For creation: If specified, this value is used as the connection ID. If not provided, a UUID is generated and stored in the `status.ExternalRef` field.
+	// For acquisition: This field must be provided to identify the connection resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// User provided display name for the connection.
