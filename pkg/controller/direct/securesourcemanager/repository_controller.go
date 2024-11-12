@@ -73,15 +73,12 @@ func (m *modelSecureSourceManagerRepository) AdapterForObject(ctx context.Contex
 	}
 
 	// Resolve SecureSourceManagerInstanceRef
-	if obj.Spec.InstanceRef != nil {
-		if obj.Spec.InstanceRef != nil {
-			instance, err := krm.ResolveSecureSourceManagerInstanceRef(ctx, reader, obj, obj.Spec.InstanceRef)
-			if err != nil {
-				return nil, err
-			}
-			obj.Spec.InstanceRef.External = instance.String()
-		}
+	instanceRef := obj.Spec.InstanceRef
+	normalizedExternal, err := instanceRef.NormalizedExternal(ctx, reader, instanceRef.Namespace)
+	if err != nil {
+		return nil, err
 	}
+	obj.Spec.InstanceRef.External = normalizedExternal
 
 	id, err := krm.NewSecureSourceManagerRepositoryRef(ctx, reader, obj)
 	if err != nil {
