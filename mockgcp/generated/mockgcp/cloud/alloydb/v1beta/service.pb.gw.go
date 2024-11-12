@@ -357,6 +357,74 @@ func local_request_AlloyDBAdmin_UpdateCluster_0(ctx context.Context, marshaler r
 
 }
 
+func request_AlloyDBAdmin_UpgradeCluster_0(ctx context.Context, marshaler runtime.Marshaler, client AlloyDBAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpgradeClusterRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.UpgradeCluster(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_AlloyDBAdmin_UpgradeCluster_0(ctx context.Context, marshaler runtime.Marshaler, server AlloyDBAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpgradeClusterRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.UpgradeCluster(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 var (
 	filter_AlloyDBAdmin_DeleteCluster_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
@@ -491,6 +559,74 @@ func local_request_AlloyDBAdmin_PromoteCluster_0(ctx context.Context, marshaler 
 	}
 
 	msg, err := server.PromoteCluster(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_AlloyDBAdmin_SwitchoverCluster_0(ctx context.Context, marshaler runtime.Marshaler, client AlloyDBAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SwitchoverClusterRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.SwitchoverCluster(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_AlloyDBAdmin_SwitchoverCluster_0(ctx context.Context, marshaler runtime.Marshaler, server AlloyDBAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SwitchoverClusterRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.SwitchoverCluster(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -1417,6 +1553,74 @@ func local_request_AlloyDBAdmin_RestartInstance_0(ctx context.Context, marshaler
 	}
 
 	msg, err := server.RestartInstance(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_AlloyDBAdmin_ExecuteSql_0(ctx context.Context, marshaler runtime.Marshaler, client AlloyDBAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExecuteSqlRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["instance"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "instance")
+	}
+
+	protoReq.Instance, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "instance", err)
+	}
+
+	msg, err := client.ExecuteSql(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_AlloyDBAdmin_ExecuteSql_0(ctx context.Context, marshaler runtime.Marshaler, server AlloyDBAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExecuteSqlRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["instance"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "instance")
+	}
+
+	protoReq.Instance, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "instance", err)
+	}
+
+	msg, err := server.ExecuteSql(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -2561,6 +2765,31 @@ func RegisterAlloyDBAdminHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("PATCH", pattern_AlloyDBAdmin_UpgradeCluster_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/UpgradeCluster", runtime.WithHTTPPathPattern("/v1beta/{name=projects/*/locations/*/clusters/*}:upgrade"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_AlloyDBAdmin_UpgradeCluster_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AlloyDBAdmin_UpgradeCluster_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("DELETE", pattern_AlloyDBAdmin_DeleteCluster_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -2608,6 +2837,31 @@ func RegisterAlloyDBAdminHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 
 		forward_AlloyDBAdmin_PromoteCluster_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_AlloyDBAdmin_SwitchoverCluster_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/SwitchoverCluster", runtime.WithHTTPPathPattern("/v1beta/{name=projects/*/locations/*/clusters/*}:switchover"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_AlloyDBAdmin_SwitchoverCluster_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AlloyDBAdmin_SwitchoverCluster_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2908,6 +3162,31 @@ func RegisterAlloyDBAdminHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 
 		forward_AlloyDBAdmin_RestartInstance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_AlloyDBAdmin_ExecuteSql_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExecuteSql", runtime.WithHTTPPathPattern("/v1beta/{instance=projects/*/locations/*/clusters/*/instances/*}:executeSql"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_AlloyDBAdmin_ExecuteSql_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AlloyDBAdmin_ExecuteSql_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3390,6 +3669,28 @@ func RegisterAlloyDBAdminHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("PATCH", pattern_AlloyDBAdmin_UpgradeCluster_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/UpgradeCluster", runtime.WithHTTPPathPattern("/v1beta/{name=projects/*/locations/*/clusters/*}:upgrade"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AlloyDBAdmin_UpgradeCluster_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AlloyDBAdmin_UpgradeCluster_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("DELETE", pattern_AlloyDBAdmin_DeleteCluster_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -3431,6 +3732,28 @@ func RegisterAlloyDBAdminHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 
 		forward_AlloyDBAdmin_PromoteCluster_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_AlloyDBAdmin_SwitchoverCluster_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/SwitchoverCluster", runtime.WithHTTPPathPattern("/v1beta/{name=projects/*/locations/*/clusters/*}:switchover"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AlloyDBAdmin_SwitchoverCluster_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AlloyDBAdmin_SwitchoverCluster_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3695,6 +4018,28 @@ func RegisterAlloyDBAdminHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 
 		forward_AlloyDBAdmin_RestartInstance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_AlloyDBAdmin_ExecuteSql_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExecuteSql", runtime.WithHTTPPathPattern("/v1beta/{instance=projects/*/locations/*/clusters/*/instances/*}:executeSql"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AlloyDBAdmin_ExecuteSql_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AlloyDBAdmin_ExecuteSql_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -4018,9 +4363,13 @@ var (
 
 	pattern_AlloyDBAdmin_UpdateCluster_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1beta", "projects", "locations", "clusters", "cluster.name"}, ""))
 
+	pattern_AlloyDBAdmin_UpgradeCluster_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1beta", "projects", "locations", "clusters", "name"}, "upgrade"))
+
 	pattern_AlloyDBAdmin_DeleteCluster_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1beta", "projects", "locations", "clusters", "name"}, ""))
 
 	pattern_AlloyDBAdmin_PromoteCluster_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1beta", "projects", "locations", "clusters", "name"}, "promote"))
+
+	pattern_AlloyDBAdmin_SwitchoverCluster_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1beta", "projects", "locations", "clusters", "name"}, "switchover"))
 
 	pattern_AlloyDBAdmin_RestoreCluster_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1beta", "projects", "locations", "parent", "clusters"}, "restore"))
 
@@ -4045,6 +4394,8 @@ var (
 	pattern_AlloyDBAdmin_InjectFault_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1beta", "projects", "locations", "clusters", "instances", "name"}, "injectFault"))
 
 	pattern_AlloyDBAdmin_RestartInstance_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1beta", "projects", "locations", "clusters", "instances", "name"}, "restart"))
+
+	pattern_AlloyDBAdmin_ExecuteSql_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1beta", "projects", "locations", "clusters", "instances", "instance"}, "executeSql"))
 
 	pattern_AlloyDBAdmin_ListBackups_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1beta", "projects", "locations", "parent", "backups"}, ""))
 
@@ -4084,9 +4435,13 @@ var (
 
 	forward_AlloyDBAdmin_UpdateCluster_0 = runtime.ForwardResponseMessage
 
+	forward_AlloyDBAdmin_UpgradeCluster_0 = runtime.ForwardResponseMessage
+
 	forward_AlloyDBAdmin_DeleteCluster_0 = runtime.ForwardResponseMessage
 
 	forward_AlloyDBAdmin_PromoteCluster_0 = runtime.ForwardResponseMessage
+
+	forward_AlloyDBAdmin_SwitchoverCluster_0 = runtime.ForwardResponseMessage
 
 	forward_AlloyDBAdmin_RestoreCluster_0 = runtime.ForwardResponseMessage
 
@@ -4111,6 +4466,8 @@ var (
 	forward_AlloyDBAdmin_InjectFault_0 = runtime.ForwardResponseMessage
 
 	forward_AlloyDBAdmin_RestartInstance_0 = runtime.ForwardResponseMessage
+
+	forward_AlloyDBAdmin_ExecuteSql_0 = runtime.ForwardResponseMessage
 
 	forward_AlloyDBAdmin_ListBackups_0 = runtime.ForwardResponseMessage
 

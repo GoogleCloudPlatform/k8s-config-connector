@@ -2812,7 +2812,7 @@ func (x *ManualApprovals_Step) GetApproverEmailRecipients() []string {
 	return nil
 }
 
-// GcpIAMAccess represents IAM based access control on a Google Cloud
+// GcpIamAccess represents IAM based access control on a Google Cloud
 // resource. Refer to https://cloud.google.com/iam/docs to understand more
 // about IAM.
 type PrivilegedAccess_GcpIamAccess struct {
@@ -4867,8 +4867,8 @@ var file_mockgcp_cloud_privilegedaccessmanager_v1_privilegedaccessmanager_proto_
 	(*Entitlement_RequesterJustificationConfig_NotMandatory)(nil), // 35: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.NotMandatory
 	(*Entitlement_RequesterJustificationConfig_Unstructured)(nil), // 36: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.Unstructured
 	(*ManualApprovals_Step)(nil),                                  // 37: mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.Step
-	(*PrivilegedAccess_GcpIamAccess)(nil),                         // 38: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess
-	(*PrivilegedAccess_GcpIamAccess_RoleBinding)(nil),             // 39: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess.RoleBinding
+	(*PrivilegedAccess_GcpIamAccess)(nil),                         // 38: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess
+	(*PrivilegedAccess_GcpIamAccess_RoleBinding)(nil),             // 39: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess.RoleBinding
 	(*Grant_Timeline)(nil),                                        // 40: mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline
 	(*Grant_AuditTrail)(nil),                                      // 41: mockgcp.cloud.privilegedaccessmanager.v1.Grant.AuditTrail
 	(*Grant_Timeline_Event)(nil),                                  // 42: mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline.Event
@@ -4901,7 +4901,7 @@ var file_mockgcp_cloud_privilegedaccessmanager_v1_privilegedaccessmanager_proto_
 	34, // 9: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.additional_notification_targets:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.AdditionalNotificationTargets
 	9,  // 10: mockgcp.cloud.privilegedaccessmanager.v1.ApprovalWorkflow.manual_approvals:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals
 	37, // 11: mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.steps:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.Step
-	38, // 12: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.gcp_iam_access:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess
+	38, // 12: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.gcp_iam_access:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess
 	6,  // 13: mockgcp.cloud.privilegedaccessmanager.v1.ListEntitlementsResponse.entitlements:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement
 	1,  // 14: mockgcp.cloud.privilegedaccessmanager.v1.SearchEntitlementsRequest.caller_access_type:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.SearchEntitlementsRequest.CallerAccessType
 	6,  // 15: mockgcp.cloud.privilegedaccessmanager.v1.SearchEntitlementsResponse.entitlements:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement
@@ -4926,7 +4926,7 @@ var file_mockgcp_cloud_privilegedaccessmanager_v1_privilegedaccessmanager_proto_
 	35, // 34: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.not_mandatory:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.NotMandatory
 	36, // 35: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.unstructured:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.Unstructured
 	7,  // 36: mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.Step.approvers:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.AccessControlEntry
-	39, // 37: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess.role_bindings:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess.RoleBinding
+	39, // 37: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess.role_bindings:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess.RoleBinding
 	42, // 38: mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline.events:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline.Event
 	53, // 39: mockgcp.cloud.privilegedaccessmanager.v1.Grant.AuditTrail.access_grant_time:type_name -> google.protobuf.Timestamp
 	53, // 40: mockgcp.cloud.privilegedaccessmanager.v1.Grant.AuditTrail.access_remove_time:type_name -> google.protobuf.Timestamp
