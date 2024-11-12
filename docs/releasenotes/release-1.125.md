@@ -49,3 +49,5 @@ We migrated the following reconciliation from the TF-based or DCL-based controll
 ## Bug Fixes:
 
 * [Incorrect format of clientTLSPolicy when referenced from ComputeBackendService](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007)
+
+* [Fix](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2973) the reconciliation error in `ContainerNodePool` that occurs when `kubeletConfig` is empty in the user's configuration, but a subfield under `kubeletConfig` is set externally outside of KCC.
