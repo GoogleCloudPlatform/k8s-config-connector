@@ -176,11 +176,11 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 	log.V(2).Info("getting BigQueryConnectionConnection", "name", a.id.External)
 
-	id, err := a.id.ConnectionID()
+	_, idIsSet, err := a.id.ConnectionID()
 	if err != nil {
 		return false, err
 	}
-	if id == "" { // resource is not yet created
+	if !idIsSet { // resource is not yet created
 		return false, nil
 	}
 	req := &bigqueryconnectionpb.GetConnectionRequest{Name: a.id.External}
@@ -220,11 +220,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		Parent:     parent,
 		Connection: resource,
 	}
-	id, err := a.id.ConnectionID()
+	id, isIsSet, err := a.id.ConnectionID()
 	if err != nil {
 		return err
 	}
-	if id != "" { // this means user has specified connection ID in `spec.ResourceID` field.
+	if isIsSet { // during "Create", this means user has specified connection ID in `spec.ResourceID` field.
 		req = &bigqueryconnectionpb.CreateConnectionRequest{
 			Parent:       parent,
 			ConnectionId: id,

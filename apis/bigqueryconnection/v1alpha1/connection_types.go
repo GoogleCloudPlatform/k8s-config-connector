@@ -38,10 +38,9 @@ type Parent struct {
 type BigQueryConnectionConnectionSpec struct {
 	Parent `json:",inline"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable. Optional.
 	// The BigQuery Connection ID used for resource creation or acquisition.
-	// For creation: If specified, this value is used as the connection ID. If not provided, a UUID is generated and stored in the `status.ExternalRef` field.
+	// For creation: If specified, this value is used as the connection ID. If not provided, a UUID will be generated and assigned as the connection ID.
 	// For acquisition: This field must be provided to identify the connection resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
 
