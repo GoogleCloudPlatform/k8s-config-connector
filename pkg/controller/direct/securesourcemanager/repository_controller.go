@@ -17,6 +17,7 @@ package securesourcemanager
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
@@ -218,15 +219,13 @@ func (a *SecureSourceManagerRepositoryAdapter) Delete(ctx context.Context, delet
 	log.V(2).Info("deleting Repository", "name", a.id.External)
 
 	req := &securesourcemanagerpb.DeleteRepositoryRequest{Name: a.id.External}
-	op, err := a.gcpClient.DeleteRepository(ctx, req)
+	_, err := a.gcpClient.DeleteRepository(ctx, req)
+	// TODO - remove after the Go protobuf fix is in. https://github.com/golang/protobuf/issues/1620#issuecomment-2402608919
+	// Handles the LRO parsing error.
 	if err != nil {
-		return false, fmt.Errorf("deleting Repository %s: %w", a.id.External, err)
-	}
-	log.V(2).Info("successfully deleted Repository", "name", a.id.External)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Repository %s: %w", a.id.External, err)
+		if !strings.Contains(err.Error(), "(line 14:3): missing \"value\" field") {
+			return false, fmt.Errorf("deleting Repository %s: %w", a.id.External, err)
+		}
 	}
 	return true, nil
 }
