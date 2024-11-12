@@ -228,12 +228,11 @@ func resolvePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.
 		Name:      resRef.Name,
 		Namespace: resRef.Namespace,
 	}
-	net, err := refs.ResolveComputeNetwork(ctx, kube, obj, netRef)
-	if err != nil {
+	if err := netRef.Normalize(ctx, kube, obj); err != nil {
 		return err
 	}
 
-	obj.Spec.Settings.IpConfiguration.PrivateNetworkRef.External = net.String()
+	obj.Spec.Settings.IpConfiguration.PrivateNetworkRef.External = netRef.External
 
 	return nil
 }
