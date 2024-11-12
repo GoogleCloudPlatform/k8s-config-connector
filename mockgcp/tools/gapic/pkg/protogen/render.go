@@ -116,6 +116,8 @@ func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
 		switch fd.MapValue().Kind() {
 		case protoreflect.StringKind:
 			b.WriteString("string")
+		case protoreflect.Int32Kind:
+			b.WriteString("int32")
 		case protoreflect.Int64Kind:
 			b.WriteString("int64")
 		case protoreflect.MessageKind:
@@ -188,7 +190,7 @@ func (p *ProtoWriter) renderMessage(msg protoreflect.MessageDescriptor) {
 	comment := p.getComment(msg.FullName())
 	if comment != "" {
 		for _, line := range strings.Split(comment, "\n") {
-			p.printf("  // %s\n", line)
+			p.printf("// %s\n", line)
 		}
 	}
 

@@ -157,4 +157,8 @@ generate-protos-from-openapi:
 	mkdir -p apis/mockgcp/cloud/kms/v1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.kms.v1 ../../temp/kms-api-v1.json > ../../apis/mockgcp/cloud/kms/v1/service.proto
 
+	wget -O temp/apigee-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/apigee/v1/apigee-api.json
+	mkdir -p apis/mockgcp/cloud/apigee/v1/
+	cd tools/gapic; go run . --proto-package mockgcp.cloud.apigee.v1 ../../temp/apigee-v1.json > ../../apis/mockgcp/cloud/apigee/v1/service.proto
+
 	rm -r temp
