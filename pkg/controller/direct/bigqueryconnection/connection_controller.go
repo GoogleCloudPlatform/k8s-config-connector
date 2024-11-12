@@ -176,8 +176,11 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 	log.V(2).Info("getting BigQueryConnectionConnection", "name", a.id.External)
 
-	if a.id.External == "" {
-		// Cannot retrieve the Connection without ServiceGeneratedID, expecting to create a new Connection.
+	id, err := a.id.ConnectionID()
+	if err != nil {
+		return false, err
+	}
+	if id == "" { // resource is not yet created
 		return false, nil
 	}
 	req := &bigqueryconnectionpb.GetConnectionRequest{Name: a.id.External}
@@ -211,11 +214,22 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	parent, err := a.id.Parent()
 	if err != nil {
-		return fmt.Errorf("get BigQueryConnectionConnection parent %s: %w", a.id.External, err)
+		return err
 	}
 	req := &bigqueryconnectionpb.CreateConnectionRequest{
 		Parent:     parent,
 		Connection: resource,
+	}
+	id, err := a.id.ConnectionID()
+	if err != nil {
+		return err
+	}
+	if id != "" { // this means user has specified connection ID in `spec.ResourceID` field.
+		req = &bigqueryconnectionpb.CreateConnectionRequest{
+			Parent:       parent,
+			ConnectionId: id,
+			Connection:   resource,
+		}
 	}
 	created, err := a.gcpClient.CreateConnection(ctx, req)
 	if err != nil {
