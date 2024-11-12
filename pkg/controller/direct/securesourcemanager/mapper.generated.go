@@ -201,24 +201,6 @@ func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	return out
 }
-func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.SecureSourceManagerRepositorySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecureSourceManagerRepositorySpec{}
-	// MISSING: Name
-	// MISSING: Description
-	if in.GetInstance() != "" {
-		out.InstanceRef = &krm.SecureSourceManagerInstanceRef{External: in.GetInstance()}
-	}
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
-	// MISSING: Uris
-	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
-	return out
-}
 func SecureSourceManagerRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerRepositorySpec) *pb.Repository {
 	if in == nil {
 		return nil

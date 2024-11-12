@@ -61,7 +61,24 @@ func OperationMetadata_EndTime_ToProto(mapCtx *direct.MapContext, in *string) *t
 	mapCtx.Errorf("OperationMetadata_EndTime_ToProto not implemented")
 	return nil
 }
-
+func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.SecureSourceManagerRepositorySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecureSourceManagerRepositorySpec{}
+	// MISSING: Name
+	// MISSING: Description
+	if in.GetInstance() != "" {
+		out.InstanceRef = &krm.SecureSourceManagerInstanceRef{External: in.GetInstance()}
+	}
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Uris
+	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
+	return out
+}
 func SecureSourceManagerRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.SecureSourceManagerRepositoryObservedState {
 	if in == nil {
 		return nil
