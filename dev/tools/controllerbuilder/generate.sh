@@ -30,8 +30,7 @@ go run . generate-types \
     --service google.cloud.discoveryengine.v1 \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
-    --kind DiscoveryEngineDataStore \
-    --proto-resource DataStore
+    --resource DiscoveryEngineDataStore:DataStore
 
 # go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/dev/tools/proto-to-mapper/third_party/googleapis/ <<EOF
 # // +kcc:proto=google.cloud.discoveryengine.v1.Engine
@@ -51,8 +50,7 @@ go run . generate-types \
     --service google.dataflow.v1beta3 \
     --api-version dataflow.cnrm.cloud.google.com/v1beta1 \
     --output-api ${APIS_DIR} \
-    --kind DataflowFlexTemplateJob \
-    --proto-resource FlexTemplateRuntimeEnvironment
+    --resource DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -68,8 +66,7 @@ go run . generate-types \
     --service google.cloud.securesourcemanager.v1 \
     --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
-    --kind SecureSourceManagerInstance \
-    --proto-resource Instance
+    --resource SecureSourceManagerInstance:Instance
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -85,16 +82,14 @@ go run . generate-types  \
     --service google.cloud.redis.cluster.v1 \
     --api-version redis.cnrm.cloud.google.com/v1alpha1  \
     --output-api ${APIS_DIR} \
-    --kind RedisCluster \
-    --proto-resource Cluster
+    --resource RedisCluster:Cluster
 
 go run . generate-types  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.redis.cluster.v1 \
     --api-version redis.cnrm.cloud.google.com/v1beta1  \
     --output-api ${APIS_DIR} \
-    --kind RedisCluster \
-    --proto-resource Cluster
+    --resource RedisCluster:Cluster
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -111,8 +106,7 @@ go run . generate-types  \
     --service google.bigtable.admin.v2 \
     --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
     --output-api ${APIS_DIR} \
-    --kind BigtableInstance \
-    --proto-resource Instance
+    --resource BigtableInstance:Instance
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -128,8 +122,7 @@ go run . generate-types \
     --service mockgcp.cloud.networkconnectivity.v1 \
     --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
-    --kind NetworkConnectivityServiceConnectionPolicy \
-    --proto-resource ServiceConnecqionPolicy
+    --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -145,8 +138,7 @@ go run . generate-types  \
     --service google.cloud.bigquery.v2 \
     --api-version bigquery.cnrm.cloud.google.com/v1beta1  \
     --output-api ${APIS_DIR} \
-    --kind BigQueryDataset \
-    --proto-resource Dataset
+    --resource BigQueryDataset:Dataset
 
 # go run . generate-mapper \
 #     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -162,8 +154,7 @@ go run . generate-types \
     --service google.cloud.bigquery.datatransfer.v1 \
     --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
-    --kind BigQueryDataTransferConfig \
-    --proto-resource TransferConfig
+    --resource BigQueryDataTransferConfig:TransferConfig
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -179,8 +170,7 @@ go run . generate-types \
     --service google.firestore.admin.v1 \
     --api-version firestore.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
-    --kind FirestoreDatabase \
-    --proto-resource Database
+    --resource FirestoreDatabase:Database
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -195,16 +185,14 @@ go run . generate-types \
     --service google.cloud.certificatemanager.v1  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --output-api $REPO_ROOT/apis \
-    --kind CertificateManagerDNSAuthorization \
-    --proto-resource DnsAuthorization \
+    --resource CertificateManagerDNSAuthorization:DnsAuthorization \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-types \
     --service google.cloud.certificatemanager.v1  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --output-api $REPO_ROOT/apis \
-    --kind CertificateManagerDNSAuthorization \
-    --proto-resource DnsAuthorization \
+    --resource CertificateManagerDNSAuthorization:DnsAuthorization \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1"
 
 # Workstations
@@ -213,8 +201,7 @@ go run . generate-types \
     --service google.cloud.workstations.v1 \
     --api-version workstations.cnrm.cloud.google.com/v1beta1 \
     --output-api ${APIS_DIR} \
-    --kind WorkstationCluster \
-    --proto-resource WorkstationCluster
+    --resource WorkstationCluster:WorkstationCluster
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -229,8 +216,7 @@ go run main.go generate-types \
      --service google.cloud.secretmanager.v1 \
      --proto-source-path ../proto-to-mapper/build/googleapis.pb \
      --output-api ${APIS_DIR} \
-     --kind SecretManagerSecret \
-     --proto-resource Secret \
+     --resource SecretManagerSecret:Secret \
      --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-mapper \
@@ -246,8 +232,8 @@ go run main.go generate-types \
     --service google.spanner.admin.instance.v1 \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --output-api $REPO_ROOT/apis \
-    --kind SpannerInstance \
-    --proto-resource Instance \
+    --resource SpannerInstance:Instance \
     --api-version "spanner.cnrm.cloud.google.com/v1beta1"
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

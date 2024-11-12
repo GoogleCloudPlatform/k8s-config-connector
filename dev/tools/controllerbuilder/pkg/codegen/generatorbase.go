@@ -50,9 +50,12 @@ func (g *generatorBase) Errorf(msg string, args ...any) {
 }
 
 type generatedFile struct {
-	baseDir  string
-	key      generatedFileKey
-	contents bytes.Buffer
+	baseDir     string
+	key         generatedFileKey
+	packageName string
+	body        bytes.Buffer
+
+	imports map[string]string
 }
 
 type generatedFileKey struct {
@@ -69,8 +72,15 @@ func (f *generatedFile) OutputDir() string {
 	return dir
 }
 
+func (f *generatedFile) addImport(alias string, pkgName string) {
+	if f.imports == nil {
+		f.imports = make(map[string]string)
+	}
+	f.imports[pkgName] = alias
+}
+
 func (f *generatedFile) Write(addCopyright bool) error {
-	if f.contents.Len() == 0 {
+	if f.body.Len() == 0 {
 		return nil
 	}
 
@@ -86,7 +96,23 @@ func (f *generatedFile) Write(addCopyright bool) error {
 		writeCopyright(&w, time.Now().Year())
 	}
 
-	f.contents.WriteTo(&w)
+	if f.packageName != "" {
+		fmt.Fprintf(&w, "package %s\n", f.packageName)
+		fmt.Fprintf(&w, "\n")
+	}
+
+	if len(f.imports) != 0 {
+		w.WriteString("import (\n")
+		for pkgName, alias := range f.imports {
+			if alias == "" {
+				w.WriteString(fmt.Sprintf("\t%q\n", pkgName))
+			} else {
+				w.WriteString(fmt.Sprintf("\t%s %q\n", alias, pkgName))
+			}
+		}
+		w.WriteString(")\n")
+	}
+	f.body.WriteTo(&w)
 
 	p := filepath.Join(dir, f.key.FileName)
 	klog.Infof("writing file %v", p)

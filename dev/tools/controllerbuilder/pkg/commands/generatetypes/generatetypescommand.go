@@ -26,16 +26,49 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 type GenerateCRDOptions struct {
 	*options.GenerateOptions
 
 	OutputAPIDirectory string
-	ResourceKindName   string
-	ResourceProtoName  string
+
+	Resources ResourceList
+}
+
+type Resource struct {
+	Kind      string
+	ProtoName string
+}
+
+type ResourceList []Resource
+
+var _ pflag.Value = &ResourceList{}
+
+func (r *ResourceList) Type() string { return "resources" }
+
+func (r *ResourceList) String() string {
+	var sb strings.Builder
+	for _, res := range *r {
+		fmt.Fprintf(&sb, "%s:%s", res.Kind, res.ProtoName)
+	}
+	return sb.String()
+}
+
+func (r *ResourceList) Set(s string) error {
+	tokens := strings.Split(s, ":")
+	if len(tokens) != 2 || tokens[0] == "" || tokens[1] == "" {
+		return fmt.Errorf("expected [KRMKind]:[ProtoResourceName], got %q", s)
+	}
+	*r = append(*r, Resource{
+		Kind:      tokens[0],
+		ProtoName: tokens[1],
+	})
+	return nil
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -50,8 +83,7 @@ func (o *GenerateCRDOptions) InitDefaults() error {
 
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
-	cmd.Flags().StringVarP(&o.ResourceProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `bucket`. If `--kind` is not given, the `--proto-resource` value will also be used as the kind name with a capital letter `Storage`.")
-	cmd.Flags().StringVarP(&o.ResourceKindName, "kind", "k", "", "the KCC resource Kind. requires `--proto-resource`.")
+	cmd.Flags().Var(&o.Resources, "resource", "the KRM Kind and the equivalent proto resource separated with a colon.  e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`.  Can be specified multiple times.")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -82,19 +114,18 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 }
 
 func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
+	log := klog.FromContext(ctx)
+
 	if o.ServiceName == "" {
 		return fmt.Errorf("`service` is required")
 	}
 	if o.GenerateOptions.ProtoSourcePath == "" {
 		return fmt.Errorf("`proto-source-path` is required")
 	}
-	if o.ResourceProtoName == "" {
-		return fmt.Errorf("`--proto-resource` is required")
+	if len(o.Resources) == 0 {
+		return fmt.Errorf("`--resource` is required")
 	}
-	if o.ResourceKindName == "" {
-		return fmt.Errorf("`--kind` is required")
-	}
-	o.ResourceProtoName = capitalizeFirstRune(o.ResourceProtoName)
+	// o.ResourceProtoName = capitalizeFirstRune(o.ResourceProtoName)
 
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
 	if err != nil {
@@ -129,9 +160,35 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	resourceProtoFullName := o.ServiceName + "." + o.ResourceProtoName
-	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, resourceProtoFullName)
-	if err := typeGenerator.VisitProto(api); err != nil {
+	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api)
+
+	for _, resource := range o.Resources {
+		resourceProtoFullName := o.ServiceName + "." + resource.ProtoName
+		log.Info("visting proto", "name", resourceProtoFullName)
+		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
+			return err
+		}
+
+		kind := resource.Kind
+		if !scaffolder.TypeFileNotExist(resource.ProtoName) {
+			fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToTypeFile(resource.ProtoName))
+		} else {
+			err := scaffolder.AddTypeFile(resource.ProtoName, kind)
+			if err != nil {
+				return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource.ProtoName), err)
+			}
+		}
+		if scaffolder.RefsFileExist(kind, resource.ProtoName) {
+			fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToRefsFile(kind, resource.ProtoName))
+		} else {
+			err := scaffolder.AddRefsFile(kind, resource.ProtoName)
+			if err != nil {
+				return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(kind, resource.ProtoName), err)
+			}
+		}
+	}
+
+	if err := typeGenerator.WriteVisitedMessages(); err != nil {
 		return err
 	}
 
@@ -140,23 +197,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
-	kind := o.ResourceKindName
-	if !scaffolder.TypeFileNotExist(o.ResourceProtoName) {
-		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToTypeFile(o.ResourceProtoName))
-	} else {
-		err := scaffolder.AddTypeFile(o.ResourceProtoName, kind)
-		if err != nil {
-			return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(o.ResourceProtoName), err)
-		}
-	}
-	if scaffolder.RefsFileExist(kind, o.ResourceProtoName) {
-		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToRefsFile(kind, o.ResourceProtoName))
-	} else {
-		err := scaffolder.AddRefsFile(kind, o.ResourceProtoName)
-		if err != nil {
-			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(kind, o.ResourceProtoName), err)
-		}
-	}
 	return nil
 }
 
