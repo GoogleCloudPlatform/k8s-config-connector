@@ -1,0 +1,56 @@
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Connection projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint&connectionId=test-bqcc-acquisition
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "cloudResource": {},
+  "description": "BigQueryConnection Connection resource for acquisition"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudResource": {
+    "serviceAccountId": "bqcx-projects/${projectId}/locations/us-central1-reVy@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "1731379730",
+  "description": "BigQueryConnection Connection resource for acquisition",
+  "lastModifiedTime": "1731379730",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
+}
