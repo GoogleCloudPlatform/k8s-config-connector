@@ -861,6 +861,10 @@ func (r *Reconciler) applyControllerReconcilerCR(ctx context.Context, cr *custom
 		r.log.Error(err, errMsg)
 		return r.handleApplyControllerReconcilerFailed(ctx, cr, errMsg)
 	}
+	if err := controllers.ApplyContainerPprof(m, cr.Name, cr.Spec.Pprof); err != nil {
+		msg := fmt.Sprintf("failed to apply pprof customization %s: %v", cr.Name, err)
+		return r.handleApplyControllerReconcilerFailed(ctx, cr, msg)
+	}
 	return r.handleApplyControllerReconcilerSucceeded(ctx, cr)
 }
 

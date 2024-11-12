@@ -178,8 +178,9 @@ type BigQueryDatasetSpec struct {
 	// +optional
 	IsCaseInsensitive *bool `json:"isCaseInsensitive,omitempty"`
 
-	/* The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations. */
-	Location string `json:"location"`
+	/* Optional. The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* Optional. Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days). The default value is 168 hours if this is not set. */
 	// +optional
@@ -196,6 +197,12 @@ type BigQueryDatasetSpec struct {
 	/* Optional. Updates storage_billing_model for the dataset. */
 	// +optional
 	StorageBillingModel *string `json:"storageBillingModel,omitempty"`
+}
+
+type DatasetObservedStateStatus struct {
+	/* Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 }
 
 type BigQueryDatasetStatus struct {
@@ -221,6 +228,10 @@ type BigQueryDatasetStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 
 	/* Output only. A URL that can be used to access the resource again. You can use this URL in Get or Update requests to the resource. */
 	// +optional

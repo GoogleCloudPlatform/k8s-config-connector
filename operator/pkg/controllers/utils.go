@@ -530,6 +530,7 @@ func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, r
 			targetControllerName, strings.Join(customizev1alpha1.ValidRateLimitControllers, ", "))
 	}
 
+	count := 0
 	for _, item := range m.Items {
 		if item.GroupVersionKind() != targetControllerGVK {
 			continue
@@ -540,7 +541,10 @@ func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, r
 		if err := item.MutateContainers(customizeRateLimitFn(targetContainerName, ratelimit)); err != nil {
 			return err
 		}
-		break // we already found the matching controller, no need to keep looking.
+		count++
+	}
+	if count != 1 {
+		return fmt.Errorf("rate limit customization for %s modified %d instances.", targetControllerName, count)
 	}
 	return nil
 }
@@ -576,6 +580,93 @@ func applyRateLimitToContainerArg(container map[string]interface{}, rateLimit *c
 	if found {
 		for _, arg := range origArgs {
 			if strings.Contains(arg, "--qps") || strings.Contains(arg, "--burst") {
+				continue
+			}
+			wantArgs = append(wantArgs, arg)
+		}
+	}
+	if err := unstructured.SetNestedStringSlice(container, wantArgs, "args"); err != nil {
+		return fmt.Errorf("error setting args in container: %w", err)
+	}
+	return nil
+}
+
+func ApplyContainerPprof(m *manifest.Objects, targetControllerName string, pprofConfig *customizev1alpha1.PprofConfig) error {
+	if pprofConfig == nil {
+		return nil
+	}
+
+	var (
+		targetContainerName string
+		targetControllerGVK schema.GroupVersionKind
+	)
+	switch targetControllerName {
+	case "cnrm-controller-manager":
+		targetContainerName = "manager"
+		targetControllerGVK = schema.GroupVersionKind{
+			Group:   appsv1.SchemeGroupVersion.Group,
+			Version: appsv1.SchemeGroupVersion.Version,
+			Kind:    "StatefulSet",
+		}
+	default:
+		return fmt.Errorf("pprof config customization for %s is not supported. "+
+			"Supported controllers: %s",
+			targetControllerName, strings.Join(customizev1alpha1.SupportedPprofControllers, ", "))
+	}
+
+	count := 0
+	for _, item := range m.Items {
+		if item.GroupVersionKind() != targetControllerGVK {
+			continue
+		}
+		if !strings.HasPrefix(item.GetName(), targetControllerName) {
+			continue
+		}
+		if err := item.MutateContainers(customizePprofConfigFn(targetContainerName, pprofConfig)); err != nil {
+			return err
+		}
+		count++
+	}
+	if count != 1 {
+		return fmt.Errorf("pprof config customization for %s modified %d instances.", targetControllerName, count)
+	}
+	return nil
+}
+
+func customizePprofConfigFn(target string, pprofConfig *customizev1alpha1.PprofConfig) func(container map[string]interface{}) error {
+	return func(container map[string]interface{}) error {
+		name, _, err := unstructured.NestedString(container, "name")
+		if err != nil {
+			return fmt.Errorf("error reading container name: %w", err)
+		}
+		if name != target {
+			return nil
+		}
+		return applyPprofConfigToContainerArg(container, pprofConfig)
+	}
+}
+
+func applyPprofConfigToContainerArg(container map[string]interface{}, pprofConfig *customizev1alpha1.PprofConfig) error {
+	if pprofConfig == nil {
+		return nil
+	}
+	origArgs, found, err := unstructured.NestedStringSlice(container, "args")
+	if err != nil {
+		return fmt.Errorf("error getting args in container: %w", err)
+	}
+	wantArgs := []string{}
+	if strings.ToUpper(pprofConfig.Support) == "ALL" {
+		wantArgs = append(wantArgs, "--enable-pprof=true")
+	} else {
+		wantArgs = append(wantArgs, "--enable-pprof=false")
+	}
+	if pprofConfig.Port > 0 {
+		wantArgs = append(wantArgs, fmt.Sprintf("--pprof-port=%d", pprofConfig.Port))
+	}
+	if found {
+		for _, arg := range origArgs {
+			if strings.Contains(arg, "--enable-pprof") || strings.Contains(arg, "--pprof-port") {
+				// drop the old value on the floor
 				continue
 			}
 			wantArgs = append(wantArgs, arg)
