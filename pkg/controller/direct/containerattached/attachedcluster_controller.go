@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	gcp "cloud.google.com/go/gkemulticloud/apiv1"
+	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 
 	containerattachedpb "cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb"
 	"github.com/googleapis/gax-go/v2/apierror"
@@ -103,6 +104,19 @@ func (m *modelContainerAttachedCluster) client(ctx context.Context, endpoint str
 	return gcpClient, err
 }
 
+func (m *modelContainerAttachedCluster) projectsClient(ctx context.Context) (*cloudresourcemanager.ProjectsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	crmClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building cloudresourcemanager client: %w", err)
+	}
+	return crmClient, err
+}
+
 func endpoint(location string) string {
 	return fmt.Sprintf("%s-gkemulticloud.googleapis.com:443", location)
 }
@@ -119,6 +133,19 @@ func (m *modelContainerAttachedCluster) AdapterForObject(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
+
+	projectsClient, err := m.projectsClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// err = krm.ResolveFleetProjectRef(ctx, reader, &obj.Spec.Fleet.ProjectRef, obj)
+	err = obj.Spec.Fleet.ProjectRef.ResolveExternal(ctx, projectsClient)
+	if err != nil {
+		// return nil, err
+		log.V(0).Info(fmt.Sprintf("HF: ResolveFleetProjectRef error: %v", err))
+	}
+	log.V(0).Info(fmt.Sprintf("HF: ResolveFleetProjectRef: %v", obj.Spec.Fleet.ProjectRef))
 
 	// Get containerattached GCP client
 	endpoint := endpoint(id.Location)

@@ -15,6 +15,9 @@
 package containerattached
 
 import (
+	"fmt"
+	"log"
+
 	pb "cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/containerattached/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -36,9 +39,14 @@ func Fleet_ToProto(mapCtx *direct.MapContext, in *krm.Fleet) *pb.Fleet {
 	}
 	out := &pb.Fleet{}
 	if in.ProjectRef.External == "" {
-		mapCtx.Errorf("Fleet project external reference was not pre-resolved")
+		if in.ProjectRef.Name == "" {
+			mapCtx.Errorf("Fleet project reference is missing")
+		}
+		in.ProjectRef.External = fmt.Sprintf("projects/%s", in.ProjectRef.Name)
+		// krm.ResolveFleetProjectRef(ctx, )
 	}
 	out.Project = in.ProjectRef.External
+	log.Printf("HF: out.Project: %s, in.ProjectRef: %+v", out.Project, in.ProjectRef)
 	out.Membership = direct.ValueOf(in.Membership)
 	return out
 }
