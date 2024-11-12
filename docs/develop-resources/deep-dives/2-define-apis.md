@@ -27,12 +27,10 @@ Run the following command
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
 go run main.go generate-types \
-     --service google.storage.v1  \
+     --service google.storage.v1 \
      --proto-source-path ../proto-to-mapper/build/googleapis.pb \
-     --output-api $REPO_ROOT/apis \
-     --kind StorageNotification  \
-     --proto-resource Notification \
-     --api-version "storage.cnrm.cloud.google.com/v1beta1"
+     --api-version "storage.cnrm.cloud.google.com/v1beta1" \
+     --resource StorageNotification:Notification
 ```
 
 * `--service`
@@ -48,13 +46,13 @@ The path to the one-off file we generated in 2.1
 
 The apis directory to where to write the result to. Shall always be   $REPO_ROOT/apis
 
-* `--kind`
+* `--resource`
 
-The Config Connector resource kind, camel case. Normally it should contain the service name for example `SpannerInstance`, `SQLInstance`.
+The "Config Connector resource kind" and the equivalent "proto name of the resource" separated with a colon. e.g. for resource `google.storage.v1.Bucket`, the flag should be `StorageBucket:Bucket`. Can be specified multiple times.
 
-* `--proto-resource`
+  * The Config Connector resource kind should be in camel case. Normally it should contain the service name for example `StorageBucket`, `SQLInstance`.
 
-The proto name of the resource, you can find them in [https://github.com/googleapis/googleapis.git](https://github.com/googleapis/googleapis.git). For example, the SQLInstance is named `instance` under [https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4](https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4). The proto-source should be `instance` instead of `SQLInstance`
+  * The proto name of the resource can be found in [https://github.com/googleapis/googleapis.git](https://github.com/googleapis/googleapis.git). For example, the SQLInstance is named `instance` under [https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4](https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4). The proto name of the resource should be `instance` instead of `SQLInstance`.
 
 * `--api-version`
 
