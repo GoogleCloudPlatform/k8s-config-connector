@@ -14,6 +14,10 @@
 
 package v1beta1
 
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+)
+
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterError
 type AttachedClusterError struct {
 	// Human-friendly description of the error.
@@ -77,7 +81,7 @@ type BinaryAuthorization struct {
 // +kcc:proto=google.cloud.gkemulticloud.v1.Fleet
 type Fleet struct {
 	// The id of the Fleet host project where this cluster will be registered.
-	ProjectRef FleetProjectRef `json:"projectRef"`
+	ProjectRef refs.ProjectRef `json:"projectRef"`
 
 	// Output only. The name of the managed Hub Membership resource associated to
 	//  this cluster.
