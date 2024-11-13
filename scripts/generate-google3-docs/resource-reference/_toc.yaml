@@ -141,6 +141,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/kms/kmscryptokey.md
   - title: "KMSKeyRing"
     path: /config-connector/docs/reference/resource-docs/kms/kmskeyring.md
+  - title: "KMSAutokeyConfig"
+    path: /config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig.md
 - title: "Eventarc"
   section:
   - title: "EventarcTrigger"

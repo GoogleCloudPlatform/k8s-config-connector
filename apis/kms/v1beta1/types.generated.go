@@ -14,6 +14,8 @@
 
 package v1beta1
 
+import refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 // +kcc:proto=google.cloud.kms.v1.CryptoKey
 type CryptoKey struct {
 	// Output only. The resource name for this
@@ -574,5 +576,8 @@ type AutokeyConfig struct {
 	//  Cloud KMS Service Agent for this key project must be granted the
 	//  `cloudkms.admin` role (or pertinent permissions). A request with an empty
 	//  key project field will clear the configuration.
-	KeyProject *string `json:"keyProject,omitempty"`
+	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
+
+	// Output only. The state for the AutokeyConfig.
+	State *string `json:"state,omitempty"`
 }
