@@ -176,7 +176,7 @@ subnetworkRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Key for the annotation.{% endverbatim %}</p>
+            <p>{% verbatim %}Key for the label.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ subnetworkRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for the annotation.{% endverbatim %}</p>
+            <p>{% verbatim %}Value for the label.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

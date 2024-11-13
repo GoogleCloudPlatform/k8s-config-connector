@@ -78,10 +78,10 @@ spec:
                 items:
                   properties:
                     key:
-                      description: Key for the annotation.
+                      description: Key for the label.
                       type: string
                     value:
-                      description: Value for the annotation.
+                      description: Value for the label.
                       type: string
                   type: object
                 type: array
@@ -424,10 +424,10 @@ spec:
                 items:
                   properties:
                     key:
-                      description: Key for the annotation.
+                      description: Key for the label.
                       type: string
                     value:
-                      description: Value for the annotation.
+                      description: Value for the label.
                       type: string
                   type: object
                 type: array
