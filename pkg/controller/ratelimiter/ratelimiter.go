@@ -72,7 +72,7 @@ func RequeueRateLimiter() ratelimiter.RateLimiter {
 	)
 }
 
-// SetMasterRateLimiter sets the the kubernetes client level rate limiter.
+// SetMasterRateLimiter sets the kubernetes client level rate limiter.
 // This rate limiter is shared among all requests created by the client.
 // If specified, it will override the QPS and Burst fields.
 //
