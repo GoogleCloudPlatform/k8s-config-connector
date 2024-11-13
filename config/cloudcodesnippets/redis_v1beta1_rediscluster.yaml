@@ -1,0 +1,31 @@
+label: Config Connector RedisCluster
+markdownDescription: Creates yaml for a RedisCluster resource
+insertText: |
+  apiVersion: redis.cnrm.cloud.google.com/v1beta1
+  kind: RedisCluster
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:rediscluster-name}
+  spec:
+    shardCount: \${4:6}
+    pscConfigs:
+    - networkRef:
+        name: \${5:rediscluster-dep}
+    location: \${6:us-central1}
+    projectRef:
+      external: \${7:[PROJECT_ID?]}
+    replicaCount: \${8:2}
+    nodeType: \${9:REDIS_STANDARD_SMALL}
+    transitEncryptionMode: \${10:TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION}
+    authorizationMode: \${11:AUTH_MODE_IAM_AUTH}
+    redisConfigs:
+      maxmemory-policy: \${12:volatile-ttl}
+    zoneDistributionConfig:
+      mode: \${13:SINGLE_ZONE}
+      zone: \${14:us-central1-b}
+    persistenceConfig:
+      mode: \${15:AOF}
+      aofConfig:
+        appendFsync: \${16:EVERYSEC}
+    deletionProtectionEnabled: \${17:false}

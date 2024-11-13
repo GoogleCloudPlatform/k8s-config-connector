@@ -13,6 +13,6 @@ insertText: |
     licenses:
     - \${6:https://compute.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx}
     rawDisk:
-      source: \${7:https://storage.googleapis.com/bosh-gce-raw-stemcells/bosh-stemcell-97.98-google-kvm-ubuntu-xenial-go_agent-raw-1557960142.tar.gz}
+      source: \${7:https://storage.googleapis.com/config-connector-computeimage-raw/computeimage-raw.tar.gz}
       containerType: \${8:TAR}
       sha1: \${9:819b7e9c17423f4539f09687eaa13687afa2fe32}

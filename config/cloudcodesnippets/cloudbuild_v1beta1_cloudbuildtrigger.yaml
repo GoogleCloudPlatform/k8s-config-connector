@@ -27,7 +27,7 @@ insertText: |
       - \${11:team-a}
       - \${12:service-b}
       timeout: \${13:1800s}
-      steps:
+      step:
       - id: \${14:download_zip}
         name: \${15:gcr.io/cloud-builders/gsutil}
         args:

@@ -1,0 +1,16 @@
+label: Config Connector BigQueryAnalyticsHubDataExchange
+markdownDescription: Creates yaml for a BigQueryAnalyticsHubDataExchange resource
+insertText: |
+  apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1beta1
+  kind: BigQueryAnalyticsHubDataExchange
+  metadata:
+    name: \${1:bigqueryanalyticshubdataexchange-name}
+  spec:
+    displayName: \${2:my_data_exchange}
+    description: \${3:example data exchange}
+    primaryContact: \${4:a@contact.com}
+    documentation: \${5:a documentation}
+    discoveryType: \${6:DISCOVERY_TYPE_PRIVATE}
+    location: \${7:US}
+    projectRef:
+      external: \${8:[PROJECT_ID?]}
