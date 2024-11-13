@@ -33,8 +33,8 @@ We migrated the following resources from the Terraform-based or DCL-based contro
 
 * Add *cluster mode* to manage the rate-limit for the Config Connector requests
 
-  * Previously we added [rate-limit control in namespace mode](https://cloud.google.com/config-connector/docs/how-to/customize-controller-manager-rate-limit). Users can configure the `ControllerReconciler` object to set the rate-limit for the reconciling requests to the kube-apiserver for their Config Connector resources. 
-  * This release adds this feature in the cluster mode. This [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/operator/config/samples/controller_reconciler_customization_sample.yaml) shows how to set up the configuration.
+  * Previously we added [rate-limit control in namespace mode](https://cloud.google.com/config-connector/docs/how-to/customize-controller-manager-rate-limit). Users can configure the `NamespacedControllerReconciler` object to set the rate-limit for the reconciling requests to the kube-apiserver for their Config Connector resources. 
+  * This release adds this feature in the cluster mode in `ControllerReconciler` object. This [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/operator/config/samples/controller_reconciler_customization_sample.yaml) shows how to set up the configuration.
 
 ## Bug Fixes:
 
