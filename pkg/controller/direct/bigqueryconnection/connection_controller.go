@@ -21,6 +21,7 @@ import (
 
 	gcp "cloud.google.com/go/bigquery/connection/apiv1"
 	bigqueryconnectionpb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
+	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
@@ -253,6 +254,17 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	return setStatus(u, status)
 }
 
+// aws.accessRole.Identity is a output-only field in CREATE, it is required in the UPDATE.
+func merge3(desired *pb.Connection, previouslyApplied *krm.BigQueryConnectionConnectionObservedState) *pb.Connection {
+	if previouslyApplied != nil {
+		if previouslyApplied.Aws != nil {
+			desired.GetAws().GetAccessRole().Identity = direct.ValueOf(previouslyApplied.Aws.AccessRole.Identity)
+
+		}
+	}
+	return desired
+}
+
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
@@ -263,8 +275,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return err
 	}
 	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	connection := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &desired.Spec)
+	connection := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &a.desired.Spec)
+	connection = merge3(connection, a.desired.Status.ObservedState)
+
 	connection.Name = a.actual.Name
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
