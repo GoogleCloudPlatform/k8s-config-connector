@@ -1018,12 +1018,11 @@ a build.`,
 				},
 			},
 			"location": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Description: `The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
-If not specified, "global" is used.`,
-				Default: "global",
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: `The location of the Cloud Build trigger. If not specified, "global" is used. More info: cloud.google.com/build/docs/locations.`,
+				Default:     "global",
 			},
 			"name": {
 				Type:        schema.TypeString,
