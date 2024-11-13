@@ -20,3 +20,5 @@ spec:
   resourceID: bigquerydataset_${uniqueId}
   friendlyName: bigquerydataset-sample
   location: us-central1
+  projectRef:
+    external: ${projectId}
