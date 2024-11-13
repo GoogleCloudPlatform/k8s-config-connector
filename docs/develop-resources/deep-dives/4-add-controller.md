@@ -4,7 +4,7 @@ Run the following command to generate a controller template
 
 ```
 cd dev/tools/controllerbuilder
-go run main.go add --service <YOUR_SERVICE> --api-version <VERSION> --kind <YOUR_RESOURCE> --proto-resource <PROTO_RESOURCE>
+go run main.go generate-controller --service <YOUR_SERVICE> --api-version <VERSION> --kind <YOUR_RESOURCE> --proto-resource <PROTO_RESOURCE>
 ```
 
 Fix the generated code to make your SciFi running!
