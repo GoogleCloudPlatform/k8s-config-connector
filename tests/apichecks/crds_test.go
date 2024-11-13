@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -231,6 +232,56 @@ func TestCRDsAcronyms(t *testing.T) {
 	want := strings.Join(errs, "\n")
 
 	test.CompareGoldenFile(t, "testdata/exceptions/acronyms.txt", want)
+}
+
+// Avoid passing sensitive data as plain text in the CRD
+func TestNoSensitiveField(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+
+	sensitiveKeywords := []string{
+		"password",
+	}
+	for _, crd := range crds {
+
+		for _, version := range crd.Spec.Versions {
+			totalPaths := sets.Set[string]{}
+			skepticalFieldPaths := sets.Set[string]{}
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				isSensitiveSkeptical := false
+				field.FieldPath = strings.ToLower(field.FieldPath)
+				for _, sensitiveWord := range sensitiveKeywords {
+					if strings.HasSuffix(field.FieldPath, sensitiveWord) {
+						isSensitiveSkeptical = true
+						break
+					}
+				}
+				if isSensitiveSkeptical {
+					skepticalFieldPaths.Insert(fieldPath)
+				}
+				totalPaths.Insert(fieldPath)
+			})
+			for skeptical := range skepticalFieldPaths {
+				if totalPaths.Has(skeptical + ".valueFrom.secretKeyRef.key") {
+					continue
+				}
+				if totalPaths.Has(skeptical + ".secretRef.name") {
+					continue
+				}
+				errs = append(errs, fmt.Sprintf("crd=%s version=%v: field %q is sensitive data, should use secretRef", crd.Name, version.Name, skeptical))
+			}
+
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/sensitive.txt", want)
 }
 
 // splitCamelCase splits the string on capital letters, so camelCase => []string{"camel", "Case"}
