@@ -732,6 +732,13 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".settings.settingsVersion", "123")
 	}
 
+	// BigQueryConnection
+	{
+		visitor.ReplacePath(".cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
+		visitor.ReplacePath(".creationTime", "123456789")
+		visitor.ReplacePath(".lastModifiedTime", "123456789")
+	}
+
 	// Run visitors
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
