@@ -539,7 +539,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The BigQuery ConnectionID. This is a server-generated ID in the UUID format. If not provided, ConfigConnector will create a new Connection and store the UUID in `status.serviceGeneratedID` field.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The BigQuery Connection ID used for resource creation or acquisition. For creation: If specified, this value is used as the connection ID. If not provided, a UUID will be generated and assigned as the connection ID. For acquisition: This field must be provided to identify the connection resource to acquire.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

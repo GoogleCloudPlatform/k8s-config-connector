@@ -15,6 +15,7 @@
 package codegen
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"path/filepath"
@@ -22,11 +23,10 @@ import (
 	"strconv"
 	"strings"
 
-	protoapi "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"k8s.io/apimachinery/pkg/util/sets"
 
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/klog/v2"
 )
 
@@ -41,45 +41,48 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 
 type TypeGenerator struct {
 	generatorBase
-	goPackage             string
-	resourceProtoFullName string
-	visitedMessages       []protoreflect.MessageDescriptor
+	api             *protoapi.Proto
+	goPackage       string
+	visitedMessages []protoreflect.MessageDescriptor
 }
 
-func NewTypeGenerator(goPackage string, outputBaseDir, resourceProtoFullName string) *TypeGenerator {
+func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
 	g := &TypeGenerator{
-		goPackage:             goPackage,
-		resourceProtoFullName: resourceProtoFullName,
+		goPackage: goPackage,
+		api:       api,
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
 }
 
-func (g *TypeGenerator) VisitProto(api *protoapi.Proto) error {
-	if err := g.visitMessages(api.Files()); err != nil {
+func (g *TypeGenerator) VisitProto(resourceProtoFullName string) error {
+
+	descriptor, err := g.api.Files().FindDescriptorByName(protoreflect.FullName(resourceProtoFullName))
+	if err != nil {
+		return fmt.Errorf("failed to find the proto message %s: %w", resourceProtoFullName, err)
+	}
+	messageDescriptor, ok := descriptor.(protoreflect.MessageDescriptor)
+	if !ok {
+		return fmt.Errorf("unexpected descriptor type: %T", descriptor)
+	}
+
+	if err := g.visitMessage(messageDescriptor); err != nil {
 		return err
 	}
 
-	g.writeVisitedMessages()
 	return nil
 }
 
-func (g *TypeGenerator) visitMessages(files *protoregistry.Files) error {
-	messageDesc, err := files.FindDescriptorByName(protoreflect.FullName(g.resourceProtoFullName))
-	if err != nil {
-		return fmt.Errorf("failed to find the proto message %s: %w", g.resourceProtoFullName, err)
-	}
-	msgDesc, ok := messageDesc.(protoreflect.MessageDescriptor)
-	if !ok {
-		return fmt.Errorf("unexpected descriptor type: %T", msgDesc)
-	}
-	//klog.Infof("found message %q", msgDesc.FullName())
+func (g *TypeGenerator) visitMessage(messageDescriptor protoreflect.MessageDescriptor) error {
+	//klog.Infof("found message %q", messageDescriptor.FullName())
 
-	msgs, err := findDependenciesForMessage(msgDesc)
+	g.visitedMessages = append(g.visitedMessages, messageDescriptor)
+
+	msgs, err := findDependenciesForMessage(messageDescriptor)
 	if err != nil {
 		return err
 	}
-	g.visitedMessages = append(msgs, msgDesc)
+	g.visitedMessages = append(g.visitedMessages, msgs...)
 
 	return nil
 }
@@ -106,8 +109,8 @@ func writeCopyright(w io.Writer, year int) {
 	}
 }
 
-func (g *TypeGenerator) writeVisitedMessages() {
-	for _, msg := range sorted(g.visitedMessages) {
+func (g *TypeGenerator) WriteVisitedMessages() error {
+	for _, msg := range deduplicateAndSort(g.visitedMessages) {
 		if msg.IsMapEntry() {
 			continue
 		}
@@ -124,8 +127,7 @@ func (g *TypeGenerator) writeVisitedMessages() {
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
 		if err != nil {
-			g.Errorf("looking up go type: %w", err)
-			continue
+			return fmt.Errorf("looking up go type: %w", err)
 		}
 		if goType != nil {
 			klog.Infof("found existing non-generated go type %q, won't generate", goTypeName)
@@ -134,21 +136,18 @@ func (g *TypeGenerator) writeVisitedMessages() {
 
 		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
 		if err != nil {
-			g.Errorf("looking up go type by proto tag: %w", err)
-			continue
+			return fmt.Errorf("looking up go type by proto tag: %w", err)
 		}
 		if goType != nil {
 			klog.Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			continue
 		}
 
-		w := &out.contents
+		out.packageName = krmVersion
 
-		if out.contents.Len() == 0 {
-			fmt.Fprintf(w, "package %s\n", krmVersion)
-		}
-		WriteMessage(w, msg)
+		WriteMessage(&out.body, msg)
 	}
+	return errors.Join(g.errors...)
 }
 
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
@@ -234,10 +233,22 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	)
 }
 
-func sorted(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDescriptor {
-	sort.Slice(messages, func(i, j int) bool {
-		return messages[i].FullName() < messages[j].FullName()
-	})
+func deduplicateAndSort(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDescriptor {
+	m := make(map[string]protoreflect.MessageDescriptor)
+	for _, msg := range messages {
+		key := string(msg.FullName())
+		m[key] = msg
+	}
+	var keys []string
+	for key := range m {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	messages = []protoreflect.MessageDescriptor{}
+	for _, key := range keys {
+		messages = append(messages, m[key])
+	}
 	return messages
 }
 

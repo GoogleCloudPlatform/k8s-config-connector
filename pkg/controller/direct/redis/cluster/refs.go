@@ -53,12 +53,8 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 	}
 
 	if networkRef, ok := v.(*refs.ComputeNetworkRef); ok {
-		resolved, err := refs.ResolveComputeNetwork(r.ctx, r.kube, r.src, networkRef)
-		if err != nil {
+		if err := networkRef.Normalize(r.ctx, r.kube, r.src); err != nil {
 			return err
-		}
-		*networkRef = refs.ComputeNetworkRef{
-			External: resolved.String(),
 		}
 	}
 

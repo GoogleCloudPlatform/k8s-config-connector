@@ -50,4 +50,4 @@ KCC_USE_DIRECT_RECONCILERS=<YOUR KIND> hack/compare-mock fixtures/<your_resource
 ### Exit Criteria
 
 * The PRs shall pass the MockGCP tests
-* For Beta resource, the roundtrip fuzz tests shall cover all the fields in `spec `and `status.observedState `fields [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92)
+* For Beta resource, the roundtrip fuzz tests shall cover all the fields in `spec `and `status.observedState `fields. [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/f313b00c52f09c4a52a2eb5fe2c15fa4b30a05fd/pkg/controller/direct/discoveryengine/fuzzers.go#L26-L47)

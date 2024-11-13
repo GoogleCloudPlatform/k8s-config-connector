@@ -1,0 +1,143 @@
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudResource": {
+    "serviceAccountId": "bqcx-projects/${projectId}/locations/us-central1-reVy@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "1731379730",
+  "description": "BigQueryConnection Connection resource for acquisition",
+  "lastModifiedTime": "1731379730",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
+}
+
+---
+
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudResource": {
+    "serviceAccountId": "bqcx-projects/${projectId}/locations/us-central1-reVy@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "1731379730",
+  "description": "BigQueryConnection Connection resource for acquisition",
+  "lastModifiedTime": "1731379730",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
+}
+
+---
+
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudResource": {
+    "serviceAccountId": "bqcx-projects/${projectId}/locations/us-central1-reVy@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "1731379730",
+  "description": "BigQueryConnection Connection resource for acquisition",
+  "lastModifiedTime": "1731379730",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
+}
+
+---
+
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+
+{
+  "cloudResource": {},
+  "description": "BigQueryConnection Connection resource for acquisition with updated description",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudResource": {
+    "serviceAccountId": "bqcx-projects/${projectId}/locations/us-central1-reVy@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "1731379730",
+  "description": "BigQueryConnection Connection resource for acquisition with updated description",
+  "lastModifiedTime": "1731379731",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
+}
+
+---
+
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudResource": {
+    "serviceAccountId": "bqcx-projects/${projectId}/locations/us-central1-reVy@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+  },
+  "creationTime": "1731379730",
+  "description": "BigQueryConnection Connection resource for acquisition with updated description",
+  "lastModifiedTime": "1731379731",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
+}

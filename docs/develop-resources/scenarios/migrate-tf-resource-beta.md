@@ -61,7 +61,7 @@ Follow [deep-dives Step 4](../deep-dives/4-add-controller.md).
 
 ### PR Reviews
 
-* We require the roundtrip fuzz tests to cover all the fields in `spec` and `status.observedState` fields [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92) (For mapper)
+* We require the roundtrip fuzz tests to cover all the fields in `spec` and `status.observedState` fields [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/f313b00c52f09c4a52a2eb5fe2c15fa4b30a05fd/pkg/controller/direct/discoveryengine/fuzzers.go#L26-L47)
 * We require the MockGCP pass without any change to the `create.yaml`, `update.yaml` and `_generated_object_<resource>.golden.yaml` files. 
 
 ## Switch to the direct controller (optional)

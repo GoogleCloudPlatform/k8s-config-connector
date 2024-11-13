@@ -9,6 +9,4 @@ insertText: |
     location: \${2:us-central1}
     projectRef:
       external: \${3:[PROJECT_ID?]}
-    description: \${4:BigQueryConnection CloudResource Connection}
-    cloudResource:
-      serviceAccountId: \${5:}
+    cloudResource: {}

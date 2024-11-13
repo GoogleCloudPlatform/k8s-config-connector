@@ -16,6 +16,7 @@ package mockcloudbuild
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -67,6 +68,11 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 	obj.CreateTime = now
 
 	populateDefaultsForWorkerPool(obj)
+
+	if err := s.validateAndNormalizeWorkerPool(obj); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -81,17 +87,38 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 
 func populateDefaultsForWorkerPool(wp *pb.WorkerPool) {
 	now := timestamppb.Now()
-	network := wp.GetPrivatePoolV1Config().GetNetworkConfig()
-	if network != nil {
-		tokens := strings.Split(network.PeeredNetwork, "/")
-		if len(tokens) == 5 {
-			network.PeeredNetwork = tokens[0] + "/" + "${projectNumber}" + "/" + tokens[2] + "/" + tokens[3] + "/" + tokens[4]
-		}
-	}
 	wp.UpdateTime = now
 	wp.State = pb.WorkerPool_RUNNING
 	wp.Etag = fields.ComputeWeakEtag(wp)
 	wp.Uid = "11111111111111111111"
+}
+
+func (s *CloudBuildV1) validateAndNormalizeWorkerPool(wp *pb.WorkerPool) error {
+	privatePoolV1Config := wp.GetPrivatePoolV1Config()
+
+	// Normalize the peered network link to always use the project number
+	if privatePoolV1Config != nil && privatePoolV1Config.NetworkConfig != nil {
+		peeredNetwork := privatePoolV1Config.NetworkConfig.GetPeeredNetwork()
+		if peeredNetwork == "" {
+			return status.Errorf(codes.InvalidArgument, "peeredNetwork is required")
+		} else {
+			tokens := strings.Split(peeredNetwork, "/")
+			projectToken := ""
+			if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
+				projectToken = tokens[1]
+			} else {
+				return fmt.Errorf("format of peered network %q was not known (use projects/<project>/global/networks/<networkid>)", peeredNetwork)
+			}
+
+			project, err := s.Projects.GetProjectByIDOrNumber(projectToken)
+			if err != nil {
+				return fmt.Errorf("error getting project %q: %w", projectToken, err)
+			}
+
+			privatePoolV1Config.NetworkConfig.PeeredNetwork = fmt.Sprintf("projects/%d/global/networks/%s", project.Number, tokens[4])
+		}
+	}
+	return nil
 }
 
 func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorkerPoolRequest) (*longrunningpb.Operation, error) {
@@ -111,7 +138,13 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 	if err := fields.UpdateByFieldMask(obj, req.WorkerPool, req.UpdateMask.Paths); err != nil {
 		return nil, err
 	}
+
 	populateDefaultsForWorkerPool(obj)
+
+	if err := s.validateAndNormalizeWorkerPool(obj); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

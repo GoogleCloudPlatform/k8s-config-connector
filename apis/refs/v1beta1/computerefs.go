@@ -17,8 +17,11 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -44,61 +47,87 @@ type ComputeNetworkRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeNetwork` resource. */
 	Namespace string `json:"namespace,omitempty"`
-
-	ProjectNumber string `json:"-"`
 }
 
-func (networkRef *ComputeNetworkRef) WithProjectNumber() string {
-	_, id, _ := ParseComputeNetworkExternal(networkRef.External)
-	return buildNetworkExternal(networkRef.ProjectNumber, id)
+type ComputeNetworkID struct {
+	Project string
+	Network string
 }
 
-type ComputeNetwork struct {
-	Project          string
-	ComputeNetworkID string
+func (c *ComputeNetworkID) String() string {
+	return fmt.Sprintf("projects/%s/global/networks/%s", c.Project, c.Network)
 }
 
-func (c *ComputeNetwork) String() string {
-	return buildNetworkExternal(c.Project, c.ComputeNetworkID)
-}
-
-func buildNetworkExternal(project, network string) string {
-	return fmt.Sprintf("projects/%s/global/networks/%s", project, network)
-}
-
-func ParseComputeNetworkExternal(external string) (string, string, error) {
+func ParseComputeNetworkID(external string) (*ComputeNetworkID, error) {
 	if external == "" {
-		return "", "", fmt.Errorf("parse empty ComputeNetwork external value")
+		return nil, fmt.Errorf("empty ComputeNetwork external value")
 	}
 	external = fixStaleExternalFormat(external)
 	tokens := strings.Split(external, "/")
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
-		return tokens[1], tokens[4], nil
+		return &ComputeNetworkID{
+			Project: tokens[1],
+			Network: tokens[4],
+		}, nil
 	}
-	return "", "", fmt.Errorf("format of computenetwork external=%q was not known (use projects/<project>/global/networks/<networkid>)", external)
+	return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/<project>/global/networks/<networkid>)", external)
 }
 
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeNetworkRef) (*ComputeNetwork, error) {
+// ConvertToProjectNumber converts the external reference to use a project number.
+func (ref *ComputeNetworkRef) ConvertToProjectNumber(ctx context.Context, projectsClient *resourcemanager.ProjectsClient) error {
 	if ref == nil {
-		return nil, nil
+		return nil
+	}
+
+	id, err := ParseComputeNetworkID(ref.External)
+	if err != nil {
+		return err
+	}
+
+	// Check if the project number is already a valid integer
+	// If not, we need to look it up
+	projectNumber, err := strconv.ParseInt(id.Project, 10, 64)
+	if err != nil {
+		req := &resourcemanagerpb.GetProjectRequest{
+			Name: "projects/" + id.Project,
+		}
+		project, err := projectsClient.GetProject(ctx, req)
+		if err != nil {
+			return fmt.Errorf("error getting project %q: %w", req.Name, err)
+		}
+		n, err := strconv.ParseInt(strings.TrimPrefix(project.Name, "projects/"), 10, 64)
+		if err != nil {
+			return fmt.Errorf("error parsing project number for %q: %w", project.Name, err)
+		}
+		projectNumber = n
+	}
+	id.Project = strconv.FormatInt(projectNumber, 10)
+	ref.External = id.String()
+	return nil
+}
+
+func (ref *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reader, src client.Object) error {
+	if ref == nil {
+		return nil
 	}
 
 	if ref.External != "" && ref.Name != "" {
-		return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
+		return fmt.Errorf("cannot specify both name and external on computenetwork reference")
 	}
 
 	if ref.External != "" {
-		project, networkID, err := ParseComputeNetworkExternal(ref.External)
+		id, err := ParseComputeNetworkID(ref.External)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		return &ComputeNetwork{
-			Project:          project,
-			ComputeNetworkID: networkID}, nil
+		*ref = ComputeNetworkRef{
+			External: id.String(),
+		}
+		return nil
 	}
 
 	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on computenetwork reference")
+		return fmt.Errorf("must specify either name or external on computenetwork reference")
 	}
 
 	key := types.NamespacedName{
@@ -109,32 +138,37 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		key.Namespace = src.GetNamespace()
 	}
 
-	computenetwork := &unstructured.Unstructured{}
-	computenetwork.SetGroupVersionKind(schema.GroupVersionKind{
+	computeNetwork := &unstructured.Unstructured{}
+	computeNetwork.SetGroupVersionKind(schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeNetwork",
 	})
-	if err := reader.Get(ctx, key, computenetwork); err != nil {
+	if err := reader.Get(ctx, key, computeNetwork); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(computenetwork.GroupVersionKind(), key)
+			return k8s.NewReferenceNotFoundError(computeNetwork.GroupVersionKind(), key)
 		}
-		return nil, fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
+		return fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
 	}
 
-	computenetworkID, err := GetResourceID(computenetwork)
+	resourceID, err := GetResourceID(computeNetwork)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	computeNetworkProjectID, err := ResolveProjectID(ctx, reader, computenetwork)
+	projectID, err := ResolveProjectID(ctx, reader, computeNetwork)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return &ComputeNetwork{
-		Project:          computeNetworkProjectID,
-		ComputeNetworkID: computenetworkID,
-	}, nil
+
+	id := ComputeNetworkID{
+		Project: projectID,
+		Network: resourceID,
+	}
+	*ref = ComputeNetworkRef{
+		External: id.String(),
+	}
+	return nil
 }
 
 type ComputeSubnetworkRef struct {

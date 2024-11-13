@@ -29,7 +29,6 @@ import (
 
 	gcp "cloud.google.com/go/workstations/apiv1"
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
-	workstationspb "cloud.google.com/go/workstations/apiv1/workstationspb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -44,7 +43,7 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.WorkstationClusterGVK, NewModel)
+	registry.RegisterModel(krm.WorkstationClusterGVK, NewWorkstationClusterModel)
 	fuzztesting.RegisterKRMFuzzer(workstationclusterFuzzer())
 }
 
@@ -79,17 +78,17 @@ func workstationclusterFuzzer() fuzztesting.KRMFuzzer {
 	return f
 }
 
-func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &model{config: *config}, nil
+func NewWorkstationClusterModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelWorkstationCluster{config: *config}, nil
 }
 
-var _ directbase.Model = &model{}
+var _ directbase.Model = &modelWorkstationCluster{}
 
-type model struct {
+type modelWorkstationCluster struct {
 	config config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelWorkstationCluster) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -102,7 +101,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelWorkstationCluster) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.WorkstationCluster{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -169,7 +168,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}, nil
 }
 
-func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *modelWorkstationCluster) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
@@ -178,7 +177,7 @@ type Adapter struct {
 	id        *WorkstationClusterIdentity
 	gcpClient *gcp.Client
 	desired   *krm.WorkstationCluster
-	actual    *workstationspb.WorkstationCluster
+	actual    *pb.WorkstationCluster
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -187,7 +186,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting WorkstationCluster", "name", a.id.FullyQualifiedName())
 
-	req := &workstationspb.GetWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
+	req := &pb.GetWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
 	workstationclusterpb, err := a.gcpClient.GetWorkstationCluster(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -213,7 +212,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	req := &workstationspb.CreateWorkstationClusterRequest{
+	req := &pb.CreateWorkstationClusterRequest{
 		Parent:               a.id.Parent.String(),
 		WorkstationClusterId: a.id.WorkstationCluster,
 		WorkstationCluster:   resource,
@@ -263,7 +262,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 
-	req := &workstationspb.UpdateWorkstationClusterRequest{
+	req := &pb.UpdateWorkstationClusterRequest{
 		UpdateMask:         updateMask,
 		WorkstationCluster: resource,
 	}
@@ -311,7 +310,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting WorkstationCluster", "name", a.id.FullyQualifiedName())
 
-	req := &workstationspb.DeleteWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
+	req := &pb.DeleteWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
 	op, err := a.gcpClient.DeleteWorkstationCluster(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting WorkstationCluster %s: %w", a.id.FullyQualifiedName(), err)
