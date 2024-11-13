@@ -146,7 +146,7 @@ spec:
         - --prometheus-scrape-endpoint=:8888
         command:
         - /configconnector/manager
-        image: gcr.io/gke-release/cnrm/cnrm/controller:2fa0f72
+        image: gcr.io/gke-release/cnrm/controller:2fa0f72
         imagePullPolicy: Always
         name: manager
         ports:
