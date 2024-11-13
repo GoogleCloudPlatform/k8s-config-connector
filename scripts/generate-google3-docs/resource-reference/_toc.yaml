@@ -485,8 +485,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate.md
 - title: "Privileged Access Manager"
   section:
-    - title: "PrivilegedAccessManagerEntitlement"
-      path: /config-connector/docs/reference/resource-docs/privilegedaccessmanager/privilegedaccessmanagerentitlement.md
+  - title: "PrivilegedAccessManagerEntitlement"
+    path: /config-connector/docs/reference/resource-docs/privilegedaccessmanager/privilegedaccessmanagerentitlement.md
 - title: "Pub/Sub"
   section:
   - title: "PubSubSchema"
