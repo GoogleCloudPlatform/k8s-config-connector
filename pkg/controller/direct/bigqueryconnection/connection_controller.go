@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	gcp "cloud.google.com/go/bigquery/connection/apiv1"
-	bigqueryconnectionpb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -165,7 +164,7 @@ type Adapter struct {
 	id        *krm.BigQueryConnectionConnectionRef
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryConnectionConnection
-	actual    *bigqueryconnectionpb.Connection
+	actual    *pb.Connection
 	reader    client.Reader
 	namespace string
 }
@@ -184,7 +183,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	if !idIsSet { // resource is not yet created
 		return false, nil
 	}
-	req := &bigqueryconnectionpb.GetConnectionRequest{Name: a.id.External}
+	req := &pb.GetConnectionRequest{Name: a.id.External}
 	connectionpb, err := a.gcpClient.GetConnection(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -217,7 +216,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if err != nil {
 		return err
 	}
-	req := &bigqueryconnectionpb.CreateConnectionRequest{
+	req := &pb.CreateConnectionRequest{
 		Parent:     parent,
 		Connection: resource,
 	}
@@ -226,7 +225,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return err
 	}
 	if isIsSet { // during "Create", this means user has specified connection ID in `spec.ResourceID` field.
-		req = &bigqueryconnectionpb.CreateConnectionRequest{
+		req = &pb.CreateConnectionRequest{
 			Parent:       parent,
 			ConnectionId: id,
 			Connection:   resource,
@@ -255,12 +254,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 }
 
 // aws.accessRole.Identity is a output-only field in CREATE, it is required in the UPDATE.
-func merge3(desired *pb.Connection, previouslyApplied *krm.BigQueryConnectionConnectionObservedState) *pb.Connection {
-	if previouslyApplied != nil {
-		if previouslyApplied.Aws != nil {
-			desired.GetAws().GetAccessRole().Identity = direct.ValueOf(previouslyApplied.Aws.AccessRole.Identity)
-
-		}
+func processAwsIdentityMerge(desired *pb.Connection, previouslyApplied *krm.BigQueryConnectionConnectionObservedState) *pb.Connection {
+	if previouslyApplied != nil && previouslyApplied.Aws != nil {
+		desired.GetAws().GetAccessRole().Identity = direct.ValueOf(previouslyApplied.Aws.AccessRole.Identity)
 	}
 	return desired
 }
@@ -276,7 +272,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	mapCtx := &direct.MapContext{}
 	connection := BigQueryConnectionConnectionSpec_ToProto(mapCtx, &a.desired.Spec)
-	connection = merge3(connection, a.desired.Status.ObservedState)
+	connection = processAwsIdentityMerge(connection, a.desired.Status.ObservedState)
 
 	connection.Name = a.actual.Name
 	if mapCtx.Err() != nil {
@@ -291,7 +287,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 	fqn := a.id.External
-	req := &bigqueryconnectionpb.UpdateConnectionRequest{
+	req := &pb.UpdateConnectionRequest{
 		Name:       fqn,
 		Connection: connection,
 		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
@@ -349,7 +345,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("deleting Connection", "name", a.id.External)
 
 	fqn := a.id.External
-	req := &bigqueryconnectionpb.DeleteConnectionRequest{Name: fqn}
+	req := &pb.DeleteConnectionRequest{Name: fqn}
 	if err := a.gcpClient.DeleteConnection(ctx, req); err != nil {
 		return false, fmt.Errorf("deleting Connection %s: %w", fqn, err)
 	}
