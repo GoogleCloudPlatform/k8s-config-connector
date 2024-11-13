@@ -31,15 +31,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858"
+  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2Fd3c6b152-44c3-46a1-9726-50475ca9a858
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -61,15 +61,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858"
+  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858?%24alt=json%3Benum-encoding%3Dint&updateMask=aws.accessRole.iamRoleId
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=aws.accessRole.iamRoleId
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2Fd3c6b152-44c3-46a1-9726-50475ca9a858
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 {
   "aws": {
@@ -78,7 +78,7 @@ x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%
       "identity": "048077221682493034546"
     }
   },
-  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858"
+  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 200 OK
@@ -101,15 +101,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858"
+  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2Fd3c6b152-44c3-46a1-9726-50475ca9a858
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private
@@ -131,15 +131,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858"
+  "name": "projects/${projectNumber}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2Fd3c6b152-44c3-46a1-9726-50475ca9a858
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Faws-us-east-1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Cache-Control: private

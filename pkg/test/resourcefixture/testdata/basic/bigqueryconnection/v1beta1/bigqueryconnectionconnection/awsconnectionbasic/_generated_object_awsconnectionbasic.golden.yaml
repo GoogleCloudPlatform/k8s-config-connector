@@ -25,7 +25,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/aws-us-east-1/connections/d3c6b152-44c3-46a1-9726-50475ca9a858
+  externalRef: projects/${projectId}/locations/aws-us-east-1/connections/71389360-831c-431d-8975-837aee2153be
   observedGeneration: 2
   observedState:
     aws:
