@@ -447,20 +447,38 @@ func directCreate(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 }
 
 func directDelete(ctx context.Context, u *unstructured.Unstructured, c client.Client) error {
+	maxRetries := 3
+	baseDelay := 100 * time.Millisecond // starting delay
+	var err error
+
 	a, err := getAdapter(ctx, u, c)
 	if err != nil {
 		return err
 	}
+	// the very first call to find can be true but subsequent calls may return false
+	// with the underlying Delete call already succeeding! So if we do not find this resource
+	// in subsequent calls but found it originally, we can consider it deleted.
+	firstFind := false
 
-	found, err := a.Find(ctx)
-	if err != nil {
-		return err
-	}
-	if !found {
-		return fmt.Errorf("GVK %s '%v' is not found", u.GroupVersionKind(), u.GetName())
+	for i := 0; i < maxRetries; i++ {
+		found, err := a.Find(ctx)
+		if err == nil && found {
+			firstFind = true
+			op := directbase.NewDeleteOperation(c, u)
+			_, err = a.Delete(ctx, op)
+			if err == nil {
+				return nil // success
+			}
+		} else if err == nil && !found {
+			if firstFind {
+				return nil // success
+			}
+			return fmt.Errorf("GVK %s '%v' is not found", u.GroupVersionKind(), u.GetName())
+		}
+
+		// Exponential backoff
+		time.Sleep(baseDelay * (1 << i)) // delays: 100ms * 2^0, 100ms * 2^1, 100ms * 2^2
 	}
 
-	op := directbase.NewDeleteOperation(c, u)
-	_, err = a.Delete(ctx, op)
-	return err
+	return fmt.Errorf("failed to delete after %d retries: %w", maxRetries, err)
 }
