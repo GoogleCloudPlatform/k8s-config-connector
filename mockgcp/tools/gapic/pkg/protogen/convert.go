@@ -87,169 +87,200 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 	desc := &descriptorpb.DescriptorProto{}
 	desc.Name = PtrTo(message.ID)
 	c.SetComment(c.protoPackageName+"."+desc.GetName(), message.Description)
-	for _, entry := range message.Properties.Entries() {
-		propertyID := entry.Key
-		property := entry.Value
-
-		tag := nextTag
-		nextTag++
-
-		field := &descriptorpb.FieldDescriptorProto{
-			Number: &tag,
+	if len(message.Properties.Entries()) > 0 {
+		for _, entry := range message.Properties.Entries() {
+			field, err := c.buildProperty(message, desc, entry.Key, entry.Value, nextTag)
+			if err != nil {
+				return nil, err
+			}
+			desc.Field = append(desc.Field, field)
+			nextTag++
 		}
-		field.JsonName = PtrTo(propertyID)
-		field.Name = PtrTo(ToProtoFieldName(propertyID))
-
-		switch property.Type {
-		case "string", "boolean", "integer", "number":
-			c.setPrimitiveType(property, field)
-
-		case "object":
-			if property.Ref != "" {
-				typeName := c.resolveMessageType(property.Ref)
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-
-			} else if property.AdditionalProperties != nil {
-				valueField := &descriptorpb.FieldDescriptorProto{
-					Name:   PtrTo("value"),
-					Number: PtrTo[int32](2),
-				}
-				switch property.AdditionalProperties.Type {
-				case "string", "boolean", "integer", "number":
-					c.setPrimitiveType(property.AdditionalProperties, valueField)
-
-				case "any":
-					valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-					valueField.TypeName = PtrTo("google.protobuf.Any")
-					c.addImport("google/protobuf/any.proto")
-
-				case "":
-					if property.AdditionalProperties.Ref != "" {
-						valueMessage := c.resolveMessageType(property.AdditionalProperties.Ref)
-
-						valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-						valueField.TypeName = PtrTo(valueMessage)
-					}
-				}
-
-				if valueField.Type == nil {
-					klog.Fatalf("unhandled additionalProperties for object: %+v", property)
-				}
-
-				mapType := MapEntryName(propertyID)
-
-				{
-					mapMessage := &descriptorpb.DescriptorProto{}
-					mapMessage.Name = &mapType
-					mapMessage.Options = &descriptorpb.MessageOptions{
-						MapEntry: PtrTo(true),
-					}
-
-					mapMessage.Field = append(mapMessage.Field, &descriptorpb.FieldDescriptorProto{
-						Name:   PtrTo("key"),
-						Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
-						Number: PtrTo[int32](1),
-					})
-					mapMessage.Field = append(mapMessage.Field, valueField)
-
-					desc.NestedType = append(desc.NestedType, mapMessage)
-				}
-
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &mapType
-				field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
-			} else if len(property.Properties.Entries()) != 0 {
-				// An inline definition
-				inlineMessage, err := c.buildMessageFromOpenAPI(property)
-				if err != nil {
-					return nil, err
-				}
-				typeName := message.ID + StartWithUpper(propertyID)
-				inlineMessage.Name = &typeName
-				c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
-
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-			} else {
-				klog.Fatalf("expected property.Ref to be set for object: %+v", property)
-			}
-
-		case "":
-			// TODO: Combine with object?
-			if property.Ref != "" {
-				typeName := c.resolveMessageType(property.Ref)
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-			} else {
-				klog.Fatalf("expected property.Ref to be set for empty type: %+v", property)
-			}
-
-		case "array":
-			field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
-
-			if property.Ref != "" {
-				typeName := c.resolveMessageType(property.Ref)
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-			} else if property.Items != nil {
-				if property.Items.Ref != "" {
-					typeName := c.resolveMessageType(property.Items.Ref)
-					field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-					field.TypeName = &typeName
-				} else {
-					switch property.Items.Type {
-					case "string", "boolean", "integer", "number":
-						c.setPrimitiveType(property.Items, field)
-
-					case "object":
-						if property.Items.AdditionalProperties != nil {
-							switch property.Items.AdditionalProperties.Type {
-							case "any":
-								field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-								field.TypeName = PtrTo("google.protobuf.Any")
-								c.addImport("google/protobuf/any.proto")
-							default:
-								klog.Fatalf("unhandled property.Format in %+v", property)
-							}
-						} else if len(property.Items.Properties.Entries()) != 0 {
-							// An inline definition
-							inlineMessage, err := c.buildMessageFromOpenAPI(property.Items)
-							if err != nil {
-								return nil, err
-							}
-							typeName := message.ID + StartWithUpper(propertyID)
-							inlineMessage.Name = &typeName
-							c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
-
-							field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-							field.TypeName = &typeName
-						} else {
-							klog.Fatalf("unhandled property.Format in %+v", property)
-						}
-
-					default:
-						klog.Fatalf("unhandled property.Items for array: %+v", property.Items)
-					}
-				}
-			} else {
-				klog.Fatalf("expected property.Ref to be set for array: %+v", property)
-			}
-
-		case "any":
-			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-			field.TypeName = PtrTo("google.protobuf.Any")
-			c.addImport("google/protobuf/any.proto")
-
-		default:
-			klog.Fatalf("unsupported property.Type %q %+v", property.Type, property)
+	} else if message.Items != nil {
+		field, err := c.buildProperty(message, desc, "items", message.Items, nextTag)
+		if err != nil {
+			return nil, err
 		}
-
-		c.SetComment(c.protoPackageName+"."+desc.GetName()+"."+field.GetName(), property.Description)
+		field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
 		desc.Field = append(desc.Field, field)
+		nextTag++
 	}
 
 	return desc, nil
+}
+
+func (c *OpenAPIConverter) buildProperty(message *openapi.Property, desc *descriptorpb.DescriptorProto, propertyID string, property *openapi.Property, tag int32) (*descriptorpb.FieldDescriptorProto, error) {
+	field := &descriptorpb.FieldDescriptorProto{
+		Number: &tag,
+	}
+	field.JsonName = PtrTo(propertyID)
+	field.Name = PtrTo(ToProtoFieldName(propertyID))
+
+	switch property.Type {
+	case "string", "boolean", "integer", "number":
+		c.setPrimitiveType(property, field)
+
+	case "object":
+		if property.Ref != "" {
+			typeName := c.resolveMessageType(property.Ref)
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+
+		} else if property.AdditionalProperties != nil {
+			valueField := &descriptorpb.FieldDescriptorProto{
+				Name:   PtrTo("value"),
+				Number: PtrTo[int32](2),
+			}
+			switch property.AdditionalProperties.Type {
+			case "string", "boolean", "integer", "number":
+				c.setPrimitiveType(property.AdditionalProperties, valueField)
+
+			case "any":
+				valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+				valueField.TypeName = PtrTo("google.protobuf.Any")
+				c.addImport("google/protobuf/any.proto")
+
+			case "":
+				if property.AdditionalProperties.Ref != "" {
+					valueMessage := c.resolveMessageType(property.AdditionalProperties.Ref)
+
+					valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+					valueField.TypeName = PtrTo(valueMessage)
+				}
+			}
+
+			if valueField.Type == nil {
+				klog.Fatalf("unhandled additionalProperties for object: %+v", property)
+			}
+
+			mapType := MapEntryName(propertyID)
+
+			{
+				mapMessage := &descriptorpb.DescriptorProto{}
+				mapMessage.Name = &mapType
+				mapMessage.Options = &descriptorpb.MessageOptions{
+					MapEntry: PtrTo(true),
+				}
+
+				mapMessage.Field = append(mapMessage.Field, &descriptorpb.FieldDescriptorProto{
+					Name:   PtrTo("key"),
+					Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+					Number: PtrTo[int32](1),
+				})
+				mapMessage.Field = append(mapMessage.Field, valueField)
+
+				desc.NestedType = append(desc.NestedType, mapMessage)
+			}
+
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &mapType
+			field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+		} else if len(property.Properties.Entries()) != 0 {
+			// An inline definition
+			inlineMessage, err := c.buildMessageFromOpenAPI(property)
+			if err != nil {
+				return nil, err
+			}
+			typeName := message.ID + StartWithUpper(propertyID)
+			inlineMessage.Name = &typeName
+			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
+
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+		} else {
+			klog.Fatalf("expected property.Ref to be set for object: %+v", property)
+		}
+
+	case "":
+		// TODO: Combine with object?
+		if property.Ref != "" {
+			typeName := c.resolveMessageType(property.Ref)
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+		} else {
+			klog.Fatalf("expected property.Ref to be set for empty type: %+v", property)
+		}
+
+	case "array":
+		field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+
+		if property.Ref != "" {
+			typeName := c.resolveMessageType(property.Ref)
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+		} else if property.Items != nil {
+			if property.Items.Ref != "" {
+				typeName := c.resolveMessageType(property.Items.Ref)
+				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+				field.TypeName = &typeName
+			} else {
+				switch property.Items.Type {
+				case "string", "boolean", "integer", "number":
+					c.setPrimitiveType(property.Items, field)
+
+				case "object":
+					if property.Items.AdditionalProperties != nil {
+						switch property.Items.AdditionalProperties.Type {
+						case "any":
+							field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+							field.TypeName = PtrTo("google.protobuf.Any")
+							c.addImport("google/protobuf/any.proto")
+						default:
+							klog.Fatalf("unhandled property.Format in %+v", property)
+						}
+					} else if len(property.Items.Properties.Entries()) != 0 {
+						// An inline definition
+						inlineMessage, err := c.buildMessageFromOpenAPI(property.Items)
+						if err != nil {
+							return nil, err
+						}
+						typeName := message.ID + StartWithUpper(propertyID)
+						inlineMessage.Name = &typeName
+						c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
+
+						field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+						field.TypeName = &typeName
+					} else {
+						klog.Fatalf("unhandled property.Format in %+v", property)
+					}
+
+				case "array":
+					inlineMessage, err := c.buildMessageFromOpenAPI(property.Items)
+					if err != nil {
+						return nil, err
+					}
+					typeName := message.ID + StartWithUpper(propertyID)
+					inlineMessage.Name = &typeName
+					c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
+
+					field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+					field.TypeName = &typeName
+
+				case "any":
+					field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+					field.TypeName = PtrTo("google.protobuf.Any")
+					c.addImport("google/protobuf/any.proto")
+
+				default:
+					klog.Fatalf("unhandled property.Items for array: %+v", property.Items)
+				}
+			}
+		} else {
+			klog.Fatalf("expected property.Ref to be set for array: %+v", property)
+		}
+
+	case "any":
+		field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+		field.TypeName = PtrTo("google.protobuf.Any")
+		c.addImport("google/protobuf/any.proto")
+
+	default:
+		klog.Fatalf("unsupported property.Type %q %+v", property.Type, property)
+	}
+
+	c.SetComment(c.protoPackageName+"."+desc.GetName()+"."+field.GetName(), property.Description)
+
+	return field, nil
 }
 
 func PtrTo[T any](val T) *T {

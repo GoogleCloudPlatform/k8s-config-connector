@@ -376,7 +376,7 @@ service ProjectsLocationsKeyRingsImportJobsServer {
   };
 }
 
-  // Request message for KeyManagementService.AsymmetricDecrypt.
+// Request message for KeyManagementService.AsymmetricDecrypt.
 message AsymmetricDecryptRequest {
   // Required. The data encrypted with the named CryptoKeyVersion's public key using OAEP.
   optional bytes ciphertext = 1 [json_name="ciphertext"];
@@ -384,7 +384,7 @@ message AsymmetricDecryptRequest {
   optional int64 ciphertext_crc32c = 2 [json_name="ciphertextCrc32c"];
 }
 
-  // Response message for KeyManagementService.AsymmetricDecrypt.
+// Response message for KeyManagementService.AsymmetricDecrypt.
 message AsymmetricDecryptResponse {
   // The decrypted data originally encrypted with the matching public key.
   optional bytes plaintext = 1 [json_name="plaintext"];
@@ -396,7 +396,7 @@ message AsymmetricDecryptResponse {
   optional bool verified_ciphertext_crc32c = 4 [json_name="verifiedCiphertextCrc32c"];
 }
 
-  // Request message for KeyManagementService.AsymmetricSign.
+// Request message for KeyManagementService.AsymmetricSign.
 message AsymmetricSignRequest {
   // Optional. The data to sign. It can't be supplied if AsymmetricSignRequest.digest is supplied.
   optional bytes data = 1 [json_name="data"];
@@ -408,7 +408,7 @@ message AsymmetricSignRequest {
   optional int64 digest_crc32c = 4 [json_name="digestCrc32c"];
 }
 
-  // Response message for KeyManagementService.AsymmetricSign.
+// Response message for KeyManagementService.AsymmetricSign.
 message AsymmetricSignResponse {
   // The resource name of the CryptoKeyVersion used for signing. Check this field to verify that the intended resource was used for signing.
   optional string name = 1 [json_name="name"];
@@ -424,7 +424,7 @@ message AsymmetricSignResponse {
   optional bool verified_digest_crc32c = 6 [json_name="verifiedDigestCrc32c"];
 }
 
-  // Specifies the audit configuration for a service. The configuration determines which permission types are logged, and what identities, if any, are exempted from logging. An AuditConfig must have one or more AuditLogConfigs. If there are AuditConfigs for both `allServices` and a specific service, the union of the two AuditConfigs is used for that service: the log_types specified in each AuditConfig are enabled, and the exempted_members in each AuditLogConfig are exempted. Example Policy with multiple AuditConfigs: { "audit_configs": [ { "service": "allServices", "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" }, { "log_type": "ADMIN_READ" } ] }, { "service": "sampleservice.googleapis.com", "audit_log_configs": [ { "log_type": "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [ "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts `jose@example.com` from DATA_READ logging, and `aliya@example.com` from DATA_WRITE logging.
+// Specifies the audit configuration for a service. The configuration determines which permission types are logged, and what identities, if any, are exempted from logging. An AuditConfig must have one or more AuditLogConfigs. If there are AuditConfigs for both `allServices` and a specific service, the union of the two AuditConfigs is used for that service: the log_types specified in each AuditConfig are enabled, and the exempted_members in each AuditLogConfig are exempted. Example Policy with multiple AuditConfigs: { "audit_configs": [ { "service": "allServices", "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" }, { "log_type": "ADMIN_READ" } ] }, { "service": "sampleservice.googleapis.com", "audit_log_configs": [ { "log_type": "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [ "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts `jose@example.com` from DATA_READ logging, and `aliya@example.com` from DATA_WRITE logging.
 message AuditConfig {
   // The configuration for logging of each type of permission.
   repeated AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
@@ -432,7 +432,7 @@ message AuditConfig {
   optional string service = 2 [json_name="service"];
 }
 
-  // Provides the configuration for logging a type of permissions. Example: { "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting jose@example.com from DATA_READ logging.
+// Provides the configuration for logging a type of permissions. Example: { "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting jose@example.com from DATA_READ logging.
 message AuditLogConfig {
   // Specifies the identities that do not cause logging for this type of permission. Follows the same format of Binding.members.
   repeated string exempted_members = 1 [json_name="exemptedMembers"];
@@ -440,7 +440,7 @@ message AuditLogConfig {
   optional string log_type = 2 [json_name="logType"];
 }
 
-  // Cloud KMS Autokey configuration for a folder.
+// Cloud KMS Autokey configuration for a folder.
 message AutokeyConfig {
   // Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new CryptoKey when a KeyHandle is created. On UpdateAutokeyConfig, the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on this key project. Once configured, for Cloud KMS Autokey to function properly, this key project must have the Cloud KMS API activated and the Cloud KMS Service Agent for this key project must be granted the `cloudkms.admin` role (or pertinent permissions). A request with an empty key project field will clear the configuration.
   optional string key_project = 1 [json_name="keyProject"];
@@ -450,7 +450,7 @@ message AutokeyConfig {
   optional string state = 3 [json_name="state"];
 }
 
-  // Associates `members`, or principals, with a `role`.
+// Associates `members`, or principals, with a `role`.
 message Binding {
   // The condition that is associated with this binding. If the condition evaluates to `true`, then this binding applies to the current request. If the condition evaluates to `false`, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
   optional Expr condition = 1 [json_name="condition"];
@@ -460,7 +460,7 @@ message Binding {
   optional string role = 3 [json_name="role"];
 }
 
-  // A Certificate represents an X.509 certificate used to authenticate HTTPS connections to EKM replicas.
+// A Certificate represents an X.509 certificate used to authenticate HTTPS connections to EKM replicas.
 message Certificate {
   // Output only. The issuer distinguished name in RFC 2253 format. Only present if parsed is true.
   optional string issuer = 1 [json_name="issuer"];
@@ -482,7 +482,7 @@ message Certificate {
   repeated string subject_alternative_dns_names = 9 [json_name="subjectAlternativeDnsNames"];
 }
 
-  // Certificate chains needed to verify the attestation. Certificates in chains are PEM-encoded and are ordered based on https://tools.ietf.org/html/rfc5246#section-7.4.2.
+// Certificate chains needed to verify the attestation. Certificates in chains are PEM-encoded and are ordered based on https://tools.ietf.org/html/rfc5246#section-7.4.2.
 message CertificateChains {
   // Cavium certificate chain corresponding to the attestation.
   repeated string cavium_certs = 1 [json_name="caviumCerts"];
@@ -492,7 +492,7 @@ message CertificateChains {
   repeated string google_partition_certs = 3 [json_name="googlePartitionCerts"];
 }
 
-  // A CryptoKey represents a logical key that can be used for cryptographic operations. A CryptoKey is made up of zero or more versions, which represent the actual key material used in cryptographic operations.
+// A CryptoKey represents a logical key that can be used for cryptographic operations. A CryptoKey is made up of zero or more versions, which represent the actual key material used in cryptographic operations.
 message CryptoKey {
   // Output only. The time at which this CryptoKey was created.
   optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -520,7 +520,7 @@ message CryptoKey {
   optional CryptoKeyVersionTemplate version_template = 12 [json_name="versionTemplate"];
 }
 
-  // A CryptoKeyVersion represents an individual cryptographic key, and the associated key material. An ENABLED version can be used for cryptographic operations. For security reasons, the raw cryptographic key material represented by a CryptoKeyVersion can never be viewed or exported. It can only be used to encrypt, decrypt, or sign data when an authorized user or application invokes Cloud KMS.
+// A CryptoKeyVersion represents an individual cryptographic key, and the associated key material. An ENABLED version can be used for cryptographic operations. For security reasons, the raw cryptographic key material represented by a CryptoKeyVersion can never be viewed or exported. It can only be used to encrypt, decrypt, or sign data when an authorized user or application invokes Cloud KMS.
 message CryptoKeyVersion {
   // Output only. The CryptoKeyVersionAlgorithm that this CryptoKeyVersion supports.
   optional string algorithm = 1 [json_name="algorithm"];
@@ -556,7 +556,7 @@ message CryptoKeyVersion {
   optional string state = 16 [json_name="state"];
 }
 
-  // A CryptoKeyVersionTemplate specifies the properties to use when creating a new CryptoKeyVersion, either manually with CreateCryptoKeyVersion or automatically as a result of auto-rotation.
+// A CryptoKeyVersionTemplate specifies the properties to use when creating a new CryptoKeyVersion, either manually with CreateCryptoKeyVersion or automatically as a result of auto-rotation.
 message CryptoKeyVersionTemplate {
   // Required. Algorithm to use when creating a CryptoKeyVersion based on this template. For backwards compatibility, GOOGLE_SYMMETRIC_ENCRYPTION is implied if both this field is omitted and CryptoKey.purpose is ENCRYPT_DECRYPT.
   optional string algorithm = 1 [json_name="algorithm"];
@@ -564,7 +564,7 @@ message CryptoKeyVersionTemplate {
   optional string protection_level = 2 [json_name="protectionLevel"];
 }
 
-  // Request message for KeyManagementService.Decrypt.
+// Request message for KeyManagementService.Decrypt.
 message DecryptRequest {
   // Optional. Optional data that must match the data originally supplied in EncryptRequest.additional_authenticated_data.
   optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
@@ -576,7 +576,7 @@ message DecryptRequest {
   optional int64 ciphertext_crc32c = 4 [json_name="ciphertextCrc32c"];
 }
 
-  // Response message for KeyManagementService.Decrypt.
+// Response message for KeyManagementService.Decrypt.
 message DecryptResponse {
   // The decrypted data originally supplied in EncryptRequest.plaintext.
   optional bytes plaintext = 1 [json_name="plaintext"];
@@ -588,11 +588,11 @@ message DecryptResponse {
   optional bool used_primary = 4 [json_name="usedPrimary"];
 }
 
-  // Request message for KeyManagementService.DestroyCryptoKeyVersion.
+// Request message for KeyManagementService.DestroyCryptoKeyVersion.
 message DestroyCryptoKeyVersionRequest {
 }
 
-  // A Digest holds a cryptographic message digest.
+// A Digest holds a cryptographic message digest.
 message Digest {
   // A message digest produced with the SHA-256 algorithm.
   optional bytes sha256 = 1 [json_name="sha256"];
@@ -602,7 +602,7 @@ message Digest {
   optional bytes sha512 = 3 [json_name="sha512"];
 }
 
-  // An EkmConfig is a singleton resource that represents configuration parameters that apply to all CryptoKeys and CryptoKeyVersions with a ProtectionLevel of EXTERNAL_VPC in a given project and location.
+// An EkmConfig is a singleton resource that represents configuration parameters that apply to all CryptoKeys and CryptoKeyVersions with a ProtectionLevel of EXTERNAL_VPC in a given project and location.
 message EkmConfig {
   // Optional. Resource name of the default EkmConnection. Setting this field to the empty string removes the default.
   optional string default_ekm_connection = 1 [json_name="defaultEkmConnection"];
@@ -610,7 +610,7 @@ message EkmConfig {
   optional string name = 2 [json_name="name"];
 }
 
-  // An EkmConnection represents an individual EKM connection. It can be used for creating CryptoKeys and CryptoKeyVersions with a ProtectionLevel of EXTERNAL_VPC, as well as performing cryptographic operations using keys created within the EkmConnection.
+// An EkmConnection represents an individual EKM connection. It can be used for creating CryptoKeys and CryptoKeyVersions with a ProtectionLevel of EXTERNAL_VPC, as well as performing cryptographic operations using keys created within the EkmConnection.
 message EkmConnection {
   // Output only. The time at which the EkmConnection was created.
   optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -626,7 +626,7 @@ message EkmConnection {
   repeated ServiceResolver service_resolvers = 6 [json_name="serviceResolvers"];
 }
 
-  // Request message for KeyManagementService.Encrypt.
+// Request message for KeyManagementService.Encrypt.
 message EncryptRequest {
   // Optional. Optional data that, if specified, must also be provided during decryption through DecryptRequest.additional_authenticated_data. The maximum size depends on the key version's protection_level. For SOFTWARE, EXTERNAL, and EXTERNAL_VPC keys the AAD must be no larger than 64KiB. For HSM keys, the combined length of the plaintext and additional_authenticated_data fields must be no larger than 8KiB.
   optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
@@ -638,7 +638,7 @@ message EncryptRequest {
   optional int64 plaintext_crc32c = 4 [json_name="plaintextCrc32c"];
 }
 
-  // Response message for KeyManagementService.Encrypt.
+// Response message for KeyManagementService.Encrypt.
 message EncryptResponse {
   // The encrypted data.
   optional bytes ciphertext = 1 [json_name="ciphertext"];
@@ -654,7 +654,7 @@ message EncryptResponse {
   optional bool verified_plaintext_crc32c = 6 [json_name="verifiedPlaintextCrc32c"];
 }
 
-  // Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
+// Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
 message Expr {
   // Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
   optional string description = 1 [json_name="description"];
@@ -666,7 +666,7 @@ message Expr {
   optional string title = 4 [json_name="title"];
 }
 
-  // ExternalProtectionLevelOptions stores a group of additional fields for configuring a CryptoKeyVersion that are specific to the EXTERNAL protection level and EXTERNAL_VPC protection levels.
+// ExternalProtectionLevelOptions stores a group of additional fields for configuring a CryptoKeyVersion that are specific to the EXTERNAL protection level and EXTERNAL_VPC protection levels.
 message ExternalProtectionLevelOptions {
   // The path to the external key material on the EKM when using EkmConnection e.g., "v0/my/key". Set this field instead of external_key_uri when using an EkmConnection.
   optional string ekm_connection_key_path = 1 [json_name="ekmConnectionKeyPath"];
@@ -674,7 +674,7 @@ message ExternalProtectionLevelOptions {
   optional string external_key_uri = 2 [json_name="externalKeyUri"];
 }
 
-  // Request message for KeyManagementService.GenerateRandomBytes.
+// Request message for KeyManagementService.GenerateRandomBytes.
 message GenerateRandomBytesRequest {
   // The length in bytes of the amount of randomness to retrieve. Minimum 8 bytes, maximum 1024 bytes.
   optional int32 length_bytes = 1 [json_name="lengthBytes"];
@@ -682,7 +682,7 @@ message GenerateRandomBytesRequest {
   optional string protection_level = 2 [json_name="protectionLevel"];
 }
 
-  // Response message for KeyManagementService.GenerateRandomBytes.
+// Response message for KeyManagementService.GenerateRandomBytes.
 message GenerateRandomBytesResponse {
   // The generated data.
   optional bytes data = 1 [json_name="data"];
@@ -690,7 +690,7 @@ message GenerateRandomBytesResponse {
   optional int64 data_crc32c = 2 [json_name="dataCrc32c"];
 }
 
-  // Request message for KeyManagementService.ImportCryptoKeyVersion.
+// Request message for KeyManagementService.ImportCryptoKeyVersion.
 message ImportCryptoKeyVersionRequest {
   // Required. The algorithm of the key being imported. This does not need to match the version_template of the CryptoKey this version imports into.
   optional string algorithm = 1 [json_name="algorithm"];
@@ -704,7 +704,7 @@ message ImportCryptoKeyVersionRequest {
   optional bytes wrapped_key = 5 [json_name="wrappedKey"];
 }
 
-  // An ImportJob can be used to create CryptoKeys and CryptoKeyVersions using pre-existing key material, generated outside of Cloud KMS. When an ImportJob is created, Cloud KMS will generate a "wrapping key", which is a public/private key pair. You use the wrapping key to encrypt (also known as wrap) the pre-existing key material to protect it during the import process. The nature of the wrapping key depends on the choice of import_method. When the wrapping key generation is complete, the state will be set to ACTIVE and the public_key can be fetched. The fetched public key can then be used to wrap your pre-existing key material. Once the key material is wrapped, it can be imported into a new CryptoKeyVersion in an existing CryptoKey by calling ImportCryptoKeyVersion. Multiple CryptoKeyVersions can be imported with a single ImportJob. Cloud KMS uses the private key portion of the wrapping key to unwrap the key material. Only Cloud KMS has access to the private key. An ImportJob expires 3 days after it is created. Once expired, Cloud KMS will no longer be able to import or unwrap any key material that was wrapped with the ImportJob's public key. For more information, see [Importing a key](https://cloud.google.com/kms/docs/importing-a-key).
+// An ImportJob can be used to create CryptoKeys and CryptoKeyVersions using pre-existing key material, generated outside of Cloud KMS. When an ImportJob is created, Cloud KMS will generate a "wrapping key", which is a public/private key pair. You use the wrapping key to encrypt (also known as wrap) the pre-existing key material to protect it during the import process. The nature of the wrapping key depends on the choice of import_method. When the wrapping key generation is complete, the state will be set to ACTIVE and the public_key can be fetched. The fetched public key can then be used to wrap your pre-existing key material. Once the key material is wrapped, it can be imported into a new CryptoKeyVersion in an existing CryptoKey by calling ImportCryptoKeyVersion. Multiple CryptoKeyVersions can be imported with a single ImportJob. Cloud KMS uses the private key portion of the wrapping key to unwrap the key material. Only Cloud KMS has access to the private key. An ImportJob expires 3 days after it is created. Once expired, Cloud KMS will no longer be able to import or unwrap any key material that was wrapped with the ImportJob's public key. For more information, see [Importing a key](https://cloud.google.com/kms/docs/importing-a-key).
 message ImportJob {
   // Output only. Statement that was generated and signed by the key creator (for example, an HSM) at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google. Only present if the chosen ImportMethod is one with a protection level of HSM.
   optional KeyOperationAttestation attestation = 1 [json_name="attestation"];
@@ -728,13 +728,13 @@ message ImportJob {
   optional string state = 10 [json_name="state"];
 }
 
-  // A KeyAccessJustificationsPolicy specifies zero or more allowed AccessReason values for encrypt, decrypt, and sign operations on a CryptoKey.
+// A KeyAccessJustificationsPolicy specifies zero or more allowed AccessReason values for encrypt, decrypt, and sign operations on a CryptoKey.
 message KeyAccessJustificationsPolicy {
   // The list of allowed reasons for access to a CryptoKey. Zero allowed access reasons means all encrypt, decrypt, and sign operations for the CryptoKey associated with this policy will fail.
   repeated string allowed_access_reasons = 1 [json_name="allowedAccessReasons"];
 }
 
-  // Resource-oriented representation of a request to Cloud KMS Autokey and the resulting provisioning of a CryptoKey.
+// Resource-oriented representation of a request to Cloud KMS Autokey and the resulting provisioning of a CryptoKey.
 message KeyHandle {
   // Output only. Name of a CryptoKey that has been provisioned for Customer Managed Encryption Key (CMEK) use in the KeyHandle project and location for the requested resource type. The CryptoKey project will reflect the value configured in the AutokeyConfig on the resource project's ancestor folder at the time of the KeyHandle creation. If more than one ancestor folder has a configured AutokeyConfig, the nearest of these configurations is used.
   optional string kms_key = 1 [json_name="kmsKey"];
@@ -744,7 +744,7 @@ message KeyHandle {
   optional string resource_type_selector = 3 [json_name="resourceTypeSelector"];
 }
 
-  // Contains an HSM-generated attestation about a key operation. For more information, see [Verifying attestations] (https://cloud.google.com/kms/docs/attest-key).
+// Contains an HSM-generated attestation about a key operation. For more information, see [Verifying attestations] (https://cloud.google.com/kms/docs/attest-key).
 message KeyOperationAttestation {
   // Output only. The certificate chains needed to validate the attestation
   optional CertificateChains cert_chains = 1 [json_name="certChains"];
@@ -754,7 +754,7 @@ message KeyOperationAttestation {
   optional string format = 3 [json_name="format"];
 }
 
-  // A KeyRing is a toplevel logical grouping of CryptoKeys.
+// A KeyRing is a toplevel logical grouping of CryptoKeys.
 message KeyRing {
   // Output only. The time at which this KeyRing was created.
   optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -762,7 +762,7 @@ message KeyRing {
   optional string name = 2 [json_name="name"];
 }
 
-  // Response message for KeyManagementService.ListCryptoKeyVersions.
+// Response message for KeyManagementService.ListCryptoKeyVersions.
 message ListCryptoKeyVersionsResponse {
   // The list of CryptoKeyVersions.
   repeated CryptoKeyVersion crypto_key_versions = 1 [json_name="cryptoKeyVersions"];
@@ -772,7 +772,7 @@ message ListCryptoKeyVersionsResponse {
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
-  // Response message for KeyManagementService.ListCryptoKeys.
+// Response message for KeyManagementService.ListCryptoKeys.
 message ListCryptoKeysResponse {
   // The list of CryptoKeys.
   repeated CryptoKey crypto_keys = 1 [json_name="cryptoKeys"];
@@ -782,7 +782,7 @@ message ListCryptoKeysResponse {
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
-  // Response message for EkmService.ListEkmConnections.
+// Response message for EkmService.ListEkmConnections.
 message ListEkmConnectionsResponse {
   // The list of EkmConnections.
   repeated EkmConnection ekm_connections = 1 [json_name="ekmConnections"];
@@ -792,7 +792,7 @@ message ListEkmConnectionsResponse {
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
-  // Response message for KeyManagementService.ListImportJobs.
+// Response message for KeyManagementService.ListImportJobs.
 message ListImportJobsResponse {
   // The list of ImportJobs.
   repeated ImportJob import_jobs = 1 [json_name="importJobs"];
@@ -802,7 +802,7 @@ message ListImportJobsResponse {
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
-  // Response message for Autokey.ListKeyHandles.
+// Response message for Autokey.ListKeyHandles.
 message ListKeyHandlesResponse {
   // Resulting KeyHandles.
   repeated KeyHandle key_handles = 1 [json_name="keyHandles"];
@@ -810,7 +810,7 @@ message ListKeyHandlesResponse {
   optional string next_page_token = 2 [json_name="nextPageToken"];
 }
 
-  // Response message for KeyManagementService.ListKeyRings.
+// Response message for KeyManagementService.ListKeyRings.
 message ListKeyRingsResponse {
   // The list of KeyRings.
   repeated KeyRing key_rings = 1 [json_name="keyRings"];
@@ -820,7 +820,7 @@ message ListKeyRingsResponse {
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
-  // The response message for Locations.ListLocations.
+// The response message for Locations.ListLocations.
 message ListLocationsResponse {
   // A list of locations that matches the specified filter in the request.
   repeated Location locations = 1 [json_name="locations"];
@@ -828,7 +828,7 @@ message ListLocationsResponse {
   optional string next_page_token = 2 [json_name="nextPageToken"];
 }
 
-  // A resource that represents a Google Cloud location.
+// A resource that represents a Google Cloud location.
 message Location {
   // The friendly name for this location, typically a nearby city name. For example, "Tokyo".
   optional string display_name = 1 [json_name="displayName"];
@@ -842,7 +842,7 @@ message Location {
   optional string name = 5 [json_name="name"];
 }
 
-  // Cloud KMS metadata for the given google.cloud.location.Location.
+// Cloud KMS metadata for the given google.cloud.location.Location.
 message LocationMetadata {
   // Indicates whether CryptoKeys with protection_level EXTERNAL can be created in this location.
   optional bool ekm_available = 1 [json_name="ekmAvailable"];
@@ -850,7 +850,7 @@ message LocationMetadata {
   optional bool hsm_available = 2 [json_name="hsmAvailable"];
 }
 
-  // Request message for KeyManagementService.MacSign.
+// Request message for KeyManagementService.MacSign.
 message MacSignRequest {
   // Required. The data to sign. The MAC tag is computed over this data field based on the specific algorithm.
   optional bytes data = 1 [json_name="data"];
@@ -858,7 +858,7 @@ message MacSignRequest {
   optional int64 data_crc32c = 2 [json_name="dataCrc32c"];
 }
 
-  // Response message for KeyManagementService.MacSign.
+// Response message for KeyManagementService.MacSign.
 message MacSignResponse {
   // The created signature.
   optional bytes mac = 1 [json_name="mac"];
@@ -872,7 +872,7 @@ message MacSignResponse {
   optional bool verified_data_crc32c = 5 [json_name="verifiedDataCrc32c"];
 }
 
-  // Request message for KeyManagementService.MacVerify.
+// Request message for KeyManagementService.MacVerify.
 message MacVerifyRequest {
   // Required. The data used previously as a MacSignRequest.data to generate the MAC tag.
   optional bytes data = 1 [json_name="data"];
@@ -884,7 +884,7 @@ message MacVerifyRequest {
   optional int64 mac_crc32c = 4 [json_name="macCrc32c"];
 }
 
-  // Response message for KeyManagementService.MacVerify.
+// Response message for KeyManagementService.MacVerify.
 message MacVerifyResponse {
   // The resource name of the CryptoKeyVersion used for verification. Check this field to verify that the intended resource was used for verification.
   optional string name = 1 [json_name="name"];
@@ -900,7 +900,7 @@ message MacVerifyResponse {
   optional bool verified_success_integrity = 6 [json_name="verifiedSuccessIntegrity"];
 }
 
-  // An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). **JSON example:** ``` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } ``` **YAML example:** ``` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 ``` For a description of IAM and its features, see the [IAM documentation](https://cloud.google.com/iam/docs/).
+// An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). **JSON example:** ``` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } ``` **YAML example:** ``` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 ``` For a description of IAM and its features, see the [IAM documentation](https://cloud.google.com/iam/docs/).
 message Policy {
   // Specifies cloud audit logging configuration for this policy.
   repeated AuditConfig audit_configs = 1 [json_name="auditConfigs"];
@@ -912,7 +912,7 @@ message Policy {
   optional int32 version = 4 [json_name="version"];
 }
 
-  // The public keys for a given CryptoKeyVersion. Obtained via GetPublicKey.
+// The public keys for a given CryptoKeyVersion. Obtained via GetPublicKey.
 message PublicKey {
   // The Algorithm associated with this key.
   optional string algorithm = 1 [json_name="algorithm"];
@@ -926,7 +926,7 @@ message PublicKey {
   optional string protection_level = 5 [json_name="protectionLevel"];
 }
 
-  // Request message for KeyManagementService.RawDecrypt.
+// Request message for KeyManagementService.RawDecrypt.
 message RawDecryptRequest {
   // Optional. Optional data that must match the data originally supplied in RawEncryptRequest.additional_authenticated_data.
   optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
@@ -944,7 +944,7 @@ message RawDecryptRequest {
   optional int32 tag_length = 7 [json_name="tagLength"];
 }
 
-  // Response message for KeyManagementService.RawDecrypt.
+// Response message for KeyManagementService.RawDecrypt.
 message RawDecryptResponse {
   // The decrypted data.
   optional bytes plaintext = 1 [json_name="plaintext"];
@@ -960,7 +960,7 @@ message RawDecryptResponse {
   optional bool verified_initialization_vector_crc32c = 6 [json_name="verifiedInitializationVectorCrc32c"];
 }
 
-  // Request message for KeyManagementService.RawEncrypt.
+// Request message for KeyManagementService.RawEncrypt.
 message RawEncryptRequest {
   // Optional. Optional data that, if specified, must also be provided during decryption through RawDecryptRequest.additional_authenticated_data. This field may only be used in conjunction with an algorithm that accepts additional authenticated data (for example, AES-GCM). The maximum size depends on the key version's protection_level. For SOFTWARE keys, the plaintext must be no larger than 64KiB. For HSM keys, the combined length of the plaintext and additional_authenticated_data fields must be no larger than 8KiB.
   optional bytes additional_authenticated_data = 1 [json_name="additionalAuthenticatedData"];
@@ -976,7 +976,7 @@ message RawEncryptRequest {
   optional int64 plaintext_crc32c = 6 [json_name="plaintextCrc32c"];
 }
 
-  // Response message for KeyManagementService.RawEncrypt.
+// Response message for KeyManagementService.RawEncrypt.
 message RawEncryptResponse {
   // The encrypted data. In the case of AES-GCM, the authentication tag is the tag_length bytes at the end of this field.
   optional bytes ciphertext = 1 [json_name="ciphertext"];
@@ -1000,11 +1000,11 @@ message RawEncryptResponse {
   optional bool verified_plaintext_crc32c = 10 [json_name="verifiedPlaintextCrc32c"];
 }
 
-  // Request message for KeyManagementService.RestoreCryptoKeyVersion.
+// Request message for KeyManagementService.RestoreCryptoKeyVersion.
 message RestoreCryptoKeyVersionRequest {
 }
 
-  // A ServiceResolver represents an EKM replica that can be reached within an EkmConnection.
+// A ServiceResolver represents an EKM replica that can be reached within an EkmConnection.
 message ServiceResolver {
   // Optional. The filter applied to the endpoints of the resolved service. If no filter is specified, all endpoints will be considered. An endpoint will be chosen arbitrarily from the filtered list for each request. For endpoint filter syntax and examples, see https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
   optional string endpoint_filter = 1 [json_name="endpointFilter"];
@@ -1016,7 +1016,7 @@ message ServiceResolver {
   optional string service_directory_service = 4 [json_name="serviceDirectoryService"];
 }
 
-  // Request message for `SetIamPolicy` method.
+// Request message for `SetIamPolicy` method.
 message SetIamPolicyRequest {
   // REQUIRED: The complete policy to be applied to the `resource`. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Google Cloud services (such as Projects) might reject them.
   optional Policy policy = 1 [json_name="policy"];
@@ -1024,13 +1024,13 @@ message SetIamPolicyRequest {
   optional string update_mask = 2 [json_name="updateMask"];
 }
 
-  // Response message for ShowEffectiveAutokeyConfig.
+// Response message for ShowEffectiveAutokeyConfig.
 message ShowEffectiveAutokeyConfigResponse {
   // Name of the key project configured in the resource project's folder ancestry.
   optional string key_project = 1 [json_name="keyProject"];
 }
 
-  // The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+// The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
 message Status {
   // The status code, which should be an enum value of google.rpc.Code.
   optional int32 code = 1 [json_name="code"];
@@ -1040,29 +1040,29 @@ message Status {
   optional string message = 3 [json_name="message"];
 }
 
-  // Request message for `TestIamPermissions` method.
+// Request message for `TestIamPermissions` method.
 message TestIamPermissionsRequest {
   // The set of permissions to check for the `resource`. Permissions with wildcards (such as `*` or `storage.*`) are not allowed. For more information see [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
   repeated string permissions = 1 [json_name="permissions"];
 }
 
-  // Response message for `TestIamPermissions` method.
+// Response message for `TestIamPermissions` method.
 message TestIamPermissionsResponse {
   // A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
   repeated string permissions = 1 [json_name="permissions"];
 }
 
-  // Request message for KeyManagementService.UpdateCryptoKeyPrimaryVersion.
+// Request message for KeyManagementService.UpdateCryptoKeyPrimaryVersion.
 message UpdateCryptoKeyPrimaryVersionRequest {
   // Required. The id of the child CryptoKeyVersion to use as primary.
   optional string crypto_key_version_id = 1 [json_name="cryptoKeyVersionId"];
 }
 
-  // Response message for EkmService.VerifyConnectivity.
+// Response message for EkmService.VerifyConnectivity.
 message VerifyConnectivityResponse {
 }
 
-  // The public key component of the wrapping key. For details of the type of key this public key corresponds to, see the ImportMethod.
+// The public key component of the wrapping key. For details of the type of key this public key corresponds to, see the ImportMethod.
 message WrappingPublicKey {
   // The public key, encoded in PEM format. For more information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13).
   optional string pem = 1 [json_name="pem"];
