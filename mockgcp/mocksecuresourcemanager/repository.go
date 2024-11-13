@@ -75,9 +75,9 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 	prefix := fmt.Sprintf("https://%s-%d", instanceName.InstanceID, name.Project.Number)
 	domain := "." + name.Location + ".sourcemanager.dev"
 	obj.Uris = &pb.Repository_URIs{
-		Html:     prefix + domain + fmt.Sprintf("%s/%s", name.Project.ID, req.GetRepositoryId()),
+		Html:     prefix + domain + fmt.Sprintf("/%s/%s", name.Project.ID, req.GetRepositoryId()),
 		Api:      prefix + "-api" + domain + fmt.Sprintf("/v1/projects/%s/locations/%s/repositories/%s", name.Project.ID, name.Location, req.GetRepositoryId()),
-		GitHttps: prefix + "-git" + domain + fmt.Sprintf("%s/%s.git", name.Project.ID, req.GetRepositoryId()),
+		GitHttps: prefix + "-git" + domain + fmt.Sprintf("/%s/%s.git", name.Project.ID, req.GetRepositoryId()),
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
