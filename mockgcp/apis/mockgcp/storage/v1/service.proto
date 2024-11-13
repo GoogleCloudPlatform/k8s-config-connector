@@ -13,516 +13,663 @@
 // limitations under the License.
 
 syntax = "proto2";
-package google.cloud.storage.v1;
+package mockgcp.storage.v1;
 import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 option go_package = "cloud.google.com/go/storage/apiv1/storagepb;storagepb";
+
 service AnywhereCachesServer {
-  rpc DisableAnywhereCache(DisableAnywhereCacheRequest) returns (AnywhereCache){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}/disable"
+
+  // Disables an Anywhere Cache instance.
+  rpc DisableAnywhereCache(DisableAnywhereCacheRequest) returns (AnywhereCache) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}/disable"
+    };
+  };
+
+  // Returns the metadata of an Anywhere Cache instance.
+  rpc GetAnywhereCache(GetAnywhereCacheRequest) returns (AnywhereCache) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}"
+    };
+  };
+
+  // Creates an Anywhere Cache instance.
+  rpc InsertAnywhereCache(InsertAnywhereCacheRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/anywhereCaches"
+      body: "anywhere_cache"
+    };
+  };
+
+  // Returns a list of Anywhere Cache instances of the bucket matching the criteria.
+  rpc ListAnywhereCaches(ListAnywhereCachesRequest) returns (AnywhereCaches) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/anywhereCaches"
+    };
+  };
+
+  // Pauses an Anywhere Cache instance.
+  rpc PauseAnywhereCache(PauseAnywhereCacheRequest) returns (AnywhereCache) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}/pause"
+    };
+  };
+
+  // Resumes a paused or disabled Anywhere Cache instance.
+  rpc ResumeAnywhereCache(ResumeAnywhereCacheRequest) returns (AnywhereCache) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}/resume"
+    };
+  };
+
+  // Updates the config(ttl and admissionPolicy) of an Anywhere Cache instance.
+  rpc UpdateAnywhereCache(UpdateAnywhereCacheRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}"
+      body: "anywhere_cache"
+    };
   };
 }
-;
-  rpc GetAnywhereCache(GetAnywhereCacheRequest) returns (AnywhereCache){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}"
-  };
-}
-;
-  rpc InsertAnywhereCache(InsertAnywhereCacheRequest) returns (GoogleLongrunningOperation){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/anywhereCaches"
-    body: "anywhere_cache"
-  };
-}
-;
-  rpc ListAnywhereCaches(ListAnywhereCachesRequest) returns (AnywhereCaches){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/anywhereCaches"
-  };
-}
-;
-  rpc PauseAnywhereCache(PauseAnywhereCacheRequest) returns (AnywhereCache){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}/pause"
-  };
-}
-;
-  rpc ResumeAnywhereCache(ResumeAnywhereCacheRequest) returns (AnywhereCache){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}/resume"
-  };
-}
-;
-  rpc UpdateAnywhereCache(UpdateAnywhereCacheRequest) returns (GoogleLongrunningOperation){
-  option (google.api.http) = {
-    patch: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}"
-    body: "anywhere_cache"
-  };
-}
-;
-}
+
 service BucketAccessControlsServer {
-  rpc DeleteBucketAccessControl(DeleteBucketAccessControlRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{bucket}/acl/{entity}"
+
+  // Permanently deletes the ACL entry for the specified entity on the specified bucket.
+  rpc DeleteBucketAccessControl(DeleteBucketAccessControlRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{bucket}/acl/{entity}"
+    };
+  };
+
+  // Returns the ACL entry for the specified entity on the specified bucket.
+  rpc GetBucketAccessControl(GetBucketAccessControlRequest) returns (BucketAccessControl) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/acl/{entity}"
+    };
+  };
+
+  // Creates a new ACL entry on the specified bucket.
+  rpc InsertBucketAccessControl(InsertBucketAccessControlRequest) returns (BucketAccessControl) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/acl"
+      body: "bucket_access_control"
+    };
+  };
+
+  // Retrieves ACL entries on the specified bucket.
+  rpc ListBucketAccessControls(ListBucketAccessControlsRequest) returns (BucketAccessControls) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/acl"
+    };
+  };
+
+  // Patches an ACL entry on the specified bucket.
+  rpc PatchBucketAccessControl(PatchBucketAccessControlRequest) returns (BucketAccessControl) {
+    option (google.api.http) = {
+      patch: "/storage/v1/b/{bucket}/acl/{entity}"
+      body: "bucket_access_control"
+    };
+  };
+
+  // Updates an ACL entry on the specified bucket.
+  rpc UpdateBucketAccessControl(UpdateBucketAccessControlRequest) returns (BucketAccessControl) {
+    option (google.api.http) = {
+      put: "/storage/v1/b/{bucket}/acl/{entity}"
+      body: "bucket_access_control"
+    };
   };
 }
-;
-  rpc GetBucketAccessControl(GetBucketAccessControlRequest) returns (BucketAccessControl){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/acl/{entity}"
-  };
-}
-;
-  rpc InsertBucketAccessControl(InsertBucketAccessControlRequest) returns (BucketAccessControl){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/acl"
-    body: "bucket_access_control"
-  };
-}
-;
-  rpc ListBucketAccessControls(ListBucketAccessControlsRequest) returns (BucketAccessControls){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/acl"
-  };
-}
-;
-  rpc PatchBucketAccessControl(PatchBucketAccessControlRequest) returns (BucketAccessControl){
-  option (google.api.http) = {
-    patch: "/storage/v1/b/{bucket}/acl/{entity}"
-    body: "bucket_access_control"
-  };
-}
-;
-  rpc UpdateBucketAccessControl(UpdateBucketAccessControlRequest) returns (BucketAccessControl){
-  option (google.api.http) = {
-    put: "/storage/v1/b/{bucket}/acl/{entity}"
-    body: "bucket_access_control"
-  };
-}
-;
-}
+
 service BucketsServer {
-  rpc DeleteBucket(DeleteBucketRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{name}"
+
+  // Deletes an empty bucket. Deletions are permanent unless soft delete is enabled on the bucket.
+  rpc DeleteBucket(DeleteBucketRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{name}"
+    };
+  };
+
+  // Returns metadata for the specified bucket.
+  rpc GetBucket(GetBucketRequest) returns (Bucket) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{name}"
+    };
+  };
+
+  // Returns the storage layout configuration for the specified bucket. Note that this operation requires storage.objects.list permission.
+  rpc GetStorageLayoutBucket(GetStorageLayoutBucketRequest) returns (BucketStorageLayout) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{name}/storageLayout"
+    };
+  };
+
+  // Creates a new bucket.
+  rpc InsertBucket(InsertBucketRequest) returns (Bucket) {
+    option (google.api.http) = {
+      post: "/storage/v1/b"
+      body: "bucket"
+    };
+  };
+
+  // Retrieves a list of buckets for a given project.
+  rpc ListBuckets(ListBucketsRequest) returns (Buckets) {
+    option (google.api.http) = {
+      get: "/storage/v1/b"
+    };
+  };
+
+  // Locks retention policy on a bucket.
+  rpc LockRetentionPolicyBucket(LockRetentionPolicyBucketRequest) returns (Bucket) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{name}/lockRetentionPolicy"
+    };
+  };
+
+  // Patches a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
+  rpc PatchBucket(PatchBucketRequest) returns (Bucket) {
+    option (google.api.http) = {
+      patch: "/storage/v1/b/{name}"
+      body: "bucket"
+    };
+  };
+
+  // Initiates a long-running Relocate Bucket operation on the specified bucket.
+  rpc RelocateBucket(RelocateBucketServiceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{name}/relocate"
+      body: "bucket"
+    };
+  };
+
+  // Restores a soft-deleted bucket.
+  rpc RestoreBucket(RestoreBucketRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{name}/restore"
+    };
+  };
+
+  // Updates a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
+  rpc UpdateBucket(UpdateBucketRequest) returns (Bucket) {
+    option (google.api.http) = {
+      put: "/storage/v1/b/{name}"
+      body: "bucket"
+    };
   };
 }
-;
-  rpc GetBucket(GetBucketRequest) returns (Bucket){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{name}"
-  };
-}
-;
-  rpc GetStorageLayoutBucket(GetStorageLayoutBucketRequest) returns (BucketStorageLayout){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{name}/storageLayout"
-  };
-}
-;
-  rpc InsertBucket(InsertBucketRequest) returns (Bucket){
-  option (google.api.http) = {
-    post: "/storage/v1/b"
-    body: "bucket"
-  };
-}
-;
-  rpc ListBuckets(ListBucketsRequest) returns (Buckets){
-  option (google.api.http) = {
-    get: "/storage/v1/b"
-  };
-}
-;
-  rpc LockRetentionPolicyBucket(LockRetentionPolicyBucketRequest) returns (Bucket){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{name}/lockRetentionPolicy"
-  };
-}
-;
-  rpc PatchBucket(PatchBucketRequest) returns (Bucket){
-  option (google.api.http) = {
-    patch: "/storage/v1/b/{name}"
-    body: "bucket"
-  };
-}
-;
-  rpc UpdateBucket(UpdateBucketRequest) returns (Bucket){
-  option (google.api.http) = {
-    put: "/storage/v1/b/{name}"
-    body: "bucket"
-  };
-}
-;
-}
+
 service ChannelsServer {
-  rpc StopChannel(StopChannelRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    post: "/storage/v1/channels/stop"
-    body: "channel"
+
+  // Stop watching resources through this channel
+  rpc StopChannel(StopChannelRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/storage/v1/channels/stop"
+      body: "channel"
+    };
   };
 }
-;
-}
+
 service DefaultObjectAccessControlsServer {
-  rpc DeleteDefaultObjectAccessControl(DeleteDefaultObjectAccessControlRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
+
+  // Permanently deletes the default object ACL entry for the specified entity on the specified bucket.
+  rpc DeleteDefaultObjectAccessControl(DeleteDefaultObjectAccessControlRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
+    };
+  };
+
+  // Returns the default object ACL entry for the specified entity on the specified bucket.
+  rpc GetDefaultObjectAccessControl(GetDefaultObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
+    };
+  };
+
+  // Creates a new default object ACL entry on the specified bucket.
+  rpc InsertDefaultObjectAccessControl(InsertDefaultObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/defaultObjectAcl"
+      body: "default_object_access_control"
+    };
+  };
+
+  // Retrieves default object ACL entries on the specified bucket.
+  rpc ListDefaultObjectAccessControls(ListDefaultObjectAccessControlsRequest) returns (ObjectAccessControls) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/defaultObjectAcl"
+    };
+  };
+
+  // Patches a default object ACL entry on the specified bucket.
+  rpc PatchDefaultObjectAccessControl(PatchDefaultObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      patch: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
+      body: "default_object_access_control"
+    };
+  };
+
+  // Updates a default object ACL entry on the specified bucket.
+  rpc UpdateDefaultObjectAccessControl(UpdateDefaultObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      put: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
+      body: "default_object_access_control"
+    };
   };
 }
-;
-  rpc GetDefaultObjectAccessControl(GetDefaultObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
-  };
-}
-;
-  rpc InsertDefaultObjectAccessControl(InsertDefaultObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/defaultObjectAcl"
-    body: "default_object_access_control"
-  };
-}
-;
-  rpc ListDefaultObjectAccessControls(ListDefaultObjectAccessControlsRequest) returns (ObjectAccessControls){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/defaultObjectAcl"
-  };
-}
-;
-  rpc PatchDefaultObjectAccessControl(PatchDefaultObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    patch: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
-    body: "default_object_access_control"
-  };
-}
-;
-  rpc UpdateDefaultObjectAccessControl(UpdateDefaultObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    put: "/storage/v1/b/{bucket}/defaultObjectAcl/{entity}"
-    body: "default_object_access_control"
-  };
-}
-;
-}
+
 service FoldersServer {
-  rpc DeleteFolder(DeleteFolderRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{bucket}/folders/{name}"
+
+  // Permanently deletes a folder. Only applicable to buckets with hierarchical namespace enabled.
+  rpc DeleteFolder(DeleteFolderRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{bucket}/folders/{name}"
+    };
+  };
+
+  // Returns metadata for the specified folder. Only applicable to buckets with hierarchical namespace enabled.
+  rpc GetFolder(GetFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/folders/{name}"
+    };
+  };
+
+  // Creates a new folder. Only applicable to buckets with hierarchical namespace enabled.
+  rpc InsertFolder(InsertFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/folders"
+      body: "folder"
+    };
+  };
+
+  // Retrieves a list of folders matching the criteria. Only applicable to buckets with hierarchical namespace enabled.
+  rpc ListFolders(ListFoldersRequest) returns (Folders) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/folders"
+    };
+  };
+
+  // Renames a source folder to a destination folder. Only applicable to buckets with hierarchical namespace enabled.
+  rpc RenameFolder(RenameFolderRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/folders/{source_folder}/renameTo/folders/{destination_folder}"
+    };
   };
 }
-;
-  rpc GetFolder(GetFolderRequest) returns (Folder){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/folders/{name}"
-  };
-}
-;
-  rpc InsertFolder(InsertFolderRequest) returns (Folder){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/folders"
-    body: "folder"
-  };
-}
-;
-  rpc ListFolders(ListFoldersRequest) returns (Folders){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/folders"
-  };
-}
-;
-  rpc RenameFolder(RenameFolderRequest) returns (GoogleLongrunningOperation){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/folders/{source_folder}/renameTo/folders/{destination_folder}"
-  };
-}
-;
-}
+
 service ManagedFoldersServer {
-  rpc DeleteManagedFolder(DeleteManagedFolderRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{bucket}/managedFolders/{name}"
+
+  // Permanently deletes a managed folder.
+  rpc DeleteManagedFolder(DeleteManagedFolderRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{bucket}/managedFolders/{name}"
+    };
+  };
+
+  // Returns metadata of the specified managed folder.
+  rpc GetManagedFolder(GetManagedFolderRequest) returns (ManagedFolder) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/managedFolders/{name}"
+    };
+  };
+
+  // Creates a new managed folder.
+  rpc InsertManagedFolder(InsertManagedFolderRequest) returns (ManagedFolder) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/managedFolders"
+      body: "managed_folder"
+    };
+  };
+
+  // Lists managed folders in the given bucket.
+  rpc ListManagedFolders(ListManagedFoldersRequest) returns (ManagedFolders) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/managedFolders"
+    };
   };
 }
-;
-  rpc GetManagedFolder(GetManagedFolderRequest) returns (ManagedFolder){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/managedFolders/{name}"
-  };
-}
-;
-  rpc InsertManagedFolder(InsertManagedFolderRequest) returns (ManagedFolder){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/managedFolders"
-    body: "managed_folder"
-  };
-}
-;
-  rpc ListManagedFolders(ListManagedFoldersRequest) returns (ManagedFolders){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/managedFolders"
-  };
-}
-;
-}
+
 service NotificationsServer {
-  rpc DeleteNotification(DeleteNotificationRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{bucket}/notificationConfigs/{name}"
+
+  // Permanently deletes a notification subscription.
+  rpc DeleteNotification(DeleteNotificationRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{bucket}/notificationConfigs/{name}"
+    };
+  };
+
+  // View a notification configuration.
+  rpc GetNotification(GetNotificationRequest) returns (Notification) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/notificationConfigs/{name}"
+    };
+  };
+
+  // Creates a notification subscription for a given bucket.
+  rpc InsertNotification(InsertNotificationRequest) returns (Notification) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/notificationConfigs"
+      body: "notification"
+    };
+  };
+
+  // Retrieves a list of notification subscriptions for a given bucket.
+  rpc ListNotifications(ListNotificationsRequest) returns (Notifications) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/notificationConfigs"
+    };
   };
 }
-;
-  rpc GetNotification(GetNotificationRequest) returns (Notification){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/notificationConfigs/{name}"
-  };
-}
-;
-  rpc InsertNotification(InsertNotificationRequest) returns (Notification){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/notificationConfigs"
-    body: "notification"
-  };
-}
-;
-  rpc ListNotifications(ListNotificationsRequest) returns (Notifications){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/notificationConfigs"
-  };
-}
-;
-}
+
 service ObjectAccessControlsServer {
-  rpc DeleteObjectAccessControl(DeleteObjectAccessControlRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
+
+  // Permanently deletes the ACL entry for the specified entity on the specified object.
+  rpc DeleteObjectAccessControl(DeleteObjectAccessControlRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
+    };
+  };
+
+  // Returns the ACL entry for the specified entity on the specified object.
+  rpc GetObjectAccessControl(GetObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
+    };
+  };
+
+  // Creates a new ACL entry on the specified object.
+  rpc InsertObjectAccessControl(InsertObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/o/{object}/acl"
+      body: "object_access_control"
+    };
+  };
+
+  // Retrieves ACL entries on the specified object.
+  rpc ListObjectAccessControls(ListObjectAccessControlsRequest) returns (ObjectAccessControls) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/o/{object}/acl"
+    };
+  };
+
+  // Patches an ACL entry on the specified object.
+  rpc PatchObjectAccessControl(PatchObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      patch: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
+      body: "object_access_control"
+    };
+  };
+
+  // Updates an ACL entry on the specified object.
+  rpc UpdateObjectAccessControl(UpdateObjectAccessControlRequest) returns (ObjectAccessControl) {
+    option (google.api.http) = {
+      put: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
+      body: "object_access_control"
+    };
   };
 }
-;
-  rpc GetObjectAccessControl(GetObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
-  };
-}
-;
-  rpc InsertObjectAccessControl(InsertObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/o/{object}/acl"
-    body: "object_access_control"
-  };
-}
-;
-  rpc ListObjectAccessControls(ListObjectAccessControlsRequest) returns (ObjectAccessControls){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/o/{object}/acl"
-  };
-}
-;
-  rpc PatchObjectAccessControl(PatchObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    patch: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
-    body: "object_access_control"
-  };
-}
-;
-  rpc UpdateObjectAccessControl(UpdateObjectAccessControlRequest) returns (ObjectAccessControl){
-  option (google.api.http) = {
-    put: "/storage/v1/b/{bucket}/o/{object}/acl/{entity}"
-    body: "object_access_control"
-  };
-}
-;
-}
+
 service ObjectsServer {
-  rpc BulkRestoreObject(BulkRestoreObjectRequest) returns (GoogleLongrunningOperation){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/o/bulkRestore"
-    body: "object"
+
+  // Initiates a long-running bulk restore operation on the specified bucket.
+  rpc BulkRestoreObject(BulkRestoreObjectRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/o/bulkRestore"
+      body: "object"
+    };
+  };
+
+  // Concatenates a list of existing objects into a new object in the same bucket.
+  rpc ComposeObject(ComposeObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{destination_bucket}/o/{destination_object}/compose"
+      body: "object"
+    };
+  };
+
+  // Copies a source object to a destination object. Optionally overrides metadata.
+  rpc CopyObject(CopyObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{source_bucket}/o/{source_object}/copyTo/b/{destination_bucket}/o/{destination_object}"
+      body: "object"
+    };
+  };
+
+  // Deletes an object and its metadata. Deletions are permanent if versioning is not enabled for the bucket, or if the generation parameter is used.
+  rpc DeleteObject(DeleteObjectRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/b/{bucket}/o/{name}"
+    };
+  };
+
+  // Retrieves an object or its metadata.
+  rpc GetObject(GetObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/o/{name}"
+    };
+  };
+
+  // Stores a new object and metadata.
+  rpc InsertObject(InsertObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/o"
+      body: "object"
+    };
+  };
+
+  // Retrieves a list of objects matching the criteria.
+  rpc ListObjects(ListObjectsRequest) returns (Objects) {
+    option (google.api.http) = {
+      get: "/storage/v1/b/{bucket}/o"
+    };
+  };
+
+  // Patches an object's metadata.
+  rpc PatchObject(PatchObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      patch: "/storage/v1/b/{bucket}/o/{name}"
+      body: "object"
+    };
+  };
+
+  // Restores a soft-deleted object.
+  rpc RestoreObject(RestoreObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/o/{name}/restore"
+    };
+  };
+
+  // Rewrites a source object to a destination object. Optionally overrides metadata.
+  rpc RewriteObject(RewriteObjectRequest) returns (RewriteResponse) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{source_bucket}/o/{source_object}/rewriteTo/b/{destination_bucket}/o/{destination_object}"
+      body: "object"
+    };
+  };
+
+  // Updates an object's metadata.
+  rpc UpdateObject(UpdateObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      put: "/storage/v1/b/{bucket}/o/{name}"
+      body: "object"
+    };
+  };
+
+  // Watch for changes on all objects in a bucket.
+  rpc WatchAllObject(WatchAllObjectRequest) returns (Channel) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/o/watch"
+      body: "object"
+    };
   };
 }
-;
-  rpc ComposeObject(ComposeObjectRequest) returns (Object){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{destination_bucket}/o/{destination_object}/compose"
-    body: "object"
-  };
-}
-;
-  rpc CopyObject(CopyObjectRequest) returns (Object){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{source_bucket}/o/{source_object}/copyTo/b/{destination_bucket}/o/{destination_object}"
-    body: "object"
-  };
-}
-;
-  rpc DeleteObject(DeleteObjectRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/b/{bucket}/o/{name}"
-  };
-}
-;
-  rpc GetObject(GetObjectRequest) returns (Object){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/o/{name}"
-  };
-}
-;
-  rpc InsertObject(InsertObjectRequest) returns (Object){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/o"
-    body: "object"
-  };
-}
-;
-  rpc ListObjects(ListObjectsRequest) returns (Objects){
-  option (google.api.http) = {
-    get: "/storage/v1/b/{bucket}/o"
-  };
-}
-;
-  rpc PatchObject(PatchObjectRequest) returns (Object){
-  option (google.api.http) = {
-    patch: "/storage/v1/b/{bucket}/o/{name}"
-    body: "object"
-  };
-}
-;
-  rpc RestoreObject(RestoreObjectRequest) returns (Object){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/o/{name}/restore"
-  };
-}
-;
-  rpc RewriteObject(RewriteObjectRequest) returns (RewriteResponse){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{source_bucket}/o/{source_object}/rewriteTo/b/{destination_bucket}/o/{destination_object}"
-    body: "object"
-  };
-}
-;
-  rpc UpdateObject(UpdateObjectRequest) returns (Object){
-  option (google.api.http) = {
-    put: "/storage/v1/b/{bucket}/o/{name}"
-    body: "object"
-  };
-}
-;
-  rpc WatchAllObject(WatchAllObjectRequest) returns (Channel){
-  option (google.api.http) = {
-    post: "/storage/v1/b/{bucket}/o/watch"
-    body: "object"
-  };
-}
-;
-}
+
 service ProjectsServer {
 }
+
 service ProjectsHmacKeysServer {
-  rpc CreateProjectsHmacKey(CreateProjectsHmacKeyRequest) returns (HmacKey){
-  option (google.api.http) = {
-    post: "/storage/v1/projects/{project_id}/hmacKeys"
+
+  // Creates a new HMAC key for the specified service account.
+  rpc CreateProjectsHmacKey(CreateProjectsHmacKeyRequest) returns (HmacKey) {
+    option (google.api.http) = {
+      post: "/storage/v1/projects/{project_id}/hmacKeys"
+    };
+  };
+
+  // Deletes an HMAC key.
+  rpc DeleteProjectsHmacKey(DeleteProjectsHmacKeyRequest) returns (.google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/storage/v1/projects/{project_id}/hmacKeys/{access_id}"
+    };
+  };
+
+  // Retrieves an HMAC key's metadata
+  rpc GetProjectsHmacKey(GetProjectsHmacKeyRequest) returns (HmacKeyMetadata) {
+    option (google.api.http) = {
+      get: "/storage/v1/projects/{project_id}/hmacKeys/{access_id}"
+    };
+  };
+
+  // Retrieves a list of HMAC keys matching the criteria.
+  rpc ListProjectsHmacKeys(ListProjectsHmacKeysRequest) returns (HmacKeysMetadata) {
+    option (google.api.http) = {
+      get: "/storage/v1/projects/{project_id}/hmacKeys"
+    };
+  };
+
+  // Updates the state of an HMAC key. See the [HMAC Key resource descriptor](https://cloud.google.com/storage/docs/json_api/v1/projects/hmacKeys/update#request-body) for valid states.
+  rpc UpdateProjectsHmacKey(UpdateProjectsHmacKeyRequest) returns (HmacKeyMetadata) {
+    option (google.api.http) = {
+      put: "/storage/v1/projects/{project_id}/hmacKeys/{access_id}"
+      body: "projects_hmac_key"
+    };
   };
 }
-;
-  rpc DeleteProjectsHmacKey(DeleteProjectsHmacKeyRequest) returns (.google.protobuf.Empty){
-  option (google.api.http) = {
-    delete: "/storage/v1/projects/{project_id}/hmacKeys/{access_id}"
-  };
-}
-;
-  rpc GetProjectsHmacKey(GetProjectsHmacKeyRequest) returns (HmacKeyMetadata){
-  option (google.api.http) = {
-    get: "/storage/v1/projects/{project_id}/hmacKeys/{access_id}"
-  };
-}
-;
-  rpc ListProjectsHmacKeys(ListProjectsHmacKeysRequest) returns (HmacKeysMetadata){
-  option (google.api.http) = {
-    get: "/storage/v1/projects/{project_id}/hmacKeys"
-  };
-}
-;
-  rpc UpdateProjectsHmacKey(UpdateProjectsHmacKeyRequest) returns (HmacKeyMetadata){
-  option (google.api.http) = {
-    put: "/storage/v1/projects/{project_id}/hmacKeys/{access_id}"
-    body: "projects_hmac_key"
-  };
-}
-;
-}
+
 service ProjectsServiceAccountServer {
-  rpc GetProjectsServiceAccount(GetProjectsServiceAccountRequest) returns (ServiceAccount){
-  option (google.api.http) = {
-    get: "/storage/v1/projects/{project_id}/serviceAccount"
+
+  // Get the email address of this project's Google Cloud Storage service account.
+  rpc GetProjectsServiceAccount(GetProjectsServiceAccountRequest) returns (ServiceAccount) {
+    option (google.api.http) = {
+      get: "/storage/v1/projects/{project_id}/serviceAccount"
+    };
   };
 }
-;
+
+  // An AdvanceRelocateBucketOperation request.
+message AdvanceRelocateBucketOperationRequest {
+  // Specifies the time when the relocation will revert to the sync stage if the relocation hasn't succeeded.
+  optional .google.protobuf.Timestamp expire_time = 1 [json_name="expireTime"];
+  // Specifies the duration after which the relocation will revert to the sync stage if the relocation hasn't succeeded. Optional, if not supplied, a default value of 12h will be used.
+  optional .google.protobuf.Duration ttl = 2 [json_name="ttl"];
 }
+
+  // An Anywhere Cache instance.
 message AnywhereCache {
+  // The cache-level entry admission policy.
   optional string admission_policy = 1 [json_name="admissionPolicy"];
+  // The ID of the Anywhere cache instance.
   optional string anywhere_cache_id = 2 [json_name="anywhereCacheId"];
+  // The name of the bucket containing this cache instance.
   optional string bucket = 3 [json_name="bucket"];
+  // The creation time of the cache instance in RFC 3339 format.
   optional .google.protobuf.Timestamp create_time = 4 [json_name="createTime"];
+  // The ID of the resource, including the project number, bucket name and anywhere cache ID.
   optional string id = 5 [json_name="id"];
+  // The kind of item this is. For Anywhere Cache, this is always storage#anywhereCache.
   optional string kind = 6 [json_name="kind"];
+  // True if the cache instance has an active Update long-running operation.
   optional bool pending_update = 7 [json_name="pendingUpdate"];
+  // The link to this cache instance.
   optional string self_link = 8 [json_name="selfLink"];
+  // The current state of the cache instance.
   optional string state = 9 [json_name="state"];
+  // The TTL of all cache entries in whole seconds. e.g., "7200s". 
   optional .google.protobuf.Duration ttl = 10 [json_name="ttl"];
+  // The modification time of the cache instance metadata in RFC 3339 format.
   optional .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
+  // The zone in which the cache instance is running. For example, us-central1-a.
   optional string zone = 12 [json_name="zone"];
 }
+
+  // A list of Anywhere Caches.
 message AnywhereCaches {
+  // The list of items.
   repeated AnywhereCache items = 1 [json_name="items"];
+  // The kind of item this is. For lists of Anywhere Caches, this is always storage#anywhereCaches.
   optional string kind = 2 [json_name="kind"];
+  // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
 }
+
 message BucketAutoclass {
   optional bool enabled = 1 [json_name="enabled"];
   optional string terminal_storage_class = 2 [json_name="terminalStorageClass"];
   optional .google.protobuf.Timestamp terminal_storage_class_update_time = 3 [json_name="terminalStorageClassUpdateTime"];
   optional .google.protobuf.Timestamp toggle_time = 4 [json_name="toggleTime"];
 }
+
 message BucketBilling {
   optional bool requester_pays = 1 [json_name="requesterPays"];
 }
+
 message BucketCors {
   optional int32 max_age_seconds = 1 [json_name="maxAgeSeconds"];
   repeated string method = 2 [json_name="method"];
   repeated string origin = 3 [json_name="origin"];
   repeated string response_header = 4 [json_name="responseHeader"];
 }
+
 message BucketCustomPlacementConfig {
   repeated string data_locations = 1 [json_name="dataLocations"];
 }
+
 message BucketEncryption {
   optional string default_kms_key_name = 1 [json_name="defaultKmsKeyName"];
 }
+
 message BucketHierarchicalNamespace {
   optional bool enabled = 1 [json_name="enabled"];
 }
+
 message BucketPolicyOnly {
   optional bool enabled = 1 [json_name="enabled"];
   optional .google.protobuf.Timestamp locked_time = 2 [json_name="lockedTime"];
 }
+
 message UniformBucketLevelAccess {
   optional bool enabled = 1 [json_name="enabled"];
   optional .google.protobuf.Timestamp locked_time = 2 [json_name="lockedTime"];
 }
+
 message BucketIamConfiguration {
   optional BucketPolicyOnly bucket_policy_only = 1 [json_name="bucketPolicyOnly"];
   optional string public_access_prevention = 2 [json_name="publicAccessPrevention"];
   optional UniformBucketLevelAccess uniform_bucket_level_access = 3 [json_name="uniformBucketLevelAccess"];
 }
+
+message PublicNetworkSource {
+  repeated string allowed_ip_cidr_ranges = 1 [json_name="allowedIpCidrRanges"];
+}
+
+message VpcNetworkSources {
+  repeated string allowed_ip_cidr_ranges = 1 [json_name="allowedIpCidrRanges"];
+  optional string network = 2 [json_name="network"];
+}
+
+message BucketIpFilter {
+  optional string mode = 1 [json_name="mode"];
+  optional PublicNetworkSource public_network_source = 2 [json_name="publicNetworkSource"];
+  repeated VpcNetworkSources vpc_network_sources = 3 [json_name="vpcNetworkSources"];
+}
+
 message Action {
   optional string storage_class = 1 [json_name="storageClass"];
   optional string type = 2 [json_name="type"];
 }
+
 message Condition {
   optional int32 age = 1 [json_name="age"];
   optional string created_before = 2 [json_name="createdBefore"];
@@ -537,424 +684,783 @@ message Condition {
   optional string noncurrent_time_before = 11 [json_name="noncurrentTimeBefore"];
   optional int32 num_newer_versions = 12 [json_name="numNewerVersions"];
 }
+
 message Rule {
   optional Action action = 1 [json_name="action"];
   optional Condition condition = 2 [json_name="condition"];
 }
+
 message BucketLifecycle {
   repeated Rule rule = 1 [json_name="rule"];
 }
+
 message BucketLogging {
   optional string log_bucket = 1 [json_name="logBucket"];
   optional string log_object_prefix = 2 [json_name="logObjectPrefix"];
 }
+
 message BucketObjectRetention {
   optional string mode = 1 [json_name="mode"];
 }
+
 message BucketOwner {
   optional string entity = 1 [json_name="entity"];
   optional string entity_id = 2 [json_name="entityId"];
 }
+
 message BucketRetentionPolicy {
   optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
   optional bool is_locked = 2 [json_name="isLocked"];
   optional int64 retention_period = 3 [json_name="retentionPeriod"];
 }
+
 message BucketSoftDeletePolicy {
   optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
   optional int64 retention_duration_seconds = 2 [json_name="retentionDurationSeconds"];
 }
+
 message BucketVersioning {
   optional bool enabled = 1 [json_name="enabled"];
 }
+
 message BucketWebsite {
   optional string main_page_suffix = 1 [json_name="mainPageSuffix"];
   optional string not_found_page = 2 [json_name="notFoundPage"];
 }
+
+  // A bucket.
 message Bucket {
+  // Access controls on the bucket.
   repeated BucketAccessControl acl = 1 [json_name="acl"];
+  // The bucket's Autoclass configuration.
   optional BucketAutoclass autoclass = 2 [json_name="autoclass"];
+  // The bucket's billing configuration.
   optional BucketBilling billing = 3 [json_name="billing"];
+  // The bucket's Cross-Origin Resource Sharing (CORS) configuration.
   repeated BucketCors cors = 4 [json_name="cors"];
+  // The bucket's custom placement configuration for Custom Dual Regions.
   optional BucketCustomPlacementConfig custom_placement_config = 5 [json_name="customPlacementConfig"];
+  // The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold's release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   optional bool default_event_based_hold = 6 [json_name="defaultEventBasedHold"];
+  // Default access controls to apply to new objects when no ACL is provided.
   repeated ObjectAccessControl default_object_acl = 7 [json_name="defaultObjectAcl"];
+  // Encryption configuration for a bucket.
   optional BucketEncryption encryption = 8 [json_name="encryption"];
+  // HTTP 1.1 Entity tag for the bucket.
   optional string etag = 9 [json_name="etag"];
-  optional BucketHierarchicalNamespace hierarchical_namespace = 10 [json_name="hierarchicalNamespace"];
-  optional BucketIamConfiguration iam_configuration = 11 [json_name="iamConfiguration"];
-  optional string id = 12 [json_name="id"];
-  optional string kind = 13 [json_name="kind"];
-  map<string, string> labels = 14 [json_name="labels"];
-  optional BucketLifecycle lifecycle = 15 [json_name="lifecycle"];
-  optional string location = 16 [json_name="location"];
-  optional string location_type = 17 [json_name="locationType"];
-  optional BucketLogging logging = 18 [json_name="logging"];
-  optional int64 metageneration = 19 [json_name="metageneration"];
-  optional string name = 20 [json_name="name"];
-  optional BucketObjectRetention object_retention = 21 [json_name="objectRetention"];
-  optional BucketOwner owner = 22 [json_name="owner"];
-  optional uint64 project_number = 23 [json_name="projectNumber"];
-  optional BucketRetentionPolicy retention_policy = 24 [json_name="retentionPolicy"];
-  optional string rpo = 25 [json_name="rpo"];
-  optional bool satisfies_p_z_s = 26 [json_name="satisfiesPZS"];
-  optional string self_link = 27 [json_name="selfLink"];
-  optional BucketSoftDeletePolicy soft_delete_policy = 28 [json_name="softDeletePolicy"];
-  optional string storage_class = 29 [json_name="storageClass"];
-  optional .google.protobuf.Timestamp time_created = 30 [json_name="timeCreated"];
-  optional .google.protobuf.Timestamp updated = 31 [json_name="updated"];
-  optional BucketVersioning versioning = 32 [json_name="versioning"];
-  optional BucketWebsite website = 33 [json_name="website"];
+  // The generation of this bucket.
+  optional int64 generation = 10 [json_name="generation"];
+  // The hard delete time of the bucket in RFC 3339 format.
+  optional .google.protobuf.Timestamp hard_delete_time = 11 [json_name="hardDeleteTime"];
+  // The bucket's hierarchical namespace configuration.
+  optional BucketHierarchicalNamespace hierarchical_namespace = 12 [json_name="hierarchicalNamespace"];
+  // The bucket's IAM configuration.
+  optional BucketIamConfiguration iam_configuration = 13 [json_name="iamConfiguration"];
+  // The ID of the bucket. For buckets, the id and name properties are the same.
+  optional string id = 14 [json_name="id"];
+  // The bucket's IP filter configuration. Specifies the network sources that are allowed to access the operations on the bucket, as well as its underlying objects. Only enforced when the mode is set to 'Enabled'.
+  optional BucketIpFilter ip_filter = 15 [json_name="ipFilter"];
+  // The kind of item this is. For buckets, this is always storage#bucket.
+  optional string kind = 16 [json_name="kind"];
+  // User-provided labels, in key/value pairs.
+  map<string, string> labels = 17 [json_name="labels"];
+  // The bucket's lifecycle configuration. See [Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle) for more information.
+  optional BucketLifecycle lifecycle = 18 [json_name="lifecycle"];
+  // The location of the bucket. Object data for objects in the bucket resides in physical storage within this region. Defaults to US. See the [Developer's Guide](https://cloud.google.com/storage/docs/locations) for the authoritative list.
+  optional string location = 19 [json_name="location"];
+  // The type of the bucket location.
+  optional string location_type = 20 [json_name="locationType"];
+  // The bucket's logging configuration, which defines the destination bucket and optional name prefix for the current bucket's logs.
+  optional BucketLogging logging = 21 [json_name="logging"];
+  // The metadata generation of this bucket.
+  optional int64 metageneration = 22 [json_name="metageneration"];
+  // The name of the bucket.
+  optional string name = 23 [json_name="name"];
+  // The bucket's object retention config.
+  optional BucketObjectRetention object_retention = 24 [json_name="objectRetention"];
+  // The owner of the bucket. This is always the project team's owner group.
+  optional BucketOwner owner = 25 [json_name="owner"];
+  // The project number of the project the bucket belongs to.
+  optional uint64 project_number = 26 [json_name="projectNumber"];
+  // The bucket's retention policy. The retention policy enforces a minimum retention time for all objects contained in the bucket, based on their creation time. Any attempt to overwrite or delete objects younger than the retention period will result in a PERMISSION_DENIED error. An unlocked retention policy can be modified or removed from the bucket via a storage.buckets.update operation. A locked retention policy cannot be removed or shortened in duration for the lifetime of the bucket. Attempting to remove or decrease period of a locked retention policy will result in a PERMISSION_DENIED error.
+  optional BucketRetentionPolicy retention_policy = 27 [json_name="retentionPolicy"];
+  // The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
+  optional string rpo = 28 [json_name="rpo"];
+  // Reserved for future use.
+  optional bool satisfies_p_z_i = 29 [json_name="satisfiesPZI"];
+  // Reserved for future use.
+  optional bool satisfies_p_z_s = 30 [json_name="satisfiesPZS"];
+  // The URI of this bucket.
+  optional string self_link = 31 [json_name="selfLink"];
+  // The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted.
+  optional BucketSoftDeletePolicy soft_delete_policy = 32 [json_name="softDeletePolicy"];
+  // The soft delete time of the bucket in RFC 3339 format.
+  optional .google.protobuf.Timestamp soft_delete_time = 33 [json_name="softDeleteTime"];
+  // The bucket's default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see [Storage Classes](https://cloud.google.com/storage/docs/storage-classes).
+  optional string storage_class = 34 [json_name="storageClass"];
+  // The creation time of the bucket in RFC 3339 format.
+  optional .google.protobuf.Timestamp time_created = 35 [json_name="timeCreated"];
+  // The modification time of the bucket in RFC 3339 format.
+  optional .google.protobuf.Timestamp updated = 36 [json_name="updated"];
+  // The bucket's versioning configuration.
+  optional BucketVersioning versioning = 37 [json_name="versioning"];
+  // The bucket's website configuration, controlling how the service behaves when accessing bucket contents as a web site. See the [Static Website Examples](https://cloud.google.com/storage/docs/static-website) for more information.
+  optional BucketWebsite website = 38 [json_name="website"];
 }
+
 message BucketAccessControlProjectTeam {
   optional string project_number = 1 [json_name="projectNumber"];
   optional string team = 2 [json_name="team"];
 }
+
+  // An access-control entry.
 message BucketAccessControl {
+  // The name of the bucket.
   optional string bucket = 1 [json_name="bucket"];
+  // The domain associated with the entity, if any.
   optional string domain = 2 [json_name="domain"];
+  // The email address associated with the entity, if any.
   optional string email = 3 [json_name="email"];
+  // The entity holding the permission, in one of the following forms: 
+  // - user-userId 
+  // - user-email 
+  // - group-groupId 
+  // - group-email 
+  // - domain-domain 
+  // - project-team-projectId 
+  // - allUsers 
+  // - allAuthenticatedUsers Examples: 
+  // - The user liz@example.com would be user-liz@example.com. 
+  // - The group example@googlegroups.com would be group-example@googlegroups.com. 
+  // - To refer to all members of the Google Apps for Business domain example.com, the entity would be domain-example.com.
   optional string entity = 4 [json_name="entity"];
+  // The ID for the entity, if any.
   optional string entity_id = 5 [json_name="entityId"];
+  // HTTP 1.1 Entity tag for the access-control entry.
   optional string etag = 6 [json_name="etag"];
+  // The ID of the access-control entry.
   optional string id = 7 [json_name="id"];
+  // The kind of item this is. For bucket access control entries, this is always storage#bucketAccessControl.
   optional string kind = 8 [json_name="kind"];
+  // The project team associated with the entity, if any.
   optional BucketAccessControlProjectTeam project_team = 9 [json_name="projectTeam"];
+  // The access permission for the entity.
   optional string role = 10 [json_name="role"];
+  // The link to this access-control entry.
   optional string self_link = 11 [json_name="selfLink"];
 }
+
+  // An access-control list.
 message BucketAccessControls {
+  // The list of items.
   repeated BucketAccessControl items = 1 [json_name="items"];
+  // The kind of item this is. For lists of bucket access control entries, this is always storage#bucketAccessControls.
   optional string kind = 2 [json_name="kind"];
 }
+
 message BucketStorageLayoutCustomPlacementConfig {
   repeated string data_locations = 1 [json_name="dataLocations"];
 }
+
 message BucketStorageLayoutHierarchicalNamespace {
   optional bool enabled = 1 [json_name="enabled"];
 }
+
+  // The storage layout configuration of a bucket.
 message BucketStorageLayout {
+  // The name of the bucket.
   optional string bucket = 1 [json_name="bucket"];
+  // The bucket's custom placement configuration for Custom Dual Regions.
   optional BucketStorageLayoutCustomPlacementConfig custom_placement_config = 2 [json_name="customPlacementConfig"];
+  // The bucket's hierarchical namespace configuration.
   optional BucketStorageLayoutHierarchicalNamespace hierarchical_namespace = 3 [json_name="hierarchicalNamespace"];
+  // The kind of item this is. For storage layout, this is always storage#storageLayout.
   optional string kind = 4 [json_name="kind"];
+  // The location of the bucket.
   optional string location = 5 [json_name="location"];
+  // The type of the bucket location.
   optional string location_type = 6 [json_name="locationType"];
 }
+
+  // A list of buckets.
 message Buckets {
+  // The list of items.
   repeated Bucket items = 1 [json_name="items"];
+  // The kind of item this is. For lists of buckets, this is always storage#buckets.
   optional string kind = 2 [json_name="kind"];
+  // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
 }
+
+  // A bulk restore objects request.
 message BulkRestoreObjectsRequest {
+  // If false (default), the restore will not overwrite live objects with the same name at the destination. This means some deleted objects may be skipped. If true, live objects will be overwritten resulting in a noncurrent object (if versioning is enabled). If versioning is not enabled, overwriting the object will result in a soft-deleted object. In either case, if a noncurrent object already exists with the same name, a live version can be written without issue.
   optional bool allow_overwrite = 1 [json_name="allowOverwrite"];
+  // If true, copies the source object's ACL; otherwise, uses the bucket's default object ACL. The default is false.
   optional bool copy_source_acl = 2 [json_name="copySourceAcl"];
+  // Restores only the objects matching any of the specified glob(s). If this parameter is not specified, all objects will be restored within the specified time range.
   repeated string match_globs = 3 [json_name="matchGlobs"];
+  // Restores only the objects that were soft-deleted after this time.
   optional .google.protobuf.Timestamp soft_deleted_after_time = 4 [json_name="softDeletedAfterTime"];
+  // Restores only the objects that were soft-deleted before this time.
   optional .google.protobuf.Timestamp soft_deleted_before_time = 5 [json_name="softDeletedBeforeTime"];
 }
+
+  // An notification channel used to watch for resource changes.
 message Channel {
+  // The address where notifications are delivered for this channel.
   optional string address = 1 [json_name="address"];
+  // Date and time of notification channel expiration, expressed as a Unix timestamp, in milliseconds. Optional.
   optional int64 expiration = 2 [json_name="expiration"];
+  // A UUID or similar unique string that identifies this channel.
   optional string id = 3 [json_name="id"];
+  // Identifies this as a notification channel used to watch for changes to a resource, which is "api#channel".
   optional string kind = 4 [json_name="kind"];
+  // Additional parameters controlling delivery channel behavior. Optional.
   map<string, string> params = 5 [json_name="params"];
+  // A Boolean value to indicate whether payload is wanted. Optional.
   optional bool payload = 6 [json_name="payload"];
+  // An opaque ID that identifies the resource being watched on this channel. Stable across different API versions.
   optional string resource_id = 7 [json_name="resourceId"];
+  // A version-specific identifier for the watched resource.
   optional string resource_uri = 8 [json_name="resourceUri"];
+  // An arbitrary string delivered to the target address with each notification delivered over this channel. Optional.
   optional string token = 9 [json_name="token"];
+  // The type of delivery mechanism used for this channel.
   optional string type = 10 [json_name="type"];
 }
+
 message ObjectPreconditions {
   optional int64 if_generation_match = 1 [json_name="ifGenerationMatch"];
 }
+
 message ComposeRequestSourceObjects {
   optional int64 generation = 1 [json_name="generation"];
   optional string name = 2 [json_name="name"];
   optional ObjectPreconditions object_preconditions = 3 [json_name="objectPreconditions"];
 }
+
+  // A Compose request.
 message ComposeRequest {
+  // Properties of the resulting object.
   optional Object destination = 1 [json_name="destination"];
+  // The kind of item this is.
   optional string kind = 2 [json_name="kind"];
+  // The list of source objects that will be concatenated into a single object.
   repeated ComposeRequestSourceObjects source_objects = 3 [json_name="sourceObjects"];
 }
+
+  // Represents an expression text. Example: title: "User account presence" description: "Determines whether the request has a user account" expression: "size(request.user) > 0"
 message Expr {
+  // An optional description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
   optional string description = 1 [json_name="description"];
+  // Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported.
   optional string expression = 2 [json_name="expression"];
+  // An optional string indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
   optional string location = 3 [json_name="location"];
+  // An optional title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
   optional string title = 4 [json_name="title"];
 }
+
 message FolderPendingRenameInfo {
   optional string operation_id = 1 [json_name="operationId"];
 }
+
+  // A folder. Only available in buckets with hierarchical namespace enabled.
 message Folder {
+  // The name of the bucket containing this folder.
   optional string bucket = 1 [json_name="bucket"];
+  // The creation time of the folder in RFC 3339 format.
   optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // The ID of the folder, including the bucket name, folder name.
   optional string id = 3 [json_name="id"];
+  // The kind of item this is. For folders, this is always storage#folder.
   optional string kind = 4 [json_name="kind"];
+  // The version of the metadata for this folder. Used for preconditions and for detecting changes in metadata.
   optional int64 metageneration = 5 [json_name="metageneration"];
+  // The name of the folder. Required if not specified by URL parameter.
   optional string name = 6 [json_name="name"];
+  // Only present if the folder is part of an ongoing rename folder operation. Contains information which can be used to query the operation status.
   optional FolderPendingRenameInfo pending_rename_info = 7 [json_name="pendingRenameInfo"];
+  // The link to this folder.
   optional string self_link = 8 [json_name="selfLink"];
+  // The modification time of the folder metadata in RFC 3339 format.
   optional .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
 }
+
+  // A list of folders.
 message Folders {
+  // The list of items.
   repeated Folder items = 1 [json_name="items"];
+  // The kind of item this is. For lists of folders, this is always storage#folders.
   optional string kind = 2 [json_name="kind"];
+  // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
 }
+
+  // The response message for storage.buckets.operations.list.
 message GoogleLongrunningListOperationsResponse {
-  optional string next_page_token = 1 [json_name="nextPageToken"];
-  repeated GoogleLongrunningOperation operations = 2 [json_name="operations"];
+  // The kind of item this is. For lists of operations, this is always storage#operations.
+  optional string kind = 1 [json_name="kind"];
+  // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  // A list of operations that matches the specified filter in the request.
+  repeated .google.longrunning.Operation operations = 3 [json_name="operations"];
 }
-message GoogleLongrunningOperation {
-  optional bool done = 1 [json_name="done"];
-  optional GoogleRpcStatus error = 2 [json_name="error"];
-  map<string, .google.protobuf.Any> metadata = 3 [json_name="metadata"];
-  optional string name = 4 [json_name="name"];
-  map<string, .google.protobuf.Any> response = 5 [json_name="response"];
-}
+
+  // The "Status" type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each "Status" message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
 message GoogleRpcStatus {
+  // The status code, which should be an enum value of google.rpc.Code.
   optional int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
   repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English.
   optional string message = 3 [json_name="message"];
 }
+
+  // JSON template to produce a JSON-style HMAC Key resource for Create responses.
 message HmacKey {
+  // The kind of item this is. For HMAC keys, this is always storage#hmacKey.
   optional string kind = 1 [json_name="kind"];
+  // Key metadata.
   optional HmacKeyMetadata metadata = 2 [json_name="metadata"];
+  // HMAC secret key material.
   optional string secret = 3 [json_name="secret"];
 }
+
+  // JSON template to produce a JSON-style HMAC Key metadata resource.
 message HmacKeyMetadata {
+  // The ID of the HMAC Key.
   optional string access_id = 1 [json_name="accessId"];
+  // HTTP 1.1 Entity tag for the HMAC key.
   optional string etag = 2 [json_name="etag"];
+  // The ID of the HMAC key, including the Project ID and the Access ID.
   optional string id = 3 [json_name="id"];
+  // The kind of item this is. For HMAC Key metadata, this is always storage#hmacKeyMetadata.
   optional string kind = 4 [json_name="kind"];
+  // Project ID owning the service account to which the key authenticates.
   optional string project_id = 5 [json_name="projectId"];
+  // The link to this resource.
   optional string self_link = 6 [json_name="selfLink"];
+  // The email address of the key's associated service account.
   optional string service_account_email = 7 [json_name="serviceAccountEmail"];
+  // The state of the key. Can be one of ACTIVE, INACTIVE, or DELETED.
   optional string state = 8 [json_name="state"];
+  // The creation time of the HMAC key in RFC 3339 format.
   optional .google.protobuf.Timestamp time_created = 9 [json_name="timeCreated"];
+  // The last modification time of the HMAC key metadata in RFC 3339 format.
   optional .google.protobuf.Timestamp updated = 10 [json_name="updated"];
 }
+
+  // A list of hmacKeys.
 message HmacKeysMetadata {
+  // The list of items.
   repeated HmacKeyMetadata items = 1 [json_name="items"];
+  // The kind of item this is. For lists of hmacKeys, this is always storage#hmacKeysMetadata.
   optional string kind = 2 [json_name="kind"];
+  // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
 }
+
+  // A managed folder.
 message ManagedFolder {
+  // The name of the bucket containing this managed folder.
   optional string bucket = 1 [json_name="bucket"];
+  // The creation time of the managed folder in RFC 3339 format.
   optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // The ID of the managed folder, including the bucket name and managed folder name.
   optional string id = 3 [json_name="id"];
+  // The kind of item this is. For managed folders, this is always storage#managedFolder.
   optional string kind = 4 [json_name="kind"];
+  // The version of the metadata for this managed folder. Used for preconditions and for detecting changes in metadata.
   optional int64 metageneration = 5 [json_name="metageneration"];
+  // The name of the managed folder. Required if not specified by URL parameter.
   optional string name = 6 [json_name="name"];
+  // The link to this managed folder.
   optional string self_link = 7 [json_name="selfLink"];
+  // The last update time of the managed folder metadata in RFC 3339 format.
   optional .google.protobuf.Timestamp update_time = 8 [json_name="updateTime"];
 }
+
+  // A list of managed folders.
 message ManagedFolders {
+  // The list of items.
   repeated ManagedFolder items = 1 [json_name="items"];
+  // The kind of item this is. For lists of managed folders, this is always storage#managedFolders.
   optional string kind = 2 [json_name="kind"];
+  // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
 }
+
+  // A subscription to receive Google PubSub notifications.
 message Notification {
+  // An optional list of additional attributes to attach to each Cloud PubSub message published for this notification subscription.
   map<string, string> custom_attributes = 1 [json_name="custom_attributes"];
+  // HTTP 1.1 Entity tag for this subscription notification.
   optional string etag = 2 [json_name="etag"];
+  // If present, only send notifications about listed event types. If empty, sent notifications for all event types.
   repeated string event_types = 3 [json_name="event_types"];
+  // The ID of the notification.
   optional string id = 4 [json_name="id"];
+  // The kind of item this is. For notifications, this is always storage#notification.
   optional string kind = 5 [json_name="kind"];
+  // If present, only apply this notification configuration to object names that begin with this prefix.
   optional string object_name_prefix = 6 [json_name="object_name_prefix"];
+  // The desired content of the Payload.
   optional string payload_format = 7 [json_name="payload_format"];
+  // The canonical URL of this notification.
   optional string self_link = 8 [json_name="selfLink"];
+  // The Cloud PubSub topic to which this subscription publishes. Formatted as: '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
   optional string topic = 9 [json_name="topic"];
 }
+
+  // A list of notification subscriptions.
 message Notifications {
+  // The list of items.
   repeated Notification items = 1 [json_name="items"];
+  // The kind of item this is. For lists of notifications, this is always storage#notifications.
   optional string kind = 2 [json_name="kind"];
 }
+
 message ObjectCustomerEncryption {
   optional string encryption_algorithm = 1 [json_name="encryptionAlgorithm"];
   optional string key_sha256 = 2 [json_name="keySha256"];
 }
+
 message ObjectOwner {
   optional string entity = 1 [json_name="entity"];
   optional string entity_id = 2 [json_name="entityId"];
 }
+
 message ObjectRetention {
   optional string mode = 1 [json_name="mode"];
   optional .google.protobuf.Timestamp retain_until_time = 2 [json_name="retainUntilTime"];
 }
+
+  // An object.
 message Object {
+  // Access controls on the object.
   repeated ObjectAccessControl acl = 1 [json_name="acl"];
+  // The name of the bucket containing this object.
   optional string bucket = 2 [json_name="bucket"];
+  // Cache-Control directive for the object data. If omitted, and the object is accessible to all anonymous users, the default will be public, max-age=3600.
   optional string cache_control = 3 [json_name="cacheControl"];
+  // Number of underlying components that make up this object. Components are accumulated by compose operations.
   optional int32 component_count = 4 [json_name="componentCount"];
+  // Content-Disposition of the object data.
   optional string content_disposition = 5 [json_name="contentDisposition"];
+  // Content-Encoding of the object data.
   optional string content_encoding = 6 [json_name="contentEncoding"];
+  // Content-Language of the object data.
   optional string content_language = 7 [json_name="contentLanguage"];
+  // Content-Type of the object data. If an object is stored without a Content-Type, it is served as application/octet-stream.
   optional string content_type = 8 [json_name="contentType"];
+  // CRC32c checksum, as described in RFC 4960, Appendix B; encoded using base64 in big-endian byte order. For more information about using the CRC32c checksum, see [Data Validation and Change Detection](https://cloud.google.com/storage/docs/data-validation).
   optional string crc32c = 9 [json_name="crc32c"];
+  // A timestamp in RFC 3339 format specified by the user for an object.
   optional .google.protobuf.Timestamp custom_time = 10 [json_name="customTime"];
+  // Metadata of customer-supplied encryption key, if the object is encrypted by such a key.
   optional ObjectCustomerEncryption customer_encryption = 11 [json_name="customerEncryption"];
+  // HTTP 1.1 Entity tag for the object.
   optional string etag = 12 [json_name="etag"];
+  // Whether an object is under event-based hold. Event-based hold is a way to retain objects until an event occurs, which is signified by the hold's release (i.e. this value is set to false). After being released (set to false), such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is the loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false.
   optional bool event_based_hold = 13 [json_name="eventBasedHold"];
+  // The content generation of this object. Used for object versioning.
   optional int64 generation = 14 [json_name="generation"];
+  // This is the time (in the future) when the soft-deleted object will no longer be restorable. It is equal to the soft delete time plus the current soft delete retention duration of the bucket.
   optional .google.protobuf.Timestamp hard_delete_time = 15 [json_name="hardDeleteTime"];
+  // The ID of the object, including the bucket name, object name, and generation number.
   optional string id = 16 [json_name="id"];
+  // The kind of item this is. For objects, this is always storage#object.
   optional string kind = 17 [json_name="kind"];
+  // Not currently supported. Specifying the parameter causes the request to fail with status code 400 - Bad Request.
   optional string kms_key_name = 18 [json_name="kmsKeyName"];
+  // MD5 hash of the data; encoded using base64. For more information about using the MD5 hash, see [Data Validation and Change Detection](https://cloud.google.com/storage/docs/data-validation).
   optional string md5_hash = 19 [json_name="md5Hash"];
+  // Media download link.
   optional string media_link = 20 [json_name="mediaLink"];
+  // User-provided metadata, in key/value pairs.
   map<string, string> metadata = 21 [json_name="metadata"];
+  // The version of the metadata for this object at this generation. Used for preconditions and for detecting changes in metadata. A metageneration number is only meaningful in the context of a particular generation of a particular object.
   optional int64 metageneration = 22 [json_name="metageneration"];
+  // The name of the object. Required if not specified by URL parameter.
   optional string name = 23 [json_name="name"];
+  // The owner of the object. This will always be the uploader of the object.
   optional ObjectOwner owner = 24 [json_name="owner"];
-  optional ObjectRetention retention = 25 [json_name="retention"];
-  optional .google.protobuf.Timestamp retention_expiration_time = 26 [json_name="retentionExpirationTime"];
-  optional string self_link = 27 [json_name="selfLink"];
-  optional uint64 size = 28 [json_name="size"];
-  optional .google.protobuf.Timestamp soft_delete_time = 29 [json_name="softDeleteTime"];
-  optional string storage_class = 30 [json_name="storageClass"];
-  optional bool temporary_hold = 31 [json_name="temporaryHold"];
-  optional .google.protobuf.Timestamp time_created = 32 [json_name="timeCreated"];
-  optional .google.protobuf.Timestamp time_deleted = 33 [json_name="timeDeleted"];
-  optional .google.protobuf.Timestamp time_storage_class_updated = 34 [json_name="timeStorageClassUpdated"];
-  optional .google.protobuf.Timestamp updated = 35 [json_name="updated"];
+  // Restore token used to differentiate deleted objects with the same name and generation. This field is only returned for deleted objects in hierarchical namespace buckets.
+  optional string restore_token = 25 [json_name="restoreToken"];
+  // A collection of object level retention parameters.
+  optional ObjectRetention retention = 26 [json_name="retention"];
+  // A server-determined value that specifies the earliest time that the object's retention period expires. This value is in RFC 3339 format. Note 1: This field is not provided for objects with an active event-based hold, since retention expiration is unknown until the hold is removed. Note 2: This value can be provided even when temporary hold is set (so that the user can reason about policy without having to first unset the temporary hold).
+  optional .google.protobuf.Timestamp retention_expiration_time = 27 [json_name="retentionExpirationTime"];
+  // The link to this object.
+  optional string self_link = 28 [json_name="selfLink"];
+  // Content-Length of the data in bytes.
+  optional uint64 size = 29 [json_name="size"];
+  // The time at which the object became soft-deleted in RFC 3339 format.
+  optional .google.protobuf.Timestamp soft_delete_time = 30 [json_name="softDeleteTime"];
+  // Storage class of the object.
+  optional string storage_class = 31 [json_name="storageClass"];
+  // Whether an object is under temporary hold. While this flag is set to true, the object is protected against deletion and overwrites. A common use case of this flag is regulatory investigations where objects need to be retained while the investigation is ongoing. Note that unlike event-based hold, temporary hold does not impact retention expiration time of an object.
+  optional bool temporary_hold = 32 [json_name="temporaryHold"];
+  // The creation time of the object in RFC 3339 format.
+  optional .google.protobuf.Timestamp time_created = 33 [json_name="timeCreated"];
+  // The time at which the object became noncurrent in RFC 3339 format. Will be returned if and only if this version of the object has been deleted.
+  optional .google.protobuf.Timestamp time_deleted = 34 [json_name="timeDeleted"];
+  // The time at which the object's storage class was last changed. When the object is initially created, it will be set to timeCreated.
+  optional .google.protobuf.Timestamp time_storage_class_updated = 35 [json_name="timeStorageClassUpdated"];
+  // The modification time of the object metadata in RFC 3339 format. Set initially to object creation time and then updated whenever any metadata of the object changes. This includes changes made by a requester, such as modifying custom metadata, as well as changes made by Cloud Storage on behalf of a requester, such as changing the storage class based on an Object Lifecycle Configuration.
+  optional .google.protobuf.Timestamp updated = 36 [json_name="updated"];
 }
+
 message ObjectAccessControlProjectTeam {
   optional string project_number = 1 [json_name="projectNumber"];
   optional string team = 2 [json_name="team"];
 }
+
+  // An access-control entry.
 message ObjectAccessControl {
+  // The name of the bucket.
   optional string bucket = 1 [json_name="bucket"];
+  // The domain associated with the entity, if any.
   optional string domain = 2 [json_name="domain"];
+  // The email address associated with the entity, if any.
   optional string email = 3 [json_name="email"];
+  // The entity holding the permission, in one of the following forms: 
+  // - user-userId 
+  // - user-email 
+  // - group-groupId 
+  // - group-email 
+  // - domain-domain 
+  // - project-team-projectId 
+  // - allUsers 
+  // - allAuthenticatedUsers Examples: 
+  // - The user liz@example.com would be user-liz@example.com. 
+  // - The group example@googlegroups.com would be group-example@googlegroups.com. 
+  // - To refer to all members of the Google Apps for Business domain example.com, the entity would be domain-example.com.
   optional string entity = 4 [json_name="entity"];
+  // The ID for the entity, if any.
   optional string entity_id = 5 [json_name="entityId"];
+  // HTTP 1.1 Entity tag for the access-control entry.
   optional string etag = 6 [json_name="etag"];
+  // The content generation of the object, if applied to an object.
   optional int64 generation = 7 [json_name="generation"];
+  // The ID of the access-control entry.
   optional string id = 8 [json_name="id"];
+  // The kind of item this is. For object access control entries, this is always storage#objectAccessControl.
   optional string kind = 9 [json_name="kind"];
+  // The name of the object, if applied to an object.
   optional string object = 10 [json_name="object"];
+  // The project team associated with the entity, if any.
   optional ObjectAccessControlProjectTeam project_team = 11 [json_name="projectTeam"];
+  // The access permission for the entity.
   optional string role = 12 [json_name="role"];
+  // The link to this access-control entry.
   optional string self_link = 13 [json_name="selfLink"];
 }
+
+  // An access-control list.
 message ObjectAccessControls {
+  // The list of items.
   repeated ObjectAccessControl items = 1 [json_name="items"];
+  // The kind of item this is. For lists of object access control entries, this is always storage#objectAccessControls.
   optional string kind = 2 [json_name="kind"];
 }
+
+  // A list of objects.
 message Objects {
+  // The list of items.
   repeated Object items = 1 [json_name="items"];
+  // The kind of item this is. For lists of objects, this is always storage#objects.
   optional string kind = 2 [json_name="kind"];
+  // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
+  // The list of prefixes of objects matching-but-not-listed up to and including the requested delimiter.
   repeated string prefixes = 4 [json_name="prefixes"];
 }
+
 message PolicyBindings {
   optional Expr condition = 1 [json_name="condition"];
   repeated string members = 2 [json_name="members"];
   optional string role = 3 [json_name="role"];
 }
+
+  // A bucket/object/managedFolder IAM policy.
 message Policy {
+  // An association between a role, which comes with a set of permissions, and members who may assume that role.
   repeated PolicyBindings bindings = 1 [json_name="bindings"];
+  // HTTP 1.1  Entity tag for the policy.
   optional bytes etag = 2 [json_name="etag"];
+  // The kind of item this is. For policies, this is always storage#policy. This field is ignored on input.
   optional string kind = 3 [json_name="kind"];
+  // The ID of the resource to which this policy belongs. Will be of the form projects/_/buckets/bucket for buckets, projects/_/buckets/bucket/objects/object for objects, and projects/_/buckets/bucket/managedFolders/managedFolder. A specific generation may be specified by appending #generationNumber to the end of the object name, e.g. projects/_/buckets/my-bucket/objects/data.txt#17. The current generation can be denoted with #0. This field is ignored on input.
   optional string resource_id = 4 [json_name="resourceId"];
+  // The IAM policy format version.
   optional int32 version = 5 [json_name="version"];
 }
+
+message RelocateBucketRequestDestinationCustomPlacementConfig {
+  repeated string data_locations = 1 [json_name="dataLocations"];
+}
+
+  // A Relocate Bucket request.
+message RelocateBucketRequest {
+  // The bucket's new custom placement configuration if relocating to a Custom Dual Region.
+  optional RelocateBucketRequestDestinationCustomPlacementConfig destination_custom_placement_config = 1 [json_name="destinationCustomPlacementConfig"];
+  // The new location the bucket will be relocated to.
+  optional string destination_location = 2 [json_name="destinationLocation"];
+  // If true, validate the operation, but do not actually relocate the bucket.
+  optional bool validate_only = 3 [json_name="validateOnly"];
+}
+
+  // A rewrite response.
 message RewriteResponse {
+  // true if the copy is finished; otherwise, false if the copy is in progress. This property is always present in the response.
   optional bool done = 1 [json_name="done"];
+  // The kind of item this is.
   optional string kind = 2 [json_name="kind"];
+  // The total size of the object being copied in bytes. This property is always present in the response.
   optional int64 object_size = 3 [json_name="objectSize"];
+  // A resource containing the metadata for the copied-to object. This property is present in the response only when copying completes.
   optional Object resource = 4 [json_name="resource"];
+  // A token to use in subsequent requests to continue copying data. This token is present in the response only when there is more data to copy.
   optional string rewrite_token = 5 [json_name="rewriteToken"];
+  // The total bytes written so far, which can be used to provide a waiting user with a progress indicator. This property is always present in the response.
   optional int64 total_bytes_rewritten = 6 [json_name="totalBytesRewritten"];
 }
+
+  // A subscription to receive Google PubSub notifications.
 message ServiceAccount {
+  // The ID of the notification.
   optional string email_address = 1 [json_name="email_address"];
+  // The kind of item this is. For notifications, this is always storage#notification.
   optional string kind = 2 [json_name="kind"];
 }
+
+  // A storage.(buckets|objects|managedFolders).testIamPermissions response.
 message TestIamPermissionsResponse {
+  // The kind of item this is.
   optional string kind = 1 [json_name="kind"];
+  // The permissions held by the caller. Permissions are always of the format storage.resource.capability, where resource is one of buckets, objects, or managedFolders. The supported permissions are as follows:  
+  // - storage.buckets.delete — Delete bucket.  
+  // - storage.buckets.get — Read bucket metadata.  
+  // - storage.buckets.getIamPolicy — Read bucket IAM policy.  
+  // - storage.buckets.create — Create bucket.  
+  // - storage.buckets.list — List buckets.  
+  // - storage.buckets.setIamPolicy — Update bucket IAM policy.  
+  // - storage.buckets.update — Update bucket metadata.  
+  // - storage.objects.delete — Delete object.  
+  // - storage.objects.get — Read object data and metadata.  
+  // - storage.objects.getIamPolicy — Read object IAM policy.  
+  // - storage.objects.create — Create object.  
+  // - storage.objects.list — List objects.  
+  // - storage.objects.setIamPolicy — Update object IAM policy.  
+  // - storage.objects.update — Update object metadata. 
+  // - storage.managedFolders.delete — Delete managed folder.  
+  // - storage.managedFolders.get — Read managed folder metadata.  
+  // - storage.managedFolders.getIamPolicy — Read managed folder IAM policy.  
+  // - storage.managedFolders.create — Create managed folder.  
+  // - storage.managedFolders.list — List managed folders.  
+  // - storage.managedFolders.setIamPolicy — Update managed folder IAM policy.
   repeated string permissions = 2 [json_name="permissions"];
 }
+
 message DisableAnywhereCacheRequest {
   optional string anywhere_cache_id = 1;
   optional string bucket = 2;
 }
+
 message GetAnywhereCacheRequest {
   optional string anywhere_cache_id = 1;
   optional string bucket = 2;
 }
+
 message InsertAnywhereCacheRequest {
   optional string bucket = 1;
   optional AnywhereCache anywhere_cache = 2;
 }
+
 message ListAnywhereCachesRequest {
   optional string bucket = 1;
   optional int32 page_size = 2;
   optional string page_token = 3;
 }
+
 message PauseAnywhereCacheRequest {
   optional string anywhere_cache_id = 1;
   optional string bucket = 2;
 }
+
 message ResumeAnywhereCacheRequest {
   optional string anywhere_cache_id = 1;
   optional string bucket = 2;
 }
+
 message UpdateAnywhereCacheRequest {
   optional string anywhere_cache_id = 1;
   optional string bucket = 2;
   optional AnywhereCache anywhere_cache = 3;
 }
+
 message DeleteBucketAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
 }
+
 message GetBucketAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
 }
+
 message InsertBucketAccessControlRequest {
   optional string bucket = 1;
   optional string user_project = 2;
   optional BucketAccessControl bucket_access_control = 3;
 }
+
 message ListBucketAccessControlsRequest {
   optional string bucket = 1;
   optional string user_project = 2;
 }
+
 message PatchBucketAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
   optional BucketAccessControl bucket_access_control = 4;
 }
+
 message UpdateBucketAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
   optional BucketAccessControl bucket_access_control = 4;
 }
+
 message DeleteBucketRequest {
   optional string name = 1;
   optional string if_metageneration_match = 2;
   optional string if_metageneration_not_match = 3;
   optional string user_project = 4;
 }
+
 message GetBucketRequest {
   optional string name = 1;
-  optional string if_metageneration_match = 2;
-  optional string if_metageneration_not_match = 3;
-  optional string projection = 4;
-  optional string user_project = 5;
+  optional string generation = 2;
+  optional string if_metageneration_match = 3;
+  optional string if_metageneration_not_match = 4;
+  optional string projection = 5;
+  optional bool soft_deleted = 6;
+  optional string user_project = 7;
 }
+
 message GetStorageLayoutBucketRequest {
   optional string name = 1;
   optional string prefix = 2;
 }
+
 message InsertBucketRequest {
   optional bool enable_object_retention = 1;
   optional string predefined_acl = 2;
@@ -964,19 +1470,23 @@ message InsertBucketRequest {
   optional string user_project = 6;
   optional Bucket bucket = 7;
 }
+
 message ListBucketsRequest {
   optional int32 max_results = 1;
   optional string page_token = 2;
   optional string prefix = 3;
   optional string project = 4;
   optional string projection = 5;
-  optional string user_project = 6;
+  optional bool soft_deleted = 6;
+  optional string user_project = 7;
 }
+
 message LockRetentionPolicyBucketRequest {
   optional string name = 1;
   optional string if_metageneration_match = 2;
   optional string user_project = 3;
 }
+
 message PatchBucketRequest {
   optional string name = 1;
   optional string if_metageneration_match = 2;
@@ -987,6 +1497,18 @@ message PatchBucketRequest {
   optional string user_project = 7;
   optional Bucket bucket = 8;
 }
+
+message RelocateBucketServiceRequest {
+  optional string name = 1;
+  optional RelocateBucketRequest bucket = 2;
+}
+
+message RestoreBucketRequest {
+  optional string name = 1;
+  optional string generation = 2;
+  optional string user_project = 3;
+}
+
 message UpdateBucketRequest {
   optional string name = 1;
   optional string if_metageneration_match = 2;
@@ -997,59 +1519,70 @@ message UpdateBucketRequest {
   optional string user_project = 7;
   optional Bucket bucket = 8;
 }
+
 message StopChannelRequest {
   optional Channel channel = 1;
 }
+
 message DeleteDefaultObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
 }
+
 message GetDefaultObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
 }
+
 message InsertDefaultObjectAccessControlRequest {
   optional string bucket = 1;
   optional string user_project = 2;
   optional ObjectAccessControl default_object_access_control = 3;
 }
+
 message ListDefaultObjectAccessControlsRequest {
   optional string bucket = 1;
   optional string if_metageneration_match = 2;
   optional string if_metageneration_not_match = 3;
   optional string user_project = 4;
 }
+
 message PatchDefaultObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
   optional ObjectAccessControl default_object_access_control = 4;
 }
+
 message UpdateDefaultObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
   optional string user_project = 3;
   optional ObjectAccessControl default_object_access_control = 4;
 }
+
 message DeleteFolderRequest {
   optional string bucket = 1;
   optional string name = 2;
   optional string if_metageneration_match = 3;
   optional string if_metageneration_not_match = 4;
 }
+
 message GetFolderRequest {
   optional string bucket = 1;
   optional string name = 2;
   optional string if_metageneration_match = 3;
   optional string if_metageneration_not_match = 4;
 }
+
 message InsertFolderRequest {
   optional string bucket = 1;
   optional bool recursive = 2;
   optional Folder folder = 3;
 }
+
 message ListFoldersRequest {
   optional string bucket = 1;
   optional string delimiter = 2;
@@ -1059,6 +1592,7 @@ message ListFoldersRequest {
   optional string prefix = 6;
   optional string start_offset = 7;
 }
+
 message RenameFolderRequest {
   optional string bucket = 1;
   optional string destination_folder = 2;
@@ -1066,6 +1600,7 @@ message RenameFolderRequest {
   optional string if_source_metageneration_not_match = 4;
   optional string source_folder = 5;
 }
+
 message DeleteManagedFolderRequest {
   optional bool allow_non_empty = 1;
   optional string bucket = 2;
@@ -1073,41 +1608,49 @@ message DeleteManagedFolderRequest {
   optional string if_metageneration_not_match = 4;
   optional string name = 5;
 }
+
 message GetManagedFolderRequest {
   optional string bucket = 1;
   optional string if_metageneration_match = 2;
   optional string if_metageneration_not_match = 3;
   optional string name = 4;
 }
+
 message InsertManagedFolderRequest {
   optional string bucket = 1;
   optional ManagedFolder managed_folder = 2;
 }
+
 message ListManagedFoldersRequest {
   optional string bucket = 1;
   optional int32 page_size = 2;
   optional string page_token = 3;
   optional string prefix = 4;
 }
+
 message DeleteNotificationRequest {
   optional string bucket = 1;
   optional string name = 2;
   optional string user_project = 3;
 }
+
 message GetNotificationRequest {
   optional string bucket = 1;
   optional string name = 2;
   optional string user_project = 3;
 }
+
 message InsertNotificationRequest {
   optional string bucket = 1;
   optional string user_project = 2;
   optional Notification notification = 3;
 }
+
 message ListNotificationsRequest {
   optional string bucket = 1;
   optional string user_project = 2;
 }
+
 message DeleteObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
@@ -1115,6 +1658,7 @@ message DeleteObjectAccessControlRequest {
   optional string object = 4;
   optional string user_project = 5;
 }
+
 message GetObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
@@ -1122,6 +1666,7 @@ message GetObjectAccessControlRequest {
   optional string object = 4;
   optional string user_project = 5;
 }
+
 message InsertObjectAccessControlRequest {
   optional string bucket = 1;
   optional string generation = 2;
@@ -1129,12 +1674,14 @@ message InsertObjectAccessControlRequest {
   optional string user_project = 4;
   optional ObjectAccessControl object_access_control = 5;
 }
+
 message ListObjectAccessControlsRequest {
   optional string bucket = 1;
   optional string generation = 2;
   optional string object = 3;
   optional string user_project = 4;
 }
+
 message PatchObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
@@ -1143,6 +1690,7 @@ message PatchObjectAccessControlRequest {
   optional string user_project = 5;
   optional ObjectAccessControl object_access_control = 6;
 }
+
 message UpdateObjectAccessControlRequest {
   optional string bucket = 1;
   optional string entity = 2;
@@ -1151,10 +1699,12 @@ message UpdateObjectAccessControlRequest {
   optional string user_project = 5;
   optional ObjectAccessControl object_access_control = 6;
 }
+
 message BulkRestoreObjectRequest {
   optional string bucket = 1;
   optional BulkRestoreObjectsRequest object = 2;
 }
+
 message ComposeObjectRequest {
   optional string destination_bucket = 1;
   optional string destination_object = 2;
@@ -1165,6 +1715,7 @@ message ComposeObjectRequest {
   optional string user_project = 7;
   optional ComposeRequest object = 8;
 }
+
 message CopyObjectRequest {
   optional string destination_bucket = 1;
   optional string destination_kms_key_name = 2;
@@ -1185,6 +1736,7 @@ message CopyObjectRequest {
   optional string user_project = 17;
   optional Object object = 18;
 }
+
 message DeleteObjectRequest {
   optional string bucket = 1;
   optional string generation = 2;
@@ -1195,6 +1747,7 @@ message DeleteObjectRequest {
   optional string name = 7;
   optional string user_project = 8;
 }
+
 message GetObjectRequest {
   optional string bucket = 1;
   optional string generation = 2;
@@ -1204,9 +1757,11 @@ message GetObjectRequest {
   optional string if_metageneration_not_match = 6;
   optional string name = 7;
   optional string projection = 8;
-  optional bool soft_deleted = 9;
-  optional string user_project = 10;
+  optional string restore_token = 9;
+  optional bool soft_deleted = 10;
+  optional string user_project = 11;
 }
+
 message InsertObjectRequest {
   optional string bucket = 1;
   optional string content_encoding = 2;
@@ -1221,6 +1776,7 @@ message InsertObjectRequest {
   optional string user_project = 11;
   optional Object object = 12;
 }
+
 message ListObjectsRequest {
   optional string bucket = 1;
   optional string delimiter = 2;
@@ -1237,6 +1793,7 @@ message ListObjectsRequest {
   optional string user_project = 13;
   optional bool versions = 14;
 }
+
 message PatchObjectRequest {
   optional string bucket = 1;
   optional string generation = 2;
@@ -1251,6 +1808,7 @@ message PatchObjectRequest {
   optional string user_project = 11;
   optional Object object = 12;
 }
+
 message RestoreObjectRequest {
   optional string bucket = 1;
   optional bool copy_source_acl = 2;
@@ -1261,8 +1819,10 @@ message RestoreObjectRequest {
   optional string if_metageneration_not_match = 7;
   optional string name = 8;
   optional string projection = 9;
-  optional string user_project = 10;
+  optional string restore_token = 10;
+  optional string user_project = 11;
 }
+
 message RewriteObjectRequest {
   optional string destination_bucket = 1;
   optional string destination_kms_key_name = 2;
@@ -1285,6 +1845,7 @@ message RewriteObjectRequest {
   optional string user_project = 19;
   optional Object object = 20;
 }
+
 message UpdateObjectRequest {
   optional string bucket = 1;
   optional string generation = 2;
@@ -1299,6 +1860,7 @@ message UpdateObjectRequest {
   optional string user_project = 11;
   optional Object object = 12;
 }
+
 message WatchAllObjectRequest {
   optional string bucket = 1;
   optional string delimiter = 2;
@@ -1313,21 +1875,25 @@ message WatchAllObjectRequest {
   optional bool versions = 11;
   optional Channel object = 12;
 }
+
 message CreateProjectsHmacKeyRequest {
   optional string project_id = 1;
   optional string service_account_email = 2;
   optional string user_project = 3;
 }
+
 message DeleteProjectsHmacKeyRequest {
   optional string access_id = 1;
   optional string project_id = 2;
   optional string user_project = 3;
 }
+
 message GetProjectsHmacKeyRequest {
   optional string access_id = 1;
   optional string project_id = 2;
   optional string user_project = 3;
 }
+
 message ListProjectsHmacKeysRequest {
   optional int32 max_results = 1;
   optional string page_token = 2;
@@ -1336,12 +1902,14 @@ message ListProjectsHmacKeysRequest {
   optional bool show_deleted_keys = 5;
   optional string user_project = 6;
 }
+
 message UpdateProjectsHmacKeyRequest {
   optional string access_id = 1;
   optional string project_id = 2;
   optional string user_project = 3;
   optional HmacKeyMetadata projects_hmac_key = 4;
 }
+
 message GetProjectsServiceAccountRequest {
   optional string project_id = 1;
   optional string user_project = 2;
