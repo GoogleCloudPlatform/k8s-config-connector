@@ -6,6 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: beta
     cnrm.cloud.google.com/system: "true"
   name: kmsautokeyconfigs.kms.cnrm.cloud.google.com
 spec:
@@ -39,7 +40,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: KMSAutokeyConfig is the Schema for the KMSAutokeyConfig API

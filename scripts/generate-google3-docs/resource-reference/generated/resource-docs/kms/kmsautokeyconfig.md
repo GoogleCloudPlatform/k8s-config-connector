@@ -73,6 +73,7 @@ keyProject:
   name: string
   namespace: string
 ```
+
 <table class="properties responsive">
 <thead>
     <tr>
@@ -296,6 +297,7 @@ observedState:
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSAutokeyConfig
 metadata:
