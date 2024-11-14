@@ -134,21 +134,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		}
 	}
 
-	// Get computeNetwork
-	networkSpec := obj.Spec.PrivatePoolConfig.NetworkConfig
-	if networkSpec != nil {
-		if err := networkSpec.PeeredNetworkRef.Normalize(ctx, reader, obj); err != nil {
-			return nil, err
-		}
-
-		projectsClient, err := m.projectsClient(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		if err := networkSpec.PeeredNetworkRef.ConvertToProjectNumber(ctx, projectsClient); err != nil {
-			return nil, err
-		}
+	// Get Project GCP client
+	projectClient, err := m.projectsClient(ctx)
+	if err != nil {
+		return nil, err
 	}
 
 	// Get CloudBuild GCP client
@@ -156,10 +145,13 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
+
 	return &Adapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:            id,
+		projectClient: projectClient,
+		gcpClient:     gcpClient,
+		reader:        reader,
+		desired:       obj,
 	}, nil
 }
 
@@ -191,10 +183,12 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *CloudBuildWorkerPoolIdentity
-	gcpClient *gcp.Client
-	desired   *krm.CloudBuildWorkerPool
-	actual    *cloudbuildpb.WorkerPool
+	id            *CloudBuildWorkerPoolIdentity
+	projectClient *cloudresourcemanager.ProjectsClient
+	gcpClient     *gcp.Client
+	reader        client.Reader
+	desired       *krm.CloudBuildWorkerPool
+	actual        *cloudbuildpb.WorkerPool
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -215,6 +209,11 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
+
+	err := a.resolveDependencies(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
+	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating object", "u", u)
@@ -252,6 +251,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
+
+	err := a.resolveDependencies(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
+	}
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
 
 	desired := a.desired.DeepCopy()
@@ -354,5 +359,20 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 	u.Object["status"] = status
 
+	return nil
+}
+
+func (a *Adapter) resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.CloudBuildWorkerPool) error {
+	// Resolve computeNetwork
+	networkSpec := obj.Spec.PrivatePoolConfig.NetworkConfig
+	if networkSpec != nil {
+		if err := networkSpec.PeeredNetworkRef.Normalize(ctx, reader, obj); err != nil {
+			return err
+		}
+
+		if err := networkSpec.PeeredNetworkRef.ConvertToProjectNumber(ctx, a.projectClient); err != nil {
+			return err
+		}
+	}
 	return nil
 }
