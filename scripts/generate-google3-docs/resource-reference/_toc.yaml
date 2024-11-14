@@ -559,3 +559,7 @@ toc:
   section:
   - title: "VPCAccessConnector"
     path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md
+- title: "Workstations"
+  section:
+  - title: "WorkstationCluster"
+    path: /config-connector/docs/reference/resource-docs/workstations/workstationcluster.md
