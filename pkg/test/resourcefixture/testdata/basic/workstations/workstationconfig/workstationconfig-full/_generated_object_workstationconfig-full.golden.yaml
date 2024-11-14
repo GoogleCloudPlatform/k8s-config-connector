@@ -1,0 +1,81 @@
+apiVersion: workstations.cnrm.cloud.google.com/v1alpha1
+kind: WorkstationConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: workstationconfig-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  annotations:
+  - key: a-key2
+    value: a-value2
+  container:
+    image: us-west1-docker.pkg.dev/cloud-workstations-images/predefined/base:latest
+  displayName: workstationconfig-full
+  encryptionKey:
+    kmsCryptoKeyRef:
+      name: kmscryptokey-${uniqueId}
+    serviceAccountRef:
+      name: iamsa-${uniqueId}
+  host:
+    gceInstance:
+      bootDiskSizeGB: 100
+      confidentialInstanceConfig:
+        enableConfidentialCompute: true
+      disablePublicIPAddresses: true
+      enableNestedVirtualization: false
+      machineType: n2d-standard-8
+      poolSize: 2
+      serviceAccountRef:
+        external: ${projectNumber}-compute@developer.gserviceaccount.com
+      serviceAccountScopes:
+      - https://www.googleapis.com/auth/devstorage.read_only
+      - https://www.googleapis.com/auth/compute.readonly
+      shieldedInstanceConfig:
+        enableIntegrityMonitoring: true
+        enableSecureBoot: true
+        enableVTPM: true
+      tags:
+      - workstationconfig-${uniqueId}
+      - workstationconfig-newtag-${uniqueId}
+  idleTimeout: 2400s
+  labels:
+  - key: l-key2
+    value: l-value2
+  parentRef:
+    name: workstationcluster-${uniqueId}
+  persistentDirectories:
+  - gcePD:
+      diskType: pd-standard
+      fsType: ext4
+      reclaimPolicy: DELETE
+      sizeGB: 200
+    mountPath: /home
+  readinessChecks:
+  - path: /ready
+    port: 9999
+  replicaZones:
+  - us-west1-a
+  - us-west1-b
+  resourceID: workstationconfig-full-${uniqueId}
+  runningTimeout: 86400s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-full-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    host:
+      gceInstance: {}
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

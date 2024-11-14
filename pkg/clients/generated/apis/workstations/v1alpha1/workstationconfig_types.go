@@ -334,19 +334,12 @@ type WorkstationConfigSpec struct {
 	// +optional
 	Labels []WorkstationconfigLabels `json:"labels,omitempty"`
 
-	/* The location of the WorkstationConfig. */
-	// +optional
-	Location *string `json:"location,omitempty"`
-
 	/* Parent is a reference to the parent WorkstationCluster for this WorkstationConfig. */
 	ParentRef v1alpha1.ResourceRef `json:"parentRef"`
 
 	/* Optional. Directories to persist across workstation sessions. */
 	// +optional
 	PersistentDirectories []WorkstationconfigPersistentDirectories `json:"persistentDirectories,omitempty"`
-
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. Readiness checks to perform when starting a workstation using this workstation configuration. Mark a workstation as running only after all specified readiness checks return 200 status codes. */
 	// +optional
@@ -392,6 +385,12 @@ type WorkstationConfigSpec struct {
 	RunningTimeout *string `json:"runningTimeout,omitempty"`
 }
 
+type WorkstationconfigGceInstanceStatus struct {
+	/* Output only. Number of instances currently available in the pool for faster workstation startup. */
+	// +optional
+	PooledInstances *int32 `json:"pooledInstances,omitempty"`
+}
+
 type WorkstationconfigGcpConditionsStatus struct {
 	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
 	// +optional
@@ -400,6 +399,12 @@ type WorkstationconfigGcpConditionsStatus struct {
 	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
 	// +optional
 	Message *string `json:"message,omitempty"`
+}
+
+type WorkstationconfigHostStatus struct {
+	/* Output only. Observed state of the Compute Engine runtime host for the workstation configuration. */
+	// +optional
+	GceInstance *WorkstationconfigGceInstanceStatus `json:"gceInstance,omitempty"`
 }
 
 type WorkstationconfigObservedStateStatus struct {
@@ -415,7 +420,7 @@ type WorkstationconfigObservedStateStatus struct {
 	// +optional
 	DeleteTime *string `json:"deleteTime,omitempty"`
 
-	/* Optional. Checksum computed by the server. May be sent on update and delete requests to make sure that the client has an up-to-date value before proceeding. */
+	/* Output only. Checksum computed by the server. May be sent on update and delete requests to make sure that the client has an up-to-date value before proceeding. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
@@ -423,9 +428,9 @@ type WorkstationconfigObservedStateStatus struct {
 	// +optional
 	GcpConditions []WorkstationconfigGcpConditionsStatus `json:"gcpConditions,omitempty"`
 
-	/* Output only. Number of instances currently available in the pool for faster workstation startup. */
+	/* Output only. Observed state of the runtime host for the workstation configuration. */
 	// +optional
-	PooledInstances *int32 `json:"pooledInstances,omitempty"`
+	Host *WorkstationconfigHostStatus `json:"host,omitempty"`
 
 	/* Output only. A system-assigned unique identifier for this workstation configuration. */
 	// +optional

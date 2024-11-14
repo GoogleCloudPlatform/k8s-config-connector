@@ -26,15 +26,32 @@ func WorkstationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.WorkstationConfigObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Reconciling
+	out.UID = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Host = WorkstationConfig_HostObservedState_FromProto(mapCtx, in.Host)
 	out.Degraded = direct.LazyPtr(in.GetDegraded())
-	// MISSING: Conditions
+	out.GCPConditions = WorkstationGCPConditions_FromProto_Alpha(mapCtx, in.Conditions)
+	return out
+}
+
+func WorkstationConfig_HostObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host) *krm.WorkstationConfig_HostObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_HostObservedState{}
+	out.GceInstance = WorkstationConfig_Host_GceInstanceObservedState_FromProto(mapCtx, in.GetGceInstance())
+	return out
+}
+
+func WorkstationConfig_Host_GceInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host_GceInstance) *krm.WorkstationConfig_Host_GceInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_Host_GceInstanceObservedState{}
+	out.PooledInstances = direct.LazyPtr(in.PooledInstances)
 	return out
 }
 
@@ -43,15 +60,34 @@ func WorkstationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 		return nil
 	}
 	out := &pb.WorkstationConfig{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Reconciling
+	out.Uid = direct.ValueOf(in.UID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
 	out.Etag = direct.ValueOf(in.Etag)
+	out.Host = WorkstationConfig_HostObservedState_ToProto(mapCtx, in.Host)
 	out.Degraded = direct.ValueOf(in.Degraded)
-	// MISSING: Conditions
+	out.Conditions = WorkstationGCPConditions_ToProto_Alpha(mapCtx, in.GCPConditions)
+	return out
+}
+
+func WorkstationConfig_HostObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_HostObservedState) *pb.WorkstationConfig_Host {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkstationConfig_Host{}
+	if oneof := WorkstationConfig_Host_GceInstanceObservedState_ToProto(mapCtx, in.GceInstance); oneof != nil {
+		out.Config = &pb.WorkstationConfig_Host_GceInstance_{GceInstance: oneof}
+	}
+	return out
+}
+
+func WorkstationConfig_Host_GceInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Host_GceInstanceObservedState) *pb.WorkstationConfig_Host_GceInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkstationConfig_Host_GceInstance{}
+	out.PooledInstances = direct.ValueOf(in.PooledInstances)
 	return out
 }
 
@@ -60,10 +96,7 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 		return nil
 	}
 	out := &krm.WorkstationConfigSpec{}
-	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: Uid
-	// MISSING: Reconciling
 	out.Annotations = WorkstationAnnotations_FromProto_Alpha(mapCtx, in.Annotations)
 	out.Labels = WorkstationLabels_FromProto_Alpha(mapCtx, in.Labels)
 	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
@@ -74,19 +107,15 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 	out.EncryptionKey = WorkstationConfig_CustomerEncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
 	out.ReadinessChecks = direct.Slice_FromProto(mapCtx, in.ReadinessChecks, WorkstationConfig_ReadinessCheck_FromProto)
 	out.ReplicaZones = in.ReplicaZones
-	// MISSING: Conditions
 	return out
 }
 
-func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfigSpec) *pb.WorkstationConfig {
+func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfigSpec, actual *pb.WorkstationConfig) *pb.WorkstationConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig{}
-	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: Uid
-	// MISSING: Reconciling
 	out.Annotations = WorkstationAnnotations_ToProto_Alpha(mapCtx, in.Annotations)
 	out.Labels = WorkstationLabels_ToProto_Alpha(mapCtx, in.Labels)
 	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
@@ -97,7 +126,9 @@ func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstatio
 	out.EncryptionKey = WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx, in.EncryptionKey)
 	out.ReadinessChecks = direct.Slice_ToProto(mapCtx, in.ReadinessChecks, WorkstationConfig_ReadinessCheck_ToProto)
 	out.ReplicaZones = in.ReplicaZones
-	// MISSING: Conditions
+
+	ApplyWorkstationConfigGCPDefaults(mapCtx, in, out, actual)
+
 	return out
 }
 
@@ -206,7 +237,6 @@ func WorkstationConfig_Host_GceInstance_FromProto(mapCtx *direct.MapContext, in 
 	out.ServiceAccountScopes = in.ServiceAccountScopes
 	out.Tags = in.Tags
 	out.PoolSize = direct.LazyPtr(in.GetPoolSize())
-	// MISSING: PooledInstances
 	out.DisablePublicIPAddresses = direct.LazyPtr(in.DisablePublicIpAddresses)
 	out.EnableNestedVirtualization = direct.LazyPtr(in.GetEnableNestedVirtualization())
 	out.ShieldedInstanceConfig = WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
@@ -227,7 +257,6 @@ func WorkstationConfig_Host_GceInstance_ToProto(mapCtx *direct.MapContext, in *k
 	out.ServiceAccountScopes = in.ServiceAccountScopes
 	out.Tags = in.Tags
 	out.PoolSize = direct.ValueOf(in.PoolSize)
-	// MISSING: PooledInstances
 	out.DisablePublicIpAddresses = direct.ValueOf(in.DisablePublicIPAddresses)
 	out.EnableNestedVirtualization = direct.ValueOf(in.EnableNestedVirtualization)
 	out.ShieldedInstanceConfig = WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)

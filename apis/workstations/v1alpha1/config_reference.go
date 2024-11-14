@@ -17,7 +17,6 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -52,7 +51,7 @@ func (r *WorkstationConfigRef) NormalizedExternal(ctx context.Context, reader cl
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := parseWorkstationConfigExternal(r.External); err != nil {
+		if _, _, err := ParseWorkstationConfigExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -81,113 +80,4 @@ func (r *WorkstationConfigRef) NormalizedExternal(ctx context.Context, reader cl
 	}
 	r.External = actualExternalRef
 	return r.External, nil
-}
-
-// New builds a WorkstationConfigRef from the Config Connector WorkstationConfig object.
-func NewWorkstationConfigRef(ctx context.Context, reader client.Reader, obj *WorkstationConfig) (*WorkstationConfigRef, error) {
-	id := &WorkstationConfigRef{}
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-	clusterRef := obj.Spec.Parent
-	if clusterRef == nil {
-		return nil, fmt.Errorf("no parent cluster")
-	}
-	clusterExternal, err := clusterRef.NormalizedExternal(ctx, reader, obj.Namespace)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve cluster: %w", err)
-	}
-	_, clusterID, err := parseWorkstationClusterExternal(clusterExternal)
-	if err != nil {
-		return nil, fmt.Errorf("cannot parse external cluster: %w", err)
-	}
-
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		parent := &WorkstationConfigParent{ProjectID: projectID, Location: location, Cluster: clusterID}
-		id.External = asWorkstationConfigExternal(parent, resourceID)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseWorkstationConfigExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-	}
-	if actualParent.Cluster != clusterID {
-		return nil, fmt.Errorf("spec.parentRef changed, expect %s, got %s", actualParent.Cluster, clusterID)
-	}
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	return id, nil
-}
-
-func (r *WorkstationConfigRef) Parent() (*WorkstationConfigParent, error) {
-	if r.External != "" {
-		parent, _, err := parseWorkstationConfigExternal(r.External)
-		if err != nil {
-			return nil, err
-		}
-		return parent, nil
-	}
-	return nil, fmt.Errorf("WorkstationConfigRef not initialized from `NewWorkstationConfigRef` or `NormalizedExternal`")
-}
-
-type WorkstationConfigParent struct {
-	ProjectID string
-	Location  string
-	Cluster   string
-}
-
-func (p *WorkstationConfigParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/workstationClusters/" + p.Cluster
-}
-
-func asWorkstationConfigExternal(parent *WorkstationConfigParent, resourceID string) (external string) {
-	return parent.String() + "/workstationConfigs/" + resourceID
-}
-
-func parseWorkstationConfigExternal(external string) (parent *WorkstationConfigParent, resourceID string, err error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" || tokens[6] != "workstationConfigs" {
-		return nil, "", fmt.Errorf("format of WorkstationConfig external=%q was not known (use projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>/workstationConfigs/<workstationconfigID>)", external)
-	}
-	parent = &WorkstationConfigParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-		Cluster:   tokens[5],
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
 }
