@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 // TODO REPLACE ALL OF THIS WITH BUCKET ID
 // I copied a similar ref file and replaced everything with logbucketref
 
@@ -42,8 +41,8 @@ type LoggingLogBucketRef struct {
 }
 
 type LoggingLogBucket struct {
-	ProjectID      string
-	Location       string
+	ProjectID          string
+	Location           string
 	LoggingLogBucketID string
 }
 
@@ -68,8 +67,8 @@ func ResolveLoggingLogBucketRef(ctx context.Context, reader client.Reader, obj c
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataExchanges" {
 			return &LoggingLogBucket{
-				ProjectID:      tokens[1],
-				Location:       tokens[3],
+				ProjectID:          tokens[1],
+				Location:           tokens[3],
 				LoggingLogBucketID: tokens[5],
 			}, nil
 		}
@@ -116,8 +115,8 @@ func ResolveLoggingLogBucketRef(ctx context.Context, reader client.Reader, obj c
 	}
 
 	return &LoggingLogBucket{
-		ProjectID:      projectID,
-		Location:       location,
+		ProjectID:          projectID,
+		Location:           location,
 		LoggingLogBucketID: resourceID,
 	}, nil
 }

@@ -15,9 +15,9 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
@@ -37,7 +37,7 @@ type LoggingLinkSpec struct {
 	//  The maximum length of the description is 8000 characters.
 	Description *string `json:"description,omitempty"`
 
-	// Placeholder description 
+	// Placeholder description
 	LoggingLogBucketRef *refs.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 }
 
