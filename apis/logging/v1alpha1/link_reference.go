@@ -90,16 +90,17 @@ func NewLoggingLinkRef(ctx context.Context, reader client.Reader, obj *LoggingLi
 	id := &LoggingLinkRef{}
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	loggingBucketRef, err := refsv1beta1.ResolveLoggingLogBucketRef(ctx, reader, obj, obj.Spec.LoggingBucketRef)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
+	projectID := loggingBucketRef.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
-	id.parent = &LoggingLinkParent{ProjectID: projectID, Location: location}
+	location := loggingBucketRef.Location
+	bucketID := loggingBucketRef.LoggingLogBucketID
+	id.parent = &LoggingLinkParent{ProjectID: projectID, Location: location, LogBucket: bucketID}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -123,17 +124,20 @@ func NewLoggingLinkRef(ctx context.Context, reader client.Reader, obj *LoggingLi
 		return nil, err
 	}
 	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		return nil, fmt.Errorf("loggingBucketRef.projectID changed, expect %s, got %s", actualParent.ProjectID, projectID)
 	}
 	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		return nil, fmt.Errorf("loggingBucketRef.location changed, expect %s, got %s", actualParent.Location, location)
+	}
+	if actualParent.LoggingLogBucketID != bucketID {
+		return nil, fmt.Errorf("loggingBucketRef.LoggingLogBucketID changed, expect %s, got %s", actualParent.Location, bucketID)
 	}
 	if actualResourceID != resourceID {
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 			resourceID, actualResourceID)
 	}
 	id.External = externalRef
-	id.parent = &LoggingLinkParent{ProjectID: projectID, Location: location}
+	id.parent = &LoggingLinkParent{ProjectID: projectID, Location: location, LogBucket: bucketID}
 	return id, nil
 }
 
@@ -154,6 +158,7 @@ func (r *LoggingLinkRef) Parent() (*LoggingLinkParent, error) {
 type LoggingLinkParent struct {
 	ProjectID string
 	Location  string
+	LogBucket string
 }
 
 func (p *LoggingLinkParent) String() string {
