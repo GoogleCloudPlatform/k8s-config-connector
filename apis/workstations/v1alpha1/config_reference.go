@@ -126,6 +126,8 @@ func NewWorkstationConfigRef(ctx context.Context, reader client.Reader, obj *Wor
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
 		parent := &WorkstationConfigParent{ProjectID: projectID, Location: location, Cluster: clusterID}
+		id.Name = resourceID
+		id.Namespace = obj.GetNamespace()
 		id.External = asWorkstationConfigExternal(parent, resourceID)
 		return id, nil
 	}
@@ -148,6 +150,8 @@ func NewWorkstationConfigRef(ctx context.Context, reader client.Reader, obj *Wor
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 			resourceID, actualResourceID)
 	}
+	id.Name = resourceID
+	id.Namespace = obj.GetNamespace()
 	id.External = externalRef
 	return id, nil
 }
