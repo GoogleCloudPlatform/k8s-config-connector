@@ -129,7 +129,7 @@ func NewLoggingLinkRef(ctx context.Context, reader client.Reader, obj *LoggingLi
 	if actualParent.Location != location {
 		return nil, fmt.Errorf("loggingBucketRef.location changed, expect %s, got %s", actualParent.Location, location)
 	}
-	if actualParent.LoggingLogBucketID != bucketID {
+	if actualParent.LogBucket != bucketID {
 		return nil, fmt.Errorf("loggingBucketRef.LoggingLogBucketID changed, expect %s, got %s", actualParent.Location, bucketID)
 	}
 	if actualResourceID != resourceID {
