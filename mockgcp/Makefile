@@ -12,7 +12,6 @@ tools:
 	wget -N -O bin/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.12.4/protoc-3.12.4-linux-x86_64.zip
 	cd bin; rm -rf protoc; mkdir protoc; cd protoc; unzip ../protoc.zip
 
-GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis git.versions | awk '{print $$2}' )
 .PHONY: sync-repo
 sync-repo:
 	mkdir -p third_party
@@ -20,8 +19,8 @@ sync-repo:
 			echo "Cloning googleapis repository..."; \
 			git clone https://github.com/googleapis/googleapis.git third_party/googleapis; \
 	fi
-	@echo "Syncing to commit $(GOOGLEAPI_VERSION)...";
-	@cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION)
+	@echo "Syncing to remote origin/master branch ...";
+	@cd third_party/googleapis && git fetch --all && git reset --hard origin/master
 
 .PHONY: gen-proto
 gen-proto: tools sync-repo
@@ -55,6 +54,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/api_auth*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/dataset*.proto \
