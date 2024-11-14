@@ -14,6 +14,7 @@
 
 package v1alpha1
 
+
 // +kcc:proto=google.logging.v2.BigQueryDataset
 type BigQueryDataset struct {
 	// Output only. The full resource name of the BigQuery dataset. The DATASET_ID
