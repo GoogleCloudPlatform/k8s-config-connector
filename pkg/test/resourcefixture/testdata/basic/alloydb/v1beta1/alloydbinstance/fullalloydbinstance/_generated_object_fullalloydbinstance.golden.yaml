@@ -35,6 +35,9 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
+  ipAddress: 10.1.2.3
   name: projects/${projectId}/locations/europe-north1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}
   observedGeneration: 2
-  state: STATE_UNSPECIFIED
+  state: READY
+  uid: "12345678"
+  updateTime: "1970-01-01T00:00:00Z"
