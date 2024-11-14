@@ -24,11 +24,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/pkg/utils"
 	"github.com/spf13/cobra"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -268,64 +268,13 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		return fmt.Errorf("error creating dynamic client: %w", err)
 	}
 
-	// use the discovery client to iterate over all api resoruces
+	// use the discovery client to iterate over all api resources
 	discoveryClient := clientset.Discovery()
-	apiResourceLists, err := discoveryClient.ServerPreferredResources()
-	if err != nil {
-		return fmt.Errorf("failed to get preferred resources: %w", err)
-	}
-
 	var resources []schema.GroupVersionResource
-
-	for _, apiResourceList := range apiResourceLists {
-		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
-			// todo acpana log debug level
-			// log.Printf("ApiResource %s group doesn't contain \"cnrm\"; skipping", apiResourceList.GroupVersion)
-			continue
-		}
-
-		apiResourceListGroupVersion, err := schema.ParseGroupVersion(apiResourceList.GroupVersion)
-		if err != nil {
-			klog.Warningf("skipping unparseable groupVersion %q", apiResourceList.GroupVersion)
-			continue
-		}
-
-		for _, apiResource := range apiResourceList.APIResources {
-			if !apiResource.Namespaced {
-				// todo acpana log debug level
-				// log.Printf("ApiResource %s is not namespaced; skipping", apiResource.SingularName)
-				continue
-			}
-			if !contains(apiResource.Verbs, "list") {
-				// todo acpana log debug level
-				// log.Printf("ApiResource %s is not listabble; skipping", apiResource.SingularName)
-				continue
-			}
-
-			gvr := schema.GroupVersionResource{
-				Group:    apiResource.Group,
-				Version:  apiResource.Version,
-				Resource: apiResource.Name,
-			}
-
-			if gvr.Group == "" {
-				// Empty implies the group of the containing resource list.
-				gvr.Group = apiResourceListGroupVersion.Group
-			}
-
-			if gvr.Version == "" {
-				// Empty implies the version of the containing resource list
-				gvr.Version = apiResourceListGroupVersion.Version
-			}
-
-			resources = append(resources, gvr)
-		}
+	resources, err = utils.GetResources(discoveryClient, resources)
+	if err != nil {
+		return fmt.Errorf("error fetching resources: %w", err)
 	}
-
-	// Improve determinism for debuggability and idempotency
-	sort.Slice(resources, func(i, j int) bool {
-		return resources[i].String() < resources[j].String()
-	})
 
 	// todo acpana debug logs
 	// log.Printf("Going to iterate over the following resources %+v", resourcesToName(resources))
@@ -446,16 +395,6 @@ func resourcesToName(resources []*metav1.APIResource) []string {
 	}
 
 	return names
-}
-
-// contains checks if a slice contains a specific string.
-func contains(slice []string, str string) bool {
-	for _, s := range slice {
-		if strings.ToLower(s) == strings.ToLower(str) {
-			return true
-		}
-	}
-	return false
 }
 
 func shouldExclude(name string, excludes []string, includes []string) bool {
