@@ -41,11 +41,13 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 		return nil
 	}
 	out := &krm.LoggingLinkSpec{}
-	// MISSING: Name
+	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: LifecycleState
-	// MISSING: BigqueryDataset
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+
+	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
+	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifeCycleState()) 
+	out.BigqueryDataset = BigQueryDataset_FromProto(mapCtx, in.BigQueryDataset)
 	return out
 }
 func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {
@@ -53,10 +55,11 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 		return nil
 	}
 	out := &pb.Link{}
-	// MISSING: Name
+	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: LifecycleState
-	// MISSING: BigqueryDataset
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
+	out.LifecycleState = direct.Enum_ToProto(mapCtx, in.GetLifeCycleState()) 
+	out.BigqueryDataset = BigQueryDataset_ToProto(mapCtx, in.BigQueryDataset)
 	return out
 }
