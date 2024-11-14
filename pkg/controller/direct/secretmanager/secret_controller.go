@@ -47,16 +47,16 @@ func init() {
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &model{config: *config}, nil
+	return &secretModel{config: *config}, nil
 }
 
-var _ directbase.Model = &model{}
+var _ directbase.Model = &secretModel{}
 
-type model struct {
+type secretModel struct {
 	config config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.Client, error) {
+func (m *secretModel) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -69,13 +69,13 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *secretModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.SecretManagerSecret{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSecretManagerSecretRef(ctx, reader, obj, u)
+	id, err := krm.NewSecretIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
 	}
@@ -96,13 +96,13 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}, nil
 }
 
-func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *secretModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
 
 type Adapter struct {
-	id        *krm.SecretManagerSecretRef
+	id        *krm.SecretIdentity
 	gcpClient *gcp.Client
 	desired   *krm.SecretManagerSecret
 	actual    *secretmanagerpb.Secret
@@ -141,15 +141,15 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting SecretManagerSecret", "name", a.id.External)
+	log.V(2).Info("getting SecretManagerSecret", "name", a.id)
 
-	req := &secretmanagerpb.GetSecretRequest{Name: a.id.External}
+	req := &secretmanagerpb.GetSecretRequest{Name: a.id.String()}
 	secretpb, err := a.gcpClient.GetSecret(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting SecretManagerSecret %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting SecretManagerSecret %q: %w", a.id, err)
 	}
 
 	a.actual = secretpb
@@ -175,7 +175,7 @@ func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
 
 func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating Secret", "name", a.id.External)
+	log.V(2).Info("creating Secret", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -187,30 +187,25 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 
-	// Add metadata
-	parent, secretId, err := krm.ParseSecretManagerSecretExternal(a.id.External)
-	if err != nil {
-		return err
-	}
 	req := &secretmanagerpb.CreateSecretRequest{
-		Parent:   parent.String(),
-		SecretId: secretId,
+		Parent:   a.id.Parent().String(),
+		SecretId: a.id.ID(),
 		Secret:   resource,
 	}
 	created, err := a.gcpClient.CreateSecret(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Secret %s: %w", a.id.External, err)
+		return fmt.Errorf("creating Secret %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created Secret", "name", a.id.External)
+	log.V(2).Info("successfully created Secret", "name", a.id)
 
 	status := &krm.SecretManagerSecretStatus{}
 	status.ObservedState = SecretManagerSecretStatusObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	external := a.id.String()
+	status.ExternalRef = &external
 	status.Name = created.Name
-
 	return op.UpdateStatus(ctx, status, nil)
 }
 
@@ -229,7 +224,7 @@ func topicsEqual(desired []*krm.TopicRef, actual []*secretmanagerpb.Topic) bool 
 
 func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating Secret", "name", a.id.External)
+	log.V(2).Info("updating Secret", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -238,7 +233,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 		return mapCtx.Err()
 	}
 	// the GCP service use *name* to identify the resource.
-	resource.Name = a.id.External
+	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
@@ -248,7 +243,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	}
 
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.External)
+		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
 
@@ -258,9 +253,9 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	}
 	updated, err := a.gcpClient.UpdateSecret(ctx, req)
 	if err != nil {
-		return fmt.Errorf("Secret %s waiting update: %w", a.id.External, err)
+		return fmt.Errorf("Secret %s waiting update: %w", a.id, err)
 	}
-	log.V(2).Info("successfully updated Secret", "name", a.id.External)
+	log.V(2).Info("successfully updated Secret", "name", a.id)
 
 	status := &krm.SecretManagerSecretStatus{}
 	status.ObservedState = SecretManagerSecretStatusObservedState_FromProto(mapCtx, updated)
@@ -294,13 +289,13 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting Secret", "name", a.id.External)
+	log.V(2).Info("deleting Secret", "name", a.id)
 
-	req := &secretmanagerpb.DeleteSecretRequest{Name: a.id.External}
+	req := &secretmanagerpb.DeleteSecretRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteSecret(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting Secret %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting Secret %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Secret", "name", a.id.External)
+	log.V(2).Info("successfully deleted Secret", "name", a.id)
 	return true, nil
 }
