@@ -14,7 +14,6 @@
 
 package workstations
 
-/*
 import (
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -22,96 +21,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func WorkstationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationCluster) *krm.WorkstationClusterObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkstationClusterObservedState{}
-	// MISSING: Name
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: Network
-	// MISSING: Subnetwork
-	out.ControlPlaneIp = direct.LazyPtr(in.GetControlPlaneIp())
-	out.Degraded = direct.LazyPtr(in.GetDegraded())
-	// MISSING: Conditions
-	return out
-}
-func WorkstationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationClusterObservedState) *pb.WorkstationCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkstationCluster{}
-	// MISSING: Name
-	out.Uid = direct.ValueOf(in.Uid)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: Network
-	// MISSING: Subnetwork
-	out.ControlPlaneIp = direct.ValueOf(in.ControlPlaneIp)
-	out.Degraded = direct.ValueOf(in.Degraded)
-	// MISSING: Conditions
-	return out
-}
-func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationCluster) *krm.WorkstationClusterSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkstationClusterSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
-	// MISSING: Network
-	// MISSING: Subnetwork
-	out.PrivateClusterConfig = WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx, in.GetPrivateClusterConfig())
-	// MISSING: Conditions
-	return out
-}
-func WorkstationClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationClusterSpec) *pb.WorkstationCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkstationCluster{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
-	// MISSING: Network
-	// MISSING: Subnetwork
-	out.PrivateClusterConfig = WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig)
-	// MISSING: Conditions
-	return out
-}
-func WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationCluster_PrivateClusterConfig) *krm.WorkstationCluster_PrivateClusterConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkstationCluster_PrivateClusterConfig{}
-	out.EnablePrivateEndpoint = direct.LazyPtr(in.GetEnablePrivateEndpoint())
-	// MISSING: ClusterHostname
-	// MISSING: ServiceAttachmentUri
-	out.AllowedProjects = in.AllowedProjects
-	return out
-}
-func WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationCluster_PrivateClusterConfig) *pb.WorkstationCluster_PrivateClusterConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkstationCluster_PrivateClusterConfig{}
-	out.EnablePrivateEndpoint = direct.ValueOf(in.EnablePrivateEndpoint)
-	// MISSING: ClusterHostname
-	// MISSING: ServiceAttachmentUri
-	out.AllowedProjects = in.AllowedProjects
-	return out
-}
 func WorkstationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig) *krm.WorkstationConfigObservedState {
 	if in == nil {
 		return nil
@@ -128,6 +37,7 @@ func WorkstationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Conditions
 	return out
 }
+
 func WorkstationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfigObservedState) *pb.WorkstationConfig {
 	if in == nil {
 		return nil
@@ -144,6 +54,7 @@ func WorkstationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	// MISSING: Conditions
 	return out
 }
+
 func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig) *krm.WorkstationConfigSpec {
 	if in == nil {
 		return nil
@@ -153,8 +64,8 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Uid
 	// MISSING: Reconciling
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	out.Annotations = WorkstationAnnotations_FromProto_Alpha(mapCtx, in.Annotations)
+	out.Labels = WorkstationLabels_FromProto_Alpha(mapCtx, in.Labels)
 	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
 	out.RunningTimeout = direct.StringDuration_FromProto(mapCtx, in.GetRunningTimeout())
 	out.Host = WorkstationConfig_Host_FromProto(mapCtx, in.GetHost())
@@ -166,6 +77,7 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 	// MISSING: Conditions
 	return out
 }
+
 func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfigSpec) *pb.WorkstationConfig {
 	if in == nil {
 		return nil
@@ -175,8 +87,8 @@ func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstatio
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: Uid
 	// MISSING: Reconciling
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	out.Annotations = WorkstationAnnotations_ToProto_Alpha(mapCtx, in.Annotations)
+	out.Labels = WorkstationLabels_ToProto_Alpha(mapCtx, in.Labels)
 	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
 	out.RunningTimeout = direct.StringDuration_ToProto(mapCtx, in.RunningTimeout)
 	out.Host = WorkstationConfig_Host_ToProto(mapCtx, in.Host)
@@ -188,6 +100,7 @@ func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstatio
 	// MISSING: Conditions
 	return out
 }
+
 func WorkstationConfig_Container_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Container) *krm.WorkstationConfig_Container {
 	if in == nil {
 		return nil
@@ -196,11 +109,26 @@ func WorkstationConfig_Container_FromProto(mapCtx *direct.MapContext, in *pb.Wor
 	out.Image = direct.LazyPtr(in.GetImage())
 	out.Command = in.Command
 	out.Args = in.Args
-	out.Env = in.Env
+	out.Env = WorkstationConfig_Container_EnvVar_FromProto(mapCtx, in.Env)
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.RunAsUser = direct.LazyPtr(in.GetRunAsUser())
 	return out
 }
+
+func WorkstationConfig_Container_EnvVar_FromProto(mapCtx *direct.MapContext, in map[string]string) []krm.WorkstationConfig_Container_EnvVar {
+	if in == nil {
+		return nil
+	}
+	out := []krm.WorkstationConfig_Container_EnvVar{}
+	for name, value := range in {
+		out = append(out, krm.WorkstationConfig_Container_EnvVar{
+			Name:  name,
+			Value: value,
+		})
+	}
+	return out
+}
+
 func WorkstationConfig_Container_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Container) *pb.WorkstationConfig_Container {
 	if in == nil {
 		return nil
@@ -209,29 +137,43 @@ func WorkstationConfig_Container_ToProto(mapCtx *direct.MapContext, in *krm.Work
 	out.Image = direct.ValueOf(in.Image)
 	out.Command = in.Command
 	out.Args = in.Args
-	out.Env = in.Env
+	out.Env = WorkstationConfig_Container_EnvVar_ToProto(mapCtx, in.Env)
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.RunAsUser = direct.ValueOf(in.RunAsUser)
 	return out
 }
+
+func WorkstationConfig_Container_EnvVar_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationConfig_Container_EnvVar) map[string]string {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]string)
+	for _, envVar := range in {
+		out[envVar.Name] = envVar.Value
+	}
+	return out
+}
+
 func WorkstationConfig_CustomerEncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_CustomerEncryptionKey) *krm.WorkstationConfig_CustomerEncryptionKey {
 	if in == nil {
 		return nil
 	}
 	out := &krm.WorkstationConfig_CustomerEncryptionKey{}
-	// MISSING: KmsKey
-	// MISSING: KmsKeyServiceAccount
+	out.KmsCryptoKeyRef = &refs.KMSCryptoKeyRef{External: in.KmsKey}
+	out.ServiceAccountRef = &refs.IAMServiceAccountRef{External: in.KmsKeyServiceAccount}
 	return out
 }
+
 func WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_CustomerEncryptionKey) *pb.WorkstationConfig_CustomerEncryptionKey {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig_CustomerEncryptionKey{}
-	// MISSING: KmsKey
-	// MISSING: KmsKeyServiceAccount
+	out.KmsKey = in.KmsCryptoKeyRef.External
+	out.KmsKeyServiceAccount = in.ServiceAccountRef.External
 	return out
 }
+
 func WorkstationConfig_Host_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host) *krm.WorkstationConfig_Host {
 	if in == nil {
 		return nil
@@ -240,6 +182,7 @@ func WorkstationConfig_Host_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 	out.GceInstance = WorkstationConfig_Host_GceInstance_FromProto(mapCtx, in.GetGceInstance())
 	return out
 }
+
 func WorkstationConfig_Host_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Host) *pb.WorkstationConfig_Host {
 	if in == nil {
 		return nil
@@ -250,6 +193,7 @@ func WorkstationConfig_Host_ToProto(mapCtx *direct.MapContext, in *krm.Workstati
 	}
 	return out
 }
+
 func WorkstationConfig_Host_GceInstance_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host_GceInstance) *krm.WorkstationConfig_Host_GceInstance {
 	if in == nil {
 		return nil
@@ -263,13 +207,14 @@ func WorkstationConfig_Host_GceInstance_FromProto(mapCtx *direct.MapContext, in 
 	out.Tags = in.Tags
 	out.PoolSize = direct.LazyPtr(in.GetPoolSize())
 	// MISSING: PooledInstances
-	// MISSING: DisablePublicIpAddresses
+	out.DisablePublicIPAddresses = direct.LazyPtr(in.DisablePublicIpAddresses)
 	out.EnableNestedVirtualization = direct.LazyPtr(in.GetEnableNestedVirtualization())
 	out.ShieldedInstanceConfig = WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
 	out.ConfidentialInstanceConfig = WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_FromProto(mapCtx, in.GetConfidentialInstanceConfig())
-	// MISSING: BootDiskSizeGb
+	out.BootDiskSizeGB = direct.LazyPtr(in.BootDiskSizeGb)
 	return out
 }
+
 func WorkstationConfig_Host_GceInstance_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Host_GceInstance) *pb.WorkstationConfig_Host_GceInstance {
 	if in == nil {
 		return nil
@@ -283,13 +228,14 @@ func WorkstationConfig_Host_GceInstance_ToProto(mapCtx *direct.MapContext, in *k
 	out.Tags = in.Tags
 	out.PoolSize = direct.ValueOf(in.PoolSize)
 	// MISSING: PooledInstances
-	// MISSING: DisablePublicIpAddresses
+	out.DisablePublicIpAddresses = direct.ValueOf(in.DisablePublicIPAddresses)
 	out.EnableNestedVirtualization = direct.ValueOf(in.EnableNestedVirtualization)
 	out.ShieldedInstanceConfig = WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
 	out.ConfidentialInstanceConfig = WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_ToProto(mapCtx, in.ConfidentialInstanceConfig)
-	// MISSING: BootDiskSizeGb
+	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
 	return out
 }
+
 func WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig) *krm.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig {
 	if in == nil {
 		return nil
@@ -298,6 +244,7 @@ func WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_FromProto(
 	out.EnableConfidentialCompute = direct.LazyPtr(in.GetEnableConfidentialCompute())
 	return out
 }
+
 func WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig) *pb.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig {
 	if in == nil {
 		return nil
@@ -306,68 +253,77 @@ func WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_ToProto(ma
 	out.EnableConfidentialCompute = direct.ValueOf(in.EnableConfidentialCompute)
 	return out
 }
+
 func WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig) *krm.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig{}
 	out.EnableSecureBoot = direct.LazyPtr(in.GetEnableSecureBoot())
-	// MISSING: EnableVtpm
+	out.EnableVTPM = direct.LazyPtr(in.EnableVtpm)
 	out.EnableIntegrityMonitoring = direct.LazyPtr(in.GetEnableIntegrityMonitoring())
 	return out
 }
+
 func WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig) *pb.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig{}
 	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
-	// MISSING: EnableVtpm
+	out.EnableVtpm = direct.ValueOf(in.EnableVTPM)
 	out.EnableIntegrityMonitoring = direct.ValueOf(in.EnableIntegrityMonitoring)
 	return out
 }
+
 func WorkstationConfig_PersistentDirectory_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_PersistentDirectory) *krm.WorkstationConfig_PersistentDirectory {
 	if in == nil {
 		return nil
 	}
 	out := &krm.WorkstationConfig_PersistentDirectory{}
-	// MISSING: GcePd
+	out.GcePD = WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_FromProto(mapCtx, in.GetGcePd())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
 	return out
 }
+
 func WorkstationConfig_PersistentDirectory_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_PersistentDirectory) *pb.WorkstationConfig_PersistentDirectory {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig_PersistentDirectory{}
-	// MISSING: GcePd
+	if oneof := WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_ToProto(mapCtx, in.GcePD); oneof != nil {
+		out.DirectoryType = &pb.WorkstationConfig_PersistentDirectory_GcePd{GcePd: oneof}
+	}
 	out.MountPath = direct.ValueOf(in.MountPath)
 	return out
 }
+
 func WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk) *krm.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk {
 	if in == nil {
 		return nil
 	}
 	out := &krm.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk{}
-	// MISSING: SizeGb
-	// MISSING: FsType
+	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
+	out.FSType = direct.LazyPtr(in.GetFsType())
 	out.DiskType = direct.LazyPtr(in.GetDiskType())
 	out.SourceSnapshot = direct.LazyPtr(in.GetSourceSnapshot())
 	out.ReclaimPolicy = direct.Enum_FromProto(mapCtx, in.GetReclaimPolicy())
 	return out
 }
+
 func WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk) *pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk{}
-	// MISSING: SizeGb
-	// MISSING: FsType
+	out.SizeGb = direct.ValueOf(in.SizeGB)
+	out.FsType = direct.ValueOf(in.FSType)
 	out.DiskType = direct.ValueOf(in.DiskType)
 	out.SourceSnapshot = direct.ValueOf(in.SourceSnapshot)
 	out.ReclaimPolicy = direct.Enum_ToProto[pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_ReclaimPolicy](mapCtx, in.ReclaimPolicy)
 	return out
 }
+
 func WorkstationConfig_ReadinessCheck_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_ReadinessCheck) *krm.WorkstationConfig_ReadinessCheck {
 	if in == nil {
 		return nil
@@ -377,6 +333,7 @@ func WorkstationConfig_ReadinessCheck_FromProto(mapCtx *direct.MapContext, in *p
 	out.Port = direct.LazyPtr(in.GetPort())
 	return out
 }
+
 func WorkstationConfig_ReadinessCheck_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_ReadinessCheck) *pb.WorkstationConfig_ReadinessCheck {
 	if in == nil {
 		return nil
@@ -386,4 +343,3 @@ func WorkstationConfig_ReadinessCheck_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Port = direct.ValueOf(in.Port)
 	return out
 }
-*/

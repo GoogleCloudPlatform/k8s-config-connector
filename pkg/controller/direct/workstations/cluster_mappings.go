@@ -16,7 +16,6 @@ package workstations
 
 import (
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
-	status "google.golang.org/genproto/googleapis/rpc/status"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
@@ -29,33 +28,11 @@ func WorkstationClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstati
 	}
 	out := &pb.WorkstationCluster{
 		DisplayName:          direct.ValueOf(in.DisplayName),
-		Annotations:          WorkstationClusterAnnotations_ToProto(mapCtx, in.Annotations),
-		Labels:               WorkstationClusterLabels_ToProto(mapCtx, in.Labels),
+		Annotations:          WorkstationAnnotations_ToProto(mapCtx, in.Annotations),
+		Labels:               WorkstationLabels_ToProto(mapCtx, in.Labels),
 		Network:              in.NetworkRef.External,
 		Subnetwork:           in.SubnetworkRef.External,
 		PrivateClusterConfig: WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig),
-	}
-	return out
-}
-
-func WorkstationClusterAnnotations_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationAnnotation) map[string]string {
-	if in == nil {
-		return nil
-	}
-	out := make(map[string]string)
-	for _, a := range in {
-		out[a.Key] = a.Value
-	}
-	return out
-}
-
-func WorkstationClusterLabels_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationLabel) map[string]string {
-	if in == nil {
-		return nil
-	}
-	out := make(map[string]string)
-	for _, l := range in {
-		out[l.Key] = l.Value
 	}
 	return out
 }
@@ -88,8 +65,8 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 	}
 	out := &krm.WorkstationClusterSpec{
 		DisplayName: direct.LazyPtr(in.GetDisplayName()),
-		Annotations: WorkstationClusterAnnotations_FromProto(mapCtx, in.GetAnnotations()),
-		Labels:      WorkstationClusterLabels_FromProto(mapCtx, in.GetLabels()),
+		Annotations: WorkstationAnnotations_FromProto(mapCtx, in.GetAnnotations()),
+		Labels:      WorkstationLabels_FromProto(mapCtx, in.GetLabels()),
 		NetworkRef: refs.ComputeNetworkRef{
 			External: in.GetNetwork(),
 		},
@@ -97,34 +74,6 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 			External: in.GetSubnetwork(),
 		},
 		PrivateClusterConfig: WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx, in.GetPrivateClusterConfig()),
-	}
-	return out
-}
-
-func WorkstationClusterAnnotations_FromProto(mapCtx *direct.MapContext, in map[string]string) []krm.WorkstationAnnotation {
-	if in == nil {
-		return nil
-	}
-	var out []krm.WorkstationAnnotation
-	for k, v := range in {
-		out = append(out, krm.WorkstationAnnotation{
-			Key:   k,
-			Value: v,
-		})
-	}
-	return out
-}
-
-func WorkstationClusterLabels_FromProto(mapCtx *direct.MapContext, in map[string]string) []krm.WorkstationLabel {
-	if in == nil {
-		return nil
-	}
-	var out []krm.WorkstationLabel
-	for k, v := range in {
-		out = append(out, krm.WorkstationLabel{
-			Key:   k,
-			Value: v,
-		})
 	}
 	return out
 }
@@ -168,7 +117,7 @@ func WorkstationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 		ClusterHostname:      WorkstationClusterClusterHostname_FromProto(mapCtx, in.PrivateClusterConfig),
 		ServiceAttachmentURI: WorkstationClusterServiceAttachmentUri_FromProto(mapCtx, in.PrivateClusterConfig),
 		Degraded:             direct.LazyPtr(in.GetDegraded()),
-		GCPConditions:        WorkstationClusterGCPConditions_FromProto(mapCtx, in.GetConditions()),
+		GCPConditions:        WorkstationGCPConditions_FromProto(mapCtx, in.GetConditions()),
 	}
 	return out
 }
@@ -187,7 +136,7 @@ func WorkstationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Etag = direct.ValueOf(in.Etag)
 	out.ControlPlaneIp = direct.ValueOf(in.ControlPlaneIP)
 	out.Degraded = direct.ValueOf(in.Degraded)
-	out.Conditions = WorkstationClusterGCPConditions_ToProto(mapCtx, in.GCPConditions)
+	out.Conditions = WorkstationGCPConditions_ToProto(mapCtx, in.GCPConditions)
 	return out
 }
 
@@ -203,31 +152,4 @@ func WorkstationClusterServiceAttachmentUri_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	return direct.LazyPtr(in.GetServiceAttachmentUri())
-}
-
-func WorkstationClusterGCPConditions_FromProto(mapCtx *direct.MapContext, in []*status.Status) []krm.WorkstationServiceGCPCondition {
-	if in == nil {
-		return nil
-	}
-	var out []krm.WorkstationServiceGCPCondition
-	for _, c := range in {
-		out = append(out, krm.WorkstationServiceGCPCondition{
-			Code:    direct.LazyPtr(c.Code),
-			Message: direct.LazyPtr(c.Message),
-		})
-	}
-	return out
-}
-func WorkstationClusterGCPConditions_ToProto(mapCtx *direct.MapContext, in []krm.WorkstationServiceGCPCondition) []*status.Status {
-	if in == nil {
-		return nil
-	}
-	var out []*status.Status
-	for _, c := range in {
-		out = append(out, &status.Status{
-			Code:    direct.ValueOf(c.Code),
-			Message: direct.ValueOf(c.Message),
-		})
-	}
-	return out
 }
