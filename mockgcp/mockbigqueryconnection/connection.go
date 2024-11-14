@@ -92,11 +92,11 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 		for i := range b {
 			b[i] = letterRunes[rand.Intn(len(letterRunes))]
 		}
-		return fmt.Sprintf("bqcx-%s-%s@gcp-sa-bigquery-condel.iam.gserviceaccount.com", req.GetParent(), string(b))
+		return fmt.Sprintf("bqcx-%s-%s@gcp-sa-bigquery-condel.iam.gserviceaccount.com", strconv.FormatInt(name.Project.Number, 10), string(b))
 	}
 
 	buildPrimaryServiceAccountId := func() string {
-		return fmt.Sprintf("service-%s@gcp-sa-bigqueryconnection.iam.gserviceaccount.com", req.GetParent())
+		return fmt.Sprintf("service-%s@gcp-sa-bigqueryconnection.iam.gserviceaccount.com", strconv.FormatInt(name.Project.Number, 10))
 	}
 
 	buildGoogleIdentity := func() string {
