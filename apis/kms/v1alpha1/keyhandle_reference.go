@@ -196,11 +196,3 @@ func AsKMSKeyHandleExternal_FromSpec(spec *KMSKeyHandleSpec) (parent *KMSKeyHand
 	}
 	return parent, valueOf(spec.ResourceID), nil
 }
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
-}
