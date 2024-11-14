@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
@@ -31,6 +32,13 @@ type LoggingLinkSpec struct {
 	// Immutable.
 	// The LoggingLink name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Describes this link.
+	//  The maximum length of the description is 8000 characters.
+	Description *string `json:"description,omitempty"`
+
+	// Placeholder description 
+	LoggingLogBucketRef *refs.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 }
 
 // LoggingLinkStatus defines the config connector machine state of LoggingLink
@@ -51,6 +59,19 @@ type LoggingLinkStatus struct {
 
 // LoggingLinkObservedState is the state of the LoggingLink resource as most recently observed in GCP.
 type LoggingLinkObservedState struct {
+	// We need to add a reference here to lifecycle state and Bigquery Dataset here since they are in the proto
+
+	// +optional
+	// +kubebuilder:validation:Format=date-time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// the lifecycle state might be something more complicated
+	// this is an ENUM, should be safe to use a string
+	LifecycleState *string `json:"lifecycleState,omitempty"`
+
+	// this field is just a string, but its an object(string)
+	// https://github.com/googleapis/googleapis/blob/master/google/logging/v2/logging_config.proto#L1063
+	BigQueryDataset *BigQueryDataset `json:"bigQueryDataset,omitempty"`
 }
 
 // +genclient
