@@ -90,7 +90,7 @@ func NewLoggingLinkRef(ctx context.Context, reader client.Reader, obj *LoggingLi
 	id := &LoggingLinkRef{}
 
 	// Get Parent
-	loggingBucketRef, err := refsv1beta1.ResolveLoggingLogBucketRef(ctx, reader, obj, obj.Spec.LoggingBucketRef)
+	loggingBucketRef, err := refsv1beta1.ResolveLoggingLogBucketRef(ctx, reader, obj, obj.Spec.LoggingLogBucketRef)
 	if err != nil {
 		return nil, err
 	}
