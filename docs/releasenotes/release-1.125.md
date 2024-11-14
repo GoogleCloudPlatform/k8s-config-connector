@@ -7,8 +7,8 @@
 ## New Beta Resources (Direct Reconciler):
 
 * `BigQueryAnlayticsHubDataExchange`
+* `BigQueryConnectionConnection`
 * `PrivilegedAccessManagerEntitlement`
-* `RedisCluster`
 * `WorkstationCluster`
 
 ## New Fields:
