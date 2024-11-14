@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// TODO REPLACE ALL OF THIS WITH BUCKET ID
-// I copied a similar ref file and replaced everything with logbucketref
-
 // TODO is it okay to have this in v1beta path?
 
 package v1beta1
@@ -47,7 +44,7 @@ type LoggingLogBucket struct {
 }
 
 func (s *LoggingLogBucket) String() string {
-	return "projects/" + s.ProjectID + "locations/" + s.Location + "/dataExchanges/" + s.LoggingLogBucketID
+	return "projects/" + s.ProjectID + "locations/" + s.Location + "/buckets/" + s.LoggingLogBucketID
 }
 
 func ResolveLoggingLogBucketRef(ctx context.Context, reader client.Reader, obj client.Object, ref *LoggingLogBucketRef) (*LoggingLogBucket, error) {
@@ -56,23 +53,23 @@ func ResolveLoggingLogBucketRef(ctx context.Context, reader client.Reader, obj c
 	}
 
 	if ref.Name == "" && ref.External == "" {
-		return nil, fmt.Errorf("must specify either name or external on dataExchangeRef")
+		return nil, fmt.Errorf("must specify either name or external on loggingLogBucketRef")
 	}
 	if ref.External != "" && ref.Name != "" {
-		return nil, fmt.Errorf("cannot specify both spec.dataExchangeRef.name and spec.dataExchangeRef.external")
+		return nil, fmt.Errorf("cannot specify both spec.loggingLogBucketRef.name and spec.loggingLogBucketRef.external")
 	}
 
 	if ref.External != "" {
-		// External should be in the `projects/[projectID]/locations/[Location]/dataExchanges/[dataExchangeID]` format.
+		// External should be in the `projects/[projectID]/locations/[Location]/buckets/[bucketID]` format.
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataExchanges" {
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "buckets" {
 			return &LoggingLogBucket{
 				ProjectID:          tokens[1],
 				Location:           tokens[3],
 				LoggingLogBucketID: tokens[5],
 			}, nil
 		}
-		return nil, fmt.Errorf("format of LoggingLogBucket external=%q was not known (use projects/<projectId>/locations/<location>/dataExchanges/<dataExchangeID>)", ref.External)
+		return nil, fmt.Errorf("format of LoggingLogBucket external=%q was not known (use projects/<projectId>/locations/<location>/buckets/<bucketID>)", ref.External)
 	}
 
 	key := types.NamespacedName{
@@ -85,9 +82,9 @@ func ResolveLoggingLogBucketRef(ctx context.Context, reader client.Reader, obj c
 
 	exchange := &unstructured.Unstructured{}
 	exchange.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "bigqueryanalyticshub.cnrm.cloud.google.com",
+		Group:   "logging.cnrm.cloud.google.com",
 		Version: "v1alpha1",
-		Kind:    "BigQueryAnalyticsHubLoggingLogBucket",
+		Kind:    "LoggingLogBucket",
 	})
 	if err := reader.Get(ctx, key, exchange); err != nil {
 		if apierrors.IsNotFound(err) {
