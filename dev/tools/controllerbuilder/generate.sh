@@ -203,6 +203,13 @@ go run . generate-types \
     --output-api ${APIS_DIR} \
     --resource WorkstationCluster:WorkstationCluster
 
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --resource WorkstationConfig:WorkstationConfig
+
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.workstations.v1 \
