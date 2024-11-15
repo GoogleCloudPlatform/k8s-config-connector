@@ -139,6 +139,15 @@ func ContainerAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Con
 	return out
 }
 
+func ContainerAttachedClusterStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.ContainerAttachedClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	return &krm.ContainerAttachedClusterObservedState{
+		FleetMembership: direct.PtrTo(in.GetFleet().GetMembership()),
+	}
+}
+
 func LoggingComponentConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingComponentConfig) *krm.LoggingComponentConfig {
 	if in == nil {
 		return nil

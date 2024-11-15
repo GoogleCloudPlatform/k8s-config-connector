@@ -15,10 +15,14 @@
 package config
 
 import (
+	"context"
 	"net/http"
 
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials/oauth"
 )
 
 type ControllerConfig struct {
@@ -86,15 +90,14 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 		opts = append(opts, option.WithUserAgent(c.UserAgent))
 	}
 	if c.HTTPClient != nil {
-		// TODO: Set UserAgent in this scenario (error is: WithHTTPClient is incompatible with gRPC dial options)
-
-		httpClient := &http.Client{}
-		*httpClient = *c.HTTPClient
-		httpClient.Transport = &optionsRoundTripper{
-			config: *c,
-			inner:  c.HTTPClient.Transport,
+		var dialOption grpc.DialOption
+		if c.GCPTokenSource != nil {
+			dialOption = grpc.WithPerRPCCredentials(oauth.TokenSource{TokenSource: c.GCPTokenSource})
+		} else {
+			dialOption = grpc.WithTransportCredentials(insecure.NewCredentials())
 		}
-		opts = append(opts, option.WithHTTPClient(httpClient))
+		opts = append(opts, option.WithGRPCDialOption(dialOption))
+
 	}
 	if c.UserProjectOverride && c.BillingProject != "" {
 		opts = append(opts, option.WithQuotaProject(c.BillingProject))
@@ -102,13 +105,18 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 	if c.GCPTokenSource != nil {
 		opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
 	}
-
 	// TODO: support endpoints?
 	// if m.config.Endpoint != "" {
 	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
 	// }
 
 	return opts, nil
+}
+
+var unaryInterceptor = func() grpc.UnaryClientInterceptor {
+	return func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+		return invoker(ctx, method, req, reply, cc, opts...)
+	}
 }
 
 type optionsRoundTripper struct {
