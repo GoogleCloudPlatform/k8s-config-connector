@@ -1,9 +1,36 @@
-POST https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/autokey-resource/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${uniqueId}%2Flocations%2Fus-central1
+x-goog-request-params: name=projects%2Fautokey-resource%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "error": {
+    "code": 404,
+    "message": "KeyHandle projects/autokey-resource/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320 not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/autokey-resource/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint&keyHandleId=5a4fa10e-995d-4ee0-a426-a220aa390320
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2Fautokey-resource%2Flocations%2Fus-central1
+
+{
+  "name": "projects/autokey-resource/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320",
   "resourceTypeSelector": "compute.googleapis.com/Disk"
 }
 
@@ -19,15 +46,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "projects/${uniqueId}/locations/us-central1/operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.kms.v1.CreateKeyHandleMetadata"
+  },
+  "name": "projects/autokey-resource/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/operations/${operationID}
+GET https://cloudkms.googleapis.com/v1/projects/autokey-resource/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+x-goog-request-params: name=projects%2Fautokey-resource%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -42,20 +72,21 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${uniqueId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/autokey-resource/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.kms.v1.KeyHandle",
-    "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d",
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/autokey/cryptoKeys/190012159962-compute-disk-b009b5dae13cd3c5",
+    "name": "projects/autokey-resource/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320",
     "resourceTypeSelector": "compute.googleapis.com/Disk"
   }
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/autokey-resource/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5fe9854c-4a75-4ec9-8c27-c235754b981d
+x-goog-request-params: name=projects%2Fautokey-resource%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
 
 200 OK
 Cache-Control: private
@@ -69,6 +100,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5fe9854c-4a75-4ec9-8c27-c235754b981d",
+  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/autokey/cryptoKeys/190012159962-compute-disk-b009b5dae13cd3c5",
+  "name": "projects/autokey-resource/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320",
   "resourceTypeSelector": "compute.googleapis.com/Disk"
 }
