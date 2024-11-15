@@ -503,7 +503,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 
 	// Underlying APIs may not have strongly-consistent reads due to caching. Sleep before attempting a re-reconcile, to
 	// give the underlying system some time to propagate the deletion info.
-	time.Sleep(resourceContext.RecreateDelay)
+	time.Sleep(time.Second * 10)
 
 	// get the current state
 	t.Logf("reconcile with %v\r", testUnstruct)
