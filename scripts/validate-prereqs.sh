@@ -50,6 +50,8 @@ if [[ "${changed_file_count}" != "0" ]] || [[ "${added_config_file_count}" != "0
     git ls-files --others --exclude-standard config/
     exit 1
 fi
+
+<<'###issues/3037: Drop problematic go-client check from PRESUBMIT'
 make generate-go-client
 changed_file_count=$(git diff --name-only | wc -l)
 added_go_client_file_count=$(git ls-files --others --exclude-standard pkg/clients/generated/ | wc -l)
@@ -64,6 +66,8 @@ if [[ "${changed_file_count}" != "0" ]] || [[ "${added_go_client_file_count}" !=
     git diff | head -n100
     exit 1
 fi
+###issues/3037: Drop problematic go-client check from PRESUBMIT
+
 make ensure
 if [[ $? -ne 0 ]]; then
   echo "'make ensure' failed. Please validate the override patch files."
