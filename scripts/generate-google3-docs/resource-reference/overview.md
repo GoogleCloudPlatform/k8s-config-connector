@@ -599,6 +599,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/kms/kmskeyring.md">KMSKeyRing</a></td>
 </tr>
 <tr>
+  <td><a href="/kms/docs/">{{kms_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig.md">KMSKeyRing</a></td>
+</tr>
+<tr>
   <td><a href="/logging/docs/">{{logging_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglogbucket.md">LoggingLogBucket</a></td>
 </tr>
