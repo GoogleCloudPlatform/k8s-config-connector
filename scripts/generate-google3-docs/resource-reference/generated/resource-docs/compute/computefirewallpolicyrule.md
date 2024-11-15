@@ -181,7 +181,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed ComputeFirewallPolicy resource. Should be in the format `locations/global/firewallPolicies/<firewallPolicy>`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed ComputeFirewallPolicy resource. Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -191,7 +191,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `ComputeFirewall olicy ` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeFirewallPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -201,7 +201,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `ComputeFirewallPolicy ` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeFirewallPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -97,6 +97,13 @@ service ProjectsLocationsGlobalHubsServer {
     };
   };
 
+  // Query PSC propagation status the status of a Network Connectivity Center hub.
+  rpc QueryStatusProjectsLocationsGlobalHub(QueryStatusProjectsLocationsGlobalHubRequest) returns (QueryHubStatusResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/global/hubs/*}:queryStatus"
+    };
+  };
+
   // Rejects a Network Connectivity Center spoke from being attached to a hub. If the spoke was previously in the `ACTIVE` state, it transitions to the `INACTIVE` state and is no longer able to connect to other spokes that are attached to the hub.
   rpc RejectSpokeProjectsLocationsGlobalHub(RejectSpokeProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
@@ -505,16 +512,20 @@ message ConsumerPscConfig {
   string consumer_instance_project = 1 [json_name="consumerInstanceProject"];
   // This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region.
   bool disable_global_access = 2 [json_name="disableGlobalAccess"];
+  // The requested IP version for the PSC connection.
+  string ip_version = 3 [json_name="ipVersion"];
   // The resource path of the consumer network where PSC connections are allowed to be created in. Note, this network does not need be in the ConsumerPscConfig.project in the case of SharedVPC. Example: projects/{projectNumOrId}/global/networks/{networkId}.
-  string network = 3 [json_name="network"];
-  // Immutable. An immutable identifier for the producer instance.
-  string producer_instance_id = 4 [json_name="producerInstanceId"];
+  string network = 4 [json_name="network"];
+  // Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
+  string producer_instance_id = 5 [json_name="producerInstanceId"];
+  // Immutable. An immutable map for the producer instance metadata.
+  map<string, string> producer_instance_metadata = 6 [json_name="producerInstanceMetadata"];
   // The consumer project where PSC connections are allowed to be created in.
-  string project = 5 [json_name="project"];
+  string project = 7 [json_name="project"];
   // Output only. A map to store mapping between customer vip and target service attachment. Only service attachment with producer specified ip addresses are stored here.
-  map<string, string> service_attachment_ip_address_map = 6 [json_name="serviceAttachmentIpAddressMap"];
+  map<string, string> service_attachment_ip_address_map = 8 [json_name="serviceAttachmentIpAddressMap"];
   // Output only. Overall state of PSC Connections management for this consumer psc config.
-  string state = 7 [json_name="state"];
+  string state = 9 [json_name="state"];
 }
 
 // PSC connection details on consumer side.
@@ -531,20 +542,24 @@ message ConsumerPscConnection {
   string gce_operation = 5 [json_name="gceOperation"];
   // The IP literal allocated on the consumer network for the PSC forwarding rule that is created to connect to the producer service attachment in this service connection map.
   string ip = 6 [json_name="ip"];
+  // The requested IP version for the PSC connection.
+  string ip_version = 7 [json_name="ipVersion"];
   // The consumer network whose PSC forwarding rule is connected to the service attachments in this service connection map. Note that the network could be on a different project (shared VPC).
-  string network = 7 [json_name="network"];
-  // Immutable. An immutable identifier for the producer instance.
-  string producer_instance_id = 8 [json_name="producerInstanceId"];
+  string network = 8 [json_name="network"];
+  // Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
+  string producer_instance_id = 9 [json_name="producerInstanceId"];
+  // Immutable. An immutable map for the producer instance metadata.
+  map<string, string> producer_instance_metadata = 10 [json_name="producerInstanceMetadata"];
   // The consumer project whose PSC forwarding rule is connected to the service attachments in this service connection map.
-  string project = 9 [json_name="project"];
+  string project = 11 [json_name="project"];
   // The PSC connection id of the PSC forwarding rule connected to the service attachments in this service connection map.
-  string psc_connection_id = 10 [json_name="pscConnectionId"];
+  string psc_connection_id = 12 [json_name="pscConnectionId"];
   // Output only. The URI of the selected subnetwork selected to allocate IP address for this connection.
-  string selected_subnetwork = 11 [json_name="selectedSubnetwork"];
+  string selected_subnetwork = 13 [json_name="selectedSubnetwork"];
   // The URI of a service attachment which is the target of the PSC connection.
-  string service_attachment_uri = 12 [json_name="serviceAttachmentUri"];
+  string service_attachment_uri = 14 [json_name="serviceAttachmentUri"];
   // The state of the PSC connection.
-  string state = 13 [json_name="state"];
+  string state = 15 [json_name="state"];
 }
 
 // A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
@@ -659,6 +674,16 @@ message Hub {
   .google.protobuf.Timestamp update_time = 13 [json_name="updateTime"];
 }
 
+// The hub status entry.
+message HubStatusEntry {
+  // The number of status. If group_by is not set in the request, the default is 1.
+  int32 count = 1 [json_name="count"];
+  // The same group_by field from the request.
+  string group_by = 2 [json_name="groupBy"];
+  // The PSC propagation status.
+  PscPropagationStatus psc_propagation_status = 3 [json_name="pscPropagationStatus"];
+}
+
 // InterconnectAttachment that this route applies to.
 message InterconnectAttachment {
   // Optional. Cloud region to install this policy-based route on interconnect attachment. Use `all` to install it on all interconnect attachments.
@@ -671,33 +696,35 @@ message InternalRange {
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
   // A description of this resource.
   string description = 2 [json_name="description"];
-  // The IP range that this internal range defines.
+  // The IP range that this internal range defines. NOTE: IPv6 ranges are limited to usage=EXTERNAL_TO_VPC and peering=FOR_SELF. NOTE: For IPv6 Ranges this field is compulsory, i.e. the address range must be specified explicitly.
   string ip_cidr_range = 3 [json_name="ipCidrRange"];
   // User-defined labels.
   map<string, string> labels = 4 [json_name="labels"];
+  // Optional. Must be present if usage is set to FOR_MIGRATION. This field is for internal use.
+  Migration migration = 5 [json_name="migration"];
   // Immutable. The name of an internal range. Format: projects/{project}/locations/{location}/internalRanges/{internal_range} See: https://google.aip.dev/122#fields-representing-resource-names
-  string name = 5 [json_name="name"];
+  string name = 6 [json_name="name"];
   // The URL or resource ID of the network in which to reserve the internal range. The network cannot be deleted if there are any reserved internal ranges referring to it. Legacy networks are not supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network} projects/{project}/locations/global/networks/{network} {network}
-  string network = 6 [json_name="network"];
+  string network = 7 [json_name="network"];
   // Optional. Types of resources that are allowed to overlap with the current internal range.
-  repeated string overlaps = 7 [json_name="overlaps"];
+  repeated string overlaps = 8 [json_name="overlaps"];
   // The type of peering set for this internal range.
-  string peering = 8 [json_name="peering"];
-  // An alternate to ip_cidr_range. Can be set when trying to create a reservation that automatically finds a free range of the given size. If both ip_cidr_range and prefix_length are set, there is an error if the range sizes do not match. Can also be used during updates to change the range size.
-  int32 prefix_length = 9 [json_name="prefixLength"];
+  string peering = 9 [json_name="peering"];
+  // An alternate to ip_cidr_range. Can be set when trying to create an IPv4 reservation that automatically finds a free range of the given size. If both ip_cidr_range and prefix_length are set, there is an error if the range sizes do not match. Can also be used during updates to change the range size. NOTE: For IPv6 this field only works if ip_cidr_range is set as well, and both fields must match. In other words, with IPv6 this field only works as a redundant parameter.
+  int32 prefix_length = 10 [json_name="prefixLength"];
   // Optional. Can be set to narrow down or pick a different address space while searching for a free range. If not set, defaults to the "10.0.0.0/8" address space. This can be used to search in other rfc-1918 address spaces like "172.16.0.0/12" and "192.168.0.0/16" or non-rfc-1918 address spaces used in the VPC.
-  repeated string target_cidr_range = 10 [json_name="targetCidrRange"];
+  repeated string target_cidr_range = 11 [json_name="targetCidrRange"];
   // Time when the internal range was updated.
-  .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
+  .google.protobuf.Timestamp update_time = 12 [json_name="updateTime"];
   // The type of usage set for this InternalRange.
-  string usage = 12 [json_name="usage"];
+  string usage = 13 [json_name="usage"];
   // Output only. The list of resources that refer to this internal range. Resources that use the internal range for their range allocation are referred to as users of the range. Other resources mark themselves as users while doing so by creating a reference to this internal range. Having a user, based on this reference, prevents deletion of the internal range referred to. Can be empty.
-  repeated string users = 13 [json_name="users"];
+  repeated string users = 14 [json_name="users"];
 }
 
 // A collection of VLAN attachment resources. These resources should be redundant attachments that all advertise the same prefixes to Google Cloud. Alternatively, in active/passive configurations, all attachments should be capable of advertising the same prefixes.
 message LinkedInterconnectAttachments {
-  // Optional. IP ranges allowed to be included during import from hub.(does not control transit connectivity) The only allowed value for now is "ALL_IPV4_RANGES".
+  // Optional. IP ranges allowed to be included during import from hub (does not control transit connectivity). The only allowed value for now is "ALL_IPV4_RANGES".
   repeated string include_import_ranges = 1 [json_name="includeImportRanges"];
   // A value that controls whether site-to-site data transfer is enabled for these resources. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
   bool site_to_site_data_transfer = 2 [json_name="siteToSiteDataTransfer"];
@@ -707,9 +734,24 @@ message LinkedInterconnectAttachments {
   string vpc_network = 4 [json_name="vpcNetwork"];
 }
 
+message LinkedProducerVpcNetwork {
+  // Optional. IP ranges encompassing the subnets to be excluded from peering.
+  repeated string exclude_export_ranges = 1 [json_name="excludeExportRanges"];
+  // Optional. IP ranges allowed to be included from peering.
+  repeated string include_export_ranges = 2 [json_name="includeExportRanges"];
+  // Immutable. The URI of the Service Consumer VPC that the Producer VPC is peered with.
+  string network = 3 [json_name="network"];
+  // Immutable. The name of the VPC peering between the Service Consumer VPC and the Producer VPC (defined in the Tenant project) which is added to the NCC hub. This peering must be in ACTIVE state.
+  string peering = 4 [json_name="peering"];
+  // Output only. The URI of the Producer VPC.
+  string producer_network = 5 [json_name="producerNetwork"];
+  // Output only. The Service Consumer Network spoke.
+  string service_consumer_vpc_spoke = 6 [json_name="serviceConsumerVpcSpoke"];
+}
+
 // A collection of router appliance instances. If you configure multiple router appliance instances to receive data from the same set of sites outside of Google Cloud, we recommend that you associate those instances with the same spoke.
 message LinkedRouterApplianceInstances {
-  // Optional. IP ranges allowed to be included during import from hub.(does not control transit connectivity) The only allowed value for now is "ALL_IPV4_RANGES".
+  // Optional. IP ranges allowed to be included during import from hub (does not control transit connectivity). The only allowed value for now is "ALL_IPV4_RANGES".
   repeated string include_import_ranges = 1 [json_name="includeImportRanges"];
   // The list of router appliance instances.
   repeated RouterApplianceInstance instances = 2 [json_name="instances"];
@@ -725,13 +767,15 @@ message LinkedVpcNetwork {
   repeated string exclude_export_ranges = 1 [json_name="excludeExportRanges"];
   // Optional. IP ranges allowed to be included from peering.
   repeated string include_export_ranges = 2 [json_name="includeExportRanges"];
+  // Output only. The list of Producer VPC spokes that this VPC spoke is a service consumer VPC spoke for. These producer VPCs are connected through VPC peering to this spoke's backing VPC network.
+  repeated string producer_vpc_spokes = 3 [json_name="producerVpcSpokes"];
   // Required. The URI of the VPC network resource.
-  string uri = 3 [json_name="uri"];
+  string uri = 4 [json_name="uri"];
 }
 
 // A collection of Cloud VPN tunnel resources. These resources should be redundant HA VPN tunnels that all advertise the same prefixes to Google Cloud. Alternatively, in a passive/active configuration, all tunnels should be capable of advertising the same prefixes.
 message LinkedVpnTunnels {
-  // Optional. IP ranges allowed to be included during import from hub.(does not control transit connectivity) The only allowed value for now is "ALL_IPV4_RANGES".
+  // Optional. IP ranges allowed to be included during import from hub (does not control transit connectivity). The only allowed value for now is "ALL_IPV4_RANGES".
   repeated string include_import_ranges = 1 [json_name="includeImportRanges"];
   // A value that controls whether site-to-site data transfer is enabled for these resources. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
   bool site_to_site_data_transfer = 2 [json_name="siteToSiteDataTransfer"];
@@ -899,6 +943,14 @@ message LocationMetadata {
   repeated string location_features = 1 [json_name="locationFeatures"];
 }
 
+// Specification for migration with source and target resource names.
+message Migration {
+  // Immutable. Resource path as an URI of the source resource, for example a subnet. The project for the source resource should match the project for the InternalRange. An example: /projects/{project}/regions/{region}/subnetworks/{subnet}
+  string source = 1 [json_name="source"];
+  // Immutable. Resource path of the target resource. The target project can be different, as in the cases when migrating to peer networks. The resource For example: /projects/{project}/regions/{region}/subnetworks/{subnet}
+  string target = 2 [json_name="target"];
+}
+
 // A route next hop that leads to an interconnect attachment resource.
 message NextHopInterconnectAttachment {
   // Indicates whether site-to-site data transfer is allowed for this interconnect attachment resource. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
@@ -1024,7 +1076,7 @@ message PscConnection {
   string consumer_forwarding_rule = 2 [json_name="consumerForwardingRule"];
   // The project where the PSC connection is created.
   string consumer_target_project = 3 [json_name="consumerTargetProject"];
-  // The most recent error during operating this connection.
+  // The most recent error during operating this connection. Deprecated, please use error_info instead.
   GoogleRpcStatus error = 4 [json_name="error"];
   // Output only. The error info for the latest error during operating this connection.
   GoogleRpcErrorInfo error_info = 5 [json_name="errorInfo"];
@@ -1032,14 +1084,46 @@ message PscConnection {
   string error_type = 6 [json_name="errorType"];
   // The last Compute Engine operation to setup PSC connection.
   string gce_operation = 7 [json_name="gceOperation"];
-  // Immutable. An immutable identifier for the producer instance.
-  string producer_instance_id = 8 [json_name="producerInstanceId"];
+  // The requested IP version for the PSC connection.
+  string ip_version = 8 [json_name="ipVersion"];
+  // Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
+  string producer_instance_id = 9 [json_name="producerInstanceId"];
+  // Immutable. An immutable map for the producer instance metadata.
+  map<string, string> producer_instance_metadata = 10 [json_name="producerInstanceMetadata"];
   // The PSC connection id of the PSC forwarding rule.
-  string psc_connection_id = 9 [json_name="pscConnectionId"];
+  string psc_connection_id = 11 [json_name="pscConnectionId"];
   // Output only. The URI of the subnetwork selected to allocate IP address for this connection.
-  string selected_subnetwork = 10 [json_name="selectedSubnetwork"];
+  string selected_subnetwork = 12 [json_name="selectedSubnetwork"];
+  // Output only. [Output only] The service class associated with this PSC Connection. The value is derived from the SCPolicy and matches the service class name provided by the customer.
+  string service_class = 13 [json_name="serviceClass"];
   // State of the PSC Connection
-  string state = 11 [json_name="state"];
+  string state = 14 [json_name="state"];
+}
+
+// The PSC propagation status in a hub.
+message PscPropagationStatus {
+  // The propagation status.
+  string code = 1 [json_name="code"];
+  // The human-readable summary of the PSC connection propagation status.
+  string message = 2 [json_name="message"];
+  // The name of the forwarding rule exported to the hub.
+  string source_forwarding_rule = 3 [json_name="sourceForwardingRule"];
+  // The name of the group that the source spoke belongs to.
+  string source_group = 4 [json_name="sourceGroup"];
+  // The name of the spoke that the source forwarding rule belongs to.
+  string source_spoke = 5 [json_name="sourceSpoke"];
+  // The name of the group that the target spoke belongs to.
+  string target_group = 6 [json_name="targetGroup"];
+  // The name of the spoke that the source forwarding rule propagates to.
+  string target_spoke = 7 [json_name="targetSpoke"];
+}
+
+// The response for HubService.QueryHubStatus.
+message QueryHubStatusResponse {
+  // The list of hub status.
+  repeated HubStatusEntry hub_status_entries = 1 [json_name="hubStatusEntries"];
+  // The token for the next page of the response. To see more results, use this value as the page_token for your next request. If this value is empty, there are no more results.
+  string next_page_token = 2 [json_name="nextPageToken"];
 }
 
 // The RegionalEndpoint resource.
@@ -1155,7 +1239,7 @@ message RoutingVPC {
   string uri = 2 [json_name="uri"];
 }
 
-// The ServiceClass resource. Next id: 9
+// The ServiceClass resource.
 message ServiceClass {
   // Output only. Time when the ServiceClass was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1173,7 +1257,7 @@ message ServiceClass {
   .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
 }
 
-// The ServiceConnectionMap resource. Next id: 15
+// The ServiceConnectionMap resource.
 message ServiceConnectionMap {
   // The PSC configurations on consumer side.
   repeated ConsumerPscConfig consumer_psc_configs = 1 [json_name="consumerPscConfigs"];
@@ -1203,9 +1287,9 @@ message ServiceConnectionMap {
   .google.protobuf.Timestamp update_time = 13 [json_name="updateTime"];
 }
 
-// The ServiceConnectionPolicy resource. Next id: 12
+// The ServiceConnectionPolicy resource.
 message ServiceConnectionPolicy {
-  // Output only. Time when the ServiceConnectionMap was created.
+  // Output only. Time when the ServiceConnectionPolicy was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
   // A description of this resource.
   string description = 2 [json_name="description"];
@@ -1223,13 +1307,13 @@ message ServiceConnectionPolicy {
   PscConfig psc_config = 8 [json_name="pscConfig"];
   // Output only. [Output only] Information about each Private Service Connect connection.
   repeated PscConnection psc_connections = 9 [json_name="pscConnections"];
-  // The service class identifier for which this ServiceConnectionPolicy is for. The service class identifier is a unique, symbolic representation of a ServiceClass. It is provided by the Service Producer. Google services have a prefix of gcp. For example, gcp-cloud-sql. 3rd party services do not. For example, test-service-a3dfcx.
+  // The service class identifier for which this ServiceConnectionPolicy is for. The service class identifier is a unique, symbolic representation of a ServiceClass. It is provided by the Service Producer. Google services have a prefix of gcp or google-cloud. For example, gcp-memorystore-redis or google-cloud-sql. 3rd party services do not. For example, test-service-a3dfcx.
   string service_class = 10 [json_name="serviceClass"];
-  // Output only. Time when the ServiceConnectionMap was updated.
+  // Output only. Time when the ServiceConnectionPolicy was updated.
   .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
 }
 
-// The ServiceConnectionToken resource. Next id: 10
+// The ServiceConnectionToken resource.
 message ServiceConnectionToken {
   // Output only. Time when the ServiceConnectionToken was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1273,24 +1357,26 @@ message Spoke {
   map<string, string> labels = 5 [json_name="labels"];
   // VLAN attachments that are associated with the spoke.
   LinkedInterconnectAttachments linked_interconnect_attachments = 6 [json_name="linkedInterconnectAttachments"];
+  // Optional. The linked producer VPC that is associated with the spoke.
+  LinkedProducerVpcNetwork linked_producer_vpc_network = 7 [json_name="linkedProducerVpcNetwork"];
   // Router appliance instances that are associated with the spoke.
-  LinkedRouterApplianceInstances linked_router_appliance_instances = 7 [json_name="linkedRouterApplianceInstances"];
+  LinkedRouterApplianceInstances linked_router_appliance_instances = 8 [json_name="linkedRouterApplianceInstances"];
   // Optional. VPC network that is associated with the spoke.
-  LinkedVpcNetwork linked_vpc_network = 8 [json_name="linkedVpcNetwork"];
+  LinkedVpcNetwork linked_vpc_network = 9 [json_name="linkedVpcNetwork"];
   // VPN tunnels that are associated with the spoke.
-  LinkedVpnTunnels linked_vpn_tunnels = 9 [json_name="linkedVpnTunnels"];
+  LinkedVpnTunnels linked_vpn_tunnels = 10 [json_name="linkedVpnTunnels"];
   // Immutable. The name of the spoke. Spoke names must be unique. They use the following form: `projects/{project_number}/locations/{region}/spokes/{spoke_id}`
-  string name = 10 [json_name="name"];
-  // Output only. The reasons for current state of the spoke. Only present when the spoke is in the `INACTIVE` state.
-  repeated StateReason reasons = 11 [json_name="reasons"];
+  string name = 11 [json_name="name"];
+  // Output only. The reasons for current state of the spoke.
+  repeated StateReason reasons = 12 [json_name="reasons"];
   // Output only. The type of resource associated with the spoke.
-  string spoke_type = 12 [json_name="spokeType"];
+  string spoke_type = 13 [json_name="spokeType"];
   // Output only. The current lifecycle state of this spoke.
-  string state = 13 [json_name="state"];
+  string state = 14 [json_name="state"];
   // Output only. The Google-generated UUID for the spoke. This value is unique across all spoke resources. If a spoke is deleted and another with the same name is created, the new spoke is assigned a different `unique_id`.
-  string unique_id = 14 [json_name="uniqueId"];
+  string unique_id = 15 [json_name="uniqueId"];
   // Output only. The time the spoke was last updated.
-  .google.protobuf.Timestamp update_time = 15 [json_name="updateTime"];
+  .google.protobuf.Timestamp update_time = 16 [json_name="updateTime"];
 }
 
 // The number of spokes that are in a particular state and associated with a given hub.
@@ -1420,6 +1506,15 @@ message PatchProjectsLocationsGlobalHubRequest {
   string request_id = 2;
   string update_mask = 3;
   Hub projects_locations_global_hub = 4;
+}
+
+message QueryStatusProjectsLocationsGlobalHubRequest {
+  string filter = 1;
+  string group_by = 2;
+  string name = 3;
+  string order_by = 4;
+  int32 page_size = 5;
+  string page_token = 6;
 }
 
 message RejectSpokeProjectsLocationsGlobalHubRequest {

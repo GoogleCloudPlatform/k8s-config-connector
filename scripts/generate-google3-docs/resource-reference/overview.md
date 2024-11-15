@@ -75,7 +75,7 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/bigquery/docs/query-overview">{{analytics_hub_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/bigqueranalyticshub/bigqueryanalyticshubdataexchange.md">BigQueryAnalyticsHubDataExchange</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshubdataexchange.md">BigQueryAnalyticsHubDataExchange</a></td>
 </tr>
 <tr>
 <tr>
@@ -885,6 +885,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md">VPCAccessConnector</a></td>
+</tr>
+<tr>
+  <td><a href="/workstations/docs/">{{workstations_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/workstations/workstationcluster.md">WorkstationCluster</a></td>
 </tr>
 </tbody>
 </table>

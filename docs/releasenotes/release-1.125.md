@@ -1,38 +1,15 @@
 # v1.125.0
 
-** This version is not yet released; this document is gathering release notes for the future release **
+* Special shout-outs to @600lyy, @acpana, @anhdle-sso, @cheftako, @ericpang777, @gemmahou, @hankfreund, @jasonvigil, @jingyih, @justinsb, @maqiuyujoyce, @nb-goog, @svetakvsundhar, @xiaoweim, @yuwenma, @zicongmei, @ziyue-101 for their contributions to this release.
 
-* ...
+## Announcement 
 
-* Special shout-outs to ... for their
-  contributions to this release.
-TODO: list contributors with `git log v1.124.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
+## New Beta Resources (Direct Reconciler):
 
-## Resources promoted from alpha to beta:
-
-* `BigQueryAnlayticsHubDataExchange` is now a v1beta1 resource.
-* `PrivilegedAccessManagerEntitlement` is now a v1beta1 resource.
-* `RedisCluster` is now a v1beta1 resource.
-* `WorkstationCluster` is now a v1beta1 resource.
-
-## Modified Beta Reconciliation
-
-We migrated the following reconciliation from the TF-based or DCL-based controller to the new Direct controller to enhance the reliability and performance. The resource CRD is unchanged.
-
-* `ComputeFirewallPolicyRule`
-
-  * You can use the alpha.cnrm.cloud.google.com/reconciler: direct annotation on ComputeFirewallPolicyRule resource to opt-in
-    the Direct Cloud Reconciler, which fixes the issue when updating `targetResources`.
-
-* `SQLInstance`
-
-  * You can use the alpha.cnrm.cloud.google.com/reconciler: direct annotation on SQLInstance resources to opt-in
-    the Direct Cloud Reconciler, which fixes issues with updating from ENTERPRISE -> ENTERPRISE_PLUS edition and allows
-    "create from clone" functionality.
-
-## New Resources:
-
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* `BigQueryAnlayticsHubDataExchange`
+* `PrivilegedAccessManagerEntitlement`
+* `RedisCluster`
+* `WorkstationCluster`
 
 ## New Fields:
 
@@ -40,14 +17,27 @@ We migrated the following reconciliation from the TF-based or DCL-based controll
   * Added `spec.networkConfig.enableOutboundPublicIp` field.
   * Added `status.outboundPublicIpAddresses` field.
 
+## Modified Beta Reconciliation
+
+We migrated the following resources from the Terraform-based or DCL-based controller to the new Direct Controller to enhance the reliability and performance. The resource CRD is unchanged.
+
+* `SQLInstance`
+
+  * You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on the `SQLInstance` CR object to opt-in the direct controller, which fixes issues with updating from ENTERPRISE -> ENTERPRISE_PLUS edition and allows "create from clone" functionality.
+
+* `ComputeFirewallPolicyRule`
+
+  * You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on the `ComputeFirewallPolicyRule` CR object to opt-in the direct controller, which fixes the `targetResources` error *required value "priority" could not be found*.
+
 ## New features:
 
-* Allow more customization of resource reconciliation in cluster mode
-  * Added a new `ControllerReconciler` CRD (v1alpha1). See [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/operator/config/samples/controller_reconciler_customization_sample.yaml)
-  * This feature allows users to customize the client-side kube-apiserver request rate limit when Config Connector is runnning in cluster mode.
+* Add *cluster mode* to manage the rate-limit for the Config Connector requests
+
+  * Previously we added [rate-limit control in namespace mode](https://cloud.google.com/config-connector/docs/how-to/customize-controller-manager-rate-limit). Users can configure the `NamespacedControllerReconciler` object to set the rate-limit for the reconciling requests to the kube-apiserver for their Config Connector resources. 
+  * This release adds this feature in the cluster mode in `ControllerReconciler` object. This [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/operator/config/samples/controller_reconciler_customization_sample.yaml) shows how to set up the configuration.
 
 ## Bug Fixes:
 
-* [Incorrect format of clientTLSPolicy when referenced from ComputeBackendService](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007)
-
-* [Fix](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2973) the reconciliation error in `ContainerNodePool` that occurs when `kubeletConfig` is empty in the user's configuration, but a subfield under `kubeletConfig` is set externally outside of KCC.
+* [Issue 3007](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007) ComputeBackendService cannot refer clientTLSPolicy due to invalid format
+* [Issue 2973](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2973) kubelet_config has `insecure_kubelet_readonly_port_enabled: true` set even if not configured in the `ContainerNodePool` object. 
+* [Issue 3140](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007) BigQueryConnectionConnection requires UUID to acquire the resource. 

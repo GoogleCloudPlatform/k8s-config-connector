@@ -160,7 +160,7 @@ func SetDefaultHierarchicalReference(resource *Resource, ns *corev1.Namespace, h
 
 // GetHierarchicalReference gets the resource reference within the resource
 // that corresponds to any of the given hierarchical reference configurations,
-// as well as the the hierarchical reference configuration associated with the
+// as well as the hierarchical reference configuration associated with the
 // resource reference. Returns a nil resource reference if none is found.
 // Returns an error if multiple resource references are found (an invalid
 // resource state as resources can have at most one hierarchical reference).

@@ -61,6 +61,7 @@ gcloud services enable \
   discoveryengine.googleapis.com \
   firestore.googleapis.com \
   logging.googleapis.com \
+  memcache.googleapis.com \
   monitoring.googleapis.com \
   redis.googleapis.com \
   servicenetworking.googleapis.com \

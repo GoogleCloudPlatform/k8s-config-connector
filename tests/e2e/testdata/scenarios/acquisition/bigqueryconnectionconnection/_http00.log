@@ -47,10 +47,10 @@ X-Xss-Protection: 0
 
 {
   "cloudResource": {
-    "serviceAccountId": "bqcx-projects/${projectId}/locations/us-central1-reVy@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+    "serviceAccountId": "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
   },
-  "creationTime": "1731379730",
+  "creationTime": "123456789",
   "description": "BigQueryConnection Connection resource for acquisition",
-  "lastModifiedTime": "1731379730",
+  "lastModifiedTime": "123456789",
   "name": "projects/${projectNumber}/locations/us-central1/connections/test-bqcc-acquisition"
 }

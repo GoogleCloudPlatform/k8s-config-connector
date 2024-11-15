@@ -26,6 +26,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -831,14 +832,28 @@ func getChangedFields(initialObject, updatedObject map[string]interface{}, field
 	if !reflect.DeepEqual(initial, updated) {
 		for k, v := range updated {
 			if !reflect.DeepEqual(initial[k], v) {
-				if _, ok := v.(map[string]interface{}); ok {
+				switch v.(type) {
+				case map[string]interface{}:
 					// Skip checking for changes in resource reference fields, because there
 					// is no way to export the name and namespace fields (only external).
 					if !strings.HasSuffix(k, "Ref") {
 						changedFields[k] = getChangedFields(initial, updated, k)
 					}
-				} else {
-					changedFields[k] = updated[k]
+				default:
+					// Skip checking for changes in fields contains a list of resource references,
+					// because there is no way to export the name and namespace fields (only external).
+
+					// Fields containing a list of resource references do not have the "Ref" suffix in the field name.
+					// For example, targetResources field in ComputeFirewallPolicyRule.
+					// Manually add those fields to the skipped fields list.
+					// todo: Determine if we want to have "Refs" in those field names, like "targetResourceRefs"
+					// That would introduce breaking changes to DCL/TF resource
+					if updatedObject["kind"] == "ComputeFirewallPolicyRule" {
+						computeFirewallPolicyRuleSkippedFields := []string{"targetResources", "targetServiceAccounts"}
+						if !slices.Contains(computeFirewallPolicyRuleSkippedFields, k) {
+							changedFields[k] = updated[k]
+						}
+					}
 				}
 			}
 		}

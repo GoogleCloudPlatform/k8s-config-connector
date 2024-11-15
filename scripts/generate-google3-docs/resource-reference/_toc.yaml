@@ -46,7 +46,7 @@ toc:
 - title: "BigQueryAnalyticsHub"
   section:
   - title: "BigQueryAnalyticsHubDataExchange"
-    path: /config-connector/docs/reference/resource-docs/bigqueranalyticshub/bigqueranalyticshubydataexchange.md
+    path: /config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueranalyticshubdataexchange.md
 - title: "BigQuery"
   section:
   - title: "BigqueryConnectionConnection"
@@ -487,8 +487,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate.md
 - title: "Privileged Access Manager"
   section:
-    - title: "PrivilegedAccessManagerEntitlement"
-      path: /config-connector/docs/reference/resource-docs/privilegedaccessmanager/privilegedaccessmanagerentitlement.md
+  - title: "PrivilegedAccessManagerEntitlement"
+    path: /config-connector/docs/reference/resource-docs/privilegedaccessmanager/privilegedaccessmanagerentitlement.md
 - title: "Pub/Sub"
   section:
   - title: "PubSubSchema"
@@ -561,3 +561,7 @@ toc:
   section:
   - title: "VPCAccessConnector"
     path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md
+- title: "Workstations"
+  section:
+  - title: "WorkstationCluster"
+    path: /config-connector/docs/reference/resource-docs/workstations/workstationcluster.md

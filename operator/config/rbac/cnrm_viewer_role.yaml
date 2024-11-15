@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.124.0
+    cnrm.cloud.google.com/version: 1.125.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
@@ -346,6 +346,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - discoveryengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - dlp.cnrm.cloud.google.com
   resources:
   - '*'
@@ -667,6 +675,14 @@ rules:
   - watch
 - apiGroups:
   - secretmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - securesourcemanager.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
