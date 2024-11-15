@@ -147,8 +147,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	req := &kmspb.CreateKeyHandleRequest{
-		Parent:      parent.String(),
-		KeyHandle:   resource,
+		Parent:    parent.String(),
+		KeyHandle: resource,
 	}
 	if idIsSet {
 		req.KeyHandleId = id
