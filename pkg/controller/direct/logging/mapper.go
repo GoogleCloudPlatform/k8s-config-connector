@@ -15,11 +15,11 @@
 package logging
 
 import (
-	krm "/home/tylerreid/dev/waze/k8s-config-connector/apis/logging/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func BigQueryDataset_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDataset {
 	if in == nil {
 		return nil
@@ -46,7 +46,7 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 
 	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
-	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifeCycleState()) 
+	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifeCycleState())
 	out.BigqueryDataset = BigQueryDataset_FromProto(mapCtx, in.BigQueryDataset)
 	return out
 }
@@ -59,7 +59,13 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 	out.Description = direct.ValueOf(in.Description)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
-	out.LifecycleState = direct.Enum_ToProto(mapCtx, in.GetLifeCycleState()) 
+	out.LifecycleState = direct.Enum_ToProto(mapCtx, in.GetLifeCycleState())
 	out.BigqueryDataset = BigQueryDataset_ToProto(mapCtx, in.BigQueryDataset)
 	return out
+}
+func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkObservedState {
+	// TODO
+}
+func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkObservedState) *pb.Link {
+	// TODO
 }

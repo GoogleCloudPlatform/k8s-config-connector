@@ -20,17 +20,13 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(user): Update the import with the google cloud client
-	gcp "cloud.google.com/go/logging/apiv1"
-
-	// TODO(user): Update the import with the google cloud client api protobuf
-	loggingpb "cloud.google.com/go/logging/v2/loggingpb"
+	gcp "cloud.google.com/go/logging/apiv2"
+	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -173,10 +169,9 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 
-	// TODO(user): Update the field if applicable.
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
+	if !reflect.DeepEqual(a.desired.Spec.description, a.actual.description) {
+		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 
 	if len(updateMask.Paths) == 0 {
@@ -224,14 +219,16 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if err != nil {
 		return nil, err
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.String()}
-	obj.Spec.Location = parent.Location
+	/* TODO Bucket Ref?
+	 obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.String()}
+	 obj.Spec.Location = parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
+	*/
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.name)
 	u.SetGroupVersionKind(krm.LoggingLinkGVK)
 
 	u.Object = uObj
