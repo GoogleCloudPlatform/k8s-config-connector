@@ -63,6 +63,9 @@ func (s *GlobalTargetTcpProxyV1) Insert(ctx context.Context, req *pb.InsertTarge
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetTcpProxy")
+	if obj.ProxyHeader == nil {
+		obj.ProxyHeader = PtrTo("NONE")
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
