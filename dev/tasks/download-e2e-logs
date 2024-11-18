@@ -46,3 +46,6 @@ gsutil cp gs://cnrm-prow/logs/${TEST}/${LATEST}/artifacts/golden.zip .build/gold
 
 echo "Expanding golden output into testdata directory"
 unzip -o .build/golden.zip "pkg/test/resourcefixture/testdata/*"
+
+echo "Downloading test log to e2e.log"
+gsutil cp gs://cnrm-prow/logs/${TEST}/${LATEST}/build-log.txt e2e.log
