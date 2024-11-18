@@ -42,6 +42,9 @@ func (s *GlobalAddressesV1) Get(ctx context.Context, req *pb.GetGlobalAddressReq
 
 	obj := &pb.Address{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

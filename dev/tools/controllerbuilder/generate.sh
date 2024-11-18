@@ -227,7 +227,14 @@ go run . generate-mapper \
    --output-dir $REPO_ROOT/pkg/controller/direct/ \
    --api-dir $REPO_ROOT/apis/
 
+go run . generate-direct-reconciler \
+   --kind SecretManagerSecretVersion \
+   --proto-resource SecretVersion \
+   --api-version  "secretmanager.cnrm.cloud.google.com/v1beta1" \
+   --service "google.cloud.secretmanager.v1" \
+   --proto-source-path ../proto-to-mapper/build/googleapis.pb
 
+# Spanner
 go run main.go generate-types \
     --service google.spanner.admin.instance.v1 \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \

@@ -94,8 +94,8 @@ func NewComputeTargetTCPProxyRef(ctx context.Context, reader client.Reader, obj 
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	region := valueOf(obj.Spec.Location)
-	id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Region: region}
+
+	id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -121,15 +121,13 @@ func NewComputeTargetTCPProxyRef(ctx context.Context, reader client.Reader, obj 
 	if actualParent.ProjectID != projectID {
 		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 	}
-	if actualParent.Region != region {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Region, region)
-	}
+
 	if actualResourceID != resourceID {
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 			resourceID, actualResourceID)
 	}
 	id.External = externalRef
-	id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Region: region}
+	id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID}
 	return id, nil
 }
 
@@ -149,10 +147,18 @@ func (r *ComputeTargetTCPProxyRef) Parent() (*ComputeTargetTCPProxyParent, error
 
 type ComputeTargetTCPProxyParent struct {
 	ProjectID string
+}
+
+type RegionalComputeTargetTCPProxyParent struct {
+	ProjectID string
 	Region    string
 }
 
 func (p *ComputeTargetTCPProxyParent) String() string {
+	return "projects/" + p.ProjectID + "/global"
+}
+
+func (p *RegionalComputeTargetTCPProxyParent) String() string {
 	return "projects/" + p.ProjectID + "/regions/" + p.Region
 }
 
@@ -163,10 +169,23 @@ func asComputeTargetTCPProxyExternal(parent *ComputeTargetTCPProxyParent, resour
 func parseComputeTargetTCPProxyExternal(external string) (parent *ComputeTargetTCPProxyParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
+	if len(tokens) != 5 || tokens[0] != "projects" || tokens[3] != "targetTcpProxies" {
+		return nil, "", fmt.Errorf("format of ComputeTargetTCPProxy external=%q was not known (use projects/<projectId>/global/targetTcpProxies/<targettcpproxyID>)", external)
+	}
+	parent = &ComputeTargetTCPProxyParent{
+		ProjectID: tokens[1],
+	}
+	resourceID = tokens[4]
+	return parent, resourceID, nil
+}
+
+func parseRegionalComputeTargetTCPProxyExternal(external string) (parent *RegionalComputeTargetTCPProxyParent, resourceID string, err error) {
+	external = strings.TrimPrefix(external, "/")
+	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "targetTcpProxies" {
 		return nil, "", fmt.Errorf("format of ComputeTargetTCPProxy external=%q was not known (use projects/<projectId>/regions/<region>/targetTcpProxies/<targettcpproxyID>)", external)
 	}
-	parent = &ComputeTargetTCPProxyParent{
+	parent = &RegionalComputeTargetTCPProxyParent{
 		ProjectID: tokens[1],
 		Region:    tokens[3],
 	}

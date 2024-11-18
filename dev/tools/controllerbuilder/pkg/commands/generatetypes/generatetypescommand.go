@@ -99,6 +99,18 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate-types",
 		Short: "generate KRM types for a proto service",
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			if opt.ServiceName == "" {
+				return fmt.Errorf("`service` is required")
+			}
+			if opt.GenerateOptions.ProtoSourcePath == "" {
+				return fmt.Errorf("`proto-source-path` is required")
+			}
+			if len(opt.Resources) == 0 {
+				return fmt.Errorf("`--resource` is required")
+			}
+			return nil
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 			if err := RunGenerateCRD(ctx, opt); err != nil {
@@ -116,15 +128,6 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	log := klog.FromContext(ctx)
 
-	if o.ServiceName == "" {
-		return fmt.Errorf("`service` is required")
-	}
-	if o.GenerateOptions.ProtoSourcePath == "" {
-		return fmt.Errorf("`proto-source-path` is required")
-	}
-	if len(o.Resources) == 0 {
-		return fmt.Errorf("`--resource` is required")
-	}
 	// o.ResourceProtoName = capitalizeFirstRune(o.ResourceProtoName)
 
 	gv, err := schema.ParseGroupVersion(o.APIVersion)

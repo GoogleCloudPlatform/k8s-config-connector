@@ -38,5 +38,5 @@ spec:
     - role: READER
       domain: google.com
     - role: OWNER
-      userByEmail: bigquerydataset-dep@${projectId}.iam.gserviceaccount.com
+      userByEmail: iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com
   storageBillingModel: LOGICAL

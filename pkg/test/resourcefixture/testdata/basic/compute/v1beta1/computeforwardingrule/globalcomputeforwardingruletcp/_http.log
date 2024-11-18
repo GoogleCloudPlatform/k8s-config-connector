@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/global/addresses/computeaddress-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/global/addresses/computeaddress-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found"
   }
 }
 
@@ -445,11 +445,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetTcpProxy \"projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetTcpProxy \"projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found"
   }
 }
 
@@ -575,11 +575,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetTcpProxy \"projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetTcpProxy \"projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}' was not found"
   }
 }
 

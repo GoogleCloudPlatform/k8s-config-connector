@@ -32,9 +32,6 @@ import (
 
 var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // {{ .Kind }}Spec defines the desired state of {{ .Kind }}
 {{- if .KindProtoTag }}
 // +kcc:proto={{ .KindProtoTag }}
@@ -62,10 +59,13 @@ type {{ .Kind }}Status struct {
 	ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
 }
 
+// {{ .Kind }}Spec defines the desired state of {{ .Kind }}
+{{- if .KindProtoTag }}
+// +kcc:proto={{ .KindProtoTag }}
+{{- end }}
 // {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 type {{ .Kind }}ObservedState struct {
 }
-
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
