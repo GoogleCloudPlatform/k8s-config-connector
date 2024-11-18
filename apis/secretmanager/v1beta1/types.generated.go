@@ -165,3 +165,116 @@ type Topic struct {
 	//  (`roles/pubsub.publisher`) includes this permission.
 	Name *string `json:"name,omitempty"`
 }
+
+// +kcc:proto=google.cloud.secretmanager.v1.CustomerManagedEncryptionStatus
+type CustomerManagedEncryptionStatus struct {
+	// Required. The resource name of the Cloud KMS CryptoKeyVersion used to
+	//  encrypt the secret payload, in the following format:
+	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.
+	KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.ReplicationStatus
+type ReplicationStatus struct {
+	// Describes the replication status of a
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+	//  automatic replication.
+	//
+	//  Only populated if the parent
+	//  [Secret][google.cloud.secretmanager.v1.Secret] has an automatic
+	//  replication policy.
+	Automatic *ReplicationStatus_AutomaticStatus `json:"automatic,omitempty"`
+
+	// Describes the replication status of a
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+	//  user-managed replication.
+	//
+	//  Only populated if the parent
+	//  [Secret][google.cloud.secretmanager.v1.Secret] has a user-managed
+	//  replication policy.
+	UserManaged *ReplicationStatus_UserManagedStatus `json:"userManaged,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.ReplicationStatus.AutomaticStatus
+type ReplicationStatus_AutomaticStatus struct {
+	// Output only. The customer-managed encryption status of the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
+	//  populated if customer-managed encryption is used.
+	CustomerManagedEncryption *CustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.ReplicationStatus.UserManagedStatus
+type ReplicationStatus_UserManagedStatus struct {
+	// Output only. The list of replica statuses for the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+	Replicas []ReplicationStatus_UserManagedStatus_ReplicaStatus `json:"replicas,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.ReplicationStatus.UserManagedStatus.ReplicaStatus
+type ReplicationStatus_UserManagedStatus_ReplicaStatus struct {
+	// Output only. The canonical ID of the replica location.
+	//  For example: `"us-east1"`.
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The customer-managed encryption status of the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
+	//  populated if customer-managed encryption is used.
+	CustomerManagedEncryption *CustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
+}
+
+// +kcc:proto=google.cloud.secretmanager.v1.SecretVersion
+type SecretVersion struct {
+	// Output only. The resource name of the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the format
+	//  `projects/*/secrets/*/versions/*`.
+	//
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a
+	//  [Secret][google.cloud.secretmanager.v1.Secret] start at 1 and are
+	//  incremented for each subsequent version of the secret.
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The time at which the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time this
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed.
+	//  Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state]
+	//  is
+	//  [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED].
+	DestroyTime *string `json:"destroyTime,omitempty"`
+
+	// Output only. The current state of the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+	State *string `json:"state,omitempty"`
+
+	// The replication status of the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+	ReplicationStatus *ReplicationStatus `json:"replicationStatus,omitempty"`
+
+	// Output only. Etag of the currently stored
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. True if payload checksum specified in
+	//  [SecretPayload][google.cloud.secretmanager.v1.SecretPayload] object has
+	//  been received by
+	//  [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService]
+	//  on
+	//  [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
+	ClientSpecifiedPayloadChecksum *bool `json:"clientSpecifiedPayloadChecksum,omitempty"`
+
+	// Optional. Output only. Scheduled destroy time for secret version.
+	//  This is a part of the Delayed secret version destroy feature. For a
+	//  Secret with a valid version destroy TTL, when a secert version is
+	//  destroyed, the version is moved to disabled state and it is scheduled for
+	//  destruction. The version is destroyed only after the
+	//  `scheduled_destroy_time`.
+	ScheduledDestroyTime *string `json:"scheduledDestroyTime,omitempty"`
+
+	// Output only. The customer-managed encryption status of the
+	//  [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
+	//  populated if customer-managed encryption is used and
+	//  [Secret][google.cloud.secretmanager.v1.Secret] is a Regionalised Secret.
+	CustomerManagedEncryption *CustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
+}

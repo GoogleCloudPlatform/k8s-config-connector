@@ -22,6 +22,7 @@ import (
 
 var _ SecretRef = &BasicAuthSecretRef{}
 
+// +kubebuilder:object:generate:=true
 type BasicAuthSecretRef struct {
 	// +required
 	// The `metadata.name` field of a Kubernetes `Secret`

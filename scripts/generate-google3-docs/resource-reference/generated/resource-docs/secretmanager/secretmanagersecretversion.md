@@ -93,12 +93,7 @@ secretRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The deletion policy for the secret version. Setting 'ABANDON' allows the resource
-to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be
-disabled rather than deleted. Default is 'DELETE'. Possible values are:
-  * DELETE
-  * DISABLE
-  * ABANDON.{% endverbatim %}</p>
+            <p>{% verbatim %}The deletion policy for the secret version. Setting 'ABANDON' allows the resource to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be disabled rather than deleted. Default is 'DELETE'. Possible values are: * DELETE * DISABLE * ABANDON.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -128,13 +123,13 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The SecretVersion name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>secretData</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -194,11 +189,11 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
     <tr>
         <td>
             <p><code>secretRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Secret Manager secret resource{% endverbatim %}</p>
+            <p>{% verbatim %}The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -208,7 +203,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecret` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecret resource. Should be in the format "projects/<projectID>/locations/<location>/secrets/<secretID>".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -218,7 +213,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +223,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -265,7 +260,7 @@ version: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -314,22 +309,27 @@ version: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time at which the Secret was created.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time at which the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>destroyTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time at which the Secret was destroyed. Only present if state is DESTROYED.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time this [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed. Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state] is [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The resource name of the SecretVersion. Format:
-'projects/{{project}}/secrets/{{secret_id}}/versions/{{version}}'.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The resource name of the
+[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the
+format `projects/*/secrets/*/versions/*`.
+
+[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a
+[Secret][google.cloud.secretmanager.v1.Secret] start at 1 and are
+incremented for each subsequent version of the secret.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

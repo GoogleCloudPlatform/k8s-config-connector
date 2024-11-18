@@ -52,12 +52,7 @@ type SecretversionValueFrom struct {
 }
 
 type SecretManagerSecretVersionSpec struct {
-	/* The deletion policy for the secret version. Setting 'ABANDON' allows the resource
-	to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be
-	disabled rather than deleted. Default is 'DELETE'. Possible values are:
-	* DELETE
-	* DISABLE
-	* ABANDON. */
+	/* The deletion policy for the secret version. Setting 'ABANDON' allows the resource to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be disabled rather than deleted. Default is 'DELETE'. Possible values are: * DELETE * DISABLE * ABANDON. */
 	// +optional
 	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
@@ -69,31 +64,38 @@ type SecretManagerSecretVersionSpec struct {
 	// +optional
 	IsSecretDataBase64 *bool `json:"isSecretDataBase64,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Immutable. The SecretVersion name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The secret data. Must be no larger than 64KiB. */
-	SecretData SecretversionSecretData `json:"secretData"`
+	// +optional
+	SecretData *SecretversionSecretData `json:"secretData,omitempty"`
 
-	/* Secret Manager secret resource */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	/* The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type SecretManagerSecretVersionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecretManagerSecretVersion's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The time at which the Secret was created. */
+	/* Output only. The time at which the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* The time at which the Secret was destroyed. Only present if state is DESTROYED. */
+	/* Output only. The time this [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed. Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state] is [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED]. */
 	// +optional
 	DestroyTime *string `json:"destroyTime,omitempty"`
 
-	/* The resource name of the SecretVersion. Format:
-	'projects/{{project}}/secrets/{{secret_id}}/versions/{{version}}'. */
+	/* Output only. The resource name of the
+	[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the
+	format `projects/* /secrets/* /versions/*`.
+
+	[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a
+	[Secret][google.cloud.secretmanager.v1.Secret] start at 1 and are
+	incremented for each subsequent version of the secret. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

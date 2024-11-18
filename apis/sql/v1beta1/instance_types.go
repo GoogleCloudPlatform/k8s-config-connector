@@ -17,12 +17,12 @@ package v1beta1
 import (
 	"reflect"
 
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
-
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 var (
@@ -204,16 +204,6 @@ type InstanceMaintenanceWindow struct {
 	UpdateTrack *string `json:"updateTrack,omitempty"`
 }
 
-type InstancePassword struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *InstanceValueFrom `json:"valueFrom,omitempty"`
-}
-
 type InstancePasswordValidationPolicy struct {
 	/* Password complexity. */
 	// +optional
@@ -280,7 +270,7 @@ type InstanceReplicaConfiguration struct {
 
 	/* Immutable. Password for the replication connection. */
 	// +optional
-	Password *InstancePassword `json:"password,omitempty"`
+	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
 
 	/* Immutable. Permissible ciphers for use in SSL encryption. */
 	// +optional
@@ -293,16 +283,6 @@ type InstanceReplicaConfiguration struct {
 	/* Immutable. True if the master's common name value is checked during the SSL handshake. */
 	// +optional
 	VerifyServerCertificate *bool `json:"verifyServerCertificate,omitempty"`
-}
-
-type InstanceRootPassword struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *InstanceValueFrom `json:"valueFrom,omitempty"`
 }
 
 type InstanceSettings struct {
@@ -431,12 +411,6 @@ type InstanceSqlServerAuditConfig struct {
 	UploadInterval *string `json:"uploadInterval,omitempty"`
 }
 
-type InstanceValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
-}
-
 type BinLogCoordinates struct {
 	/* Name of the binary log file for a Cloud SQL instance. */
 	BinLogFileName string `json:"binLogFileName,omitempty"`
@@ -500,7 +474,7 @@ type SQLInstanceSpec struct {
 
 	/* Initial root password. Required for MS SQL Server. */
 	// +optional
-	RootPassword *InstanceRootPassword `json:"rootPassword,omitempty"`
+	RootPassword *refsv1beta1secret.Legacy `json:"rootPassword,omitempty"`
 
 	/* The settings to use for the database. The configuration is detailed below. */
 	Settings InstanceSettings `json:"settings"`

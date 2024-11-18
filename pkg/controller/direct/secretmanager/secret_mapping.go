@@ -103,3 +103,21 @@ func SecretManagerSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecretMa
 	// MISSING: CustomerManagedEncryption
 	return out
 }
+
+func Topic_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.Topic {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Topic{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+
+func Topic_ToProto(mapCtx *direct.MapContext, in *krm.Topic) *pb.Topic {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic{}
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
