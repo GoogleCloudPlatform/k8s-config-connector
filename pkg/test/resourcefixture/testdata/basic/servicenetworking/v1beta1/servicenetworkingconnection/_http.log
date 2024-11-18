@@ -148,11 +148,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/global/addresses/computeaddress1-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/computeaddress1-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/global/addresses/computeaddress1-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/computeaddress1-${uniqueId}' was not found"
   }
 }
 
@@ -361,11 +361,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/global/addresses/computeaddress2-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/computeaddress2-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/global/addresses/computeaddress2-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/computeaddress2-${uniqueId}' was not found"
   }
 }
 
