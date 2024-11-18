@@ -19,6 +19,6 @@ metadata:
 spec:
   resourceID: 5a4fa10e-995d-4ee0-a426-a220aa390320
   projectRef:
-    external: projects/autokey-resource
+    external: projects/${uniqueId}
   location: us-central1
   resourceTypeSelector: compute.googleapis.com/Disk
