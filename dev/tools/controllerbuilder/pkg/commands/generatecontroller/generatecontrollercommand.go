@@ -15,6 +15,7 @@
 package generatecontroller
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -67,24 +68,33 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			gv, _ := schema.ParseGroupVersion(baseOptions.APIVersion)
-			gcpTokens := strings.Split(baseOptions.ServiceName, ".")
-			version := gcpTokens[len(gcpTokens)-1]
-			if version[0] != 'v' {
-				return fmt.Errorf("--service does not contain GCP version")
+
+			ctx := cmd.Context()
+			if err := RunController(ctx, opt); err != nil {
+				return err
 			}
-			serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
-			cArgs := &cctemplate.ControllerArgs{
-				KCCService:    serviceName,
-				KCCVersion:    gv.Version,
-				Kind:          opt.Kind,
-				ProtoResource: opt.ProtoName,
-				ProtoVersion:  version,
-			}
-			return scaffold.Scaffold(serviceName, opt.ProtoName, cArgs)
+			return nil
 		},
 	}
 	opt.BindFlags(cmd)
 
 	return cmd
+}
+
+func RunController(ctx context.Context, o *GenerateControllerOptions) error {
+	gv, _ := schema.ParseGroupVersion(o.GenerateOptions.APIVersion)
+	gcpTokens := strings.Split(o.GenerateOptions.ServiceName, ".")
+	version := gcpTokens[len(gcpTokens)-1]
+	if version[0] != 'v' {
+		return fmt.Errorf("--service does not contain GCP version")
+	}
+	serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
+	cArgs := &cctemplate.ControllerArgs{
+		KCCService:    serviceName,
+		KCCVersion:    gv.Version,
+		Kind:          o.Kind,
+		ProtoResource: o.ProtoName,
+		ProtoVersion:  version,
+	}
+	return scaffold.Scaffold(serviceName, o.ProtoName, cArgs)
 }

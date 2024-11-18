@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/exportcsv"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatecontroller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatedirectreconciler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatemapper"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/updatetypes"
@@ -34,6 +35,7 @@ func Execute() {
 	rootCmd := &cobra.Command{}
 	generateOptions.BindPersistentFlags(rootCmd)
 
+	rootCmd.AddCommand(generatedirectreconciler.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatecontroller.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatetypes.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatemapper.BuildCommand(&generateOptions))
