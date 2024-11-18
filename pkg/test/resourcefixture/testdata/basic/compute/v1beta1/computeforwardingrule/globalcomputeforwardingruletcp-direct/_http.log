@@ -424,9 +424,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -455,15 +456,16 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}
 
 {
   "description": "test description",
   "name": "computetargettcpproxy-${uniqueId}",
   "proxyHeader": "NONE",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 200 OK
@@ -494,8 +496,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -526,9 +530,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -549,14 +554,15 @@ X-Xss-Protection: 0
   "name": "computetargettcpproxy-${uniqueId}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -585,15 +591,16 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}
 
 {
   "description": "other test description",
   "name": "computetargettcpproxy2-${uniqueId}",
   "proxyHeader": "NONE",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 200 OK
@@ -624,8 +631,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -656,9 +665,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -679,7 +689,7 @@ X-Xss-Protection: 0
   "name": "computetargettcpproxy2-${uniqueId}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
@@ -1137,9 +1147,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -1160,14 +1171,15 @@ X-Xss-Protection: 0
   "name": "computetargettcpproxy2-${uniqueId}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy2-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -1197,8 +1209,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -1229,9 +1243,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -1252,14 +1267,15 @@ X-Xss-Protection: 0
   "name": "computetargettcpproxy-${uniqueId}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&target_tcp_proxy=computetargettcpproxy-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -1289,8 +1305,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: project=${projectId}&operation=${operationID}
 
 200 OK
 Cache-Control: private

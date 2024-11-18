@@ -42,8 +42,7 @@ type ComputeTargetTCPProxySpec struct {
 
 	// The geographical location of the ComputeTargetTCPProxy.
 	// Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
-	// +optional
-	Location *string `json:"location"`
+	Location *string `json:"location,omitempty"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProxyBind is immutable"
 	// Immutable. This field only applies when the forwarding rule that references
