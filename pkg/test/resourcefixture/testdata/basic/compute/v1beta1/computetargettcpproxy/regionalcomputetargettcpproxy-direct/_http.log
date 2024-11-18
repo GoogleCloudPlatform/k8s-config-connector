@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}' was not found",
+        "message": "healthCheck \"projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}' was not found"
+    "message": "healthCheck \"projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}\" not found"
   }
 }
 
@@ -63,48 +63,10 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "2026744290697682842",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "insert",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "2026744290697682842",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -131,7 +93,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
   "name": "computehealthcheck-${uniqueId}",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
+  "region": "projects/${projectId}/global/regions/europe-west4",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}",
   "tcpHealthCheck": {
     "port": 443,
@@ -213,48 +175,10 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "7448223792667959149",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "insert",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "7448223792667959149",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -275,32 +199,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}"
   ],
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
-    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "oauth2ClientSecret": ""
   },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "computebackendservice-${uniqueId}",
-  "port": 80,
-  "portName": "http",
   "protocol": "TCP",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}",
-  "sessionAffinity": "NONE",
-  "timeoutSec": 30
+  "region": "projects/${projectId}/global/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
@@ -531,32 +448,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}"
   ],
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
-    "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "oauth2ClientSecret": ""
   },
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "computebackendservice-${uniqueId}",
-  "port": 80,
-  "portName": "http",
   "protocol": "TCP",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}",
-  "sessionAffinity": "NONE",
-  "timeoutSec": 30
+  "region": "projects/${projectId}/global/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
@@ -581,48 +491,10 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "7448223792667959149",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "7448223792667959149",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -649,7 +521,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
   "name": "computehealthcheck-${uniqueId}",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
+  "region": "projects/${projectId}/global/regions/europe-west4",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}",
   "tcpHealthCheck": {
     "port": 443,
@@ -682,46 +554,8 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "2026744290697682842",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "2026744290697682842",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/healthChecks/computehealthcheck-${uniqueId}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
