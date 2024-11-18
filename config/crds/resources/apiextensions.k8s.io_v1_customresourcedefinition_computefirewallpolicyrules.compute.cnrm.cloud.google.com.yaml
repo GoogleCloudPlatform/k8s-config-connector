@@ -112,6 +112,9 @@ spec:
                       resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
               match:
                 description: A match condition that incoming traffic is evaluated
                   against. If it evaluates to true, the corresponding 'action' is
@@ -217,6 +220,9 @@ spec:
                   where 0 is the highest priority and 2147483647 is the lowest prority.
                 format: int64
                 type: integer
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
               targetResources:
                 items:
                   oneOf:
