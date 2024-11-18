@@ -19,6 +19,8 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computetargettcpproxy-${uniqueId}
 spec:
+  description: "test target tcp proxy"
   backendServiceRef:
     name: computebackendservice-${uniqueId}
+  proxyBind: false
   proxyHeader: PROXY_V1
