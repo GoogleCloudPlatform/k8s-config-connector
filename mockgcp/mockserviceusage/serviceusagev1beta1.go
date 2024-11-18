@@ -65,6 +65,9 @@ func (s *ServiceUsageV1Beta1) GenerateServiceIdentity(ctx context.Context, req *
 	case "secretmanager.googleapis.com":
 		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@gcp-sa-secretmanager.iam.gserviceaccount.com"
 		identity.UniqueId = "123456789006"
+	case "bigquery.googleapis.com":
+		identity.Email = "bq-" + strconv.FormatInt(name.Project.Number, 10) + "@bigquery-encryption.iam.gserviceaccount.com"
+		identity.UniqueId = "123456789007"
 	default:
 		return nil, fmt.Errorf("generating serviceIdentity for service %q not implemented in mock", name.ServiceName)
 	}
