@@ -16,8 +16,6 @@ apiVersion: securesourcemanager.cnrm.cloud.google.com/v1alpha1
 kind: SecureSourceManagerRepository
 metadata:
   name: ssmrepository-${uniqueId}
-  annotations:
-      alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   location: us-central1
   projectRef:
