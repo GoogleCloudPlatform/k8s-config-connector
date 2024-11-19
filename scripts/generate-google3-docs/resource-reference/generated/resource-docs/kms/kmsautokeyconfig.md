@@ -304,7 +304,7 @@ metadata:
   name: kmsautokeyconfig-sample
 spec:
   folderRef:
-    # Replace "${FOLDER_ID}" with the numeric ID for your folder on which you want to configure autokey.
+    # Replace "${TEST_FOLDER_ID}" with the numeric ID for your folder on which you want to configure autokey.
     external: folders/${FOLDER_ID?}
   keyProject:
     # Replace ${PROJECT_ID?} with your kms project ID where kms keys will be automatically created.
