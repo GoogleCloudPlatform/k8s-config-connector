@@ -31,6 +31,10 @@ type FakeKmsV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeKmsV1alpha1) KMSAutokeyConfigs(namespace string) v1alpha1.KMSAutokeyConfigInterface {
+	return &FakeKMSAutokeyConfigs{c, namespace}
+}
+
 func (c *FakeKmsV1alpha1) KMSCryptoKeyVersions(namespace string) v1alpha1.KMSCryptoKeyVersionInterface {
 	return &FakeKMSCryptoKeyVersions{c, namespace}
 }
