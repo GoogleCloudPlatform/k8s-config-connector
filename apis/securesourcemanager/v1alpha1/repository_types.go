@@ -47,6 +47,14 @@ type SecureSourceManagerRepositorySpec struct {
 
 	// Input only. Initial configurations for the repository.
 	InitialConfig *Repository_InitialConfig `json:"initialConfig,omitempty"`
+
+	// Optional. Description of the repository, which cannot exceed 500 characters.
+	Description *string `json:"description,omitempty"`
+
+	// Optional. This checksum is computed by the server based on the value of other
+	// fields, and may be sent on update and delete requests to ensure the
+	// client has an up-to-date value before proceeding.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // SecureSourceManagerRepositoryStatus defines the config connector machine state of SecureSourceManagerRepository
@@ -72,6 +80,9 @@ type SecureSourceManagerRepositoryObservedState struct {
 
 	// // Output only. Update timestamp.
 	// UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Unique identifier of the repository.
+	Uid *string `json:"uid,omitempty"`
 
 	// Output only. URIs for the repository.
 	URIs *Repository_URIs `json:"uris,omitempty"`
