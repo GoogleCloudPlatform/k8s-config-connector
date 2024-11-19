@@ -214,7 +214,7 @@ func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Uid
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Etag
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	// MISSING: Uris
 	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
 	return out
@@ -225,7 +225,7 @@ func SecureSourceManagerRepositorySpec_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.Repository{}
 	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Description
 	if in.InstanceRef != nil {
 		out.Instance = in.InstanceRef.External
 	}

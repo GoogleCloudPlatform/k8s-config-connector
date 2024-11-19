@@ -49,7 +49,8 @@ type SecureSourceManagerRepositorySpec struct {
 	InitialConfig *Repository_InitialConfig `json:"initialConfig,omitempty"`
 
 	// Optional. Description of the repository, which cannot exceed 500 characters.
-	Description *string `json:"description,omitempty"`
+	// Temporarily omitted for now.
+	// Description *string `json:"description,omitempty"`
 
 	// Optional. This checksum is computed by the server based on the value of other
 	// fields, and may be sent on update and delete requests to ensure the

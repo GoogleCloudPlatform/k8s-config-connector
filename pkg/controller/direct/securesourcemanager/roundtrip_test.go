@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/fuzz"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
@@ -135,27 +136,31 @@ func FuzzSecureSourceManagerRepositorySpec(f *testing.F) {
 		fuzz.FillWithRandom(t, randStream, p1)
 
 		// We don't expect output fields to round-trip
-		ignoreFields := sets.New(
-			// Handled specially
-			".name",
-
-			// Not yet implemented
-			".create_time",
-			".update_time",
-
-			// ObservedState (output) fields
-			".uid",
-			".uris",
-		)
+		outputFields := sets.New[string]()
+		outputFields.Insert(".uid")
+		outputFields.Insert(".uris")
 
 		// A few fields are not implemented yet in KRM, don't test them
 		unimplementedFields := sets.New[string]()
+		unimplementedFields.Insert(".name")
+
+		// Status fields
+		unimplementedFields.Insert(".create_time")
+		unimplementedFields.Insert(".update_time")
+		// Temporarily not supported due to lack of Update API.
+		unimplementedFields.Insert(".description")
 
 		// Remove any output only or known-unimplemented fields
 		clearFields := &fuzz.ClearFields{
-			Paths: unimplementedFields.Union(ignoreFields),
+			Paths: unimplementedFields.Union(outputFields),
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
+
+		r := &fuzz.ReplaceFields{}
+		r.Func = func(path string, val protoreflect.Value) (protoreflect.Value, bool) {
+			return protoreflect.Value{}, false
+		}
+		fuzz.Visit("", p1.ProtoReflect(), nil, r)
 
 		ctx := &direct.MapContext{}
 		k := SecureSourceManagerRepositorySpec_FromProto(ctx, p1)
@@ -183,27 +188,33 @@ func FuzzSecureSourceManagerRepositoryObservedState(f *testing.F) {
 		p1 := &pb.Repository{}
 		fuzz.FillWithRandom(t, randStream, p1)
 
-		// We don't expect spec fields to round-trip
-		ignoreFields := sets.New(
-			// Handled specially
-			".name",
+		// Ignore spec fields
+		specFields := sets.New[string]()
+		specFields.Insert(".instance")
+		specFields.Insert(".initial_config")
+		specFields.Insert(".etag")
+		// Temporarily not supported due to lack of Update API.
+		specFields.Insert(".description")
 
-			// Not yet implemented
-			".create_time",
-			".update_time",
+		// A few fields are not implemented yet in KRM, don't test them
+		unimplementedFields := sets.New[string]()
+		unimplementedFields.Insert(".name")
 
-			// Spec fields
-			".instance",
-			".initial_config",
-			".description",
-			".etag",
-		)
+		// Status fields
+		unimplementedFields.Insert(".create_time")
+		unimplementedFields.Insert(".update_time")
 
-		// Remove any output only or known-unimplemented fields
+		// Remove any output only or spec fields
 		clearFields := &fuzz.ClearFields{
-			Paths: ignoreFields,
+			Paths: unimplementedFields.Union(specFields),
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
+
+		r := &fuzz.ReplaceFields{}
+		r.Func = func(path string, val protoreflect.Value) (protoreflect.Value, bool) {
+			return protoreflect.Value{}, false
+		}
+		fuzz.Visit("", p1.ProtoReflect(), nil, r)
 
 		ctx := &direct.MapContext{}
 		k := SecureSourceManagerRepositoryObservedState_FromProto(ctx, p1)
