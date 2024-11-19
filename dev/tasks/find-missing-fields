@@ -38,6 +38,8 @@ go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterObserved
 go test -v ./pkg/controller/direct/monitoring/ -fuzz=FuzzMonitoringDashboardSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerInstanceSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerInstanceObservedState -fuzztime 60s
+go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerRepositorySpec -fuzztime 60s
+go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerRepositoryObservedState -fuzztime 60s
 
 go test -v ./pkg/controller/direct/dataform/ -fuzz=FuzzDataformRepositorySpec -fuzztime 60s
 
