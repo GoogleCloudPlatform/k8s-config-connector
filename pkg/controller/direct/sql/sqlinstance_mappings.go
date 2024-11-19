@@ -21,6 +21,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
@@ -99,7 +100,7 @@ func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration) 
 	return out
 }
 
-func InstanceRootPasswordKRMToGCP(in *krm.InstanceRootPassword) string {
+func InstanceRootPasswordKRMToGCP(in *refsv1beta1secret.Legacy) string {
 	if in == nil {
 		return ""
 	}
@@ -211,7 +212,7 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 	return out
 }
 
-func InstancePasswordKRMToGCP(in *krm.InstancePassword) string {
+func InstancePasswordKRMToGCP(in *refsv1beta1secret.Legacy) string {
 	if in == nil {
 		return ""
 	}

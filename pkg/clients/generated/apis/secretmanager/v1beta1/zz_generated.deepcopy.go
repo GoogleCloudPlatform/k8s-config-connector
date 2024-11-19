@@ -313,8 +313,16 @@ func (in *SecretManagerSecretVersionSpec) DeepCopyInto(out *SecretManagerSecretV
 		*out = new(string)
 		**out = **in
 	}
-	in.SecretData.DeepCopyInto(&out.SecretData)
-	out.SecretRef = in.SecretRef
+	if in.SecretData != nil {
+		in, out := &in.SecretData, &out.SecretData
+		*out = new(SecretversionSecretData)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	return
 }
 

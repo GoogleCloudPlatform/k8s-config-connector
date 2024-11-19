@@ -15,11 +15,101 @@
 package secretmanager
 
 import (
+	"strconv"
+
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CustomerManagedEncryptionStatus_FromProto(mapCtx *direct.MapContext, in *pb.CustomerManagedEncryptionStatus) *krm.CustomerManagedEncryptionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomerManagedEncryptionStatus{}
+	out.KmsKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
+	return out
+}
+func CustomerManagedEncryptionStatus_ToProto(mapCtx *direct.MapContext, in *krm.CustomerManagedEncryptionStatus) *pb.CustomerManagedEncryptionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomerManagedEncryptionStatus{}
+	out.KmsKeyVersionName = direct.ValueOf(in.KmsKeyVersionName)
+	return out
+}
+func ReplicationStatus_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationStatus) *krm.ReplicationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicationStatus{}
+	out.Automatic = ReplicationStatus_AutomaticStatus_FromProto(mapCtx, in.GetAutomatic())
+	out.UserManaged = ReplicationStatus_UserManagedStatus_FromProto(mapCtx, in.GetUserManaged())
+	return out
+}
+func ReplicationStatus_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationStatus) *pb.ReplicationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicationStatus{}
+	if oneof := ReplicationStatus_AutomaticStatus_ToProto(mapCtx, in.Automatic); oneof != nil {
+		out.ReplicationStatus = &pb.ReplicationStatus_Automatic{Automatic: oneof}
+	}
+	if oneof := ReplicationStatus_UserManagedStatus_ToProto(mapCtx, in.UserManaged); oneof != nil {
+		out.ReplicationStatus = &pb.ReplicationStatus_UserManaged{UserManaged: oneof}
+	}
+	return out
+}
+func ReplicationStatus_AutomaticStatus_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationStatus_AutomaticStatus) *krm.ReplicationStatus_AutomaticStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicationStatus_AutomaticStatus{}
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_FromProto(mapCtx, in.GetCustomerManagedEncryption())
+	return out
+}
+func ReplicationStatus_AutomaticStatus_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationStatus_AutomaticStatus) *pb.ReplicationStatus_AutomaticStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicationStatus_AutomaticStatus{}
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_ToProto(mapCtx, in.CustomerManagedEncryption)
+	return out
+}
+func ReplicationStatus_UserManagedStatus_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationStatus_UserManagedStatus) *krm.ReplicationStatus_UserManagedStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicationStatus_UserManagedStatus{}
+	out.Replicas = direct.Slice_FromProto(mapCtx, in.Replicas, ReplicationStatus_UserManagedStatus_ReplicaStatus_FromProto)
+	return out
+}
+func ReplicationStatus_UserManagedStatus_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationStatus_UserManagedStatus) *pb.ReplicationStatus_UserManagedStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicationStatus_UserManagedStatus{}
+	out.Replicas = direct.Slice_ToProto(mapCtx, in.Replicas, ReplicationStatus_UserManagedStatus_ReplicaStatus_ToProto)
+	return out
+}
+func ReplicationStatus_UserManagedStatus_ReplicaStatus_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationStatus_UserManagedStatus_ReplicaStatus) *krm.ReplicationStatus_UserManagedStatus_ReplicaStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicationStatus_UserManagedStatus_ReplicaStatus{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_FromProto(mapCtx, in.GetCustomerManagedEncryption())
+	return out
+}
+func ReplicationStatus_UserManagedStatus_ReplicaStatus_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationStatus_UserManagedStatus_ReplicaStatus) *pb.ReplicationStatus_UserManagedStatus_ReplicaStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicationStatus_UserManagedStatus_ReplicaStatus{}
+	out.Location = direct.ValueOf(in.Location)
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_ToProto(mapCtx, in.CustomerManagedEncryption)
+	return out
+}
 func Replication_Automatic_FromProto(mapCtx *direct.MapContext, in *pb.Replication_Automatic) *krm.Replication_Automatic {
 	if in == nil {
 		return nil
@@ -88,51 +178,6 @@ func Rotation_ToProto(mapCtx *direct.MapContext, in *krm.Rotation) *pb.Rotation 
 	out.RotationPeriod = direct.StringDuration_ToProto(mapCtx, in.RotationPeriod)
 	return out
 }
-func Secret_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.Secret {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Secret{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Replication = Replication_FromProto(mapCtx, in.GetReplication())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.Labels = in.Labels
-	out.Topics = direct.Slice_FromProto(mapCtx, in.Topics, Topic_FromProto)
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Ttl = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Rotation = Rotation_FromProto(mapCtx, in.GetRotation())
-	out.VersionAliases = in.VersionAliases
-	out.Annotations = in.Annotations
-	// MISSING: VersionDestroyTtl
-	out.CustomerManagedEncryption = CustomerManagedEncryption_FromProto(mapCtx, in.GetCustomerManagedEncryption())
-	return out
-}
-
-func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Secret{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Replication = Replication_ToProto(mapCtx, in.Replication)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.Labels = in.Labels
-	out.Topics = direct.Slice_ToProto(mapCtx, in.Topics, Topic_ToProto)
-	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
-		out.Expiration = &pb.Secret_ExpireTime{ExpireTime: oneof}
-	}
-	if oneof := direct.StringDuration_ToProto(mapCtx, in.Ttl); oneof != nil {
-		out.Expiration = &pb.Secret_Ttl{Ttl: oneof}
-	}
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Rotation = Rotation_ToProto(mapCtx, in.Rotation)
-	out.VersionAliases = in.VersionAliases
-	out.Annotations = in.Annotations
-	// MISSING: VersionDestroyTtl
-	out.CustomerManagedEncryption = CustomerManagedEncryption_ToProto(mapCtx, in.CustomerManagedEncryption)
-	return out
-}
 func SecretManagerSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.SecretManagerSecretObservedState {
 	if in == nil {
 		return nil
@@ -177,27 +222,139 @@ func SecretManagerSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.Secret)
 	// MISSING: Ttl
 	// MISSING: Etag
 	out.Rotation = Rotation_FromProto(mapCtx, in.GetRotation())
-	// MISSING: VersionAliases
-	// out.VersionAliases = in.VersionAliases
+	for k, v := range in.VersionAliases {
+		out.VersionAliases[k] = strconv.FormatInt(v, 10)
+	}
 	out.Annotations = in.Annotations
 	// MISSING: VersionDestroyTtl
 	// MISSING: CustomerManagedEncryption
 	return out
 }
-func Topic_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.Topic {
+func SecretManagerSecretVersionObservation_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionObservation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Topic{}
+	out := &krm.SecretManagerSecretVersionObservation{}
 	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DestroyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDestroyTime())
+	// MISSING: State
+	out.ReplicationStatus = ReplicationStatus_FromProto(mapCtx, in.GetReplicationStatus())
+	// MISSING: Etag
+	out.ClientSpecifiedPayloadChecksum = direct.LazyPtr(in.GetClientSpecifiedPayloadChecksum())
+	out.ScheduledDestroyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetScheduledDestroyTime())
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_FromProto(mapCtx, in.GetCustomerManagedEncryption())
 	return out
 }
-
-func Topic_ToProto(mapCtx *direct.MapContext, in *krm.Topic) *pb.Topic {
+func SecretManagerSecretVersionObservation_ToProto(mapCtx *direct.MapContext, in *krm.SecretManagerSecretVersionObservation) *pb.SecretVersion {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Topic{}
+	out := &pb.SecretVersion{}
 	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.DestroyTime = direct.StringTimestamp_ToProto(mapCtx, in.DestroyTime)
+	// MISSING: State
+	out.ReplicationStatus = ReplicationStatus_ToProto(mapCtx, in.ReplicationStatus)
+	// MISSING: Etag
+	out.ClientSpecifiedPayloadChecksum = direct.ValueOf(in.ClientSpecifiedPayloadChecksum)
+	out.ScheduledDestroyTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduledDestroyTime)
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_ToProto(mapCtx, in.CustomerManagedEncryption)
+	return out
+}
+func SecretManagerSecretVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionObservation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretManagerSecretVersionObservation{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: DestroyTime
+	// MISSING: State
+	// MISSING: ReplicationStatus
+	// MISSING: Etag
+	// MISSING: ClientSpecifiedPayloadChecksum
+	// MISSING: ScheduledDestroyTime
+	// MISSING: CustomerManagedEncryption
+	return out
+}
+func SecretManagerSecretVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretManagerSecretVersionObservation) *pb.SecretVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretVersion{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: DestroyTime
+	// MISSING: State
+	// MISSING: ReplicationStatus
+	// MISSING: Etag
+	// MISSING: ClientSpecifiedPayloadChecksum
+	// MISSING: ScheduledDestroyTime
+	// MISSING: CustomerManagedEncryption
+	return out
+}
+func SecretManagerSecretVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretManagerSecretVersionSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: DestroyTime
+	// MISSING: State
+	// MISSING: ReplicationStatus
+	// MISSING: Etag
+	// MISSING: ClientSpecifiedPayloadChecksum
+	// MISSING: ScheduledDestroyTime
+	// MISSING: CustomerManagedEncryption
+	return out
+}
+func SecretManagerSecretVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecretManagerSecretVersionSpec) *pb.SecretVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretVersion{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: DestroyTime
+	// MISSING: State
+	// MISSING: ReplicationStatus
+	// MISSING: Etag
+	// MISSING: ClientSpecifiedPayloadChecksum
+	// MISSING: ScheduledDestroyTime
+	// MISSING: CustomerManagedEncryption
+	return out
+}
+func SecretVersion_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretVersion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretVersion{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DestroyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDestroyTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ReplicationStatus = ReplicationStatus_FromProto(mapCtx, in.GetReplicationStatus())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ClientSpecifiedPayloadChecksum = direct.LazyPtr(in.GetClientSpecifiedPayloadChecksum())
+	out.ScheduledDestroyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetScheduledDestroyTime())
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_FromProto(mapCtx, in.GetCustomerManagedEncryption())
+	return out
+}
+func SecretVersion_ToProto(mapCtx *direct.MapContext, in *krm.SecretVersion) *pb.SecretVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretVersion{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.DestroyTime = direct.StringTimestamp_ToProto(mapCtx, in.DestroyTime)
+	out.State = direct.Enum_ToProto[pb.SecretVersion_State](mapCtx, in.State)
+	out.ReplicationStatus = ReplicationStatus_ToProto(mapCtx, in.ReplicationStatus)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ClientSpecifiedPayloadChecksum = direct.ValueOf(in.ClientSpecifiedPayloadChecksum)
+	out.ScheduledDestroyTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduledDestroyTime)
+	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_ToProto(mapCtx, in.CustomerManagedEncryption)
 	return out
 }
