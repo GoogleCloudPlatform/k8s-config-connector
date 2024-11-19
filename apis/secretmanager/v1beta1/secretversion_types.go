@@ -28,11 +28,20 @@ type SecretManagerSecretVersionSpec struct {
 	// The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for.
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
 
-	// Immutable. The SecretVersion name. If not given, the metadata.name will be used.
+	// The SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service.
+	// If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number
+	// from `status.observedState.version`
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// TODO: Below fields are legacy KCC API. We should mark as deprecated once switch to use SciFi controller.
+	// Should enable or disable the current SecretVersion.
+	// - Enabled version can be accessed and described.
+	// - Disabled version cannot be accessed, but the secret's contents still exist
+	Enabled *bool `json:"enabled,omitempty"`
 
+	// The actual secret data. Config Connector supports secret data stored in Kubernetes secret or plain data (base64)
+	SecretData *SecretData_OneOf `json:"secretData,omitempty"`
+
+	// DEPRECATED. You do not need to set this field in direct reconciler mode. Use delete-policy annotation instead. https://cloud.google.com/config-connector/docs/how-to/managing-deleting-resources#keeping_resources_after_deletion
 	// The deletion policy for the secret version. Setting 'ABANDON' allows the resource
 	// to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be
 	// disabled rather than deleted. Default is 'DELETE'. Possible values are:
@@ -40,12 +49,14 @@ type SecretManagerSecretVersionSpec struct {
 	// * DISABLE
 	// * ABANDON.
 	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
-	// The current state of the SecretVersion.
-	Enabled *bool `json:"enabled,omitempty"`
-	// Immutable. If set to 'true', the secret data is expected to be base64-encoded string and would be sent as is.
+
+	// DEPRECATED. You do not need to set this field in direct reconciler mode.
 	IsSecretDataBase64 *bool `json:"isSecretDataBase64,omitempty"`
-	// Immutable. The secret data. Must be no larger than 64KiB.
-	SecretData *refsv1beta1secret.Legacy `json:"secretData,omitempty"`
+}
+
+type SecretData_OneOf struct {
+	*refsv1beta1secret.Legacy `json:",inline"`
+	// TODO: support getting secret data from other places.
 }
 
 // SecretManagerSecretVersionStatus defines the config connector machine state of SecretManagerSecretVersion
@@ -57,43 +68,28 @@ type SecretManagerSecretVersionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/*NOTYET
 	// A unique specifier for the SecretManagerSecretVersion resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *SecretManagerSecretVersionObservedState `json:"observedState,omitempty"`
-	*/
 
-	// Note: Below fields should be under status.observedState. To keep it here to make the resource backward compatible.
-
-	// Output only. The time at which the
-	// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.
+	// DEPRECATING NOTE: Please use status.observedState.createTime instead.
 	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
 
-	// Output only. The time this
-	// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed.
-	// Only present if
-	// [state][google.cloud.secretmanager.v1.SecretVersion.state] is
-	// [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED].
+	// DEPRECATING NOTE: Please use status.observedState.destroyTime instead.
 	DestroyTime *string `json:"destroyTime,omitempty" tf:"destroy_time,omitempty"`
 
-	// Output only. The resource name of the
-	// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the
-	// format `projects/*/secrets/*/versions/*`.
-	//
-	// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a
-	// [Secret][google.cloud.secretmanager.v1.Secret] start at 1 and are
-	// incremented for each subsequent version of the secret.
+	// DEPRECATING NOTE: Please use status.observedState.name instead.
 	Name *string `json:"name,omitempty"`
 
-	// The version of the Secret.
+	// DEPRECATED.
 	Version *string `json:"version,omitempty"`
 }
 
-// SecretManagerSecretVersionObservedState is the state of the SecretManagerSecretVersion resource as most recently observed in GCP.
+// SecretManagerSecretVersionObserved is the state of the SecretManagerSecretVersion resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.secretmanager.v1.SecretVersion
-type SecretManagerSecretVersionObservation struct {
+type SecretManagerSecretVersionObservedState struct {
 	// Output only. The time at which the
 	// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.
 	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
