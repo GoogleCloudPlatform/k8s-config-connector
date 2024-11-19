@@ -165,23 +165,32 @@ func main() {
 	if err != nil {
 		log.Fatalf("error getting direct resource GVKs: %v", err)
 	}
+	docGenerator := &DocGenerator{
+		smLoader:   smLoader,
+		directGVKs: directGVKs,
+	}
 	for _, gvk := range manualResources {
 		if strings.HasPrefix(gvk.Version, "v1alpha") {
 			klog.Infof("skipping alpha resource %v", gvk)
 			continue
 		}
-		if err := generateDocForGVK(gvk, smLoader, directGVKs); err != nil {
+		if err := docGenerator.generateDocForGVK(gvk); err != nil {
 			log.Fatal(fmt.Errorf("error generating doc for GVK %v: %w", gvk, err))
 		}
 	}
 }
 
-func generateDocForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader, directGVKs map[schema.GroupVersionKind]bool) error {
+type DocGenerator struct {
+	smLoader   *servicemappingloader.ServiceMappingLoader
+	directGVKs map[schema.GroupVersionKind]bool
+}
+
+func (d *DocGenerator) generateDocForGVK(gvk schema.GroupVersionKind) error {
 	template, err := templateForGVK(gvk)
 	if err != nil {
 		return fmt.Errorf("error creating template: %w", err)
 	}
-	templateData, err := templateDataForGVK(gvk, smLoader, directGVKs)
+	templateData, err := d.templateDataForGVK(gvk)
 	if err != nil {
 		return fmt.Errorf("error preparing template data: %w", err)
 	}
@@ -215,22 +224,22 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 	return template, nil
 }
 
-func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader, directGVKs map[schema.GroupVersionKind]bool) (interface{}, error) {
-	resource, err := constructResourceForGVK(gvk, smLoader, directGVKs)
+func (d *DocGenerator) templateDataForGVK(gvk schema.GroupVersionKind) (interface{}, error) {
+	resource, err := d.constructResourceForGVK(gvk)
 	if err != nil {
 		return nil, fmt.Errorf("error constructing resource data: %w", err)
 	}
 
 	switch gvk.Kind {
 	case "IAMPolicy":
-		supportedReferences, err := referencesSupportedByIAMPolicy(smLoader)
+		supportedReferences, err := d.referencesSupportedByIAMPolicy()
 		if err != nil {
 			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
 		return &iamPolicyResource{*resource, supportedReferences}, nil
 	case "IAMPartialPolicy":
 		// IAMPartialPolicy has the same resource supports as IAMPolicy
-		supportedReferences, err := referencesSupportedByIAMPolicy(smLoader)
+		supportedReferences, err := d.referencesSupportedByIAMPolicy()
 		if err != nil {
 			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
@@ -245,13 +254,13 @@ func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloa
 		}
 		return &iamPartialPolicyResource{*resource, references}, nil
 	case "IAMPolicyMember":
-		supportedReferences, err := referencesSupportedByIAMPolicyMember(smLoader)
+		supportedReferences, err := d.referencesSupportedByIAMPolicyMember()
 		if err != nil {
 			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
 		return &iamPolicyMemberResource{*resource, supportedReferences}, nil
 	case "IAMAuditConfig":
-		supportedReferences, err := referencesSupportedByIAMAuditConfig(smLoader)
+		supportedReferences, err := d.referencesSupportedByIAMAuditConfig()
 		if err != nil {
 			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
@@ -261,7 +270,7 @@ func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloa
 	}
 }
 
-func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader, directGVKs map[schema.GroupVersionKind]bool) (*resource, error) {
+func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*resource, error) {
 	r := &resource{}
 
 	// crd properties
@@ -290,8 +299,8 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	if err = buildFieldDescriptions(r, crd, gvk.Version); err != nil {
 		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
 	}
-	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader).Seconds())
-	isDirectGVK := directGVKs[gvk]
+	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, d.smLoader, serviceMetadataLoader).Seconds())
+	isDirectGVK := d.directGVKs[gvk]
 	if err != nil {
 		return nil, fmt.Errorf("error checking whether GVK is direct: %w", err)
 	}
@@ -305,7 +314,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 			return nil, fmt.Errorf("error processing the DCL based resource %v: %w", gvk, err)
 		}
 	} else {
-		if err := handleAnnotationsAndIAMSettingsForTFBasedResource(r, gvk, smLoader); err != nil {
+		if err := d.handleAnnotationsAndIAMSettingsForTFBasedResource(r, gvk); err != nil {
 			// TODO: Add annotation and IAM settings handling logic for direct GKs.
 			if isDirectGVK &&
 				strings.Contains(err.Error(), fmt.Sprintf("unable to get service mapping: no mapping with name '%s' found", gvk.Group)) {
@@ -316,7 +325,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 		}
 	}
 
-	r.SampleYamls, err = buildSamples(r.Kind, sampleDirPathForGVK(gvk), smLoader)
+	r.SampleYamls, err = d.buildSamples(r.Kind, sampleDirPathForGVK(gvk))
 	if err != nil {
 		// TODO: Samples should also be required for direct CRDs.
 		if isDirectGVK &&
@@ -366,9 +375,9 @@ func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.
 	return nil
 }
 
-func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) error {
+func (d *DocGenerator) handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.GroupVersionKind) error {
 	annotationSet := sets.NewString()
-	rcs, err := smLoader.GetResourceConfigs(gvk)
+	rcs, err := d.smLoader.GetResourceConfigs(gvk)
 	if err != nil {
 		return fmt.Errorf("error getting resource configs: %w", err)
 	}
@@ -475,7 +484,7 @@ func getDCLExternalReferenceFormatIfSupportsIAM(gvk schema.GroupVersionKind) (st
 	return externalReferenceFormat, nil
 }
 
-func buildSamples(kind, sampleDirPath string, smLoader *servicemappingloader.ServiceMappingLoader) (map[string]string, error) {
+func (d *DocGenerator) buildSamples(kind, sampleDirPath string) (map[string]string, error) {
 	fileInfos, err := ioutil.ReadDir(sampleDirPath)
 	if err != nil {
 		return nil, fmt.Errorf("error reading directory %v: %w", sampleDirPath, err)
@@ -488,7 +497,7 @@ func buildSamples(kind, sampleDirPath string, smLoader *servicemappingloader.Ser
 			if err != nil {
 				return nil, fmt.Errorf("error building sample at %v: %w", subDirPath, err)
 			}
-			name := titleForSample(subDir, smLoader.GetServiceMappings())
+			name := d.titleForSample(subDir)
 			sampleYAMLs[name] = sample
 		}
 	} else {
@@ -631,10 +640,10 @@ func atLeastOneFieldHasRequiredWhenParentPresentRequirementLevel(desc fielddesc.
 	return false
 }
 
-func referencesSupportedByIAMPolicy(smLoader *servicemappingloader.ServiceMappingLoader) ([]iamPolicyReference, error) {
+func (d *DocGenerator) referencesSupportedByIAMPolicy() ([]iamPolicyReference, error) {
 	refs := make([]iamPolicyReference, 0)
-	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
-		rcs, err := smLoader.GetResourceConfigs(gvk)
+	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(d.smLoader) {
+		rcs, err := d.smLoader.GetResourceConfigs(gvk)
 		if err != nil {
 			return nil, fmt.Errorf("error getting resource configs for GVK %v: %w", gvk, err)
 		}
@@ -685,10 +694,10 @@ func referencesSupportedByIAMPolicy(smLoader *servicemappingloader.ServiceMappin
 	return refs, nil
 }
 
-func referencesSupportedByIAMPolicyMember(smLoader *servicemappingloader.ServiceMappingLoader) ([]iamPolicyMemberReference, error) {
+func (d *DocGenerator) referencesSupportedByIAMPolicyMember() ([]iamPolicyMemberReference, error) {
 	refs := make([]iamPolicyMemberReference, 0)
-	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
-		rcs, err := smLoader.GetResourceConfigs(gvk)
+	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(d.smLoader) {
+		rcs, err := d.smLoader.GetResourceConfigs(gvk)
 		if err != nil {
 			return nil, fmt.Errorf("error getting resource configs for GVK %v: %w", gvk, err)
 		}
@@ -733,10 +742,10 @@ func referencesSupportedByIAMPolicyMember(smLoader *servicemappingloader.Service
 	return refs, nil
 }
 
-func referencesSupportedByIAMAuditConfig(smLoader *servicemappingloader.ServiceMappingLoader) ([]iamAuditConfigReference, error) {
+func (d *DocGenerator) referencesSupportedByIAMAuditConfig() ([]iamAuditConfigReference, error) {
 	refs := make([]iamAuditConfigReference, 0)
-	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
-		rcs, err := smLoader.GetResourceConfigs(gvk)
+	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(d.smLoader) {
+		rcs, err := d.smLoader.GetResourceConfigs(gvk)
 		if err != nil {
 			return nil, fmt.Errorf("error getting resource configs for GVK %v: %w", gvk, err)
 		}
@@ -768,10 +777,10 @@ func referencesSupportedByIAMAuditConfig(smLoader *servicemappingloader.ServiceM
 }
 
 // titleForSample returns the title that should be used for the sample
-func titleForSample(dir fs.FileInfo, serviceMappings []v1alpha1.ServiceMapping) string {
+func (d *DocGenerator) titleForSample(dir fs.FileInfo) string {
 	serviceMappingNames := make(map[string]v1alpha1.ServiceMapping)
 	resourceKinds := make(map[string]v1alpha1.ResourceConfig)
-	for _, sm := range serviceMappings {
+	for _, sm := range d.smLoader.GetServiceMappings() {
 		serviceMappingNames[strings.ToLower(sm.Spec.Name)] = sm
 
 		for _, resource := range sm.Spec.Resources {
