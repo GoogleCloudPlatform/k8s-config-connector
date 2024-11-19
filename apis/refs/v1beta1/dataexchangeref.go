@@ -115,3 +115,36 @@ func ResolveDataExchangeRef(ctx context.Context, reader client.Reader, obj clien
 		DataExchangeID: resourceID,
 	}, nil
 }
+
+func ResolveDataExchangeForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (*DataExchange, error) {
+	dataExchangeRefExternal, _, err := unstructured.NestedString(obj.Object, "spec", "dataExchangeRef", "external")
+	if err != nil {
+		return nil, fmt.Errorf("error fetching dataExchangeRef.external %w", err)
+	}
+	if dataExchangeRefExternal != "" {
+		return ResolveDataExchangeRef(ctx, reader, obj, &DataExchangeRef{External: dataExchangeRefExternal})
+	}
+
+	dataExchangeRefName, _, err := unstructured.NestedString(obj.Object, "spec", "dataExchangeRef", "name")
+	if err != nil {
+		return nil, fmt.Errorf("error fetching dataExchangeRef.name %w", err)
+	}
+	if dataExchangeRefName != "" {
+		dataExchangeRefNs, _, err := unstructured.NestedString(obj.Object, "spec", "dataExchangeRef", "namespace")
+		if err != nil {
+			return nil, fmt.Errorf("error fetching dataExchangeRef.namespace %w", err)
+		}
+
+		dataExchangeRef := DataExchangeRef{
+			Name:      dataExchangeRefName,
+			Namespace: dataExchangeRefNs,
+		}
+		if dataExchangeRef.Namespace == "" {
+			dataExchangeRef.Namespace = obj.GetNamespace()
+		}
+
+		return ResolveDataExchangeRef(ctx, reader, obj, &dataExchangeRef)
+	}
+
+	return nil, fmt.Errorf("cannot find dataExchangeRef for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
+}

@@ -79,8 +79,7 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 
-	or, err := resolveOptionalReferences(ctx, reader, obj)
-	if err != nil {
+	if err := resolveOptionalReferences(ctx, reader, obj); err != nil {
 		return nil, err
 	}
 	// Get bigqueryanalyticshub GCP client
@@ -89,45 +88,37 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 	return &ListingAdapter{
-		id:         id,
-		gcpClient:  gcpClient,
-		desired:    obj,
-		references: or,
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   obj,
 	}, nil
 }
 
-type optionalReferences struct {
-	dataExchange *refs.DataExchange
-}
-
-func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *krm.BigQueryAnalyticsHubListing) (*optionalReferences, error) {
-	or := &optionalReferences{}
+func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *krm.BigQueryAnalyticsHubListing) error {
 	if ref := obj.Spec.DataExchangeRef; ref != nil {
-		de, err := refs.ResolveDataExchangeRef(ctx, reader, obj, ref)
+		_, err := refs.ResolveDataExchangeRef(ctx, reader, obj, ref)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		or.dataExchange = de
 	}
 
 	if obj.Spec.Source != nil && obj.Spec.Source.BigQueryDatasetSource != nil {
 		if ref := obj.Spec.Source.BigQueryDatasetSource.Dataset; ref != nil {
-			// don't need to save the actual reference for this
 			if _, err := refs.ResolveBigQueryDataset(ctx, reader, obj, ref); err != nil {
-				return nil, err
+				return err
 			}
 
 			for _, selectedResource := range obj.Spec.Source.BigQueryDatasetSource.SelectedResources {
 				if ref := selectedResource.TableRef; ref != nil {
 					if _, err := refs.ResolveBigQueryTable(ctx, reader, obj, ref); err != nil {
-						return nil, err
+						return err
 					}
 				}
 			}
 		}
 	}
 
-	return or, nil
+	return nil
 }
 
 func (m *modelListing) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -140,8 +131,6 @@ type ListingAdapter struct {
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryAnalyticsHubListing
 	actual    *bigqueryanalyticshubpb.Listing
-
-	references *optionalReferences
 }
 
 var _ directbase.Adapter = &ListingAdapter{}
@@ -180,7 +169,7 @@ func (a *ListingAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 
 	req := &bigqueryanalyticshubpb.CreateListingRequest{
-		Parent:    parent.String() + "/dataExchanges/" + a.references.dataExchange.DataExchangeID,
+		Parent:    parent.String(),
 		Listing:   resource,
 		ListingId: a.desired.GetName(),
 	}
@@ -327,14 +316,8 @@ func (a *ListingAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log := klog.FromContext(ctx).WithName(listingCtrlName)
 	log.V(2).Info("deleting Listing", "name", a.id.External)
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return false, err
-	}
-
-	actualName := parent.String() + "/dataExchanges/" + a.references.dataExchange.DataExchangeID + "/listings/" + a.id.Name
-	req := &bigqueryanalyticshubpb.DeleteListingRequest{Name: actualName}
-	err = a.gcpClient.DeleteListing(ctx, req)
+	req := &bigqueryanalyticshubpb.DeleteListingRequest{Name: a.id.External}
+	err := a.gcpClient.DeleteListing(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting Listing %s: %w", a.id.External, err)
 	}

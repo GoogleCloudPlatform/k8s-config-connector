@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -99,7 +100,19 @@ func NewBigQueryAnalyticsHubListingRef(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location}
+	if location == "" {
+		return nil, fmt.Errorf("location cannot be empty")
+	}
+	contents, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot convert typed to unstructured: %w", err)
+	}
+
+	dataExchangeRef, err := refsv1beta1.ResolveDataExchangeForObject(ctx, reader, &unstructured.Unstructured{Object: contents})
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve dataset ref: %w", err)
+	}
+	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location, DataExchangeID: dataExchangeRef.DataExchangeID}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -152,13 +165,13 @@ func (r *BigQueryAnalyticsHubListingRef) Parent() (*BigQueryAnalyticsHubListingP
 }
 
 type BigQueryAnalyticsHubListingParent struct {
-	ProjectID string
-	Location  string
-	// todo acpana rework the parent to include the data exchange ref
+	ProjectID      string
+	Location       string
+	DataExchangeID string
 }
 
 func (p *BigQueryAnalyticsHubListingParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/dataExchanges/" + p.DataExchangeID
 }
 
 func asBigQueryAnalyticsHubListingExternal(parent *BigQueryAnalyticsHubListingParent, resourceID string) (external string) {
@@ -168,14 +181,15 @@ func asBigQueryAnalyticsHubListingExternal(parent *BigQueryAnalyticsHubListingPa
 func parseBigQueryAnalyticsHubListingExternal(external string) (parent *BigQueryAnalyticsHubListingParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "listings" {
-		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubListing external=%q was not known (use projects/<projectId>/locations/<location>/listings/<listingID>)", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "dataExchanges" || tokens[6] != "listings" {
+		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubListing external=%q was not known (use projects/<projectID>/locations/<location>/dataExchanges/<dataExchangeID>/listings/<listingID>)", external)
 	}
 	parent = &BigQueryAnalyticsHubListingParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:      tokens[1],
+		Location:       tokens[3],
+		DataExchangeID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
 
