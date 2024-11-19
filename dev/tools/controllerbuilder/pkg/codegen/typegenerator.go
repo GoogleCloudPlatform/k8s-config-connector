@@ -262,7 +262,7 @@ func goNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 
 	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
 	fullName = strings.TrimPrefix(fullName, ".")
-	fullName = strings.ReplaceAll(fullName, ".", "_")
+	fullName = strings.ReplaceAll(fullName, ".", "")
 	return fullName
 }
 
