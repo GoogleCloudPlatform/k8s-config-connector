@@ -18,7 +18,27 @@ import (
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
+func LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx *direct.MapContext, in string) *refs.LoggingLogBucketRef {
+	if in == "" {
+		return nil
+	}
+	return &refs.LoggingLogBucketRef{
+		External: in,
+	}
+}
+
+func LoggingLinkSpec_LoggingLogBucketRef_ToProto(mapCtx *direct.MapContext, in *refs.LoggingLogBucketRef) *string {
+	if in == nil {
+		return nil
+	}
+	if in.External == "" {
+		mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
+	}
+	return direct.LazyPtr(in.External)
+}
+
 
 func BigQueryDataset_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDataset {
 	if in == nil {
@@ -41,13 +61,10 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 		return nil
 	}
 	out := &krm.LoggingLinkSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out.ResourceID = direct.LazyPtr(in.GetName()) // this needs to be link ID, which is just the unique name of the link (strip the prefix)
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-
-	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
-	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifeCycleState())
-	out.BigqueryDataset = BigQueryDataset_FromProto(mapCtx, in.BigQueryDataset)
+	// Build from proto and to proto for Log Bucket Ref
+	out.LoggingLogBucketRef =  LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx, in.GetName) //but strip the suffix of links/linkID
 	return out
 }
 func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {
@@ -55,17 +72,20 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 		return nil
 	}
 	out := &pb.Link{}
-	out.Name = direct.ValueOf(in.Name)
+	// out.Name = direct.ValueOf(in.Name) - keep in mind, this is set, but in the caller by the controller
 	out.Description = direct.ValueOf(in.Description)
+
+	return out
+}
+func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkObservedState {
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
+	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifeCycleState())
+	out.BigqueryDataset = BigQueryDataset_FromProto(mapCtx, in.BigQueryDataset)
+}
+func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkObservedState) *pb.Link {
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
 	out.LifecycleState = direct.Enum_ToProto(mapCtx, in.GetLifeCycleState())
 	out.BigqueryDataset = BigQueryDataset_ToProto(mapCtx, in.BigQueryDataset)
-	return out
-}
-func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkObservedState {
-	// TODO
-}
-func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkObservedState) *pb.Link {
-	// TODO
 }

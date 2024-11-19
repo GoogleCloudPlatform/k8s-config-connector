@@ -36,19 +36,17 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
 )
 
-/*
 
-//I dont think I need to declare this because it is in LogBucket
-
-type configService struct {
+type linkService struct {
 	*MockService
 	pb.UnimplementedConfigServiceV2Server
 }
-*/
+
+/*
 
 // createLinkDefaultObjects will ensure that the default log bucket is created for the folder/project/org
 // The input to this is probably linkName not bucketNmae
-func (s *configService) createLinkDefaultObjects(ctx context.Context, name *loggingLinkName) error {
+func (s *linkService) createLinkDefaultObjects(ctx context.Context, name *loggingLinkName) error {
 	// Create the default bucket
 	{
 		bucket := &pb.LogBucket{
@@ -69,16 +67,20 @@ func (s *configService) createLinkDefaultObjects(ctx context.Context, name *logg
 	return nil
 }
 
-func (s *configService) GetLoggingLink(ctx context.Context, req *pb.GetLoggingLinkRequest) (*pb.LoggingLink, error) {
+*/ 
+
+func (s *linkService) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.Link, error) {
 	name, err := s.parseLoggingLinkName(req.Name)
 	if err != nil {
 		return nil, err
 	}
+	/*
 	if err := s.createLinkDefaultObjects(ctx, name); err != nil {
 		return nil, err
 	}
+	*/
 	fqn := name.String()
-	obj := &pb.LoggingLink{}
+	obj := &pb.Link{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Bucket `%s` does not exist", name.BucketName)
@@ -88,88 +90,47 @@ func (s *configService) GetLoggingLink(ctx context.Context, req *pb.GetLoggingLi
 	return obj, nil
 }
 
-func (s *configService) CreateLoggingLink(ctx context.Context, req *pb.CreateLoggingLinkRequest) (*pb.LoggingLink, error) {
-	reqName := req.Parent + "/buckets/" + req.GetBucketId() + "/links/" + req.GetLinkId()
+func (s *linkService) CreateLink(ctx context.Context, req *pb.CreateLinkRequest) (*pb.Link, error) {
+	reqName := req.Parent + "/links/" + req.GetLinkId()
 	name, err := s.parseLoggingLinkName(reqName)
 	if err != nil {
 		return nil, err
 	}
+	/*
 	if err := s.createLinkDefaultObjects(ctx, name); err != nil {
 		return nil, err
 	}
+	*/ 
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.GetLoggingLink()).(*pb.LoggingLink)
+	obj := proto.Clone(req.GetLink()).(*pb.Link)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-	obj.UpdateTime = timestamppb.New(now)
-	s.populateDefaultsForLogBucket(obj)
+	// s.populateDefaultsForLogBucket(obj)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
-func (s *configService) populateDefaultsForLoggingLink(obj *pb.LoggingLink) {
+func (s *linkService) populateDefaultsForLoggingLink(obj *pb.Link) {
 	if obj.LifecycleState == pb.LifecycleState_LIFECYCLE_STATE_UNSPECIFIED {
 		obj.LifecycleState = pb.LifecycleState_ACTIVE
 	}
 }
 
-func (s *configService) UpdateLoggingLink(ctx context.Context, req *pb.UpdateLoggingLinkRequest) (*pb.LoggingLink, error) {
-	reqName := req.Name
-	name, err := s.parseLoggingLinkName(reqName)
-	if err != nil {
-		return nil, err
-	}
-	if err := s.createLinkDefaultObjects(ctx, name); err != nil {
-		return nil, err
-	}
-	fqn := name.String()
-	existing := &pb.LoggingLink{}
-	if err := s.storage.Get(ctx, fqn, existing); err != nil {
-		return nil, err
-	}
-	now := time.Now()
-	updated := proto.Clone(existing).(*pb.LogBucket)
-	updated.CreateTime = existing.CreateTime
-	updated.UpdateTime = timestamppb.New(now)
-
-	// Required. The update mask applies to the resource.
-	paths := req.GetUpdateMask().GetPaths()
-	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask is required")
-	}
-
-	// TODO: Some sort of helper for fieldmask?
-	for _, path := range paths {
-		switch path {
-		case "description":
-			updated.Description = req.GetLoggingLink().GetDescription()
-		// case "labels":
-		// 	updated.Labels = req.GetDnsAuthorization().GetLabels()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
-	}
-
-	s.populateDefaultsForLoggingLink(updated)
-	if err := s.storage.Update(ctx, fqn, updated); err != nil {
-		return nil, err
-	}
-	return updated, nil
-}
-
-func (s *configService) DeleteLoggingLink(ctx context.Context, req *pb.DeleteLoggingLinkRequest) (*empty.Empty, error) {
+func (s *linkService) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequest) (*empty.Empty, error) {
 	name, err := s.parseLoggingLinkName(req.Name)
 	if err != nil {
 		return nil, err
 	}
+	/*
 	if err := s.createLinkDefaultObjects(ctx, name); err != nil {
 		return nil, err
 	}
+	*/
 	fqn := name.String()
-	deletedObj := &pb.LoggingLink{}
+	deletedObj := &pb.Link{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
