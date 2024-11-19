@@ -20,7 +20,7 @@ spec:
   organizationRef:
     external: "organizations/${TEST_ORG_ID}"
   shortName: firewallpolicy-${uniqueId}
-  description: "A basic folder firewall policy"
+  description: "A basic organization firewall policy"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
