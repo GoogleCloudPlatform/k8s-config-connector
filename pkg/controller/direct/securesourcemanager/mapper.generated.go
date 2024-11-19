@@ -67,38 +67,6 @@ func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 	// MISSING: PscAllowedProjects
 	return out
 }
-func Repository_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.Repository {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Repository{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Instance = direct.LazyPtr(in.GetInstance())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Uris = Repository_URIs_FromProto(mapCtx, in.GetUris())
-	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
-	return out
-}
-func Repository_ToProto(mapCtx *direct.MapContext, in *krm.Repository) *pb.Repository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Repository{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	out.Instance = direct.ValueOf(in.Instance)
-	out.Uid = direct.ValueOf(in.Uid)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Uris = Repository_URIs_ToProto(mapCtx, in.Uris)
-	out.InitialConfig = Repository_InitialConfig_ToProto(mapCtx, in.InitialConfig)
-	return out
-}
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
 	if in == nil {
 		return nil
