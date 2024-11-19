@@ -68,6 +68,7 @@ func SecureSourceManagerRepositoryObservedState_FromProto(mapCtx *direct.MapCont
 	}
 	out := &krm.SecureSourceManagerRepositoryObservedState{}
 	out.Uid = direct.LazyPtr(in.Uid)
+	out.Etag = direct.LazyPtr(in.Etag)
 	out.URIs = Repository_URIs_FromProto(mapCtx, in.GetUris())
 	return out
 }
@@ -77,6 +78,7 @@ func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContex
 	}
 	out := &pb.Repository{}
 	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.Uris = Repository_URIs_ToProto(mapCtx, in.URIs)
 	return out
 }
