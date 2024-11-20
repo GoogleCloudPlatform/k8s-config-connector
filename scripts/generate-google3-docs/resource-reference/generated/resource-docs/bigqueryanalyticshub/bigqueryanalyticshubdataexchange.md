@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>bigqueryanalyticshubdataexchange</td>
+<td>gcpbigqueryanalyticshubdataexchange<br>gcpbigqueryanalyticshubdataexchanges<br>bigqueryanalyticshubdataexchange</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
