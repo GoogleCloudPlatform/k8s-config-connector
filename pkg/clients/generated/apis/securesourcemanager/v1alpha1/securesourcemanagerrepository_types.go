@@ -73,6 +73,14 @@ type SecureSourceManagerRepositorySpec struct {
 }
 
 type RepositoryObservedStateStatus struct {
+	/* Output only. This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
+	/* Output only. Unique identifier of the repository. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+
 	/* Output only. URIs for the repository. */
 	// +optional
 	Uris *RepositoryUrisStatus `json:"uris,omitempty"`

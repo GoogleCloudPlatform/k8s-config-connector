@@ -325,6 +325,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  etag:
+                    description: Output only. This checksum is computed by the server
+                      based on the value of other fields, and may be sent on update
+                      and delete requests to ensure the client has an up-to-date value
+                      before proceeding.
+                    type: string
+                  uid:
+                    description: Output only. Unique identifier of the repository.
+                    type: string
                   uris:
                     description: Output only. URIs for the repository.
                     properties:

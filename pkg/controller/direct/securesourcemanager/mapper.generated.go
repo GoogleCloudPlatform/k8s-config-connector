@@ -52,6 +52,7 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	out.CaPool = direct.LazyPtr(in.GetCaPool())
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
+	// MISSING: PscAllowedProjects
 	return out
 }
 func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
@@ -63,6 +64,49 @@ func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 	out.CaPool = direct.ValueOf(in.CaPool)
 	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
 	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
+	// MISSING: PscAllowedProjects
+	return out
+}
+func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_InitialConfig{}
+	out.DefaultBranch = direct.LazyPtr(in.GetDefaultBranch())
+	out.Gitignores = in.Gitignores
+	out.License = direct.LazyPtr(in.GetLicense())
+	out.Readme = direct.LazyPtr(in.GetReadme())
+	return out
+}
+func Repository_InitialConfig_ToProto(mapCtx *direct.MapContext, in *krm.Repository_InitialConfig) *pb.Repository_InitialConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_InitialConfig{}
+	out.DefaultBranch = direct.ValueOf(in.DefaultBranch)
+	out.Gitignores = in.Gitignores
+	out.License = direct.ValueOf(in.License)
+	out.Readme = direct.ValueOf(in.Readme)
+	return out
+}
+func Repository_URIs_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_URIs {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_URIs{}
+	out.HTML = direct.LazyPtr(in.GetHtml())
+	out.GitHTTPS = direct.LazyPtr(in.GetGitHttps())
+	out.Api = direct.LazyPtr(in.GetApi())
+	return out
+}
+func Repository_URIs_ToProto(mapCtx *direct.MapContext, in *krm.Repository_URIs) *pb.Repository_URIs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_URIs{}
+	out.Html = direct.ValueOf(in.HTML)
+	out.GitHttps = direct.ValueOf(in.GitHTTPS)
+	out.Api = direct.ValueOf(in.Api)
 	return out
 }
 func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceObservedState {
@@ -123,5 +167,41 @@ func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	if in.KmsKeyRef != nil {
 		out.KmsKey = in.KmsKeyRef.External
 	}
+	return out
+}
+func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.SecureSourceManagerRepositorySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecureSourceManagerRepositorySpec{}
+	// MISSING: Name
+	// MISSING: Description
+	if in.GetInstance() != "" {
+		out.InstanceRef = &krm.SecureSourceManagerInstanceRef{External: in.GetInstance()}
+	}
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Uris
+	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
+	return out
+}
+func SecureSourceManagerRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerRepositorySpec) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: Name
+	// MISSING: Description
+	if in.InstanceRef != nil {
+		out.Instance = in.InstanceRef.External
+	}
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Uris
+	out.InitialConfig = Repository_InitialConfig_ToProto(mapCtx, in.InitialConfig)
 	return out
 }
