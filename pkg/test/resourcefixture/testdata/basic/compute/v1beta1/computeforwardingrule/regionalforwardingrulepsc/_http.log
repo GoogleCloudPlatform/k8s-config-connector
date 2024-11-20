@@ -62,7 +62,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "name": "Dependent Project",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "example-project-01"
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "Dependent Project",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "example-project-01",
@@ -1256,7 +1256,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-1-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Cache-Control: private
@@ -1371,7 +1371,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-1-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1408,7 +1408,7 @@ X-Xss-Protection: 0
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&resource=computeforwardingrule-1-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&resource=${forwardingRuleID}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1451,7 +1451,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-1-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1633,7 +1633,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Cache-Control: private
@@ -1744,7 +1744,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1780,7 +1780,7 @@ X-Xss-Protection: 0
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&resource=computeforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&resource=${forwardingRuleID}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1824,7 +1824,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1865,7 +1865,7 @@ X-Xss-Protection: 0
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&resource=computeforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&resource=${forwardingRuleID}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1909,7 +1909,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1950,7 +1950,7 @@ X-Xss-Protection: 0
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -2149,7 +2149,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-1-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -2190,7 +2190,7 @@ X-Xss-Protection: 0
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeforwardingrule-1-${uniqueId}
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private

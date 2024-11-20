@@ -22,7 +22,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000001:testIamPermissions?alt=json&prettyPrint=false
+POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -62,7 +62,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "name": "mci-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "mci-${uniqueId}"
@@ -129,7 +129,7 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001"
+  "billingAccountName": "billingAccounts/${billingAccountID}"
 }
 
 200 OK
@@ -144,7 +144,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
   "name": "projects/mci-${uniqueId}/billingInfo",
   "projectId": "mci-${uniqueId}"
@@ -167,62 +167,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001",
-  "billingEnabled": true,
-  "name": "projects/mci-${uniqueId}/billingInfo",
-  "projectId": "mci-${uniqueId}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/mci-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "mci-${uniqueId}",
-  "parent": {
-    "id": "123450001",
-    "type": "organization"
-  },
-  "projectId": "mci-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/mci-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
   "name": "projects/mci-${uniqueId}/billingInfo",
   "projectId": "mci-${uniqueId}"
@@ -253,7 +198,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "mci-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "mci-${uniqueId}",
@@ -277,7 +222,62 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/mci-${uniqueId}/billingInfo",
+  "projectId": "mci-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/mci-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "mci-${uniqueId}",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "mci-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/mci-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
   "name": "projects/mci-${uniqueId}/billingInfo",
   "projectId": "mci-${uniqueId}"
@@ -2881,7 +2881,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "mci-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "mci-${uniqueId}",

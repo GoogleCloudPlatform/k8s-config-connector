@@ -33,7 +33,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}"
@@ -118,7 +118,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -173,7 +173,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -228,7 +228,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -250,7 +250,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "lifecycleState": "ACTIVE",
   "name": "KCC-2 ${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -277,7 +277,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -300,7 +300,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "lifecycleState": "ACTIVE",
   "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -328,7 +328,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -361,7 +361,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
@@ -417,7 +417,7 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "123450001",
+    "id": "${organizationID}",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
