@@ -1,6 +1,6 @@
 # Set up AWS Controllers for Kubernetes (ACK)
 
-Note: ACK support is only availabe for GCP managed [Config
+Note: ACK support is only available for GCP managed [Config
 Connector](https://cloud.google.com/config-connector/docs/overview).
 
 Here is an overview of the ACK setup process:

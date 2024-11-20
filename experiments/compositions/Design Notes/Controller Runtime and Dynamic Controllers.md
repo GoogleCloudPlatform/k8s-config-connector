@@ -36,7 +36,7 @@ Multiple runnables share the same cancelable context.
 
 ## No support for checking if a controller/reconciler exists
 
-contorller-runtime's Manager interface provides no way to check if a controller has been created for an given CRD(gvk).
+controller-runtime's Manager interface provides no way to check if a controller has been created for an given CRD(gvk).
 
 `type Manager interface {}` : https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/manager/manager.go#L55
 `type Cluster interface {}` : https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/cluster/cluster.go#L40
@@ -45,7 +45,7 @@ We would need to build an intrerface on top of the manager that supports checkin
 
 ## No support for stopping a controller
 
-contorller-runtime's Manager interface provides no way to `Stop` or `Remove` a runnable. In fact it does not even track the runnables for a given group. During `Add()` a go routine is created and thats it. A shared cancellable context is used across multiple reconcilers.
+controller-runtime's Manager interface provides no way to `Stop` or `Remove` a runnable. In fact it does not even track the runnables for a given group. During `Add()` a go routine is created and thats it. A shared cancellable context is used across multiple reconcilers.
 
 ## Impact for Allotrope
 - With naive controller-runtime library we end up starting multiple reconcilers for the same Input GVK everytime the Composition object changes.

@@ -2,7 +2,7 @@
 
 We'd love to accept your patches and contributions to this project. We use this
 GitHub project as our primary source of truth and the main development
-repository for Config Connetor. The source code in this project is also
+repository for Config Connector. The source code in this project is also
 mirrored to internal Google repository for the purposes of releases.
 
 ## Contributor License Agreement
@@ -367,7 +367,7 @@ can run it locally on your dev machine with the steps below.
 If you are adding a new resource, you need to follow the steps in [NewResourceFromTerraform.md](README.ChangingTerraform.md)
 to make code changes, add test data, and run the tests for your resource.
 
-If you are working on a existing resource, test yaml should exist under
+If you are working on an existing resource, test yaml should exist under
 ./pkg/test/resourcefixture/testdata/basic, you can run the test command directly
 to make sure the test can still pass. Example command:
 

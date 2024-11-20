@@ -380,7 +380,7 @@ func tfConfigToKRMConfig(tfConfig interface{}, tfType string, dependencyGraph *s
 
 	name, specs, containerAnnotation, err := cleanupTFFields(tfConfig, tfType, dependencyGraph, rc, tfToGVK)
 	if err != nil {
-		return nil, fmt.Errorf("error cleanning up the TF config: %w", err)
+		return nil, fmt.Errorf("error cleaning up the TF config: %w", err)
 	}
 	// TODO(b/265367038): Handle the samples with multiple resources of the same type.\
 	gvk, ok := tfToGVK[tfType]

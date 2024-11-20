@@ -1270,7 +1270,7 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 				continue
 			}
 			if isV1alpha1ToV1beta1 {
-				// if this is a direct resource, the storage version is defiend
+				// if this is a direct resource, the storage version is defined
 				// in the kubebuilder tooling
 				if r.Direct {
 					continue

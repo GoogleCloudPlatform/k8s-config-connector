@@ -1,6 +1,6 @@
 # Object storage for manifests
 
-The object location (path) is created by the Allotrope Manager and then passed on to the Expander pods as part of the pod bringup.
+The object location (path) is created by the Allotrope Manager and then passed on to the Expander pods as part of the pod bring-up.
 The expander pods should read the manifests from that location and then expand them and write it back to the same location.
 
 ## Object Storage provider

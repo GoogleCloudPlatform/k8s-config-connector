@@ -79,7 +79,7 @@ type ResourceConfig struct {
 	// the host field is optional
 	//
 	// An OR condition can be defined on a portion of the template by enclosing the portion with brackets `[...]` and using
-	// a bar character, `|`, to deliminate the OR. Example, `my-template/[{{field1}}|text_{{field2}]`.
+	// a bar character, `|`, to delimit the OR. Example, `my-template/[{{field1}}|text_{{field2}]`.
 	//
 	// If SkipImport is true, this must be specified, and its expanded form will be directly
 	// used as the TF resource's `id` field.

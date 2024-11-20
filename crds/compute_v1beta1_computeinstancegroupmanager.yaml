@@ -620,7 +620,7 @@ spec:
                   recreating:
                     description: '[Output Only] The number of instances in the managed
                       instance group that are scheduled to be recreated or are currently
-                      being being recreated. Recreating an instance deletes the existing
+                      being recreated. Recreating an instance deletes the existing
                       root persistent disk and creates a new disk from the image that
                       is defined in the instance template.'
                     format: int64

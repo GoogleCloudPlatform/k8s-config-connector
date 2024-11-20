@@ -13,7 +13,7 @@ This ensures that when the Input API is deleted, the expanded resources are dele
 
 ## Set Input API as the owner
 
-Input API is set as the `OwnerRef`. This allows for the usecase where the `Plan` doesnt need to exist in the same namespace as the Input API and the expanded resources. We are not yet sure of this usecase and pattern and hence would like to deletgate this option to a later date. 
+Input API is set as the `OwnerRef`. This allows for the usecase where the `Plan` doesnt need to exist in the same namespace as the Input API and the expanded resources. We are not yet sure of this usecase and pattern and hence would like to delegate this option to a later date. 
 
 ## Auto-inject OwnerRef in applylib
 
@@ -25,9 +25,9 @@ reference:
 - https://github.com/kubernetes-sigs/kubebuilder-declarative-pattern/blob/83bd9c05741b108dc854a6b42bf893997b76d090/pkg/patterns/declarative/reconciler.go#L687
 - https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/experiments/compositions/composition/internal/controller/expander_applier.go#L137
 
-## Abandon chioce
+## Abandon choice
 
-We should allow the choice to abandon the expanded resources when the Input API is deleted. This could be done via an annotaton on the Input API object. 
+We should allow the choice to abandon the expanded resources when the Input API is deleted. This could be done via an annotation on the Input API object. 
 
 ## POC decisions
 

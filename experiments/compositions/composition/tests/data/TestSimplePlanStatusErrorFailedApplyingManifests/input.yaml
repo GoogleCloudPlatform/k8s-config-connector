@@ -133,7 +133,7 @@ spec:
     name: common
     template: |
       apiVersion: v1
-      kind: MonfigCap ## should fail
+      kind: ConfigCap_ ## should fail
       metadata:
         name: common-config
         namespace: {{ pconfigs.metadata.namespace }}

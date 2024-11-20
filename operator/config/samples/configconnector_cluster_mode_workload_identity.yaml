@@ -18,5 +18,5 @@ metadata:
   name: configconnector.core.cnrm.cloud.google.com
 spec:
   mode: cluster
-  # Replace ${GSA?} with your service account's name and and ${PROJECT_ID?} with your project ID.
+  # Replace ${GSA?} with your service account's name and ${PROJECT_ID?} with your project ID.
   googleServiceAccount: "${GSA?}@${PROJECT_ID?}.iam.gserviceaccount.com"

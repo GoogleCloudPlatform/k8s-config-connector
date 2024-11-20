@@ -118,7 +118,7 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	logger = logger.WithName(composition.Name).WithName(fmt.Sprintf("%d", composition.Generation))
 
 	composition.Status.ClearCondition(compositionv1alpha1.Error)
-	logger.Info("Validating Compostion object")
+	logger.Info("Validating Composition object")
 	if !composition.Validate() {
 		logger.Info("Validation Failed")
 		return ctrl.Result{}, fmt.Errorf("Validation failed")

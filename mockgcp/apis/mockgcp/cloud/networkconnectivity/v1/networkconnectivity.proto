@@ -690,7 +690,7 @@ message InterconnectAttachment {
   string region = 1 [json_name="region"];
 }
 
-// The internal range resource for IPAM operations within a VPC network. Used to represent a private address range along with behavioral characterstics of that range (its usage and peering behavior). Networking resources can link to this range if they are created as belonging to it.
+// The internal range resource for IPAM operations within a VPC network. Used to represent a private address range along with behavioral characteristics of that range (its usage and peering behavior). Networking resources can link to this range if they are created as belonging to it.
 message InternalRange {
   // Time when the internal range was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1281,7 +1281,7 @@ message ServiceConnectionMap {
   string service_class = 10 [json_name="serviceClass"];
   // Output only. The service class uri this ServiceConnectionMap is for.
   string service_class_uri = 11 [json_name="serviceClassUri"];
-  // The token provided by the consumer. This token authenticates that the consumer can create a connecton within the specified project and network.
+  // The token provided by the consumer. This token authenticates that the consumer can create a connection within the specified project and network.
   string token = 12 [json_name="token"];
   // Output only. Time when the ServiceConnectionMap was updated.
   .google.protobuf.Timestamp update_time = 13 [json_name="updateTime"];

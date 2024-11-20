@@ -282,7 +282,7 @@ tryAgain:
 			return nil
 		}
 
-		return fmt.Errorf("cannot set project id annotatation value to %q: the annotation already contained a value of %q", projectID, val)
+		return fmt.Errorf("cannot set project id annotation value to %q: the annotation already contained a value of %q", projectID, val)
 	}
 	k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectID, &ns)
 	err := c.Update(ctx, &ns)

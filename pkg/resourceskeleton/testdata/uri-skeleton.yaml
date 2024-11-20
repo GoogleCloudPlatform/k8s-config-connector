@@ -394,7 +394,7 @@
 - ExpectedSkeleton: null
   ResourceConfigId: ComputeRegionNetworkEndpointGroup
   URI: ""
-  # TODO: (b/233123518) Config Connector CLI can not currently support ComputeRegionNetworkEndpointGroup.
+  # TODO: (b/233123518) Config Connector CLI cannot currently support ComputeRegionNetworkEndpointGroup.
 - ExpectedSkeleton:
     apiVersion: compute.cnrm.cloud.google.com/v1beta1
     kind: ComputeReservation

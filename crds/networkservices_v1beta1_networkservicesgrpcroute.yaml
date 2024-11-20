@@ -384,7 +384,7 @@ spec:
                             properties:
                               caseSensitive:
                                 description: Optional. Specifies that matches are
-                                  case sensitive. The default value is true. case_sensitive
+                                  case-sensitive. The default value is true. case_sensitive
                                   must not be used with a type of REGULAR_EXPRESSION.
                                 type: boolean
                               grpcMethod:

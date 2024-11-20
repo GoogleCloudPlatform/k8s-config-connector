@@ -1751,7 +1751,7 @@ func TestIsHierarchicalReference(t *testing.T) {
 		{
 			name: "resource reference is not one of hierarchical references",
 			ref: corekccv1alpha1.ReferenceConfig{
-				TFField: "biling",
+				TFField: "billing",
 				TypeConfig: corekccv1alpha1.TypeConfig{
 					Key: "billingRef",
 					GVK: schema.GroupVersionKind{

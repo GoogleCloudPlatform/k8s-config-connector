@@ -292,7 +292,7 @@ func GetContainerAnnotation(annotations map[string]string, containerTypes []core
 			continue
 		}
 		if found {
-			return "", "", fmt.Errorf("ambiguious container annotation: found for %v and %v", containerType, c)
+			return "", "", fmt.Errorf("ambiguous container annotation: found for %v and %v", containerType, c)
 		}
 		containerVal = val
 		containerType = c
