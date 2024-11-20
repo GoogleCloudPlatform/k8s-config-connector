@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -149,8 +150,49 @@ func (r *BigQueryConnectionConnectionRef) NormalizedExternal(ctx context.Context
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return "", fmt.Errorf("BigQueryConnectionConnection is not ready yet.")
+		return "", fmt.Errorf("BigQueryConnectionConnection is not ready yet")
 	}
 	r.External = actualExternalRef
 	return r.External, nil
+}
+
+func ResolveServiceAccountID(ctx context.Context, reader client.Reader, namespace string, ref *iamv1beta1.BigQueryConnectionConnectionMemberReference) (string, error) {
+	key := types.NamespacedName{
+		Name:      ref.Name,
+		Namespace: ref.Namespace,
+	}
+	if key.Namespace == "" { // use the namespace of the IAM resource if a namespace is not provided in the reference
+		key.Namespace = namespace
+	}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(BigQueryConnectionConnectionGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryConnectionConnectionGVK, key, err)
+
+	}
+
+	// a map of supported connection types to the corresponding status paths to service acocunt ID
+	serviceAccountPaths := map[string][]string{
+		"cloudSQL":      {"status", "observedState", "cloudSQL", "serviceAccountID"},
+		"spark":         {"status", "observedState", "spark", "serviceAccountID"},
+		"cloudResource": {"status", "observedState", "cloudResource", "serviceAccountID"},
+	}
+	path, supported := serviceAccountPaths[ref.Type]
+	if !supported {
+		return "", fmt.Errorf("invalid connection type '%s' for BigQueryConnection for IAM reference. Supported types are: cloudSQL, spark, cloudResource", ref.Type)
+	}
+
+	sa, found, err := unstructured.NestedString(u.Object, path...)
+	if err != nil {
+		return "", fmt.Errorf("failed to access serviceAccountID field in BigQueryConnection %s/%s: %w", key.Namespace, key.Name, err)
+	}
+	if !found {
+		pathStr := strings.Join(path, ".")
+		return "", fmt.Errorf("BigQueryConnection %s/%s is not ready - field '%s' is missing", key.Namespace, key.Name, pathStr)
+	}
+
+	return "serviceAccount:" + sa, nil // TODO: a better way to provide format/template
 }

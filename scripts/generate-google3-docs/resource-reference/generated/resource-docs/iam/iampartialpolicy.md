@@ -517,6 +517,10 @@ bindings:
   members:
   - member: string
     memberFrom:
+      bigQueryConnectionConnectionRef:
+        name: string
+        namespace: string
+        type: string
       logSinkRef:
         name: string
         namespace: string
@@ -643,6 +647,46 @@ resourceRef:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bindings[].members[].memberFrom.bigQueryConnectionConnectionRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specifie the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bindings[].members[].memberFrom.bigQueryConnectionConnectionRef.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bindings[].members[].memberFrom.bigQueryConnectionConnectionRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bindings[].members[].memberFrom.bigQueryConnectionConnectionRef.type</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Type field specifies the connection type of the BigQueryConnectionConnection resource, whose service account is to be bound to the role.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

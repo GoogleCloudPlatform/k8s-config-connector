@@ -45,6 +45,10 @@ type PolicymemberCondition struct {
 }
 
 type PolicymemberMemberFrom struct {
+	/* BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specifie the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`. */
+	// +optional
+	BigQueryConnectionConnectionRef *v1alpha1.IAMResourceRef `json:"bigQueryConnectionConnectionRef,omitempty"`
+
 	/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
 	// +optional
 	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`

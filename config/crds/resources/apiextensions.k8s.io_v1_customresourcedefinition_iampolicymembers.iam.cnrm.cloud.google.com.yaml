@@ -86,6 +86,8 @@ spec:
                   subfield within 'memberFrom' can be used.
                 oneOf:
                 - required:
+                  - bigQueryConnectionConnectionRef
+                - required:
                   - logSinkRef
                 - required:
                   - serviceAccountRef
@@ -94,6 +96,31 @@ spec:
                 - required:
                   - sqlInstanceRef
                 properties:
+                  bigQueryConnectionConnectionRef:
+                    description: BigQueryConnectionConnection whose service account
+                      is to be bound to the role. Use the Type field to specifie the
+                      connection type. For "spark" connetion, the service account
+                      is in `status.observedState.spark.serviceAccountID`. For "cloudSQL"
+                      connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
+                      For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                      type:
+                        description: Type field specifies the connection type of the
+                          BigQueryConnectionConnection resource, whose service account
+                          is to be bound to the role.
+                        enum:
+                        - spark
+                        - cloudSQL
+                        - cloudResource
+                        type: string
+                    required:
+                    - name
+                    - type
+                    type: object
                   logSinkRef:
                     description: The LoggingLogSink whose writer identity (i.e. its
                       'status.writerIdentity') is to be bound to the role.

@@ -21,9 +21,11 @@ import (
 	"reflect"
 	"strings"
 
+	bigqueryconnection "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -54,6 +56,26 @@ func ResolveMemberIdentity(ctx context.Context, member v1beta1.Member,
 		return string(member), nil
 	}
 
+	if err := memberFrom.Validate(); err != nil {
+		return id, err
+	}
+
+	if id, err := tryResolveTFMemberReference(ctx, memberFrom, namespace, tfIAMClient); err != nil {
+		return "", err
+	} else if id != "" { // successfully resolved member reference from TF-based resources
+		return id, nil
+	}
+
+	if id, err = tryResolveDirectMemberReference(ctx, memberFrom, namespace, tfIAMClient.kubeClient); err != nil {
+		return "", err
+	} else if id != "" { // successfully resolved member reference from direct resources
+		return id, nil
+	}
+
+	return "", fmt.Errorf("unable to resolve member identity from %v", memberFrom)
+}
+
+func tryResolveTFMemberReference(ctx context.Context, memberFrom *v1beta1.MemberSource, namespace string, tfIAMClient *TFIAMClient) (string, error) {
 	var refs []*v1beta1.MemberReference
 	var gvks []schema.GroupVersionKind
 
@@ -80,8 +102,15 @@ func ResolveMemberIdentity(ctx context.Context, member v1beta1.Member,
 	if len(refs) == 1 {
 		return tfIAMClient.resolveMemberReference(ctx, refs[0], gvks[0], namespace)
 	}
+	return "", nil
+}
 
-	return id, fmt.Errorf("%v memberFrom refs found. Exactly one Of 'logSinkRef', 'serviceAccountRef', 'sqlInstanceRef', 'serviceIdentityRef' must be used", len(refs))
+func tryResolveDirectMemberReference(ctx context.Context, memberFrom *v1beta1.MemberSource, namespace string, reader client.Reader) (string, error) {
+	if memberFrom.BigQueryConnectionConnectionRef != nil {
+		return bigqueryconnection.ResolveServiceAccountID(ctx, reader, namespace, memberFrom.BigQueryConnectionConnectionRef)
+	}
+	// TODO: handle more direct resource reference
+	return "", nil
 }
 
 func extractNamespaceAndResourceReference(iamInterface interface{}) (string, v1beta1.ResourceReference) {

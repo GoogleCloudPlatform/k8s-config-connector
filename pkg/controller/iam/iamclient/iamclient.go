@@ -54,6 +54,10 @@ const (
 	SerivceIdentityKind = "ServiceIdentity"
 	ServiceUsageGroup   = "serviceusage.cnrm.cloud.google.com"
 	ServiceUsageVersion = "v1beta1"
+
+	BigQueryConnectionConnectionKind = "BigQueryConnectionConnection"
+	BigQueryConnectionGroup          = "bigqueryconnection.cnrm.cloud.google.com"
+	BigQueryConnectionVersion        = "v1beta1"
 )
 
 var (
@@ -84,6 +88,11 @@ var (
 		Group:   ServiceUsageGroup,
 		Version: ServiceUsageVersion,
 		Kind:    SerivceIdentityKind,
+	}
+	BigQueryConnectionConnectionGVK = schema.GroupVersionKind{
+		Group:   BigQueryConnectionGroup,
+		Version: BigQueryConnectionVersion,
+		Kind:    BigQueryConnectionConnectionKind,
 	}
 )
 
