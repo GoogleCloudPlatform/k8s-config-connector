@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@ metadata:
   name: bigqueryreservationreservation-${uniqueId}
 spec:
   autoscale:
-  - maxSlots: 100
+    maxSlots: 50
   concurrency: 0
-  edition: STANDARD
-  ignoreIdleSlots: true
+  edition: ENTERPRISE
+  ignoreIdleSlots: false
   location: us-west2
+  multiRegionAuxiliary: false
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
