@@ -117,4 +117,3 @@ type KMSAutokeyConfigList struct {
 func init() {
 	SchemeBuilder.Register(&KMSAutokeyConfig{}, &KMSAutokeyConfigList{})
 }
-
