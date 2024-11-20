@@ -98,7 +98,7 @@ type DiscoveryEngineDataStoreStatus struct {
 // +kcc:proto=google.cloud.discoveryengine.v1.DataStore
 type DiscoveryEngineDataStoreObservedState struct {
 	// Output only. The id of the default
-	// [Schema][google.cloud.discoveryengine.v1.Schema] asscociated to this data
+	// [Schema][google.cloud.discoveryengine.v1.Schema] associated to this data
 	// store.
 	DefaultSchemaID *string `json:"defaultSchemaID,omitempty"`
 
