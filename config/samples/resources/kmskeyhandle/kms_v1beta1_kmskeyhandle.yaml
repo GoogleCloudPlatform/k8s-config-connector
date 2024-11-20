@@ -19,7 +19,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with resource project ID where you want to create resource like bucket, compute disk, etc. protected by autokey.
-    external: "${PROJECT_ID?}"
+    external: projects/autokey-resource #"${PROJECT_ID?}"
   location: us-central1
   resourceTypeSelector: compute.googleapis.com/Disk
   
