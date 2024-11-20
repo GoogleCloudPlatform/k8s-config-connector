@@ -189,6 +189,11 @@ func init() {
 		SkipUpdate:   true,
 	}
 
+	resourceContextMap["regionalcomputetargettcpproxy"] = ResourceContext{
+		ResourceKind: "ComputeTargetTCPProxy",
+		SkipUpdate:   true, // API does not support UPDATE/PATCH.
+	}
+
 	resourceContextMap["computetargettcpproxy"] = ResourceContext{
 		ResourceKind: "ComputeTargetTCPProxy",
 	}
