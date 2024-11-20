@@ -565,11 +565,11 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     },
     {
       "role": "OWNER",
-      "userByEmail": "user@google.com"
+      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "userByEmail": "user@google.com"
     }
   ],
   "datasetReference": {
@@ -606,16 +606,16 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
       "userByEmail": "user@google.com"
-    },
-    {
-      "domain": "google.com",
-      "role": "READER"
     }
   ],
   "creationTime": "123456789",
@@ -666,16 +666,16 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
       "userByEmail": "user@google.com"
-    },
-    {
-      "domain": "google.com",
-      "role": "READER"
     }
   ],
   "creationTime": "123456789",

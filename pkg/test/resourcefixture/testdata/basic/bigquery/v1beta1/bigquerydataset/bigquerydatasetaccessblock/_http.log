@@ -72,12 +72,12 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
       "domain": "google.com",
       "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     }
   ],
   "creationTime": "123456789",
@@ -121,12 +121,12 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
       "domain": "google.com",
       "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     }
   ],
   "creationTime": "123456789",
@@ -200,16 +200,16 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "domain": "google.com",
+      "role": "READER"
     },
     {
       "iamMember": "allUsers",
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     }
   ],
   "creationTime": "123456789",
@@ -254,16 +254,16 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "domain": "google.com",
+      "role": "READER"
     },
     {
       "iamMember": "allUsers",
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     }
   ],
   "creationTime": "123456789",
