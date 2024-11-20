@@ -131,12 +131,12 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
 	ctx := &direct.MapContext{}
-	k := f.FromProto(ctx, p1)
+	krm := f.FromProto(ctx, p1)
 	if ctx.Err() != nil {
 		t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 	}
 
-	p2 := f.ToProto(ctx, k)
+	p2 := f.ToProto(ctx, krm)
 	if ctx.Err() != nil {
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
@@ -144,6 +144,6 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
 		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Logf("p2 = %v", prototext.Format(p2))
-		t.Errorf("roundtrip failed; diff:\n%s", diff)
+		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
 	}
 }

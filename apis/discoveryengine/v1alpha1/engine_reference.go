@@ -27,39 +27,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineDataStoreRef{}
+var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineEngineRef{}
 
-// DiscoveryEngineDataStoreRef defines the resource reference to DiscoveryEngineDataStore, which "External" field
+// DiscoveryEngineEngineRef defines the resource reference to DiscoveryEngineEngine, which "External" field
 // holds the GCP identifier for the KRM object.
-type DiscoveryEngineDataStoreRef struct {
-	// A reference to an externally managed DiscoveryEngineDataStore resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/datastores/<datastoreID>".
+type DiscoveryEngineEngineRef struct {
+	// A reference to an externally managed DiscoveryEngineEngine resource.
+	// Should be in the format "projects/<projectID>/locations/<location>/engines/<engineID>".
 	External string `json:"external,omitempty"`
 
-	// The name of a DiscoveryEngineDataStore resource.
+	// The name of a DiscoveryEngineEngine resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a DiscoveryEngineDataStore resource.
+	// The namespace of a DiscoveryEngineEngine resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// DiscoveryEngineDataStoreRef defines the resource reference to DiscoveryEngineDataStore, which "External" field
-// holds the GCP identifier for the KRM object.
-type DiscoveryEngineDataStoreID struct {
-	*CollectionLink
-	DataStore string
-}
-
-// NormalizedExternal provision the "External" value for other resource that depends on DiscoveryEngineDataStore.
-// If the "External" is given in the other resource's spec.DiscoveryEngineDataStoreRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual DiscoveryEngineDataStore object from the cluster.
-func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, reader client.Reader, defaultNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on DiscoveryEngineEngine.
+// If the "External" is given in the other resource's spec.DiscoveryEngineEngineRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual DiscoveryEngineEngine object from the cluster.
+func (r *DiscoveryEngineEngineRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", DiscoveryEngineDataStoreGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", DiscoveryEngineEngineGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		id, err := ParseDiscoveryEngineDataStoreExternal(r.External)
+		id, err := parseDiscoveryEngineEngineExternal(r.External)
 		if err != nil {
 			return "", err
 		}
@@ -68,17 +61,17 @@ func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, re
 	}
 
 	// From the Config Connector object
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
+	if r.Namespace == "" {
+		r.Namespace = otherNamespace
 	}
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(DiscoveryEngineDataStoreGVK)
+	u.SetGroupVersionKind(DiscoveryEngineEngineGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", DiscoveryEngineDataStoreGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", DiscoveryEngineEngineGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
@@ -92,8 +85,8 @@ func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, re
 	return r.External, nil
 }
 
-// New builds a DiscoveryEngineDataStoreRef from the Config Connector DiscoveryEngineDataStore object.
-func NewDiscoveryEngineDataStoreIDFromObject(ctx context.Context, reader client.Reader, obj *DiscoveryEngineDataStore) (*DiscoveryEngineDataStoreID, error) {
+// New builds a DiscoveryEngineEngineRef from the Config Connector DiscoveryEngineEngine object.
+func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj *DiscoveryEngineEngine) (*DiscoveryEngineEngineID, error) {
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
@@ -123,7 +116,7 @@ func NewDiscoveryEngineDataStoreIDFromObject(ctx context.Context, reader client.
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	id := &DiscoveryEngineDataStoreID{
+	id := &DiscoveryEngineEngineID{
 		CollectionLink: &CollectionLink{
 			ProjectAndLocation: &ProjectAndLocation{
 				ProjectID: projectID,
@@ -150,33 +143,39 @@ func NewDiscoveryEngineDataStoreIDFromObject(ctx context.Context, reader client.
 	return id, nil
 }
 
-type ProjectAndLocation struct {
-	ProjectID string
-	Location  string
+// func (r *DiscoveryEngineEngineRef) Parent() (*DiscoveryEngineEngineParent, error) {
+// 	if r.parent != nil {
+// 		return r.parent, nil
+// 	}
+// 	if r.External != "" {
+// 		parent, _, err := parseDiscoveryEngineEngineExternal(r.External)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		return parent, nil
+// 	}
+// 	return nil, fmt.Errorf("DiscoveryEngineEngineRef not initialized from `NewDiscoveryEngineEngineRef` or `NormalizedExternal`")
+// }
+
+// DiscoveryEngineEngineID is the resolved identifier for a DiscoveryEngineEngine
+type DiscoveryEngineEngineID struct {
+	*CollectionLink
+	DataStore string
 }
 
-func (p *ProjectAndLocation) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
+// func (p *DiscoveryEngineEngineParent) String() string {
+// 	return "projects/" + p.ProjectID + "/locations/" + p.Location
+// }
 
-type CollectionLink struct {
-	*ProjectAndLocation
-	Collection string
-}
+// func asDiscoveryEngineEngineExternal(parent *DiscoveryEngineEngineParent, resourceID string) (external string) {
+// 	return parent.String() + "/engines/" + resourceID
+// }
 
-func (p *CollectionLink) String() string {
-	return p.ProjectAndLocation.String() + "/collections/" + p.Collection
-}
-
-func (p *DiscoveryEngineDataStoreID) String() string {
-	return p.CollectionLink.String() + "/dataStores/" + p.DataStore
-}
-
-func ParseDiscoveryEngineDataStoreExternal(external string) (*DiscoveryEngineDataStoreID, error) {
+func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
 	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
 	s = strings.TrimPrefix(s, "/")
 	tokens := strings.Split(s, "/")
-	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "dataStores" {
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "engines" {
 		projectAndLocation := &ProjectAndLocation{
 			ProjectID: tokens[1],
 			Location:  tokens[3],
@@ -185,18 +184,10 @@ func ParseDiscoveryEngineDataStoreExternal(external string) (*DiscoveryEngineDat
 			ProjectAndLocation: projectAndLocation,
 			Collection:         tokens[5],
 		}
-		return &DiscoveryEngineDataStoreID{
+		return &DiscoveryEngineEngineID{
 			CollectionLink: collection,
 			DataStore:      tokens[7],
 		}, nil
 	}
-	return nil, fmt.Errorf("format of DiscoveryEngineDataStore external=%q was not known (use projects/<projectId>/locations/<location>/collections/<collectionID>/dataStores/<dataStoreID>)", external)
-}
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
+	return nil, fmt.Errorf("format of DiscoveryEngineEngine external=%q was not known (use projects/<projectId>/locations/<location>/collections/<collectionID>/engines/<engineID>)", external)
 }
