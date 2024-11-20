@@ -146,8 +146,8 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 **Tip**: You can
 [use the auto-generated service mappings as a reference](#using-the-auto-generated-service-mappings-as-a-reference).
 
-**Tip**: The full list of available properties for a `ResourceConfig` is defined
-[here](pkg/apis/core/v1alpha1/servicemapping_types.go#L46).
+**Tip**: See the [full list of available properties for a
+`ResourceConfig`](pkg/apis/core/v1alpha1/servicemapping_types.go#L46).
 
 1.  Open the Service Mappings file from the previous section for editing. In the
     case of the `Spanner` service the file is named `spanner.yaml`.
@@ -281,9 +281,8 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
     Note: The `containers` field has been deprecated, and
     `hierarchicalReferences` should be used instead.
 
-1.  Follow the resource reference guidelines
-    [here](README.ConfigureResourceReferences.md) to identify and configure
-    potential resource reference fields.
+1.  Follow the [resource reference guidelines](README.ConfigureResourceReferences.md)
+    to identify and configure potential resource reference fields.
 
 1.  Add `observedFields` if a common solution depends on the computed values
     from unspecified fields under `spec`. The field names should be paths of the
@@ -601,7 +600,7 @@ samples are created for that resource.
 
 1.  In [config/samples/resources](config/samples/resources), create a new
     directory for the resource's samples: `mkdir spannerinstance`.
-1.  Follow the sample guidelines [here](README.Samples.md) and create sample(s)
+1.  Follow the [sample guidelines](README.Samples.md) and create sample(s)
     for the resource.
 
 ## Run/Disable Sample Tests
@@ -854,10 +853,9 @@ projects, folders, and billing accounts.**
 *   All the resource names should be `[lowercase(Kind)]-${uniqueId}`, e.g.
     `cloudschedulerjob-${uniqueId}`, `pubsubtopic-${uniqueId}`.
 
-    *   ${uniqueId} is a 20-char unique ID generated
-        [here](pkg/test/resourcefixture/variable/variables.go#16). We always
-        want to use the `-${uniqueId}` as the suffix for the resource name in
-        testdata.
+    *   ${uniqueId} is a [generated](pkg/test/resourcefixture/variable/variables.go#16)
+        20-char unique ID. We always want to use the `-${uniqueId}` as the
+        suffix for the resource name in testdata.
 
     *   If there are multiple resources of the same kind used in the same test
         cases, the resource names should be

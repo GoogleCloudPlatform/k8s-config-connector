@@ -25,7 +25,7 @@ Check  to make sure your validation is complete.
 
 ## 4.3 Register your controller
 
-To wire your controller in the Config Connector operator, you need to register the controller [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/register/register.go)
+To wire your controller in the Config Connector operator, you need to [register the controller](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/register/register.go)
 
 
 ## 4.4 Verify your controller

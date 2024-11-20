@@ -402,9 +402,8 @@ spec:
                     properties:
                       host:
                         description: 'Output only. The host that the job is sent to.
-                          For more information about how App Engine requests are routed,
-                          see [here](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).
-                          The host is constructed as: * `host = [application_domain_name]`
+                          Read information about [how App Engine requests are
+                          routed](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).                          The host is constructed as: * `host = [application_domain_name]`
                           `| [service] + ''.'' + [application_domain_name]` `| [version]
                           + ''.'' + [application_domain_name]` `| [version_dot_service]+
                           ''.'' + [application_domain_name]` `| [instance] + ''.''
