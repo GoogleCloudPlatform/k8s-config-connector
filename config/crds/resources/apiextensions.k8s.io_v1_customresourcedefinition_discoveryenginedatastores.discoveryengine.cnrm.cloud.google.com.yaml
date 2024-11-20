@@ -242,7 +242,7 @@ spec:
                     type: string
                   defaultSchemaID:
                     description: Output only. The id of the default [Schema][google.cloud.discoveryengine.v1.Schema]
-                      associated to this data store.
+                      asscociated to this data store.
                     type: string
                 type: object
             type: object
