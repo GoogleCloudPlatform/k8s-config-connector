@@ -1,8 +1,6 @@
 apiVersion: securesourcemanager.cnrm.cloud.google.com/v1alpha1
 kind: SecureSourceManagerRepository
 metadata:
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
