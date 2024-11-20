@@ -56,6 +56,9 @@
 </tbody>
 </table>
 
+ComputeTargetTCPProxy can manage both global and regional target TCP proxies. To manage a global ComputeTargetTCPProxy, no need to specify `spec.location`
+ or use a value of `global` in the `spec.location` field. To manage a regional ComputeTargetTCPProxy, use a region name in the `spec.location` field.
+
 ## Custom Resource Definition Properties
 
 
@@ -302,7 +305,7 @@ selfLink: string
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### Global Target Tcp Proxy
 ```yaml
 # Copyright 2020 Google LLC
 #
@@ -323,7 +326,7 @@ kind: ComputeTargetTCPProxy
 metadata:
   name: computetargettcpproxy-sample
 spec:
-  description: "A sample TCP proxy."
+  description: "A sample global TCP proxy."
   backendServiceRef:
     name: computetargettcpproxy-dep
 ---
@@ -347,6 +350,60 @@ spec:
   tcpHealthCheck:
     port: 443
   location: global
+```
+
+### Regional Target Tcp Proxy
+```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetTCPProxy
+metadata:
+  name: computetargettcpproxy-sample
+spec:
+  description: "A sample regional TCP proxy."
+  backendServiceRef:
+    name: computetargettcpproxy-dep
+  proxyBind: false
+  proxyHeader: NONE
+  location: europe-west4
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computetargettcpproxy-dep
+spec:
+  healthChecks:
+    - healthCheckRef:
+        name: computetargettcpproxy-dep
+  location: europe-west4
+  protocol: TCP
+  # Default loadBalancingScheme for regional backend service is INTERNAL
+  # Set to INTERNAL_MANAGED when being referenced by Regional Target TCP Proxy
+  # googleapi error: Regional Target TCP Proxy cannot be used with BackendServices with schema INTERNAL
+  loadBalancingScheme: INTERNAL_MANAGED
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computetargettcpproxy-dep
+spec:
+  checkIntervalSec: 10
+  tcpHealthCheck:
+    port: 443
+  location: europe-west4
 ```
 
 
