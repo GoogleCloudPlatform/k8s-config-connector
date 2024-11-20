@@ -112,7 +112,7 @@ type generatedGoField struct {
 
 type generatedGoStruct struct {
 	name    string // fully qualified name of the proto message
-	content []byte // the content of the genearted Go struct
+	content []byte // the content of the generated Go struct
 }
 
 func NewTypeUpdater(opts *UpdateTypeOptions) *TypeUpdater {
@@ -238,7 +238,7 @@ func (u *TypeUpdater) generate() error {
 
 	for _, msg := range u.dependentMessages {
 		var buf bytes.Buffer
-		klog.Infof("genearte Go code for messge %s", msg.FullName())
+		klog.Infof("generate Go code for messge %s", msg.FullName())
 		codegen.WriteMessage(&buf, msg)
 		u.generatedGoStructs = append(u.generatedGoStructs,
 			generatedGoStruct{

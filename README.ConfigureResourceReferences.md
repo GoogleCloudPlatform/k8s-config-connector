@@ -62,7 +62,7 @@ Once it's determined, note down the field name and the referenced GCP resource n
 
 Before you can identify what the resource is based on, you must convert
 the Google Cloud resource name or Terraform type name into a
-Config Connector kind name. Create a Github question in this repo for help
+Config Connector kind name. Create a GitHub question in this repo for help
 if you still can't find the Config Connector kind name after following these steps:
 
 1.  If you know the TF type name, you can do project-scoped search in your local
@@ -80,7 +80,7 @@ if you still can't find the Config Connector kind name after following these ste
     [KCC reference doc](https://cloud.google.com/config-connector/docs/reference/overview).
 
 1.  If you can't find a KCC kind with the steps above, it's possible that the
-    referenced resource is not supported in KCC. Create a Github question in this repo
+    referenced resource is not supported in KCC. Create a GitHub question in this repo
     to clarify. If you've determined that the KCC kind is not supported in
     KCC, skip ahead to
     [Configure reference resource in the service mappings](#configure-reference-in-the-service-mappings).
@@ -119,10 +119,10 @@ You can find a `Type` field for each argument, and two most common types are
 
     1.  If the field is not required, mark it as an ignored field following
         [this example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/b746248cd5a9b30669380513de8fdc6b4c43018d/config/servicemappings/cloudbuild.yaml#L204).
-    1.  If the field is required, create a Github question in this repo for
+    1.  If the field is required, create a GitHub question in this repo for
         further discussion.
 
-1.  If the field isn't a string or a list, create a Github question in this repo
+1.  If the field isn't a string or a list, create a GitHub question in this repo
     for further discussion.
 
 ## Configure reference resource in the service mappings

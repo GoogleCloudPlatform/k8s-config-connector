@@ -360,7 +360,7 @@ spec:
                                 type: string
                             type: object
                           id:
-                            description: Required. Id of the artifact, which the installation
+                            description: Required. ID of the artifact, which the installation
                               and update steps of this recipe can reference. Artifacts
                               in a recipe cannot have the same id.
                             type: string

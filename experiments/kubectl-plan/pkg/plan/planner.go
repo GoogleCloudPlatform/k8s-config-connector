@@ -61,7 +61,7 @@ func (r *Planner) BuildPlan(ctx context.Context, objects []*unstructured.Unstruc
 		resource, err := target.ResourceForGVK(ctx, gvk)
 		if err != nil {
 			// The Kind doesn't even exist; the object can't exist already
-			// TODO: We should invalide mappings above, in case our cache is out of date
+			// TODO: We should invalidate mappings above, in case our cache is out of date
 			action.Type = ActionTypeCreate
 			plan.Spec.Actions = append(plan.Spec.Actions, action)
 			continue
