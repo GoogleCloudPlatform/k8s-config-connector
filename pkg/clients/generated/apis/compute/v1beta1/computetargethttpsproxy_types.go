@@ -44,7 +44,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	can only be set for global target proxies. This field is only supported
 	for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
 	For INTERNAL_MANAGED, use certificateManagerCertificates instead.
-	sslCertificates and certificateMap fields can not be defined together. */
+	sslCertificates and certificateMap fields cannot be defined together. */
 	// +optional
 	CertificateMapRef *v1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
 

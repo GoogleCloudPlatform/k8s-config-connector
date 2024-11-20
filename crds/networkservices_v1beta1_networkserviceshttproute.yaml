@@ -359,7 +359,7 @@ spec:
                             pathRedirect:
                               description: The path that will be used in the redirect
                                 response instead of the one that was supplied in the
-                                request. path_redirect can not be supplied together
+                                request. path_redirect cannot be supplied together
                                 with prefix_redirect. Supply one alone or neither.
                                 If neither is supplied, the path of the original request
                                 will be used for the redirect.
@@ -626,7 +626,7 @@ spec:
                             type: array
                           ignoreCase:
                             description: Specifies if prefix_match and full_path_match
-                              matches are case sensitive. The default value is false.
+                              matches are case-sensitive. The default value is false.
                             type: boolean
                           prefixMatch:
                             description: The HTTP request path value must begin with

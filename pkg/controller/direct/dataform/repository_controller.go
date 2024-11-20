@@ -249,7 +249,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		mapCtx := &direct.MapContext{}
 		protoDesired := RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx, a.desired.Spec.WorkspaceCompilationOverrides)
 		if mapCtx.Err() != nil {
-			return fmt.Errorf("converting WorkspaceCompilaitonOverrides to api: %w", mapCtx.Err())
+			return fmt.Errorf("converting WorkspaceCompilationOverrides to api: %w", mapCtx.Err())
 		}
 
 		if !reflect.DeepEqual(protoDesired, a.actual.WorkspaceCompilationOverrides) {

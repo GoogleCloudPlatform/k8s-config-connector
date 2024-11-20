@@ -394,7 +394,7 @@ storageBillingModel: string
  afterwards, and does not alter the existing tables.
  The following values are supported:
 
- * 'und:ci': undetermined locale, case insensitive.
+ * 'und:ci': undetermined locale, case-insensitive.
  * '': empty string. Default to case-sensitive behavior.{% endverbatim %}</p>
         </td>
     </tr>

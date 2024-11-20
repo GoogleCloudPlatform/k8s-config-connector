@@ -264,7 +264,7 @@ func (r *Response) AddHeader(key, value string) {
 
 func (r *Response) RemoveHeader(key string) {
 	// The http.header `Del` converts the `key` to `CanonicalHeaderKey`, which means
-	// it expects the passed-in parameter `key` to be case insensitive, but `Header` itself should
+	// it expects the passed-in parameter `key` to be case-insensitive, but `Header` itself should
 	// use canonical keys.
 	r.Header.Del(key)
 	// Delete non canonical header keys like `x-goog-api-client`.
@@ -273,7 +273,7 @@ func (r *Response) RemoveHeader(key string) {
 
 func (r *Request) RemoveHeader(key string) {
 	// The http.header `Del` converts the `key` to `CanonicalHeaderKey`, which means
-	// it expects the passed-in parameter `key` to be case insensitive, but `Header` itself should
+	// it expects the passed-in parameter `key` to be case-insensitive, but `Header` itself should
 	// use canonical keys.
 	r.Header.Del(key)
 	// Delete non canonical header keys like `x-goog-api-client`.
