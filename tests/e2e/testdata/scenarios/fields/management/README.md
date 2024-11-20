@@ -1,7 +1,6 @@
 This test folder contains scenarios for setting and unsetting a field.
 
-Unsetting a native field (int, bool, string) refers to setting that field to the
-0 value in Go.
+Unsetting a native field (int, bool, string) in the underlying GCP resource that a Config Connector resource manages can be achieved by setting the corresponding field in the Config Connector resource to its 0 value. This means setting an int field to `0`, a bool field to `false`,  a string field to `""` (and etc).
 
 The folder structure should follow:
 
