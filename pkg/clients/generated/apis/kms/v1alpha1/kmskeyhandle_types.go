@@ -44,7 +44,7 @@ type KMSKeyHandleSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. The KMSKeyHandle name. If not given, the metadata.name will be used. */
+	/* Immutable. The KMS Key Handle ID used for resource creation or acquisition. For creation: If specified, this value is used as the key handle ID. If not provided, a UUID will be generated and assigned as the key handle ID. For acquisition: This field must be provided to identify the key handle resource to acquire. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

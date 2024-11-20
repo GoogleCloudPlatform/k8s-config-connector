@@ -29,7 +29,9 @@ var KMSKeyHandleGVK = GroupVersion.WithKind("KMSKeyHandle")
 type KMSKeyHandleSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.
-	// The KMSKeyHandle name. If not given, the metadata.name will be used.
+	// The KMS Key Handle ID used for resource creation or acquisition.
+	// For creation: If specified, this value is used as the key handle ID. If not provided, a UUID will be generated and assigned as the key handle ID.
+	// For acquisition: This field must be provided to identify the key handle resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Project hosting KMSKeyHandle

@@ -106,8 +106,11 @@ var _ directbase.Adapter = &Adapter{}
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting KeyHandle", "name", a.id.External)
-	if a.id.External == "" {
-		// cannot retrieve the key handle without ServiceGeneratedID, expecting to create a new connection
+	_, idIsSet, err := a.id.KeyHandleID()
+	if err != nil {
+		return false, err
+	}
+	if !idIsSet {
 		return false, nil
 	}
 	req := &kmspb.GetKeyHandleRequest{Name: a.id.External}
@@ -138,9 +141,17 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if err != nil {
 		return err
 	}
+	id, idIsSet, err := a.id.KeyHandleID()
+	if err != nil {
+		return err
+	}
+
 	req := &kmspb.CreateKeyHandleRequest{
 		Parent:    parent.String(),
 		KeyHandle: resource,
+	}
+	if idIsSet {
+		req.KeyHandleId = id
 	}
 	op, err := a.gcpClient.CreateKeyHandle(ctx, req)
 	if err != nil {

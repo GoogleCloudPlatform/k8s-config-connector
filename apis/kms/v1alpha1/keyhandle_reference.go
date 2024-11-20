@@ -21,7 +21,6 @@ import (
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/google/uuid"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
@@ -103,22 +102,18 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 	id.parent = &KMSKeyHandleParent{ProjectID: projectID, Location: location}
 
 	// Get desired ID
-	desiredHandleId := valueOf(obj.Spec.ResourceID)
-	if desiredHandleId != "" {
-		if _, err := uuid.Parse(desiredHandleId); err != nil {
-			return nil, fmt.Errorf("spec.resourceID should be in a UUID format, got %s ", desiredHandleId)
-		}
-	}
+	desiredHandleID := valueOf(obj.Spec.ResourceID)
 
 	// At this point we are expecting desiredHandleID to be either empty or valid uuid
 	// 1. if desiredHandleID empty:
 	// id.external will be projects/<pid>/locations/<loc>/keyHandles/. i.e without resourceID.
 	// A call will be made to find() with invalid externalID which will return false.
 	// 2. if desiredHandleID is a valid UUID: id.external will be valid.
+
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		actualParent, actualHandleId, err := ParseKMSKeyHandleExternal(externalRef)
+		actualParent, actualHandleID, err := ParseKMSKeyHandleExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -129,18 +124,27 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
-		if desiredHandleId != "" && (actualHandleId != desiredHandleId) {
+		if desiredHandleID != "" && (actualHandleID != desiredHandleID) {
 			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already assigned to %s",
-				desiredHandleId, actualHandleId)
+				desiredHandleID, actualHandleID)
 		}
 		id.External = externalRef
 		return id, nil
 	}
 	id.parent = &KMSKeyHandleParent{ProjectID: projectID, Location: location}
-	if desiredHandleId != "" {
-		id.External = id.parent.String() + "/keyHandles/" + desiredHandleId
-	}
+	id.External = id.parent.String() + "/keyHandles/" + desiredHandleID
 	return id, nil
+}
+
+func (r *KMSKeyHandleRef) KeyHandleID() (string, bool, error) {
+	if r.External != "" {
+		_, id, err := ParseKMSKeyHandleExternal(r.External)
+		if err != nil {
+			return "", false, err
+		}
+		return id, id != "", nil
+	}
+	return "", false, fmt.Errorf("KMSKeyHandleRef not normalized to External form or not created from `New()`")
 }
 
 func (r *KMSKeyHandleRef) Parent() (*KMSKeyHandleParent, error) {
