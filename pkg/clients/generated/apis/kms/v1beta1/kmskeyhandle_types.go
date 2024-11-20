@@ -28,51 +28,41 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AutokeyconfigKeyProject struct {
-	/* The `projectID` field of a project, when not managed by Config Connector. */
+type KMSKeyHandleSpec struct {
+	/* Location name to create KeyHandle */
 	// +optional
-	External *string `json:"external,omitempty"`
+	Location *string `json:"location,omitempty"`
 
-	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	/* Project hosting KMSKeyHandle */
 	// +optional
-	Kind *string `json:"kind,omitempty"`
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The `name` field of a `Project` resource. */
+	/* Immutable. The KMS Key Handle ID used for resource creation or acquisition. For creation: If specified, this value is used as the key handle ID. If not provided, a UUID will be generated and assigned as the key handle ID. For acquisition: This field must be provided to identify the key handle resource to acquire. */
 	// +optional
-	Name *string `json:"name,omitempty"`
+	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The `namespace` field of a `Project` resource. */
+	/* Indicates the resource type that the resulting [CryptoKey][] is meant to protect, e.g. `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource types https://cloud.google.com/kms/docs/autokey-overview#compatible-services. */
 	// +optional
-	Namespace *string `json:"namespace,omitempty"`
+	ResourceTypeSelector *string `json:"resourceTypeSelector,omitempty"`
 }
 
-type KMSAutokeyConfigSpec struct {
-	/* Immutable. The folder that this resource belongs to. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef"`
-
-	/* The Project that this resource belongs to. */
+type KeyhandleObservedStateStatus struct {
 	// +optional
-	KeyProject *AutokeyconfigKeyProject `json:"keyProject,omitempty"`
+	KmsKey *string `json:"kmsKey,omitempty"`
 }
 
-type AutokeyconfigObservedStateStatus struct {
-	/* Output only. Current state of this AutokeyConfig. */
-	// +optional
-	State *string `json:"state,omitempty"`
-}
-
-type KMSAutokeyConfigStatus struct {
+type KMSKeyHandleStatus struct {
 	/* Conditions represent the latest available observations of the
-	   KMSAutokeyConfig's current state. */
+	   KMSKeyHandle's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the KMSAutokeyConfig resource in GCP. */
+	/* A unique specifier for the KMSKeyHandle resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -82,38 +72,38 @@ type KMSAutokeyConfigStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *AutokeyconfigObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *KeyhandleObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpkmsautokeyconfig;gcpkmsautokeyconfigs
+// +kubebuilder:resource:categories=gcp,shortName=gcpkmskeyhandle;gcpkmskeyhandles
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// KMSAutokeyConfig is the Schema for the kms API
+// KMSKeyHandle is the Schema for the kms API
 // +k8s:openapi-gen=true
-type KMSAutokeyConfig struct {
+type KMSKeyHandle struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   KMSAutokeyConfigSpec   `json:"spec,omitempty"`
-	Status KMSAutokeyConfigStatus `json:"status,omitempty"`
+	Spec   KMSKeyHandleSpec   `json:"spec,omitempty"`
+	Status KMSKeyHandleStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// KMSAutokeyConfigList contains a list of KMSAutokeyConfig
-type KMSAutokeyConfigList struct {
+// KMSKeyHandleList contains a list of KMSKeyHandle
+type KMSKeyHandleList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []KMSAutokeyConfig `json:"items"`
+	Items           []KMSKeyHandle `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&KMSAutokeyConfig{}, &KMSAutokeyConfigList{})
+	SchemeBuilder.Register(&KMSKeyHandle{}, &KMSKeyHandleList{})
 }

@@ -25,4 +25,6 @@ type KMSAutokeyConfigExpansion interface{}
 
 type KMSCryptoKeyExpansion interface{}
 
+type KMSKeyHandleExpansion interface{}
+
 type KMSKeyRingExpansion interface{}
