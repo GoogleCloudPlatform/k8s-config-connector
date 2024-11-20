@@ -56,6 +56,9 @@
 </tbody>
 </table>
 
+ComputeTargetTCPProxy can manage both global and regional target TCP proxies. To manage a global ComputeTargetTCPProxy, no need to specify `spec.location`
+ or use a value of `global` in the `spec.location` field. To manage a regional ComputeTargetTCPProxy, use a region name in the `spec.location` field.
+
 ## Custom Resource Definition Properties
 
 
@@ -302,7 +305,7 @@ selfLink: string
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### Global Target Tcp Proxy
 ```yaml
 # Copyright 2020 Google LLC
 #
@@ -323,7 +326,7 @@ kind: ComputeTargetTCPProxy
 metadata:
   name: computetargettcpproxy-sample
 spec:
-  description: "A sample TCP proxy."
+  description: "A sample global TCP proxy."
   backendServiceRef:
     name: computetargettcpproxy-dep
 ---
