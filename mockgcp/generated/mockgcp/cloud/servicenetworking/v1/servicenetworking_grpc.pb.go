@@ -23,10 +23,15 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesServerClient interface {
+	// For service producers, provisions a new subnet in a peered service's shared VPC network in the requested region and with the requested size that's expressed as a CIDR range (number of leading bits of ipV4 network mask). The method checks against the assigned allocated ranges to find a non-conflicting IP address range. The method will reuse a subnet if subsequent calls contain the same subnet name, region, and prefix length. This method will make producer's tenant project to be a shared VPC service project as needed.
 	AddSubnetworkService(ctx context.Context, in *AddSubnetworkServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Disables VPC service controls for a connection.
 	DisableVpcServiceControlsService(ctx context.Context, in *DisableVpcServiceControlsServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Enables VPC service controls for a connection.
 	EnableVpcServiceControlsService(ctx context.Context, in *EnableVpcServiceControlsServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Service producers can use this method to find a currently unused range within consumer allocated ranges. This returned range is not reserved, and not guaranteed to remain unused. It will validate previously provided allocated ranges, find non-conflicting sub-range of requested size (expressed in number of leading bits of ipv4 network mask, as in CIDR range notation).
 	SearchRangeService(ctx context.Context, in *SearchRangeServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Service producers use this method to validate if the consumer provided network, project and requested range are valid. This allows them to use a fail-fast mechanism for consumer requests, and not have to wait for AddSubnetwork operation completion to determine if user request is invalid.
 	ValidateService(ctx context.Context, in *ValidateServiceRequest, opts ...grpc.CallOption) (*ValidateConsumerConfigResponse, error)
 }
 
@@ -40,7 +45,7 @@ func NewServicesServerClient(cc grpc.ClientConnInterface) ServicesServerClient {
 
 func (c *servicesServerClient) AddSubnetworkService(ctx context.Context, in *AddSubnetworkServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +54,7 @@ func (c *servicesServerClient) AddSubnetworkService(ctx context.Context, in *Add
 
 func (c *servicesServerClient) DisableVpcServiceControlsService(ctx context.Context, in *DisableVpcServiceControlsServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +63,7 @@ func (c *servicesServerClient) DisableVpcServiceControlsService(ctx context.Cont
 
 func (c *servicesServerClient) EnableVpcServiceControlsService(ctx context.Context, in *EnableVpcServiceControlsServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +72,7 @@ func (c *servicesServerClient) EnableVpcServiceControlsService(ctx context.Conte
 
 func (c *servicesServerClient) SearchRangeService(ctx context.Context, in *SearchRangeServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesServer/SearchRangeService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/SearchRangeService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +81,7 @@ func (c *servicesServerClient) SearchRangeService(ctx context.Context, in *Searc
 
 func (c *servicesServerClient) ValidateService(ctx context.Context, in *ValidateServiceRequest, opts ...grpc.CallOption) (*ValidateConsumerConfigResponse, error) {
 	out := new(ValidateConsumerConfigResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesServer/ValidateService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/ValidateService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,10 +92,15 @@ func (c *servicesServerClient) ValidateService(ctx context.Context, in *Validate
 // All implementations must embed UnimplementedServicesServerServer
 // for forward compatibility
 type ServicesServerServer interface {
+	// For service producers, provisions a new subnet in a peered service's shared VPC network in the requested region and with the requested size that's expressed as a CIDR range (number of leading bits of ipV4 network mask). The method checks against the assigned allocated ranges to find a non-conflicting IP address range. The method will reuse a subnet if subsequent calls contain the same subnet name, region, and prefix length. This method will make producer's tenant project to be a shared VPC service project as needed.
 	AddSubnetworkService(context.Context, *AddSubnetworkServiceRequest) (*longrunningpb.Operation, error)
+	// Disables VPC service controls for a connection.
 	DisableVpcServiceControlsService(context.Context, *DisableVpcServiceControlsServiceRequest) (*longrunningpb.Operation, error)
+	// Enables VPC service controls for a connection.
 	EnableVpcServiceControlsService(context.Context, *EnableVpcServiceControlsServiceRequest) (*longrunningpb.Operation, error)
+	// Service producers can use this method to find a currently unused range within consumer allocated ranges. This returned range is not reserved, and not guaranteed to remain unused. It will validate previously provided allocated ranges, find non-conflicting sub-range of requested size (expressed in number of leading bits of ipv4 network mask, as in CIDR range notation).
 	SearchRangeService(context.Context, *SearchRangeServiceRequest) (*longrunningpb.Operation, error)
+	// Service producers use this method to validate if the consumer provided network, project and requested range are valid. This allows them to use a fail-fast mechanism for consumer requests, and not have to wait for AddSubnetwork operation completion to determine if user request is invalid.
 	ValidateService(context.Context, *ValidateServiceRequest) (*ValidateConsumerConfigResponse, error)
 	mustEmbedUnimplementedServicesServerServer()
 }
@@ -137,7 +147,7 @@ func _ServicesServer_AddSubnetworkService_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesServerServer).AddSubnetworkService(ctx, req.(*AddSubnetworkServiceRequest))
@@ -155,7 +165,7 @@ func _ServicesServer_DisableVpcServiceControlsService_Handler(srv interface{}, c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesServerServer).DisableVpcServiceControlsService(ctx, req.(*DisableVpcServiceControlsServiceRequest))
@@ -173,7 +183,7 @@ func _ServicesServer_EnableVpcServiceControlsService_Handler(srv interface{}, ct
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesServerServer).EnableVpcServiceControlsService(ctx, req.(*EnableVpcServiceControlsServiceRequest))
@@ -191,7 +201,7 @@ func _ServicesServer_SearchRangeService_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesServer/SearchRangeService",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesServer/SearchRangeService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesServerServer).SearchRangeService(ctx, req.(*SearchRangeServiceRequest))
@@ -209,7 +219,7 @@ func _ServicesServer_ValidateService_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesServer/ValidateService",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesServer/ValidateService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesServerServer).ValidateService(ctx, req.(*ValidateServiceRequest))
@@ -221,7 +231,7 @@ func _ServicesServer_ValidateService_Handler(srv interface{}, ctx context.Contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesServer",
 	HandlerType: (*ServicesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -253,9 +263,13 @@ var ServicesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesConnectionsServerClient interface {
+	// Creates a private connection that establishes a VPC Network Peering connection to a VPC network in the service producer's organization. The administrator of the service consumer's VPC network invokes this method. The administrator must assign one or more allocated IP ranges for provisioning subnetworks in the service producer's VPC network. This connection is used for all supported services in the service producer's organization, so it only needs to be invoked once.
 	CreateServicesConnection(ctx context.Context, in *CreateServicesConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a private service access connection.
 	DeleteConnectionServicesConnection(ctx context.Context, in *DeleteConnectionServicesConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// List the private connections that are configured in a service consumer's VPC network.
 	ListServicesConnections(ctx context.Context, in *ListServicesConnectionsRequest, opts ...grpc.CallOption) (*ListConnectionsResponse, error)
+	// Updates the allocated ranges that are assigned to a connection.
 	PatchServicesConnection(ctx context.Context, in *PatchServicesConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -269,7 +283,7 @@ func NewServicesConnectionsServerClient(cc grpc.ClientConnInterface) ServicesCon
 
 func (c *servicesConnectionsServerClient) CreateServicesConnection(ctx context.Context, in *CreateServicesConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +292,7 @@ func (c *servicesConnectionsServerClient) CreateServicesConnection(ctx context.C
 
 func (c *servicesConnectionsServerClient) DeleteConnectionServicesConnection(ctx context.Context, in *DeleteConnectionServicesConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -287,7 +301,7 @@ func (c *servicesConnectionsServerClient) DeleteConnectionServicesConnection(ctx
 
 func (c *servicesConnectionsServerClient) ListServicesConnections(ctx context.Context, in *ListServicesConnectionsRequest, opts ...grpc.CallOption) (*ListConnectionsResponse, error) {
 	out := new(ListConnectionsResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -296,7 +310,7 @@ func (c *servicesConnectionsServerClient) ListServicesConnections(ctx context.Co
 
 func (c *servicesConnectionsServerClient) PatchServicesConnection(ctx context.Context, in *PatchServicesConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -307,9 +321,13 @@ func (c *servicesConnectionsServerClient) PatchServicesConnection(ctx context.Co
 // All implementations must embed UnimplementedServicesConnectionsServerServer
 // for forward compatibility
 type ServicesConnectionsServerServer interface {
+	// Creates a private connection that establishes a VPC Network Peering connection to a VPC network in the service producer's organization. The administrator of the service consumer's VPC network invokes this method. The administrator must assign one or more allocated IP ranges for provisioning subnetworks in the service producer's VPC network. This connection is used for all supported services in the service producer's organization, so it only needs to be invoked once.
 	CreateServicesConnection(context.Context, *CreateServicesConnectionRequest) (*longrunningpb.Operation, error)
+	// Deletes a private service access connection.
 	DeleteConnectionServicesConnection(context.Context, *DeleteConnectionServicesConnectionRequest) (*longrunningpb.Operation, error)
+	// List the private connections that are configured in a service consumer's VPC network.
 	ListServicesConnections(context.Context, *ListServicesConnectionsRequest) (*ListConnectionsResponse, error)
+	// Updates the allocated ranges that are assigned to a connection.
 	PatchServicesConnection(context.Context, *PatchServicesConnectionRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedServicesConnectionsServerServer()
 }
@@ -354,7 +372,7 @@ func _ServicesConnectionsServer_CreateServicesConnection_Handler(srv interface{}
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesConnectionsServerServer).CreateServicesConnection(ctx, req.(*CreateServicesConnectionRequest))
@@ -372,7 +390,7 @@ func _ServicesConnectionsServer_DeleteConnectionServicesConnection_Handler(srv i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesConnectionsServerServer).DeleteConnectionServicesConnection(ctx, req.(*DeleteConnectionServicesConnectionRequest))
@@ -390,7 +408,7 @@ func _ServicesConnectionsServer_ListServicesConnections_Handler(srv interface{},
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesConnectionsServerServer).ListServicesConnections(ctx, req.(*ListServicesConnectionsRequest))
@@ -408,7 +426,7 @@ func _ServicesConnectionsServer_PatchServicesConnection_Handler(srv interface{},
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesConnectionsServerServer).PatchServicesConnection(ctx, req.(*PatchServicesConnectionRequest))
@@ -420,7 +438,7 @@ func _ServicesConnectionsServer_PatchServicesConnection_Handler(srv interface{},
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesConnectionsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesConnectionsServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer",
 	HandlerType: (*ServicesConnectionsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -448,10 +466,15 @@ var ServicesConnectionsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesDnsRecordSetsServerClient interface {
+	// Service producers can use this method to add DNS record sets to private DNS zones in the shared producer host project.
 	AddServicesDnsRecordSet(ctx context.Context, in *AddServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Producers can use this method to retrieve information about the DNS record set added to the private zone inside the shared tenant host project associated with a consumer network.
 	GetServicesDnsRecordSet(ctx context.Context, in *GetServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*DnsRecordSet, error)
+	// Producers can use this method to retrieve a list of available DNS RecordSets available inside the private zone on the tenant host project accessible from their network.
 	ListServicesDnsRecordSets(ctx context.Context, in *ListServicesDnsRecordSetsRequest, opts ...grpc.CallOption) (*ListDnsRecordSetsResponse, error)
+	// Service producers can use this method to remove DNS record sets from private DNS zones in the shared producer host project.
 	DeleteServicesDnsRecordSet(ctx context.Context, in *DeleteServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Service producers can use this method to update DNS record sets from private DNS zones in the shared producer host project.
 	UpdateServicesDnsRecordSet(ctx context.Context, in *UpdateServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -465,7 +488,7 @@ func NewServicesDnsRecordSetsServerClient(cc grpc.ClientConnInterface) ServicesD
 
 func (c *servicesDnsRecordSetsServerClient) AddServicesDnsRecordSet(ctx context.Context, in *AddServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -474,7 +497,7 @@ func (c *servicesDnsRecordSetsServerClient) AddServicesDnsRecordSet(ctx context.
 
 func (c *servicesDnsRecordSetsServerClient) GetServicesDnsRecordSet(ctx context.Context, in *GetServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*DnsRecordSet, error) {
 	out := new(DnsRecordSet)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -483,7 +506,7 @@ func (c *servicesDnsRecordSetsServerClient) GetServicesDnsRecordSet(ctx context.
 
 func (c *servicesDnsRecordSetsServerClient) ListServicesDnsRecordSets(ctx context.Context, in *ListServicesDnsRecordSetsRequest, opts ...grpc.CallOption) (*ListDnsRecordSetsResponse, error) {
 	out := new(ListDnsRecordSetsResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -492,7 +515,7 @@ func (c *servicesDnsRecordSetsServerClient) ListServicesDnsRecordSets(ctx contex
 
 func (c *servicesDnsRecordSetsServerClient) DeleteServicesDnsRecordSet(ctx context.Context, in *DeleteServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -501,7 +524,7 @@ func (c *servicesDnsRecordSetsServerClient) DeleteServicesDnsRecordSet(ctx conte
 
 func (c *servicesDnsRecordSetsServerClient) UpdateServicesDnsRecordSet(ctx context.Context, in *UpdateServicesDnsRecordSetRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -512,10 +535,15 @@ func (c *servicesDnsRecordSetsServerClient) UpdateServicesDnsRecordSet(ctx conte
 // All implementations must embed UnimplementedServicesDnsRecordSetsServerServer
 // for forward compatibility
 type ServicesDnsRecordSetsServerServer interface {
+	// Service producers can use this method to add DNS record sets to private DNS zones in the shared producer host project.
 	AddServicesDnsRecordSet(context.Context, *AddServicesDnsRecordSetRequest) (*longrunningpb.Operation, error)
+	// Producers can use this method to retrieve information about the DNS record set added to the private zone inside the shared tenant host project associated with a consumer network.
 	GetServicesDnsRecordSet(context.Context, *GetServicesDnsRecordSetRequest) (*DnsRecordSet, error)
+	// Producers can use this method to retrieve a list of available DNS RecordSets available inside the private zone on the tenant host project accessible from their network.
 	ListServicesDnsRecordSets(context.Context, *ListServicesDnsRecordSetsRequest) (*ListDnsRecordSetsResponse, error)
+	// Service producers can use this method to remove DNS record sets from private DNS zones in the shared producer host project.
 	DeleteServicesDnsRecordSet(context.Context, *DeleteServicesDnsRecordSetRequest) (*longrunningpb.Operation, error)
+	// Service producers can use this method to update DNS record sets from private DNS zones in the shared producer host project.
 	UpdateServicesDnsRecordSet(context.Context, *UpdateServicesDnsRecordSetRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedServicesDnsRecordSetsServerServer()
 }
@@ -563,7 +591,7 @@ func _ServicesDnsRecordSetsServer_AddServicesDnsRecordSet_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesDnsRecordSetsServerServer).AddServicesDnsRecordSet(ctx, req.(*AddServicesDnsRecordSetRequest))
@@ -581,7 +609,7 @@ func _ServicesDnsRecordSetsServer_GetServicesDnsRecordSet_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesDnsRecordSetsServerServer).GetServicesDnsRecordSet(ctx, req.(*GetServicesDnsRecordSetRequest))
@@ -599,7 +627,7 @@ func _ServicesDnsRecordSetsServer_ListServicesDnsRecordSets_Handler(srv interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesDnsRecordSetsServerServer).ListServicesDnsRecordSets(ctx, req.(*ListServicesDnsRecordSetsRequest))
@@ -617,7 +645,7 @@ func _ServicesDnsRecordSetsServer_DeleteServicesDnsRecordSet_Handler(srv interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesDnsRecordSetsServerServer).DeleteServicesDnsRecordSet(ctx, req.(*DeleteServicesDnsRecordSetRequest))
@@ -635,7 +663,7 @@ func _ServicesDnsRecordSetsServer_UpdateServicesDnsRecordSet_Handler(srv interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesDnsRecordSetsServerServer).UpdateServicesDnsRecordSet(ctx, req.(*UpdateServicesDnsRecordSetRequest))
@@ -647,7 +675,7 @@ func _ServicesDnsRecordSetsServer_UpdateServicesDnsRecordSet_Handler(srv interfa
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesDnsRecordSetsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer",
 	HandlerType: (*ServicesDnsRecordSetsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -679,7 +707,9 @@ var ServicesDnsRecordSetsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesDnsZonesServerClient interface {
+	// Service producers can use this method to add private DNS zones in the shared producer host project and matching peering zones in the consumer project.
 	AddServicesDnsZone(ctx context.Context, in *AddServicesDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Service producers can use this method to remove private DNS zones in the shared producer host project and matching peering zones in the consumer project.
 	DeleteServicesDnsZone(ctx context.Context, in *DeleteServicesDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -693,7 +723,7 @@ func NewServicesDnsZonesServerClient(cc grpc.ClientConnInterface) ServicesDnsZon
 
 func (c *servicesDnsZonesServerClient) AddServicesDnsZone(ctx context.Context, in *AddServicesDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -702,7 +732,7 @@ func (c *servicesDnsZonesServerClient) AddServicesDnsZone(ctx context.Context, i
 
 func (c *servicesDnsZonesServerClient) DeleteServicesDnsZone(ctx context.Context, in *DeleteServicesDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -713,7 +743,9 @@ func (c *servicesDnsZonesServerClient) DeleteServicesDnsZone(ctx context.Context
 // All implementations must embed UnimplementedServicesDnsZonesServerServer
 // for forward compatibility
 type ServicesDnsZonesServerServer interface {
+	// Service producers can use this method to add private DNS zones in the shared producer host project and matching peering zones in the consumer project.
 	AddServicesDnsZone(context.Context, *AddServicesDnsZoneRequest) (*longrunningpb.Operation, error)
+	// Service producers can use this method to remove private DNS zones in the shared producer host project and matching peering zones in the consumer project.
 	DeleteServicesDnsZone(context.Context, *DeleteServicesDnsZoneRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedServicesDnsZonesServerServer()
 }
@@ -752,7 +784,7 @@ func _ServicesDnsZonesServer_AddServicesDnsZone_Handler(srv interface{}, ctx con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesDnsZonesServerServer).AddServicesDnsZone(ctx, req.(*AddServicesDnsZoneRequest))
@@ -770,7 +802,7 @@ func _ServicesDnsZonesServer_DeleteServicesDnsZone_Handler(srv interface{}, ctx 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesDnsZonesServerServer).DeleteServicesDnsZone(ctx, req.(*DeleteServicesDnsZoneRequest))
@@ -782,7 +814,7 @@ func _ServicesDnsZonesServer_DeleteServicesDnsZone_Handler(srv interface{}, ctx 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesDnsZonesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesDnsZonesServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer",
 	HandlerType: (*ServicesDnsZonesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -841,7 +873,7 @@ func RegisterServicesProjectsServerServer(s grpc.ServiceRegistrar, srv ServicesP
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesProjectsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesProjectsServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesProjectsServer",
 	HandlerType: (*ServicesProjectsServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
@@ -891,7 +923,7 @@ func RegisterServicesProjectsGlobalServerServer(s grpc.ServiceRegistrar, srv Ser
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesProjectsGlobalServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesProjectsGlobalServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalServer",
 	HandlerType: (*ServicesProjectsGlobalServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
@@ -902,8 +934,11 @@ var ServicesProjectsGlobalServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesProjectsGlobalNetworksServerClient interface {
+	// Service producers use this method to get the configuration of their connection including the import/export of custom routes and subnetwork routes with public IP.
 	GetServicesProjectsGlobalNetwork(ctx context.Context, in *GetServicesProjectsGlobalNetworkRequest, opts ...grpc.CallOption) (*ConsumerConfig, error)
+	// Consumers use this method to find out the state of VPC Service Controls. The controls could be enabled or disabled for a connection.
 	GetVpcServiceControlsServicesProjectsGlobalNetwork(ctx context.Context, in *GetVpcServiceControlsServicesProjectsGlobalNetworkRequest, opts ...grpc.CallOption) (*VpcServiceControls, error)
+	// Service producers use this method to update the configuration of their connection including the import/export of custom routes and subnetwork routes with public IP.
 	UpdateConsumerConfigServicesProjectsGlobalNetwork(ctx context.Context, in *UpdateConsumerConfigServicesProjectsGlobalNetworkRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -917,7 +952,7 @@ func NewServicesProjectsGlobalNetworksServerClient(cc grpc.ClientConnInterface) 
 
 func (c *servicesProjectsGlobalNetworksServerClient) GetServicesProjectsGlobalNetwork(ctx context.Context, in *GetServicesProjectsGlobalNetworkRequest, opts ...grpc.CallOption) (*ConsumerConfig, error) {
 	out := new(ConsumerConfig)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -926,7 +961,7 @@ func (c *servicesProjectsGlobalNetworksServerClient) GetServicesProjectsGlobalNe
 
 func (c *servicesProjectsGlobalNetworksServerClient) GetVpcServiceControlsServicesProjectsGlobalNetwork(ctx context.Context, in *GetVpcServiceControlsServicesProjectsGlobalNetworkRequest, opts ...grpc.CallOption) (*VpcServiceControls, error) {
 	out := new(VpcServiceControls)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -935,7 +970,7 @@ func (c *servicesProjectsGlobalNetworksServerClient) GetVpcServiceControlsServic
 
 func (c *servicesProjectsGlobalNetworksServerClient) UpdateConsumerConfigServicesProjectsGlobalNetwork(ctx context.Context, in *UpdateConsumerConfigServicesProjectsGlobalNetworkRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -946,8 +981,11 @@ func (c *servicesProjectsGlobalNetworksServerClient) UpdateConsumerConfigService
 // All implementations must embed UnimplementedServicesProjectsGlobalNetworksServerServer
 // for forward compatibility
 type ServicesProjectsGlobalNetworksServerServer interface {
+	// Service producers use this method to get the configuration of their connection including the import/export of custom routes and subnetwork routes with public IP.
 	GetServicesProjectsGlobalNetwork(context.Context, *GetServicesProjectsGlobalNetworkRequest) (*ConsumerConfig, error)
+	// Consumers use this method to find out the state of VPC Service Controls. The controls could be enabled or disabled for a connection.
 	GetVpcServiceControlsServicesProjectsGlobalNetwork(context.Context, *GetVpcServiceControlsServicesProjectsGlobalNetworkRequest) (*VpcServiceControls, error)
+	// Service producers use this method to update the configuration of their connection including the import/export of custom routes and subnetwork routes with public IP.
 	UpdateConsumerConfigServicesProjectsGlobalNetwork(context.Context, *UpdateConsumerConfigServicesProjectsGlobalNetworkRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedServicesProjectsGlobalNetworksServerServer()
 }
@@ -989,7 +1027,7 @@ func _ServicesProjectsGlobalNetworksServer_GetServicesProjectsGlobalNetwork_Hand
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksServerServer).GetServicesProjectsGlobalNetwork(ctx, req.(*GetServicesProjectsGlobalNetworkRequest))
@@ -1007,7 +1045,7 @@ func _ServicesProjectsGlobalNetworksServer_GetVpcServiceControlsServicesProjects
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksServerServer).GetVpcServiceControlsServicesProjectsGlobalNetwork(ctx, req.(*GetVpcServiceControlsServicesProjectsGlobalNetworkRequest))
@@ -1025,7 +1063,7 @@ func _ServicesProjectsGlobalNetworksServer_UpdateConsumerConfigServicesProjectsG
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksServerServer).UpdateConsumerConfigServicesProjectsGlobalNetwork(ctx, req.(*UpdateConsumerConfigServicesProjectsGlobalNetworkRequest))
@@ -1037,7 +1075,7 @@ func _ServicesProjectsGlobalNetworksServer_UpdateConsumerConfigServicesProjectsG
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesProjectsGlobalNetworksServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer",
 	HandlerType: (*ServicesProjectsGlobalNetworksServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1061,7 +1099,9 @@ var ServicesProjectsGlobalNetworksServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesProjectsGlobalNetworksDnsZonesServerClient interface {
+	// Service producers can use this method to retrieve a DNS zone in the shared producer host project and the matching peering zones in consumer project
 	GetServicesProjectsGlobalNetworksDnsZone(ctx context.Context, in *GetServicesProjectsGlobalNetworksDnsZoneRequest, opts ...grpc.CallOption) (*GetDnsZoneResponse, error)
+	// * Service producers can use this method to retrieve a list of available DNS zones in the shared producer host project and the matching peering zones in the consumer project. *
 	ListServicesProjectsGlobalNetworksDnsZones(ctx context.Context, in *ListServicesProjectsGlobalNetworksDnsZonesRequest, opts ...grpc.CallOption) (*ListDnsZonesResponse, error)
 }
 
@@ -1075,7 +1115,7 @@ func NewServicesProjectsGlobalNetworksDnsZonesServerClient(cc grpc.ClientConnInt
 
 func (c *servicesProjectsGlobalNetworksDnsZonesServerClient) GetServicesProjectsGlobalNetworksDnsZone(ctx context.Context, in *GetServicesProjectsGlobalNetworksDnsZoneRequest, opts ...grpc.CallOption) (*GetDnsZoneResponse, error) {
 	out := new(GetDnsZoneResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1084,7 +1124,7 @@ func (c *servicesProjectsGlobalNetworksDnsZonesServerClient) GetServicesProjects
 
 func (c *servicesProjectsGlobalNetworksDnsZonesServerClient) ListServicesProjectsGlobalNetworksDnsZones(ctx context.Context, in *ListServicesProjectsGlobalNetworksDnsZonesRequest, opts ...grpc.CallOption) (*ListDnsZonesResponse, error) {
 	out := new(ListDnsZonesResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1095,7 +1135,9 @@ func (c *servicesProjectsGlobalNetworksDnsZonesServerClient) ListServicesProject
 // All implementations must embed UnimplementedServicesProjectsGlobalNetworksDnsZonesServerServer
 // for forward compatibility
 type ServicesProjectsGlobalNetworksDnsZonesServerServer interface {
+	// Service producers can use this method to retrieve a DNS zone in the shared producer host project and the matching peering zones in consumer project
 	GetServicesProjectsGlobalNetworksDnsZone(context.Context, *GetServicesProjectsGlobalNetworksDnsZoneRequest) (*GetDnsZoneResponse, error)
+	// * Service producers can use this method to retrieve a list of available DNS zones in the shared producer host project and the matching peering zones in the consumer project. *
 	ListServicesProjectsGlobalNetworksDnsZones(context.Context, *ListServicesProjectsGlobalNetworksDnsZonesRequest) (*ListDnsZonesResponse, error)
 	mustEmbedUnimplementedServicesProjectsGlobalNetworksDnsZonesServerServer()
 }
@@ -1134,7 +1176,7 @@ func _ServicesProjectsGlobalNetworksDnsZonesServer_GetServicesProjectsGlobalNetw
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksDnsZonesServerServer).GetServicesProjectsGlobalNetworksDnsZone(ctx, req.(*GetServicesProjectsGlobalNetworksDnsZoneRequest))
@@ -1152,7 +1194,7 @@ func _ServicesProjectsGlobalNetworksDnsZonesServer_ListServicesProjectsGlobalNet
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksDnsZonesServerServer).ListServicesProjectsGlobalNetworksDnsZones(ctx, req.(*ListServicesProjectsGlobalNetworksDnsZonesRequest))
@@ -1164,7 +1206,7 @@ func _ServicesProjectsGlobalNetworksDnsZonesServer_ListServicesProjectsGlobalNet
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesProjectsGlobalNetworksDnsZonesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer",
 	HandlerType: (*ServicesProjectsGlobalNetworksDnsZonesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1184,8 +1226,11 @@ var ServicesProjectsGlobalNetworksDnsZonesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesProjectsGlobalNetworksPeeredDnsDomainsServerClient interface {
+	// Creates a peered DNS domain which sends requests for records in given namespace originating in the service producer VPC network to the consumer VPC network to be resolved.
 	CreateServicesProjectsGlobalNetworksPeeredDnsDomain(ctx context.Context, in *CreateServicesProjectsGlobalNetworksPeeredDnsDomainRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a peered DNS domain.
 	DeleteServicesProjectsGlobalNetworksPeeredDnsDomain(ctx context.Context, in *DeleteServicesProjectsGlobalNetworksPeeredDnsDomainRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists peered DNS domains for a connection.
 	ListServicesProjectsGlobalNetworksPeeredDnsDomains(ctx context.Context, in *ListServicesProjectsGlobalNetworksPeeredDnsDomainsRequest, opts ...grpc.CallOption) (*ListPeeredDnsDomainsResponse, error)
 }
 
@@ -1199,7 +1244,7 @@ func NewServicesProjectsGlobalNetworksPeeredDnsDomainsServerClient(cc grpc.Clien
 
 func (c *servicesProjectsGlobalNetworksPeeredDnsDomainsServerClient) CreateServicesProjectsGlobalNetworksPeeredDnsDomain(ctx context.Context, in *CreateServicesProjectsGlobalNetworksPeeredDnsDomainRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1208,7 +1253,7 @@ func (c *servicesProjectsGlobalNetworksPeeredDnsDomainsServerClient) CreateServi
 
 func (c *servicesProjectsGlobalNetworksPeeredDnsDomainsServerClient) DeleteServicesProjectsGlobalNetworksPeeredDnsDomain(ctx context.Context, in *DeleteServicesProjectsGlobalNetworksPeeredDnsDomainRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1217,7 +1262,7 @@ func (c *servicesProjectsGlobalNetworksPeeredDnsDomainsServerClient) DeleteServi
 
 func (c *servicesProjectsGlobalNetworksPeeredDnsDomainsServerClient) ListServicesProjectsGlobalNetworksPeeredDnsDomains(ctx context.Context, in *ListServicesProjectsGlobalNetworksPeeredDnsDomainsRequest, opts ...grpc.CallOption) (*ListPeeredDnsDomainsResponse, error) {
 	out := new(ListPeeredDnsDomainsResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1228,8 +1273,11 @@ func (c *servicesProjectsGlobalNetworksPeeredDnsDomainsServerClient) ListService
 // All implementations must embed UnimplementedServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer
 // for forward compatibility
 type ServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer interface {
+	// Creates a peered DNS domain which sends requests for records in given namespace originating in the service producer VPC network to the consumer VPC network to be resolved.
 	CreateServicesProjectsGlobalNetworksPeeredDnsDomain(context.Context, *CreateServicesProjectsGlobalNetworksPeeredDnsDomainRequest) (*longrunningpb.Operation, error)
+	// Deletes a peered DNS domain.
 	DeleteServicesProjectsGlobalNetworksPeeredDnsDomain(context.Context, *DeleteServicesProjectsGlobalNetworksPeeredDnsDomainRequest) (*longrunningpb.Operation, error)
+	// Lists peered DNS domains for a connection.
 	ListServicesProjectsGlobalNetworksPeeredDnsDomains(context.Context, *ListServicesProjectsGlobalNetworksPeeredDnsDomainsRequest) (*ListPeeredDnsDomainsResponse, error)
 	mustEmbedUnimplementedServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer()
 }
@@ -1271,7 +1319,7 @@ func _ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_CreateServicesProject
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer).CreateServicesProjectsGlobalNetworksPeeredDnsDomain(ctx, req.(*CreateServicesProjectsGlobalNetworksPeeredDnsDomainRequest))
@@ -1289,7 +1337,7 @@ func _ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_DeleteServicesProject
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer).DeleteServicesProjectsGlobalNetworksPeeredDnsDomain(ctx, req.(*DeleteServicesProjectsGlobalNetworksPeeredDnsDomainRequest))
@@ -1307,7 +1355,7 @@ func _ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_ListServicesProjectsG
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer).ListServicesProjectsGlobalNetworksPeeredDnsDomains(ctx, req.(*ListServicesProjectsGlobalNetworksPeeredDnsDomainsRequest))
@@ -1319,7 +1367,7 @@ func _ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_ListServicesProjectsG
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer",
 	HandlerType: (*ServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1343,6 +1391,7 @@ var ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_ServiceDesc = grpc.Serv
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServicesRolesServerClient interface {
+	// Service producers can use this method to add roles in the shared VPC host project. Each role is bound to the provided member. Each role must be selected from within an allowlisted set of roles. Each role is applied at only the granularity specified in the allowlist.
 	AddServicesRole(ctx context.Context, in *AddServicesRoleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -1356,7 +1405,7 @@ func NewServicesRolesServerClient(cc grpc.ClientConnInterface) ServicesRolesServ
 
 func (c *servicesRolesServerClient) AddServicesRole(ctx context.Context, in *AddServicesRoleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1367,6 +1416,7 @@ func (c *servicesRolesServerClient) AddServicesRole(ctx context.Context, in *Add
 // All implementations must embed UnimplementedServicesRolesServerServer
 // for forward compatibility
 type ServicesRolesServerServer interface {
+	// Service producers can use this method to add roles in the shared VPC host project. Each role is bound to the provided member. Each role must be selected from within an allowlisted set of roles. Each role is applied at only the granularity specified in the allowlist.
 	AddServicesRole(context.Context, *AddServicesRoleRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedServicesRolesServerServer()
 }
@@ -1401,7 +1451,7 @@ func _ServicesRolesServer_AddServicesRole_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole",
+		FullMethod: "/mockgcp.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServicesRolesServerServer).AddServicesRole(ctx, req.(*AddServicesRoleRequest))
@@ -1413,7 +1463,7 @@ func _ServicesRolesServer_AddServicesRole_Handler(srv interface{}, ctx context.C
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServicesRolesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.servicenetworking.v1.ServicesRolesServer",
+	ServiceName: "mockgcp.cloud.servicenetworking.v1.ServicesRolesServer",
 	HandlerType: (*ServicesRolesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

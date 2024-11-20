@@ -186,7 +186,7 @@ service BucketsServer {
   };
 
   // Restores a soft-deleted bucket.
-  rpc RestoreBucket(RestoreBucketRequest) returns (.google.protobuf.Empty) {
+  rpc RestoreBucket(RestoreBucketRequest) returns (Bucket) {
     option (google.api.http) = {
       post: "/storage/v1/b/{name}/restore"
     };
@@ -1207,10 +1207,12 @@ message Object {
   optional .google.protobuf.Timestamp time_created = 33 [json_name="timeCreated"];
   // The time at which the object became noncurrent in RFC 3339 format. Will be returned if and only if this version of the object has been deleted.
   optional .google.protobuf.Timestamp time_deleted = 34 [json_name="timeDeleted"];
+  // The time when the object was finalized.
+  optional .google.protobuf.Timestamp time_finalized = 35 [json_name="timeFinalized"];
   // The time at which the object's storage class was last changed. When the object is initially created, it will be set to timeCreated.
-  optional .google.protobuf.Timestamp time_storage_class_updated = 35 [json_name="timeStorageClassUpdated"];
+  optional .google.protobuf.Timestamp time_storage_class_updated = 36 [json_name="timeStorageClassUpdated"];
   // The modification time of the object metadata in RFC 3339 format. Set initially to object creation time and then updated whenever any metadata of the object changes. This includes changes made by a requester, such as modifying custom metadata, as well as changes made by Cloud Storage on behalf of a requester, such as changing the storage class based on an Object Lifecycle Configuration.
-  optional .google.protobuf.Timestamp updated = 36 [json_name="updated"];
+  optional .google.protobuf.Timestamp updated = 37 [json_name="updated"];
 }
 
 message ObjectAccessControlProjectTeam {
@@ -1506,7 +1508,8 @@ message RelocateBucketServiceRequest {
 message RestoreBucketRequest {
   optional string name = 1;
   optional string generation = 2;
-  optional string user_project = 3;
+  optional string projection = 3;
+  optional string user_project = 4;
 }
 
 message UpdateBucketRequest {

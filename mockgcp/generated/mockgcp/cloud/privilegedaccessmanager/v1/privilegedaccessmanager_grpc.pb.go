@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PrivilegedAccessManagerClient interface {
-	// CheckOnboardingStatus reports the onboarding status for a
+	// `CheckOnboardingStatus` reports the onboarding status for a
 	// project/folder/organization. Any findings reported by this API need to be
 	// fixed before PAM can be used on the resource.
 	CheckOnboardingStatus(ctx context.Context, in *CheckOnboardingStatusRequest, opts ...grpc.CallOption) (*CheckOnboardingStatusResponse, error)
@@ -38,7 +38,7 @@ type PrivilegedAccessManagerClient interface {
 	// location.
 	CreateEntitlement(ctx context.Context, in *CreateEntitlementRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single entitlement. This method can only be called when there
-	// are no in-progress (ACTIVE/ACTIVATING/REVOKING) grants under the
+	// are no in-progress (`ACTIVE`/`ACTIVATING`/`REVOKING`) grants under the
 	// entitlement.
 	DeleteEntitlement(ctx context.Context, in *DeleteEntitlementRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Updates the entitlement specified in the request. Updated fields in the
@@ -69,7 +69,8 @@ type PrivilegedAccessManagerClient interface {
 	SearchGrants(ctx context.Context, in *SearchGrantsRequest, opts ...grpc.CallOption) (*SearchGrantsResponse, error)
 	// Get details of a single grant.
 	GetGrant(ctx context.Context, in *GetGrantRequest, opts ...grpc.CallOption) (*Grant, error)
-	// Creates a new grant in a given project and location.
+	// Creates a new grant in a given project/folder/organization and
+	// location.
 	CreateGrant(ctx context.Context, in *CreateGrantRequest, opts ...grpc.CallOption) (*Grant, error)
 	// `ApproveGrant` is used to approve a grant. This method can only be called
 	// on a grant when it's in the `APPROVAL_AWAITED` state. This operation can't
@@ -222,7 +223,7 @@ func (c *privilegedAccessManagerClient) RevokeGrant(ctx context.Context, in *Rev
 // All implementations must embed UnimplementedPrivilegedAccessManagerServer
 // for forward compatibility
 type PrivilegedAccessManagerServer interface {
-	// CheckOnboardingStatus reports the onboarding status for a
+	// `CheckOnboardingStatus` reports the onboarding status for a
 	// project/folder/organization. Any findings reported by this API need to be
 	// fixed before PAM can be used on the resource.
 	CheckOnboardingStatus(context.Context, *CheckOnboardingStatusRequest) (*CheckOnboardingStatusResponse, error)
@@ -237,7 +238,7 @@ type PrivilegedAccessManagerServer interface {
 	// location.
 	CreateEntitlement(context.Context, *CreateEntitlementRequest) (*longrunningpb.Operation, error)
 	// Deletes a single entitlement. This method can only be called when there
-	// are no in-progress (ACTIVE/ACTIVATING/REVOKING) grants under the
+	// are no in-progress (`ACTIVE`/`ACTIVATING`/`REVOKING`) grants under the
 	// entitlement.
 	DeleteEntitlement(context.Context, *DeleteEntitlementRequest) (*longrunningpb.Operation, error)
 	// Updates the entitlement specified in the request. Updated fields in the
@@ -268,7 +269,8 @@ type PrivilegedAccessManagerServer interface {
 	SearchGrants(context.Context, *SearchGrantsRequest) (*SearchGrantsResponse, error)
 	// Get details of a single grant.
 	GetGrant(context.Context, *GetGrantRequest) (*Grant, error)
-	// Creates a new grant in a given project and location.
+	// Creates a new grant in a given project/folder/organization and
+	// location.
 	CreateGrant(context.Context, *CreateGrantRequest) (*Grant, error)
 	// `ApproveGrant` is used to approve a grant. This method can only be called
 	// on a grant when it's in the `APPROVAL_AWAITED` state. This operation can't

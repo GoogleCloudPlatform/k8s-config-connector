@@ -7,6 +7,7 @@
 package storagepb
 
 import (
+	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	context "context"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
@@ -23,13 +24,20 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AnywhereCachesServerClient interface {
+	// Disables an Anywhere Cache instance.
 	DisableAnywhereCache(ctx context.Context, in *DisableAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
+	// Returns the metadata of an Anywhere Cache instance.
 	GetAnywhereCache(ctx context.Context, in *GetAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
-	InsertAnywhereCache(ctx context.Context, in *InsertAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
+	// Creates an Anywhere Cache instance.
+	InsertAnywhereCache(ctx context.Context, in *InsertAnywhereCacheRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Returns a list of Anywhere Cache instances of the bucket matching the criteria.
 	ListAnywhereCaches(ctx context.Context, in *ListAnywhereCachesRequest, opts ...grpc.CallOption) (*AnywhereCaches, error)
+	// Pauses an Anywhere Cache instance.
 	PauseAnywhereCache(ctx context.Context, in *PauseAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
+	// Resumes a paused or disabled Anywhere Cache instance.
 	ResumeAnywhereCache(ctx context.Context, in *ResumeAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
-	UpdateAnywhereCache(ctx context.Context, in *UpdateAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
+	// Updates the config(ttl and admissionPolicy) of an Anywhere Cache instance.
+	UpdateAnywhereCache(ctx context.Context, in *UpdateAnywhereCacheRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type anywhereCachesServerClient struct {
@@ -42,7 +50,7 @@ func NewAnywhereCachesServerClient(cc grpc.ClientConnInterface) AnywhereCachesSe
 
 func (c *anywhereCachesServerClient) DisableAnywhereCache(ctx context.Context, in *DisableAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
 	out := new(AnywhereCache)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/DisableAnywhereCache", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.AnywhereCachesServer/DisableAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,16 +59,16 @@ func (c *anywhereCachesServerClient) DisableAnywhereCache(ctx context.Context, i
 
 func (c *anywhereCachesServerClient) GetAnywhereCache(ctx context.Context, in *GetAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
 	out := new(AnywhereCache)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/GetAnywhereCache", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.AnywhereCachesServer/GetAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *anywhereCachesServerClient) InsertAnywhereCache(ctx context.Context, in *InsertAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
-	out := new(GoogleLongrunningOperation)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/InsertAnywhereCache", in, out, opts...)
+func (c *anywhereCachesServerClient) InsertAnywhereCache(ctx context.Context, in *InsertAnywhereCacheRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.AnywhereCachesServer/InsertAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +77,7 @@ func (c *anywhereCachesServerClient) InsertAnywhereCache(ctx context.Context, in
 
 func (c *anywhereCachesServerClient) ListAnywhereCaches(ctx context.Context, in *ListAnywhereCachesRequest, opts ...grpc.CallOption) (*AnywhereCaches, error) {
 	out := new(AnywhereCaches)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/ListAnywhereCaches", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.AnywhereCachesServer/ListAnywhereCaches", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +86,7 @@ func (c *anywhereCachesServerClient) ListAnywhereCaches(ctx context.Context, in 
 
 func (c *anywhereCachesServerClient) PauseAnywhereCache(ctx context.Context, in *PauseAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
 	out := new(AnywhereCache)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/PauseAnywhereCache", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.AnywhereCachesServer/PauseAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,16 +95,16 @@ func (c *anywhereCachesServerClient) PauseAnywhereCache(ctx context.Context, in 
 
 func (c *anywhereCachesServerClient) ResumeAnywhereCache(ctx context.Context, in *ResumeAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
 	out := new(AnywhereCache)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/ResumeAnywhereCache", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.AnywhereCachesServer/ResumeAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *anywhereCachesServerClient) UpdateAnywhereCache(ctx context.Context, in *UpdateAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
-	out := new(GoogleLongrunningOperation)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/UpdateAnywhereCache", in, out, opts...)
+func (c *anywhereCachesServerClient) UpdateAnywhereCache(ctx context.Context, in *UpdateAnywhereCacheRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.AnywhereCachesServer/UpdateAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -107,13 +115,20 @@ func (c *anywhereCachesServerClient) UpdateAnywhereCache(ctx context.Context, in
 // All implementations must embed UnimplementedAnywhereCachesServerServer
 // for forward compatibility
 type AnywhereCachesServerServer interface {
+	// Disables an Anywhere Cache instance.
 	DisableAnywhereCache(context.Context, *DisableAnywhereCacheRequest) (*AnywhereCache, error)
+	// Returns the metadata of an Anywhere Cache instance.
 	GetAnywhereCache(context.Context, *GetAnywhereCacheRequest) (*AnywhereCache, error)
-	InsertAnywhereCache(context.Context, *InsertAnywhereCacheRequest) (*GoogleLongrunningOperation, error)
+	// Creates an Anywhere Cache instance.
+	InsertAnywhereCache(context.Context, *InsertAnywhereCacheRequest) (*longrunningpb.Operation, error)
+	// Returns a list of Anywhere Cache instances of the bucket matching the criteria.
 	ListAnywhereCaches(context.Context, *ListAnywhereCachesRequest) (*AnywhereCaches, error)
+	// Pauses an Anywhere Cache instance.
 	PauseAnywhereCache(context.Context, *PauseAnywhereCacheRequest) (*AnywhereCache, error)
+	// Resumes a paused or disabled Anywhere Cache instance.
 	ResumeAnywhereCache(context.Context, *ResumeAnywhereCacheRequest) (*AnywhereCache, error)
-	UpdateAnywhereCache(context.Context, *UpdateAnywhereCacheRequest) (*GoogleLongrunningOperation, error)
+	// Updates the config(ttl and admissionPolicy) of an Anywhere Cache instance.
+	UpdateAnywhereCache(context.Context, *UpdateAnywhereCacheRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedAnywhereCachesServerServer()
 }
 
@@ -127,7 +142,7 @@ func (UnimplementedAnywhereCachesServerServer) DisableAnywhereCache(context.Cont
 func (UnimplementedAnywhereCachesServerServer) GetAnywhereCache(context.Context, *GetAnywhereCacheRequest) (*AnywhereCache, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAnywhereCache not implemented")
 }
-func (UnimplementedAnywhereCachesServerServer) InsertAnywhereCache(context.Context, *InsertAnywhereCacheRequest) (*GoogleLongrunningOperation, error) {
+func (UnimplementedAnywhereCachesServerServer) InsertAnywhereCache(context.Context, *InsertAnywhereCacheRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InsertAnywhereCache not implemented")
 }
 func (UnimplementedAnywhereCachesServerServer) ListAnywhereCaches(context.Context, *ListAnywhereCachesRequest) (*AnywhereCaches, error) {
@@ -139,7 +154,7 @@ func (UnimplementedAnywhereCachesServerServer) PauseAnywhereCache(context.Contex
 func (UnimplementedAnywhereCachesServerServer) ResumeAnywhereCache(context.Context, *ResumeAnywhereCacheRequest) (*AnywhereCache, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResumeAnywhereCache not implemented")
 }
-func (UnimplementedAnywhereCachesServerServer) UpdateAnywhereCache(context.Context, *UpdateAnywhereCacheRequest) (*GoogleLongrunningOperation, error) {
+func (UnimplementedAnywhereCachesServerServer) UpdateAnywhereCache(context.Context, *UpdateAnywhereCacheRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAnywhereCache not implemented")
 }
 func (UnimplementedAnywhereCachesServerServer) mustEmbedUnimplementedAnywhereCachesServerServer() {}
@@ -165,7 +180,7 @@ func _AnywhereCachesServer_DisableAnywhereCache_Handler(srv interface{}, ctx con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/DisableAnywhereCache",
+		FullMethod: "/mockgcp.storage.v1.AnywhereCachesServer/DisableAnywhereCache",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnywhereCachesServerServer).DisableAnywhereCache(ctx, req.(*DisableAnywhereCacheRequest))
@@ -183,7 +198,7 @@ func _AnywhereCachesServer_GetAnywhereCache_Handler(srv interface{}, ctx context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/GetAnywhereCache",
+		FullMethod: "/mockgcp.storage.v1.AnywhereCachesServer/GetAnywhereCache",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnywhereCachesServerServer).GetAnywhereCache(ctx, req.(*GetAnywhereCacheRequest))
@@ -201,7 +216,7 @@ func _AnywhereCachesServer_InsertAnywhereCache_Handler(srv interface{}, ctx cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/InsertAnywhereCache",
+		FullMethod: "/mockgcp.storage.v1.AnywhereCachesServer/InsertAnywhereCache",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnywhereCachesServerServer).InsertAnywhereCache(ctx, req.(*InsertAnywhereCacheRequest))
@@ -219,7 +234,7 @@ func _AnywhereCachesServer_ListAnywhereCaches_Handler(srv interface{}, ctx conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/ListAnywhereCaches",
+		FullMethod: "/mockgcp.storage.v1.AnywhereCachesServer/ListAnywhereCaches",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnywhereCachesServerServer).ListAnywhereCaches(ctx, req.(*ListAnywhereCachesRequest))
@@ -237,7 +252,7 @@ func _AnywhereCachesServer_PauseAnywhereCache_Handler(srv interface{}, ctx conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/PauseAnywhereCache",
+		FullMethod: "/mockgcp.storage.v1.AnywhereCachesServer/PauseAnywhereCache",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnywhereCachesServerServer).PauseAnywhereCache(ctx, req.(*PauseAnywhereCacheRequest))
@@ -255,7 +270,7 @@ func _AnywhereCachesServer_ResumeAnywhereCache_Handler(srv interface{}, ctx cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/ResumeAnywhereCache",
+		FullMethod: "/mockgcp.storage.v1.AnywhereCachesServer/ResumeAnywhereCache",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnywhereCachesServerServer).ResumeAnywhereCache(ctx, req.(*ResumeAnywhereCacheRequest))
@@ -273,7 +288,7 @@ func _AnywhereCachesServer_UpdateAnywhereCache_Handler(srv interface{}, ctx cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/UpdateAnywhereCache",
+		FullMethod: "/mockgcp.storage.v1.AnywhereCachesServer/UpdateAnywhereCache",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnywhereCachesServerServer).UpdateAnywhereCache(ctx, req.(*UpdateAnywhereCacheRequest))
@@ -285,7 +300,7 @@ func _AnywhereCachesServer_UpdateAnywhereCache_Handler(srv interface{}, ctx cont
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AnywhereCachesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.AnywhereCachesServer",
+	ServiceName: "mockgcp.storage.v1.AnywhereCachesServer",
 	HandlerType: (*AnywhereCachesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -325,11 +340,17 @@ var AnywhereCachesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BucketAccessControlsServerClient interface {
+	// Permanently deletes the ACL entry for the specified entity on the specified bucket.
 	DeleteBucketAccessControl(ctx context.Context, in *DeleteBucketAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns the ACL entry for the specified entity on the specified bucket.
 	GetBucketAccessControl(ctx context.Context, in *GetBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
+	// Creates a new ACL entry on the specified bucket.
 	InsertBucketAccessControl(ctx context.Context, in *InsertBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
+	// Retrieves ACL entries on the specified bucket.
 	ListBucketAccessControls(ctx context.Context, in *ListBucketAccessControlsRequest, opts ...grpc.CallOption) (*BucketAccessControls, error)
+	// Patches an ACL entry on the specified bucket.
 	PatchBucketAccessControl(ctx context.Context, in *PatchBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
+	// Updates an ACL entry on the specified bucket.
 	UpdateBucketAccessControl(ctx context.Context, in *UpdateBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
 }
 
@@ -343,7 +364,7 @@ func NewBucketAccessControlsServerClient(cc grpc.ClientConnInterface) BucketAcce
 
 func (c *bucketAccessControlsServerClient) DeleteBucketAccessControl(ctx context.Context, in *DeleteBucketAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/DeleteBucketAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketAccessControlsServer/DeleteBucketAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -352,7 +373,7 @@ func (c *bucketAccessControlsServerClient) DeleteBucketAccessControl(ctx context
 
 func (c *bucketAccessControlsServerClient) GetBucketAccessControl(ctx context.Context, in *GetBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
 	out := new(BucketAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/GetBucketAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketAccessControlsServer/GetBucketAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -361,7 +382,7 @@ func (c *bucketAccessControlsServerClient) GetBucketAccessControl(ctx context.Co
 
 func (c *bucketAccessControlsServerClient) InsertBucketAccessControl(ctx context.Context, in *InsertBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
 	out := new(BucketAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/InsertBucketAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketAccessControlsServer/InsertBucketAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -370,7 +391,7 @@ func (c *bucketAccessControlsServerClient) InsertBucketAccessControl(ctx context
 
 func (c *bucketAccessControlsServerClient) ListBucketAccessControls(ctx context.Context, in *ListBucketAccessControlsRequest, opts ...grpc.CallOption) (*BucketAccessControls, error) {
 	out := new(BucketAccessControls)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/ListBucketAccessControls", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketAccessControlsServer/ListBucketAccessControls", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -379,7 +400,7 @@ func (c *bucketAccessControlsServerClient) ListBucketAccessControls(ctx context.
 
 func (c *bucketAccessControlsServerClient) PatchBucketAccessControl(ctx context.Context, in *PatchBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
 	out := new(BucketAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/PatchBucketAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketAccessControlsServer/PatchBucketAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +409,7 @@ func (c *bucketAccessControlsServerClient) PatchBucketAccessControl(ctx context.
 
 func (c *bucketAccessControlsServerClient) UpdateBucketAccessControl(ctx context.Context, in *UpdateBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
 	out := new(BucketAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/UpdateBucketAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketAccessControlsServer/UpdateBucketAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -399,11 +420,17 @@ func (c *bucketAccessControlsServerClient) UpdateBucketAccessControl(ctx context
 // All implementations must embed UnimplementedBucketAccessControlsServerServer
 // for forward compatibility
 type BucketAccessControlsServerServer interface {
+	// Permanently deletes the ACL entry for the specified entity on the specified bucket.
 	DeleteBucketAccessControl(context.Context, *DeleteBucketAccessControlRequest) (*empty.Empty, error)
+	// Returns the ACL entry for the specified entity on the specified bucket.
 	GetBucketAccessControl(context.Context, *GetBucketAccessControlRequest) (*BucketAccessControl, error)
+	// Creates a new ACL entry on the specified bucket.
 	InsertBucketAccessControl(context.Context, *InsertBucketAccessControlRequest) (*BucketAccessControl, error)
+	// Retrieves ACL entries on the specified bucket.
 	ListBucketAccessControls(context.Context, *ListBucketAccessControlsRequest) (*BucketAccessControls, error)
+	// Patches an ACL entry on the specified bucket.
 	PatchBucketAccessControl(context.Context, *PatchBucketAccessControlRequest) (*BucketAccessControl, error)
+	// Updates an ACL entry on the specified bucket.
 	UpdateBucketAccessControl(context.Context, *UpdateBucketAccessControlRequest) (*BucketAccessControl, error)
 	mustEmbedUnimplementedBucketAccessControlsServerServer()
 }
@@ -454,7 +481,7 @@ func _BucketAccessControlsServer_DeleteBucketAccessControl_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/DeleteBucketAccessControl",
+		FullMethod: "/mockgcp.storage.v1.BucketAccessControlsServer/DeleteBucketAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketAccessControlsServerServer).DeleteBucketAccessControl(ctx, req.(*DeleteBucketAccessControlRequest))
@@ -472,7 +499,7 @@ func _BucketAccessControlsServer_GetBucketAccessControl_Handler(srv interface{},
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/GetBucketAccessControl",
+		FullMethod: "/mockgcp.storage.v1.BucketAccessControlsServer/GetBucketAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketAccessControlsServerServer).GetBucketAccessControl(ctx, req.(*GetBucketAccessControlRequest))
@@ -490,7 +517,7 @@ func _BucketAccessControlsServer_InsertBucketAccessControl_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/InsertBucketAccessControl",
+		FullMethod: "/mockgcp.storage.v1.BucketAccessControlsServer/InsertBucketAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketAccessControlsServerServer).InsertBucketAccessControl(ctx, req.(*InsertBucketAccessControlRequest))
@@ -508,7 +535,7 @@ func _BucketAccessControlsServer_ListBucketAccessControls_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/ListBucketAccessControls",
+		FullMethod: "/mockgcp.storage.v1.BucketAccessControlsServer/ListBucketAccessControls",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketAccessControlsServerServer).ListBucketAccessControls(ctx, req.(*ListBucketAccessControlsRequest))
@@ -526,7 +553,7 @@ func _BucketAccessControlsServer_PatchBucketAccessControl_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/PatchBucketAccessControl",
+		FullMethod: "/mockgcp.storage.v1.BucketAccessControlsServer/PatchBucketAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketAccessControlsServerServer).PatchBucketAccessControl(ctx, req.(*PatchBucketAccessControlRequest))
@@ -544,7 +571,7 @@ func _BucketAccessControlsServer_UpdateBucketAccessControl_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/UpdateBucketAccessControl",
+		FullMethod: "/mockgcp.storage.v1.BucketAccessControlsServer/UpdateBucketAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketAccessControlsServerServer).UpdateBucketAccessControl(ctx, req.(*UpdateBucketAccessControlRequest))
@@ -556,7 +583,7 @@ func _BucketAccessControlsServer_UpdateBucketAccessControl_Handler(srv interface
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var BucketAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.BucketAccessControlsServer",
+	ServiceName: "mockgcp.storage.v1.BucketAccessControlsServer",
 	HandlerType: (*BucketAccessControlsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -592,13 +619,25 @@ var BucketAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BucketsServerClient interface {
+	// Deletes an empty bucket. Deletions are permanent unless soft delete is enabled on the bucket.
 	DeleteBucket(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns metadata for the specified bucket.
 	GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	// Returns the storage layout configuration for the specified bucket. Note that this operation requires storage.objects.list permission.
 	GetStorageLayoutBucket(ctx context.Context, in *GetStorageLayoutBucketRequest, opts ...grpc.CallOption) (*BucketStorageLayout, error)
+	// Creates a new bucket.
 	InsertBucket(ctx context.Context, in *InsertBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	// Retrieves a list of buckets for a given project.
 	ListBuckets(ctx context.Context, in *ListBucketsRequest, opts ...grpc.CallOption) (*Buckets, error)
+	// Locks retention policy on a bucket.
 	LockRetentionPolicyBucket(ctx context.Context, in *LockRetentionPolicyBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	// Patches a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
 	PatchBucket(ctx context.Context, in *PatchBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	// Initiates a long-running Relocate Bucket operation on the specified bucket.
+	RelocateBucket(ctx context.Context, in *RelocateBucketServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Restores a soft-deleted bucket.
+	RestoreBucket(ctx context.Context, in *RestoreBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	// Updates a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
 	UpdateBucket(ctx context.Context, in *UpdateBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
 }
 
@@ -612,7 +651,7 @@ func NewBucketsServerClient(cc grpc.ClientConnInterface) BucketsServerClient {
 
 func (c *bucketsServerClient) DeleteBucket(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/DeleteBucket", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/DeleteBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -621,7 +660,7 @@ func (c *bucketsServerClient) DeleteBucket(ctx context.Context, in *DeleteBucket
 
 func (c *bucketsServerClient) GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
 	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/GetBucket", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/GetBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -630,7 +669,7 @@ func (c *bucketsServerClient) GetBucket(ctx context.Context, in *GetBucketReques
 
 func (c *bucketsServerClient) GetStorageLayoutBucket(ctx context.Context, in *GetStorageLayoutBucketRequest, opts ...grpc.CallOption) (*BucketStorageLayout, error) {
 	out := new(BucketStorageLayout)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/GetStorageLayoutBucket", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/GetStorageLayoutBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -639,7 +678,7 @@ func (c *bucketsServerClient) GetStorageLayoutBucket(ctx context.Context, in *Ge
 
 func (c *bucketsServerClient) InsertBucket(ctx context.Context, in *InsertBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
 	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/InsertBucket", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/InsertBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -648,7 +687,7 @@ func (c *bucketsServerClient) InsertBucket(ctx context.Context, in *InsertBucket
 
 func (c *bucketsServerClient) ListBuckets(ctx context.Context, in *ListBucketsRequest, opts ...grpc.CallOption) (*Buckets, error) {
 	out := new(Buckets)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/ListBuckets", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/ListBuckets", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -657,7 +696,7 @@ func (c *bucketsServerClient) ListBuckets(ctx context.Context, in *ListBucketsRe
 
 func (c *bucketsServerClient) LockRetentionPolicyBucket(ctx context.Context, in *LockRetentionPolicyBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
 	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/LockRetentionPolicyBucket", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/LockRetentionPolicyBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -666,7 +705,25 @@ func (c *bucketsServerClient) LockRetentionPolicyBucket(ctx context.Context, in 
 
 func (c *bucketsServerClient) PatchBucket(ctx context.Context, in *PatchBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
 	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/PatchBucket", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/PatchBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) RelocateBucket(ctx context.Context, in *RelocateBucketServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/RelocateBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) RestoreBucket(ctx context.Context, in *RestoreBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
+	out := new(Bucket)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/RestoreBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -675,7 +732,7 @@ func (c *bucketsServerClient) PatchBucket(ctx context.Context, in *PatchBucketRe
 
 func (c *bucketsServerClient) UpdateBucket(ctx context.Context, in *UpdateBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
 	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/UpdateBucket", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.BucketsServer/UpdateBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -686,13 +743,25 @@ func (c *bucketsServerClient) UpdateBucket(ctx context.Context, in *UpdateBucket
 // All implementations must embed UnimplementedBucketsServerServer
 // for forward compatibility
 type BucketsServerServer interface {
+	// Deletes an empty bucket. Deletions are permanent unless soft delete is enabled on the bucket.
 	DeleteBucket(context.Context, *DeleteBucketRequest) (*empty.Empty, error)
+	// Returns metadata for the specified bucket.
 	GetBucket(context.Context, *GetBucketRequest) (*Bucket, error)
+	// Returns the storage layout configuration for the specified bucket. Note that this operation requires storage.objects.list permission.
 	GetStorageLayoutBucket(context.Context, *GetStorageLayoutBucketRequest) (*BucketStorageLayout, error)
+	// Creates a new bucket.
 	InsertBucket(context.Context, *InsertBucketRequest) (*Bucket, error)
+	// Retrieves a list of buckets for a given project.
 	ListBuckets(context.Context, *ListBucketsRequest) (*Buckets, error)
+	// Locks retention policy on a bucket.
 	LockRetentionPolicyBucket(context.Context, *LockRetentionPolicyBucketRequest) (*Bucket, error)
+	// Patches a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
 	PatchBucket(context.Context, *PatchBucketRequest) (*Bucket, error)
+	// Initiates a long-running Relocate Bucket operation on the specified bucket.
+	RelocateBucket(context.Context, *RelocateBucketServiceRequest) (*longrunningpb.Operation, error)
+	// Restores a soft-deleted bucket.
+	RestoreBucket(context.Context, *RestoreBucketRequest) (*Bucket, error)
+	// Updates a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
 	UpdateBucket(context.Context, *UpdateBucketRequest) (*Bucket, error)
 	mustEmbedUnimplementedBucketsServerServer()
 }
@@ -722,6 +791,12 @@ func (UnimplementedBucketsServerServer) LockRetentionPolicyBucket(context.Contex
 func (UnimplementedBucketsServerServer) PatchBucket(context.Context, *PatchBucketRequest) (*Bucket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchBucket not implemented")
 }
+func (UnimplementedBucketsServerServer) RelocateBucket(context.Context, *RelocateBucketServiceRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RelocateBucket not implemented")
+}
+func (UnimplementedBucketsServerServer) RestoreBucket(context.Context, *RestoreBucketRequest) (*Bucket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RestoreBucket not implemented")
+}
 func (UnimplementedBucketsServerServer) UpdateBucket(context.Context, *UpdateBucketRequest) (*Bucket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBucket not implemented")
 }
@@ -748,7 +823,7 @@ func _BucketsServer_DeleteBucket_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/DeleteBucket",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/DeleteBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).DeleteBucket(ctx, req.(*DeleteBucketRequest))
@@ -766,7 +841,7 @@ func _BucketsServer_GetBucket_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/GetBucket",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/GetBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).GetBucket(ctx, req.(*GetBucketRequest))
@@ -784,7 +859,7 @@ func _BucketsServer_GetStorageLayoutBucket_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/GetStorageLayoutBucket",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/GetStorageLayoutBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).GetStorageLayoutBucket(ctx, req.(*GetStorageLayoutBucketRequest))
@@ -802,7 +877,7 @@ func _BucketsServer_InsertBucket_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/InsertBucket",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/InsertBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).InsertBucket(ctx, req.(*InsertBucketRequest))
@@ -820,7 +895,7 @@ func _BucketsServer_ListBuckets_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/ListBuckets",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/ListBuckets",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).ListBuckets(ctx, req.(*ListBucketsRequest))
@@ -838,7 +913,7 @@ func _BucketsServer_LockRetentionPolicyBucket_Handler(srv interface{}, ctx conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/LockRetentionPolicyBucket",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/LockRetentionPolicyBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).LockRetentionPolicyBucket(ctx, req.(*LockRetentionPolicyBucketRequest))
@@ -856,10 +931,46 @@ func _BucketsServer_PatchBucket_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/PatchBucket",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/PatchBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).PatchBucket(ctx, req.(*PatchBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketsServer_RelocateBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RelocateBucketServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).RelocateBucket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/RelocateBucket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).RelocateBucket(ctx, req.(*RelocateBucketServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketsServer_RestoreBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestoreBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).RestoreBucket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/RestoreBucket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).RestoreBucket(ctx, req.(*RestoreBucketRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -874,7 +985,7 @@ func _BucketsServer_UpdateBucket_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.BucketsServer/UpdateBucket",
+		FullMethod: "/mockgcp.storage.v1.BucketsServer/UpdateBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).UpdateBucket(ctx, req.(*UpdateBucketRequest))
@@ -886,7 +997,7 @@ func _BucketsServer_UpdateBucket_Handler(srv interface{}, ctx context.Context, d
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var BucketsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.BucketsServer",
+	ServiceName: "mockgcp.storage.v1.BucketsServer",
 	HandlerType: (*BucketsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -918,6 +1029,14 @@ var BucketsServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BucketsServer_PatchBucket_Handler,
 		},
 		{
+			MethodName: "RelocateBucket",
+			Handler:    _BucketsServer_RelocateBucket_Handler,
+		},
+		{
+			MethodName: "RestoreBucket",
+			Handler:    _BucketsServer_RestoreBucket_Handler,
+		},
+		{
 			MethodName: "UpdateBucket",
 			Handler:    _BucketsServer_UpdateBucket_Handler,
 		},
@@ -930,6 +1049,7 @@ var BucketsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChannelsServerClient interface {
+	// Stop watching resources through this channel
 	StopChannel(ctx context.Context, in *StopChannelRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
@@ -943,7 +1063,7 @@ func NewChannelsServerClient(cc grpc.ClientConnInterface) ChannelsServerClient {
 
 func (c *channelsServerClient) StopChannel(ctx context.Context, in *StopChannelRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ChannelsServer/StopChannel", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ChannelsServer/StopChannel", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -954,6 +1074,7 @@ func (c *channelsServerClient) StopChannel(ctx context.Context, in *StopChannelR
 // All implementations must embed UnimplementedChannelsServerServer
 // for forward compatibility
 type ChannelsServerServer interface {
+	// Stop watching resources through this channel
 	StopChannel(context.Context, *StopChannelRequest) (*empty.Empty, error)
 	mustEmbedUnimplementedChannelsServerServer()
 }
@@ -988,7 +1109,7 @@ func _ChannelsServer_StopChannel_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ChannelsServer/StopChannel",
+		FullMethod: "/mockgcp.storage.v1.ChannelsServer/StopChannel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ChannelsServerServer).StopChannel(ctx, req.(*StopChannelRequest))
@@ -1000,7 +1121,7 @@ func _ChannelsServer_StopChannel_Handler(srv interface{}, ctx context.Context, d
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ChannelsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.ChannelsServer",
+	ServiceName: "mockgcp.storage.v1.ChannelsServer",
 	HandlerType: (*ChannelsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1016,11 +1137,17 @@ var ChannelsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DefaultObjectAccessControlsServerClient interface {
+	// Permanently deletes the default object ACL entry for the specified entity on the specified bucket.
 	DeleteDefaultObjectAccessControl(ctx context.Context, in *DeleteDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns the default object ACL entry for the specified entity on the specified bucket.
 	GetDefaultObjectAccessControl(ctx context.Context, in *GetDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	// Creates a new default object ACL entry on the specified bucket.
 	InsertDefaultObjectAccessControl(ctx context.Context, in *InsertDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	// Retrieves default object ACL entries on the specified bucket.
 	ListDefaultObjectAccessControls(ctx context.Context, in *ListDefaultObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error)
+	// Patches a default object ACL entry on the specified bucket.
 	PatchDefaultObjectAccessControl(ctx context.Context, in *PatchDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	// Updates a default object ACL entry on the specified bucket.
 	UpdateDefaultObjectAccessControl(ctx context.Context, in *UpdateDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
 }
 
@@ -1034,7 +1161,7 @@ func NewDefaultObjectAccessControlsServerClient(cc grpc.ClientConnInterface) Def
 
 func (c *defaultObjectAccessControlsServerClient) DeleteDefaultObjectAccessControl(ctx context.Context, in *DeleteDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/DeleteDefaultObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/DeleteDefaultObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1043,7 +1170,7 @@ func (c *defaultObjectAccessControlsServerClient) DeleteDefaultObjectAccessContr
 
 func (c *defaultObjectAccessControlsServerClient) GetDefaultObjectAccessControl(ctx context.Context, in *GetDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/GetDefaultObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/GetDefaultObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1052,7 +1179,7 @@ func (c *defaultObjectAccessControlsServerClient) GetDefaultObjectAccessControl(
 
 func (c *defaultObjectAccessControlsServerClient) InsertDefaultObjectAccessControl(ctx context.Context, in *InsertDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/InsertDefaultObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/InsertDefaultObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1061,7 +1188,7 @@ func (c *defaultObjectAccessControlsServerClient) InsertDefaultObjectAccessContr
 
 func (c *defaultObjectAccessControlsServerClient) ListDefaultObjectAccessControls(ctx context.Context, in *ListDefaultObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error) {
 	out := new(ObjectAccessControls)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/ListDefaultObjectAccessControls", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/ListDefaultObjectAccessControls", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1070,7 +1197,7 @@ func (c *defaultObjectAccessControlsServerClient) ListDefaultObjectAccessControl
 
 func (c *defaultObjectAccessControlsServerClient) PatchDefaultObjectAccessControl(ctx context.Context, in *PatchDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/PatchDefaultObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/PatchDefaultObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1079,7 +1206,7 @@ func (c *defaultObjectAccessControlsServerClient) PatchDefaultObjectAccessContro
 
 func (c *defaultObjectAccessControlsServerClient) UpdateDefaultObjectAccessControl(ctx context.Context, in *UpdateDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/UpdateDefaultObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/UpdateDefaultObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1090,11 +1217,17 @@ func (c *defaultObjectAccessControlsServerClient) UpdateDefaultObjectAccessContr
 // All implementations must embed UnimplementedDefaultObjectAccessControlsServerServer
 // for forward compatibility
 type DefaultObjectAccessControlsServerServer interface {
+	// Permanently deletes the default object ACL entry for the specified entity on the specified bucket.
 	DeleteDefaultObjectAccessControl(context.Context, *DeleteDefaultObjectAccessControlRequest) (*empty.Empty, error)
+	// Returns the default object ACL entry for the specified entity on the specified bucket.
 	GetDefaultObjectAccessControl(context.Context, *GetDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
+	// Creates a new default object ACL entry on the specified bucket.
 	InsertDefaultObjectAccessControl(context.Context, *InsertDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
+	// Retrieves default object ACL entries on the specified bucket.
 	ListDefaultObjectAccessControls(context.Context, *ListDefaultObjectAccessControlsRequest) (*ObjectAccessControls, error)
+	// Patches a default object ACL entry on the specified bucket.
 	PatchDefaultObjectAccessControl(context.Context, *PatchDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
+	// Updates a default object ACL entry on the specified bucket.
 	UpdateDefaultObjectAccessControl(context.Context, *UpdateDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
 	mustEmbedUnimplementedDefaultObjectAccessControlsServerServer()
 }
@@ -1145,7 +1278,7 @@ func _DefaultObjectAccessControlsServer_DeleteDefaultObjectAccessControl_Handler
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/DeleteDefaultObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/DeleteDefaultObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DefaultObjectAccessControlsServerServer).DeleteDefaultObjectAccessControl(ctx, req.(*DeleteDefaultObjectAccessControlRequest))
@@ -1163,7 +1296,7 @@ func _DefaultObjectAccessControlsServer_GetDefaultObjectAccessControl_Handler(sr
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/GetDefaultObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/GetDefaultObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DefaultObjectAccessControlsServerServer).GetDefaultObjectAccessControl(ctx, req.(*GetDefaultObjectAccessControlRequest))
@@ -1181,7 +1314,7 @@ func _DefaultObjectAccessControlsServer_InsertDefaultObjectAccessControl_Handler
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/InsertDefaultObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/InsertDefaultObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DefaultObjectAccessControlsServerServer).InsertDefaultObjectAccessControl(ctx, req.(*InsertDefaultObjectAccessControlRequest))
@@ -1199,7 +1332,7 @@ func _DefaultObjectAccessControlsServer_ListDefaultObjectAccessControls_Handler(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/ListDefaultObjectAccessControls",
+		FullMethod: "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/ListDefaultObjectAccessControls",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DefaultObjectAccessControlsServerServer).ListDefaultObjectAccessControls(ctx, req.(*ListDefaultObjectAccessControlsRequest))
@@ -1217,7 +1350,7 @@ func _DefaultObjectAccessControlsServer_PatchDefaultObjectAccessControl_Handler(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/PatchDefaultObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/PatchDefaultObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DefaultObjectAccessControlsServerServer).PatchDefaultObjectAccessControl(ctx, req.(*PatchDefaultObjectAccessControlRequest))
@@ -1235,7 +1368,7 @@ func _DefaultObjectAccessControlsServer_UpdateDefaultObjectAccessControl_Handler
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/UpdateDefaultObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.DefaultObjectAccessControlsServer/UpdateDefaultObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DefaultObjectAccessControlsServerServer).UpdateDefaultObjectAccessControl(ctx, req.(*UpdateDefaultObjectAccessControlRequest))
@@ -1247,7 +1380,7 @@ func _DefaultObjectAccessControlsServer_UpdateDefaultObjectAccessControl_Handler
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DefaultObjectAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.DefaultObjectAccessControlsServer",
+	ServiceName: "mockgcp.storage.v1.DefaultObjectAccessControlsServer",
 	HandlerType: (*DefaultObjectAccessControlsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1283,11 +1416,16 @@ var DefaultObjectAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FoldersServerClient interface {
+	// Permanently deletes a folder. Only applicable to buckets with hierarchical namespace enabled.
 	DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns metadata for the specified folder. Only applicable to buckets with hierarchical namespace enabled.
 	GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*Folder, error)
+	// Creates a new folder. Only applicable to buckets with hierarchical namespace enabled.
 	InsertFolder(ctx context.Context, in *InsertFolderRequest, opts ...grpc.CallOption) (*Folder, error)
+	// Retrieves a list of folders matching the criteria. Only applicable to buckets with hierarchical namespace enabled.
 	ListFolders(ctx context.Context, in *ListFoldersRequest, opts ...grpc.CallOption) (*Folders, error)
-	RenameFolder(ctx context.Context, in *RenameFolderRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
+	// Renames a source folder to a destination folder. Only applicable to buckets with hierarchical namespace enabled.
+	RenameFolder(ctx context.Context, in *RenameFolderRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type foldersServerClient struct {
@@ -1300,7 +1438,7 @@ func NewFoldersServerClient(cc grpc.ClientConnInterface) FoldersServerClient {
 
 func (c *foldersServerClient) DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/DeleteFolder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.FoldersServer/DeleteFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1309,7 +1447,7 @@ func (c *foldersServerClient) DeleteFolder(ctx context.Context, in *DeleteFolder
 
 func (c *foldersServerClient) GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*Folder, error) {
 	out := new(Folder)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/GetFolder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.FoldersServer/GetFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1318,7 +1456,7 @@ func (c *foldersServerClient) GetFolder(ctx context.Context, in *GetFolderReques
 
 func (c *foldersServerClient) InsertFolder(ctx context.Context, in *InsertFolderRequest, opts ...grpc.CallOption) (*Folder, error) {
 	out := new(Folder)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/InsertFolder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.FoldersServer/InsertFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1327,16 +1465,16 @@ func (c *foldersServerClient) InsertFolder(ctx context.Context, in *InsertFolder
 
 func (c *foldersServerClient) ListFolders(ctx context.Context, in *ListFoldersRequest, opts ...grpc.CallOption) (*Folders, error) {
 	out := new(Folders)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/ListFolders", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.FoldersServer/ListFolders", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *foldersServerClient) RenameFolder(ctx context.Context, in *RenameFolderRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
-	out := new(GoogleLongrunningOperation)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/RenameFolder", in, out, opts...)
+func (c *foldersServerClient) RenameFolder(ctx context.Context, in *RenameFolderRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.FoldersServer/RenameFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1347,11 +1485,16 @@ func (c *foldersServerClient) RenameFolder(ctx context.Context, in *RenameFolder
 // All implementations must embed UnimplementedFoldersServerServer
 // for forward compatibility
 type FoldersServerServer interface {
+	// Permanently deletes a folder. Only applicable to buckets with hierarchical namespace enabled.
 	DeleteFolder(context.Context, *DeleteFolderRequest) (*empty.Empty, error)
+	// Returns metadata for the specified folder. Only applicable to buckets with hierarchical namespace enabled.
 	GetFolder(context.Context, *GetFolderRequest) (*Folder, error)
+	// Creates a new folder. Only applicable to buckets with hierarchical namespace enabled.
 	InsertFolder(context.Context, *InsertFolderRequest) (*Folder, error)
+	// Retrieves a list of folders matching the criteria. Only applicable to buckets with hierarchical namespace enabled.
 	ListFolders(context.Context, *ListFoldersRequest) (*Folders, error)
-	RenameFolder(context.Context, *RenameFolderRequest) (*GoogleLongrunningOperation, error)
+	// Renames a source folder to a destination folder. Only applicable to buckets with hierarchical namespace enabled.
+	RenameFolder(context.Context, *RenameFolderRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedFoldersServerServer()
 }
 
@@ -1371,7 +1514,7 @@ func (UnimplementedFoldersServerServer) InsertFolder(context.Context, *InsertFol
 func (UnimplementedFoldersServerServer) ListFolders(context.Context, *ListFoldersRequest) (*Folders, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFolders not implemented")
 }
-func (UnimplementedFoldersServerServer) RenameFolder(context.Context, *RenameFolderRequest) (*GoogleLongrunningOperation, error) {
+func (UnimplementedFoldersServerServer) RenameFolder(context.Context, *RenameFolderRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RenameFolder not implemented")
 }
 func (UnimplementedFoldersServerServer) mustEmbedUnimplementedFoldersServerServer() {}
@@ -1397,7 +1540,7 @@ func _FoldersServer_DeleteFolder_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.FoldersServer/DeleteFolder",
+		FullMethod: "/mockgcp.storage.v1.FoldersServer/DeleteFolder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FoldersServerServer).DeleteFolder(ctx, req.(*DeleteFolderRequest))
@@ -1415,7 +1558,7 @@ func _FoldersServer_GetFolder_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.FoldersServer/GetFolder",
+		FullMethod: "/mockgcp.storage.v1.FoldersServer/GetFolder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FoldersServerServer).GetFolder(ctx, req.(*GetFolderRequest))
@@ -1433,7 +1576,7 @@ func _FoldersServer_InsertFolder_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.FoldersServer/InsertFolder",
+		FullMethod: "/mockgcp.storage.v1.FoldersServer/InsertFolder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FoldersServerServer).InsertFolder(ctx, req.(*InsertFolderRequest))
@@ -1451,7 +1594,7 @@ func _FoldersServer_ListFolders_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.FoldersServer/ListFolders",
+		FullMethod: "/mockgcp.storage.v1.FoldersServer/ListFolders",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FoldersServerServer).ListFolders(ctx, req.(*ListFoldersRequest))
@@ -1469,7 +1612,7 @@ func _FoldersServer_RenameFolder_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.FoldersServer/RenameFolder",
+		FullMethod: "/mockgcp.storage.v1.FoldersServer/RenameFolder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FoldersServerServer).RenameFolder(ctx, req.(*RenameFolderRequest))
@@ -1481,7 +1624,7 @@ func _FoldersServer_RenameFolder_Handler(srv interface{}, ctx context.Context, d
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var FoldersServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.FoldersServer",
+	ServiceName: "mockgcp.storage.v1.FoldersServer",
 	HandlerType: (*FoldersServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1513,9 +1656,13 @@ var FoldersServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ManagedFoldersServerClient interface {
+	// Permanently deletes a managed folder.
 	DeleteManagedFolder(ctx context.Context, in *DeleteManagedFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns metadata of the specified managed folder.
 	GetManagedFolder(ctx context.Context, in *GetManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error)
+	// Creates a new managed folder.
 	InsertManagedFolder(ctx context.Context, in *InsertManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error)
+	// Lists managed folders in the given bucket.
 	ListManagedFolders(ctx context.Context, in *ListManagedFoldersRequest, opts ...grpc.CallOption) (*ManagedFolders, error)
 }
 
@@ -1529,7 +1676,7 @@ func NewManagedFoldersServerClient(cc grpc.ClientConnInterface) ManagedFoldersSe
 
 func (c *managedFoldersServerClient) DeleteManagedFolder(ctx context.Context, in *DeleteManagedFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/DeleteManagedFolder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ManagedFoldersServer/DeleteManagedFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1538,7 +1685,7 @@ func (c *managedFoldersServerClient) DeleteManagedFolder(ctx context.Context, in
 
 func (c *managedFoldersServerClient) GetManagedFolder(ctx context.Context, in *GetManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error) {
 	out := new(ManagedFolder)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/GetManagedFolder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ManagedFoldersServer/GetManagedFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1547,7 +1694,7 @@ func (c *managedFoldersServerClient) GetManagedFolder(ctx context.Context, in *G
 
 func (c *managedFoldersServerClient) InsertManagedFolder(ctx context.Context, in *InsertManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error) {
 	out := new(ManagedFolder)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/InsertManagedFolder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ManagedFoldersServer/InsertManagedFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1556,7 +1703,7 @@ func (c *managedFoldersServerClient) InsertManagedFolder(ctx context.Context, in
 
 func (c *managedFoldersServerClient) ListManagedFolders(ctx context.Context, in *ListManagedFoldersRequest, opts ...grpc.CallOption) (*ManagedFolders, error) {
 	out := new(ManagedFolders)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/ListManagedFolders", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ManagedFoldersServer/ListManagedFolders", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1567,9 +1714,13 @@ func (c *managedFoldersServerClient) ListManagedFolders(ctx context.Context, in 
 // All implementations must embed UnimplementedManagedFoldersServerServer
 // for forward compatibility
 type ManagedFoldersServerServer interface {
+	// Permanently deletes a managed folder.
 	DeleteManagedFolder(context.Context, *DeleteManagedFolderRequest) (*empty.Empty, error)
+	// Returns metadata of the specified managed folder.
 	GetManagedFolder(context.Context, *GetManagedFolderRequest) (*ManagedFolder, error)
+	// Creates a new managed folder.
 	InsertManagedFolder(context.Context, *InsertManagedFolderRequest) (*ManagedFolder, error)
+	// Lists managed folders in the given bucket.
 	ListManagedFolders(context.Context, *ListManagedFoldersRequest) (*ManagedFolders, error)
 	mustEmbedUnimplementedManagedFoldersServerServer()
 }
@@ -1613,7 +1764,7 @@ func _ManagedFoldersServer_DeleteManagedFolder_Handler(srv interface{}, ctx cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/DeleteManagedFolder",
+		FullMethod: "/mockgcp.storage.v1.ManagedFoldersServer/DeleteManagedFolder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ManagedFoldersServerServer).DeleteManagedFolder(ctx, req.(*DeleteManagedFolderRequest))
@@ -1631,7 +1782,7 @@ func _ManagedFoldersServer_GetManagedFolder_Handler(srv interface{}, ctx context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/GetManagedFolder",
+		FullMethod: "/mockgcp.storage.v1.ManagedFoldersServer/GetManagedFolder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ManagedFoldersServerServer).GetManagedFolder(ctx, req.(*GetManagedFolderRequest))
@@ -1649,7 +1800,7 @@ func _ManagedFoldersServer_InsertManagedFolder_Handler(srv interface{}, ctx cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/InsertManagedFolder",
+		FullMethod: "/mockgcp.storage.v1.ManagedFoldersServer/InsertManagedFolder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ManagedFoldersServerServer).InsertManagedFolder(ctx, req.(*InsertManagedFolderRequest))
@@ -1667,7 +1818,7 @@ func _ManagedFoldersServer_ListManagedFolders_Handler(srv interface{}, ctx conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/ListManagedFolders",
+		FullMethod: "/mockgcp.storage.v1.ManagedFoldersServer/ListManagedFolders",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ManagedFoldersServerServer).ListManagedFolders(ctx, req.(*ListManagedFoldersRequest))
@@ -1679,7 +1830,7 @@ func _ManagedFoldersServer_ListManagedFolders_Handler(srv interface{}, ctx conte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ManagedFoldersServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.ManagedFoldersServer",
+	ServiceName: "mockgcp.storage.v1.ManagedFoldersServer",
 	HandlerType: (*ManagedFoldersServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1707,9 +1858,13 @@ var ManagedFoldersServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NotificationsServerClient interface {
+	// Permanently deletes a notification subscription.
 	DeleteNotification(ctx context.Context, in *DeleteNotificationRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// View a notification configuration.
 	GetNotification(ctx context.Context, in *GetNotificationRequest, opts ...grpc.CallOption) (*Notification, error)
+	// Creates a notification subscription for a given bucket.
 	InsertNotification(ctx context.Context, in *InsertNotificationRequest, opts ...grpc.CallOption) (*Notification, error)
+	// Retrieves a list of notification subscriptions for a given bucket.
 	ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*Notifications, error)
 }
 
@@ -1723,7 +1878,7 @@ func NewNotificationsServerClient(cc grpc.ClientConnInterface) NotificationsServ
 
 func (c *notificationsServerClient) DeleteNotification(ctx context.Context, in *DeleteNotificationRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/DeleteNotification", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.NotificationsServer/DeleteNotification", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1732,7 +1887,7 @@ func (c *notificationsServerClient) DeleteNotification(ctx context.Context, in *
 
 func (c *notificationsServerClient) GetNotification(ctx context.Context, in *GetNotificationRequest, opts ...grpc.CallOption) (*Notification, error) {
 	out := new(Notification)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/GetNotification", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.NotificationsServer/GetNotification", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1741,7 +1896,7 @@ func (c *notificationsServerClient) GetNotification(ctx context.Context, in *Get
 
 func (c *notificationsServerClient) InsertNotification(ctx context.Context, in *InsertNotificationRequest, opts ...grpc.CallOption) (*Notification, error) {
 	out := new(Notification)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/InsertNotification", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.NotificationsServer/InsertNotification", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1750,7 +1905,7 @@ func (c *notificationsServerClient) InsertNotification(ctx context.Context, in *
 
 func (c *notificationsServerClient) ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*Notifications, error) {
 	out := new(Notifications)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/ListNotifications", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.NotificationsServer/ListNotifications", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1761,9 +1916,13 @@ func (c *notificationsServerClient) ListNotifications(ctx context.Context, in *L
 // All implementations must embed UnimplementedNotificationsServerServer
 // for forward compatibility
 type NotificationsServerServer interface {
+	// Permanently deletes a notification subscription.
 	DeleteNotification(context.Context, *DeleteNotificationRequest) (*empty.Empty, error)
+	// View a notification configuration.
 	GetNotification(context.Context, *GetNotificationRequest) (*Notification, error)
+	// Creates a notification subscription for a given bucket.
 	InsertNotification(context.Context, *InsertNotificationRequest) (*Notification, error)
+	// Retrieves a list of notification subscriptions for a given bucket.
 	ListNotifications(context.Context, *ListNotificationsRequest) (*Notifications, error)
 	mustEmbedUnimplementedNotificationsServerServer()
 }
@@ -1807,7 +1966,7 @@ func _NotificationsServer_DeleteNotification_Handler(srv interface{}, ctx contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.NotificationsServer/DeleteNotification",
+		FullMethod: "/mockgcp.storage.v1.NotificationsServer/DeleteNotification",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NotificationsServerServer).DeleteNotification(ctx, req.(*DeleteNotificationRequest))
@@ -1825,7 +1984,7 @@ func _NotificationsServer_GetNotification_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.NotificationsServer/GetNotification",
+		FullMethod: "/mockgcp.storage.v1.NotificationsServer/GetNotification",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NotificationsServerServer).GetNotification(ctx, req.(*GetNotificationRequest))
@@ -1843,7 +2002,7 @@ func _NotificationsServer_InsertNotification_Handler(srv interface{}, ctx contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.NotificationsServer/InsertNotification",
+		FullMethod: "/mockgcp.storage.v1.NotificationsServer/InsertNotification",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NotificationsServerServer).InsertNotification(ctx, req.(*InsertNotificationRequest))
@@ -1861,7 +2020,7 @@ func _NotificationsServer_ListNotifications_Handler(srv interface{}, ctx context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.NotificationsServer/ListNotifications",
+		FullMethod: "/mockgcp.storage.v1.NotificationsServer/ListNotifications",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NotificationsServerServer).ListNotifications(ctx, req.(*ListNotificationsRequest))
@@ -1873,7 +2032,7 @@ func _NotificationsServer_ListNotifications_Handler(srv interface{}, ctx context
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var NotificationsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.NotificationsServer",
+	ServiceName: "mockgcp.storage.v1.NotificationsServer",
 	HandlerType: (*NotificationsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1901,11 +2060,17 @@ var NotificationsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ObjectAccessControlsServerClient interface {
+	// Permanently deletes the ACL entry for the specified entity on the specified object.
 	DeleteObjectAccessControl(ctx context.Context, in *DeleteObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Returns the ACL entry for the specified entity on the specified object.
 	GetObjectAccessControl(ctx context.Context, in *GetObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	// Creates a new ACL entry on the specified object.
 	InsertObjectAccessControl(ctx context.Context, in *InsertObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	// Retrieves ACL entries on the specified object.
 	ListObjectAccessControls(ctx context.Context, in *ListObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error)
+	// Patches an ACL entry on the specified object.
 	PatchObjectAccessControl(ctx context.Context, in *PatchObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	// Updates an ACL entry on the specified object.
 	UpdateObjectAccessControl(ctx context.Context, in *UpdateObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
 }
 
@@ -1919,7 +2084,7 @@ func NewObjectAccessControlsServerClient(cc grpc.ClientConnInterface) ObjectAcce
 
 func (c *objectAccessControlsServerClient) DeleteObjectAccessControl(ctx context.Context, in *DeleteObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/DeleteObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectAccessControlsServer/DeleteObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1928,7 +2093,7 @@ func (c *objectAccessControlsServerClient) DeleteObjectAccessControl(ctx context
 
 func (c *objectAccessControlsServerClient) GetObjectAccessControl(ctx context.Context, in *GetObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/GetObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectAccessControlsServer/GetObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1937,7 +2102,7 @@ func (c *objectAccessControlsServerClient) GetObjectAccessControl(ctx context.Co
 
 func (c *objectAccessControlsServerClient) InsertObjectAccessControl(ctx context.Context, in *InsertObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/InsertObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectAccessControlsServer/InsertObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1946,7 +2111,7 @@ func (c *objectAccessControlsServerClient) InsertObjectAccessControl(ctx context
 
 func (c *objectAccessControlsServerClient) ListObjectAccessControls(ctx context.Context, in *ListObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error) {
 	out := new(ObjectAccessControls)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/ListObjectAccessControls", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectAccessControlsServer/ListObjectAccessControls", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1955,7 +2120,7 @@ func (c *objectAccessControlsServerClient) ListObjectAccessControls(ctx context.
 
 func (c *objectAccessControlsServerClient) PatchObjectAccessControl(ctx context.Context, in *PatchObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/PatchObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectAccessControlsServer/PatchObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1964,7 +2129,7 @@ func (c *objectAccessControlsServerClient) PatchObjectAccessControl(ctx context.
 
 func (c *objectAccessControlsServerClient) UpdateObjectAccessControl(ctx context.Context, in *UpdateObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
 	out := new(ObjectAccessControl)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/UpdateObjectAccessControl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectAccessControlsServer/UpdateObjectAccessControl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1975,11 +2140,17 @@ func (c *objectAccessControlsServerClient) UpdateObjectAccessControl(ctx context
 // All implementations must embed UnimplementedObjectAccessControlsServerServer
 // for forward compatibility
 type ObjectAccessControlsServerServer interface {
+	// Permanently deletes the ACL entry for the specified entity on the specified object.
 	DeleteObjectAccessControl(context.Context, *DeleteObjectAccessControlRequest) (*empty.Empty, error)
+	// Returns the ACL entry for the specified entity on the specified object.
 	GetObjectAccessControl(context.Context, *GetObjectAccessControlRequest) (*ObjectAccessControl, error)
+	// Creates a new ACL entry on the specified object.
 	InsertObjectAccessControl(context.Context, *InsertObjectAccessControlRequest) (*ObjectAccessControl, error)
+	// Retrieves ACL entries on the specified object.
 	ListObjectAccessControls(context.Context, *ListObjectAccessControlsRequest) (*ObjectAccessControls, error)
+	// Patches an ACL entry on the specified object.
 	PatchObjectAccessControl(context.Context, *PatchObjectAccessControlRequest) (*ObjectAccessControl, error)
+	// Updates an ACL entry on the specified object.
 	UpdateObjectAccessControl(context.Context, *UpdateObjectAccessControlRequest) (*ObjectAccessControl, error)
 	mustEmbedUnimplementedObjectAccessControlsServerServer()
 }
@@ -2030,7 +2201,7 @@ func _ObjectAccessControlsServer_DeleteObjectAccessControl_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/DeleteObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.ObjectAccessControlsServer/DeleteObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectAccessControlsServerServer).DeleteObjectAccessControl(ctx, req.(*DeleteObjectAccessControlRequest))
@@ -2048,7 +2219,7 @@ func _ObjectAccessControlsServer_GetObjectAccessControl_Handler(srv interface{},
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/GetObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.ObjectAccessControlsServer/GetObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectAccessControlsServerServer).GetObjectAccessControl(ctx, req.(*GetObjectAccessControlRequest))
@@ -2066,7 +2237,7 @@ func _ObjectAccessControlsServer_InsertObjectAccessControl_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/InsertObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.ObjectAccessControlsServer/InsertObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectAccessControlsServerServer).InsertObjectAccessControl(ctx, req.(*InsertObjectAccessControlRequest))
@@ -2084,7 +2255,7 @@ func _ObjectAccessControlsServer_ListObjectAccessControls_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/ListObjectAccessControls",
+		FullMethod: "/mockgcp.storage.v1.ObjectAccessControlsServer/ListObjectAccessControls",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectAccessControlsServerServer).ListObjectAccessControls(ctx, req.(*ListObjectAccessControlsRequest))
@@ -2102,7 +2273,7 @@ func _ObjectAccessControlsServer_PatchObjectAccessControl_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/PatchObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.ObjectAccessControlsServer/PatchObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectAccessControlsServerServer).PatchObjectAccessControl(ctx, req.(*PatchObjectAccessControlRequest))
@@ -2120,7 +2291,7 @@ func _ObjectAccessControlsServer_UpdateObjectAccessControl_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/UpdateObjectAccessControl",
+		FullMethod: "/mockgcp.storage.v1.ObjectAccessControlsServer/UpdateObjectAccessControl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectAccessControlsServerServer).UpdateObjectAccessControl(ctx, req.(*UpdateObjectAccessControlRequest))
@@ -2132,7 +2303,7 @@ func _ObjectAccessControlsServer_UpdateObjectAccessControl_Handler(srv interface
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ObjectAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.ObjectAccessControlsServer",
+	ServiceName: "mockgcp.storage.v1.ObjectAccessControlsServer",
 	HandlerType: (*ObjectAccessControlsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2168,17 +2339,29 @@ var ObjectAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ObjectsServerClient interface {
-	BulkRestoreObject(ctx context.Context, in *BulkRestoreObjectRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
+	// Initiates a long-running bulk restore operation on the specified bucket.
+	BulkRestoreObject(ctx context.Context, in *BulkRestoreObjectRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Concatenates a list of existing objects into a new object in the same bucket.
 	ComposeObject(ctx context.Context, in *ComposeObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	// Copies a source object to a destination object. Optionally overrides metadata.
 	CopyObject(ctx context.Context, in *CopyObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	// Deletes an object and its metadata. Deletions are permanent if versioning is not enabled for the bucket, or if the generation parameter is used.
 	DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Retrieves an object or its metadata.
 	GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	// Stores a new object and metadata.
 	InsertObject(ctx context.Context, in *InsertObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	// Retrieves a list of objects matching the criteria.
 	ListObjects(ctx context.Context, in *ListObjectsRequest, opts ...grpc.CallOption) (*Objects, error)
+	// Patches an object's metadata.
 	PatchObject(ctx context.Context, in *PatchObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	// Restores a soft-deleted object.
 	RestoreObject(ctx context.Context, in *RestoreObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	// Rewrites a source object to a destination object. Optionally overrides metadata.
 	RewriteObject(ctx context.Context, in *RewriteObjectRequest, opts ...grpc.CallOption) (*RewriteResponse, error)
+	// Updates an object's metadata.
 	UpdateObject(ctx context.Context, in *UpdateObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	// Watch for changes on all objects in a bucket.
 	WatchAllObject(ctx context.Context, in *WatchAllObjectRequest, opts ...grpc.CallOption) (*Channel, error)
 }
 
@@ -2190,9 +2373,9 @@ func NewObjectsServerClient(cc grpc.ClientConnInterface) ObjectsServerClient {
 	return &objectsServerClient{cc}
 }
 
-func (c *objectsServerClient) BulkRestoreObject(ctx context.Context, in *BulkRestoreObjectRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
-	out := new(GoogleLongrunningOperation)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/BulkRestoreObject", in, out, opts...)
+func (c *objectsServerClient) BulkRestoreObject(ctx context.Context, in *BulkRestoreObjectRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/BulkRestoreObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2201,7 +2384,7 @@ func (c *objectsServerClient) BulkRestoreObject(ctx context.Context, in *BulkRes
 
 func (c *objectsServerClient) ComposeObject(ctx context.Context, in *ComposeObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/ComposeObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/ComposeObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2210,7 +2393,7 @@ func (c *objectsServerClient) ComposeObject(ctx context.Context, in *ComposeObje
 
 func (c *objectsServerClient) CopyObject(ctx context.Context, in *CopyObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/CopyObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/CopyObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2219,7 +2402,7 @@ func (c *objectsServerClient) CopyObject(ctx context.Context, in *CopyObjectRequ
 
 func (c *objectsServerClient) DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/DeleteObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/DeleteObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2228,7 +2411,7 @@ func (c *objectsServerClient) DeleteObject(ctx context.Context, in *DeleteObject
 
 func (c *objectsServerClient) GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/GetObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/GetObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2237,7 +2420,7 @@ func (c *objectsServerClient) GetObject(ctx context.Context, in *GetObjectReques
 
 func (c *objectsServerClient) InsertObject(ctx context.Context, in *InsertObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/InsertObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/InsertObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2246,7 +2429,7 @@ func (c *objectsServerClient) InsertObject(ctx context.Context, in *InsertObject
 
 func (c *objectsServerClient) ListObjects(ctx context.Context, in *ListObjectsRequest, opts ...grpc.CallOption) (*Objects, error) {
 	out := new(Objects)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/ListObjects", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/ListObjects", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2255,7 +2438,7 @@ func (c *objectsServerClient) ListObjects(ctx context.Context, in *ListObjectsRe
 
 func (c *objectsServerClient) PatchObject(ctx context.Context, in *PatchObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/PatchObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/PatchObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2264,7 +2447,7 @@ func (c *objectsServerClient) PatchObject(ctx context.Context, in *PatchObjectRe
 
 func (c *objectsServerClient) RestoreObject(ctx context.Context, in *RestoreObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/RestoreObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/RestoreObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2273,7 +2456,7 @@ func (c *objectsServerClient) RestoreObject(ctx context.Context, in *RestoreObje
 
 func (c *objectsServerClient) RewriteObject(ctx context.Context, in *RewriteObjectRequest, opts ...grpc.CallOption) (*RewriteResponse, error) {
 	out := new(RewriteResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/RewriteObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/RewriteObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2282,7 +2465,7 @@ func (c *objectsServerClient) RewriteObject(ctx context.Context, in *RewriteObje
 
 func (c *objectsServerClient) UpdateObject(ctx context.Context, in *UpdateObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/UpdateObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/UpdateObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2291,7 +2474,7 @@ func (c *objectsServerClient) UpdateObject(ctx context.Context, in *UpdateObject
 
 func (c *objectsServerClient) WatchAllObject(ctx context.Context, in *WatchAllObjectRequest, opts ...grpc.CallOption) (*Channel, error) {
 	out := new(Channel)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/WatchAllObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/WatchAllObject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2302,17 +2485,29 @@ func (c *objectsServerClient) WatchAllObject(ctx context.Context, in *WatchAllOb
 // All implementations must embed UnimplementedObjectsServerServer
 // for forward compatibility
 type ObjectsServerServer interface {
-	BulkRestoreObject(context.Context, *BulkRestoreObjectRequest) (*GoogleLongrunningOperation, error)
+	// Initiates a long-running bulk restore operation on the specified bucket.
+	BulkRestoreObject(context.Context, *BulkRestoreObjectRequest) (*longrunningpb.Operation, error)
+	// Concatenates a list of existing objects into a new object in the same bucket.
 	ComposeObject(context.Context, *ComposeObjectRequest) (*Object, error)
+	// Copies a source object to a destination object. Optionally overrides metadata.
 	CopyObject(context.Context, *CopyObjectRequest) (*Object, error)
+	// Deletes an object and its metadata. Deletions are permanent if versioning is not enabled for the bucket, or if the generation parameter is used.
 	DeleteObject(context.Context, *DeleteObjectRequest) (*empty.Empty, error)
+	// Retrieves an object or its metadata.
 	GetObject(context.Context, *GetObjectRequest) (*Object, error)
+	// Stores a new object and metadata.
 	InsertObject(context.Context, *InsertObjectRequest) (*Object, error)
+	// Retrieves a list of objects matching the criteria.
 	ListObjects(context.Context, *ListObjectsRequest) (*Objects, error)
+	// Patches an object's metadata.
 	PatchObject(context.Context, *PatchObjectRequest) (*Object, error)
+	// Restores a soft-deleted object.
 	RestoreObject(context.Context, *RestoreObjectRequest) (*Object, error)
+	// Rewrites a source object to a destination object. Optionally overrides metadata.
 	RewriteObject(context.Context, *RewriteObjectRequest) (*RewriteResponse, error)
+	// Updates an object's metadata.
 	UpdateObject(context.Context, *UpdateObjectRequest) (*Object, error)
+	// Watch for changes on all objects in a bucket.
 	WatchAllObject(context.Context, *WatchAllObjectRequest) (*Channel, error)
 	mustEmbedUnimplementedObjectsServerServer()
 }
@@ -2321,7 +2516,7 @@ type ObjectsServerServer interface {
 type UnimplementedObjectsServerServer struct {
 }
 
-func (UnimplementedObjectsServerServer) BulkRestoreObject(context.Context, *BulkRestoreObjectRequest) (*GoogleLongrunningOperation, error) {
+func (UnimplementedObjectsServerServer) BulkRestoreObject(context.Context, *BulkRestoreObjectRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BulkRestoreObject not implemented")
 }
 func (UnimplementedObjectsServerServer) ComposeObject(context.Context, *ComposeObjectRequest) (*Object, error) {
@@ -2380,7 +2575,7 @@ func _ObjectsServer_BulkRestoreObject_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/BulkRestoreObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/BulkRestoreObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).BulkRestoreObject(ctx, req.(*BulkRestoreObjectRequest))
@@ -2398,7 +2593,7 @@ func _ObjectsServer_ComposeObject_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/ComposeObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/ComposeObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).ComposeObject(ctx, req.(*ComposeObjectRequest))
@@ -2416,7 +2611,7 @@ func _ObjectsServer_CopyObject_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/CopyObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/CopyObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).CopyObject(ctx, req.(*CopyObjectRequest))
@@ -2434,7 +2629,7 @@ func _ObjectsServer_DeleteObject_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/DeleteObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/DeleteObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).DeleteObject(ctx, req.(*DeleteObjectRequest))
@@ -2452,7 +2647,7 @@ func _ObjectsServer_GetObject_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/GetObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/GetObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).GetObject(ctx, req.(*GetObjectRequest))
@@ -2470,7 +2665,7 @@ func _ObjectsServer_InsertObject_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/InsertObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/InsertObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).InsertObject(ctx, req.(*InsertObjectRequest))
@@ -2488,7 +2683,7 @@ func _ObjectsServer_ListObjects_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/ListObjects",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/ListObjects",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).ListObjects(ctx, req.(*ListObjectsRequest))
@@ -2506,7 +2701,7 @@ func _ObjectsServer_PatchObject_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/PatchObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/PatchObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).PatchObject(ctx, req.(*PatchObjectRequest))
@@ -2524,7 +2719,7 @@ func _ObjectsServer_RestoreObject_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/RestoreObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/RestoreObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).RestoreObject(ctx, req.(*RestoreObjectRequest))
@@ -2542,7 +2737,7 @@ func _ObjectsServer_RewriteObject_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/RewriteObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/RewriteObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).RewriteObject(ctx, req.(*RewriteObjectRequest))
@@ -2560,7 +2755,7 @@ func _ObjectsServer_UpdateObject_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/UpdateObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/UpdateObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).UpdateObject(ctx, req.(*UpdateObjectRequest))
@@ -2578,7 +2773,7 @@ func _ObjectsServer_WatchAllObject_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ObjectsServer/WatchAllObject",
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/WatchAllObject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjectsServerServer).WatchAllObject(ctx, req.(*WatchAllObjectRequest))
@@ -2590,7 +2785,7 @@ func _ObjectsServer_WatchAllObject_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ObjectsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.ObjectsServer",
+	ServiceName: "mockgcp.storage.v1.ObjectsServer",
 	HandlerType: (*ObjectsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2688,7 +2883,7 @@ func RegisterProjectsServerServer(s grpc.ServiceRegistrar, srv ProjectsServerSer
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.ProjectsServer",
+	ServiceName: "mockgcp.storage.v1.ProjectsServer",
 	HandlerType: (*ProjectsServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
@@ -2699,10 +2894,15 @@ var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsHmacKeysServerClient interface {
+	// Creates a new HMAC key for the specified service account.
 	CreateProjectsHmacKey(ctx context.Context, in *CreateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKey, error)
+	// Deletes an HMAC key.
 	DeleteProjectsHmacKey(ctx context.Context, in *DeleteProjectsHmacKeyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Retrieves an HMAC key's metadata
 	GetProjectsHmacKey(ctx context.Context, in *GetProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error)
+	// Retrieves a list of HMAC keys matching the criteria.
 	ListProjectsHmacKeys(ctx context.Context, in *ListProjectsHmacKeysRequest, opts ...grpc.CallOption) (*HmacKeysMetadata, error)
+	// Updates the state of an HMAC key. See the [HMAC Key resource descriptor](https://cloud.google.com/storage/docs/json_api/v1/projects/hmacKeys/update#request-body) for valid states.
 	UpdateProjectsHmacKey(ctx context.Context, in *UpdateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error)
 }
 
@@ -2716,7 +2916,7 @@ func NewProjectsHmacKeysServerClient(cc grpc.ClientConnInterface) ProjectsHmacKe
 
 func (c *projectsHmacKeysServerClient) CreateProjectsHmacKey(ctx context.Context, in *CreateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKey, error) {
 	out := new(HmacKey)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/CreateProjectsHmacKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ProjectsHmacKeysServer/CreateProjectsHmacKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2725,7 +2925,7 @@ func (c *projectsHmacKeysServerClient) CreateProjectsHmacKey(ctx context.Context
 
 func (c *projectsHmacKeysServerClient) DeleteProjectsHmacKey(ctx context.Context, in *DeleteProjectsHmacKeyRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/DeleteProjectsHmacKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ProjectsHmacKeysServer/DeleteProjectsHmacKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2734,7 +2934,7 @@ func (c *projectsHmacKeysServerClient) DeleteProjectsHmacKey(ctx context.Context
 
 func (c *projectsHmacKeysServerClient) GetProjectsHmacKey(ctx context.Context, in *GetProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error) {
 	out := new(HmacKeyMetadata)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/GetProjectsHmacKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ProjectsHmacKeysServer/GetProjectsHmacKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2743,7 +2943,7 @@ func (c *projectsHmacKeysServerClient) GetProjectsHmacKey(ctx context.Context, i
 
 func (c *projectsHmacKeysServerClient) ListProjectsHmacKeys(ctx context.Context, in *ListProjectsHmacKeysRequest, opts ...grpc.CallOption) (*HmacKeysMetadata, error) {
 	out := new(HmacKeysMetadata)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/ListProjectsHmacKeys", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ProjectsHmacKeysServer/ListProjectsHmacKeys", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2752,7 +2952,7 @@ func (c *projectsHmacKeysServerClient) ListProjectsHmacKeys(ctx context.Context,
 
 func (c *projectsHmacKeysServerClient) UpdateProjectsHmacKey(ctx context.Context, in *UpdateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error) {
 	out := new(HmacKeyMetadata)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/UpdateProjectsHmacKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ProjectsHmacKeysServer/UpdateProjectsHmacKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2763,10 +2963,15 @@ func (c *projectsHmacKeysServerClient) UpdateProjectsHmacKey(ctx context.Context
 // All implementations must embed UnimplementedProjectsHmacKeysServerServer
 // for forward compatibility
 type ProjectsHmacKeysServerServer interface {
+	// Creates a new HMAC key for the specified service account.
 	CreateProjectsHmacKey(context.Context, *CreateProjectsHmacKeyRequest) (*HmacKey, error)
+	// Deletes an HMAC key.
 	DeleteProjectsHmacKey(context.Context, *DeleteProjectsHmacKeyRequest) (*empty.Empty, error)
+	// Retrieves an HMAC key's metadata
 	GetProjectsHmacKey(context.Context, *GetProjectsHmacKeyRequest) (*HmacKeyMetadata, error)
+	// Retrieves a list of HMAC keys matching the criteria.
 	ListProjectsHmacKeys(context.Context, *ListProjectsHmacKeysRequest) (*HmacKeysMetadata, error)
+	// Updates the state of an HMAC key. See the [HMAC Key resource descriptor](https://cloud.google.com/storage/docs/json_api/v1/projects/hmacKeys/update#request-body) for valid states.
 	UpdateProjectsHmacKey(context.Context, *UpdateProjectsHmacKeyRequest) (*HmacKeyMetadata, error)
 	mustEmbedUnimplementedProjectsHmacKeysServerServer()
 }
@@ -2814,7 +3019,7 @@ func _ProjectsHmacKeysServer_CreateProjectsHmacKey_Handler(srv interface{}, ctx 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/CreateProjectsHmacKey",
+		FullMethod: "/mockgcp.storage.v1.ProjectsHmacKeysServer/CreateProjectsHmacKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsHmacKeysServerServer).CreateProjectsHmacKey(ctx, req.(*CreateProjectsHmacKeyRequest))
@@ -2832,7 +3037,7 @@ func _ProjectsHmacKeysServer_DeleteProjectsHmacKey_Handler(srv interface{}, ctx 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/DeleteProjectsHmacKey",
+		FullMethod: "/mockgcp.storage.v1.ProjectsHmacKeysServer/DeleteProjectsHmacKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsHmacKeysServerServer).DeleteProjectsHmacKey(ctx, req.(*DeleteProjectsHmacKeyRequest))
@@ -2850,7 +3055,7 @@ func _ProjectsHmacKeysServer_GetProjectsHmacKey_Handler(srv interface{}, ctx con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/GetProjectsHmacKey",
+		FullMethod: "/mockgcp.storage.v1.ProjectsHmacKeysServer/GetProjectsHmacKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsHmacKeysServerServer).GetProjectsHmacKey(ctx, req.(*GetProjectsHmacKeyRequest))
@@ -2868,7 +3073,7 @@ func _ProjectsHmacKeysServer_ListProjectsHmacKeys_Handler(srv interface{}, ctx c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/ListProjectsHmacKeys",
+		FullMethod: "/mockgcp.storage.v1.ProjectsHmacKeysServer/ListProjectsHmacKeys",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsHmacKeysServerServer).ListProjectsHmacKeys(ctx, req.(*ListProjectsHmacKeysRequest))
@@ -2886,7 +3091,7 @@ func _ProjectsHmacKeysServer_UpdateProjectsHmacKey_Handler(srv interface{}, ctx 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/UpdateProjectsHmacKey",
+		FullMethod: "/mockgcp.storage.v1.ProjectsHmacKeysServer/UpdateProjectsHmacKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsHmacKeysServerServer).UpdateProjectsHmacKey(ctx, req.(*UpdateProjectsHmacKeyRequest))
@@ -2898,7 +3103,7 @@ func _ProjectsHmacKeysServer_UpdateProjectsHmacKey_Handler(srv interface{}, ctx 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectsHmacKeysServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.ProjectsHmacKeysServer",
+	ServiceName: "mockgcp.storage.v1.ProjectsHmacKeysServer",
 	HandlerType: (*ProjectsHmacKeysServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2930,6 +3135,7 @@ var ProjectsHmacKeysServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsServiceAccountServerClient interface {
+	// Get the email address of this project's Google Cloud Storage service account.
 	GetProjectsServiceAccount(ctx context.Context, in *GetProjectsServiceAccountRequest, opts ...grpc.CallOption) (*ServiceAccount, error)
 }
 
@@ -2943,7 +3149,7 @@ func NewProjectsServiceAccountServerClient(cc grpc.ClientConnInterface) Projects
 
 func (c *projectsServiceAccountServerClient) GetProjectsServiceAccount(ctx context.Context, in *GetProjectsServiceAccountRequest, opts ...grpc.CallOption) (*ServiceAccount, error) {
 	out := new(ServiceAccount)
-	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsServiceAccountServer/GetProjectsServiceAccount", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ProjectsServiceAccountServer/GetProjectsServiceAccount", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2954,6 +3160,7 @@ func (c *projectsServiceAccountServerClient) GetProjectsServiceAccount(ctx conte
 // All implementations must embed UnimplementedProjectsServiceAccountServerServer
 // for forward compatibility
 type ProjectsServiceAccountServerServer interface {
+	// Get the email address of this project's Google Cloud Storage service account.
 	GetProjectsServiceAccount(context.Context, *GetProjectsServiceAccountRequest) (*ServiceAccount, error)
 	mustEmbedUnimplementedProjectsServiceAccountServerServer()
 }
@@ -2989,7 +3196,7 @@ func _ProjectsServiceAccountServer_GetProjectsServiceAccount_Handler(srv interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.storage.v1.ProjectsServiceAccountServer/GetProjectsServiceAccount",
+		FullMethod: "/mockgcp.storage.v1.ProjectsServiceAccountServer/GetProjectsServiceAccount",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsServiceAccountServerServer).GetProjectsServiceAccount(ctx, req.(*GetProjectsServiceAccountRequest))
@@ -3001,7 +3208,7 @@ func _ProjectsServiceAccountServer_GetProjectsServiceAccount_Handler(srv interfa
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectsServiceAccountServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.storage.v1.ProjectsServiceAccountServer",
+	ServiceName: "mockgcp.storage.v1.ProjectsServiceAccountServer",
 	HandlerType: (*ProjectsServiceAccountServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

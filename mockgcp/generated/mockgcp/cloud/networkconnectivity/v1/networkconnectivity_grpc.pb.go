@@ -263,6 +263,8 @@ type ProjectsLocationsGlobalHubsServerClient interface {
 	ListSpokesProjectsLocationsGlobalHub(ctx context.Context, in *ListSpokesProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*ListHubSpokesResponse, error)
 	// Updates the description and/or labels of a Network Connectivity Center hub.
 	PatchProjectsLocationsGlobalHub(ctx context.Context, in *PatchProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Query PSC propagation status the status of a Network Connectivity Center hub.
+	QueryStatusProjectsLocationsGlobalHub(ctx context.Context, in *QueryStatusProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*QueryHubStatusResponse, error)
 	// Rejects a Network Connectivity Center spoke from being attached to a hub. If the spoke was previously in the `ACTIVE` state, it transitions to the `INACTIVE` state and is no longer able to connect to other spokes that are attached to the hub.
 	RejectSpokeProjectsLocationsGlobalHub(ctx context.Context, in *RejectSpokeProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
@@ -338,6 +340,15 @@ func (c *projectsLocationsGlobalHubsServerClient) PatchProjectsLocationsGlobalHu
 	return out, nil
 }
 
+func (c *projectsLocationsGlobalHubsServerClient) QueryStatusProjectsLocationsGlobalHub(ctx context.Context, in *QueryStatusProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*QueryHubStatusResponse, error) {
+	out := new(QueryHubStatusResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/QueryStatusProjectsLocationsGlobalHub", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *projectsLocationsGlobalHubsServerClient) RejectSpokeProjectsLocationsGlobalHub(ctx context.Context, in *RejectSpokeProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/RejectSpokeProjectsLocationsGlobalHub", in, out, opts...)
@@ -365,6 +376,8 @@ type ProjectsLocationsGlobalHubsServerServer interface {
 	ListSpokesProjectsLocationsGlobalHub(context.Context, *ListSpokesProjectsLocationsGlobalHubRequest) (*ListHubSpokesResponse, error)
 	// Updates the description and/or labels of a Network Connectivity Center hub.
 	PatchProjectsLocationsGlobalHub(context.Context, *PatchProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
+	// Query PSC propagation status the status of a Network Connectivity Center hub.
+	QueryStatusProjectsLocationsGlobalHub(context.Context, *QueryStatusProjectsLocationsGlobalHubRequest) (*QueryHubStatusResponse, error)
 	// Rejects a Network Connectivity Center spoke from being attached to a hub. If the spoke was previously in the `ACTIVE` state, it transitions to the `INACTIVE` state and is no longer able to connect to other spokes that are attached to the hub.
 	RejectSpokeProjectsLocationsGlobalHub(context.Context, *RejectSpokeProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedProjectsLocationsGlobalHubsServerServer()
@@ -394,6 +407,9 @@ func (UnimplementedProjectsLocationsGlobalHubsServerServer) ListSpokesProjectsLo
 }
 func (UnimplementedProjectsLocationsGlobalHubsServerServer) PatchProjectsLocationsGlobalHub(context.Context, *PatchProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchProjectsLocationsGlobalHub not implemented")
+}
+func (UnimplementedProjectsLocationsGlobalHubsServerServer) QueryStatusProjectsLocationsGlobalHub(context.Context, *QueryStatusProjectsLocationsGlobalHubRequest) (*QueryHubStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryStatusProjectsLocationsGlobalHub not implemented")
 }
 func (UnimplementedProjectsLocationsGlobalHubsServerServer) RejectSpokeProjectsLocationsGlobalHub(context.Context, *RejectSpokeProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RejectSpokeProjectsLocationsGlobalHub not implemented")
@@ -538,6 +554,24 @@ func _ProjectsLocationsGlobalHubsServer_PatchProjectsLocationsGlobalHub_Handler(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectsLocationsGlobalHubsServer_QueryStatusProjectsLocationsGlobalHub_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryStatusProjectsLocationsGlobalHubRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsGlobalHubsServerServer).QueryStatusProjectsLocationsGlobalHub(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/QueryStatusProjectsLocationsGlobalHub",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsGlobalHubsServerServer).QueryStatusProjectsLocationsGlobalHub(ctx, req.(*QueryStatusProjectsLocationsGlobalHubRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ProjectsLocationsGlobalHubsServer_RejectSpokeProjectsLocationsGlobalHub_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RejectSpokeProjectsLocationsGlobalHubRequest)
 	if err := dec(in); err != nil {
@@ -590,6 +624,10 @@ var ProjectsLocationsGlobalHubsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PatchProjectsLocationsGlobalHub",
 			Handler:    _ProjectsLocationsGlobalHubsServer_PatchProjectsLocationsGlobalHub_Handler,
+		},
+		{
+			MethodName: "QueryStatusProjectsLocationsGlobalHub",
+			Handler:    _ProjectsLocationsGlobalHubsServer_QueryStatusProjectsLocationsGlobalHub_Handler,
 		},
 		{
 			MethodName: "RejectSpokeProjectsLocationsGlobalHub",

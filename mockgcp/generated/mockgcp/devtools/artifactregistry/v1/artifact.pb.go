@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -182,7 +182,7 @@ type ListDockerImagesRequest struct {
 	// Required. The name of the parent resource whose docker images will be
 	// listed.
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of artifacts to return.
+	// The maximum number of artifacts to return. Maximum page size is 1,000.
 	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The next_page_token value returned from a previous list request, if any.
 	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
@@ -481,7 +481,7 @@ type ListMavenArtifactsRequest struct {
 	// Required. The name of the parent resource whose maven artifacts will be
 	// listed.
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of artifacts to return.
+	// The maximum number of artifacts to return. Maximum page size is 1,000.
 	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The next_page_token value returned from a previous list request, if any.
 	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
@@ -757,7 +757,7 @@ type ListNpmPackagesRequest struct {
 	// Required. The name of the parent resource whose npm packages will be
 	// listed.
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of artifacts to return.
+	// The maximum number of artifacts to return. Maximum page size is 1,000.
 	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The next_page_token value returned from a previous list request, if any.
 	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
@@ -1037,7 +1037,7 @@ type ListPythonPackagesRequest struct {
 	// Required. The name of the parent resource whose python packages will be
 	// listed.
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of artifacts to return.
+	// The maximum number of artifacts to return. Maximum page size is 1,000.
 	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The next_page_token value returned from a previous list request, if any.
 	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
