@@ -59,10 +59,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -73,6 +69,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -113,10 +113,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -127,6 +123,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -416,10 +416,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -430,6 +426,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",

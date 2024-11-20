@@ -379,6 +379,10 @@ func (o *objectWalker) ReplacePath(path string, v string) {
 	o.replacePaths[path] = v
 }
 
+func (o *objectWalker) SortSlice(path string) {
+	o.sortSlices.Insert(path)
+}
+
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
 	if v == nil {
 		return v, nil
@@ -740,6 +744,12 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 		visitor.ReplacePath(".settings.backupConfiguration.startTime", "12:00")
 		visitor.ReplacePath(".settings.settingsVersion", "123")
+	}
+
+	// Specific to BigQuery
+	{
+		visitor.SortSlice(".access")
+		visitor.ReplacePath(".access[].userByEmail", "user@google.com")
 	}
 
 	// BigQueryConnection

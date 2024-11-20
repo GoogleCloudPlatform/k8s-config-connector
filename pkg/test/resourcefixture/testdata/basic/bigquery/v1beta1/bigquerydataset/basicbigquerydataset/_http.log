@@ -60,10 +60,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -74,6 +70,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -115,10 +115,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -129,6 +125,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -161,15 +161,15 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "access": [
     {
       "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
       "userByEmail": "user@google.com"
     },
     {
       "role": "READER",
       "specialGroup": "projectReaders"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "WRITER",
@@ -202,10 +202,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -216,6 +212,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -258,10 +258,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -272,6 +268,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
