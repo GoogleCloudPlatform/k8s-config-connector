@@ -197,7 +197,7 @@ func CollectEvents(t *testing.T, config *rest.Config, namespace string, expected
 	listOptions := metav1.ListOptions{}
 	watcher, err := clientSet.CoreV1().Events(namespace).Watch(context.Background(), listOptions)
 	if err != nil {
-		t.Fatalf("errror creating event watch: %v", err)
+		t.Fatalf("error creating event watch: %v", err)
 	}
 	defer watcher.Stop()
 	results := make([]v1.Event, 0)

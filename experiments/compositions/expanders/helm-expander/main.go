@@ -283,7 +283,7 @@ func (e *Expander) Evaluate(result *pb.EvaluateResult) (*pb.EvaluateResult, erro
 
 // ------------- GRPC Server implementation ----------------
 
-// server is used to implement exander.Evaluator
+// server is used to implement expander.Evaluator
 type server struct {
 	pb.UnimplementedExpanderServer
 }

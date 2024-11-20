@@ -35,7 +35,7 @@ type operationBase struct {
 
 	object *unstructured.Unstructured
 
-	// HasSetReadyCondition tracks whether the controller explcitly set the ready condition
+	// HasSetReadyCondition tracks whether the controller explicitly set the ready condition
 	HasSetReadyCondition bool
 
 	// RequeueRequested tracks whether we need a re-reconciliation

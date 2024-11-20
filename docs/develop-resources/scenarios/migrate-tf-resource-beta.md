@@ -55,7 +55,7 @@ The PR adds the direct mapper. You can do this together with the previous step o
 
 Follow [deep-dives Step 4](../deep-dives/4-add-controller.md).
 
-* Use the `KCC_USE_DIRECT_RECONCILERS` flag [exampe](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/dev/tasks/run-e2e#L27). 
+* Use the `KCC_USE_DIRECT_RECONCILERS` flag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/dev/tasks/run-e2e#L27). 
 
 *Tips* The `KCC_USE_DIRECT_RECONCILERS` will override the `tf2crd` and `dcl2crd` label to force using the direct controller, but it will not affect the releases which will still use the Terraform/DCL based controllers until the Direct controller is fully ready. This allows developing the API and controller in different Config Connector releases without code freeze.
 

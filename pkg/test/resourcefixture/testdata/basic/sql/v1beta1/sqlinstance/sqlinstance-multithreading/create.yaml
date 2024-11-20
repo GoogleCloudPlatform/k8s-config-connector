@@ -32,7 +32,7 @@ spec:
     # Location preference is not actually a required field. However, setting it for tests
     # helps with with normalizing the GCP responses, because otherwise GCP chooses a zone
     # preference based on availability. Therefore it could potentially vary if not
-    # explicity specified.
+    # explicitly specified.
     locationPreference:
       zone: us-central1-a
     tier: db-custom-6-16384

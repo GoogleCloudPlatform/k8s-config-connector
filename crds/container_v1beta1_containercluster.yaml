@@ -1716,7 +1716,7 @@ spec:
                   field will not be blocked.
                 properties:
                   enabled:
-                    description: When enabled, services with exterenal ips specified
+                    description: When enabled, services with external ips specified
                       will be allowed.
                     type: boolean
                 required:

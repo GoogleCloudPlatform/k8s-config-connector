@@ -48,7 +48,7 @@ We would need to build an intrerface on top of the manager that supports checkin
 controller-runtime's Manager interface provides no way to `Stop` or `Remove` a runnable. In fact it does not even track the runnables for a given group. During `Add()` a go routine is created and thats it. A shared cancellable context is used across multiple reconcilers.
 
 ## Impact for Allotrope
-- With naive controller-runtime library we end up starting multiple reconcilers for the same Input GVK everytime the Composition object changes.
+- With naive controller-runtime library we end up starting multiple reconcilers for the same Input GVK every time the Composition object changes.
 - Without stop support we cannot stop the Input GVK controller when a Composition object is deleted.
 
 

@@ -34,7 +34,7 @@ var (
 	port = flag.Int("port", 8443, "The server port")
 )
 
-// server is used to implement exander.Evaluator
+// server is used to implement expander.Evaluator
 type server struct {
 	pb.UnimplementedExpanderServer
 }

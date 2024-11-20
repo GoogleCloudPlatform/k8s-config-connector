@@ -165,7 +165,7 @@ spec:
                           type: string
                         osVersion:
                           description: Targets VM instances with OS Inventory enabled
-                            and having the following following OS version.
+                            and having the following OS version.
                           type: string
                       type: object
                     type: array
