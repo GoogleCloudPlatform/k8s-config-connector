@@ -1,3 +1,4 @@
+@@ -1,76 +1,64 @@
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,7 +12,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    AUTO GENERATED CODE     ***
@@ -22,12 +22,10 @@
 //     changes will be clobbered when the file is regenerated.
 //
 // ----------------------------------------------------------------------------
-
 // *** DISCLAIMER ***
 // Config Connector's go-client for CRDs is currently in ALPHA, which means
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
-
 // Package v1alpha1 contains API Schema definitions for the kms v1alpha1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
@@ -35,23 +33,24 @@
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=kms.cnrm.cloud.google.com
 package v1alpha1
-
 import (
 	"reflect"
-
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
-
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
 	SchemeGroupVersion = schema.GroupVersion{Group: "kms.cnrm.cloud.google.com", Version: "v1alpha1"}
-
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
-
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
+
+	KMSAutokeyConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(KMSAutokeyConfig{}).Name(),
+	}
 
 	KMSCryptoKeyVersionGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
@@ -59,17 +58,21 @@ var (
 		Kind:    reflect.TypeOf(KMSCryptoKeyVersion{}).Name(),
 	}
 
+	KMSKeyHandleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(KMSKeyHandle{}).Name(),
+	}
+
 	KMSKeyRingImportJobGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(KMSKeyRingImportJob{}).Name(),
 	}
-
 	KMSSecretCiphertextGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(KMSSecretCiphertext{}).Name(),
 	}
-
 	kmsAPIVersion = SchemeGroupVersion.String()
 )
