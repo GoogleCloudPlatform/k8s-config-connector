@@ -4,17 +4,16 @@ Config Connector builds the API using the Google Cloud Client proto.
 
 ## 2.1 Build the Google Cloud Proto (one-off step)
 
-This step generates the Google Cloud Client proto in a single file under ./dev/tools/proto-to-mapper/build. This should be a one-off command only when you need to update the proto or the first time you develop the direct resource.
+This step compiles the Google Cloud Client protos into a single file `.build/googleapis.pb`. This should be a one-off command only when you need to update the proto or the first time you develop the direct resource.
 
-Make sure the` generate-pb` rule in [proto-to-mapper/Makefile](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/dev/tools/proto-to-mapper/Makefile#L2) contains your proto. If not, add one using the file path in [https://github.com/googleapis/googleapis/tree/master](https://github.com/googleapis/googleapis/tree/master). [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/6ce31faf38dfaf6f44dd964802f43f9228d5a869/dev/tools/proto-to-mapper/Makefile#L16)
+Make sure the [`generate-proto.sh` script](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/dev/tools/controllerbuilder/generate-proto.sh) contains your proto. If not, add one using the file path in [https://github.com/googleapis/googleapis/tree/master](https://github.com/googleapis/googleapis/tree/master).
 
 Run the following command to generate the Google proto.
 
 
 ```
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd $REPO_ROOT/dev/tools/proto-to-mapper
-make generate-pb
+$REPO_ROOT/dev/tools/controllerbuilder/generate-proto.sh
 ```
 
 ## 2.2 Generate the Config Connector Types (repeat-run safe) 
@@ -28,7 +27,7 @@ cd $REPO_ROOT/dev/tools/controllerbuilder
 
 go run main.go generate-types \
      --service google.storage.v1 \
-     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+     --proto-source-path ${REPO_ROOT}/.build/googleapis.pb \
      --api-version "storage.cnrm.cloud.google.com/v1beta1" \
      --resource StorageNotification:Notification
 ```

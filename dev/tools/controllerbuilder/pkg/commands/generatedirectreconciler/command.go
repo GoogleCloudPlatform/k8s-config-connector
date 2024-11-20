@@ -48,15 +48,15 @@ func (o *GenerateBasicReconcilerOptions) BindFlags(cmd *cobra.Command) {
 }
 
 func (o *GenerateBasicReconcilerOptions) InitDefaults() error {
-	root, err := options.RepoRoot()
+	repoRoot, err := options.RepoRoot()
 	if err != nil {
 		return nil
 	}
-	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
+	o.ProtoSourcePath = repoRoot + "/.build/googleapis.pb"
 	o.APIGoPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
-	o.APIDirectory = root + "/apis/"
-	//	o.OutputAPIDirectory = root + "/apis/"
-	o.OutputMapperDirectory = root + "/pkg/controller/direct/"
+	o.APIDirectory = repoRoot + "/apis/"
+	//	o.OutputAPIDirectory = repoRoot + "/apis/"
+	o.OutputMapperDirectory = repoRoot + "/pkg/controller/direct/"
 	return nil
 }
 

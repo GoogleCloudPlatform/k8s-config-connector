@@ -19,7 +19,6 @@ issues:
     - third_party
     - pkg/clients/generated
     - temp-vendor
-    - dev/tools/proto-to-mapper
 linters:
   disable-all: true
   enable:
