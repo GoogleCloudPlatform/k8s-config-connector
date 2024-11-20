@@ -51,16 +51,19 @@ cd tools/patch-proto
 #   MaintenanceUpdatePolicy maintenance_update_policy = 32;
 # EOF
 
+# Another example proto patch; the psc_config field has now been added upstream,
+# so we don't need it, but we are keeping it as a comment here for reference.
+#
 # Use our proto patch tool to add the missing pscConfig field for AlloyDB cluster.
-go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto --message Cluster <<EOF
+# go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto --message Cluster <<EOF
 
-  // PscConfig contains PSC related configuration at a cluster level.
-  message PscConfig {
-    // Optional. Create an instance that allows connections from Private Service
-    // Connect endpoints to the instance.
-    bool psc_enabled = 1 [(google.api.field_behavior) = OPTIONAL];
-  }
+#   // PscConfig contains PSC related configuration at a cluster level.
+#   message PscConfig {
+#     // Optional. Create an instance that allows connections from Private Service
+#     // Connect endpoints to the instance.
+#     bool psc_enabled = 1 [(google.api.field_behavior) = OPTIONAL];
+#   }
 
-  // Optional. The configuration for Private Service Connect (PSC) for the cluster.
-  PscConfig psc_config = 31 [(google.api.field_behavior) = OPTIONAL];
-EOF
+#   // Optional. The configuration for Private Service Connect (PSC) for the cluster.
+#   PscConfig psc_config = 31 [(google.api.field_behavior) = OPTIONAL];
+# EOF
