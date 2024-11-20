@@ -83,7 +83,7 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 			// Golden file won't be generated if the result is empty.
 			return
 		} else {
-			t.Fatalf("failed to read golden file %q: %v", p, err)
+			t.Fatalf("FAIL: failed to read golden file %q: %v", p, err)
 		}
 	}
 	want := string(wantBytes)
@@ -107,14 +107,14 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
 			t.Logf("unexpected diff in %s: %s", p, diff)
 		} else {
-			t.Errorf("unexpected diff in %s: %s", p, diff)
+			t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
 		}
 	}
 
 	if writeGoldenOutput {
 		// Write the output to the golden file
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
-			t.Fatalf("failed to write golden output %s: %v", p, err)
+			t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
 		}
 		t.Logf("wrote updated golden output to %s", p)
 	}
@@ -192,7 +192,7 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 		return
 	}
 
-	t.Errorf("unexpected diff in %s: %s", p, diff)
+	t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
 
 	if writeGoldenOutput {
 		// Write the output to the golden file

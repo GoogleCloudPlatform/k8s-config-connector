@@ -265,15 +265,15 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					t.Cleanup(func() {
 						err := h.VCRRecorderNonTF.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop non TF vcr recorder: %v", err)
+							t.Errorf("FAIL: [VCR] Failed stop non TF vcr recorder: %v", err)
 						}
 						err = h.VCRRecorderTF.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop TF vcr recorder: %v", err)
+							t.Errorf("FAIL: [VCR] Failed stop TF vcr recorder: %v", err)
 						}
 						err = h.VCRRecorderOauth.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop Oauth vcr recorder: %v", err)
+							t.Errorf("FAIL: [VCR] Failed stop Oauth vcr recorder: %v", err)
 						}
 					})
 					configureVCR(t, h)
@@ -314,21 +314,21 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if len(pieces) > 0 {
 							testName = pieces[len(pieces)-1]
 						} else {
-							t.Errorf("failed to get test name")
+							t.Fatalf("FAIL: failed to get test name")
 						}
 						// Golden test exported GCP object
 						exportedYAML := exportResource(h, obj, &Expectations{})
 						if exportedYAML != "" {
 							exportedObj := &unstructured.Unstructured{}
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
-								t.Fatalf("error from yaml.Unmarshal: %v", err)
+								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
 							if err := normalizeKRMObject(t, exportedObj, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
 							if err != nil {
-								t.Errorf("failed to convert KRM object to yaml: %v", err)
+								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
 
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
@@ -339,14 +339,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						u.SetGroupVersionKind(obj.GroupVersionKind())
 						id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
-							t.Errorf("failed to get KRM object: %v", err)
+							t.Fatalf("FAIL: failed to get KRM object: %v", err)
 						} else {
 							if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
 							if err != nil {
-								t.Errorf("failed to convert KRM object to yaml: %v", err)
+								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
 							test.CompareGoldenObject(t, expectedPath, got)
@@ -500,7 +500,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							_, found, _ := unstructured.NestedString(obj, tokens...)
 							if found {
 								if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
-									t.Fatal(err)
+									t.Fatalf("FAIL: setting nested field: %v", err)
 								}
 							}
 						})
@@ -509,7 +509,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement := func(path string, newValue string) {
 						jsonMutators = append(jsonMutators, func(obj map[string]any) {
 							if err := setStringAtPath(obj, path, newValue); err != nil {
-								t.Fatalf("error from setStringAtPath(%+v): %v", obj, err)
+								t.Fatalf("FAIL: error from setStringAtPath(%+v): %v", obj, err)
 							}
 						})
 					}
@@ -622,7 +622,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									// Set name field to use human-readable ID, instead of UID
 									// Note: This only works if firestore databases in all resource fixture test cases use the name "firestoredatabase-${uniqueId}"
 									if err := unstructured.SetNestedField(obj, "projects/${projectId}/databases/firestoredatabase-${uniqueId}", "response", "name"); err != nil {
-										t.Fatal(err)
+										t.Fatalf("FAIL: stting nested field: %v", err)
 									}
 								}
 							}
@@ -638,14 +638,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								if _, found, err := unstructured.NestedString(obj, "done"); err == nil && !found {
 									// Explicitly set `done` to `false`.
 									if err := unstructured.SetNestedField(obj, false, "done"); err != nil {
-										t.Fatal(err)
+										t.Fatalf("FAIL: setting nested field: %v", err)
 									}
 								}
 
 								if _, found, err := unstructured.NestedString(obj, "metadata", "requestedCancellation"); err == nil && !found {
 									// Explicitly set `metadata.requestedCancellation` to `false`.
 									if err := unstructured.SetNestedField(obj, false, "metadata", "requestedCancellation"); err != nil {
-										t.Fatal(err)
+										t.Fatalf("FAIL: setting nested field: %v", err)
 									}
 								}
 							}
@@ -683,7 +683,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								// Include settings.authorizedGaeApplications in response, even if it's empty.
 								var val []string
 								if err := unstructured.SetNestedStringSlice(obj, val, "settings", "authorizedGaeApplications"); err != nil {
-									t.Fatal(err)
+									t.Fatalf("FAIL: setting nested field: %v", err)
 								}
 							}
 						}
@@ -692,7 +692,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								// Include settings.ipConfiguration.authorizedNetworks in response, even if it's empty.
 								var val []string
 								if err := unstructured.SetNestedStringSlice(obj, val, "settings", "ipConfiguration", "authorizedNetworks"); err != nil {
-									t.Fatal(err)
+									t.Fatalf("FAIL: setting nested field: %v", err)
 								}
 							}
 						}
@@ -700,14 +700,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							// Hardcode the zone. GCP chooses this zone within the
 							// region, and it varies based on availability.
 							if err := unstructured.SetNestedField(obj, "us-central1-a", "gceZone"); err != nil {
-								t.Fatal(err)
+								t.Fatalf("FAIL: setting nested field: %v", err)
 							}
 						}
 						if ipConfig, found, _ := unstructured.NestedMap(obj, "settings", "ipConfiguration"); found {
 							// Hack fix: remove unpublished field that's suddenly showing up in real gcp proto responses.
 							delete(ipConfig, "serverCaMode")
 							if err := unstructured.SetNestedMap(obj, ipConfig, "settings", "ipConfiguration"); err != nil {
-								t.Fatal(err)
+								t.Fatalf("FAIL: setting nested field: %v", err)
 							}
 						}
 					})
@@ -723,14 +723,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								if itemMap, ok := item.(map[string]interface{}); ok {
 									if _, found, _ := unstructured.NestedStringSlice(itemMap, "host"); !found {
 										if err := unstructured.SetNestedField(itemMap, "", "host"); err != nil {
-											t.Fatal(err)
+											t.Fatalf("FAIL: setting nested field: %v", err)
 										}
 									}
 									newItems = append(newItems, itemMap)
 								}
 							}
 							if err := unstructured.SetNestedSlice(obj, newItems, "items"); err != nil {
-								t.Fatal(err)
+								t.Fatalf("FAIL: setting nested field: %v", err)
 							}
 						}
 					})
@@ -780,12 +780,12 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						// special handling because the field includes dot
 						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientId"); found {
 							if err := unstructured.SetNestedField(obj, "client-id", "params", "connector.authentication.oauth.clientId"); err != nil {
-								t.Fatal(err)
+								t.Fatalf("FAIL: setting nested field: %v", err)
 							}
 						}
 						if _, found, _ := unstructured.NestedString(obj, "params", "connector.authentication.oauth.clientSecret"); found {
 							if err := unstructured.SetNestedField(obj, "client-secret", "params", "connector.authentication.oauth.clientSecret"); err != nil {
-								t.Fatal(err)
+								t.Fatalf("FAIL: setting nested field: %v", err)
 							}
 						}
 						delete(obj, "state") // data transfer run state, which depends on timing
@@ -865,11 +865,11 @@ func assertNoRequest(t *testing.T, got string, normalizers ...func(s string) str
 	}
 
 	if strings.Contains(got, "POST") {
-		t.Fatalf("unexpected POST in log: %s", got)
+		t.Fatalf("FAIL: unexpected POST in log: %s", got)
 	}
 
 	if strings.Contains(got, "GET") {
-		t.Fatalf("unexpected GET in log: %s", got)
+		t.Fatalf("FAIL: unexpected GET in log: %s", got)
 	}
 }
 
@@ -888,7 +888,7 @@ func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
 	cc.Name = "configconnector.core.cnrm.cloud.google.com"
 
 	if err := c.Create(ctx, cc); err != nil {
-		t.Fatalf("error creating CC: %v", err)
+		t.Fatalf("FAIL: error creating CC: %v", err)
 	}
 }
 
@@ -994,7 +994,7 @@ func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) co
 	t.Cleanup(func() {
 		done = true
 		if timedOut {
-			t.Fatalf("subtest timeout after %v", timeout)
+			t.Fatalf("FAIL: subtest timeout after %v", timeout)
 		}
 		cancel()
 	})
@@ -1107,7 +1107,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 			var err error
 			reqBody, err = io.ReadAll(r.Body)
 			if err != nil {
-				t.Fatal("[VCR] Failed to read request body")
+				t.Fatal("FAIL: [VCR] Failed to read request body")
 			}
 			r.Body.Close()
 			r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
