@@ -61,10 +61,11 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 		return nil
 	}
 	out := &krm.LoggingLinkSpec{}
-	out.ResourceID = direct.LazyPtr(in.GetName()) // this needs to be link ID, which is just the unique name of the link (strip the prefix)
+	resourceID := in.GetName()[strings.LastIndex(name, "/")+1:]
+	out.ResourceID = direct.LazyPtr(resourceID)
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// Build from proto and to proto for Log Bucket Ref
-	out.LoggingLogBucketRef =  LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx, in.GetName) //but strip the suffix of links/linkID
+	out.LoggingLogBucketRef =  LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx, resourceID)
 	return out
 }
 func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {
