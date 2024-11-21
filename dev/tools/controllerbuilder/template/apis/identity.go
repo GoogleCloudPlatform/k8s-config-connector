@@ -21,11 +21,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -37,11 +34,11 @@ type {{.ProtoResource}}Identity struct {
 }
 
 func (i *{{.ProtoResource}}Identity) String() string {
-	return  p.parent.String() + "/{{.ProtoResource | toLower}s/" + p.id
+	return  i.parent.String() + "/{{.ProtoResource | ToLower}}s/" + i.id
 }
 
 func (i *{{.ProtoResource}}Identity) ID() string {
-	return p.id
+	return i.id
 }
 
 func (i *{{.ProtoResource}}Identity) Parent() *{{.ProtoResource}}Parent {
@@ -59,7 +56,7 @@ func (p *{{.ProtoResource}}Parent) String() string {
 
 
 // New builds a {{.ProtoResource}}Identity from the Config Connector {{.ProtoResource}} object.
-func New{{.ProtoResource}}Identity(ctx context.Context, reader client.Reader, obj *{{.ProtoResource}}) (*{{.ProtoResource}}Identity, error) {
+func New{{.ProtoResource}}Identity(ctx context.Context, reader client.Reader, obj *{{.Kind}}) (*{{.ProtoResource}}Identity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
