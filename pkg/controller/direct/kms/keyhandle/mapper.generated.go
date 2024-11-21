@@ -16,7 +16,7 @@ package keyhandle
 
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
