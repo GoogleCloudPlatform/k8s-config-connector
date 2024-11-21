@@ -230,11 +230,11 @@ func SecretManagerSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.Secret)
 	// MISSING: CustomerManagedEncryption
 	return out
 }
-func SecretManagerSecretVersionObservation_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionObservation {
+func SecretManagerSecretVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SecretManagerSecretVersionObservation{}
+	out := &krm.SecretManagerSecretVersionObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.DestroyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDestroyTime())
@@ -246,7 +246,7 @@ func SecretManagerSecretVersionObservation_FromProto(mapCtx *direct.MapContext, 
 	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_FromProto(mapCtx, in.GetCustomerManagedEncryption())
 	return out
 }
-func SecretManagerSecretVersionObservation_ToProto(mapCtx *direct.MapContext, in *krm.SecretManagerSecretVersionObservation) *pb.SecretVersion {
+func SecretManagerSecretVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretManagerSecretVersionObservedState) *pb.SecretVersion {
 	if in == nil {
 		return nil
 	}
@@ -262,38 +262,7 @@ func SecretManagerSecretVersionObservation_ToProto(mapCtx *direct.MapContext, in
 	out.CustomerManagedEncryption = CustomerManagedEncryptionStatus_ToProto(mapCtx, in.CustomerManagedEncryption)
 	return out
 }
-func SecretManagerSecretVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionObservation {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecretManagerSecretVersionObservation{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: DestroyTime
-	// MISSING: State
-	// MISSING: ReplicationStatus
-	// MISSING: Etag
-	// MISSING: ClientSpecifiedPayloadChecksum
-	// MISSING: ScheduledDestroyTime
-	// MISSING: CustomerManagedEncryption
-	return out
-}
-func SecretManagerSecretVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretManagerSecretVersionObservation) *pb.SecretVersion {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SecretVersion{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: DestroyTime
-	// MISSING: State
-	// MISSING: ReplicationStatus
-	// MISSING: Etag
-	// MISSING: ClientSpecifiedPayloadChecksum
-	// MISSING: ScheduledDestroyTime
-	// MISSING: CustomerManagedEncryption
-	return out
-}
+
 func SecretManagerSecretVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionSpec {
 	if in == nil {
 		return nil
@@ -326,6 +295,7 @@ func SecretManagerSecretVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.S
 	// MISSING: CustomerManagedEncryption
 	return out
 }
+
 func SecretVersion_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretVersion {
 	if in == nil {
 		return nil

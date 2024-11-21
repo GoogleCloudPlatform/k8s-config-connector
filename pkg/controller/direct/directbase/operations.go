@@ -57,6 +57,8 @@ func (o *operationBase) GetUnstructured() *unstructured.Unstructured {
 	return o.object
 }
 
+var _ Operation = &UpdateOperation{}
+
 type UpdateOperation struct {
 	operationBase
 
@@ -75,6 +77,8 @@ func (o *UpdateOperation) RecordUpdatingEvent() {
 	r := o.lifecycleHandler.Recorder
 	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 }
+
+var _ Operation = &CreateOperation{}
 
 type CreateOperation struct {
 	operationBase

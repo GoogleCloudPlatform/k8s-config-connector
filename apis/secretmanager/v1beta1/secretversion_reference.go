@@ -83,7 +83,7 @@ func (r *SecretVersionRef) NormalizedExternal(ctx context.Context, reader client
 	return r.External, nil
 }
 
-func ParseSecretVersionExternal(external string) (*SecretIdentity, error) {
+func ParseSecretVersionExternal(external string) (*SecretVersionIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("missing external value")
 	}
@@ -92,8 +92,8 @@ func ParseSecretVersionExternal(external string) (*SecretIdentity, error) {
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "secrets" || tokens[4] != "versions" {
 		return nil, fmt.Errorf("format of SecretManagerSecretVersion external=%q was not known (use projects/<projectId>/secrets/<secretID>/versions/<versionID>)", external)
 	}
-	return &SecretIdentity{
-		parent: &SecretParent{ProjectID: tokens[1]},
-		id:     tokens[3],
+	return &SecretVersionIdentity{
+		parent: &SecretVersionParent{ProjectID: tokens[1], SecretID: tokens[3]},
+		id:     tokens[5],
 	}, nil
 }

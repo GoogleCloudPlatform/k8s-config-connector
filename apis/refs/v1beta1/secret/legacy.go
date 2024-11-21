@@ -15,7 +15,15 @@
 package secret
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // +kubebuilder:object:generate:=true
@@ -34,4 +42,35 @@ type LegacyValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
 	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+}
+
+func NormalizedLegacySecret(ctx context.Context, r *v1alpha1.SecretKeyRef, reader client.Reader, otherNamespace string) ([]byte, error) {
+	if r == nil {
+		return nil, nil
+	}
+	if r.Name == "" {
+		return nil, fmt.Errorf("Secret `name` is required ")
+	}
+	nn := types.NamespacedName{
+		Namespace: otherNamespace,
+		Name:      r.Name,
+	}
+
+	secret := &corev1.Secret{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "v1",
+			Kind:       "Secret",
+		},
+	}
+	if err := reader.Get(ctx, nn, secret); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced Secret %v not found", nn)
+		}
+		return nil, fmt.Errorf("error reading referenced Secret %v: %w", nn, err)
+	}
+	data, ok := secret.Data[r.Key]
+	if !ok {
+		return nil, fmt.Errorf("%s not found in Secret %s", r.Key, r.Name)
+	}
+	return data, nil
 }
