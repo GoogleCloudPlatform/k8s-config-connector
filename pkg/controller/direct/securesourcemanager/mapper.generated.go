@@ -49,10 +49,11 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	}
 	out := &krm.Instance_PrivateConfig{}
 	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
-	out.CaPool = direct.LazyPtr(in.GetCaPool())
+	if in.GetCaPool() != "" {
+		out.CaPoolRef = SecureSourceManagerInstanceSpec_CaPoolRef_FromProto(mapCtx, in.GetCaPool())
+	}
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
-	out.PscAllowedProjects = in.PscAllowedProjects
 	return out
 }
 func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
@@ -61,10 +62,11 @@ func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 	}
 	out := &pb.Instance_PrivateConfig{}
 	out.IsPrivate = direct.ValueOf(in.IsPrivate)
-	out.CaPool = direct.ValueOf(in.CaPool)
+	if in.CaPoolRef != nil {
+		out.CaPool = in.CaPoolRef.External
+	}
 	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
 	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
-	out.PscAllowedProjects = in.PscAllowedProjects
 	return out
 }
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {

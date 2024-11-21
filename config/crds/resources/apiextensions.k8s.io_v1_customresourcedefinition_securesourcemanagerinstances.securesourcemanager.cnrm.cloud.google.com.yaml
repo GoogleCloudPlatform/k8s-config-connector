@@ -134,13 +134,6 @@ spec:
                   isPrivate:
                     description: Required. Immutable. Indicate if it's private instance.
                     type: boolean
-                  pscAllowedProjects:
-                    description: Optional. Additional allowed projects for setting
-                      up PSC connections. Instance host project is automatically allowed
-                      and does not need to be included in this list.
-                    items:
-                      type: string
-                    type: array
                   sshServiceAttachment:
                     description: Output only. Service Attachment for SSH, resource
                       is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
