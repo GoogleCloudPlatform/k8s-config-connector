@@ -57,10 +57,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(user): Update the import with the google cloud client
+	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/{{.KCCService}}/apiv1"
 
-	// TODO(user): Update the import with the google cloud client api protobuf
+	// TODO(contributor): Update the import with the google cloud client api protobuf
 	{{.KCCService}}pb "cloud.google.com/go/{{.KCCService}}/{{.ProtoVersion}}/{{.KCCService}}pb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -77,17 +77,17 @@ func init() {
 	registry.RegisterModel(krm.{{.Kind}}GVK, New{{.Kind}}Model)
 }
 
-func New{{.Kind}}Model(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &model{{.Kind}}{config: *config}, nil
+func New{{.ProtoResource}}Model(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{{.ProtoResource}}{config: *config}, nil
 }
 
-var _ directbase.Model = &model{{.Kind}}{}
+var _ directbase.Model = &model{{.ProtoResource}}{}
 
-type model{{.Kind}} struct {
+type model{{.ProtoResource}} struct {
 	config config.ControllerConfig
 }
 
-func (m *model{{.Kind}}) client(ctx context.Context) (*gcp.Client, error) {
+func (m *model{{.ProtoResource}}) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -100,13 +100,13 @@ func (m *model{{.Kind}}) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model{{.Kind}}) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.{{.Kind}}{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.New{{.Kind}}Ref(ctx, reader, obj)
+	id, err := krm.New{{.ProtoResource}}Identity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -116,47 +116,52 @@ func (m *model{{.Kind}}) AdapterForObject(ctx context.Context, reader client.Rea
 	if err != nil {
 		return nil, err
 	}
-	return &{{.Kind}}Adapter{
+	return &{{.ProtoResource}}Adapter{
 		id:        id,
 		gcpClient:  gcpClient,
 		desired:    obj,
 	}, nil
 }
 
-func (m *model{{.Kind}}) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *model{{.ProtoResource}}) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
 
-type {{.Kind}}Adapter struct {
-	id         *krm.{{.Kind}}Ref
+type {{.ProtoResource}}Adapter struct {
+	id         *krm.{{.ProtoResource}}Ref
 	gcpClient  *gcp.Client
-	desired    *krm.{{.Kind}}
+	desired    *krm.{{.ProtoResource}}
 	actual     *{{.KCCService}}pb.{{.ProtoResource}}
 }
 
-var _ directbase.Adapter = &{{.Kind}}Adapter{}
+var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
 
-func (a *{{.Kind}}Adapter) Find(ctx context.Context) (bool, error) {
+// Find retrieves the GCP resource.
+// Return true means the object is found. This triggers Adapter ` + "`" + `Update` + "`" + ` call.
+// Return true means the object is not found. This triggers Adapter ` + "`" + `Create` + "`" + ` call.
+// Return a non-nil error requeues the requests. 
+func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting {{.Kind}}", "name", a.id.External)
+	log.V(2).Info("getting {{.ProtoResource}}", "name", a.id)
 
-	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.External}
+	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id}
 	{{.ProtoResource | ToLower }}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting {{.ProtoResource}} %q: %w", a.id, err)
 	}
 
 	a.actual = {{.ProtoResource | ToLower }}pb
 	return true, nil
 }
 
-func (a *{{.Kind}}Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+// Create creates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id.External)
+	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -165,24 +170,20 @@ func (a *{{.Kind}}Adapter) Create(ctx context.Context, createOp *directbase.Crea
 		return mapCtx.Err()
 	}
 
-	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
+	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &{{.KCCService}}pb.Create{{.ProtoResource}}Request{
-		Parent: 						  parent.String(),
+		Parent: 						  a.id.Parent().String(),
 		{{.ProtoResource}}:               resource,
 	}
 	op, err := a.gcpClient.Create{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id.External, err)
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id.External, err)
+		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id.External)
+	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id)
 
 	status := &krm.{{.Kind}}Status{}
 	status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, created)
@@ -193,32 +194,49 @@ func (a *{{.Kind}}Adapter) Create(ctx context.Context, createOp *directbase.Crea
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *{{.Kind}}Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+// Update updates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id.External)
+	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := {{.Kind}}Spec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := {{.Kind}}Spec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	// TODO(user): Update the field if applicable.
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
+	paths := []string{}
+	// Option 1: This option is good for proto that has ` + "`" + `field_mask` + "`" + ` for output-only, immutable, required/optional.
+	// TODO(contributor): If choosing this option, remove the "Option 2" code.
+	{
+		var err error
+		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+		if err != nil {
+			return err
+		}
 	}
-	
-	if len(updateMask.Paths) == 0 {
+
+	// Option 2: manually add all mutable fields. 
+	// TODO(contributor): If choosing this option, remove the "Option 1" code.
+	{
+		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
+			paths = append(paths, "display_name")
+		}
+	}
+
+
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.External)
 		return nil
 	}
-	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: sets.List(paths)}
+
+	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &{{.KCCService}}pb.Update{{.ProtoResource}}Request{
 		Name:       			a.id.External,
 		UpdateMask:             updateMask,
-		{{.ProtoResource}}:     resource,
+		{{.ProtoResource}}:     desiredPb,
 	}
 	op, err := a.gcpClient.Update{{.ProtoResource}}(ctx, req)
 	if err != nil {
@@ -238,7 +256,8 @@ func (a *{{.Kind}}Adapter) Update(ctx context.Context, updateOp *directbase.Upda
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *{{.Kind}}Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+// Export maps the GCP object to a Config Connector resource ` + "`" + `spec` + "`" + `. 
+func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -250,13 +269,8 @@ func (a *{{.Kind}}Adapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	// TODO(user): Update other resource references 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, err
-	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.String()}
-	obj.Spec.Location = parent.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location =  a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -269,21 +283,21 @@ func (a *{{.Kind}}Adapter) Export(ctx context.Context) (*unstructured.Unstructur
 	return u, nil
 }
 
-// Delete implements the Adapter interface.
-func (a *{{.Kind}}Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+// Delete the resource from GCP service when the corresponding Config Connector resource is deleted. 
+func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id.External)
+	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id)
 
-	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.External}
+	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.String()}
 	op, err := a.gcpClient.Delete{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id.External)
+	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id.External, err)
+		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id, err)
 	}
 	return true, nil
 }

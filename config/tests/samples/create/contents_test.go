@@ -58,7 +58,7 @@ func validateResourceName(t *testing.T, sampleName string, u *unstructured.Unstr
 		}
 	}
 	// In addition to this naming scheme following the sample guidelines, the
-	// create sample test looks for either "sample" or "dep" to "uniqify" the
+	// create sample test looks for either "sample" or "dep" to "uniquify" the
 	// name of a sample
 	t.Errorf("invalid metadata.name value '%v' in sample '%v': must contain one of {%v} to be valid",
 		u.GetName(), sampleName, strings.Join(allowedNameFragments, ","))

@@ -58,10 +58,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -72,6 +68,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -112,10 +112,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -126,6 +122,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -157,10 +157,6 @@ User-Agent: kcc/controller-manager
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -171,6 +167,10 @@ User-Agent: kcc/controller-manager
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -206,10 +206,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -220,6 +216,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -261,10 +261,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -275,6 +271,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -316,10 +316,6 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    },
-    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -330,6 +326,10 @@ X-Xss-Protection: 0
     {
       "role": "READER",
       "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",

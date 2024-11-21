@@ -68,7 +68,7 @@ func CtyValToMap(val cty.Value, t cty.Type) map[string]interface{} {
 	}
 	var ret map[string]interface{}
 	if err := json.Unmarshal(b, &ret); err != nil {
-		panic(fmt.Errorf("error unmarshaling JSON as map[string]interface{}: %w", err))
+		panic(fmt.Errorf("error unmarshalling JSON as map[string]interface{}: %w", err))
 	}
 	return ret
 }
@@ -80,7 +80,7 @@ func MapToCtyVal(m map[string]interface{}, t cty.Type) cty.Value {
 	}
 	ret, err := ctyjson.Unmarshal(b, t)
 	if err != nil {
-		panic(fmt.Errorf("error unmarshaling JSON as cty.Value: %w", err))
+		panic(fmt.Errorf("error unmarshalling JSON as cty.Value: %w", err))
 	}
 	return ret
 }
@@ -92,7 +92,7 @@ func MapToCtyValWithSchema(m map[string]interface{}, s map[string]*schema.Schema
 	}
 	ret, err := ctyjson.Unmarshal(b, schema.InternalMap(s).CoreConfigSchema().ImpliedType())
 	if err != nil {
-		panic(fmt.Errorf("error unmarshaling JSON as cty.Value: %w", err))
+		panic(fmt.Errorf("error unmarshalling JSON as cty.Value: %w", err))
 	}
 	return ret
 }

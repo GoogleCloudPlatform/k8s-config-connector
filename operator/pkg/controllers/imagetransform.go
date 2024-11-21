@@ -23,7 +23,7 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
-// ImageTranform remaps container images in a manifest.
+// ImageTransform remaps container images in a manifest.
 type ImageTransform struct {
 	// ImagePrefix changes the image registry to a different registry, keeping the name.
 	// We strip off all but the last component of the image name, and then add the prefix.
@@ -45,7 +45,7 @@ func NewImageTransform(imagePrefix string) *ImageTransform {
 }
 
 // Remap images to the specified mirror / alternative location.
-// This function can be used as an object transfomration.
+// This function can be used as an object transformation.
 func (x *ImageTransform) RemapImages(ctx context.Context, o declarative.DeclarativeObject, manifest *manifest.Objects) error {
 	for _, obj := range manifest.Items {
 		if err := x.remapImages(obj); err != nil {

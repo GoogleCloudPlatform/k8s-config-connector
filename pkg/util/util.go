@@ -25,7 +25,7 @@ func Marshal(raw interface{}, processed interface{}) error {
 		return fmt.Errorf("error marshaling as JSON: %w", err)
 	}
 	if err := json.Unmarshal(b, processed); err != nil {
-		return fmt.Errorf("error unmarshaling into processed object: %w", err)
+		return fmt.Errorf("error unmarshalling into processed object: %w", err)
 	}
 	return nil
 }

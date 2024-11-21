@@ -56,7 +56,7 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 		return err
 	}
 
-	controllerFilePath, err := buildControllerPath(service, kind)
+	controllerFilePath, err := buildControllerPath(service, cArgs.ProtoResource)
 	if err != nil {
 		return err
 	}
@@ -99,8 +99,8 @@ func buildResourcePath(service, filename string) (string, error) {
 	return "", fmt.Errorf("file %s already exist", resourceFilePath)
 }
 
-func buildControllerPath(service, kind string) (string, error) {
-	return buildResourcePath(service, strings.ToLower(kind)+"_controller.go")
+func buildControllerPath(service, protoResource string) (string, error) {
+	return buildResourcePath(service, strings.ToLower(protoResource)+"_controller.go")
 }
 
 func FormatImports(path string, out []byte) error {

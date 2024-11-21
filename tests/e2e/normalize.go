@@ -333,7 +333,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	})
 
-	return visitor.VisitUnstructued(u)
+	return visitor.VisitUnstructured(u)
 }
 
 func setStringAtPath(m map[string]any, atPath string, newValue string) error {
@@ -377,6 +377,10 @@ func (o *objectWalker) ReplacePath(path string, v string) {
 	}
 
 	o.replacePaths[path] = v
+}
+
+func (o *objectWalker) SortSlice(path string) {
+	o.sortSlices.Insert(path)
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
@@ -502,7 +506,7 @@ func (o *objectWalker) visitString(v string, path string) (string, error) {
 	return v, nil
 }
 
-func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
+func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
 	if err := o.visitMap(v.Object, ""); err != nil {
 		return err
 	}
@@ -740,6 +744,12 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 		visitor.ReplacePath(".settings.backupConfiguration.startTime", "12:00")
 		visitor.ReplacePath(".settings.settingsVersion", "123")
+	}
+
+	// Specific to BigQuery
+	{
+		visitor.SortSlice(".access")
+		visitor.ReplacePath(".access[].userByEmail", "user@google.com")
 	}
 
 	// BigQueryConnection

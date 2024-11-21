@@ -149,7 +149,7 @@ spec:
                           should contain all of the labels specified here. The selection
                           is determined based on the best match. For example, suppose
                           there are three EndpointPolicy resources P1, P2 and P3 and
-                          if P1 has a the matcher as MATCH_ANY , P2 has MATCH_ALL
+                          if P1 has the matcher as MATCH_ANY , P2 has MATCH_ALL
                           , and P3 has MATCH_ALL . If a client with label connects,
                           the config from P1 will be selected. If a client with label
                           connects, the config from P2 will be selected. If a client

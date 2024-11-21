@@ -24,7 +24,7 @@ spec:
     external: projects/${projectId}
   serviceRef:
     external: monitoringservice-${uniqueId}
-  displayName: "updae request - a window based metric sum filter"
+  displayName: "update request - a window based metric sum filter"
   goal: 0.8
   rollingPeriod: "172800s"
   serviceLevelIndicator:

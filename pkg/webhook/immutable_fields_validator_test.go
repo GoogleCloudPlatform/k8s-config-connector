@@ -2161,7 +2161,7 @@ var TestCases = []TestCase{
 		},
 		ExpectedResult: []string{"ipAddress"},
 	},
-	// (TODO:maqiuyu): Add a test case for resourceID once supported.
+	// TODO(maqiuyu): Add a test case for resourceID once supported.
 }
 
 func TestUpdateIAMPolicy(t *testing.T) {
@@ -2179,25 +2179,25 @@ func TestUpdateIAMPolicy(t *testing.T) {
 			},
 		},
 	}
-	oldPolicyUnstructred := newUnstructuredFromObject(t, &policy)
+	oldPolicyUnstructured := newUnstructuredFromObject(t, &policy)
 	newPolicyUnstructured := newUnstructuredFromObject(t, &policy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, true)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, true)
 	copyPolicy := policy
 	copyPolicy.Spec.ResourceReference.Kind = "new-resource-reference-kind"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Namespace = "new-resource-reference-namespace"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Name = "new-resource-reference-name"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.APIVersion = "new-resource-reference-apiversion"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 }
 
 func assertHandleIAMPolicy(t *testing.T, old *unstructured.Unstructured, new *unstructured.Unstructured, expectedAllowedValue bool) {
@@ -2225,25 +2225,25 @@ func TestUpdateIAMPartialPolicy(t *testing.T) {
 			},
 		},
 	}
-	oldPolicyUnstructred := newUnstructuredFromObject(t, &policy)
+	oldPolicyUnstructured := newUnstructuredFromObject(t, &policy)
 	newPolicyUnstructured := newUnstructuredFromObject(t, &policy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, true)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, true)
 	copyPolicy := policy
 	copyPolicy.Spec.ResourceReference.Kind = "new-resource-reference-kind"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Namespace = "new-resource-reference-namespace"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Name = "new-resource-reference-name"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.APIVersion = "new-resource-reference-apiversion"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 }
 
 func assertHandleIAMPartialPolicy(t *testing.T, old *unstructured.Unstructured, new *unstructured.Unstructured, expectedAllowedValue bool) {
@@ -2273,33 +2273,33 @@ func TestUpdateIAMPolicyMember(t *testing.T) {
 			},
 		},
 	}
-	oldPolicyMemberUnstructred := newUnstructuredFromObject(t, &policyMember)
+	oldPolicyMemberUnstructured := newUnstructuredFromObject(t, &policyMember)
 	newPolicyMemberUnstructured := newUnstructuredFromObject(t, &policyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, true)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, true)
 	copyPolicyMember := policyMember
 	copyPolicyMember.Spec.Member = "new-member"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.Role = "new-role"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.Kind = "new-resource-reference-kind"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.Namespace = "new-resource-reference-namespace"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.Name = "new-resource-reference-name"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.APIVersion = "new-resource-reference-apiversion"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 }
 
 func assertHandleIAMPolicyMember(t *testing.T, old *unstructured.Unstructured, new *unstructured.Unstructured, expectedAllowedValue bool) {

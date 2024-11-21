@@ -223,7 +223,7 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
-  "displayName": "updae request - a window based metric sum filter",
+  "displayName": "update request - a window based metric sum filter",
   "goal": 0.8,
   "rollingPeriod": "172800s",
   "serviceLevelIndicator": {
@@ -258,7 +258,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "displayName": "updae request - a window based metric sum filter",
+  "displayName": "update request - a window based metric sum filter",
   "goal": 0.8,
   "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}",
   "rollingPeriod": "172800s",
@@ -300,7 +300,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "displayName": "updae request - a window based metric sum filter",
+  "displayName": "update request - a window based metric sum filter",
   "goal": 0.8,
   "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}",
   "rollingPeriod": "172800s",

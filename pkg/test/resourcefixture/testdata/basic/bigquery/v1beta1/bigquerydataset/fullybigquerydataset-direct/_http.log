@@ -561,16 +561,16 @@ User-Agent: kcc/controller-manager
 {
   "access": [
     {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
       "domain": "google.com",
       "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -618,6 +618,10 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -628,10 +632,6 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "userByEmail": "user@google.com"
-    },
-    {
-      "domain": "google.com",
-      "role": "READER"
     }
   ],
   "creationTime": "123456789",
@@ -681,6 +681,10 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -691,10 +695,6 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "userByEmail": "user@google.com"
-    },
-    {
-      "domain": "google.com",
-      "role": "READER"
     }
   ],
   "creationTime": "123456789",
@@ -743,6 +743,10 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     },
@@ -753,10 +757,6 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "userByEmail": "user@google.com"
-    },
-    {
-      "domain": "google.com",
-      "role": "READER"
     }
   ],
   "creationTime": "123456789",

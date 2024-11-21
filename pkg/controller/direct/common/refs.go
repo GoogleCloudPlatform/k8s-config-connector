@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package monitoring
+package common
 
 import (
 	"context"
@@ -28,6 +28,13 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+func NormalizeReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.Project) error {
+	if err := VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: projectRef, kube: reader}); err != nil {
+		return err
+	}
+	return nil
+}
 
 func normalizeResourceName(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*v1alpha1.ResourceRef, error) {
 	if ref == nil {
@@ -174,7 +181,7 @@ type refNormalizer struct {
 	ctx     context.Context
 	kube    client.Reader
 	src     client.Object
-	project refs.Project
+	project *refs.Project
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
@@ -188,7 +195,10 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 	if alertChart, ok := v.(*krm.AlertChart); ok {
-		if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, r.project, alertChart.AlertPolicyRef); err != nil {
+		if r.project == nil {
+			return fmt.Errorf("must specify project for alertChart references")
+		}
+		if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, *r.project, alertChart.AlertPolicyRef); err != nil {
 			return err
 		} else {
 			alertChart.AlertPolicyRef = ref
@@ -197,7 +207,11 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 
 	if alertChart, ok := v.(*krm.IncidentList); ok {
 		for i, policyRef := range alertChart.PolicyRefs {
-			if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, r.project, &policyRef); err != nil {
+			if r.project == nil {
+				return fmt.Errorf("must specify project for policyRef references")
+			}
+
+			if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, *r.project, &policyRef); err != nil {
 				return err
 			} else {
 				prefix := fmt.Sprintf("projects/%s/", r.project.ProjectID)

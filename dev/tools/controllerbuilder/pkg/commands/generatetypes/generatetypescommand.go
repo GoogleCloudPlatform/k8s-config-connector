@@ -189,6 +189,14 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(kind, resource.ProtoName), err)
 			}
 		}
+		if scaffolder.IdentityFileExist(kind, resource.ProtoName) {
+			fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(kind, resource.ProtoName))
+		} else {
+			err := scaffolder.AddIdentityFile(kind, resource.ProtoName)
+			if err != nil {
+				return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(kind, resource.ProtoName), err)
+			}
+		}
 	}
 
 	if err := typeGenerator.WriteVisitedMessages(); err != nil {

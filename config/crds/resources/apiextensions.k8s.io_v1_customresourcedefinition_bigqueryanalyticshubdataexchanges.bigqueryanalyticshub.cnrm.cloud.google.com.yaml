@@ -17,6 +17,9 @@ spec:
     kind: BigQueryAnalyticsHubDataExchange
     listKind: BigQueryAnalyticsHubDataExchangeList
     plural: bigqueryanalyticshubdataexchanges
+    shortNames:
+    - gcpbigqueryanalyticshubdataexchange
+    - gcpbigqueryanalyticshubdataexchanges
     singular: bigqueryanalyticshubdataexchange
   preserveUnknownFields: false
   scope: Namespaced

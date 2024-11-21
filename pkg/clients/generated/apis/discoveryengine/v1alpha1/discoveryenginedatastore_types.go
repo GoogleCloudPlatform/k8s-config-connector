@@ -131,7 +131,7 @@ type DatastoreObservedStateStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The id of the default [Schema][google.cloud.discoveryengine.v1.Schema] asscociated to this data store. */
+	/* Output only. The id of the default [Schema][google.cloud.discoveryengine.v1.Schema] associated to this data store. */
 	// +optional
 	DefaultSchemaID *string `json:"defaultSchemaID,omitempty"`
 }
