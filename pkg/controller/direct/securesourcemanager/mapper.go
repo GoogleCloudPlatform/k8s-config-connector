@@ -88,3 +88,9 @@ func SecureSourceManagerRepositorySpec_InstanceRef_FromProto(mapCtx *direct.MapC
 	}
 	return &krm.SecureSourceManagerInstanceRef{External: in}
 }
+func SecureSourceManagerInstanceSpec_CaPoolRef_FromProto(mapCtx *direct.MapContext, in string) *krm.PrivateCACAPoolRef {
+	if in == "" {
+		return nil
+	}
+	return &krm.PrivateCACAPoolRef{External: in}
+}
