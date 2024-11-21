@@ -918,7 +918,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "secretmanagersecretversion":
 		case "servicedirectorynamespace":
 		case "servicenetworkingconnection":
-		case "service":
 		case "sourcereporepository":
 		case "spannerdatabase":
 		case "sqluser":
