@@ -37,7 +37,7 @@ type Instance_PrivateConfig struct {
 
 	// Required. Immutable. CA pool resource, resource must in the format of
 	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
-	CaPool *string `json:"caPool,omitempty"`
+	CaPoolRef *PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
 
 	// Output only. Service Attachment for HTTP, resource is in the format of
 	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.

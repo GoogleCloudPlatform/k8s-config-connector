@@ -98,10 +98,35 @@ spec:
                 description: Optional. PrivateConfig includes settings for private
                   instance.
                 properties:
-                  caPool:
+                  caPoolRef:
                     description: Required. Immutable. CA pool resource, resource must
                       in the format of `projects/{project}/locations/{location}/caPools/{ca_pool}`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed PrivateCACAPool.
+                          Should be in the format `projects/[project_id]/locations/[region]/caPools/[caPool]`.
+                        type: string
+                      name:
+                        description: The `name` of a `PrivateCACAPool` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `PrivateCACAPool` resource.
+                        type: string
+                    type: object
                   httpServiceAttachment:
                     description: Output only. Service Attachment for HTTP, resource
                       is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
