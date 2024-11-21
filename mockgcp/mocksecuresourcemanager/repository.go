@@ -72,6 +72,8 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 		return nil, err
 	}
 
+	obj.InitialConfig = req.GetRepository().GetInitialConfig()
+
 	prefix := fmt.Sprintf("https://%s-%d", instanceName.InstanceID, name.Project.Number)
 	domain := "." + name.Location + ".sourcemanager.dev"
 	obj.Uris = &pb.Repository_URIs{
