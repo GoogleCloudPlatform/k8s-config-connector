@@ -97,7 +97,7 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, kube client.Re
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, kube, obj, &obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

@@ -99,7 +99,7 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 		Namespace: obj.Spec.ProjectRef.Namespace,
 		External:  obj.Spec.ProjectRef.External,
 	}
-	project, err := refs.ResolveProject(ctx, reader, loggingLogBucket, projectRef)
+	project, err := refs.ResolveProject(ctx, reader, loggingLogBucket.GetNamespace(), projectRef)
 	if err != nil {
 		return fmt.Errorf("cannot get project for referenced LoggingLogBucket %v: %w", key, err)
 	}

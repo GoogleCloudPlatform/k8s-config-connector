@@ -40,7 +40,7 @@ func NormalizeWorkstationCluster(ctx context.Context, kube client.Reader, obj *k
 	if obj.Spec.PrivateClusterConfig != nil && obj.Spec.PrivateClusterConfig.AllowedProjects != nil {
 		var resolvedProjects []refs.ProjectRef
 		for _, projectRef := range obj.Spec.PrivateClusterConfig.AllowedProjects {
-			resolvedProject, err := refs.ResolveProject(ctx, kube, obj, &projectRef)
+			resolvedProject, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &projectRef)
 			if err != nil {
 				return err
 			}

@@ -88,7 +88,7 @@ func (r *DiscoveryEngineEngineRef) NormalizedExternal(ctx context.Context, reade
 // New builds a DiscoveryEngineEngineRef from the Config Connector DiscoveryEngineEngine object.
 func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj *DiscoveryEngineEngine) (*DiscoveryEngineEngineID, error) {
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

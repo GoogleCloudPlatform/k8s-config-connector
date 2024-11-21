@@ -26,7 +26,7 @@ func normalizeProjectRef(ctx context.Context, reader client.Reader, src client.O
 		return nil, nil
 	}
 
-	project, err := refs.ResolveProject(ctx, reader, src, ref)
+	project, err := refs.ResolveProject(ctx, reader, src.GetNamespace(), ref)
 	if err != nil {
 		return nil, err
 	}

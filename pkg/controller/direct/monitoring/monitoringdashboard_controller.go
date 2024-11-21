@@ -88,7 +88,7 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reade
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, kube, obj, &obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

@@ -102,7 +102,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get Project ID
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

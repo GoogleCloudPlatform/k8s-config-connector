@@ -95,7 +95,7 @@ func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, re
 // New builds a DiscoveryEngineDataStoreRef from the Config Connector DiscoveryEngineDataStore object.
 func NewDiscoveryEngineDataStoreIDFromObject(ctx context.Context, reader client.Reader, obj *DiscoveryEngineDataStore) (*DiscoveryEngineDataStoreID, error) {
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

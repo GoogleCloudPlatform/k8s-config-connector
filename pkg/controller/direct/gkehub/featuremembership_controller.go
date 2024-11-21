@@ -89,7 +89,7 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 		Namespace: obj.Spec.ProjectRef.Namespace,
 		External:  obj.Spec.ProjectRef.External,
 	}
-	project, err := refs.ResolveProject(ctx, reader, obj, projectRef)
+	project, err := refs.ResolveProject(ctx, reader, u.GetNamespace(), projectRef)
 	if err != nil {
 		return nil, err
 	}
