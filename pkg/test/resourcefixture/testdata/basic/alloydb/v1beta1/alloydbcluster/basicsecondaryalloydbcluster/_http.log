@@ -121,6 +121,10 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "computenetwork-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -132,12 +136,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "cluster \"projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -161,13 +175,125 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
+    "automatedBackupPolicy": {
+      "backupWindow": "3600s",
+      "enabled": false,
+      "location": "us-west1",
+      "timeBasedRetention": {
+        "retentionPeriod": "1209600s"
+      },
+      "weeklySchedule": {
+        "daysOfWeek": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ],
+        "startTimes": [
+          {
+            "hours": 23
+          }
+        ]
+      }
+    },
+    "clusterType": "PRIMARY",
+    "continuousBackupConfig": {
+      "enabled": true,
+      "recoveryWindowDays": 14
+    },
+    "continuousBackupInfo": {
+      "enabledTime": "2024-04-01T12:34:56.123456Z",
+      "encryptionInfo": {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      },
+      "schedule": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ]
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseVersion": "POSTGRES_15",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "geminiConfig": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "networkConfig": {
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    },
+    "reconciling": false,
+    "state": "READY",
+    "subscriptionType": "STANDARD",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -177,51 +303,81 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": null,
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": null,
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "geminiConfig": null,
-  "initialUser": {
-    "password": "alloydb-pg",
-    "user": ""
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": false,
+    "location": "us-west1",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
   },
+  "clusterType": "PRIMARY",
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "schedule": [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseVersion": "POSTGRES_15",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maintenanceSchedule": null,
-  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
-  "network": "",
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
-  "primaryConfig": null,
-  "pscConfig": null,
   "reconciling": false,
-  "satisfiesPzs": false,
-  "secondaryConfig": null,
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
-  "tags": {},
-  "trialMetadata": null,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -618,12 +774,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "instance \"projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -645,13 +811,108 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Instance",
+    "availabilityType": "REGIONAL",
+    "clientConnectionConfig": {
+      "sslConfig": {
+        "sslMode": "ENCRYPTED_ONLY"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "geminiConfig": {},
+    "instanceType": "PRIMARY",
+    "ipAddress": "10.1.2.3",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "machineConfig": {
+      "cpuCount": 2
+    },
+    "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "nodes": [
+      {
+        "zoneId": "us-west1-c"
+      }
+    ],
+    "observabilityConfig": {
+      "enabled": false,
+      "maxQueryStringLength": 10240,
+      "preserveComments": false,
+      "queryPlansPerMinute": 20,
+      "recordApplicationTags": false,
+      "trackActiveQueries": false,
+      "trackClientAddress": false,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
+    "queryInsightsConfig": {
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
+    },
+    "reconciling": false,
+    "state": "READY",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "writableNode": {
+      "zoneId": "us-west1-b"
+    }
+  }
 }
 
 ---
@@ -661,20 +922,25 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
   "availabilityType": "REGIONAL",
-  "clientConnectionConfig": null,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": "ENCRYPTED_ONLY"
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseFlags": {},
-  "deleteTime": null,
-  "displayName": "",
-  "etag": "abcdef0123A=",
-  "gceZone": "",
-  "geminiConfig": null,
+  "geminiConfig": {},
   "instanceType": "PRIMARY",
   "ipAddress": "10.1.2.3",
   "labels": {
@@ -685,21 +951,35 @@ Grpc-Metadata-Content-Type: application/grpc
     "cpuCount": 2
   },
   "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
-  "networkConfig": null,
-  "nodes": [],
-  "observabilityConfig": null,
-  "outboundPublicIpAddresses": [],
-  "pscInstanceConfig": null,
-  "publicIpAddress": "",
-  "queryInsightsConfig": null,
-  "readPoolConfig": null,
+  "nodes": [
+    {
+      "zoneId": "us-west1-c"
+    }
+  ],
+  "observabilityConfig": {
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
   "reconciling": false,
-  "satisfiesPzs": false,
-  "state": "STATE_UNSPECIFIED",
+  "state": "READY",
   "uid": "111111111111111111111",
-  "updatePolicy": null,
-  "updateTime": null,
-  "writableNode": null
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "us-west1-b"
+  }
 }
 
 ---
@@ -709,12 +989,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "cluster \"projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -738,13 +1028,128 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "verb": "createsecondary"
+  },
+  "name": "projects/${projectId}/locations/europe-west8/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "verb": "createsecondary"
+  },
+  "name": "projects/${projectId}/locations/europe-west8/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
+    "automatedBackupPolicy": {
+      "backupWindow": "3600s",
+      "enabled": false,
+      "location": "europe-west8",
+      "timeBasedRetention": {
+        "retentionPeriod": "1209600s"
+      },
+      "weeklySchedule": {
+        "daysOfWeek": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ],
+        "startTimes": [
+          {
+            "hours": 23
+          }
+        ]
+      }
+    },
+    "clusterType": "SECONDARY",
+    "continuousBackupConfig": {
+      "enabled": true,
+      "recoveryWindowDays": 14
+    },
+    "continuousBackupInfo": {
+      "enabledTime": "2024-04-01T12:34:56.123456Z",
+      "encryptionInfo": {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      },
+      "schedule": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ]
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseVersion": "POSTGRES_15",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "geminiConfig": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "networkConfig": {
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    },
+    "reconciling": false,
+    "secondaryConfig": {
+      "primaryClusterName": "projects/${projectNumber}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
+    },
+    "state": "READY",
+    "subscriptionType": "STANDARD",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -754,50 +1159,84 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": null,
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": false,
+    "location": "europe-west8",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
+  },
   "clusterType": "SECONDARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "schedule": [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
+    ]
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": null,
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "geminiConfig": null,
-  "initialUser": null,
+  "databaseVersion": "POSTGRES_15",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maintenanceSchedule": null,
-  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
-  "network": "",
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
-  "primaryConfig": null,
-  "pscConfig": null,
   "reconciling": false,
-  "satisfiesPzs": false,
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
-  "tags": {},
-  "trialMetadata": null,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -808,17 +1247,43 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 
 {
   "automatedBackupPolicy": {
+    "backupWindow": "3600s",
     "labels": {
       "source": "kcc-test"
+    },
+    "location": "europe-west8",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
     }
   },
   "clusterType": "SECONDARY",
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
@@ -826,13 +1291,131 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west8/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west8/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
+    "automatedBackupPolicy": {
+      "backupWindow": "3600s",
+      "enabled": false,
+      "labels": {
+        "source": "kcc-test"
+      },
+      "location": "europe-west8",
+      "timeBasedRetention": {
+        "retentionPeriod": "1209600s"
+      },
+      "weeklySchedule": {
+        "daysOfWeek": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ],
+        "startTimes": [
+          {
+            "hours": 23
+          }
+        ]
+      }
+    },
+    "clusterType": "SECONDARY",
+    "continuousBackupConfig": {
+      "enabled": true,
+      "recoveryWindowDays": 14
+    },
+    "continuousBackupInfo": {
+      "enabledTime": "2024-04-01T12:34:56.123456Z",
+      "encryptionInfo": {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      },
+      "schedule": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ]
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseVersion": "POSTGRES_15",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "geminiConfig": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "networkConfig": {
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    },
+    "reconciling": false,
+    "secondaryConfig": {
+      "primaryClusterName": "projects/${projectNumber}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
+    },
+    "state": "READY",
+    "subscriptionType": "STANDARD",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -842,57 +1425,87 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
   "automatedBackupPolicy": {
-    "backupWindow": null,
-    "encryptionConfig": null,
+    "backupWindow": "3600s",
+    "enabled": false,
     "labels": {
       "source": "kcc-test"
     },
-    "location": ""
+    "location": "europe-west8",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
   },
   "clusterType": "SECONDARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "schedule": [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
+    ]
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": null,
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "geminiConfig": null,
-  "initialUser": null,
+  "databaseVersion": "POSTGRES_15",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maintenanceSchedule": null,
-  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
-  "network": "",
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
-  "primaryConfig": null,
-  "pscConfig": null,
   "reconciling": false,
-  "satisfiesPzs": false,
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
-  "tags": {},
-  "trialMetadata": null,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -902,13 +1515,61 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west8/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west8/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
@@ -918,20 +1579,25 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
   "availabilityType": "REGIONAL",
-  "clientConnectionConfig": null,
+  "clientConnectionConfig": {
+    "sslConfig": {
+      "sslMode": "ENCRYPTED_ONLY"
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseFlags": {},
-  "deleteTime": null,
-  "displayName": "",
-  "etag": "abcdef0123A=",
-  "gceZone": "",
-  "geminiConfig": null,
+  "geminiConfig": {},
   "instanceType": "PRIMARY",
   "ipAddress": "10.1.2.3",
   "labels": {
@@ -942,21 +1608,35 @@ Grpc-Metadata-Content-Type: application/grpc
     "cpuCount": 2
   },
   "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
-  "networkConfig": null,
-  "nodes": [],
-  "observabilityConfig": null,
-  "outboundPublicIpAddresses": [],
-  "pscInstanceConfig": null,
-  "publicIpAddress": "",
-  "queryInsightsConfig": null,
-  "readPoolConfig": null,
+  "nodes": [
+    {
+      "zoneId": "us-west1-c"
+    }
+  ],
+  "observabilityConfig": {
+    "enabled": false,
+    "maxQueryStringLength": 10240,
+    "preserveComments": false,
+    "queryPlansPerMinute": 20,
+    "recordApplicationTags": false,
+    "trackActiveQueries": false,
+    "trackClientAddress": false,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
+  "queryInsightsConfig": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024,
+    "recordApplicationTags": false,
+    "recordClientAddress": false
+  },
   "reconciling": false,
-  "satisfiesPzs": false,
-  "state": "STATE_UNSPECIFIED",
+  "state": "READY",
   "uid": "111111111111111111111",
-  "updatePolicy": null,
-  "updateTime": null,
-  "writableNode": null
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writableNode": {
+    "zoneId": "us-west1-b"
+  }
 }
 
 ---
@@ -966,13 +1646,61 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
@@ -1216,51 +1944,81 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": null,
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": null,
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "geminiConfig": null,
-  "initialUser": {
-    "password": "alloydb-pg",
-    "user": ""
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": false,
+    "location": "us-west1",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
   },
+  "clusterType": "PRIMARY",
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "schedule": [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseVersion": "POSTGRES_15",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maintenanceSchedule": null,
-  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
-  "network": "",
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
-  "primaryConfig": null,
-  "pscConfig": null,
   "reconciling": false,
-  "satisfiesPzs": false,
-  "secondaryConfig": null,
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
-  "tags": {},
-  "trialMetadata": null,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1270,13 +2028,61 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
@@ -1303,6 +2109,10 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "computenetwork-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }

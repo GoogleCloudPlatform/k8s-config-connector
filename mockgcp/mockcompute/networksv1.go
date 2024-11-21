@@ -68,6 +68,9 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
 	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
 	obj.Kind = PtrTo("compute#network")
+	obj.RoutingConfig = &pb.NetworkRoutingConfig{
+		RoutingMode: PtrTo("REGIONAL"),
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

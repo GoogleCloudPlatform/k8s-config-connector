@@ -37,8 +37,23 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  databaseVersion: DATABASE_VERSION_UNSPECIFIED
+  continuousBackupInfo:
+  - enabledTime: "1970-01-01T00:00:00Z"
+    encryptionInfo:
+    - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
+    schedule:
+    - MONDAY
+    - TUESDAY
+    - WEDNESDAY
+    - THURSDAY
+    - FRIDAY
+    - SATURDAY
+    - SUNDAY
+  databaseVersion: POSTGRES_15
+  encryptionInfo:
+  - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
   name: projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}
   observedGeneration: 3
   observedState:
     clusterType: SECONDARY
+  uid: "12345678"

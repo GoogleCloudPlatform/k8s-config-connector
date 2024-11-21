@@ -16,16 +16,17 @@ package mockalloydb
 
 import (
 	"context"
-	"strings"
+	"fmt"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
@@ -38,10 +39,85 @@ func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func setInstanceFields(name *instanceName, obj *pb.Instance) {
+	// Set default values to optional fields when unset.
+	if obj.ClientConnectionConfig == nil {
+		obj.ClientConnectionConfig = &pb.Instance_ClientConnectionConfig{
+			SslConfig: &pb.SslConfig{
+				SslMode: pb.SslConfig_ENCRYPTED_ONLY,
+			},
+		}
+	}
+	if obj.GeminiConfig == nil {
+		obj.GeminiConfig = &pb.GeminiInstanceConfig{}
+	}
+	if obj.ObservabilityConfig == nil {
+		obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{
+			Enabled:               direct.PtrTo(false),
+			MaxQueryStringLength:  direct.PtrTo(int32(10240)),
+			PreserveComments:      direct.PtrTo(false),
+			QueryPlansPerMinute:   direct.PtrTo(int32(20)),
+			RecordApplicationTags: direct.PtrTo(false),
+			TrackActiveQueries:    direct.PtrTo(false),
+			TrackClientAddress:    direct.PtrTo(false),
+			TrackWaitEventTypes:   direct.PtrTo(true),
+			TrackWaitEvents:       direct.PtrTo(true),
+		}
+	}
+	if obj.QueryInsightsConfig == nil {
+		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
+			QueryPlansPerMinute:   direct.PtrTo(uint32(5)),
+			QueryStringLength:     uint32(1024),
+			RecordApplicationTags: direct.PtrTo(false),
+			RecordClientAddress:   direct.PtrTo(false),
+		}
+		if obj.InstanceType == pb.Instance_SECONDARY {
+			obj.QueryInsightsConfig.RecordApplicationTags = direct.PtrTo(true)
+			obj.QueryInsightsConfig.RecordClientAddress = direct.PtrTo(true)
+		}
+	}
+	if obj.InstanceType != pb.Instance_READ_POOL &&
+		obj.AvailabilityType == pb.Instance_AVAILABILITY_TYPE_UNSPECIFIED {
+		obj.AvailabilityType = pb.Instance_REGIONAL
+	}
+
+	// Set output-only fields.
+	now := timestamppb.Now()
+	obj.CreateTime = now
+	obj.UpdateTime = now
+	obj.IpAddress = "10.1.2.3"
+	obj.State = pb.Instance_READY
+	obj.Uid = "12345678"
+	if obj.InstanceType != pb.Instance_READ_POOL {
+		obj.WritableNode = &pb.Instance_Node{
+			ZoneId: fmt.Sprintf("%v-b", name.Location),
+		}
+		if obj.AvailabilityType != pb.Instance_ZONAL {
+			obj.Nodes = []*pb.Instance_Node{
+				{
+					ZoneId: fmt.Sprintf("%v-c", name.Location),
+				},
+			}
+		}
+	}
+	if obj.NetworkConfig != nil && obj.NetworkConfig.EnableOutboundPublicIp {
+		obj.OutboundPublicIpAddresses = []string{
+			"35.228.195.235",
+			"34.88.204.106",
+		}
+	}
+	if obj.NetworkConfig != nil && obj.NetworkConfig.EnablePublicIp {
+		obj.PublicIpAddress = "34.88.151.45"
+	}
 }
 
 func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
@@ -55,15 +131,18 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = fqn
-
-	now := timestamppb.Now()
-	obj.CreateTime = now
+	setInstanceFields(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := constructOperationMetadata(fqn, "create")
+	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Instance)
+		metadata.EndTime = timestamppb.Now()
+		return result, nil
+	})
 }
 
 func (s *AlloyDBAdminV1) CreateSecondaryInstance(ctx context.Context, req *pb.CreateSecondaryInstanceRequest) (*longrunning.Operation, error) {
@@ -77,15 +156,18 @@ func (s *AlloyDBAdminV1) CreateSecondaryInstance(ctx context.Context, req *pb.Cr
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = fqn
-
-	now := timestamppb.Now()
-	obj.CreateTime = now
+	setInstanceFields(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := constructOperationMetadata(fqn, "createsecondary")
+	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Instance)
+		metadata.EndTime = timestamppb.Now()
+		return result, nil
+	})
 }
 
 func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstanceRequest) (*longrunning.Operation, error) {
@@ -137,7 +219,12 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := constructOperationMetadata(fqn, "update")
+	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		result := proto.Clone(obj).(*pb.Instance)
+		return result, nil
+	})
 }
 
 func (s *AlloyDBAdminV1) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
@@ -153,40 +240,11 @@ func (s *AlloyDBAdminV1) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
-}
+	metadata := constructOperationMetadata(fqn, "delete")
+	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
 
-type instanceName struct {
-	Project      *projects.ProjectData
-	Location     string
-	ClusterName  string
-	InstanceName string
-}
-
-func (n *instanceName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.ClusterName + "/instances/" + n.InstanceName
-}
-
-// parseInstanceName parses a string into an alloyDBInstanceName.
-// The expected form is projects/<projectID>/locations/<region>/clusters/<cluster>/instances/<AlloyDBInstanceName>
-func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
-	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" && tokens[6] == "instances" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &instanceName{
-			Project:      project,
-			Location:     tokens[3],
-			ClusterName:  tokens[5],
-			InstanceName: tokens[7],
-		}
-
-		return name, nil
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
-	}
+		result := &emptypb.Empty{}
+		return result, nil
+	})
 }
