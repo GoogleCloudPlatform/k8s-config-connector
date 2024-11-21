@@ -114,6 +114,7 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
+  "bondingType": "BONDING_TYPE_UNSPECIFIED",
   "createTime": null,
   "description": "Basic Subnet",
   "ipv4Cidr": [
