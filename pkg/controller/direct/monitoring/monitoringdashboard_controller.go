@@ -30,6 +30,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -96,7 +97,7 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reade
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	if err := VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, projectRef); err != nil {
 		return nil, err
 	}
 
