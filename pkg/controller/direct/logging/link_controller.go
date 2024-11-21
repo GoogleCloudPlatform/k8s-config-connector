@@ -17,7 +17,7 @@ package logging
 import (
 	"context"
 	"fmt"
-	"reflect"
+	//"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -27,8 +27,8 @@ import (
 
 	gcp "cloud.google.com/go/logging/apiv2"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
-	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	//"google.golang.org/api/option"
+	//"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -50,15 +50,17 @@ type modelLoggingLink struct {
 	config config.ControllerConfig
 }
 
-func (m *modelLoggingLink) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
+	/*
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	*/
+	gcpClient, err := gcp.NewConfigClient(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("building Link client: %w", err)
+		return nil, fmt.Errorf("building Logging Config client: %w", err)
 	}
 	return gcpClient, err
 }
@@ -95,7 +97,7 @@ func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (direc
 
 type LoggingLinkAdapter struct {
 	id        *krm.LoggingLinkRef
-	gcpClient *gcp.Client
+	gcpClient *gcp.ConfigClient
 	desired   *krm.LoggingLink
 	actual    *loggingpb.Link
 }
@@ -158,7 +160,13 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
+
 func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	// TODO Delete this
+	// No Update method for logging links
+	return nil
+
+	/*
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Link", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
@@ -200,6 +208,7 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
+	*/
 }
 
 func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -215,11 +224,11 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		return nil, mapCtx.Err()
 	}
 	// TODO(user): Update other resource references
+	/* TODO Bucket Ref?
 	parent, err := a.id.Parent()
 	if err != nil {
 		return nil, err
 	}
-	/* TODO Bucket Ref?
 	 obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.String()}
 	 obj.Spec.Location = parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -228,10 +237,11 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	}
 	*/
 
-	u.SetName(a.actual.name)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.LoggingLinkGVK)
 
-	u.Object = uObj
+	// TODO uObj is set in the commented out code
+	//u.Object = uObj
 	return u, nil
 }
 

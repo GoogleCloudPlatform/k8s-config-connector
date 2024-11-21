@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"strings"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx *direct.MapContext, in string) *refs.LoggingLogBucketRef {
@@ -61,7 +62,8 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 		return nil
 	}
 	out := &krm.LoggingLinkSpec{}
-	resourceID := in.GetName()[strings.LastIndex(name, "/")+1:]
+	name := in.GetName()
+	resourceID := name[strings.LastIndex(name, "/")+1:]
 	out.ResourceID = direct.LazyPtr(resourceID)
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// Build from proto and to proto for Log Bucket Ref
@@ -79,14 +81,25 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 	return out
 }
 func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLinkObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
-	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifeCycleState())
-	out.BigqueryDataset = BigQueryDataset_FromProto(mapCtx, in.BigQueryDataset)
+	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())
+	out.BigQueryDataset = BigQueryDataset_FromProto(mapCtx, in.BigqueryDataset)
+	return out
 }
 func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkObservedState) *pb.Link {
+	if in == nil {
+		return nil
+	}
+	// TODO do I want to return a link or an observed state?
+	out := &pb.Link{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
-	out.LifecycleState = direct.Enum_ToProto(mapCtx, in.GetLifeCycleState())
+	out.LifecycleState = direct.Enum_ToProto[pb.LifecycleState](mapCtx, in.LifecycleState)
 	out.BigqueryDataset = BigQueryDataset_ToProto(mapCtx, in.BigQueryDataset)
+	return out
 }

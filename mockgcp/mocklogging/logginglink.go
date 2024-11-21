@@ -22,7 +22,7 @@ package mocklogging
 
 import (
 	"context"
-	"fmt"
+	// "fmt"
 	"strings"
 	"time"
 
