@@ -26,10 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(user): Update the import with the google cloud client
 	gcp "cloud.google.com/go/securesourcemanager/apiv1"
 
-	// TODO(user): Update the import with the google cloud client api protobuf
 	securesourcemanagerpb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	"google.golang.org/api/option"
 
