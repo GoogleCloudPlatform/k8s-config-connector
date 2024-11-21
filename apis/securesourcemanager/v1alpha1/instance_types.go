@@ -44,6 +44,9 @@ type SecureSourceManagerInstanceSpec struct {
 
 	// Optional. Immutable. Customer-managed encryption key name.
 	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+
+	// Optional. PrivateConfig includes settings for private instance.
+	PrivateConfig *Instance_PrivateConfig `json:"privateConfig,omitempty"`
 }
 
 // SecureSourceManagerInstanceStatus defines the config connector machine state of SecureSourceManagerInstance
