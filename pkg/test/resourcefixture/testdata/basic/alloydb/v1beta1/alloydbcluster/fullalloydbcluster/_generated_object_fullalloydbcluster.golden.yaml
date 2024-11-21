@@ -61,22 +61,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  continuousBackupInfo:
-  - encryptionInfo:
-    - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-    schedule:
-    - MONDAY
-    - TUESDAY
-    - WEDNESDAY
-    - THURSDAY
-    - FRIDAY
-    - SATURDAY
-    - SUNDAY
-  databaseVersion: POSTGRES_15
-  encryptionInfo:
-  - encryptionType: CUSTOMER_MANAGED_ENCRYPTION
+  databaseVersion: DATABASE_VERSION_UNSPECIFIED
   name: projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}
   observedGeneration: 3
   observedState:
     clusterType: PRIMARY
-  uid: "12345678"
