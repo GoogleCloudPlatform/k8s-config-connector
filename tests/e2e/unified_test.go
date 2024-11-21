@@ -681,17 +681,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
-					// Add Compute Beta only fields
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						if _, found, _ := unstructured.NestedMap(obj, "routingConfig"); found {
-							if _, found, _ := unstructured.NestedString(obj, "routingConfig", "bgpBestPathSelectionMode"); !found {
-								if err := unstructured.SetNestedField(obj, "LEGACY", "routingConfig", "bgpBestPathSelectionMode"); err != nil {
-									t.Fatal(err)
-								}
-							}
-						}
-					})
-
 					// Specific to Firestore
 					jsonMutators = append(jsonMutators, func(obj map[string]any) {
 						if _, found, _ := unstructured.NestedMap(obj, "response"); found {
