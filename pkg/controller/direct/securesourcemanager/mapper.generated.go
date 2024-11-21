@@ -54,7 +54,6 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	}
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
-	// MISSING: PscAllowedProjects
 	return out
 }
 func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
@@ -178,7 +177,7 @@ func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	// MISSING: Description
 	if in.GetInstance() != "" {
-		out.InstanceRef = &krm.SecureSourceManagerInstanceRef{External: in.GetInstance()}
+		out.InstanceRef = &refs.*SecureSourceManagerInstanceRef{External: in.GetInstance()}
 	}
 	// MISSING: Uid
 	// MISSING: CreateTime
