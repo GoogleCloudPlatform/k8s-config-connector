@@ -105,7 +105,7 @@ spec:
                 type: string
               sensitiveLabels:
                 description: |-
-                  Different notification type behaviors are configured primarily using the the 'labels' field on this
+                  Different notification type behaviors are configured primarily using the 'labels' field on this
                   resource. This block contains the labels which contain secrets or passwords so that they can be marked
                   sensitive and hidden from plan output. The name of the field, eg: password, will be the key
                   in the 'labels' map in the api request.

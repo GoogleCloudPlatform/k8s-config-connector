@@ -15,7 +15,7 @@ metadata:
   name: monitoringservicelevelobjective-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  displayName: updae request - a window based metric sum filter
+  displayName: update request - a window based metric sum filter
   goal: 0.8
   projectRef:
     external: projects/${projectId}

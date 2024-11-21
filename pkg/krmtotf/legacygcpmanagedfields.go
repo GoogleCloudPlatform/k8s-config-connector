@@ -304,7 +304,7 @@ func getLastAppliedValue(r *Resource, path ...string) (val interface{}, found bo
 	}
 	lastAppliedConfig := make(map[string]interface{})
 	if err := json.Unmarshal([]byte(lastAppliedConfigRaw), &lastAppliedConfig); err != nil {
-		return nil, false, fmt.Errorf("error unmarshaling last applied configuration: %w", err)
+		return nil, false, fmt.Errorf("error unmarshalling last applied configuration: %w", err)
 	}
 	specPath := append([]string{"spec"}, path...)
 	return unstructured.NestedFieldCopy(lastAppliedConfig, specPath...)
