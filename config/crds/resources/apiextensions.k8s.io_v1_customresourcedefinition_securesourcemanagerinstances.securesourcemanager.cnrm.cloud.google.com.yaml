@@ -94,6 +94,33 @@ spec:
               location:
                 description: Immutable. Location of the instance.
                 type: string
+              privateConfig:
+                description: Optional. PrivateConfig includes settings for private
+                  instance.
+                properties:
+                  caPool:
+                    description: Required. Immutable. CA pool resource, resource must
+                      in the format of `projects/{project}/locations/{location}/caPools/{ca_pool}`.
+                    type: string
+                  httpServiceAttachment:
+                    description: Output only. Service Attachment for HTTP, resource
+                      is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+                    type: string
+                  isPrivate:
+                    description: Required. Immutable. Indicate if it's private instance.
+                    type: boolean
+                  pscAllowedProjects:
+                    description: Optional. Additional allowed projects for setting
+                      up PSC connections. Instance host project is automatically allowed
+                      and does not need to be included in this list.
+                    items:
+                      type: string
+                    type: array
+                  sshServiceAttachment:
+                    description: Output only. Service Attachment for SSH, resource
+                      is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+                    type: string
+                type: object
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
                 oneOf:
