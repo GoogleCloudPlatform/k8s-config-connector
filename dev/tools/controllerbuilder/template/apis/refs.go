@@ -19,7 +19,6 @@ package {{ .Version }}
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -54,7 +53,7 @@ func (r *{{.ProtoResource}}Ref) NormalizedExternal(ctx context.Context, reader c
 	}
 	// From given External
 	if r.External != "" {
-		if _, err := Parse{{.ProtoResource}}External(r.External); err != nil {
+		if _, _, err := Parse{{.ProtoResource}}External(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
