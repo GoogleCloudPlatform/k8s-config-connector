@@ -54,9 +54,9 @@ gcloud config set project "${GCP_PROJECT_ID}"
 
 gcloud services enable \
   apigee.googleapis.com \
-  compute.googleapis.com \
   cloudbuild.googleapis.com \
   cloudkms.googleapis.com \
+  compute.googleapis.com \
   dataflow.googleapis.com \
   discoveryengine.googleapis.com \
   firestore.googleapis.com \
@@ -64,6 +64,7 @@ gcloud services enable \
   memcache.googleapis.com \
   monitoring.googleapis.com \
   redis.googleapis.com \
+  secretmanager.googleapis.com \
   servicenetworking.googleapis.com \
   serviceusage.googleapis.com \
   sqladmin.googleapis.com \
