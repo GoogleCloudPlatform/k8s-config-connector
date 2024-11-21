@@ -25,6 +25,10 @@ on:
     paths-ignore:
       - "**.md"
       - "experiments/**"
+  merge_group:
+    types: [checks_requested]
+    branches: [ "master" ]
+
 
 jobs:
   validations:
