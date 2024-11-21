@@ -36,7 +36,6 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
 )
 
-
 type linkService struct {
 	*MockService
 	pb.UnimplementedConfigServiceV2Server
@@ -67,7 +66,7 @@ func (s *linkService) createLinkDefaultObjects(ctx context.Context, name *loggin
 	return nil
 }
 
-*/ 
+*/
 
 func (s *linkService) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.Link, error) {
 	name, err := s.parseLoggingLinkName(req.Name)
@@ -75,9 +74,9 @@ func (s *linkService) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.
 		return nil, err
 	}
 	/*
-	if err := s.createLinkDefaultObjects(ctx, name); err != nil {
-		return nil, err
-	}
+		if err := s.createLinkDefaultObjects(ctx, name); err != nil {
+			return nil, err
+		}
 	*/
 	fqn := name.String()
 	obj := &pb.Link{}
@@ -97,10 +96,10 @@ func (s *linkService) CreateLink(ctx context.Context, req *pb.CreateLinkRequest)
 		return nil, err
 	}
 	/*
-	if err := s.createLinkDefaultObjects(ctx, name); err != nil {
-		return nil, err
-	}
-	*/ 
+		if err := s.createLinkDefaultObjects(ctx, name); err != nil {
+			return nil, err
+		}
+	*/
 	fqn := name.String()
 	now := time.Now()
 	obj := proto.Clone(req.GetLink()).(*pb.Link)
@@ -125,9 +124,9 @@ func (s *linkService) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequest)
 		return nil, err
 	}
 	/*
-	if err := s.createLinkDefaultObjects(ctx, name); err != nil {
-		return nil, err
-	}
+		if err := s.createLinkDefaultObjects(ctx, name); err != nil {
+			return nil, err
+		}
 	*/
 	fqn := name.String()
 	deletedObj := &pb.Link{}

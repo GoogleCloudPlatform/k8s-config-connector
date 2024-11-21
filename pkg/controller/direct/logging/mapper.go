@@ -15,12 +15,14 @@
 package logging
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"strings"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx *direct.MapContext, in string) *refs.LoggingLogBucketRef {
 	if in == "" {
 		return nil
@@ -39,7 +41,6 @@ func LoggingLinkSpec_LoggingLogBucketRef_ToProto(mapCtx *direct.MapContext, in *
 	}
 	return direct.LazyPtr(in.External)
 }
-
 
 func BigQueryDataset_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDataset {
 	if in == nil {
@@ -67,7 +68,7 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 	out.ResourceID = direct.LazyPtr(resourceID)
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// Build from proto and to proto for Log Bucket Ref
-	out.LoggingLogBucketRef =  LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx, resourceID)
+	out.LoggingLogBucketRef = LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx, resourceID)
 	return out
 }
 func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {

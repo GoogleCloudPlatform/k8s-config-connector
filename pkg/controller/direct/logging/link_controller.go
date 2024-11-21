@@ -17,6 +17,7 @@ package logging
 import (
 	"context"
 	"fmt"
+
 	//"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
@@ -27,6 +28,7 @@ import (
 
 	gcp "cloud.google.com/go/logging/apiv2"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
+
 	//"google.golang.org/api/option"
 	//"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -52,11 +54,11 @@ type modelLoggingLink struct {
 
 func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
 	/*
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
+		var opts []option.ClientOption
+		opts, err := m.config.RESTClientOptions()
+		if err != nil {
+			return nil, err
+		}
 	*/
 	gcpClient, err := gcp.NewConfigClient(ctx)
 	if err != nil {
@@ -160,54 +162,53 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-
 func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	// TODO Delete this
 	// No Update method for logging links
 	return nil
 
 	/*
-	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Link", "name", a.id.External)
-	mapCtx := &direct.MapContext{}
+		log := klog.FromContext(ctx)
+		log.V(2).Info("updating Link", "name", a.id.External)
+		mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := LoggingLinkSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+		desired := a.desired.DeepCopy()
+		resource := LoggingLinkSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
 
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.description, a.actual.description) {
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
+		updateMask := &fieldmaskpb.FieldMask{}
+		if !reflect.DeepEqual(a.desired.Spec.description, a.actual.description) {
+			updateMask.Paths = append(updateMask.Paths, "description")
+		}
 
-	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.External)
-		return nil
-	}
-	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
-	req := &loggingpb.UpdateLinkRequest{
-		Name:       a.id.External,
-		UpdateMask: updateMask,
-		Link:       resource,
-	}
-	op, err := a.gcpClient.UpdateLink(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating Link %s: %w", a.id.External, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Link %s waiting update: %w", a.id.External, err)
-	}
-	log.V(2).Info("successfully updated Link", "name", a.id.External)
+		if len(updateMask.Paths) == 0 {
+			log.V(2).Info("no field needs update", "name", a.id.External)
+			return nil
+		}
+		// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
+		req := &loggingpb.UpdateLinkRequest{
+			Name:       a.id.External,
+			UpdateMask: updateMask,
+			Link:       resource,
+		}
+		op, err := a.gcpClient.UpdateLink(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Link %s: %w", a.id.External, err)
+		}
+		updated, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("Link %s waiting update: %w", a.id.External, err)
+		}
+		log.V(2).Info("successfully updated Link", "name", a.id.External)
 
-	status := &krm.LoggingLinkStatus{}
-	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+		status := &krm.LoggingLinkStatus{}
+		status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, updated)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	*/
 }
 
