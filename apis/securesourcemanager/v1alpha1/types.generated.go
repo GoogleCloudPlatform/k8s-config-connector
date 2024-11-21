@@ -46,6 +46,11 @@ type Instance_PrivateConfig struct {
 	// Output only. Service Attachment for SSH, resource is in the format of
 	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
 	SSHServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
+
+	// Optional. Additional allowed projects for setting up PSC connections.
+	//  Instance host project is automatically allowed and does not need to be
+	//  included in this list.
+	PscAllowedProjects []string `json:"pscAllowedProjects,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository
