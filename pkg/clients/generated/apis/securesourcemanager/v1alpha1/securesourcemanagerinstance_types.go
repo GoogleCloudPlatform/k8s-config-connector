@@ -35,6 +35,24 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstancePrivateConfig struct {
+	/* Required. Immutable. CA pool resource, resource must in the format of `projects/{project}/locations/{location}/caPools/{ca_pool}`. */
+	// +optional
+	CaPoolRef *v1alpha1.ResourceRef `json:"caPoolRef,omitempty"`
+
+	/* Output only. Service Attachment for HTTP, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`. */
+	// +optional
+	HttpServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
+
+	/* Required. Immutable. Indicate if it's private instance. */
+	// +optional
+	IsPrivate *bool `json:"isPrivate,omitempty"`
+
+	/* Output only. Service Attachment for SSH, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`. */
+	// +optional
+	SshServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
+}
+
 type SecureSourceManagerInstanceSpec struct {
 	/* Optional. Immutable. Customer-managed encryption key name. */
 	// +optional
@@ -42,6 +60,10 @@ type SecureSourceManagerInstanceSpec struct {
 
 	/* Immutable. Location of the instance. */
 	Location string `json:"location"`
+
+	/* Optional. PrivateConfig includes settings for private instance. */
+	// +optional
+	PrivateConfig *InstancePrivateConfig `json:"privateConfig,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
