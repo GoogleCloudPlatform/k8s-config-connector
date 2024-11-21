@@ -35,6 +35,10 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStores(namespace string
 	return &FakeDiscoveryEngineDataStores{c, namespace}
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineEngines(namespace string) v1alpha1.DiscoveryEngineEngineInterface {
+	return &FakeDiscoveryEngineEngines{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDiscoveryengineV1alpha1) RESTClient() rest.Interface {

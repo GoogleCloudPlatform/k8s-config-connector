@@ -32,6 +32,7 @@ import (
 type DiscoveryengineV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DiscoveryEngineDataStoresGetter
+	DiscoveryEngineEnginesGetter
 }
 
 // DiscoveryengineV1alpha1Client is used to interact with features provided by the discoveryengine.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type DiscoveryengineV1alpha1Client struct {
 
 func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineDataStores(namespace string) DiscoveryEngineDataStoreInterface {
 	return newDiscoveryEngineDataStores(c, namespace)
+}
+
+func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineEngines(namespace string) DiscoveryEngineEngineInterface {
+	return newDiscoveryEngineEngines(c, namespace)
 }
 
 // NewForConfig creates a new DiscoveryengineV1alpha1Client for the given config.

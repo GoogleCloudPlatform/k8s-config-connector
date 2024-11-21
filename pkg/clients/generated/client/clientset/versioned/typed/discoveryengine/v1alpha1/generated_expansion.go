@@ -22,3 +22,5 @@
 package v1alpha1
 
 type DiscoveryEngineDataStoreExpansion interface{}
+
+type DiscoveryEngineEngineExpansion interface{}
