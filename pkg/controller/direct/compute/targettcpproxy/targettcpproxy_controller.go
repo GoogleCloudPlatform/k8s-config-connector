@@ -266,6 +266,14 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeTargetTCPProxy backend service %s: %w", a.id.External, err)
 		}
+		if !op.Done() {
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting ComputeTargetTCPProxy backend service %s update failed: %w", a.id.External, err)
+			}
+		}
+		log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id.External)
+
 	}
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) && region == "global" {
 		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
@@ -277,15 +285,14 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeTargetTCPProxy proxy header %s: %w", a.id.External, err)
 		}
-	}
-
-	if !op.Done() {
-		err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("waiting ComputeTargetTCPProxy %s update failed: %w", a.id.External, err)
+		if !op.Done() {
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting ComputeTargetTCPProxy proxy header %s update failed: %w", a.id.External, err)
+			}
 		}
+		log.V(2).Info("successfully updated ComputeTargetTCPProxy proxy header", "name", a.id.External)
 	}
-	log.V(2).Info("successfully updated ComputeTargetTCPProxy", "name", a.id.External)
 
 	// Get the updated resource
 	updated, err = a.get(ctx)
