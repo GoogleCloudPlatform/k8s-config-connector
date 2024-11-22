@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
 
@@ -65,15 +66,35 @@ func MustReadFile(t *testing.T, p string) []byte {
 	return b
 }
 
+func extractEventsWithURLPrefix(allEvents, urlPrefix string) string {
+	eventStrings := make([]string, 0)
+	events := strings.Split(allEvents, "---")
+	for _, event := range events {
+		processed := strings.TrimSpace(event)
+		for _, m := range []string{"GET", "POST", "PUT", "PATCH", "DELETE"} {
+			processed = strings.TrimPrefix(processed, m)
+			processed = strings.TrimSpace(processed)
+		}
+		if strings.HasPrefix(processed, urlPrefix) {
+			if len(eventStrings) == 0 {
+				event = strings.TrimPrefix(event, "\n\n")
+			}
+			eventStrings = append(eventStrings, event)
+		}
+	}
+	return strings.Join(eventStrings, "---")
+}
+
 // CompareGoldenFile performs a file comparison for a golden test.
-func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s string) string) {
+func CompareGoldenFile(t *testing.T, path, got string, normalizers ...func(s string) string) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
 
 	for _, normalizer := range normalizers {
 		got = normalizer(got)
 	}
+	gotForComp := got
 
-	wantBytes, err := os.ReadFile(p)
+	wantBytes, err := os.ReadFile(path)
 	if err != nil {
 		if writeGoldenOutput && os.IsNotExist(err) {
 			// Expected when creating output for the first time;
@@ -83,40 +104,58 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 			// Golden file won't be generated if the result is empty.
 			return
 		} else {
-			t.Fatalf("FAIL: failed to read golden file %q: %v", p, err)
+			t.Fatalf("FAIL: failed to read golden file %q: %v", path, err)
 		}
 	}
-	want := string(wantBytes)
+	wantForComp := string(wantBytes)
 	for _, normalizer := range normalizers {
-		want = normalizer(want)
+		wantForComp = normalizer(wantForComp)
+	}
+	// If urlPrefix is not an empty string, then we should only compare the http
+	// log events that has given URL prefix.
+	urlPrefix := os.Getenv("ONLY_COMPARE_URL_PREFIX")
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" && urlPrefix != "" {
+		klog.Infof("only comparing events with URL prefix %q in the http log", urlPrefix)
+
+		wantForComp = extractEventsWithURLPrefix(wantForComp, urlPrefix)
+		gotForComp = extractEventsWithURLPrefix(gotForComp, urlPrefix)
 	}
 
-	if want == got {
+	if wantForComp == gotForComp {
+		if urlPrefix != "" && writeGoldenOutput {
+			// Write the entire http log to the golden file before the current
+			// comparison only covers events with given URL prefix.
+			if err := os.WriteFile(path, []byte(got), 0644); err != nil {
+				t.Fatalf("FAIL: failed to write golden output %s: %v", path, err)
+			}
+			t.Logf("wrote updated golden output to %s", path)
+		}
 		return
 	}
 
-	if diff := cmp.Diff(want, got); diff != "" {
+	if diff := cmp.Diff(wantForComp, gotForComp); diff != "" {
 		onlyWarn := false
 		for _, f := range strings.Split(os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"), ",") {
-			if f == filepath.Base(p) {
+			if f == filepath.Base(path) {
 				onlyWarn = true
 			}
 		}
 
 		if onlyWarn {
-			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
-			t.Logf("unexpected diff in %s: %s", p, diff)
+			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", path, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
+			t.Logf("unexpected diff in %s: %s", path, diff)
 		} else {
-			t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
+			t.Errorf("FAIL: unexpected diff in %s: %s", path, diff)
 		}
 	}
 
 	if writeGoldenOutput {
-		// Write the output to the golden file
-		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
-			t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
+		// No matter how we compare the golden files, we should write the entire
+		// http log to the golden file.
+		if err := os.WriteFile(path, []byte(got), 0644); err != nil {
+			t.Fatalf("FAIL: failed to write golden output %s: %v", path, err)
 		}
-		t.Logf("wrote updated golden output to %s", p)
+		t.Logf("wrote updated golden output to %s", path)
 	}
 }
 
