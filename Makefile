@@ -138,6 +138,7 @@ generate:
 	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
 	go generate ./pkg/apis/...
+	make -C operator generate
 	make fmt
 
 # Build the docker images
