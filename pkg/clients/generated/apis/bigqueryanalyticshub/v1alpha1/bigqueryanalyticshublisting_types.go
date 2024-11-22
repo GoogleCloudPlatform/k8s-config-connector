@@ -99,6 +99,7 @@ type BigQueryAnalyticsHubListingSpec struct {
 	// +optional
 	Categories []string `json:"categories,omitempty"`
 
+	/* BigQueryAnalyticsHubDataExchangeRef defines the resource reference to BigQueryAnalyticsHubDataExchange, which "External" field holds the GCP identifier for the KRM object. */
 	DataExchangeRef v1alpha1.ResourceRef `json:"dataExchangeRef"`
 
 	/* Optional. Details of the data provider who owns the source data. */

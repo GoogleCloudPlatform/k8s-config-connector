@@ -65,6 +65,9 @@ spec:
                   type: string
                 type: array
               dataExchangeRef:
+                description: BigQueryAnalyticsHubDataExchangeRef defines the resource
+                  reference to BigQueryAnalyticsHubDataExchange, which "External"
+                  field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -81,14 +84,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The DataExchange selfLink, when not managed by Config
-                      Connector.
+                    description: A reference to an externally managed BigQueryAnalyticsHubDataExchange
+                      resource. Should be in the format "projects/<projectID>/locations/<location>/dataexchanges/<dataexchangeID>".
                     type: string
                   name:
-                    description: The `name` field of a `DataExchange` resource.
+                    description: The name of a BigQueryAnalyticsHubDataExchange resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `DataExchange` resource.
+                    description: The namespace of a BigQueryAnalyticsHubDataExchange
+                      resource.
                     type: string
                 type: object
               dataProvider:

@@ -96,9 +96,9 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 
 func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *krm.BigQueryAnalyticsHubListing) error {
 	if ref := obj.Spec.DataExchangeRef; ref != nil {
-		_, err := refs.ResolveDataExchangeRef(ctx, reader, obj, ref)
+		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to resolve optional DataExchangeRef: %w", err)
 		}
 	}
 

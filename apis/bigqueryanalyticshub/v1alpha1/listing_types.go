@@ -15,6 +15,8 @@
 package v1alpha1
 
 import (
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
+
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -136,7 +138,7 @@ type BigQueryAnalyticsHubListingSpec struct {
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
 	// +required
-	DataExchangeRef *refv1beta1.DataExchangeRef `json:"dataExchangeRef"`
+	DataExchangeRef *v1beta1.BigQueryAnalyticsHubDataExchangeRef `json:"dataExchangeRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.

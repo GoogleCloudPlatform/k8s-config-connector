@@ -19,11 +19,11 @@ import (
 	"fmt"
 	"strings"
 
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -103,16 +103,21 @@ func NewBigQueryAnalyticsHubListingRef(ctx context.Context, reader client.Reader
 	if location == "" {
 		return nil, fmt.Errorf("location cannot be empty")
 	}
-	contents, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+
+	if obj.Spec.DataExchangeRef == nil {
+		return nil, fmt.Errorf("spec.dataExchangeRef cannot be empty")
+	}
+	dataExchangeExternal, err := obj.Spec.DataExchangeRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
-		return nil, fmt.Errorf("cannot convert typed to unstructured: %w", err)
+		return nil, fmt.Errorf("cannot normalize dataExchangeRef for listing ref: %w", err)
 	}
 
-	dataExchangeRef, err := refsv1beta1.ResolveDataExchangeForObject(ctx, reader, &unstructured.Unstructured{Object: contents})
+	dataExchangeID, err := v1beta1.ParseDataExchangeIdentity(dataExchangeExternal)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve dataset ref: %w", err)
+		return nil, fmt.Errorf("cannot parse dataExchangeRef for listing ref: %w", err)
 	}
-	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location, DataExchangeID: dataExchangeRef.DataExchangeID}
+
+	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location, DataExchangeID: dataExchangeID.ID()}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)

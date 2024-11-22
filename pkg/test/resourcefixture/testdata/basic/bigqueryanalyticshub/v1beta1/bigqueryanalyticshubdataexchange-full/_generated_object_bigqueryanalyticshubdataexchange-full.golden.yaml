@@ -28,6 +28,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: //bigqueryanalyticshub.googleapis.com/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+  externalRef: projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
   observedGeneration: 2
   observedState: {}

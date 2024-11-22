@@ -123,6 +123,8 @@ type BigQueryTable struct {
 	tableID   string
 }
 
+// TODO(acpana): Once we have a BigQueryTable direct resource with a reference that implements the
+// ExternalNormalizer we can remove this code.
 func ResolveBigQueryTable(ctx context.Context, reader client.Reader, src client.Object, ref *BigQueryTableRef) (*BigQueryTable, error) {
 	if ref == nil {
 		return nil, nil
@@ -193,6 +195,8 @@ func (d *BigQueryTable) String() string {
 	return fmt.Sprintf("projects/%s/datasets/%s/tables/%s", d.projectID, d.datasetID, d.tableID)
 }
 
+// TODO(acpana): Once we have a BigQueryTable direct resource with a reference that implements the
+// ExternalNormalizer we can remove this code.
 func ResolveDatasetForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (*BigQueryDataset, error) {
 	datasetRefExternal, _, err := unstructured.NestedString(obj.Object, "spec", "datasetRef", "external")
 	if err != nil {

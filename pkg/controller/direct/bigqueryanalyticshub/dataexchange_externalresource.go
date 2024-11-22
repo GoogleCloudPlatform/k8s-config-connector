@@ -47,9 +47,6 @@ func (c *DataExchangeIdentity) AsExternalRef() *string {
 
 // asID builds a DataExchangeIdentity from a `status.externalRef`
 func asID(externalRef string) (*DataExchangeIdentity, error) {
-	if !strings.HasPrefix(externalRef, serviceDomain) {
-		return nil, fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
-	}
 	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
 	tokens := strings.Split(path, "/")
 
