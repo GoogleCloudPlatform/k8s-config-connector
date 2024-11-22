@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-version: 2
-interactions: []
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: project-${uniqueId}
+spec:
+  name: "Test Project"
+  folderRef:
+    external: ${TEST_FOLDER_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
