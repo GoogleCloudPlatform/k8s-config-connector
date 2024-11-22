@@ -20,7 +20,6 @@ import (
 	"strings"
 	"time"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -855,7 +854,7 @@ func (r *Reconciler) fetchAndApplyAllControllerReconcilers(ctx context.Context, 
 	return nil
 }
 
-func (r *Reconciler) applyControllerReconcilerCR(ctx context.Context, cr *customizev1alpha1.ControllerReconciler, m *manifest.Objects) error {
+func (r *Reconciler) applyControllerReconcilerCR(ctx context.Context, cr *customizev1beta1.ControllerReconciler, m *manifest.Objects) error {
 	if err := controllers.ApplyContainerRateLimit(m, cr.Name, cr.Spec.RateLimit); err != nil {
 		errMsg := fmt.Sprintf("failed to apply rate limit customization %s: %v", cr.Name, err)
 		r.log.Error(err, errMsg)
@@ -868,7 +867,7 @@ func (r *Reconciler) applyControllerReconcilerCR(ctx context.Context, cr *custom
 	return r.handleApplyControllerReconcilerSucceeded(ctx, cr)
 }
 
-func (r *Reconciler) handleApplyControllerReconcilerSucceeded(ctx context.Context, cr *customizev1alpha1.ControllerReconciler) error {
+func (r *Reconciler) handleApplyControllerReconcilerSucceeded(ctx context.Context, cr *customizev1beta1.ControllerReconciler) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: true,
 		Errors:  []string{},
@@ -876,7 +875,7 @@ func (r *Reconciler) handleApplyControllerReconcilerSucceeded(ctx context.Contex
 	return r.updateControllerReconcilerStatus(ctx, cr)
 }
 
-func (r *Reconciler) handleApplyControllerReconcilerFailed(ctx context.Context, cr *customizev1alpha1.ControllerReconciler, errMsg string) error {
+func (r *Reconciler) handleApplyControllerReconcilerFailed(ctx context.Context, cr *customizev1beta1.ControllerReconciler, errMsg string) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: false,
 		Errors:  []string{errMsg},
@@ -884,7 +883,7 @@ func (r *Reconciler) handleApplyControllerReconcilerFailed(ctx context.Context, 
 	return r.updateControllerReconcilerStatus(ctx, cr)
 }
 
-func (r *Reconciler) updateControllerReconcilerStatus(ctx context.Context, cr *customizev1alpha1.ControllerReconciler) error {
+func (r *Reconciler) updateControllerReconcilerStatus(ctx context.Context, cr *customizev1beta1.ControllerReconciler) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "error updating ControllerReconciler status", "Name", cr.Name)
 		return fmt.Errorf("error updating ControllerReconciler status for %v: %w", cr.Name, err)

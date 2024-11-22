@@ -18,7 +18,6 @@ import (
 	"reflect"
 	"testing"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 
 	v1 "k8s.io/api/core/v1"
@@ -220,7 +219,7 @@ func TestApplyRateLimitToContainerArg(t *testing.T) {
 	tests := []struct {
 		desc      string
 		container map[string]interface{}
-		ratelimit *customizev1alpha1.RateLimit
+		ratelimit *customizev1beta1.RateLimit
 		want      map[string]interface{}
 		wantErr   bool
 	}{
@@ -232,7 +231,7 @@ func TestApplyRateLimitToContainerArg(t *testing.T) {
 					"--scoped-namespace=test-ns",
 				},
 			},
-			ratelimit: &customizev1alpha1.RateLimit{
+			ratelimit: &customizev1beta1.RateLimit{
 				QPS:   80,
 				Burst: 30,
 			},
@@ -248,7 +247,7 @@ func TestApplyRateLimitToContainerArg(t *testing.T) {
 		{
 			desc:      "container without args",
 			container: map[string]interface{}{},
-			ratelimit: &customizev1alpha1.RateLimit{
+			ratelimit: &customizev1beta1.RateLimit{
 				QPS:   80,
 				Burst: 30,
 			},
@@ -269,7 +268,7 @@ func TestApplyRateLimitToContainerArg(t *testing.T) {
 					"--burst=10",
 				},
 			},
-			ratelimit: &customizev1alpha1.RateLimit{
+			ratelimit: &customizev1beta1.RateLimit{
 				QPS:   80,
 				Burst: 30,
 			},
@@ -290,7 +289,7 @@ func TestApplyRateLimitToContainerArg(t *testing.T) {
 					"--scoped-namespace=test-ns",
 				},
 			},
-			ratelimit: &customizev1alpha1.RateLimit{
+			ratelimit: &customizev1beta1.RateLimit{
 				QPS: 80,
 			},
 			want: map[string]interface{}{
@@ -309,7 +308,7 @@ func TestApplyRateLimitToContainerArg(t *testing.T) {
 					"--scoped-namespace=test-ns",
 				},
 			},
-			ratelimit: &customizev1alpha1.RateLimit{
+			ratelimit: &customizev1beta1.RateLimit{
 				Burst: 30,
 			},
 			want: map[string]interface{}{
