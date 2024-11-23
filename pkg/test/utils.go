@@ -86,30 +86,30 @@ func extractEventsWithURLPrefix(allEvents, urlPrefix string) string {
 }
 
 // CompareGoldenFile performs a file comparison for a golden test.
-func CompareGoldenFile(t *testing.T, path, got string, normalizers ...func(s string) string) {
+func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s string) string) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
 
 	for _, normalizer := range normalizers {
-		got = normalizer(got)
+		fullGot = normalizer(fullGot)
 	}
-	gotForComp := got
+	got := fullGot
 
-	wantBytes, err := os.ReadFile(path)
+	wantBytes, err := os.ReadFile(p)
 	if err != nil {
 		if writeGoldenOutput && os.IsNotExist(err) {
 			// Expected when creating output for the first time;
 			// treat as empty
 			wantBytes = []byte{} // Not strictly needed, but clearer
-		} else if got == "" && os.IsNotExist(err) {
+		} else if fullGot == "" && os.IsNotExist(err) {
 			// Golden file won't be generated if the result is empty.
 			return
 		} else {
-			t.Fatalf("FAIL: failed to read golden file %q: %v", path, err)
+			t.Fatalf("FAIL: failed to read golden file %q: %v", p, err)
 		}
 	}
-	wantForComp := string(wantBytes)
+	want := string(wantBytes)
 	for _, normalizer := range normalizers {
-		wantForComp = normalizer(wantForComp)
+		want = normalizer(want)
 	}
 	// If urlPrefix is not an empty string, then we should only compare the http
 	// log events that has given URL prefix.
@@ -117,45 +117,46 @@ func CompareGoldenFile(t *testing.T, path, got string, normalizers ...func(s str
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" && urlPrefix != "" {
 		klog.Infof("only comparing events with URL prefix %q in the http log", urlPrefix)
 
-		wantForComp = extractEventsWithURLPrefix(wantForComp, urlPrefix)
-		gotForComp = extractEventsWithURLPrefix(gotForComp, urlPrefix)
+		want = extractEventsWithURLPrefix(want, urlPrefix)
+		got = extractEventsWithURLPrefix(got, urlPrefix)
 	}
 
-	if wantForComp == gotForComp {
+	if want == got {
 		if urlPrefix != "" && writeGoldenOutput {
-			// Write the entire http log to the golden file before the current
-			// comparison only covers events with given URL prefix.
-			if err := os.WriteFile(path, []byte(got), 0644); err != nil {
-				t.Fatalf("FAIL: failed to write golden output %s: %v", path, err)
+			// Write the full http log to the golden file. The current
+			// comparison only covers events with given URL prefix, and the full
+			// http log may have diffs.
+			if err := os.WriteFile(p, []byte(fullGot), 0644); err != nil {
+				t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
 			}
-			t.Logf("wrote updated golden output to %s", path)
+			t.Logf("wrote updated golden output to %s", p)
 		}
 		return
 	}
 
-	if diff := cmp.Diff(wantForComp, gotForComp); diff != "" {
+	if diff := cmp.Diff(want, got); diff != "" {
 		onlyWarn := false
 		for _, f := range strings.Split(os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"), ",") {
-			if f == filepath.Base(path) {
+			if f == filepath.Base(p) {
 				onlyWarn = true
 			}
 		}
 
 		if onlyWarn {
-			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", path, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
-			t.Logf("unexpected diff in %s: %s", path, diff)
+			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
+			t.Logf("unexpected diff in %s: %s", p, diff)
 		} else {
-			t.Errorf("FAIL: unexpected diff in %s: %s", path, diff)
+			t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
 		}
 	}
 
 	if writeGoldenOutput {
 		// No matter how we compare the golden files, we should write the entire
 		// http log to the golden file.
-		if err := os.WriteFile(path, []byte(got), 0644); err != nil {
-			t.Fatalf("FAIL: failed to write golden output %s: %v", path, err)
+		if err := os.WriteFile(p, []byte(fullGot), 0644); err != nil {
+			t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
 		}
-		t.Logf("wrote updated golden output to %s", path)
+		t.Logf("wrote updated golden output to %s", p)
 	}
 }
 
