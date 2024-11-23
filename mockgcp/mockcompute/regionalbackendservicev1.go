@@ -68,7 +68,10 @@ func (s *RegionalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertRe
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateRegionBackendServiceRequest) (*pb.Operation, error) {
@@ -108,7 +111,10 @@ func (s *RegionalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteRe
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalBackendServiceName struct {
