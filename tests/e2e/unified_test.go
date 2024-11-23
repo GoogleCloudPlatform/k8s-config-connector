@@ -629,6 +629,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 										}
 									}
 								}
+
+								// Replace the IP addresses in `outboundPublicIpAddresses` slice to test IP addresses.
+								if _, found, _ := unstructured.NestedSlice(obj, "outboundPublicIpAddresses"); found {
+									if err := unstructured.SetNestedStringSlice(obj, []string{"6.6.6.6", "8.8.8.8"}, "outboundPublicIpAddresses"); err != nil {
+										t.Fatal(err)
+									}
+								}
 							}
 						}
 					})
@@ -668,6 +675,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 												if err := unstructured.SetNestedField(obj, false, "response", "automatedBackupPolicy", "enabled"); err != nil {
 													t.Fatal(err)
 												}
+											}
+										}
+
+										// Replace the IP addresses in `outboundPublicIpAddresses` slice to test IP addresses.
+										if _, found, _ := unstructured.NestedSlice(obj, "response", "outboundPublicIpAddresses"); found {
+											if err := unstructured.SetNestedStringSlice(obj, []string{"6.6.6.6", "8.8.8.8"}, "response", "outboundPublicIpAddresses"); err != nil {
+												t.Fatal(err)
 											}
 										}
 									}

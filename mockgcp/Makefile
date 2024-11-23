@@ -12,6 +12,17 @@ tools:
 	wget -N -O bin/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.12.4/protoc-3.12.4-linux-x86_64.zip
 	cd bin; rm -rf protoc; mkdir protoc; cd protoc; unzip ../protoc.zip
 
+GOOGLEAPI_VERSION?=HEAD
+.PHONY: checkout-local-head
+checkout-local-head:
+	mkdir -p third_party
+	@if [ ! -d "third_party/googleapis" ]; then \
+			echo "Cloning googleapis repository..."; \
+			git clone https://github.com/googleapis/googleapis.git third_party/googleapis; \
+	fi
+	@echo "Syncing to commit $(GOOGLEAPI_VERSION)...";
+	@cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION)
+
 .PHONY: sync-repo
 sync-repo:
 	mkdir -p third_party
@@ -23,7 +34,7 @@ sync-repo:
 	@cd third_party/googleapis && git fetch --all && git reset --hard origin/master
 
 .PHONY: gen-proto
-gen-proto: tools sync-repo
+gen-proto: tools checkout-local-head
 	mkdir -p ./generated
 
 	./apply-proto-patches.sh

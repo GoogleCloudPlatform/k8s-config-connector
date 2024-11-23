@@ -39,8 +39,8 @@ status:
   name: projects/${projectId}/locations/europe-north1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}
   observedGeneration: 2
   outboundPublicIpAddresses:
-  - 35.228.195.235
-  - 34.88.204.106
+  - 6.6.6.6
+  - 8.8.8.8
   publicIpAddress: 10.1.2.3
   state: READY
   uid: "12345678"

@@ -923,8 +923,8 @@ X-Xss-Protection: 0
       "trackWaitEvents": true
     },
     "outboundPublicIpAddresses": [
-      "35.228.195.235",
-      "34.88.204.106"
+      "6.6.6.6",
+      "8.8.8.8"
     ],
     "publicIpAddress": "34.88.151.45",
     "queryInsightsConfig": {
@@ -1011,8 +1011,8 @@ X-Xss-Protection: 0
     "trackWaitEvents": true
   },
   "outboundPublicIpAddresses": [
-    "35.228.195.235",
-    "34.88.204.106"
+    "6.6.6.6",
+    "8.8.8.8"
   ],
   "publicIpAddress": "34.88.151.45",
   "queryInsightsConfig": {
@@ -1147,8 +1147,8 @@ X-Xss-Protection: 0
       "trackWaitEvents": true
     },
     "outboundPublicIpAddresses": [
-      "35.228.195.235",
-      "34.88.204.106"
+      "6.6.6.6",
+      "8.8.8.8"
     ],
     "publicIpAddress": "34.88.151.45",
     "queryInsightsConfig": {
@@ -1225,8 +1225,8 @@ X-Xss-Protection: 0
     "trackWaitEvents": true
   },
   "outboundPublicIpAddresses": [
-    "35.228.195.235",
-    "34.88.204.106"
+    "6.6.6.6",
+    "8.8.8.8"
   ],
   "publicIpAddress": "34.88.151.45",
   "queryInsightsConfig": {
