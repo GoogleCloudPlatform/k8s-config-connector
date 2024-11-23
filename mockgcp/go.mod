@@ -5,6 +5,7 @@ go 1.22
 toolchain go1.23.2
 
 require (
+	cloud.google.com/go/bigtable v1.33.0
 	cloud.google.com/go/compute v1.28.1
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/iam v1.2.1
@@ -27,7 +28,6 @@ require (
 require (
 	cloud.google.com/go/auth v0.9.9 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
-	cloud.google.com/go/bigtable v1.33.0 // indirect
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.10.2 // indirect
