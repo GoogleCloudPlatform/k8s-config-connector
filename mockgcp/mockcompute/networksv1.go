@@ -65,8 +65,8 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	obj := proto.Clone(req.GetNetworkResource()).(*pb.Network)
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
-	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%d", name.Project.ID, id))
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
+	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
 	obj.Kind = PtrTo("compute#network")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

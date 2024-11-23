@@ -63,7 +63,7 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetForwardingRuleResource()).(*pb.ForwardingRule)
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
@@ -115,7 +115,7 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 		}
-		obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name))
+		obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
 	}
 
 	if obj.Subnetwork != nil {
@@ -123,7 +123,7 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "subnetwork %q is not valid", obj.GetSubnetwork())
 		}
-		obj.Subnetwork = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/subnetworks/%s", subnetworkName.Project.ID, subnetworkName.Region, subnetworkName.Name))
+		obj.Subnetwork = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", subnetworkName.Project.ID, subnetworkName.Region, subnetworkName.Name)))
 	}
 
 	// output only field. This field is only used for internal load balancing.
@@ -136,7 +136,7 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 	// network field is only used for global internal load balancing.
 	// If neither subnetwork nor network field is specified, the default network will be used.
 	if obj.Network == nil && obj.Subnetwork == nil && obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme != "EXTERNAL" {
-		obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"))
+		obj.Network = PtrTo(buildComputeSelfLink(ctx, "projects/${projectId}/global/networks/default"))
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

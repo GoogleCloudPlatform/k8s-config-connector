@@ -683,7 +683,7 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		switch path {
-		case ".selfLink", ".targetLink", ".selfLinkWithId", ".subnetworks[]":
+		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetworks[]", ".target", ".targetLink", ".zone":
 			return rewriteComputeURL(s)
 		}
 		return s

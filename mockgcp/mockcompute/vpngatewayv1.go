@@ -59,7 +59,7 @@ func (s *VPNGatewaysV1) Insert(ctx context.Context, req *pb.InsertVpnGatewayRequ
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetVpnGatewayResource()).(*pb.VpnGateway)
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#vpnGateway")

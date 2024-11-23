@@ -17,9 +17,11 @@ package httpmux
 import (
 	"context"
 	"net/http"
+	"net/url"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
@@ -96,6 +98,7 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),
 		runtime.WithOutgoingHeaderMatcher(outgoingHeaderMatcher),
 		runtime.WithForwardResponseOption(m.addGCPHeaders),
+		runtime.WithMetadata(m.addMetadata),
 	)
 	m.ServeMux = mux
 
@@ -106,6 +109,35 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 	}
 
 	return m, nil
+}
+
+// originalPathKey is the (unique) type for storing the original request path in the context
+type originalPathKey string
+
+// originalPathKey is the (unique) value for storing the original request path in the context
+var originalPath originalPathKey = "originalPath"
+
+// RewriteRequest returns a new http.Request for the specified URL,
+// also stashing the original request for addMetadata.
+func RewriteRequest(r *http.Request, newURL *url.URL) *http.Request {
+	ctx := r.Context()
+	ctx = context.WithValue(ctx, originalPath, r.URL.Path)
+	r = r.WithContext(ctx)
+	r.URL = newURL
+	return r
+}
+
+// addMetadata adds custom metadata to the GRPC context.
+// We add the HTTP request path (so services can know which version is being invoked)
+func (m *ServeMux) addMetadata(ctx context.Context, r *http.Request) metadata.MD {
+	md := make(map[string]string)
+	md["path"] = r.URL.Path
+
+	v := r.Context().Value(originalPath)
+	if v != nil {
+		md["path"] = v.(string)
+	}
+	return metadata.New(md)
 }
 
 func (m *ServeMux) addGCPHeaders(ctx context.Context, w http.ResponseWriter, resp proto.Message) error {
