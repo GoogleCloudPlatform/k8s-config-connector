@@ -122,6 +122,7 @@ func (s *GlobalTargetTcpProxyV1) SetBackendService(ctx context.Context, req *pb.
 		return nil, err
 	}
 
+	obj.Service = req.GetTargetTcpProxiesSetBackendServiceRequestResource().Service
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
