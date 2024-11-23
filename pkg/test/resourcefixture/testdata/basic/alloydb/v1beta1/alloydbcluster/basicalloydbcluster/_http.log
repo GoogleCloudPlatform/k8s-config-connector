@@ -282,6 +282,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "encryptionConfig": null,
   "encryptionInfo": null,
   "etag": "abcdef0123A=",
+  "geminiConfig": null,
   "initialUser": {
     "password": "postgres",
     "user": "postgres"
@@ -305,6 +306,9 @@ Grpc-Metadata-Content-Type: application/grpc
   "secondaryConfig": null,
   "sslConfig": null,
   "state": "STATE_UNSPECIFIED",
+  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
+  "tags": {},
+  "trialMetadata": null,
   "uid": "111111111111111111111",
   "updateTime": null
 }
@@ -375,6 +379,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "encryptionConfig": null,
   "encryptionInfo": null,
   "etag": "abcdef0123A=",
+  "geminiConfig": null,
   "initialUser": {
     "password": "postgres",
     "user": "postgres"
@@ -398,6 +403,9 @@ Grpc-Metadata-Content-Type: application/grpc
   "secondaryConfig": null,
   "sslConfig": null,
   "state": "STATE_UNSPECIFIED",
+  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
+  "tags": {},
+  "trialMetadata": null,
   "uid": "111111111111111111111",
   "updateTime": null
 }

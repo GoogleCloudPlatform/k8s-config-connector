@@ -191,6 +191,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "encryptionConfig": null,
   "encryptionInfo": null,
   "etag": "abcdef0123A=",
+  "geminiConfig": null,
   "initialUser": {
     "password": "alloydb-pg",
     "user": ""
@@ -211,6 +212,9 @@ Grpc-Metadata-Content-Type: application/grpc
   "secondaryConfig": null,
   "sslConfig": null,
   "state": "STATE_UNSPECIFIED",
+  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
+  "tags": {},
+  "trialMetadata": null,
   "uid": "111111111111111111111",
   "updateTime": null
 }
@@ -664,6 +668,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "displayName": "",
   "etag": "abcdef0123A=",
   "gceZone": "",
+  "geminiConfig": null,
   "instanceType": "PRIMARY",
   "ipAddress": "10.1.2.3",
   "labels": {
@@ -676,6 +681,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "name": "projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
   "networkConfig": null,
   "nodes": [],
+  "observabilityConfig": null,
   "outboundPublicIpAddresses": [],
   "pscInstanceConfig": null,
   "publicIpAddress": "",
@@ -755,6 +761,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "displayName": "",
   "etag": "abcdef0123A=",
   "gceZone": "",
+  "geminiConfig": null,
   "instanceType": "READ_POOL",
   "ipAddress": "10.1.2.3",
   "labels": {
@@ -767,6 +774,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "name": "projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}",
   "networkConfig": null,
   "nodes": [],
+  "observabilityConfig": null,
   "outboundPublicIpAddresses": [],
   "pscInstanceConfig": null,
   "publicIpAddress": "",
@@ -833,6 +841,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "displayName": "",
   "etag": "abcdef0123A=",
   "gceZone": "",
+  "geminiConfig": null,
   "instanceType": "READ_POOL",
   "ipAddress": "10.1.2.3",
   "labels": {
@@ -845,6 +854,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "name": "projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}",
   "networkConfig": null,
   "nodes": [],
+  "observabilityConfig": null,
   "outboundPublicIpAddresses": [],
   "pscInstanceConfig": null,
   "publicIpAddress": "",
@@ -897,6 +907,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "displayName": "",
   "etag": "abcdef0123A=",
   "gceZone": "",
+  "geminiConfig": null,
   "instanceType": "PRIMARY",
   "ipAddress": "10.1.2.3",
   "labels": {
@@ -909,6 +920,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "name": "projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}",
   "networkConfig": null,
   "nodes": [],
+  "observabilityConfig": null,
   "outboundPublicIpAddresses": [],
   "pscInstanceConfig": null,
   "publicIpAddress": "",
@@ -1196,6 +1208,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "encryptionConfig": null,
   "encryptionInfo": null,
   "etag": "abcdef0123A=",
+  "geminiConfig": null,
   "initialUser": {
     "password": "alloydb-pg",
     "user": ""
@@ -1216,6 +1229,9 @@ Grpc-Metadata-Content-Type: application/grpc
   "secondaryConfig": null,
   "sslConfig": null,
   "state": "STATE_UNSPECIFIED",
+  "subscriptionType": "SUBSCRIPTION_TYPE_UNSPECIFIED",
+  "tags": {},
+  "trialMetadata": null,
   "uid": "111111111111111111111",
   "updateTime": null
 }

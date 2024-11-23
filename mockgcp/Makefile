@@ -12,7 +12,7 @@ tools:
 	wget -N -O bin/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.12.4/protoc-3.12.4-linux-x86_64.zip
 	cd bin; rm -rf protoc; mkdir protoc; cd protoc; unzip ../protoc.zip
 
-GOOGLEAPI_VERSION?=HEAD
+GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis git.versions | awk '{print $$2}' )
 .PHONY: sync-repo
 sync-repo:
 	mkdir -p third_party
@@ -58,6 +58,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/dataset*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/encryption_spec.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/api_auth.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/io.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/operation.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/saved_query.proto \

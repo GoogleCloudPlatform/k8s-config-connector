@@ -577,7 +577,7 @@ func (x *Entitlement) GetEtag() string {
 	return ""
 }
 
-// AccessControlEntry is used to control who can do some operation.
+// `AccessControlEntry` is used to control who can do some operation.
 type AccessControlEntry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1224,7 +1224,7 @@ type CreateEntitlementRequest struct {
 	// ID, the server can check if original operation with the same request ID
 	// was received, and if so, ignores the second request and returns the
 	// previous operation's response. This prevents clients from accidentally
-	// creating duplicate commitments.
+	// creating duplicate entitlements.
 	//
 	// The request ID must be a valid UUID with the exception that zero UUID is
 	// not supported (00000000-0000-0000-0000-000000000000).
@@ -1307,8 +1307,7 @@ type DeleteEntitlementRequest struct {
 	// For example, consider a situation where you make an initial request and the
 	// request times out. If you make the request again with the same request
 	// ID, the server can check if original operation with the same request ID
-	// was received, and if so, ignores the second request. This prevents
-	// clients from accidentally creating duplicate commitments.
+	// was received, and if so, ignores the second request.
 	//
 	// The request ID must be a valid UUID with the exception that zero UUID is
 	// not supported (00000000-0000-0000-0000-000000000000).
@@ -1438,8 +1437,6 @@ func (x *UpdateEntitlementRequest) GetUpdateMask() *field_mask.FieldMask {
 	return nil
 }
 
-// This is to ensure that the `Grants` and `ProducerGrants` proto are byte
-// compatible.
 // A grant represents a request from a user for obtaining the access specified
 // in an entitlement they are eligible for.
 type Grant struct {
@@ -2219,7 +2216,7 @@ type CreateGrantRequest struct {
 	// request times out. If you make the request again with the same request
 	// ID, the server can check if original operation with the same request ID
 	// was received, and if so, ignores the second request. This prevents
-	// clients from accidentally creating duplicate commitments.
+	// clients from accidentally creating duplicate grants.
 	//
 	// The request ID must be a valid UUID with the exception that zero UUID is
 	// not supported (00000000-0000-0000-0000-000000000000).
@@ -2602,7 +2599,7 @@ func (*Entitlement_RequesterJustificationConfig_NotMandatory_) isEntitlement_Req
 func (*Entitlement_RequesterJustificationConfig_Unstructured_) isEntitlement_RequesterJustificationConfig_JustificationType() {
 }
 
-// AdditionalNotificationTargets includes email addresses to be notified.
+// `AdditionalNotificationTargets` includes email addresses to be notified.
 type Entitlement_AdditionalNotificationTargets struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2812,7 +2809,7 @@ func (x *ManualApprovals_Step) GetApproverEmailRecipients() []string {
 	return nil
 }
 
-// GcpIAMAccess represents IAM based access control on a Google Cloud
+// `GcpIamAccess` represents IAM based access control on a Google Cloud
 // resource. Refer to https://cloud.google.com/iam/docs to understand more
 // about IAM.
 type PrivilegedAccess_GcpIamAccess struct {
@@ -2881,7 +2878,7 @@ func (x *PrivilegedAccess_GcpIamAccess) GetRoleBindings() []*PrivilegedAccess_Gc
 	return nil
 }
 
-// IAM Role bindings that are created after a successful grant.
+// IAM role bindings that are created after a successful grant.
 type PrivilegedAccess_GcpIamAccess_RoleBinding struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4867,8 +4864,8 @@ var file_mockgcp_cloud_privilegedaccessmanager_v1_privilegedaccessmanager_proto_
 	(*Entitlement_RequesterJustificationConfig_NotMandatory)(nil), // 35: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.NotMandatory
 	(*Entitlement_RequesterJustificationConfig_Unstructured)(nil), // 36: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.Unstructured
 	(*ManualApprovals_Step)(nil),                                  // 37: mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.Step
-	(*PrivilegedAccess_GcpIamAccess)(nil),                         // 38: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess
-	(*PrivilegedAccess_GcpIamAccess_RoleBinding)(nil),             // 39: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess.RoleBinding
+	(*PrivilegedAccess_GcpIamAccess)(nil),                         // 38: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess
+	(*PrivilegedAccess_GcpIamAccess_RoleBinding)(nil),             // 39: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess.RoleBinding
 	(*Grant_Timeline)(nil),                                        // 40: mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline
 	(*Grant_AuditTrail)(nil),                                      // 41: mockgcp.cloud.privilegedaccessmanager.v1.Grant.AuditTrail
 	(*Grant_Timeline_Event)(nil),                                  // 42: mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline.Event
@@ -4901,7 +4898,7 @@ var file_mockgcp_cloud_privilegedaccessmanager_v1_privilegedaccessmanager_proto_
 	34, // 9: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.additional_notification_targets:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.AdditionalNotificationTargets
 	9,  // 10: mockgcp.cloud.privilegedaccessmanager.v1.ApprovalWorkflow.manual_approvals:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals
 	37, // 11: mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.steps:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.Step
-	38, // 12: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.gcp_iam_access:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess
+	38, // 12: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.gcp_iam_access:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess
 	6,  // 13: mockgcp.cloud.privilegedaccessmanager.v1.ListEntitlementsResponse.entitlements:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement
 	1,  // 14: mockgcp.cloud.privilegedaccessmanager.v1.SearchEntitlementsRequest.caller_access_type:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.SearchEntitlementsRequest.CallerAccessType
 	6,  // 15: mockgcp.cloud.privilegedaccessmanager.v1.SearchEntitlementsResponse.entitlements:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement
@@ -4926,7 +4923,7 @@ var file_mockgcp_cloud_privilegedaccessmanager_v1_privilegedaccessmanager_proto_
 	35, // 34: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.not_mandatory:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.NotMandatory
 	36, // 35: mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.unstructured:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Entitlement.RequesterJustificationConfig.Unstructured
 	7,  // 36: mockgcp.cloud.privilegedaccessmanager.v1.ManualApprovals.Step.approvers:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.AccessControlEntry
-	39, // 37: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess.role_bindings:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIAMAccess.RoleBinding
+	39, // 37: mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess.role_bindings:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.PrivilegedAccess.GcpIamAccess.RoleBinding
 	42, // 38: mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline.events:type_name -> mockgcp.cloud.privilegedaccessmanager.v1.Grant.Timeline.Event
 	53, // 39: mockgcp.cloud.privilegedaccessmanager.v1.Grant.AuditTrail.access_grant_time:type_name -> google.protobuf.Timestamp
 	53, // 40: mockgcp.cloud.privilegedaccessmanager.v1.Grant.AuditTrail.access_remove_time:type_name -> google.protobuf.Timestamp
