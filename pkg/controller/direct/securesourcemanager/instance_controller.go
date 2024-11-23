@@ -233,7 +233,9 @@ func (a *secureSourceManagerInstanceAdapter) Delete(ctx context.Context, deleteO
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting for delete of Instance %q: %w", a.id.External, err)
+		if !strings.Contains(err.Error(), "(line 15:3): missing \"value\" field") {
+			return false, fmt.Errorf("deleting Instance %s: %w", a.id.External, err)
+		}
 	}
 	return true, nil
 }
