@@ -60,7 +60,7 @@ func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src clien
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 8 && tokens[0] == "project" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
 			ref = &KMSCryptoKeyRef{
-				External: fmt.Sprintf("projects/%s/secrets/%s/versions/%s", tokens[1], tokens[3], tokens[5]),
+				External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", tokens[1], tokens[3], tokens[5], tokens[7]),
 			}
 			return ref, nil
 		}

@@ -15,7 +15,7 @@
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
-  name: kmscryptokey-${uniqueId}
+  name: key-ring-${uniqueId}
 spec:
   location: us-central1
 ---
@@ -23,9 +23,11 @@ apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
   name: kmscryptokey-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   keyRingRef:
-    name: kmscryptokey-${uniqueId}
+    name: key-ring-${uniqueId}
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
