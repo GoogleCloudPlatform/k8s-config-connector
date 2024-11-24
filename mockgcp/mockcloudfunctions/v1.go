@@ -16,13 +16,13 @@ package mockcloudfunctions
 
 import (
 	"context"
+	"fmt"
 
 	"google.golang.org/genproto/googleapis/longrunning"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/functions/v1"
 )
 
@@ -85,18 +85,8 @@ func (s *CloudFunctionsV1) UpdateFunction(ctx context.Context, req *pb.UpdateFun
 		klog.Warningf("update_mask was not provided in request, should be required")
 	}
 
-	// TODO: Some sort of helper for fieldmask?
-	for _, path := range paths {
-		switch path {
-		case "description":
-			obj.Description = req.GetFunction().GetDescription()
-		case "labels":
-			obj.Labels = req.GetFunction().GetLabels()
-		case "timeout":
-			obj.Timeout = req.GetFunction().GetTimeout()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
+	if err := fields.UpdateByFieldMask(obj, req.GetFunction(), req.UpdateMask.GetPaths()); err != nil {
+		return nil, fmt.Errorf("applying updates: %w", err)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
