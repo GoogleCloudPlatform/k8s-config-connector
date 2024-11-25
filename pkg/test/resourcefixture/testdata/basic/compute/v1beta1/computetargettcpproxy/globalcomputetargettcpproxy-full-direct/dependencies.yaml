@@ -32,3 +32,14 @@ spec:
         name: computehealthcheck-${uniqueId}
   location: global
   protocol: TCP
+---
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeBackendService
+  metadata:
+    name: computebackendservice-2-${uniqueId}
+  spec:
+    healthChecks:
+      - healthCheckRef:
+          name: computehealthcheck-${uniqueId}
+    location: global
+    protocol: TCP
