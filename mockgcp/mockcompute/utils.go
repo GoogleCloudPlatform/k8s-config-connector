@@ -15,10 +15,13 @@
 package mockcompute
 
 import (
+	"context"
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"strings"
 
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,4 +32,30 @@ func computeFingerprint(obj proto.Message) string {
 	}
 	hash := md5.Sum(b)
 	return base64.StdEncoding.EncodeToString(hash[:])
+}
+
+// getAPIVersion returns the version of the compute API the caller is using.
+// It defaults to v1
+func getAPIVersion(ctx context.Context) string {
+	md, _ := metadata.FromIncomingContext(ctx)
+	path := ""
+	if md != nil {
+		for _, v := range md.Get("path") {
+			path = v
+		}
+	}
+	path = strings.TrimPrefix(path, "/")
+	path = strings.TrimPrefix(path, "compute/")
+	version, _, _ := strings.Cut(path, "/")
+	if version == "" {
+		// Default to v1
+		version = "v1"
+	}
+	return version
+}
+
+// buildComputeSelfLink constructs a full self link (including https://www.googleapis.com/compute/)
+func buildComputeSelfLink(ctx context.Context, fqn string) string {
+	version := getAPIVersion(ctx)
+	return "https://www.googleapis.com/compute/" + version + "/" + fqn
 }
