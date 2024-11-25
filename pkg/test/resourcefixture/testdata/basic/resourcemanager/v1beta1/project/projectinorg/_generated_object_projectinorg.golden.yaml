@@ -16,7 +16,7 @@ metadata:
 spec:
   name: KCC-2 ${uniqueId}
   organizationRef:
-    external: "123450001"
+    external: ${organizationID}
   resourceID: project-${uniqueId}
 status:
   conditions:

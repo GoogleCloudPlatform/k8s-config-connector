@@ -570,6 +570,28 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		return s
 	})
 
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "" {
+			return s
+		}
+
+		switch path {
+		case ".spec.organizationRef.external":
+			id := strings.TrimPrefix(s, "organizations/")
+			replacement.PathIDs[id] = "${organizationID}"
+		case ".status.writerIdentity":
+			if strings.HasPrefix(s, "serviceAccount:service-org-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-org-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${organizationID}"
+			}
+			if strings.HasPrefix(s, "serviceAccount:service-folder-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-folder-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${folderID}"
+			}
+		}
+		return s
+	})
+
 	if err := visitor.visitMap(u.Object, ""); err != nil {
 		t.Fatalf("visiting KRM object: %v", err)
 	}
