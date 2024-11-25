@@ -25,6 +25,7 @@ spec:
         syncRev: HEAD
         syncWaitSecs: "20"
       sourceFormat: hierarchy
+    management: MANAGEMENT_AUTOMATIC
     version: 1.18.1
   featureRef:
     name: gkehubfeature-basic-acm-${uniqueId}
