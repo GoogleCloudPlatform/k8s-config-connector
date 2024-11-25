@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 )
 
 // Replacements manages replacements of dynamic values, like resource IDs
@@ -78,6 +79,12 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	for _, replacement := range replacements {
 		normalizers = append(normalizers, ReplaceString(replacement.find, replacement.replace))
 	}
+
+	// Replace our testgcp env vars
+	if testgcp.IsolatedTestOrgName.Get() != "" {
+		normalizers = append(normalizers, ReplaceString(testgcp.IsolatedTestOrgName.Get(), "${ISOLATED_TEST_ORG_NAME}"))
+	}
+
 	for _, normalizer := range normalizers {
 		s = normalizer(s)
 	}

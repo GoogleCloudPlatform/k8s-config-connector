@@ -371,6 +371,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestFolderID.Set("123451001")
 		testgcp.TestFolder2ID.Set("123451002")
 		testgcp.TestOrgID.Set("123450001")
+		testgcp.IsolatedTestOrgName.Set("isolated-test-org.example.com")
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
 		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
 		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
@@ -746,6 +747,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 			case schema.GroupKind{Group: "cloudids.cnrm.cloud.google.com", Kind: "CloudIDSEndpoint"}:
+
+			case schema.GroupKind{Group: "cloudidentity.cnrm.cloud.google.com", Kind: "CloudIdentityGroup"}:
 
 			case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
 

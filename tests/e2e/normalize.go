@@ -324,6 +324,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 					return strings.ReplaceAll(s, resourceID, "${firewallPolicyID}")
 
 				})
+
+			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${groupID}")
+				})
 			}
 		}
 	}
