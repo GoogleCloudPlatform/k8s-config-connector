@@ -163,10 +163,20 @@ func FeaturemembershipPolicyControllerHubConfig_FromProto(mapCtx *direct.MapCont
 	out.ExemptableNamespaces = r.ExemptableNamespaces
 	out.InstallSpec = direct.LazyPtr(r.InstallSpec)
 	out.LogDeniesEnabled = direct.LazyPtr(r.LogDeniesEnabled)
+	out.Monitoring = FeaturemembershipMonitoring_FromProto(mapCtx, r.Monitoring)
 	out.MutationEnabled = direct.LazyPtr(r.MutationEnabled)
 	out.PolicyContent = FeaturemembershipPolicyContent_FromProto(mapCtx, r.PolicyContent)
 	out.ReferentialRulesEnabled = direct.LazyPtr(r.ReferentialRulesEnabled)
 
+	return out
+}
+
+func FeaturemembershipMonitoring_FromProto(mapCtx *direct.MapContext, r *api.PolicyControllerMonitoringConfig) *krm.FeaturemembershipMonitoring {
+	if r == nil {
+		return nil
+	}
+	out := &krm.FeaturemembershipMonitoring{}
+	out.Backends = r.Backends
 	return out
 }
 
