@@ -2,16 +2,22 @@ Examples:
 
 
 ```
-go run . generate-types  --proto-source-path ../proto-to-mapper/build/googleapis.pb \
-  --service google.bigtable.admin.v2 --version v1beta1 \
-  --output-api ~/kcc/k8s-config-connector
-  --kinds BigtableInstance
+# To generate Go types for BigtableInstance
+go run . generate-types \
+  --service google.bigtable.admin.v2 \
+  --api-version bigtable.cnrm.cloud.google.com/v1beta1 \
+  --resource BigtableInstance:Instance
 
+# To generate mapping function between KRM and proto for BigtableInstance
+go run . generate-mapper \
+  --output-dir ~/kcc/k8s-config-connector/pkg/controller/direct/ \
+  --service google.bigtable.admin.v2
 
-go run . generate-mapper --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-      --output-dir ~/kcc/k8s-config-connector/pkg/controller/direct/ \
-      --proto-source-path ../proto-to-mapper/build/googleapis.pb \
-      --service google.bigtable.admin.v2 \
-      --api-dir ~/kcc/k8s-config-connector/apis/
+# To scaffold generate the SecretManagerSecretVersion controller
+go run . generate-direct-reconciler \
+  --kind SecretManagerSecretVersion \
+  --proto-resource SecretVersion \
+  --api-version  "secretmanager.cnrm.cloud.google.com/v1beta1" \
+  --service "google.cloud.secretmanager.v1"
 
 ```

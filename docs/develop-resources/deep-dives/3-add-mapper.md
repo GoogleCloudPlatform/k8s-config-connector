@@ -9,12 +9,8 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
 go run . generate-mapper \
-   --proto-source-path ../proto-to-mapper/build/googleapis.pb \
    --service google.storage.v1  \
-   --api-version "storage.cnrm.cloud.google.com/v1beta1" \
-   --api-go-package-path  $REPO_ROOT/apis \
-   --output-dir $REPO_ROOT/pkg/controller/direct/ \
-   --api-dir $REPO_ROOT/apis 
+   --api-version "storage.cnrm.cloud.google.com/v1beta1"
 ```
 
 **Note**: We suggest using the same proto for your mock GCP and for you type-generation tool to generate the Config Connector API and mapper to avoid mismatch in schema definitions. There are some exceptions where you need to [replace the proto go package](https://github.com/xiaoweim/k8s-config-connector/blob/master/dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go#L132).

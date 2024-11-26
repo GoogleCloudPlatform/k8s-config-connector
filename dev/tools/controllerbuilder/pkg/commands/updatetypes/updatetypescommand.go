@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
@@ -47,11 +46,10 @@ type UpdateTypeOptions struct {
 }
 
 func (o *UpdateTypeOptions) InitDefaults() error {
-	root, err := getGitRepoRoot()
+	root, err := options.RepoRoot()
 	if err != nil {
 		return nil
 	}
-	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
 	o.apiDirectory = root + "/apis/"
 	o.goPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
 	return nil
@@ -247,16 +245,4 @@ func (u *TypeUpdater) generate() error {
 			})
 	}
 	return nil
-}
-
-func getGitRepoRoot() (string, error) {
-	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
-	output, err := cmd.Output()
-	if err != nil {
-		return "", err
-	}
-
-	// Convert the output to a string and trim any whitespace
-	repoRoot := strings.TrimSpace(string(output))
-	return repoRoot, nil
 }

@@ -52,7 +52,6 @@ func (o *GenerateBasicReconcilerOptions) InitDefaults() error {
 	if err != nil {
 		return nil
 	}
-	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
 	o.APIGoPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
 	o.APIDirectory = root + "/apis/"
 	//	o.OutputAPIDirectory = root + "/apis/"

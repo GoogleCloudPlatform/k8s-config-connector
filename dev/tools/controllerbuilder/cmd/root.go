@@ -30,8 +30,10 @@ import (
 
 func Execute() {
 	var generateOptions options.GenerateOptions
-	generateOptions.InitDefaults()
-
+	if err := generateOptions.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
+	}
 	rootCmd := &cobra.Command{}
 	generateOptions.BindPersistentFlags(rootCmd)
 
