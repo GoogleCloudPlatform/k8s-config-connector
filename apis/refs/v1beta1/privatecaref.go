@@ -89,17 +89,17 @@ func ResolvePrivateCACAPoolRef(ctx context.Context, reader client.Reader, src cl
 		return nil, fmt.Errorf("error reading referenced PrivateCACAPool %v: %w", key, err)
 	}
 
-	caPoolResourceID, err := refsv1beta1.GetResourceID(caPool)
+	caPoolResourceID, err := GetResourceID(caPool)
 	if err != nil {
 		return nil, err
 	}
 
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, caPool)
+	projectID, err := ResolveProjectID(ctx, reader, caPool)
 	if err != nil {
 		return nil, err
 	}
 
-	location, err := refsv1beta1.GetLocation(caPool)
+	location, err := GetLocation(caPool)
 	if err != nil {
 		return nil, err
 	}
