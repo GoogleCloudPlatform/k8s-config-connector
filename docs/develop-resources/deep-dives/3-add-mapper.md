@@ -9,7 +9,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
 go run . generate-mapper \
-   --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+   --proto-source-path ${REPO_ROOT}/.build/googleapis.pb \
    --service google.storage.v1  \
    --api-version "storage.cnrm.cloud.google.com/v1beta1" \
    --api-go-package-path  $REPO_ROOT/apis \

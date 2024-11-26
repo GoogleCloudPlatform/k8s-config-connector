@@ -47,12 +47,12 @@ type UpdateTypeOptions struct {
 }
 
 func (o *UpdateTypeOptions) InitDefaults() error {
-	root, err := getGitRepoRoot()
+	repoRoot, err := getGitRepoRoot()
 	if err != nil {
 		return nil
 	}
-	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
-	o.apiDirectory = root + "/apis/"
+	o.ProtoSourcePath = repoRoot + "/.build/googleapis.pb"
+	o.apiDirectory = repoRoot + "/apis/"
 	o.goPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
 	return nil
 }

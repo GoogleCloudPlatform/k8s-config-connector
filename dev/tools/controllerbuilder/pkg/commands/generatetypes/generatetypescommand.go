@@ -72,12 +72,12 @@ func (r *ResourceList) Set(s string) error {
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
-	root, err := options.RepoRoot()
+	repoRoot, err := options.RepoRoot()
 	if err != nil {
 		return nil
 	}
-	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
-	o.OutputAPIDirectory = root + "/apis/"
+	o.ProtoSourcePath = repoRoot + "/.build/googleapis.pb"
+	o.OutputAPIDirectory = repoRoot + "/apis/"
 	return nil
 }
 
