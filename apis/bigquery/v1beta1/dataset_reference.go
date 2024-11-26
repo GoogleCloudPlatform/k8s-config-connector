@@ -81,8 +81,7 @@ func (r *BigQueryDatasetRef) NormalizedExternal(ctx context.Context, reader clie
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a BigQueryDatasetRef from the Config Connector BigQueryDataset object.

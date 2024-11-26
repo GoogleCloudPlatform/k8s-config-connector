@@ -84,8 +84,7 @@ func (r *ComputeTargetTCPProxyRef) NormalizedExternal(ctx context.Context, reade
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a ComputeTargetTCPProxyRef from the Config Connector ComputeTargetTCPProxy object.

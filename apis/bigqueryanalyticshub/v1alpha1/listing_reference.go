@@ -82,8 +82,8 @@ func (r *BigQueryAnalyticsHubListingRef) NormalizedExternal(ctx context.Context,
 	if actualExternalRef == "" {
 		return "", fmt.Errorf("BigQueryAnalyticsHubListing is not ready yet")
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+
+	return actualExternalRef, nil
 }
 
 // New builds a BigQueryAnalyticsHubListingRef from the Config Connector BigQueryAnalyticsHubListing object.

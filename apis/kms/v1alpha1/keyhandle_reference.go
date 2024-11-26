@@ -81,8 +81,7 @@ func (r *KMSKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a KMSKeyHandleRef from the Config Connector KMSKeyHandle object.

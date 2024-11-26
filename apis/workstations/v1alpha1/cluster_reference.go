@@ -79,8 +79,7 @@ func (r *WorkstationClusterRef) NormalizedExternal(ctx context.Context, reader c
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a WorkstationClusterRef from the Config Connector WorkstationCluster object.

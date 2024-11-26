@@ -79,8 +79,7 @@ func (r *WorkstationConfigRef) NormalizedExternal(ctx context.Context, reader cl
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a WorkstationConfigRef from the Config Connector WorkstationConfig object.

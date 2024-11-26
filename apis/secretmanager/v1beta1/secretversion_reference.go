@@ -79,8 +79,7 @@ func (r *SecretVersionRef) NormalizedExternal(ctx context.Context, reader client
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 func ParseSecretVersionExternal(external string) (*SecretVersionIdentity, error) {

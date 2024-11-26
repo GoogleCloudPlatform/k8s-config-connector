@@ -81,8 +81,7 @@ func (r *SpannerInstanceRef) NormalizedExternal(ctx context.Context, reader clie
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a SpannerInstanceRef from the Config Connector SpannerInstance object.
