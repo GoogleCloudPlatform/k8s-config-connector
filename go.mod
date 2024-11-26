@@ -17,12 +17,11 @@ require (
 	cloud.google.com/go/dataform v0.10.2
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/firestore v1.17.0
-	cloud.google.com/go/gkemulticloud v1.4.1
-	cloud.google.com/go/iam v1.2.2
-	cloud.google.com/go/iap v1.10.2
-	cloud.google.com/go/kms v1.20.1
-	cloud.google.com/go/managedkafka v0.4.0
-	cloud.google.com/go/monitoring v1.21.2
+	cloud.google.com/go/gkemulticloud v1.4.0
+	cloud.google.com/go/iam v1.2.1
+	cloud.google.com/go/kms v1.20.0
+	cloud.google.com/go/logging v1.11.0
+	cloud.google.com/go/monitoring v1.21.1
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/redis v1.17.2
