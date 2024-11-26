@@ -8,7 +8,8 @@ Experimental KCC companion tool to help troubleshoot, analyze and gather data ab
 
 ```
 # Assumes pwd is <REPO_ROOT>/experiments/kompanion
-$ GOWORK=off go build -o kompanion
+$ mkdir bin
+$ GOWORK=off go build -o bin/kompanion
 ```
 
 ## Export

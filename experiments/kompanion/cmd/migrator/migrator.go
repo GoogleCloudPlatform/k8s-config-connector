@@ -12,17 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package summary
+package migrator
 
 import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/pkg/utils"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -33,19 +36,28 @@ import (
 
 const (
 	examples = `
-	# Summarize Config Connector resources across all namespaces, excludes \"kube\" namespaces by default
-	kompanion summary
+	# export Config Connector resources across all namespaces, excludes \"kube\" namespaces by default
+	kompanion migrator
+
+	# exclude certain namespace prefixes
+	kompanion migrator --exclude-namespaces=kube --exclude-namespaces=my-team
+
+	# target only specific namespace prefixes
+	kompanion migrator --target-namespaces=my-team
+
+	# target only specific namespace prefixes AND specific object prefixes
+	kompanion migrator --target-namespaces=my-team --target-objects=logging
 	`
 )
 
-func BuildSummaryCmd() *cobra.Command {
-	opts := NewSummaryOptions()
+func BuildMigratorCmd() *cobra.Command {
+	opts := NewMigratorOptions()
 	cmd := &cobra.Command{
-		Use:     "summary",
-		Short:   "summarize Config Connector resources",
+		Use:     "migrator",
+		Short:   "migrates Config Connector resources",
 		Example: examples,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return RunSummarize(cmd.Context(), opts)
+			return RunMigrator(cmd.Context(), opts)
 		},
 		Args: cobra.ExactArgs(0),
 	}
@@ -54,85 +66,6 @@ func BuildSummaryCmd() *cobra.Command {
 	opts.AddFlags(flags)
 
 	return cmd
-}
-
-type Result struct {
-	// Map[namespace, Map[gk, Map[status, count]]]
-	counts map[string]map[string]map[string]int
-	// Map[gk, Map[status, count]]
-	totals map[string]map[string]int
-	// secures access to counts & totals
-	countLock sync.Mutex
-}
-
-func (r *Result) increment(namespace string, gk string, status string) {
-	r.countLock.Lock()
-	defer r.countLock.Unlock()
-	if r.counts == nil {
-		r.counts = make(map[string]map[string]map[string]int)
-	}
-	nsMap, present := r.counts[namespace]
-	if !present {
-		nsMap = make(map[string]map[string]int)
-		r.counts[namespace] = nsMap
-	}
-	gkMap, present := nsMap[gk]
-	if !present {
-		gkMap = make(map[string]int)
-		nsMap[gk] = gkMap
-	}
-	count := gkMap[status]
-	// Can ignore not present because count will default to 0.
-	gkMap[status] = count + 1
-
-	if r.totals == nil {
-		r.totals = make(map[string]map[string]int)
-	}
-	gkMap, present = r.totals[gk]
-	if !present {
-		gkMap = make(map[string]int)
-		r.totals[gk] = gkMap
-	}
-	count = gkMap[status]
-	// Can ignore not present because count will default to 0.
-	gkMap[status] = count + 1
-}
-
-func (r *Result) Print() {
-	r.countLock.Lock()
-	defer r.countLock.Unlock()
-	for ns, nsMap := range r.counts {
-		log.Printf("Namespace: %s\n", ns)
-		for gk, gkMap := range nsMap {
-			first := true
-			info := "("
-			for status, count := range gkMap {
-				if first {
-					info += fmt.Sprintf("%s: %d", status, count)
-					first = false
-				} else {
-					info += fmt.Sprintf(", %s: %d", status, count)
-				}
-			}
-			info += ")"
-			log.Printf("- GroupKind: %s %s\n", gk, info)
-		}
-	}
-	log.Printf("Totals: \n")
-	for gk, gkMap := range r.totals {
-		first := true
-		info := "("
-		for status, count := range gkMap {
-			if first {
-				info += fmt.Sprintf("%s: %d", status, count)
-				first = false
-			} else {
-				info += fmt.Sprintf(", %s: %d", status, count)
-			}
-		}
-		info += ")"
-		log.Printf("- GroupKind: %s %s\n", gk, info)
-	}
 }
 
 // Task is implemented by our namespace-collection routine, or anything else we want to run in parallel.
@@ -169,21 +102,20 @@ func (n *taskQueue) AddTask(t Task) {
 }
 
 type dumpResourcesTask struct {
-	// Result accumulates the overall summary
-	Summary *Result
-
 	// Namespace is the namespace to filter down
 	Namespace string
 
 	DynamicClient *dynamic.DynamicClient
 
+	OutputChannel chan string
+
 	// Resources is the list of resources to query
 	Resources []schema.GroupVersionResource
+
+	ShouldExcludeObject func(id types.NamespacedName) bool
 }
 
 func (t *dumpResourcesTask) Run(ctx context.Context) error {
-	// klog := klog.FromContext(ctx)
-
 	for _, gvr := range t.Resources {
 		var resources *unstructured.UnstructuredList
 		if t.Namespace != "" {
@@ -202,23 +134,68 @@ func (t *dumpResourcesTask) Run(ctx context.Context) error {
 		}
 
 		for _, r := range resources.Items {
-			status, err := getStatus(r, gvr)
-			if err != nil {
-				log.Printf("Got error retrieving status of type gvr %s, %v", gvr, err)
+			id := types.NamespacedName{
+				Namespace: r.GetNamespace(),
+				Name:      r.GetName(),
 			}
-			gk := gvr.Resource + "." + gvr.Group
-			t.Summary.increment(r.GetNamespace(), gk, status)
+			if t.ShouldExcludeObject(id) {
+				continue
+			}
+			r = pruneResource(r)
+
+			data, err := yaml.Marshal(r)
+			if err != nil {
+				return fmt.Errorf("error marshalling resource %s: %w", id, err)
+			}
+			t.OutputChannel <- string(data)
 		}
 	}
 
 	return nil
 }
 
-func RunSummarize(ctx context.Context, opts *SummaryOptions) error {
-	log.Printf("Running kompanion summary with kubeconfig: %s", opts.Kubeconfig)
+func pruneResource(r unstructured.Unstructured) unstructured.Unstructured {
+	newAnnotations := make(map[string]string)
+	annotations := r.GetAnnotations()
+	for key, value := range annotations {
+		if !strings.Contains(key, "cnrm.cloud.google.com") {
+			continue
+		}
+		newAnnotations[key] = value
+	}
+	if len(newAnnotations) == 0 {
+		r.SetAnnotations(nil)
+	} else {
+		r.SetAnnotations(newAnnotations)
+	}
+
+	r.SetCreationTimestamp(metav1.Time{})
+	r.SetFinalizers(nil)
+	r.SetGeneration(0)
+	r.SetManagedFields(nil)
+	r.SetResourceVersion("")
+	r.SetUID("")
+
+	unstructured.RemoveNestedField(r.Object, "status", "conditions")
+	unstructured.RemoveNestedField(r.Object, "status", "creationTimestamp")
+	unstructured.RemoveNestedField(r.Object, "status", "healthy")
+	unstructured.RemoveNestedField(r.Object, "status", "observedGeneration")
+	unstructured.RemoveNestedField(r.Object, "status", "selfLink") // Are we sure?
+	status, present, err := unstructured.NestedMap(r.Object, "status")
+	if err != nil {
+		log.Fatalf("Could not get the status field %v\r", err)
+	}
+	if present && len(status) == 0 {
+		unstructured.RemoveNestedField(r.Object, "status")
+	}
+
+	return r
+}
+
+func RunMigrator(ctx context.Context, opts *MigratorOptions) error {
+	log.Printf("Running kompanion export with kubeconfig: %s", opts.Kubeconfig)
 
 	if err := opts.validateFlags(); err != nil {
-		opts.Print()
 		return err
 	}
 
@@ -251,15 +228,53 @@ func RunSummarize(ctx context.Context, opts *SummaryOptions) error {
 		return fmt.Errorf("error fetching resources: %w", err)
 	}
 
+	outputChannel := make(chan string, 2*opts.WorkerRoutines)
+
 	namespaces, err := clientset.CoreV1().Namespaces().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return fmt.Errorf("error fetching namespaces: %w", err)
 	}
+	shouldExcludeObject := func(id types.NamespacedName) bool {
+		if shouldExclude(id.Namespace, opts.IgnoreNamespaces, opts.TargetNamespaces) {
+			return true
+		}
+		return shouldExclude(id.Name, opts.IgnoreObjects, opts.TargetObjects)
+	}
+
+	// write the namespaces to the migrator file
+	filedir := filepath.Dir(opts.MigrationFile)
+	if err := os.MkdirAll(filedir, 0o700); err != nil {
+		return fmt.Errorf("error creating directory %s: %w", filedir, err)
+	}
+	migfile, err := os.Create(opts.MigrationFile)
+	if err != nil {
+		return fmt.Errorf("error creating migration file %s: %w", opts.MigrationFile, err)
+	}
+	defer migfile.Close()
+	nsGvr := schema.GroupVersionResource{
+		Group:    "",
+		Version:  "v1",
+		Resource: "namespaces",
+	}
+	nss, err := dynamicClient.Resource(nsGvr).List(ctx, metav1.ListOptions{})
+	if err != nil {
+		return fmt.Errorf("fetching namespace %s resources: %w", nsGvr, err)
+	}
+	for _, ns := range nss.Items {
+		ns = pruneResource(ns)
+		if len(ns.GetAnnotations()) <= 0 {
+			continue
+		}
+		data, err := yaml.Marshal(ns)
+		if err != nil {
+			return fmt.Errorf("error marshalling namespace: %w", err)
+		}
+		migfile.WriteString(string(data[:]))
+		migfile.WriteString("---\n")
+	}
 
 	// create the work log for go routine workers to use
 	q := &taskQueue{}
-
-	summary := &Result{}
 
 	// Parallize across resources, unless we are scoped to a few namespaces
 	// The thought is that if users target a particular namespace (or a few), they may not have cluster-wide permission.
@@ -271,23 +286,26 @@ func RunSummarize(ctx context.Context, opts *SummaryOptions) error {
 			}
 
 			q.AddTask(&dumpResourcesTask{
-				Summary:       summary,
 				Namespace:     ns.Name,
 				Resources:     resources,
 				DynamicClient: dynamicClient,
+				OutputChannel: outputChannel,
+				// ReportDir:           reportTempDir,
+				ShouldExcludeObject: shouldExcludeObject,
 			})
 		}
 	} else {
 		for _, resource := range resources {
 			q.AddTask(&dumpResourcesTask{
-				Summary:       summary,
 				Resources:     []schema.GroupVersionResource{resource},
 				DynamicClient: dynamicClient,
+				OutputChannel: outputChannel,
+				// ReportDir:           reportTempDir,
+				ShouldExcludeObject: shouldExcludeObject,
 			})
 		}
 	}
 
-	log.Printf("Starting worker threads to process Config Connector objects")
 	var wg sync.WaitGroup
 
 	var errs []error
@@ -305,7 +323,6 @@ func RunSummarize(ctx context.Context, opts *SummaryOptions) error {
 					return
 				}
 
-				//log.Printf("Starting work on %v", task)
 				if err := task.Run(ctx); err != nil {
 					errsMutex.Lock()
 					errs = append(errs, err)
@@ -315,48 +332,19 @@ func RunSummarize(ctx context.Context, opts *SummaryOptions) error {
 		}()
 	}
 
-	log.Printf("Dumping Config Connector summaries")
+	go func() {
+		for data := range outputChannel {
+			migfile.WriteString(data)
+			migfile.WriteString("---\n")
+		}
+	}()
+
 	wg.Wait()
-
-	summary.Print()
-
+	close(outputChannel)
 	return nil
 }
 
-func getStatus(r unstructured.Unstructured, gvr schema.GroupVersionResource) (string, error) {
-	id := types.NamespacedName{
-		Namespace: r.GetNamespace(),
-		Name:      r.GetName(),
-	}
-	slices, present, err := unstructured.NestedSlice(r.Object, "status", "conditions")
-	if !present {
-		return "no status", nil
-	}
-	if err != nil {
-		return "error", fmt.Errorf("error retrieving .status.healthy from resource %s: %w", id, err)
-	}
-	if len(slices) < 1 {
-		return "no status", nil
-	} else if len(slices) > 1 {
-		return "unknown", nil
-	}
-	element := slices[0]
-	condition, ok := element.(map[string]interface{})
-	if !ok {
-		return "unknown", fmt.Errorf("resource %s of type gvr %s failed to cast %T to condition", id, gvr, element)
-	}
-	val, present, err := unstructured.NestedString(condition, "status")
-	if !present {
-		return "unknown", nil
-	}
-	if err != nil {
-		return "unknown", fmt.Errorf("error retrieving .status.healthy from resource %s: %w", id, err)
-	}
-	return val, nil
-}
-
 func shouldExclude(name string, excludes []string, includes []string) bool {
-	// todo acpana: maps
 	for _, exclude := range excludes {
 		if strings.Contains(name, exclude) {
 			log.Printf("Excluding %s as it contains %s", name, exclude)

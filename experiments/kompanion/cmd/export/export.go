@@ -36,8 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
@@ -59,57 +57,21 @@ const (
 )
 
 func BuildExportCmd() *cobra.Command {
-	var opts ExportOptions
-
+	opts := NewExportOptions()
 	cmd := &cobra.Command{
 		Use:     "export",
 		Short:   "export Config Connector resources",
 		Example: examples,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return RunExport(cmd.Context(), &opts)
+			return RunExport(cmd.Context(), opts)
 		},
 		Args: cobra.ExactArgs(0),
 	}
 
-	cmd.Flags().StringVarP(&opts.kubeconfig, kubeconfigFlag, "", opts.kubeconfig, "path to the kubeconfig file.")
-	cmd.Flags().StringVarP(&opts.reportNamePrefix, reportNamePrefixFlag, "", "report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
-
-	cmd.Flags().StringArrayVarP(&opts.targetNamespaces, targetNamespacesFlag, "", []string{}, "namespace prefix to target the export tool. Targets all if empty. Can be specified multiple times.")
-	cmd.Flags().StringArrayVarP(&opts.ignoreNamespaces, ignoreNamespacesFlag, "", []string{"kube"}, "namespace prefix to ignore. Excludes nothing if empty. Can be specified multiple times. Defaults to \"kube\".")
-
-	cmd.Flags().StringArrayVarP(&opts.targetObjects, targetObjectsFlag, "", []string{}, "object name prefix to target. Targets all if empty. Can be specified multiple times.")
-	cmd.Flags().StringArrayVarP(&opts.ignoreObjects, ignoreObjectsFlag, "", []string{}, "object name prefix to ignore. Excludes nothing if empty. Can be specified multiple times.")
-
-	cmd.Flags().IntVarP(&opts.workerRountines, workerRoutinesFlag, "", 10, "Configure the number of worker routines to export namespaces with. Defaults to 10. ")
+	flags := cmd.Flags()
+	opts.AddFlags(flags)
 
 	return cmd
-}
-
-const (
-	// flag names.
-	kubeconfigFlag       = "kubeconfig"
-	reportNamePrefixFlag = "report-prefix"
-
-	targetNamespacesFlag = "target-namespaces"
-	ignoreNamespacesFlag = "exclude-namespaces"
-
-	targetObjectsFlag = "target-objects"
-	ignoreObjectsFlag = "exclude-objects"
-
-	workerRoutinesFlag = "worker-routines"
-)
-
-type ExportOptions struct {
-	kubeconfig       string
-	reportNamePrefix string
-
-	targetNamespaces []string
-	ignoreNamespaces []string
-
-	targetObjects []string
-	ignoreObjects []string
-
-	workerRountines int
 }
 
 // Task is implemented by our namespace-collection routine, or anything else we want to run in parallel.
@@ -217,37 +179,14 @@ func (t *dumpResourcesTask) Run(ctx context.Context) error {
 	return nil
 }
 
-func (opts *ExportOptions) validateFlags() error {
-	if opts.workerRountines <= 0 || opts.workerRountines > 100 {
-		return fmt.Errorf("invalid value %d for flag %s. Supported values are [1,100]", opts.workerRountines, workerRoutinesFlag)
-	}
-
-	return nil
-}
-
-func getRESTConfig(ctx context.Context, opts *ExportOptions) (*rest.Config, error) {
-	var loadingRules clientcmd.ClientConfigLoader
-	if opts.kubeconfig != "" {
-		loadingRules = &clientcmd.ClientConfigLoadingRules{ExplicitPath: opts.kubeconfig}
-	} else {
-		loadingRules = clientcmd.NewDefaultClientConfigLoadingRules()
-	}
-
-	return clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
-		loadingRules,
-		&clientcmd.ConfigOverrides{
-			// ClusterInfo: clientcmdapi.Cluster{Server: masterUrl},
-		}).ClientConfig()
-}
-
 func RunExport(ctx context.Context, opts *ExportOptions) error {
-	log.Printf("Running kompanion export with kubeconfig: %s", opts.kubeconfig)
+	log.Printf("Running kompanion export with kubeconfig: %s", opts.Kubeconfig)
 
 	if err := opts.validateFlags(); err != nil {
 		return err
 	}
 
-	config, err := getRESTConfig(ctx, opts)
+	config, err := utils.GetRESTConfig(ctx, opts.Kubeconfig)
 	if err != nil {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
@@ -284,7 +223,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 		return fmt.Errorf("error fetching namespaces: %w", err)
 	}
 
-	reportName := timestampedName(opts.reportNamePrefix)
+	reportName := timestampedName(opts.ReportNamePrefix)
 	reportTempDir := filepath.Join(".", reportName)
 	reportFile := filepath.Join(".", reportName+".tar.gz")
 	if err := os.Mkdir(filepath.Join(reportTempDir), 0o700); err != nil {
@@ -292,10 +231,10 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 	}
 
 	shouldExcludeObject := func(id types.NamespacedName) bool {
-		if shouldExclude(id.Namespace, opts.ignoreNamespaces, opts.targetNamespaces) {
+		if shouldExclude(id.Namespace, opts.IgnoreNamespaces, opts.TargetNamespaces) {
 			return true
 		}
-		return shouldExclude(id.Name, opts.ignoreObjects, opts.targetObjects)
+		return shouldExclude(id.Name, opts.IgnoreObjects, opts.TargetObjects)
 	}
 
 	// create the work log for go routine workers to use
@@ -303,10 +242,10 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 
 	// Parallize across resources, unless we are scoped to a few namespaces
 	// The thought is that if users target a particular namespace (or a few), they may not have cluster-wide permission.
-	perNamespace := len(opts.targetNamespaces) > 0
+	perNamespace := len(opts.TargetNamespaces) > 0
 	if perNamespace {
 		for _, ns := range namespaces.Items {
-			if shouldExclude(ns.Name, opts.ignoreNamespaces, opts.targetNamespaces) {
+			if shouldExclude(ns.Name, opts.IgnoreNamespaces, opts.TargetNamespaces) {
 				continue
 			}
 
@@ -335,7 +274,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 	var errs []error
 	var errsMutex sync.Mutex
 
-	for i := 0; i < opts.workerRountines; i++ {
+	for i := 0; i < opts.WorkerRoutines; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
