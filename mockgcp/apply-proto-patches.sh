@@ -67,3 +67,7 @@ cd tools/patch-proto
 #   // Optional. The configuration for Private Service Connect (PSC) for the cluster.
 #   PscConfig psc_config = 31 [(google.api.field_behavior) = OPTIONAL];
 # EOF
+
+# Fix issue in generated apigee service proto
+# Ref: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3183
+sed -i 's/^      post: "\/v1\/{project=projects\/\*}:provisionOrganization"$/      post: "\/v1\/{name=projects\/\*}:provisionOrganization"/g' ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto
