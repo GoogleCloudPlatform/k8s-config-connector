@@ -15,12 +15,23 @@
 package v1alpha1
 
 import (
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
+
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var BigQueryAnalyticsHubListingGVK = GroupVersion.WithKind("BigQueryAnalyticsHubDataExchangeListing")
+var BigQueryAnalyticsHubListingGVK = GroupVersion.WithKind("BigQueryAnalyticsHubListing")
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource
+type SelectedResource struct {
+	// Optional. A reference to a BigQueryTable.
+	// Format:
+	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
+	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
+	TableRef *refv1beta1.BigQueryTableRef `json:"table,omitempty"`
+}
 
 type BigQueryDatasetSource struct {
 	// +required
@@ -31,12 +42,27 @@ type BigQueryDatasetSource struct {
 	// Optional. Resources in this dataset that are selectively shared.
 	//  If this field is empty, then the entire dataset (all resources) are
 	//  shared. This field is only valid for data clean room exchanges.
-	SelectedResources []Listing_BigQueryDatasetSource_SelectedResource `json:"selectedResources,omitempty"`
+	SelectedResources []SelectedResource `json:"selectedResources,omitempty"`
 
 	// Optional. If set, restricted export policy will be propagated and
 	//  enforced on the linked dataset.
-	RestrictedExportPolicy *Listing_BigQueryDatasetSource_RestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
+	RestrictedExportPolicy *RestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
 }
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy
+type RestrictedExportPolicy struct {
+	// Optional. If true, enable restricted export.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. If true, restrict direct table access (read
+	//  api/tabledata.list) on linked table.
+	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
+
+	// Optional. If true, restrict export of query result derived from
+	//  restricted linked dataset table.
+	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
+}
+
 type Source struct {
 	// One of the following fields must be set.
 	BigQueryDatasetSource *BigQueryDatasetSource `json:"bigQueryDatasetSource,omitempty"`
@@ -112,7 +138,7 @@ type BigQueryAnalyticsHubListingSpec struct {
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
 	// +required
-	DataExchangeRef *refv1beta1.DataExchangeRef `json:"dataExchangeRef"`
+	DataExchangeRef *v1beta1.BigQueryAnalyticsHubDataExchangeRef `json:"dataExchangeRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.

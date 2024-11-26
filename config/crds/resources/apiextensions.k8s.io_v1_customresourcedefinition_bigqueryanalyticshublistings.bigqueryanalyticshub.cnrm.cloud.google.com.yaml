@@ -65,6 +65,9 @@ spec:
                   type: string
                 type: array
               dataExchangeRef:
+                description: BigQueryAnalyticsHubDataExchangeRef defines the resource
+                  reference to BigQueryAnalyticsHubDataExchange, which "External"
+                  field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -81,14 +84,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The DataExchange selfLink, when not managed by Config
-                      Connector.
+                    description: A reference to an externally managed BigQueryAnalyticsHubDataExchange
+                      resource. Should be in the format "projects/<projectID>/locations/<location>/dataexchanges/<dataexchangeID>".
                     type: string
                   name:
-                    description: The `name` field of a `DataExchange` resource.
+                    description: The name of a BigQueryAnalyticsHubDataExchange resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `DataExchange` resource.
+                    description: The namespace of a BigQueryAnalyticsHubDataExchange
+                      resource.
                     type: string
                 type: object
               dataProvider:
@@ -227,27 +231,15 @@ spec:
                         properties:
                           enabled:
                             description: Optional. If true, enable restricted export.
-                            properties:
-                              value:
-                                description: The bool value.
-                                type: boolean
-                            type: object
+                            type: boolean
                           restrictDirectTableAccess:
                             description: Optional. If true, restrict direct table
                               access (read api/tabledata.list) on linked table.
-                            properties:
-                              value:
-                                description: The bool value.
-                                type: boolean
-                            type: object
+                            type: boolean
                           restrictQueryResult:
                             description: Optional. If true, restrict export of query
                               result derived from restricted linked dataset table.
-                            properties:
-                              value:
-                                description: The bool value.
-                                type: boolean
-                            type: object
+                            type: boolean
                         type: object
                       selectedResources:
                         description: Optional. Resources in this dataset that are
@@ -257,9 +249,36 @@ spec:
                         items:
                           properties:
                             table:
-                              description: 'Optional. Format: For table: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
+                              description: 'Optional. A reference to a BigQueryTable.
+                                Format: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
                                 Example:"projects/test_project/datasets/test_dataset/tables/test_table"'
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: If provided must be in the format `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`.
+                                  type: string
+                                name:
+                                  description: The `metadata.name` field of a `BigQueryTable`
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The `metadata.namespace` field of a
+                                    `BigQueryTable` resource.
+                                  type: string
+                              type: object
                           type: object
                         type: array
                     required:
