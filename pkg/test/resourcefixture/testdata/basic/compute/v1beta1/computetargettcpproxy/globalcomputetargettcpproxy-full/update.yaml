@@ -21,6 +21,6 @@ metadata:
 spec:
   description: "test target tcp proxy"
   backendServiceRef:
-    name: computebackendservice-${uniqueId}
+    name: computebackendservice-2-${uniqueId}
   proxyBind: false
   proxyHeader: PROXY_V1

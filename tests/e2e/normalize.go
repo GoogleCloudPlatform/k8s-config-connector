@@ -324,6 +324,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 					return strings.ReplaceAll(s, resourceID, "${firewallPolicyID}")
 
 				})
+
+			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${groupID}")
+				})
 			}
 		}
 	}
@@ -570,6 +575,28 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		return s
 	})
 
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "" {
+			return s
+		}
+
+		switch path {
+		case ".spec.organizationRef.external":
+			id := strings.TrimPrefix(s, "organizations/")
+			replacement.PathIDs[id] = "${organizationID}"
+		case ".status.writerIdentity":
+			if strings.HasPrefix(s, "serviceAccount:service-org-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-org-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${organizationID}"
+			}
+			if strings.HasPrefix(s, "serviceAccount:service-folder-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-folder-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${folderID}"
+			}
+		}
+		return s
+	})
+
 	if err := visitor.visitMap(u.Object, ""); err != nil {
 		t.Fatalf("visiting KRM object: %v", err)
 	}
@@ -683,7 +710,7 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		switch path {
-		case ".selfLink", ".targetLink", ".selfLinkWithId", ".subnetworks[]":
+		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetworks[]", ".target", ".targetLink", ".zone":
 			return rewriteComputeURL(s)
 		}
 		return s

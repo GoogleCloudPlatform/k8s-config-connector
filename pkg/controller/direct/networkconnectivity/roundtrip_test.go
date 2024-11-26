@@ -43,6 +43,9 @@ func FuzzServiceConnectionPolicySpec(f *testing.F) {
 			".name",
 			".labels",
 			".psc_config.allowed_google_producers_resource_hierarchy_level",
+			".psc_connections[].ip_version",
+			".psc_connections[].producer_instance_metadata",
+			".psc_connections[].service_class",
 		)
 
 		statusFields := sets.New(
@@ -99,6 +102,9 @@ func FuzzServiceConnectionPolicyObservedState(f *testing.F) {
 			".name",
 			".labels",
 			".psc_config.allowed_google_producers_resource_hierarchy_level",
+			".psc_connections[].ip_version",
+			".psc_connections[].producer_instance_metadata",
+			".psc_connections[].service_class",
 		)
 
 		specFields := sets.New(

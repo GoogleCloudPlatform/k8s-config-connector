@@ -138,6 +138,7 @@ generate:
 	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
 	go generate ./pkg/apis/...
+	make -C operator generate
 	make fmt
 
 # Build the docker images
@@ -244,7 +245,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs generate-go-client ensure
+ready-pr: lint manifests resource-docs ensure
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl

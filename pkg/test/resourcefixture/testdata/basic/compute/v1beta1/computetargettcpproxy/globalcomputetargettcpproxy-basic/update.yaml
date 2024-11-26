@@ -20,4 +20,4 @@ metadata:
   name: computetargettcpproxy-${uniqueId}
 spec:
   backendServiceRef:
-    name: computebackendservice-${uniqueId}
+    name: computebackendservice-2-${uniqueId}

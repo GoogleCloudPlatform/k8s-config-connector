@@ -1,0 +1,1030 @@
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=pubsubtopic-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "The connector is not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors?alt=json&connectorId=c-1-${uniqueId}
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "ipCidrRange": "10.1.0.0/28",
+  "machineType": "e2-micro",
+  "maxThroughput": 400,
+  "minThroughput": 300,
+  "network": "${networkID}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.Connector",
+    "ipCidrRange": "10.1.0.0/28",
+    "machineType": "e2-micro",
+    "maxInstances": 4,
+    "maxThroughput": 400,
+    "minInstances": 3,
+    "minThroughput": 300,
+    "name": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}",
+    "network": "${networkID}",
+    "state": "READY"
+  }
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ipCidrRange": "10.1.0.0/28",
+  "machineType": "e2-micro",
+  "maxInstances": 4,
+  "maxThroughput": 400,
+  "minInstances": 3,
+  "minThroughput": 300,
+  "name": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}",
+  "network": "${networkID}",
+  "state": "READY"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "The connector is not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors?alt=json&connectorId=c-2-${uniqueId}
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "ipCidrRange": "10.1.1.0/28",
+  "machineType": "e2-micro",
+  "maxThroughput": 400,
+  "minThroughput": 300,
+  "network": "${networkID}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.Connector",
+    "ipCidrRange": "10.1.1.0/28",
+    "machineType": "e2-micro",
+    "maxInstances": 4,
+    "maxThroughput": 400,
+    "minInstances": 3,
+    "minThroughput": 300,
+    "name": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}",
+    "network": "${networkID}",
+    "state": "READY"
+  }
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ipCidrRange": "10.1.1.0/28",
+  "machineType": "e2-micro",
+  "maxInstances": 4,
+  "maxThroughput": 400,
+  "minInstances": 3,
+  "minThroughput": 300,
+  "name": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}",
+  "network": "${networkID}",
+  "state": "READY"
+}
+
+---
+
+GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "cloudFunction \"projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}\" not found"
+}
+
+---
+
+POST https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "availableMemoryMb": 128,
+  "description": "A sample cloud function with an event trigger",
+  "entryPoint": "helloGET",
+  "environmentVariables": {
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "eventTrigger": {
+    "eventType": "providers/cloud.pubsub/eventTypes/topic.publish",
+    "failurePolicy": {
+      "retry": {}
+    },
+    "resource": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+    "service": "pubsub.googleapis.com"
+  },
+  "ingressSettings": "ALLOW_INTERNAL_ONLY",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "maxInstances": 10,
+  "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
+  "runtime": "nodejs10",
+  "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
+  "sourceRepository": {
+    "url": "https://source.developers.google.com/projects//repos/kcc-cloud-functions/moveable-aliases/main"
+  },
+  "timeout": "60s",
+  "vpcConnector": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}",
+  "vpcConnectorEgressSettings": "PRIVATE_RANGES_ONLY"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "availableMemoryMb": 128,
+  "buildEnvironmentVariables": {},
+  "buildId": "",
+  "buildName": "",
+  "buildServiceAccount": "",
+  "buildWorkerPool": "",
+  "description": "A sample cloud function with an event trigger",
+  "dockerRegistry": "DOCKER_REGISTRY_UNSPECIFIED",
+  "dockerRepository": "",
+  "entryPoint": "helloGET",
+  "environmentVariables": {
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "eventTrigger": {
+    "eventType": "providers/cloud.pubsub/eventTypes/topic.publish",
+    "failurePolicy": {
+      "retry": {}
+    },
+    "resource": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+    "service": "pubsub.googleapis.com"
+  },
+  "ingressSettings": "ALLOW_INTERNAL_ONLY",
+  "kmsKeyName": "",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "maxInstances": 10,
+  "minInstances": 0,
+  "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
+  "network": "",
+  "runtime": "nodejs10",
+  "secretEnvironmentVariables": [],
+  "secretVolumes": [],
+  "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
+  "sourceRepository": {
+    "deployedUrl": "",
+    "url": "https://source.developers.google.com/projects//repos/kcc-cloud-functions/moveable-aliases/main"
+  },
+  "sourceToken": "",
+  "status": "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
+  "timeout": "60s",
+  "updateTime": null,
+  "versionId": "0",
+  "vpcConnector": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}",
+  "vpcConnectorEgressSettings": "PRIVATE_RANGES_ONLY"
+}
+
+---
+
+PATCH https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json&updateMask=availableMemoryMb%2Cdescription%2CenvironmentVariables%2CingressSettings%2Clabels%2CmaxInstances%2Ctimeout%2CvpcConnector%2CvpcConnectorEgressSettings
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "availableMemoryMb": 256,
+  "description": "An updated sample cloud function with an event trigger",
+  "environmentVariables": {
+    "NEW_TEST_ENV_VARIABLE": "new-test-env-variable-value",
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "ingressSettings": "ALLOW_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "maxInstances": 7,
+  "runtime": "nodejs10",
+  "timeout": "120s",
+  "vpcConnector": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}",
+  "vpcConnectorEgressSettings": "ALL_TRAFFIC"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "availableMemoryMb": 256,
+  "buildEnvironmentVariables": {},
+  "buildId": "",
+  "buildName": "",
+  "buildServiceAccount": "",
+  "buildWorkerPool": "",
+  "description": "An updated sample cloud function with an event trigger",
+  "dockerRegistry": "DOCKER_REGISTRY_UNSPECIFIED",
+  "dockerRepository": "",
+  "entryPoint": "helloGET",
+  "environmentVariables": {
+    "NEW_TEST_ENV_VARIABLE": "new-test-env-variable-value",
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "eventTrigger": {
+    "eventType": "providers/cloud.pubsub/eventTypes/topic.publish",
+    "failurePolicy": {
+      "retry": {}
+    },
+    "resource": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+    "service": "pubsub.googleapis.com"
+  },
+  "ingressSettings": "ALLOW_ALL",
+  "kmsKeyName": "",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "maxInstances": 7,
+  "minInstances": 0,
+  "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
+  "network": "",
+  "runtime": "nodejs10",
+  "secretEnvironmentVariables": [],
+  "secretVolumes": [],
+  "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
+  "sourceRepository": {
+    "deployedUrl": "",
+    "url": "https://source.developers.google.com/projects//repos/kcc-cloud-functions/moveable-aliases/main"
+  },
+  "sourceToken": "",
+  "status": "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
+  "timeout": "120s",
+  "updateTime": null,
+  "versionId": "0",
+  "vpcConnector": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}",
+  "vpcConnectorEgressSettings": "ALL_TRAFFIC"
+}
+
+---
+
+DELETE https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "cloudFunction \"projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}\" not found"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ipCidrRange": "10.1.1.0/28",
+  "machineType": "e2-micro",
+  "maxInstances": 4,
+  "maxThroughput": 400,
+  "minInstances": 3,
+  "minThroughput": 300,
+  "name": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}",
+  "network": "${networkID}",
+  "state": "READY"
+}
+
+---
+
+DELETE https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ipCidrRange": "10.1.0.0/28",
+  "machineType": "e2-micro",
+  "maxInstances": 4,
+  "maxThroughput": 400,
+  "minInstances": 3,
+  "minThroughput": 300,
+  "name": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}",
+  "network": "${networkID}",
+  "state": "READY"
+}
+
+---
+
+DELETE https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
+    "target": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

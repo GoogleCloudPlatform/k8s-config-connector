@@ -2623,7 +2623,7 @@ service ProjectsServer {
   // Provisions a new Apigee organization with a functioning runtime. This is the standard way to create trial organizations for a free Apigee trial.
   rpc ProvisionOrganizationProject(ProvisionOrganizationProjectRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1/{project=projects/*}:provisionOrganization"
+      post: "/v1/{name=projects/*}:provisionOrganization"
       body: "project"
     };
   };
@@ -3881,48 +3881,64 @@ message GoogleCloudApigeeV1EnvironmentConfig {
   GoogleCloudApigeeV1RuntimeAddonsConfig addons_config = 1 [json_name="addonsConfig"];
   // The location for the config blob of API Runtime Control, aka Envoy Adapter, for op-based authentication as a URI, e.g. a Cloud Storage URI. This is only used by Envoy-based gateways.
   string arc_config_location = 2 [json_name="arcConfigLocation"];
+  // The algorithm to resolve IP.
+  GoogleCloudApigeeV1EnvironmentConfigClientIPResolutionConfig client_ip_resolution_config = 3 [json_name="clientIpResolutionConfig"];
   // Time that the environment configuration was created.
-  .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  .google.protobuf.Timestamp create_time = 4 [json_name="createTime"];
   // List of data collectors used by the deployments in the environment.
-  repeated GoogleCloudApigeeV1DataCollectorConfig data_collectors = 4 [json_name="dataCollectors"];
+  repeated GoogleCloudApigeeV1DataCollectorConfig data_collectors = 5 [json_name="dataCollectors"];
   // Debug mask that applies to all deployments in the environment.
-  GoogleCloudApigeeV1DebugMask debug_mask = 5 [json_name="debugMask"];
+  GoogleCloudApigeeV1DebugMask debug_mask = 6 [json_name="debugMask"];
   // List of deployment groups in the environment.
-  repeated GoogleCloudApigeeV1DeploymentGroupConfig deployment_groups = 6 [json_name="deploymentGroups"];
+  repeated GoogleCloudApigeeV1DeploymentGroupConfig deployment_groups = 7 [json_name="deploymentGroups"];
   // List of deployments in the environment.
-  repeated GoogleCloudApigeeV1DeploymentConfig deployments = 7 [json_name="deployments"];
+  repeated GoogleCloudApigeeV1DeploymentConfig deployments = 8 [json_name="deployments"];
   // Revision ID for environment-scoped resources (e.g. target servers, keystores) in this config. This ID will increment any time a resource not scoped to a deployment group changes.
-  int64 env_scoped_revision_id = 8 [json_name="envScopedRevisionId"];
+  int64 env_scoped_revision_id = 9 [json_name="envScopedRevisionId"];
   // Feature flags inherited from the organization and environment.
-  map<string, string> feature_flags = 9 [json_name="featureFlags"];
+  map<string, string> feature_flags = 10 [json_name="featureFlags"];
   // List of flow hooks in the environment.
-  repeated GoogleCloudApigeeV1FlowHookConfig flowhooks = 10 [json_name="flowhooks"];
+  repeated GoogleCloudApigeeV1FlowHookConfig flowhooks = 11 [json_name="flowhooks"];
   // The forward proxy's url to be used by the runtime. When set, runtime will send requests to the target via the given forward proxy. This is only used by programmable gateways.
-  string forward_proxy_uri = 11 [json_name="forwardProxyUri"];
+  string forward_proxy_uri = 12 [json_name="forwardProxyUri"];
   // The location for the gateway config blob as a URI, e.g. a Cloud Storage URI. This is only used by Envoy-based gateways.
-  string gateway_config_location = 12 [json_name="gatewayConfigLocation"];
+  string gateway_config_location = 13 [json_name="gatewayConfigLocation"];
   // List of keystores in the environment.
-  repeated GoogleCloudApigeeV1KeystoreConfig keystores = 13 [json_name="keystores"];
+  repeated GoogleCloudApigeeV1KeystoreConfig keystores = 14 [json_name="keystores"];
   // Name of the environment configuration in the following format: `organizations/{org}/environments/{env}/configs/{config}`
-  string name = 14 [json_name="name"];
+  string name = 15 [json_name="name"];
   // Used by the Control plane to add context information to help detect the source of the document during diagnostics and debugging.
-  string provider = 15 [json_name="provider"];
+  string provider = 16 [json_name="provider"];
   // Name of the PubSub topic for the environment.
-  string pubsub_topic = 16 [json_name="pubsubTopic"];
+  string pubsub_topic = 17 [json_name="pubsubTopic"];
   // List of resource references in the environment.
-  repeated GoogleCloudApigeeV1ReferenceConfig resource_references = 17 [json_name="resourceReferences"];
+  repeated GoogleCloudApigeeV1ReferenceConfig resource_references = 18 [json_name="resourceReferences"];
   // List of resource versions in the environment.
-  repeated GoogleCloudApigeeV1ResourceConfig resources = 18 [json_name="resources"];
+  repeated GoogleCloudApigeeV1ResourceConfig resources = 19 [json_name="resources"];
   // Revision ID of the environment configuration. The higher the value, the more recently the configuration was deployed.
-  int64 revision_id = 19 [json_name="revisionId"];
+  int64 revision_id = 20 [json_name="revisionId"];
   // DEPRECATED: Use revision_id.
-  int64 sequence_number = 20 [json_name="sequenceNumber"];
+  int64 sequence_number = 21 [json_name="sequenceNumber"];
   // List of target servers in the environment. Disabled target servers are not displayed.
-  repeated GoogleCloudApigeeV1TargetServerConfig targets = 21 [json_name="targets"];
+  repeated GoogleCloudApigeeV1TargetServerConfig targets = 22 [json_name="targets"];
   // Trace configurations. Contains config for the environment and config overrides for specific API proxies.
-  GoogleCloudApigeeV1RuntimeTraceConfig trace_config = 22 [json_name="traceConfig"];
+  GoogleCloudApigeeV1RuntimeTraceConfig trace_config = 23 [json_name="traceConfig"];
   // Unique ID for the environment configuration. The ID will only change if the environment is deleted and recreated.
-  string uid = 23 [json_name="uid"];
+  string uid = 24 [json_name="uid"];
+}
+
+// Configuration for resolving the client ip.
+message GoogleCloudApigeeV1EnvironmentConfigClientIPResolutionConfig {
+  // Resolves the client ip based on a custom header.
+  GoogleCloudApigeeV1EnvironmentConfigClientIPResolutionConfigHeaderIndexAlgorithm header_index_algorithm = 1 [json_name="headerIndexAlgorithm"];
+}
+
+// Resolves the client ip based on a custom header.
+message GoogleCloudApigeeV1EnvironmentConfigClientIPResolutionConfigHeaderIndexAlgorithm {
+  // The index of the ip in the header. (By default, value is 0 if missing)
+  int32 ip_header_index = 1 [json_name="ipHeaderIndex"];
+  // The name of the header to extract the client ip from.
+  string ip_header_name = 2 [json_name="ipHeaderName"];
 }
 
 // EnvironmentGroup configuration. An environment group is used to group one or more Apigee environments under a single host name.

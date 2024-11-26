@@ -20,10 +20,5 @@ metadata:
   name: secretmanagersecretversion-${uniqueId}
 spec:
   enabled: false
-  secretData:
-    valueFrom:
-      secretKeyRef:
-        key: secretData
-        name: secretmanagersecretversion-dep-${uniqueId}
   secretRef:
     name: secretmanagersecretversion-dep-${uniqueId}

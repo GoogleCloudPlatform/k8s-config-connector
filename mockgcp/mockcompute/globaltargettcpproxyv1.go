@@ -59,10 +59,11 @@ func (s *GlobalTargetTcpProxyV1) Insert(ctx context.Context, req *pb.InsertTarge
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetTargetTcpProxyResource()).(*pb.TargetTcpProxy)
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetTcpProxy")
+
 	if obj.ProxyHeader == nil {
 		obj.ProxyHeader = PtrTo("NONE")
 	}
@@ -104,6 +105,36 @@ func (s *GlobalTargetTcpProxyV1) Delete(ctx context.Context, req *pb.DeleteTarge
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return deleted, nil
+	})
+}
+
+func (s *GlobalTargetTcpProxyV1) SetBackendService(ctx context.Context, req *pb.SetBackendServiceTargetTcpProxyRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global/targetTcpProxies/" + req.GetTargetTcpProxy()
+	name, err := s.parseTargetTcpProxyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.TargetTcpProxy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Service = req.GetTargetTcpProxiesSetBackendServiceRequestResource().Service
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("TargetTcpProxySetBackendService"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
 	})
 }
 

@@ -113,6 +113,14 @@ func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, reader clien
 	}
 	location := parent.Region
 
+	// Handle API/TF default values
+	if obj.Spec.ProxyBind != nil && *obj.Spec.ProxyBind == false {
+		obj.Spec.ProxyBind = nil
+	}
+	if obj.Spec.ProxyHeader == nil {
+		obj.Spec.ProxyHeader = direct.PtrTo("NONE")
+	}
+
 	// Get GCP client
 	if location == "global" {
 		gcpClient, err := m.client(ctx)
@@ -256,17 +264,6 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
 	// Regional API does not support Update
-	if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) && region == "global" {
-		setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
-			Project: parent.ProjectID,
-			TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
-			TargetTcpProxy: tokens[len(tokens)-1],
-		}
-		op, err = a.targetTcpProxiesClient.SetBackendService(ctx, setBackendServiceReq)
-		if err != nil {
-			return fmt.Errorf("updating ComputeTargetTCPProxy backend service %s: %w", a.id.External, err)
-		}
-	}
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) && region == "global" {
 		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
 			Project: parent.ProjectID,
@@ -277,15 +274,34 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		if err != nil {
 			return fmt.Errorf("updating ComputeTargetTCPProxy proxy header %s: %w", a.id.External, err)
 		}
+		if !op.Done() {
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting ComputeTargetTCPProxy proxy header %s update failed: %w", a.id.External, err)
+			}
+		}
+		log.V(2).Info("successfully updated ComputeTargetTCPProxy proxy header", "name", a.id.External)
 	}
 
-	if !op.Done() {
-		err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("waiting ComputeTargetTCPProxy %s update failed: %w", a.id.External, err)
+	if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) && region == "global" {
+		setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
+			Project: parent.ProjectID,
+			TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
+			TargetTcpProxy: tokens[len(tokens)-1],
 		}
+		op, err = a.targetTcpProxiesClient.SetBackendService(ctx, setBackendServiceReq)
+		if err != nil {
+			return fmt.Errorf("updating ComputeTargetTCPProxy backend service %s: %w", a.id.External, err)
+		}
+		if !op.Done() {
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting ComputeTargetTCPProxy backend service %s update failed: %w", a.id.External, err)
+			}
+		}
+		log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id.External)
+
 	}
-	log.V(2).Info("successfully updated ComputeTargetTCPProxy", "name", a.id.External)
 
 	// Get the updated resource
 	updated, err = a.get(ctx)

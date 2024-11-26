@@ -60,8 +60,8 @@ func (s *TargetGrpcProxyV1) Insert(ctx context.Context, req *pb.InsertTargetGrpc
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetTargetGrpcProxyResource()).(*pb.TargetGrpcProxy)
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
-	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/targetGrpcProxies/%d", name.Project.ID, id))
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/targetGrpcProxies/%d", name.Project.ID, id)))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetGrpcProxy")

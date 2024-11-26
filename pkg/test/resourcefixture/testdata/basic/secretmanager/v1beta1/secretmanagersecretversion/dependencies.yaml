@@ -16,6 +16,8 @@ apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
 metadata:
   name: secretmanagersecretversion-dep-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   replication:
     automatic: true

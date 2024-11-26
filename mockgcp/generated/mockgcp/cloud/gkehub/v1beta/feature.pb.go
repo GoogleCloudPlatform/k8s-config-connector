@@ -21,11 +21,11 @@
 package gkehubpb
 
 import (
-	configmanagementpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement"
-	meteringpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering"
-	multiclusteringresspb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress"
-	servicemeshpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/servicemesh/v1beta"
-	policycontrollerpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta"
+	v1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/servicemesh/v1beta"
+	configmanagement "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement"
+	metering "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering"
+	multiclusteringress "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -501,7 +501,7 @@ func (m *CommonFeatureSpec) GetFeatureSpec() isCommonFeatureSpec_FeatureSpec {
 	return nil
 }
 
-func (x *CommonFeatureSpec) GetMulticlusteringress() *multiclusteringresspb.FeatureSpec {
+func (x *CommonFeatureSpec) GetMulticlusteringress() *multiclusteringress.FeatureSpec {
 	if x, ok := x.GetFeatureSpec().(*CommonFeatureSpec_Multiclusteringress); ok {
 		return x.Multiclusteringress
 	}
@@ -514,7 +514,7 @@ type isCommonFeatureSpec_FeatureSpec interface {
 
 type CommonFeatureSpec_Multiclusteringress struct {
 	// Multicluster Ingress-specific spec.
-	Multiclusteringress *multiclusteringresspb.FeatureSpec `protobuf:"bytes,102,opt,name=multiclusteringress,proto3,oneof"`
+	Multiclusteringress *multiclusteringress.FeatureSpec `protobuf:"bytes,102,opt,name=multiclusteringress,proto3,oneof"`
 }
 
 func (*CommonFeatureSpec_Multiclusteringress) isCommonFeatureSpec_FeatureSpec() {}
@@ -623,21 +623,21 @@ func (m *MembershipFeatureSpec) GetFeatureSpec() isMembershipFeatureSpec_Feature
 	return nil
 }
 
-func (x *MembershipFeatureSpec) GetConfigmanagement() *configmanagementpb.MembershipSpec {
+func (x *MembershipFeatureSpec) GetConfigmanagement() *configmanagement.MembershipSpec {
 	if x, ok := x.GetFeatureSpec().(*MembershipFeatureSpec_Configmanagement); ok {
 		return x.Configmanagement
 	}
 	return nil
 }
 
-func (x *MembershipFeatureSpec) GetMesh() *servicemeshpb.MembershipSpec {
+func (x *MembershipFeatureSpec) GetMesh() *v1beta.MembershipSpec {
 	if x, ok := x.GetFeatureSpec().(*MembershipFeatureSpec_Mesh); ok {
 		return x.Mesh
 	}
 	return nil
 }
 
-func (x *MembershipFeatureSpec) GetPolicycontroller() *policycontrollerpb.MembershipSpec {
+func (x *MembershipFeatureSpec) GetPolicycontroller() *v1beta1.MembershipSpec {
 	if x, ok := x.GetFeatureSpec().(*MembershipFeatureSpec_Policycontroller); ok {
 		return x.Policycontroller
 	}
@@ -650,17 +650,17 @@ type isMembershipFeatureSpec_FeatureSpec interface {
 
 type MembershipFeatureSpec_Configmanagement struct {
 	// Config Management-specific spec.
-	Configmanagement *configmanagementpb.MembershipSpec `protobuf:"bytes,106,opt,name=configmanagement,proto3,oneof"`
+	Configmanagement *configmanagement.MembershipSpec `protobuf:"bytes,106,opt,name=configmanagement,proto3,oneof"`
 }
 
 type MembershipFeatureSpec_Mesh struct {
 	// Anthos Service Mesh-specific spec
-	Mesh *servicemeshpb.MembershipSpec `protobuf:"bytes,116,opt,name=mesh,proto3,oneof"`
+	Mesh *v1beta.MembershipSpec `protobuf:"bytes,116,opt,name=mesh,proto3,oneof"`
 }
 
 type MembershipFeatureSpec_Policycontroller struct {
 	// Policy Controller spec.
-	Policycontroller *policycontrollerpb.MembershipSpec `protobuf:"bytes,118,opt,name=policycontroller,proto3,oneof"`
+	Policycontroller *v1beta1.MembershipSpec `protobuf:"bytes,118,opt,name=policycontroller,proto3,oneof"`
 }
 
 func (*MembershipFeatureSpec_Configmanagement) isMembershipFeatureSpec_FeatureSpec() {}
@@ -726,28 +726,28 @@ func (m *MembershipFeatureState) GetFeatureState() isMembershipFeatureState_Feat
 	return nil
 }
 
-func (x *MembershipFeatureState) GetServicemesh() *servicemeshpb.MembershipState {
+func (x *MembershipFeatureState) GetServicemesh() *v1beta.MembershipState {
 	if x, ok := x.GetFeatureState().(*MembershipFeatureState_Servicemesh); ok {
 		return x.Servicemesh
 	}
 	return nil
 }
 
-func (x *MembershipFeatureState) GetMetering() *meteringpb.MembershipState {
+func (x *MembershipFeatureState) GetMetering() *metering.MembershipState {
 	if x, ok := x.GetFeatureState().(*MembershipFeatureState_Metering); ok {
 		return x.Metering
 	}
 	return nil
 }
 
-func (x *MembershipFeatureState) GetConfigmanagement() *configmanagementpb.MembershipState {
+func (x *MembershipFeatureState) GetConfigmanagement() *configmanagement.MembershipState {
 	if x, ok := x.GetFeatureState().(*MembershipFeatureState_Configmanagement); ok {
 		return x.Configmanagement
 	}
 	return nil
 }
 
-func (x *MembershipFeatureState) GetPolicycontroller() *policycontrollerpb.MembershipState {
+func (x *MembershipFeatureState) GetPolicycontroller() *v1beta1.MembershipState {
 	if x, ok := x.GetFeatureState().(*MembershipFeatureState_Policycontroller); ok {
 		return x.Policycontroller
 	}
@@ -767,22 +767,22 @@ type isMembershipFeatureState_FeatureState interface {
 
 type MembershipFeatureState_Servicemesh struct {
 	// Service Mesh-specific state.
-	Servicemesh *servicemeshpb.MembershipState `protobuf:"bytes,100,opt,name=servicemesh,proto3,oneof"`
+	Servicemesh *v1beta.MembershipState `protobuf:"bytes,100,opt,name=servicemesh,proto3,oneof"`
 }
 
 type MembershipFeatureState_Metering struct {
 	// Metering-specific state.
-	Metering *meteringpb.MembershipState `protobuf:"bytes,104,opt,name=metering,proto3,oneof"`
+	Metering *metering.MembershipState `protobuf:"bytes,104,opt,name=metering,proto3,oneof"`
 }
 
 type MembershipFeatureState_Configmanagement struct {
 	// Config Management-specific state.
-	Configmanagement *configmanagementpb.MembershipState `protobuf:"bytes,106,opt,name=configmanagement,proto3,oneof"`
+	Configmanagement *configmanagement.MembershipState `protobuf:"bytes,106,opt,name=configmanagement,proto3,oneof"`
 }
 
 type MembershipFeatureState_Policycontroller struct {
 	// Policycontroller-specific state.
-	Policycontroller *policycontrollerpb.MembershipState `protobuf:"bytes,116,opt,name=policycontroller,proto3,oneof"`
+	Policycontroller *v1beta1.MembershipState `protobuf:"bytes,116,opt,name=policycontroller,proto3,oneof"`
 }
 
 func (*MembershipFeatureState_Servicemesh) isMembershipFeatureState_FeatureState() {}
@@ -1026,27 +1026,27 @@ func file_mockgcp_cloud_gkehub_v1beta_feature_proto_rawDescGZIP() []byte {
 var file_mockgcp_cloud_gkehub_v1beta_feature_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_mockgcp_cloud_gkehub_v1beta_feature_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_mockgcp_cloud_gkehub_v1beta_feature_proto_goTypes = []interface{}{
-	(FeatureResourceState_State)(0), // 0: mockgcp.cloud.gkehub.v1beta.FeatureResourceState.State
-	(FeatureState_Code)(0),          // 1: mockgcp.cloud.gkehub.v1beta.FeatureState.Code
-	(*Feature)(nil),                 // 2: mockgcp.cloud.gkehub.v1beta.Feature
-	(*FeatureResourceState)(nil),    // 3: mockgcp.cloud.gkehub.v1beta.FeatureResourceState
-	(*FeatureState)(nil),            // 4: mockgcp.cloud.gkehub.v1beta.FeatureState
-	(*CommonFeatureSpec)(nil),       // 5: mockgcp.cloud.gkehub.v1beta.CommonFeatureSpec
-	(*CommonFeatureState)(nil),      // 6: mockgcp.cloud.gkehub.v1beta.CommonFeatureState
-	(*MembershipFeatureSpec)(nil),   // 7: mockgcp.cloud.gkehub.v1beta.MembershipFeatureSpec
-	(*MembershipFeatureState)(nil),  // 8: mockgcp.cloud.gkehub.v1beta.MembershipFeatureState
-	nil,                             // 9: mockgcp.cloud.gkehub.v1beta.Feature.LabelsEntry
-	nil,                             // 10: mockgcp.cloud.gkehub.v1beta.Feature.MembershipSpecsEntry
-	nil,                             // 11: mockgcp.cloud.gkehub.v1beta.Feature.MembershipStatesEntry
-	(*timestamp.Timestamp)(nil),     // 12: google.protobuf.Timestamp
-	(*multiclusteringresspb.FeatureSpec)(nil),  // 13: mockgcp.cloud.gkehub.multiclusteringress.v1beta.FeatureSpec
-	(*configmanagementpb.MembershipSpec)(nil),  // 14: mockgcp.cloud.gkehub.configmanagement.v1beta.MembershipSpec
-	(*servicemeshpb.MembershipSpec)(nil),       // 15: mockgcp.cloud.gkehub.servicemesh.v1beta.MembershipSpec
-	(*policycontrollerpb.MembershipSpec)(nil),  // 16: mockgcp.cloud.gkehub.policycontroller.v1beta.MembershipSpec
-	(*servicemeshpb.MembershipState)(nil),      // 17: mockgcp.cloud.gkehub.servicemesh.v1beta.MembershipState
-	(*meteringpb.MembershipState)(nil),         // 18: mockgcp.cloud.gkehub.metering.v1beta.MembershipState
-	(*configmanagementpb.MembershipState)(nil), // 19: mockgcp.cloud.gkehub.configmanagement.v1beta.MembershipState
-	(*policycontrollerpb.MembershipState)(nil), // 20: mockgcp.cloud.gkehub.policycontroller.v1beta.MembershipState
+	(FeatureResourceState_State)(0),          // 0: mockgcp.cloud.gkehub.v1beta.FeatureResourceState.State
+	(FeatureState_Code)(0),                   // 1: mockgcp.cloud.gkehub.v1beta.FeatureState.Code
+	(*Feature)(nil),                          // 2: mockgcp.cloud.gkehub.v1beta.Feature
+	(*FeatureResourceState)(nil),             // 3: mockgcp.cloud.gkehub.v1beta.FeatureResourceState
+	(*FeatureState)(nil),                     // 4: mockgcp.cloud.gkehub.v1beta.FeatureState
+	(*CommonFeatureSpec)(nil),                // 5: mockgcp.cloud.gkehub.v1beta.CommonFeatureSpec
+	(*CommonFeatureState)(nil),               // 6: mockgcp.cloud.gkehub.v1beta.CommonFeatureState
+	(*MembershipFeatureSpec)(nil),            // 7: mockgcp.cloud.gkehub.v1beta.MembershipFeatureSpec
+	(*MembershipFeatureState)(nil),           // 8: mockgcp.cloud.gkehub.v1beta.MembershipFeatureState
+	nil,                                      // 9: mockgcp.cloud.gkehub.v1beta.Feature.LabelsEntry
+	nil,                                      // 10: mockgcp.cloud.gkehub.v1beta.Feature.MembershipSpecsEntry
+	nil,                                      // 11: mockgcp.cloud.gkehub.v1beta.Feature.MembershipStatesEntry
+	(*timestamp.Timestamp)(nil),              // 12: google.protobuf.Timestamp
+	(*multiclusteringress.FeatureSpec)(nil),  // 13: mockgcp.cloud.gkehub.multiclusteringress.v1beta.FeatureSpec
+	(*configmanagement.MembershipSpec)(nil),  // 14: mockgcp.cloud.gkehub.configmanagement.v1beta.MembershipSpec
+	(*v1beta.MembershipSpec)(nil),            // 15: mockgcp.cloud.gkehub.servicemesh.v1beta.MembershipSpec
+	(*v1beta1.MembershipSpec)(nil),           // 16: mockgcp.cloud.gkehub.policycontroller.v1beta.MembershipSpec
+	(*v1beta.MembershipState)(nil),           // 17: mockgcp.cloud.gkehub.servicemesh.v1beta.MembershipState
+	(*metering.MembershipState)(nil),         // 18: mockgcp.cloud.gkehub.metering.v1beta.MembershipState
+	(*configmanagement.MembershipState)(nil), // 19: mockgcp.cloud.gkehub.configmanagement.v1beta.MembershipState
+	(*v1beta1.MembershipState)(nil),          // 20: mockgcp.cloud.gkehub.policycontroller.v1beta.MembershipState
 }
 var file_mockgcp_cloud_gkehub_v1beta_feature_proto_depIdxs = []int32{
 	9,  // 0: mockgcp.cloud.gkehub.v1beta.Feature.labels:type_name -> mockgcp.cloud.gkehub.v1beta.Feature.LabelsEntry

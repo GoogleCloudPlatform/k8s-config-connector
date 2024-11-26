@@ -61,15 +61,15 @@ func (s *RegionalDisksV1) Insert(ctx context.Context, req *pb.InsertRegionDiskRe
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetDiskResource()).(*pb.Disk)
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#disk")
-	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
+	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 	obj.Status = PtrTo("READY")
 	if obj.Type == nil {
 		diskType := "pd-standard"
-		obj.Type = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/regiondiskTypes/%s", name.Project.ID, name.Region, diskType))
+		obj.Type = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/regiondiskTypes/%s", name.Project.ID, name.Region, diskType)))
 	}
 	if obj.PhysicalBlockSizeBytes == nil {
 		obj.PhysicalBlockSizeBytes = PtrTo(int64(4096))

@@ -60,7 +60,7 @@ func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertT
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetTargetHttpsProxyResource()).(*pb.TargetHttpsProxy)
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetHttpsProxy")
@@ -89,7 +89,7 @@ func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertT
 				if err != nil {
 					return nil, status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
 				}
-				certs = append(certs, fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/global/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Name))
+				certs = append(certs, buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Name)))
 			}
 			obj.SslCertificates = certs
 		}
@@ -99,7 +99,7 @@ func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertT
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
 		}
-		obj.UrlMap = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/global/urlMaps/%s", mapName.Project.ID, mapName.Name))
+		obj.UrlMap = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/urlMaps/%s", mapName.Project.ID, mapName.Name)))
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -168,7 +168,7 @@ func (s *GlobalTargetHTTPSProxiesV1) SetUrlMap(ctx context.Context, req *pb.SetU
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
 		}
-		obj.UrlMap = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/global/urlMaps/%s", mapName.Project.ID, mapName.Name))
+		obj.UrlMap = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/urlMaps/%s", mapName.Project.ID, mapName.Name)))
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

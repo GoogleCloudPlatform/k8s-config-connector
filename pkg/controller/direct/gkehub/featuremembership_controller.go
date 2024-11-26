@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 	"time"
 
 	featureapi "google.golang.org/api/gkehub/v1beta"
@@ -157,7 +158,14 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting feature %q: %w", a.featureID, err)
 	}
 	a.actual = feature
-	return true, nil
+	canonicalizedMID, found, err := matchWithCanonicalMemebrshipID(a.membershipID, feature)
+	if err != nil {
+		return false, nil
+	}
+	if canonicalizedMID != "" {
+		a.membershipID = canonicalizedMID
+	}
+	return found, nil
 }
 
 // Delete implements the Adapter interface.
@@ -276,4 +284,23 @@ func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, err
 	}
 	u.Object = uObj
 	return u, nil
+}
+
+// mID is in the format of "projects/{ProjectID}/locations/*/memberships/{membershipId}".
+// matchWithCanonicalMemebrshipID matches the keys in the feature.membershipspec map, which is in the format of "projects/{ProjectNumber}/locations/*/memberships/{membershipId}".
+func matchWithCanonicalMemebrshipID(mID string, feature *featureapi.Feature) (string, bool, error) {
+	if feature.MembershipSpecs == nil {
+		return "", false, nil
+	}
+	tokens := strings.Split(mID, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "memberships" {
+		return "", false, fmt.Errorf("format of membership ID=%q was not known (use projects/*/locations/*/memberships/{membershipId}) ", mID)
+	}
+	suffix := strings.Join(tokens[2:], "/")
+	for k := range feature.MembershipSpecs {
+		if strings.HasSuffix(k, suffix) {
+			return k, true, nil
+		}
+	}
+	return "", false, nil
 }

@@ -3,7 +3,7 @@ kind: Folder
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/organization-id: "123450001"
+    cnrm.cloud.google.com/organization-id: ${organizationID}
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -17,7 +17,7 @@ metadata:
 spec:
   displayName: KCC-2 ${uniqueId}
   organizationRef:
-    external: "123450001"
+    external: ${organizationID}
   resourceID: ${folderId}
 status:
   conditions:

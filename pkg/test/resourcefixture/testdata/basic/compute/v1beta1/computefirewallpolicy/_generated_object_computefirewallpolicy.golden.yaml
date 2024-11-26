@@ -30,5 +30,5 @@ status:
   id: 1111111111111111
   observedGeneration: 3
   ruleTupleCount: 8
-  selfLink: https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
-  selfLinkWithId: https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/${firewallPolicyID}
+  selfLink: https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/${firewallPolicyID}
+  selfLinkWithId: https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/${firewallPolicyID}/${firewallPolicyID}

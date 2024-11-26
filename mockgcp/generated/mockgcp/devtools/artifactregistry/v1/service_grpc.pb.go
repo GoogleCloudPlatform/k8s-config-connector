@@ -81,10 +81,18 @@ type ArtifactRegistryClient interface {
 	// Deletes multiple versions across a repository. The returned operation will
 	// complete once the versions have been deleted.
 	BatchDeleteVersions(ctx context.Context, in *BatchDeleteVersionsRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates a version.
+	UpdateVersion(ctx context.Context, in *UpdateVersionRequest, opts ...grpc.CallOption) (*Version, error)
 	// Lists files.
 	ListFiles(ctx context.Context, in *ListFilesRequest, opts ...grpc.CallOption) (*ListFilesResponse, error)
 	// Gets a file.
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*File, error)
+	// Deletes a file and all of its content. It is only allowed on generic
+	// repositories. The returned operation will complete once the file has been
+	// deleted.
+	DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates a file.
+	UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*File, error)
 	// Lists tags.
 	ListTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*ListTagsResponse, error)
 	// Gets a tag.
@@ -95,6 +103,16 @@ type ArtifactRegistryClient interface {
 	UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*Tag, error)
 	// Deletes a tag.
 	DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Creates a rule.
+	CreateRule(ctx context.Context, in *CreateRuleRequest, opts ...grpc.CallOption) (*Rule, error)
+	// Lists rules.
+	ListRules(ctx context.Context, in *ListRulesRequest, opts ...grpc.CallOption) (*ListRulesResponse, error)
+	// Gets a rule.
+	GetRule(ctx context.Context, in *GetRuleRequest, opts ...grpc.CallOption) (*Rule, error)
+	// Updates a rule.
+	UpdateRule(ctx context.Context, in *UpdateRuleRequest, opts ...grpc.CallOption) (*Rule, error)
+	// Deletes a rule.
+	DeleteRule(ctx context.Context, in *DeleteRuleRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Updates the IAM policy for a given resource.
 	SetIamPolicy(ctx context.Context, in *iampb.SetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
 	// Gets the IAM policy for a given resource.
@@ -109,6 +127,19 @@ type ArtifactRegistryClient interface {
 	GetVPCSCConfig(ctx context.Context, in *GetVPCSCConfigRequest, opts ...grpc.CallOption) (*VPCSCConfig, error)
 	// Updates the VPCSC Config for the Project.
 	UpdateVPCSCConfig(ctx context.Context, in *UpdateVPCSCConfigRequest, opts ...grpc.CallOption) (*VPCSCConfig, error)
+	// Updates a package.
+	UpdatePackage(ctx context.Context, in *UpdatePackageRequest, opts ...grpc.CallOption) (*Package, error)
+	// Lists attachments.
+	ListAttachments(ctx context.Context, in *ListAttachmentsRequest, opts ...grpc.CallOption) (*ListAttachmentsResponse, error)
+	// Gets an attachment.
+	GetAttachment(ctx context.Context, in *GetAttachmentRequest, opts ...grpc.CallOption) (*Attachment, error)
+	// Creates an attachment. The returned Operation will finish once the
+	// attachment has been created. Its response will be the created attachment.
+	CreateAttachment(ctx context.Context, in *CreateAttachmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes an attachment. The returned Operation will
+	// finish once the attachments has been deleted. It will not have any
+	// Operation metadata and will return a `google.protobuf.Empty` response.
+	DeleteAttachment(ctx context.Context, in *DeleteAttachmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type artifactRegistryClient struct {
@@ -317,6 +348,15 @@ func (c *artifactRegistryClient) BatchDeleteVersions(ctx context.Context, in *Ba
 	return out, nil
 }
 
+func (c *artifactRegistryClient) UpdateVersion(ctx context.Context, in *UpdateVersionRequest, opts ...grpc.CallOption) (*Version, error) {
+	out := new(Version)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdateVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *artifactRegistryClient) ListFiles(ctx context.Context, in *ListFilesRequest, opts ...grpc.CallOption) (*ListFilesResponse, error) {
 	out := new(ListFilesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/ListFiles", in, out, opts...)
@@ -329,6 +369,24 @@ func (c *artifactRegistryClient) ListFiles(ctx context.Context, in *ListFilesReq
 func (c *artifactRegistryClient) GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*File, error) {
 	out := new(File)
 	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/GetFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/DeleteFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*File, error) {
+	out := new(File)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdateFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -374,6 +432,51 @@ func (c *artifactRegistryClient) UpdateTag(ctx context.Context, in *UpdateTagReq
 func (c *artifactRegistryClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/DeleteTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) CreateRule(ctx context.Context, in *CreateRuleRequest, opts ...grpc.CallOption) (*Rule, error) {
+	out := new(Rule)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/CreateRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) ListRules(ctx context.Context, in *ListRulesRequest, opts ...grpc.CallOption) (*ListRulesResponse, error) {
+	out := new(ListRulesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/ListRules", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) GetRule(ctx context.Context, in *GetRuleRequest, opts ...grpc.CallOption) (*Rule, error) {
+	out := new(Rule)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/GetRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) UpdateRule(ctx context.Context, in *UpdateRuleRequest, opts ...grpc.CallOption) (*Rule, error) {
+	out := new(Rule)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdateRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) DeleteRule(ctx context.Context, in *DeleteRuleRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/DeleteRule", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -443,6 +546,51 @@ func (c *artifactRegistryClient) UpdateVPCSCConfig(ctx context.Context, in *Upda
 	return out, nil
 }
 
+func (c *artifactRegistryClient) UpdatePackage(ctx context.Context, in *UpdatePackageRequest, opts ...grpc.CallOption) (*Package, error) {
+	out := new(Package)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdatePackage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) ListAttachments(ctx context.Context, in *ListAttachmentsRequest, opts ...grpc.CallOption) (*ListAttachmentsResponse, error) {
+	out := new(ListAttachmentsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/ListAttachments", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) GetAttachment(ctx context.Context, in *GetAttachmentRequest, opts ...grpc.CallOption) (*Attachment, error) {
+	out := new(Attachment)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/GetAttachment", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) CreateAttachment(ctx context.Context, in *CreateAttachmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/CreateAttachment", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artifactRegistryClient) DeleteAttachment(ctx context.Context, in *DeleteAttachmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/DeleteAttachment", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ArtifactRegistryServer is the server API for ArtifactRegistry service.
 // All implementations must embed UnimplementedArtifactRegistryServer
 // for forward compatibility
@@ -503,10 +651,18 @@ type ArtifactRegistryServer interface {
 	// Deletes multiple versions across a repository. The returned operation will
 	// complete once the versions have been deleted.
 	BatchDeleteVersions(context.Context, *BatchDeleteVersionsRequest) (*longrunningpb.Operation, error)
+	// Updates a version.
+	UpdateVersion(context.Context, *UpdateVersionRequest) (*Version, error)
 	// Lists files.
 	ListFiles(context.Context, *ListFilesRequest) (*ListFilesResponse, error)
 	// Gets a file.
 	GetFile(context.Context, *GetFileRequest) (*File, error)
+	// Deletes a file and all of its content. It is only allowed on generic
+	// repositories. The returned operation will complete once the file has been
+	// deleted.
+	DeleteFile(context.Context, *DeleteFileRequest) (*longrunningpb.Operation, error)
+	// Updates a file.
+	UpdateFile(context.Context, *UpdateFileRequest) (*File, error)
 	// Lists tags.
 	ListTags(context.Context, *ListTagsRequest) (*ListTagsResponse, error)
 	// Gets a tag.
@@ -517,6 +673,16 @@ type ArtifactRegistryServer interface {
 	UpdateTag(context.Context, *UpdateTagRequest) (*Tag, error)
 	// Deletes a tag.
 	DeleteTag(context.Context, *DeleteTagRequest) (*empty.Empty, error)
+	// Creates a rule.
+	CreateRule(context.Context, *CreateRuleRequest) (*Rule, error)
+	// Lists rules.
+	ListRules(context.Context, *ListRulesRequest) (*ListRulesResponse, error)
+	// Gets a rule.
+	GetRule(context.Context, *GetRuleRequest) (*Rule, error)
+	// Updates a rule.
+	UpdateRule(context.Context, *UpdateRuleRequest) (*Rule, error)
+	// Deletes a rule.
+	DeleteRule(context.Context, *DeleteRuleRequest) (*empty.Empty, error)
 	// Updates the IAM policy for a given resource.
 	SetIamPolicy(context.Context, *iampb.SetIamPolicyRequest) (*iampb.Policy, error)
 	// Gets the IAM policy for a given resource.
@@ -531,6 +697,19 @@ type ArtifactRegistryServer interface {
 	GetVPCSCConfig(context.Context, *GetVPCSCConfigRequest) (*VPCSCConfig, error)
 	// Updates the VPCSC Config for the Project.
 	UpdateVPCSCConfig(context.Context, *UpdateVPCSCConfigRequest) (*VPCSCConfig, error)
+	// Updates a package.
+	UpdatePackage(context.Context, *UpdatePackageRequest) (*Package, error)
+	// Lists attachments.
+	ListAttachments(context.Context, *ListAttachmentsRequest) (*ListAttachmentsResponse, error)
+	// Gets an attachment.
+	GetAttachment(context.Context, *GetAttachmentRequest) (*Attachment, error)
+	// Creates an attachment. The returned Operation will finish once the
+	// attachment has been created. Its response will be the created attachment.
+	CreateAttachment(context.Context, *CreateAttachmentRequest) (*longrunningpb.Operation, error)
+	// Deletes an attachment. The returned Operation will
+	// finish once the attachments has been deleted. It will not have any
+	// Operation metadata and will return a `google.protobuf.Empty` response.
+	DeleteAttachment(context.Context, *DeleteAttachmentRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedArtifactRegistryServer()
 }
 
@@ -604,11 +783,20 @@ func (UnimplementedArtifactRegistryServer) DeleteVersion(context.Context, *Delet
 func (UnimplementedArtifactRegistryServer) BatchDeleteVersions(context.Context, *BatchDeleteVersionsRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteVersions not implemented")
 }
+func (UnimplementedArtifactRegistryServer) UpdateVersion(context.Context, *UpdateVersionRequest) (*Version, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateVersion not implemented")
+}
 func (UnimplementedArtifactRegistryServer) ListFiles(context.Context, *ListFilesRequest) (*ListFilesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFiles not implemented")
 }
 func (UnimplementedArtifactRegistryServer) GetFile(context.Context, *GetFileRequest) (*File, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFile not implemented")
+}
+func (UnimplementedArtifactRegistryServer) DeleteFile(context.Context, *DeleteFileRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFile not implemented")
+}
+func (UnimplementedArtifactRegistryServer) UpdateFile(context.Context, *UpdateFileRequest) (*File, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFile not implemented")
 }
 func (UnimplementedArtifactRegistryServer) ListTags(context.Context, *ListTagsRequest) (*ListTagsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTags not implemented")
@@ -624,6 +812,21 @@ func (UnimplementedArtifactRegistryServer) UpdateTag(context.Context, *UpdateTag
 }
 func (UnimplementedArtifactRegistryServer) DeleteTag(context.Context, *DeleteTagRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTag not implemented")
+}
+func (UnimplementedArtifactRegistryServer) CreateRule(context.Context, *CreateRuleRequest) (*Rule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRule not implemented")
+}
+func (UnimplementedArtifactRegistryServer) ListRules(context.Context, *ListRulesRequest) (*ListRulesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRules not implemented")
+}
+func (UnimplementedArtifactRegistryServer) GetRule(context.Context, *GetRuleRequest) (*Rule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRule not implemented")
+}
+func (UnimplementedArtifactRegistryServer) UpdateRule(context.Context, *UpdateRuleRequest) (*Rule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRule not implemented")
+}
+func (UnimplementedArtifactRegistryServer) DeleteRule(context.Context, *DeleteRuleRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRule not implemented")
 }
 func (UnimplementedArtifactRegistryServer) SetIamPolicy(context.Context, *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
@@ -645,6 +848,21 @@ func (UnimplementedArtifactRegistryServer) GetVPCSCConfig(context.Context, *GetV
 }
 func (UnimplementedArtifactRegistryServer) UpdateVPCSCConfig(context.Context, *UpdateVPCSCConfigRequest) (*VPCSCConfig, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateVPCSCConfig not implemented")
+}
+func (UnimplementedArtifactRegistryServer) UpdatePackage(context.Context, *UpdatePackageRequest) (*Package, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePackage not implemented")
+}
+func (UnimplementedArtifactRegistryServer) ListAttachments(context.Context, *ListAttachmentsRequest) (*ListAttachmentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAttachments not implemented")
+}
+func (UnimplementedArtifactRegistryServer) GetAttachment(context.Context, *GetAttachmentRequest) (*Attachment, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAttachment not implemented")
+}
+func (UnimplementedArtifactRegistryServer) CreateAttachment(context.Context, *CreateAttachmentRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAttachment not implemented")
+}
+func (UnimplementedArtifactRegistryServer) DeleteAttachment(context.Context, *DeleteAttachmentRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAttachment not implemented")
 }
 func (UnimplementedArtifactRegistryServer) mustEmbedUnimplementedArtifactRegistryServer() {}
 
@@ -1055,6 +1273,24 @@ func _ArtifactRegistry_BatchDeleteVersions_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArtifactRegistry_UpdateVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).UpdateVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdateVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).UpdateVersion(ctx, req.(*UpdateVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ArtifactRegistry_ListFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFilesRequest)
 	if err := dec(in); err != nil {
@@ -1087,6 +1323,42 @@ func _ArtifactRegistry_GetFile_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ArtifactRegistryServer).GetFile(ctx, req.(*GetFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_DeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).DeleteFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/DeleteFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).DeleteFile(ctx, req.(*DeleteFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).UpdateFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdateFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).UpdateFile(ctx, req.(*UpdateFileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1177,6 +1449,96 @@ func _ArtifactRegistry_DeleteTag_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ArtifactRegistryServer).DeleteTag(ctx, req.(*DeleteTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_CreateRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).CreateRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/CreateRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).CreateRule(ctx, req.(*CreateRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_ListRules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRulesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).ListRules(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/ListRules",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).ListRules(ctx, req.(*ListRulesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_GetRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).GetRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/GetRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).GetRule(ctx, req.(*GetRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_UpdateRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).UpdateRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdateRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).UpdateRule(ctx, req.(*UpdateRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_DeleteRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).DeleteRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/DeleteRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).DeleteRule(ctx, req.(*DeleteRuleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1307,6 +1669,96 @@ func _ArtifactRegistry_UpdateVPCSCConfig_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArtifactRegistry_UpdatePackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePackageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).UpdatePackage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/UpdatePackage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).UpdatePackage(ctx, req.(*UpdatePackageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_ListAttachments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAttachmentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).ListAttachments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/ListAttachments",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).ListAttachments(ctx, req.(*ListAttachmentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_GetAttachment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAttachmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).GetAttachment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/GetAttachment",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).GetAttachment(ctx, req.(*GetAttachmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_CreateAttachment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAttachmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).CreateAttachment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/CreateAttachment",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).CreateAttachment(ctx, req.(*CreateAttachmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtifactRegistry_DeleteAttachment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAttachmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).DeleteAttachment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/DeleteAttachment",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).DeleteAttachment(ctx, req.(*DeleteAttachmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ArtifactRegistry_ServiceDesc is the grpc.ServiceDesc for ArtifactRegistry service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1403,12 +1855,24 @@ var ArtifactRegistry_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ArtifactRegistry_BatchDeleteVersions_Handler,
 		},
 		{
+			MethodName: "UpdateVersion",
+			Handler:    _ArtifactRegistry_UpdateVersion_Handler,
+		},
+		{
 			MethodName: "ListFiles",
 			Handler:    _ArtifactRegistry_ListFiles_Handler,
 		},
 		{
 			MethodName: "GetFile",
 			Handler:    _ArtifactRegistry_GetFile_Handler,
+		},
+		{
+			MethodName: "DeleteFile",
+			Handler:    _ArtifactRegistry_DeleteFile_Handler,
+		},
+		{
+			MethodName: "UpdateFile",
+			Handler:    _ArtifactRegistry_UpdateFile_Handler,
 		},
 		{
 			MethodName: "ListTags",
@@ -1429,6 +1893,26 @@ var ArtifactRegistry_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteTag",
 			Handler:    _ArtifactRegistry_DeleteTag_Handler,
+		},
+		{
+			MethodName: "CreateRule",
+			Handler:    _ArtifactRegistry_CreateRule_Handler,
+		},
+		{
+			MethodName: "ListRules",
+			Handler:    _ArtifactRegistry_ListRules_Handler,
+		},
+		{
+			MethodName: "GetRule",
+			Handler:    _ArtifactRegistry_GetRule_Handler,
+		},
+		{
+			MethodName: "UpdateRule",
+			Handler:    _ArtifactRegistry_UpdateRule_Handler,
+		},
+		{
+			MethodName: "DeleteRule",
+			Handler:    _ArtifactRegistry_DeleteRule_Handler,
 		},
 		{
 			MethodName: "SetIamPolicy",
@@ -1457,6 +1941,26 @@ var ArtifactRegistry_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateVPCSCConfig",
 			Handler:    _ArtifactRegistry_UpdateVPCSCConfig_Handler,
+		},
+		{
+			MethodName: "UpdatePackage",
+			Handler:    _ArtifactRegistry_UpdatePackage_Handler,
+		},
+		{
+			MethodName: "ListAttachments",
+			Handler:    _ArtifactRegistry_ListAttachments_Handler,
+		},
+		{
+			MethodName: "GetAttachment",
+			Handler:    _ArtifactRegistry_GetAttachment_Handler,
+		},
+		{
+			MethodName: "CreateAttachment",
+			Handler:    _ArtifactRegistry_CreateAttachment_Handler,
+		},
+		{
+			MethodName: "DeleteAttachment",
+			Handler:    _ArtifactRegistry_DeleteAttachment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

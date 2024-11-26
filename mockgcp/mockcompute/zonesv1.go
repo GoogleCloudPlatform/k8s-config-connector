@@ -39,7 +39,7 @@ func (s *ZonesV1) Get(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, er
 	}
 
 	region := strings.Join(strings.Split(name.Zone, "-")[:2], "-")
-	region = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, region)
+	region = buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, region))
 
 	obj := &pb.Zone{}
 
@@ -47,7 +47,7 @@ func (s *ZonesV1) Get(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, er
 	obj.Name = PtrTo(name.Zone)
 	obj.Status = PtrTo("UP")
 	obj.Region = &region
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
 
 	return obj, nil
 }

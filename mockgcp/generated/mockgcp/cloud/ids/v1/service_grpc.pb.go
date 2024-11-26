@@ -61,7 +61,7 @@ func RegisterProjectsServerServer(s grpc.ServiceRegistrar, srv ProjectsServerSer
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.ids.v1.ProjectsServer",
+	ServiceName: "mockgcp.cloud.ids.v1.ProjectsServer",
 	HandlerType: (*ProjectsServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
@@ -72,7 +72,9 @@ var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsLocationsServerClient interface {
+	// Gets information about a location.
 	GetProjectsLocation(ctx context.Context, in *GetProjectsLocationRequest, opts ...grpc.CallOption) (*Location, error)
+	// Lists information about the supported locations for this service.
 	ListProjectsLocations(ctx context.Context, in *ListProjectsLocationsRequest, opts ...grpc.CallOption) (*ListLocationsResponse, error)
 }
 
@@ -86,7 +88,7 @@ func NewProjectsLocationsServerClient(cc grpc.ClientConnInterface) ProjectsLocat
 
 func (c *projectsLocationsServerClient) GetProjectsLocation(ctx context.Context, in *GetProjectsLocationRequest, opts ...grpc.CallOption) (*Location, error) {
 	out := new(Location)
-	err := c.cc.Invoke(ctx, "/google.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +97,7 @@ func (c *projectsLocationsServerClient) GetProjectsLocation(ctx context.Context,
 
 func (c *projectsLocationsServerClient) ListProjectsLocations(ctx context.Context, in *ListProjectsLocationsRequest, opts ...grpc.CallOption) (*ListLocationsResponse, error) {
 	out := new(ListLocationsResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +108,9 @@ func (c *projectsLocationsServerClient) ListProjectsLocations(ctx context.Contex
 // All implementations must embed UnimplementedProjectsLocationsServerServer
 // for forward compatibility
 type ProjectsLocationsServerServer interface {
+	// Gets information about a location.
 	GetProjectsLocation(context.Context, *GetProjectsLocationRequest) (*Location, error)
+	// Lists information about the supported locations for this service.
 	ListProjectsLocations(context.Context, *ListProjectsLocationsRequest) (*ListLocationsResponse, error)
 	mustEmbedUnimplementedProjectsLocationsServerServer()
 }
@@ -145,7 +149,7 @@ func _ProjectsLocationsServer_GetProjectsLocation_Handler(srv interface{}, ctx c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation",
+		FullMethod: "/mockgcp.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsServerServer).GetProjectsLocation(ctx, req.(*GetProjectsLocationRequest))
@@ -163,7 +167,7 @@ func _ProjectsLocationsServer_ListProjectsLocations_Handler(srv interface{}, ctx
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations",
+		FullMethod: "/mockgcp.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsServerServer).ListProjectsLocations(ctx, req.(*ListProjectsLocationsRequest))
@@ -175,7 +179,7 @@ func _ProjectsLocationsServer_ListProjectsLocations_Handler(srv interface{}, ctx
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectsLocationsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.ids.v1.ProjectsLocationsServer",
+	ServiceName: "mockgcp.cloud.ids.v1.ProjectsLocationsServer",
 	HandlerType: (*ProjectsLocationsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -195,10 +199,15 @@ var ProjectsLocationsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsLocationsEndpointsServerClient interface {
+	// Creates a new Endpoint in a given project and location.
 	CreateProjectsLocationsEndpoint(ctx context.Context, in *CreateProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a single Endpoint.
 	DeleteProjectsLocationsEndpoint(ctx context.Context, in *DeleteProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets details of a single Endpoint.
 	GetProjectsLocationsEndpoint(ctx context.Context, in *GetProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*Endpoint, error)
+	// Lists Endpoints in a given project and location.
 	ListProjectsLocationsEndpoints(ctx context.Context, in *ListProjectsLocationsEndpointsRequest, opts ...grpc.CallOption) (*ListEndpointsResponse, error)
+	// Updates the parameters of a single Endpoint.
 	PatchProjectsLocationsEndpoint(ctx context.Context, in *PatchProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -212,7 +221,7 @@ func NewProjectsLocationsEndpointsServerClient(cc grpc.ClientConnInterface) Proj
 
 func (c *projectsLocationsEndpointsServerClient) CreateProjectsLocationsEndpoint(ctx context.Context, in *CreateProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -221,7 +230,7 @@ func (c *projectsLocationsEndpointsServerClient) CreateProjectsLocationsEndpoint
 
 func (c *projectsLocationsEndpointsServerClient) DeleteProjectsLocationsEndpoint(ctx context.Context, in *DeleteProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +239,7 @@ func (c *projectsLocationsEndpointsServerClient) DeleteProjectsLocationsEndpoint
 
 func (c *projectsLocationsEndpointsServerClient) GetProjectsLocationsEndpoint(ctx context.Context, in *GetProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*Endpoint, error) {
 	out := new(Endpoint)
-	err := c.cc.Invoke(ctx, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +248,7 @@ func (c *projectsLocationsEndpointsServerClient) GetProjectsLocationsEndpoint(ct
 
 func (c *projectsLocationsEndpointsServerClient) ListProjectsLocationsEndpoints(ctx context.Context, in *ListProjectsLocationsEndpointsRequest, opts ...grpc.CallOption) (*ListEndpointsResponse, error) {
 	out := new(ListEndpointsResponse)
-	err := c.cc.Invoke(ctx, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -248,7 +257,7 @@ func (c *projectsLocationsEndpointsServerClient) ListProjectsLocationsEndpoints(
 
 func (c *projectsLocationsEndpointsServerClient) PatchProjectsLocationsEndpoint(ctx context.Context, in *PatchProjectsLocationsEndpointRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -259,10 +268,15 @@ func (c *projectsLocationsEndpointsServerClient) PatchProjectsLocationsEndpoint(
 // All implementations must embed UnimplementedProjectsLocationsEndpointsServerServer
 // for forward compatibility
 type ProjectsLocationsEndpointsServerServer interface {
+	// Creates a new Endpoint in a given project and location.
 	CreateProjectsLocationsEndpoint(context.Context, *CreateProjectsLocationsEndpointRequest) (*longrunningpb.Operation, error)
+	// Deletes a single Endpoint.
 	DeleteProjectsLocationsEndpoint(context.Context, *DeleteProjectsLocationsEndpointRequest) (*longrunningpb.Operation, error)
+	// Gets details of a single Endpoint.
 	GetProjectsLocationsEndpoint(context.Context, *GetProjectsLocationsEndpointRequest) (*Endpoint, error)
+	// Lists Endpoints in a given project and location.
 	ListProjectsLocationsEndpoints(context.Context, *ListProjectsLocationsEndpointsRequest) (*ListEndpointsResponse, error)
+	// Updates the parameters of a single Endpoint.
 	PatchProjectsLocationsEndpoint(context.Context, *PatchProjectsLocationsEndpointRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedProjectsLocationsEndpointsServerServer()
 }
@@ -310,7 +324,7 @@ func _ProjectsLocationsEndpointsServer_CreateProjectsLocationsEndpoint_Handler(s
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint",
+		FullMethod: "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsEndpointsServerServer).CreateProjectsLocationsEndpoint(ctx, req.(*CreateProjectsLocationsEndpointRequest))
@@ -328,7 +342,7 @@ func _ProjectsLocationsEndpointsServer_DeleteProjectsLocationsEndpoint_Handler(s
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint",
+		FullMethod: "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsEndpointsServerServer).DeleteProjectsLocationsEndpoint(ctx, req.(*DeleteProjectsLocationsEndpointRequest))
@@ -346,7 +360,7 @@ func _ProjectsLocationsEndpointsServer_GetProjectsLocationsEndpoint_Handler(srv 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint",
+		FullMethod: "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsEndpointsServerServer).GetProjectsLocationsEndpoint(ctx, req.(*GetProjectsLocationsEndpointRequest))
@@ -364,7 +378,7 @@ func _ProjectsLocationsEndpointsServer_ListProjectsLocationsEndpoints_Handler(sr
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints",
+		FullMethod: "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsEndpointsServerServer).ListProjectsLocationsEndpoints(ctx, req.(*ListProjectsLocationsEndpointsRequest))
@@ -382,7 +396,7 @@ func _ProjectsLocationsEndpointsServer_PatchProjectsLocationsEndpoint_Handler(sr
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint",
+		FullMethod: "/mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsEndpointsServerServer).PatchProjectsLocationsEndpoint(ctx, req.(*PatchProjectsLocationsEndpointRequest))
@@ -394,7 +408,7 @@ func _ProjectsLocationsEndpointsServer_PatchProjectsLocationsEndpoint_Handler(sr
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectsLocationsEndpointsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "google.cloud.ids.v1.ProjectsLocationsEndpointsServer",
+	ServiceName: "mockgcp.cloud.ids.v1.ProjectsLocationsEndpointsServer",
 	HandlerType: (*ProjectsLocationsEndpointsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

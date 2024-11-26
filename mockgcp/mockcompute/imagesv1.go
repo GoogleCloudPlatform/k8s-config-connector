@@ -36,7 +36,7 @@ func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImage
 	obj.Kind = PtrTo("compute#image")
 	obj.Name = PtrTo("debian-11-bullseye-v20231010")
 	obj.Description = PtrTo("Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010")
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010")
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
 	obj.Family = PtrTo("debian-11")
 	obj.Status = PtrTo("UP")
 
@@ -75,7 +75,7 @@ func (s *ImagesV1) Insert(ctx context.Context, req *pb.InsertImageRequest) (*pb.
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetImageResource()).(*pb.Image)
-	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#image")

@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
 
@@ -65,13 +66,33 @@ func MustReadFile(t *testing.T, p string) []byte {
 	return b
 }
 
+func extractEventsWithURLPrefix(allEvents, urlPrefix string) string {
+	eventStrings := make([]string, 0)
+	events := strings.Split(allEvents, "---")
+	for _, event := range events {
+		processed := strings.TrimSpace(event)
+		for _, m := range []string{"GET", "POST", "PUT", "PATCH", "DELETE"} {
+			processed = strings.TrimPrefix(processed, m)
+			processed = strings.TrimSpace(processed)
+		}
+		if strings.HasPrefix(processed, urlPrefix) {
+			if len(eventStrings) == 0 {
+				event = strings.TrimPrefix(event, "\n\n")
+			}
+			eventStrings = append(eventStrings, event)
+		}
+	}
+	return strings.Join(eventStrings, "---")
+}
+
 // CompareGoldenFile performs a file comparison for a golden test.
-func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s string) string) {
+func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s string) string) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
 
 	for _, normalizer := range normalizers {
-		got = normalizer(got)
+		fullGot = normalizer(fullGot)
 	}
+	got := fullGot
 
 	wantBytes, err := os.ReadFile(p)
 	if err != nil {
@@ -79,7 +100,7 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 			// Expected when creating output for the first time;
 			// treat as empty
 			wantBytes = []byte{} // Not strictly needed, but clearer
-		} else if got == "" && os.IsNotExist(err) {
+		} else if fullGot == "" && os.IsNotExist(err) {
 			// Golden file won't be generated if the result is empty.
 			return
 		} else {
@@ -90,8 +111,26 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 	for _, normalizer := range normalizers {
 		want = normalizer(want)
 	}
+	// If urlPrefix is not an empty string, then we should only compare the http
+	// log events that has given URL prefix.
+	urlPrefix := os.Getenv("ONLY_COMPARE_URL_PREFIX")
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" && urlPrefix != "" {
+		klog.Infof("only comparing events with URL prefix %q in the http log", urlPrefix)
+
+		want = extractEventsWithURLPrefix(want, urlPrefix)
+		got = extractEventsWithURLPrefix(got, urlPrefix)
+	}
 
 	if want == got {
+		if urlPrefix != "" && writeGoldenOutput {
+			// Write the full http log to the golden file. The current
+			// comparison only covers events with given URL prefix, and the full
+			// http log may have diffs.
+			if err := os.WriteFile(p, []byte(fullGot), 0644); err != nil {
+				t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
+			}
+			t.Logf("wrote updated golden output to %s", p)
+		}
 		return
 	}
 
@@ -112,8 +151,9 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 	}
 
 	if writeGoldenOutput {
-		// Write the output to the golden file
-		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
+		// No matter how we compare the golden files, we should write the entire
+		// http log to the golden file.
+		if err := os.WriteFile(p, []byte(fullGot), 0644); err != nil {
 			t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
 		}
 		t.Logf("wrote updated golden output to %s", p)

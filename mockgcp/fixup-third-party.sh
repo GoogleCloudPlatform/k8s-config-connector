@@ -1,5 +1,6 @@
 #!/bin/bash
-# Copyright 2023 Google LLC
+
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -o errexit
+set -o nounset
+set -o pipefail
 
-set -e
+REPO_ROOT=$(git rev-parse --show-toplevel)
+MOCKGCP=${REPO_ROOT}/mockgcp
+cd ${MOCKGCP}/third_party/googleapis
 
-cd third_party/googleapis
+GOOGLEAPIS=$(pwd)
 
 # We need to rewrite various proto import paths, to avoid conflicts with the version that is in use in KCC itself.
 # We also need to be a little careful not to rewrite the google.api.http annotations, which are used by grpc-go.
@@ -87,8 +93,16 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.artifactregistr
 find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g"
 
-cd ..
-cd mockgrafeas
+# Fix some go packages to cross-imported packages (where it matters)
+find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/configmanagement/apiv1beta/configmanagementpb;configmanagementpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement;configmanagementpb"@g'
+find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/metering/apiv1beta/meteringpb;meteringpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering;meteringpb"@g'
+find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/multiclusteringress/apiv1beta/multiclusteringresspb;multiclusteringresspb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress;multiclusteringresspb"@g'
+find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/servicemesh/apiv1beta/servicemeshpb;servicemeshpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/servicemesh/v1beta;servicemeshpb"@g'
+find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g'
 
+# Temporary fixup during publishing process
+find ${MOCKGCP}/generated/ -type f -print0 | xargs -0 sed -i -e 's@"cloud.google.com/go/bigtable/admin/apiv2/adminpb"@"google.golang.org/genproto/googleapis/bigtable/admin/v2"@g'
+
+cd ${GOOGLEAPIS}/mockgrafeas
 find . -type f -print0 | xargs -0 sed -i -e "s@grafeas/@mockgrafeas/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@grafeas\.@mockgrafeas.@g"
