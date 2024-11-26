@@ -35,17 +35,20 @@ if [[ -z "${TEST:-}" ]]; then
   exit 1
 fi
 
-echo "Getting latest test run for ${TEST}"
-LATEST=$(gsutil cat gs://cnrm-prow/logs/${TEST}/latest-build.txt)
+if [[ -z "${TEST_RUN:-}" ]]; then
+  echo "TEST_RUN not specified, getting latest test run for ${TEST}"
+  echo "To list recent runs: gsutil ls gs://cnrm-prow/logs/${TEST}/ | cut -f 6 -d / | sort | grep -v latest | tail"
+  TEST_RUN=$(gsutil cat gs://cnrm-prow/logs/${TEST}/latest-build.txt)
+fi
 
 echo "Getting test results:"
-gsutil cat gs://cnrm-prow/logs/${TEST}/${LATEST}/finished.json | jq .
+gsutil cat gs://cnrm-prow/logs/${TEST}/${TEST_RUN}/finished.json | jq .
 
 echo "Downloading golden output"
-gsutil cp gs://cnrm-prow/logs/${TEST}/${LATEST}/artifacts/golden.zip .build/golden.zip
+gsutil cp gs://cnrm-prow/logs/${TEST}/${TEST_RUN}/artifacts/golden.zip .build/golden.zip
 
 echo "Expanding golden output into testdata directory"
 unzip -o .build/golden.zip "pkg/test/resourcefixture/testdata/*"
 
 echo "Downloading test log to e2e.log"
-gsutil cp gs://cnrm-prow/logs/${TEST}/${LATEST}/build-log.txt e2e.log
+gsutil cp gs://cnrm-prow/logs/${TEST}/${TEST_RUN}/build-log.txt e2e.log
