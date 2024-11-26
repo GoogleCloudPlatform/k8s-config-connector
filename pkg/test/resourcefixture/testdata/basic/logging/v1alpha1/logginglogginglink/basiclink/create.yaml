@@ -12,16 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# change to logginglog link
-
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
-kind: LoggingLogBucket
+kind: LoggingLogLink
 metadata:
-  name: logginglogbucket-${uniqueId}
+  name: loggingloglink-${uniqueId}
 spec:
-  projectRef:
-    external: "projects/${projectId}"
-  location: "global"
-  description: "A sample log bucket"
-  locked: false
-  retentionDays: 30
+  loggingLogBucketRef:
+    external: "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}"
+  description: "A sample log link"
