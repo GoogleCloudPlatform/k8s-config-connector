@@ -621,15 +621,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 									}
 								}
 
-								// Explicitly set `automatedBackupPolicy.enabled` in response to `false`.
-								if _, found, _ := unstructured.NestedMap(obj, "automatedBackupPolicy"); found {
-									if _, found, _ := unstructured.NestedBool(obj, "automatedBackupPolicy", "enabled"); !found {
-										if err := unstructured.SetNestedField(obj, false, "automatedBackupPolicy", "enabled"); err != nil {
-											t.Fatal(err)
-										}
-									}
-								}
-
 								// Replace the IP addresses in `outboundPublicIpAddresses` slice to test IP addresses.
 								if _, found, _ := unstructured.NestedSlice(obj, "outboundPublicIpAddresses"); found {
 									if err := unstructured.SetNestedStringSlice(obj, []string{"6.6.6.6", "8.8.8.8"}, "outboundPublicIpAddresses"); err != nil {
@@ -667,14 +658,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 										if _, found, _ := unstructured.NestedBool(obj, "response", "reconciling"); !found {
 											if err := unstructured.SetNestedField(obj, false, "response", "reconciling"); err != nil {
 												t.Fatal(err)
-											}
-										}
-										// Explicitly set `automatedBackupPolicy.enabled` in response to `false`.
-										if _, found, _ := unstructured.NestedMap(obj, "response", "automatedBackupPolicy"); found {
-											if _, found, _ := unstructured.NestedBool(obj, "response", "automatedBackupPolicy", "enabled"); !found {
-												if err := unstructured.SetNestedField(obj, false, "response", "automatedBackupPolicy", "enabled"); err != nil {
-													t.Fatal(err)
-												}
 											}
 										}
 

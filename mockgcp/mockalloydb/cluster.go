@@ -29,7 +29,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 type AlloyDBAdminV1 struct {
@@ -62,14 +61,14 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	// Set default values to optional fields when unset.
 	if obj.AutomatedBackupPolicy == nil {
 		obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{
-			BackupWindow: direct.PtrTo(duration.Duration{Seconds: 3600}),
+			BackupWindow: PtrTo(duration.Duration{Seconds: 3600}),
 			// Defaults to true when unset, which is different from the value in
 			// the default policy.
-			Enabled:  direct.PtrTo(false),
+			Enabled:  PtrTo(false),
 			Location: name.Location,
 			Retention: &pb.AutomatedBackupPolicy_TimeBasedRetention_{
 				TimeBasedRetention: &pb.AutomatedBackupPolicy_TimeBasedRetention{
-					RetentionPeriod: direct.PtrTo(duration.Duration{Seconds: 1209600}),
+					RetentionPeriod: PtrTo(duration.Duration{Seconds: 1209600}),
 				},
 			},
 			Schedule: &pb.AutomatedBackupPolicy_WeeklySchedule_{
@@ -92,7 +91,7 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	}
 	if obj.ContinuousBackupConfig == nil {
 		obj.ContinuousBackupConfig = &pb.ContinuousBackupConfig{
-			Enabled:            direct.PtrTo(true),
+			Enabled:            PtrTo(true),
 			RecoveryWindowDays: 14,
 		}
 	}
@@ -239,7 +238,9 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 	} else {
 		obj.ContinuousBackupInfo.EnabledTime = nil
 	}
-
+	if obj.AutomatedBackupPolicy != nil && obj.AutomatedBackupPolicy.Enabled == nil {
+		obj.AutomatedBackupPolicy.Enabled = PtrTo(false)
+	}
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

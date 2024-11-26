@@ -26,7 +26,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
@@ -62,27 +61,27 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	}
 	if obj.ObservabilityConfig == nil {
 		obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{
-			Enabled:               direct.PtrTo(false),
-			MaxQueryStringLength:  direct.PtrTo(int32(10240)),
-			PreserveComments:      direct.PtrTo(false),
-			QueryPlansPerMinute:   direct.PtrTo(int32(20)),
-			RecordApplicationTags: direct.PtrTo(false),
-			TrackActiveQueries:    direct.PtrTo(false),
-			TrackClientAddress:    direct.PtrTo(false),
-			TrackWaitEventTypes:   direct.PtrTo(true),
-			TrackWaitEvents:       direct.PtrTo(true),
+			Enabled:               PtrTo(false),
+			MaxQueryStringLength:  PtrTo(int32(10240)),
+			PreserveComments:      PtrTo(false),
+			QueryPlansPerMinute:   PtrTo(int32(20)),
+			RecordApplicationTags: PtrTo(false),
+			TrackActiveQueries:    PtrTo(false),
+			TrackClientAddress:    PtrTo(false),
+			TrackWaitEventTypes:   PtrTo(true),
+			TrackWaitEvents:       PtrTo(true),
 		}
 	}
 	if obj.QueryInsightsConfig == nil {
 		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
-			QueryPlansPerMinute:   direct.PtrTo(uint32(5)),
+			QueryPlansPerMinute:   PtrTo(uint32(5)),
 			QueryStringLength:     uint32(1024),
-			RecordApplicationTags: direct.PtrTo(false),
-			RecordClientAddress:   direct.PtrTo(false),
+			RecordApplicationTags: PtrTo(false),
+			RecordClientAddress:   PtrTo(false),
 		}
 		if obj.InstanceType == pb.Instance_SECONDARY {
-			obj.QueryInsightsConfig.RecordApplicationTags = direct.PtrTo(true)
-			obj.QueryInsightsConfig.RecordClientAddress = direct.PtrTo(true)
+			obj.QueryInsightsConfig.RecordApplicationTags = PtrTo(true)
+			obj.QueryInsightsConfig.RecordClientAddress = PtrTo(true)
 		}
 	}
 	if obj.InstanceType != pb.Instance_READ_POOL &&
