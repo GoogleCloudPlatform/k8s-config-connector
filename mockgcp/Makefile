@@ -12,9 +12,9 @@ tools:
 	wget -N -O bin/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.12.4/protoc-3.12.4-linux-x86_64.zip
 	cd bin; rm -rf protoc; mkdir protoc; cd protoc; unzip ../protoc.zip
 
-GOOGLEAPI_VERSION?=HEAD
-.PHONY: checkout-local-head
-checkout-local-head:
+GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis git.versions | awk '{print $$2}' )
+.PHONY: sync-repo
+sync-repo:
 	mkdir -p third_party
 	@if [ ! -d "third_party/googleapis" ]; then \
 			echo "Cloning googleapis repository..."; \
@@ -23,18 +23,8 @@ checkout-local-head:
 	@echo "Syncing to commit $(GOOGLEAPI_VERSION)...";
 	@cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION)
 
-.PHONY: sync-repo
-sync-repo:
-	mkdir -p third_party
-	@if [ ! -d "third_party/googleapis" ]; then \
-			echo "Cloning googleapis repository..."; \
-			git clone https://github.com/googleapis/googleapis.git third_party/googleapis; \
-	fi
-	@echo "Syncing to remote origin/master branch ...";
-	@cd third_party/googleapis && git fetch --all && git reset --hard origin/master
-
 .PHONY: gen-proto
-gen-proto: tools checkout-local-head
+gen-proto: tools sync-repo
 	mkdir -p ./generated
 
 	./apply-proto-patches.sh
@@ -122,7 +112,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
 		./third_party/googleapis/mockgrafeas/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto
-		
+
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
