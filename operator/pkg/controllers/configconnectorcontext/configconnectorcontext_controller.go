@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -546,7 +545,7 @@ func (r *Reconciler) fetchAndApplyAllNamespacedControllerReconcilers(ctx context
 }
 
 // applyNamespacedControllerReconciler applies customizations specified in NamespacedControllerReconciler CR.
-func (r *Reconciler) applyNamespacedControllerReconciler(ctx context.Context, cr *customizev1alpha1.NamespacedControllerReconciler, m *manifest.Objects) error {
+func (r *Reconciler) applyNamespacedControllerReconciler(ctx context.Context, cr *customizev1beta1.NamespacedControllerReconciler, m *manifest.Objects) error {
 	if err := controllers.ApplyContainerRateLimit(m, cr.Name, cr.Spec.RateLimit); err != nil {
 		msg := fmt.Sprintf("failed to apply rate limit customization %s: %v", cr.Name, err)
 		return r.handleApplyNamespacedControllerReconcilerFailed(ctx, cr.Namespace, cr.Name, msg)
@@ -592,7 +591,7 @@ func (r *Reconciler) handleApplyNamespacedControllerReconcilerSucceeded(ctx cont
 	return r.updateNamespacedControllerReconcilerStatus(ctx, cr)
 }
 
-func (r *Reconciler) updateNamespacedControllerReconcilerStatus(ctx context.Context, cr *customizev1alpha1.NamespacedControllerReconciler) error {
+func (r *Reconciler) updateNamespacedControllerReconcilerStatus(ctx context.Context, cr *customizev1beta1.NamespacedControllerReconciler) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "failed to update NamespacedControllerReconciler", "namespace", cr.Namespace, "name", cr.Name)
 		return fmt.Errorf("failed to update NamespacedControllerReconciler %v/%v: %w", cr.Namespace, cr.Name, err)

@@ -21,7 +21,6 @@ import (
 	"testing"
 	"time"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -906,16 +905,16 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 	tests := []struct {
 		name                   string
 		manifests              []string
-		controllerReconcilerCR *customizev1alpha1.NamespacedControllerReconciler
+		controllerReconcilerCR *customizev1beta1.NamespacedControllerReconciler
 		expectedManifests      []string
-		expectedCRStatus       customizev1alpha1.NamespacedControllerReconcilerStatus
+		expectedCRStatus       customizev1beta1.NamespacedControllerReconcilerStatus
 	}{
 		{
 			name:                   "customize the rate limit for cnrm-controller-manager",
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCR,
 			expectedManifests:      testcontroller.NamespacedComponentsWithRatLimitCustomization,
-			expectedCRStatus: customizev1alpha1.NamespacedControllerReconcilerStatus{
+			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
 				},
@@ -926,7 +925,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
-			expectedCRStatus: customizev1alpha1.NamespacedControllerReconcilerStatus{
+			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrUnsupportedController},
@@ -938,7 +937,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRWrongNamespace,
 			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
-			expectedCRStatus: customizev1alpha1.NamespacedControllerReconcilerStatus{
+			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{}, // no update to status because it is not in the same namespace as the CCC reconciler.
 			},
 		},
@@ -986,7 +985,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			}
 
 			// check the status of namespaced customization CR
-			updatedCR := &customizev1alpha1.NamespacedControllerReconciler{}
+			updatedCR := &customizev1beta1.NamespacedControllerReconciler{}
 			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.controllerReconcilerCR.Namespace, Name: tc.controllerReconcilerCR.Name}, updatedCR); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}

@@ -22,7 +22,6 @@ import (
 	"testing"
 	"time"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -1241,18 +1240,18 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 	tests := []struct {
 		name                             string
 		manifests                        []string
-		controllerReconcilerCR           *customizev1alpha1.ControllerReconciler
-		namespacedControllerReconcilerCR *customizev1alpha1.NamespacedControllerReconciler
+		controllerReconcilerCR           *customizev1beta1.ControllerReconciler
+		namespacedControllerReconcilerCR *customizev1beta1.NamespacedControllerReconciler
 		expectedManifests                []string
 		skipCheckingCRStatus             bool
-		expectedCRStatus                 customizev1alpha1.ControllerReconcilerStatus
+		expectedCRStatus                 customizev1beta1.ControllerReconcilerStatus
 	}{
 		{
 			name:                   "customize the rate limit for cnrm-controller-manager",
 			manifests:              testcontroller.ClusterModeComponents,
 			controllerReconcilerCR: testcontroller.ControllerReconcilerCR,
 			expectedManifests:      testcontroller.ClusterModeComponentsWithRatLimitCustomization,
-			expectedCRStatus: customizev1alpha1.ControllerReconcilerStatus{
+			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
 				},
@@ -1263,7 +1262,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.ClusterModeComponents,
 			controllerReconcilerCR: testcontroller.ControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCRStatus: customizev1alpha1.ControllerReconcilerStatus{
+			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrUnsupportedController},
@@ -1330,7 +1329,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			if tc.skipCheckingCRStatus {
 				return
 			}
-			updatedCR := &customizev1alpha1.ControllerReconciler{}
+			updatedCR := &customizev1beta1.ControllerReconciler{}
 			if err := c.Get(ctx, types.NamespacedName{Name: tc.controllerReconcilerCR.Name}, updatedCR); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
