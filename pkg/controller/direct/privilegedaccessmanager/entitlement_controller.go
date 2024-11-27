@@ -424,6 +424,9 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	req := &privilegedaccessmanagerpb.DeleteEntitlementRequest{Name: a.id.FullyQualifiedName()}
 	op, err := a.gcpClient.DeleteEntitlement(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("error deleting PrivilegedAccessManagerEntitlement %s: %w", a.id.FullyQualifiedName(), err)
 	}
 
