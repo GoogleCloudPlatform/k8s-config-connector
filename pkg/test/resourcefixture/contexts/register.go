@@ -63,10 +63,6 @@ type ResourceContext struct {
 	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
 	PostModifyDelay time.Duration
 
-	// Time to delay before recreating the resource as part of the drift detection test.
-	// The default wait time is 10 seconds. However, some resources appear to need to
-	// wait longer before recreating, so this value is customizable.
-	RecreateDelay time.Duration
 	// If true, skip drift detection test.
 	SkipDriftDetection bool
 
@@ -90,12 +86,6 @@ func GetResourceContext(fixture resourcefixture.ResourceFixture, serviceMetadata
 
 	if rc.ResourceGVK == emptyGVK {
 		rc.ResourceGVK = fixture.GVK
-	}
-
-	if rc.RecreateDelay == 0 {
-		// By default, wait for 10 seconds before recreating resource as part of drift detection test.
-		// Some resources appear to need to wait longer than 10 seconds, so this value is customizable.
-		rc.RecreateDelay = time.Second * 10
 	}
 
 	// If CRD has DCL controller label, fetch DCL schema.
