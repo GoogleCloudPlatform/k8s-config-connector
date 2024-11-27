@@ -15,6 +15,8 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
   name: alloydbcluster-${uniqueId}
 spec:
   location: us-central1
