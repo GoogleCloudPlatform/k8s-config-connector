@@ -77,3 +77,6 @@ done
 # clean up apis/config/crd for now
 cd ${REPO_ROOT}
 rm -rf apis/config/crd
+
+# controller-gen sometimes leaves empty imports in the api files.
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis
