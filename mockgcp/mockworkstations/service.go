@@ -59,14 +59,5 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
-
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-			error.Message = "Resource 'projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}' was not found"
-		}
-	}
-
 	return mux, nil
 }

@@ -11,6 +11,8 @@ metadata:
   namespace: ${uniqueId}
 spec:
   annotations:
+  - key: a-key1
+    value: a-value1
   - key: a-key2
     value: a-value2
   container:
@@ -44,6 +46,8 @@ spec:
       - workstationconfig-newtag-${uniqueId}
   idleTimeout: 2400s
   labels:
+  - key: l-key1
+    value: l-value1
   - key: l-key2
     value: l-value2
   parentRef:
