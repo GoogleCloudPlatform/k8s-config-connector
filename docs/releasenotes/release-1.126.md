@@ -9,6 +9,8 @@ TODO: list contributors with `git log v1.125.0... | grep Merge | grep from | awk
 
 ## Announcement 
 
+* Promoted `ControllerReconciler` and `NamespacedControllerReconciler` CRDs from v1alpha1 to v1beta1.
+
 ## New Beta Resources (Direct Reconciler):
 
 * `Placeholder`
