@@ -24,6 +24,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -65,14 +66,14 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
-	obj.UpdateTime = timestamppb.New(now)
 
 	instanceName, err := s.parseInstanceName(obj.GetInstance())
 	if err != nil {
 		return nil, err
 	}
 
-	obj.InitialConfig = req.GetRepository().GetInitialConfig()
+	// Real GCP doesn't include initial config field.
+	obj.InitialConfig = nil
 
 	prefix := fmt.Sprintf("https://%s-%d", instanceName.InstanceID, name.Project.Number)
 	domain := "." + name.Location + ".sourcemanager.dev"
@@ -86,17 +87,29 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 		return nil, err
 	}
 
-	op := &pb.OperationMetadata{
+	opMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "create",
 		ApiVersion: "v1",
 	}
-	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		op.EndTime = timestamppb.Now()
-		return obj, nil
-	})
+	opMetadataAny, err := anypb.New(opMetadata)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := anypb.New(obj)
+	if err != nil {
+		return nil, err
+	}
+	op := &longrunning.Operation{
+		Done:     true,
+		Metadata: opMetadataAny,
+		Name:     `operations/${operation_id}`,
+		Result: &longrunning.Operation_Response{
+			Response: resp,
+		},
+	}
+	return op, nil
 }
 
 func (s *secureSourceManagerServer) DeleteRepository(ctx context.Context, req *pb.DeleteRepositoryRequest) (*longrunning.Operation, error) {
@@ -113,17 +126,30 @@ func (s *secureSourceManagerServer) DeleteRepository(ctx context.Context, req *p
 		return nil, err
 	}
 
-	op := &pb.OperationMetadata{
+	opMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
+		EndTime:    timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "delete",
 		ApiVersion: "v1",
 	}
-	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		op.EndTime = timestamppb.Now()
-		return &emptypb.Empty{}, nil
-	})
+	opMetadataAny, err := anypb.New(opMetadata)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := anypb.New(&emptypb.Empty{})
+	if err != nil {
+		return nil, err
+	}
+	op := &longrunning.Operation{
+		Done:     true,
+		Metadata: opMetadataAny,
+		Name:     `operations/${operation_id}`,
+		Result: &longrunning.Operation_Response{
+			Response: resp,
+		},
+	}
+	return op, nil
 }
 
 type RepositoryName struct {
