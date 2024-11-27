@@ -17,7 +17,6 @@ package gkehub
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 	"time"
 
@@ -62,7 +61,7 @@ type gkeHubAdapter struct {
 	projectID    string
 	location     string
 
-	desired *featureapi.MembershipFeatureSpec
+	desired *krm.GKEHubFeatureMembership
 	actual  *featureapi.Feature
 
 	hubClient *gkeHubClient
@@ -108,16 +107,12 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	if err := resolveIAMReferences(ctx, reader, obj); err != nil {
 		return nil, err
 	}
-	apiObj, err := featureMembershipSpecKRMtoMembershipFeatureSpecAPI(&obj.Spec)
-	if err != nil {
-		return nil, err
-	}
 	return &gkeHubAdapter{
 		membershipID: membership.id,
 		featureID:    feature.id,
 		projectID:    projectID,
 		location:     obj.Spec.Location,
-		desired:      apiObj,
+		desired:      obj,
 		hubClient:    hubClient,
 	}, nil
 }
@@ -179,7 +174,7 @@ func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 		return false, nil
 	}
 	// emptying the membershipspec is sufficient
-	a.desired = &featureapi.MembershipFeatureSpec{}
+	a.desired = &krm.GKEHubFeatureMembership{}
 	if _, err := a.patchMembershipSpec(ctx); err != nil {
 		return false, fmt.Errorf("deleting membershipspec for %s: %w", a.membershipID, err)
 	}
@@ -193,7 +188,11 @@ func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error)
 		mSpecs = make(map[string]featureapi.MembershipFeatureSpec)
 	}
 	// only change the feature configuration for the associated membership
-	mSpecs[a.membershipID] = *a.desired
+	desiredApiObj, err := featureMembershipSpecKRMtoMembershipFeatureSpecAPI(&a.desired.Spec)
+	if err != nil {
+		return nil, err
+	}
+	mSpecs[a.membershipID] = *desiredApiObj
 	feature.MembershipSpecs = mSpecs
 	op, err := a.hubClient.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
 	if err != nil {
@@ -249,7 +248,7 @@ func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
-	if !reflect.DeepEqual(a.desired.Configmanagement, actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, actual.Mesh) {
+	if len(diffFeatureMembership(&a.desired.Spec, &actual)) != 0 {
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
 		if _, err := a.patchMembershipSpec(ctx); err != nil {
 			return fmt.Errorf("patching gkehubfeaturemembership failed: %w", err)
