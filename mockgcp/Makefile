@@ -52,6 +52,7 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/google/apps/cloudidentity/groups/v1beta1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
+		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \

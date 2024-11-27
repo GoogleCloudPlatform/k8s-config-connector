@@ -701,6 +701,10 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	// Compute resources
 	visitor.sortSlices.Insert(".subnetworks")
 
+	// Specific to Apigee
+	visitor.replacePaths[".response.lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.createdAt"] = "2024-04-01T12:34:56.123456Z"
+
 	for _, event := range events {
 		// Compute URLs: Replace any compute beta URLs with v1 URLs
 		// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
