@@ -17,6 +17,7 @@ package mockprivateca
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -29,15 +30,15 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/security/privateca/v1"
 )
 
-func (s *PrivateCAV1) GetCertificateAuthority(context.Context, *pb.GetCertificateAuthorityRequest) (*pb.CertificateAuthority, error) {
-	name, err := s.parseCAPoolName(req.Name)
+func (s *PrivateCAV1) GetCertificateAuthority(ctx context.Context, req *pb.GetCertificateAuthorityRequest) (*pb.CertificateAuthority, error) {
+	name, err := s.parseCertificateAuthorityName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.CaPool{}
+	obj := &pb.CertificateAuthority{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
@@ -48,9 +49,9 @@ func (s *PrivateCAV1) GetCertificateAuthority(context.Context, *pb.GetCertificat
 	return obj, nil
 }
 
-func (s *PrivateCAV1) CreateCertificateAuthority(context.Context, *pb.CreateCertificateAuthorityRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/caPools/" + req.CaPoolId
-	name, err := s.parseCAPoolName(reqName)
+func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.CreateCertificateAuthorityRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/certificateAuthorities/" + req.CertificateAuthorityId
+	name, err := s.parseCertificateAuthorityName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -59,23 +60,8 @@ func (s *PrivateCAV1) CreateCertificateAuthority(context.Context, *pb.CreateCert
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.CaPool).(*pb.CaPool)
+	obj := proto.Clone(req.CertificateAuthority).(*pb.CertificateAuthority)
 	obj.Name = fqn
-
-	// service seems to remove "zero" values
-	baseKeyUsage := obj.GetIssuancePolicy().GetBaselineValues().GetKeyUsage().GetBaseKeyUsage()
-	if baseKeyUsage != nil {
-		if proto.Equal(baseKeyUsage, &pb.KeyUsage_KeyUsageOptions{}) {
-			obj.IssuancePolicy.BaselineValues.KeyUsage.BaseKeyUsage = nil
-		}
-	}
-
-	extendedKeyUsage := obj.GetIssuancePolicy().GetBaselineValues().GetKeyUsage().GetExtendedKeyUsage()
-	if extendedKeyUsage != nil {
-		if proto.Equal(extendedKeyUsage, &pb.KeyUsage_ExtendedKeyUsageOptions{}) {
-			obj.IssuancePolicy.BaselineValues.KeyUsage.ExtendedKeyUsage = nil
-		}
-	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -95,8 +81,8 @@ func (s *PrivateCAV1) CreateCertificateAuthority(context.Context, *pb.CreateCert
 	})
 }
 
-func (s *PrivateCAV1) DeleteCertificateAuthority(context.Context, *pb.DeleteCertificateAuthorityRequest) (*longrunning.Operation, error) {
-	name, err := s.parseCAPoolName(req.Name)
+func (s *PrivateCAV1) DeleteCertificateAuthority(ctx context.Context, req *pb.DeleteCertificateAuthorityRequest) (*longrunning.Operation, error) {
+	name, err := s.parseCertificateAuthorityName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +91,7 @@ func (s *PrivateCAV1) DeleteCertificateAuthority(context.Context, *pb.DeleteCert
 
 	now := time.Now()
 
-	oldObj := &pb.CaPool{}
+	oldObj := &pb.CertificateAuthority{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
@@ -122,4 +108,39 @@ func (s *PrivateCAV1) DeleteCertificateAuthority(context.Context, *pb.DeleteCert
 		opMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
+}
+
+type certificateAuthorityName struct {
+	caPoolName
+	CertificateAuthorityID string
+}
+
+func (n *certificateAuthorityName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/caPools/" + n.CAPoolName + "/certificateAuthorities" + n.CertificateAuthorityID
+}
+
+// parseCertificateAuthorityName parses a string into a certificateAuthorityName.
+// The expected form is projects/<projectID>/locations/<region>/caPools/<capoolName>/certificateAuthorities/<caName>
+func (s *MockService) parseCertificateAuthorityName(name string) (*certificateAuthorityName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "caPools" && tokens[6] == "certificateAuthorities" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &certificateAuthorityName{
+			caPoolName: caPoolName{
+				Project:    project,
+				Location:   tokens[3],
+				CAPoolName: tokens[5],
+			},
+			CertificateAuthorityID: tokens[7],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
