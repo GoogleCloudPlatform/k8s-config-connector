@@ -44,7 +44,8 @@ manager: generate fmt vet
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
 manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 $(CRD_OPTIONS) paths="./pkg/apis/core/v1beta1/..." output:crd:artifacts:config=config/crd/base/bases
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 $(CRD_OPTIONS) paths="./pkg/apis/core/customize/..." output:crd:artifacts:config=config/crd/overlays/full/bases
 	go run scripts/generate-image-configmap/main.go
 
 # Run go fmt against code
@@ -65,7 +66,7 @@ generate:
 # Install CRDs into a cluster
 .PHONY: install
 install: manifests
-	kustomize build config/crd | kubectl apply -f -
+	kustomize build config/crd/overlays/full | kubectl apply -f -
 
 # Uninstall CRDs from a cluster
 .PHONY: uninstall
