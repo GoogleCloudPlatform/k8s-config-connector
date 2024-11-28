@@ -157,7 +157,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "alloydb.cnrm.cloud.google.com",
-		Version: "v1beta1",
+		Version: "v1alpha1",
 		Kind:    "AlloyDBInstance",
 	}: {
 		Labels: map[string]string{
@@ -169,7 +169,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "alloydb.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "AlloyDBInstance",
 	}: {
 		Labels: map[string]string{

@@ -7,6 +7,7 @@ toolchain go1.23.2
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
+	cloud.google.com/go/alloydb v1.14.0
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/bigquery v1.63.1
 	cloud.google.com/go/certificatemanager v1.9.1
