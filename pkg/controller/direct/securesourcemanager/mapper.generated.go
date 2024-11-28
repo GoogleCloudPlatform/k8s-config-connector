@@ -50,7 +50,7 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	out := &krm.Instance_PrivateConfig{}
 	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
 	if in.GetCaPool() != "" {
-		out.CaPoolRef = SecureSourceManagerInstanceSpec_CaPoolRef_FromProto(mapCtx, in.GetCaPool())
+		out.CaPoolRef = &refs.PrivateCACAPoolRef{External: in.GetCaPool()}
 	}
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())

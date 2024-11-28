@@ -118,7 +118,7 @@ spec:
                     properties:
                       external:
                         description: A reference to an externally managed PrivateCACAPool.
-                          Should be in the format `projects/[project_id]/locations/[region]/caPools/[caPool]`.
+                          Should be in the format `projects/{project_id}/locations/{region}/caPools/{caPool}`.
                         type: string
                       name:
                         description: The `name` of a `PrivateCACAPool` resource.

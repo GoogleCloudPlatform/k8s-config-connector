@@ -14,6 +14,10 @@
 
 package v1alpha1
 
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+)
+
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfig struct {
 	// Output only. HTML hostname.
@@ -37,7 +41,7 @@ type Instance_PrivateConfig struct {
 
 	// Required. Immutable. CA pool resource, resource must in the format of
 	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
-	CaPoolRef *PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
+	CaPoolRef *refs.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
 
 	// Output only. Service Attachment for HTTP, resource is in the format of
 	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
