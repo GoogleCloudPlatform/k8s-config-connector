@@ -74,6 +74,14 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
+	if obj.Spec.PrivateConfig != nil && *obj.Spec.PrivateConfig.IsPrivate {
+		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CaPoolRef)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.PrivateConfig.CaPoolRef = caPoolRef
+	}
+
 	mapCtx := &direct.MapContext{}
 	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
