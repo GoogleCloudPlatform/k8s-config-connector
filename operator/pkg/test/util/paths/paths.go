@@ -55,8 +55,12 @@ func GetOperatorSrcRoot() (string, error) {
 	return filepath.Join(gitRoot, "operator"), nil
 }
 
-func GetOperatorCRDsPath() string {
-	return filepath.Join(GetOperatorSrcRootOrLogFatal(), "config", "crd", "bases")
+func GetOperatorCRDsPaths() []string {
+	return []string{
+		filepath.Join(GetOperatorSrcRootOrLogFatal(), "config", "crd", "base", "bases"),             // this path has the core CRDs
+		filepath.Join(GetOperatorSrcRootOrLogFatal(), "config", "crd", "overlays", "full", "bases"), // this path has the customization CRDs
+	}
+
 }
 
 func GetOperatorSrcRootOrLogFatal() string {
