@@ -1,0 +1,52 @@
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificateAuthority
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+    label-two: value-two
+  name: privatecacertificateauthority-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  caPoolRef:
+    name: privatecacapool-${uniqueId}
+  config:
+    subjectConfig:
+      subject:
+        commonName: my-certificate-authority
+        organization: Example
+      subjectAltName:
+        dnsNames:
+        - example.com
+    x509Config:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
+  keySpec:
+    algorithm: RSA_PKCS1_4096_SHA256
+  lifetime: 86400s
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  resourceID: privatecacertificateauthority-${uniqueId}
+  type: SELF_SIGNED
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
