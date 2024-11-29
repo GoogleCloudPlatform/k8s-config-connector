@@ -74,7 +74,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
-	if obj.Spec.PrivateConfig != nil && *obj.Spec.PrivateConfig.IsPrivate {
+	if obj.Spec.PrivateConfig != nil {
 		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CaPoolRef)
 		if err != nil {
 			return nil, err
