@@ -58,7 +58,7 @@ func ResolvePrivateCACAPoolRef(ctx context.Context, reader client.Reader, src cl
 	// External should be in the `projects/{project_id}/locations/{region}/caPools/{caPool}` format
 	if ref.External != "" {
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 6 && tokens[0] == "project" && tokens[2] == "locations" && tokens[4] == "caPools" {
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "caPools" {
 			ref = &PrivateCACAPoolRef{
 				External: fmt.Sprintf("projects/%s/locations/%s/caPools/%s", tokens[1], tokens[3], tokens[5]),
 			}
