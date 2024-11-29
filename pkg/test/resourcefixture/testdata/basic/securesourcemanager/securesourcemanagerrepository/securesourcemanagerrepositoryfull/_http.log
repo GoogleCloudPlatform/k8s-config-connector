@@ -43,12 +43,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "create"
   },
@@ -80,7 +78,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "create"
   },
@@ -121,7 +118,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource \"projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}\" was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -157,6 +154,35 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
@@ -166,12 +192,21 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
     "verb": "create"
   },
-  "name": "operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.Repository",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "projects/${projectNumber}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
+    "initialConfig": {
+      "defaultBranch": "main",
+      "gitignores": [
+        "python"
+      ],
+      "license": "mit",
+      "readme": "default"
+    },
+    "instance": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "name": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "uris": {
       "api": "https://ssminstance-dep-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
       "gitHttps": "https://ssminstance-dep-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev/${projectId}/ssmrepository-${uniqueId}.git",
@@ -200,8 +235,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "instance": "projects/${projectNumber}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
+  "initialConfig": {
+    "defaultBranch": "main",
+    "gitignores": [
+      "python"
+    ],
+    "license": "mit",
+    "readme": "default"
+  },
+  "instance": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
   "name": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
   "uris": {
     "api": "https://ssminstance-dep-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
     "gitHttps": "https://ssminstance-dep-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev/${projectId}/ssmrepository-${uniqueId}.git",
@@ -228,19 +272,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
     "verb": "delete"
   },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
@@ -293,12 +332,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "delete"
   },
@@ -330,7 +367,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "delete"
   },
