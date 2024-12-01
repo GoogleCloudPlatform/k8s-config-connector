@@ -71,7 +71,7 @@ install: manifests
 # Uninstall CRDs from a cluster
 .PHONY: uninstall
 uninstall: manifests
-	kustomize build config/crd | kubectl delete -f -
+	kustomize build config/crd/overlays/full | kubectl delete -f -
 
 # Build the docker image
 .PHONY: docker-build
