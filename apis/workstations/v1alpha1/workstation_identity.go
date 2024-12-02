@@ -23,56 +23,61 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// WorkstationConfigIdentity defines the resource reference to WorkstationConfig.
-type WorkstationConfigIdentity struct {
-	parent *WorkstationConfigParent
+// WorkstationIdentity defines the resource reference to Workstation.
+type WorkstationIdentity struct {
+	parent *WorkstationParent
 	id     string
 }
 
-func (i *WorkstationConfigIdentity) String() string {
-	return i.parent.String() + "/workstationConfigs/" + i.id
+func (i *WorkstationIdentity) String() string {
+	return i.parent.String() + "/workstations/" + i.id
 }
 
-func (i *WorkstationConfigIdentity) ID() string {
+func (i *WorkstationIdentity) ID() string {
 	return i.id
 }
 
-func (i *WorkstationConfigIdentity) Parent() *WorkstationConfigParent {
+func (i *WorkstationIdentity) Parent() *WorkstationParent {
 	return i.parent
 }
 
-type WorkstationConfigParent struct {
+type WorkstationParent struct {
 	ProjectID string
 	Location  string
 	Cluster   string
+	Config    string
 }
 
-func (p *WorkstationConfigParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/workstationClusters/" + p.Cluster
+func (p *WorkstationParent) String() string {
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/workstationClusters/" + p.Cluster + "/workstationConfigs/" + p.Config
 }
 
-// New builds a ConfigIdentity from the Config Connector WorkstationConfig object.
-func NewWorkstationConfigIdentity(ctx context.Context, reader client.Reader, obj *WorkstationConfig) (*WorkstationConfigIdentity, error) {
+// New builds a WorkstationIdentity from the Config Connector Workstation object.
+func NewWorkstationIdentity(ctx context.Context, reader client.Reader, obj *Workstation) (*WorkstationIdentity, error) {
 	// Get Parent
-	clusterRef := obj.Spec.Parent
-	if clusterRef == nil {
-		return nil, fmt.Errorf("no parent cluster")
+	configRef := obj.Spec.Parent
+	if configRef == nil {
+		return nil, fmt.Errorf("no parent config")
 	}
-	clusterExternal, err := clusterRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	configExternal, err := configRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve cluster: %w", err)
+		return nil, fmt.Errorf("cannot resolve config: %w", err)
 	}
-	clusterParent, cluster, err := parseWorkstationClusterExternal(clusterExternal)
+	configParent, config, err := ParseWorkstationConfigExternal(configExternal)
 	if err != nil {
-		return nil, fmt.Errorf("cannot parse external cluster: %w", err)
+		return nil, fmt.Errorf("cannot parse external config: %w", err)
 	}
-	projectID := clusterParent.ProjectID
+	projectID := configParent.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := clusterParent.Location
+	location := configParent.Location
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
+	}
+	cluster := configParent.Cluster
+	if cluster == "" {
+		return nil, fmt.Errorf("cannot resolve cluster")
 	}
 
 	// Get desired ID
@@ -88,7 +93,7 @@ func NewWorkstationConfigIdentity(ctx context.Context, reader client.Reader, obj
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseWorkstationConfigExternal(externalRef)
+		actualParent, actualResourceID, err := ParseWorkstationExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -101,31 +106,36 @@ func NewWorkstationConfigIdentity(ctx context.Context, reader client.Reader, obj
 		if actualParent.Cluster != cluster {
 			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, cluster)
 		}
+		if actualParent.Config != config {
+			return nil, fmt.Errorf("spec.config changed, expect %s, got %s", actualParent.Config, config)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
 	}
-	return &WorkstationConfigIdentity{
-		parent: &WorkstationConfigParent{
+	return &WorkstationIdentity{
+		parent: &WorkstationParent{
 			ProjectID: projectID,
 			Location:  location,
 			Cluster:   cluster,
+			Config:    config,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseWorkstationConfigExternal(external string) (parent *WorkstationConfigParent, resourceID string, err error) {
+func ParseWorkstationExternal(external string) (parent *WorkstationParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" || tokens[6] != "workstationConfigs" {
-		return nil, "", fmt.Errorf("format of Workstation external=%q was not known (use projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>/workstationConfigs/<workstationconfigID>)", external)
+	if len(tokens) != 10 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" || tokens[6] != "workstationConfigs" || tokens[8] != "workstations" {
+		return nil, "", fmt.Errorf("format of Workstation external=%q was not known (use projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>/workstationConfigs/<workstationconfigID>/workstations/<workstationID>)", external)
 	}
-	parent = &WorkstationConfigParent{
+	parent = &WorkstationParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 		Cluster:   tokens[5],
+		Config:    tokens[7],
 	}
-	resourceID = tokens[7]
+	resourceID = tokens[9]
 	return parent, resourceID, nil
 }

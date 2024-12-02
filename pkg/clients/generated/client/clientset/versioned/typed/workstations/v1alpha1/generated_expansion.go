@@ -21,4 +21,6 @@
 
 package v1alpha1
 
+type WorkstationExpansion interface{}
+
 type WorkstationConfigExpansion interface{}
