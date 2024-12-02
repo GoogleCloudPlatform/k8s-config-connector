@@ -18,10 +18,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: secretmanagersecret-${uniqueId}
-  labels:
-    label-one: value-one
 spec:
   replication:
     userManaged:
       replicas:
       - location: us-central1
+  labels:
+    label-one: value-one

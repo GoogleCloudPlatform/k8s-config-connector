@@ -31,7 +31,6 @@ x-goog-request-params: parent=projects%2F${projectId}
 
 {
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -61,7 +60,6 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -99,7 +97,6 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },

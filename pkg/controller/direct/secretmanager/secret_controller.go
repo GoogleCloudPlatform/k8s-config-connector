@@ -160,6 +160,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	desired.Spec.Labels = common.AddLabelManagedByCNRM(desired.Spec.Labels)
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -205,6 +206,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	desired.Spec.Labels = common.AddLabelManagedByCNRM(desired.Spec.Labels)
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

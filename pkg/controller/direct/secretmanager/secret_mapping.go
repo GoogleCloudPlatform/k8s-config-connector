@@ -99,6 +99,7 @@ func SecretManagerSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecretMa
 	// MISSING: VersionAliases
 	// out.VersionAliases = in.VersionAliases
 	out.Annotations = in.Annotations
+	out.Labels = in.Labels
 	// MISSING: VersionDestroyTtl
 	// MISSING: CustomerManagedEncryption
 	return out

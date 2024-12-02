@@ -165,6 +165,7 @@ func (a *SecretVersionAdapter) Create(ctx context.Context, createOp *directbase.
 	log.V(2).Info("successfully created SecretVersion", "name", a.id)
 
 	// The default status for newly created resource is "enabled".
+	// This saves the waiting time for the next reconciliation.
 	if !*a.desired.Spec.Enabled {
 		log.V(2).Info("disabling the secret version", "name", a.id)
 		req := &pb.DisableSecretVersionRequest{

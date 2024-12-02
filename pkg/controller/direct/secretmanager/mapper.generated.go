@@ -216,7 +216,6 @@ func SecretManagerSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.Secret)
 	// MISSING: Name
 	out.Replication = Replication_FromProto(mapCtx, in.GetReplication())
 	// MISSING: CreateTime
-	// MISSING: Labels
 	// MISSING: Topics
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	// MISSING: Ttl
@@ -226,6 +225,7 @@ func SecretManagerSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.Secret)
 		out.VersionAliases[k] = strconv.FormatInt(v, 10)
 	}
 	out.Annotations = in.Annotations
+	out.Labels = in.Labels
 	// MISSING: VersionDestroyTtl
 	// MISSING: CustomerManagedEncryption
 	return out

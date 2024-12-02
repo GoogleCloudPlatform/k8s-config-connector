@@ -14,7 +14,9 @@
 
 package common
 
-import "strings"
+import (
+	"strings"
+)
 
 func ComputeGCPLabels(labels map[string]string) map[string]string {
 	if labels == nil {
@@ -33,4 +35,12 @@ func RemoveByPrefixes(a map[string]string, prefixes ...string) {
 			}
 		}
 	}
+}
+
+func AddLabelManagedByCNRM(labels map[string]string) map[string]string {
+	if labels == nil {
+		labels = map[string]string{}
+	}
+	labels["managed-by-cnrm"] = "true"
+	return labels
 }
