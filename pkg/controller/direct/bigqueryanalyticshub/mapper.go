@@ -239,7 +239,40 @@ func BigQueryAnalyticsHubListingSpec_ToProto(mapCtx *direct.MapContext, in *krmv
 	dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
 	out.DiscoveryType = &dtype
 
-	// todo acpana do source
+	out.Source = Listing_BigQueryDatasetSource_ToProto(mapCtx, in.Source.BigQueryDatasetSource)
+	return out
+}
+
+func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDatasetSource) *pb.Listing_BigqueryDataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Listing_BigqueryDataset{}
+
+	if in.Dataset != nil {
+		out.BigqueryDataset = &pb.Listing_BigQueryDatasetSource{
+			Dataset: in.Dataset.External,
+		}
+	}
+
+	if in.RestrictedExportPolicy != nil {
+		out.BigqueryDataset.RestrictedExportPolicy = &pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy{}
+		out.BigqueryDataset.RestrictedExportPolicy.Enabled = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.Enabled}
+		out.BigqueryDataset.RestrictedExportPolicy.RestrictDirectTableAccess = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.RestrictDirectTableAccess}
+		out.BigqueryDataset.RestrictedExportPolicy.RestrictQueryResult = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.RestrictQueryResult}
+	}
+
+	if in.SelectedResources != nil {
+		out.BigqueryDataset.SelectedResources = []*pb.Listing_BigQueryDatasetSource_SelectedResource{}
+		for _, tableRef := range in.SelectedResources {
+			out.BigqueryDataset.SelectedResources = append(out.BigqueryDataset.SelectedResources, &pb.Listing_BigQueryDatasetSource_SelectedResource{
+				Resource: &pb.Listing_BigQueryDatasetSource_SelectedResource_Table{
+					Table: tableRef.TableRef.External,
+				},
+			})
+		}
+	}
+
 	return out
 }
 

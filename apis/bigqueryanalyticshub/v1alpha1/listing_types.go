@@ -127,9 +127,6 @@ type BigQueryAnalyticsHubListingSpec struct {
 	// //  increases the size of the data by 33-36%) when using JSON on the wire.
 	// Icon []byte `json:"icon,omitempty"`
 
-	// Not yet
-	// Source *Listing_Source `json:"source,omitempty"`
-
 	/* Immutable. The name of the location this data exchange. */
 	// +required
 	Location string `json:"location"`
