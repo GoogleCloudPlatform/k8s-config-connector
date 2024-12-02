@@ -72,9 +72,16 @@ func (r *SecretRef) NormalizedExternal(ctx context.Context, reader client.Reader
 		return "", fmt.Errorf("reading referenced %s %s: %w", SecretManagerSecretGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	actualExternalRef, _, err1 := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err1 != nil {
+		err1 = fmt.Errorf("SecretManagerSecret `status.externalRef` not configured: %w", err1)
+		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
+		var err2 error
+		actualExternalRef, _, err2 = unstructured.NestedString(u.Object, "status", "name")
+		if err2 != nil {
+			err2 = fmt.Errorf("SecretManagerSecret `status.name` not configured: %w", err2)
+			return "", fmt.Errorf("%w\n%w", err1, err2)
+		}
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)

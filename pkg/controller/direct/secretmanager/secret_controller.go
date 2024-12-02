@@ -38,8 +38,7 @@ import (
 )
 
 const (
-	ctrlName      = "secretmanager-controller"
-	serviceDomain = "//secretmanager.googleapis.com"
+	ctrlName = "secretmanager-controller"
 )
 
 func init() {
@@ -136,7 +135,6 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 		}
 	}
 	return nil
-
 }
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
@@ -156,23 +154,6 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func MergeMap(a, b map[string]string) map[string]string {
-	copy := make(map[string]string, len(a))
-	for k, v := range a {
-		copy[k] = v
-	}
-	for k, v := range b {
-		copy[k] = v
-	}
-	return copy
-}
-
-func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
-	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
-	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com")
-	return annotations
-}
-
 func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating Secret", "name", a.id)
@@ -183,10 +164,6 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	resource.Annotations = ComputeAnnotations(desired)
-	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
-
 	req := &secretmanagerpb.CreateSecretRequest{
 		Parent:   a.id.Parent().String(),
 		SecretId: a.id.ID(),
@@ -235,8 +212,6 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag
-	resource.Annotations = ComputeAnnotations(desired)
-	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -262,6 +237,10 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	// Set externalRef. This field is empty after migration from the TF-based controller to the direct.
+	external := a.id.String()
+	status.ExternalRef = &external
+
 	status.Name = updated.Name
 	return op.UpdateStatus(ctx, status, nil)
 }

@@ -17,6 +17,9 @@ package common
 import "strings"
 
 func ComputeGCPLabels(labels map[string]string) map[string]string {
+	if labels == nil {
+		return map[string]string{}
+	}
 	RemoveByPrefixes(labels, "cnrm.cloud.google.com")
 	labels["managed-by-cnrm"] = "true"
 	return labels
