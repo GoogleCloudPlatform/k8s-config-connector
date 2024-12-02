@@ -3,6 +3,7 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -34,6 +35,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -46,17 +48,19 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "INSERT",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}"
   },
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.EnvironmentGroup",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup",
+    "createdAt": "2024-04-01T12:34:56.123456Z",
     "hostnames": [
       "${uniqueId}.mytesthost.net"
     ],
+    "lastModifiedAt": "2024-04-01T12:34:56.123456Z",
     "name": "apigeeenvgroup-full-${uniqueId}",
     "state": "ACTIVE"
   }
@@ -69,6 +73,7 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -95,6 +100,7 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -107,7 +113,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}"
