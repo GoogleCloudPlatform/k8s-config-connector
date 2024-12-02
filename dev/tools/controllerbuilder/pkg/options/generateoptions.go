@@ -27,7 +27,13 @@ type GenerateOptions struct {
 	APIVersion      string
 }
 
-func (o *GenerateOptions) InitDefaults() {
+func (o *GenerateOptions) InitDefaults() error {
+	root, err := RepoRoot()
+	if err != nil {
+		return nil
+	}
+	o.ProtoSourcePath = root + "/.build/googleapis.pb"
+	return nil
 }
 
 func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {

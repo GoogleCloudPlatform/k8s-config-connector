@@ -20,6 +20,7 @@ import (
 )
 
 // +kubebuilder:object:root=true
+// +kubebuilder:unservedversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=namespacedcontrollerreconcilers
 
@@ -84,6 +85,7 @@ func (c *NamespacedControllerReconciler) SetCommonStatus(s addonv1alpha1.CommonS
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:unservedversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=controllerreconcilers,scope=Cluster
 

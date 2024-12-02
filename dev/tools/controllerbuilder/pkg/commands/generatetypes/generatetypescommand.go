@@ -76,7 +76,6 @@ func (o *GenerateCRDOptions) InitDefaults() error {
 	if err != nil {
 		return nil
 	}
-	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
 	o.OutputAPIDirectory = root + "/apis/"
 	return nil
 }

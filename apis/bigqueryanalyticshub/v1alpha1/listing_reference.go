@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -99,7 +100,24 @@ func NewBigQueryAnalyticsHubListingRef(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location}
+	if location == "" {
+		return nil, fmt.Errorf("location cannot be empty")
+	}
+
+	if obj.Spec.DataExchangeRef == nil {
+		return nil, fmt.Errorf("spec.dataExchangeRef cannot be empty")
+	}
+	dataExchangeExternal, err := obj.Spec.DataExchangeRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	if err != nil {
+		return nil, fmt.Errorf("cannot normalize dataExchangeRef for listing ref: %w", err)
+	}
+
+	dataExchangeID, err := v1beta1.ParseDataExchangeIdentity(dataExchangeExternal)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse dataExchangeRef for listing ref: %w", err)
+	}
+
+	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location, DataExchangeID: dataExchangeID.ID()}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -152,12 +170,13 @@ func (r *BigQueryAnalyticsHubListingRef) Parent() (*BigQueryAnalyticsHubListingP
 }
 
 type BigQueryAnalyticsHubListingParent struct {
-	ProjectID string
-	Location  string
+	ProjectID      string
+	Location       string
+	DataExchangeID string
 }
 
 func (p *BigQueryAnalyticsHubListingParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/dataExchanges/" + p.DataExchangeID
 }
 
 func asBigQueryAnalyticsHubListingExternal(parent *BigQueryAnalyticsHubListingParent, resourceID string) (external string) {
@@ -167,14 +186,15 @@ func asBigQueryAnalyticsHubListingExternal(parent *BigQueryAnalyticsHubListingPa
 func parseBigQueryAnalyticsHubListingExternal(external string) (parent *BigQueryAnalyticsHubListingParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "listing" {
-		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubListing external=%q was not known (use projects/<projectId>/locations/<location>/listings/<listingID>)", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "dataExchanges" || tokens[6] != "listings" {
+		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubListing external=%q was not known (use projects/<projectID>/locations/<location>/dataExchanges/<dataExchangeID>/listings/<listingID>)", external)
 	}
 	parent = &BigQueryAnalyticsHubListingParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:      tokens[1],
+		Location:       tokens[3],
+		DataExchangeID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
 

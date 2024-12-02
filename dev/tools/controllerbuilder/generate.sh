@@ -23,17 +23,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-APIS_DIR=${REPO_ROOT}/apis/
-OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
-
-PROTO_BUNDLE=${REPO_ROOT}/.build/googleapis.pb
 
 # DiscoveryEngine
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.discoveryengine.v1 \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
-    --output-api ${APIS_DIR} \
     --resource DiscoveryEngineDataStore:DataStore \
     --resource DiscoveryEngineEngine:Engine
 
@@ -42,215 +36,134 @@ go run . generate-types \
 # EOF
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.discoveryengine.v1 \
-    --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 
 # DataFlow
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.dataflow.v1beta3 \
     --api-version dataflow.cnrm.cloud.google.com/v1beta1 \
-    --output-api ${APIS_DIR} \
     --resource DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.dataflow.v1beta3 \
-    --api-version dataflow.cnrm.cloud.google.com/v1alpha1 \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version dataflow.cnrm.cloud.google.com/v1alpha1
 
 # SecureSourceManagerInstance
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.securesourcemanager.v1 \
     --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
-    --output-api ${APIS_DIR} \
     --resource SecureSourceManagerInstance:Instance
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.securesourcemanager.v1 \
-    --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1
 
 # RedisCluster
 go run . generate-types  \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.redis.cluster.v1 \
-    --api-version redis.cnrm.cloud.google.com/v1alpha1  \
-    --output-api ${APIS_DIR} \
+    --api-version redis.cnrm.cloud.google.com/v1alpha1 \
     --resource RedisCluster:Cluster
 
 go run . generate-types  \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.redis.cluster.v1 \
     --api-version redis.cnrm.cloud.google.com/v1beta1  \
-    --output-api ${APIS_DIR} \
     --resource RedisCluster:Cluster
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.redis.cluster.v1 \
-    --api-version redis.cnrm.cloud.google.com/v1beta1  \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version redis.cnrm.cloud.google.com/v1beta1
 
 # Bigtable
 
 go run . generate-types  \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.bigtable.admin.v2 \
     --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
-    --output-api ${APIS_DIR} \
     --resource BigtableInstance:Instance
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.bigtable.admin.v2 \
-    --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version bigtable.cnrm.cloud.google.com/v1beta1
 
 # NetworkConnectivity
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service mockgcp.cloud.networkconnectivity.v1 \
     --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
-    --output-api ${APIS_DIR} \
     --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service mockgcp.cloud.networkconnectivity.v1 \
-    --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1
 
 # BigQueryDataset
 go run . generate-types  \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.bigquery.v2 \
     --api-version bigquery.cnrm.cloud.google.com/v1beta1  \
-    --output-api ${APIS_DIR} \
     --resource BigQueryDataset:Dataset
 
 # go run . generate-mapper \
-#     --proto-source-path ${PROTO_BUNDLE} \
 #     --service google.cloud.bigquery.v2 \
-#     --api-version bigquery.cnrm.cloud.google.com/v1beta1 \
-#     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-#     --output-dir ${OUTPUT_MAPPER} \
-#     --api-dir ${APIS_DIR}
+#     --api-version bigquery.cnrm.cloud.google.com/v1beta1
 
 # BigQueryDataTransferConfig
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.bigquery.datatransfer.v1 \
     --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1 \
-    --output-api ${APIS_DIR} \
     --resource BigQueryDataTransferConfig:TransferConfig
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.bigquery.datatransfer.v1 \
-    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1 \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1
 
 # Firestore
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.firestore.admin.v1 \
     --api-version firestore.cnrm.cloud.google.com/v1alpha1 \
-    --output-api ${APIS_DIR} \
     --resource FirestoreDatabase:Database
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.firestore.admin.v1 \
-    --api-version firestore.cnrm.cloud.google.com/v1alpha1 \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version firestore.cnrm.cloud.google.com/v1alpha1
 
 # Certificate Manager DNSAuthorization
 go run . generate-types \
     --service google.cloud.certificatemanager.v1  \
-    --proto-source-path ${PROTO_BUNDLE} \
-    --output-api $REPO_ROOT/apis \
     --resource CertificateManagerDNSAuthorization:DnsAuthorization \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-types \
     --service google.cloud.certificatemanager.v1  \
-    --proto-source-path ${PROTO_BUNDLE} \
-    --output-api $REPO_ROOT/apis \
     --resource CertificateManagerDNSAuthorization:DnsAuthorization \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1"
 
 # Workstations
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.workstations.v1 \
     --api-version workstations.cnrm.cloud.google.com/v1beta1 \
-    --output-api ${APIS_DIR} \
     --resource WorkstationCluster:WorkstationCluster
 
 go run . generate-types \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.workstations.v1 \
     --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
-    --output-api ${APIS_DIR} \
     --resource WorkstationConfig:WorkstationConfig
 
 go run . generate-mapper \
-    --proto-source-path ${PROTO_BUNDLE} \
     --service google.cloud.workstations.v1 \
-    --api-version workstations.cnrm.cloud.google.com/v1beta1 \
-    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ${OUTPUT_MAPPER} \
-    --api-dir ${APIS_DIR}
+    --api-version workstations.cnrm.cloud.google.com/v1beta1
 
 # SecretManager
 go run main.go generate-types \
      --service google.cloud.secretmanager.v1 \
-     --proto-source-path ${PROTO_BUNDLE} \
-     --output-api ${APIS_DIR} \
      --resource SecretManagerSecret:Secret \
      --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-mapper \
-   --proto-source-path ${PROTO_BUNDLE} \
    --service google.cloud.secretmanager.v1 \
-   --api-version "secretmanager.cnrm.cloud.google.com/v1beta1" \
-   --api-go-package-path  $REPO_ROOT/apis/ \
-   --output-dir $REPO_ROOT/pkg/controller/direct/ \
-   --api-dir $REPO_ROOT/apis/
-
-# To scaffold generate the SecretManagerSecretVersion controller:
-# go run . generate-direct-reconciler \
-#    --kind SecretManagerSecretVersion \
-#    --proto-resource SecretVersion \
-#    --api-version  "secretmanager.cnrm.cloud.google.com/v1beta1" \
-#    --service "google.cloud.secretmanager.v1" \
-#    --proto-source-path ${PROTO_BUNDLE}
+   --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
 
 # Spanner
 go run main.go generate-types \
     --service google.spanner.admin.instance.v1 \
-    --proto-source-path ${PROTO_BUNDLE} \
     --output-api $REPO_ROOT/apis \
     --resource SpannerInstance:Instance \
     --api-version "spanner.cnrm.cloud.google.com/v1beta1"

@@ -608,6 +608,70 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("response.ipAddress", "10.1.2.3")
 					addReplacement("primary.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("primary.generateTime", "2024-04-01T12:34:56.123456Z")
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if val, found, _ := unstructured.NestedString(obj, "name"); found {
+							if strings.Contains(val, "clusters/alloydb") ||
+								strings.Contains(val, "instances/alloydb") ||
+								strings.Contains(val, "backups/alloydb") {
+
+								// Explicitly set `reconciling` to `false`.
+								if _, found, _ := unstructured.NestedBool(obj, "reconciling"); !found {
+									if err := unstructured.SetNestedField(obj, false, "reconciling"); err != nil {
+										t.Fatal(err)
+									}
+								}
+
+								// Replace the IP addresses in `outboundPublicIpAddresses` slice to test IP addresses.
+								if _, found, _ := unstructured.NestedSlice(obj, "outboundPublicIpAddresses"); found {
+									if err := unstructured.SetNestedStringSlice(obj, []string{"6.6.6.6", "8.8.8.8"}, "outboundPublicIpAddresses"); err != nil {
+										t.Fatal(err)
+									}
+								}
+							}
+						}
+					})
+					// Boolean fields in LRO are omitted when false so we need
+					// to add them back.
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if _, found, _ := unstructured.NestedMap(obj, "metadata"); found {
+							if val, found, err := unstructured.NestedString(obj, "metadata", "@type"); err == nil && found && val == "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata" {
+								if _, found, err := unstructured.NestedString(obj, "done"); err == nil && !found {
+									// Explicitly set `done` to `false`.
+									if err := unstructured.SetNestedField(obj, false, "done"); err != nil {
+										t.Fatal(err)
+									}
+								}
+
+								if _, found, err := unstructured.NestedString(obj, "metadata", "requestedCancellation"); err == nil && !found {
+									// Explicitly set `metadata.requestedCancellation` to `false`.
+									if err := unstructured.SetNestedField(obj, false, "metadata", "requestedCancellation"); err != nil {
+										t.Fatal(err)
+									}
+								}
+
+								if _, found, _ := unstructured.NestedMap(obj, "response"); found {
+									if val, found, _ := unstructured.NestedString(obj, "response", "@type"); found &&
+										val == "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster" ||
+										val == "type.googleapis.com/google.cloud.alloydb.v1beta.Instance" ||
+										val == "type.googleapis.com/google.cloud.alloydb.v1beta.Backup" {
+										// Explicitly set `reconciling` in response to `false`.
+										if _, found, _ := unstructured.NestedBool(obj, "response", "reconciling"); !found {
+											if err := unstructured.SetNestedField(obj, false, "response", "reconciling"); err != nil {
+												t.Fatal(err)
+											}
+										}
+
+										// Replace the IP addresses in `outboundPublicIpAddresses` slice to test IP addresses.
+										if _, found, _ := unstructured.NestedSlice(obj, "response", "outboundPublicIpAddresses"); found {
+											if err := unstructured.SetNestedStringSlice(obj, []string{"6.6.6.6", "8.8.8.8"}, "response", "outboundPublicIpAddresses"); err != nil {
+												t.Fatal(err)
+											}
+										}
+									}
+								}
+							}
+						}
+					})
 
 					// Specific to BigTable
 					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")

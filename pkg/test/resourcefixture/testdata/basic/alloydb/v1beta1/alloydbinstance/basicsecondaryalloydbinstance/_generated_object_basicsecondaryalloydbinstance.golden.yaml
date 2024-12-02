@@ -1,0 +1,39 @@
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: alloydbinstance-2-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  availabilityType: REGIONAL
+  clusterRef:
+    name: alloydbcluster-2-${uniqueId}
+  databaseFlags:
+    enable_google_adaptive_autovacuum: "off"
+  instanceTypeRef:
+    name: alloydbcluster-2-${uniqueId}
+  machineConfig:
+    cpuCount: 2
+  resourceID: alloydbinstance-2-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  ipAddress: 10.1.2.3
+  name: projects/${projectId}/locations/europe-west2/clusters/alloydbcluster-2-${uniqueId}/instances/alloydbinstance-2-${uniqueId}
+  observedGeneration: 3
+  state: READY
+  uid: "12345678"
+  updateTime: "1970-01-01T00:00:00Z"

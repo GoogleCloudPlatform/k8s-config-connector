@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -161,8 +160,8 @@ func ListNamespacedControllerResources(ctx context.Context, c client.Client, nam
 	return list.Items, nil
 }
 
-func GetNamespacedControllerReconciler(ctx context.Context, c client.Client, namespace, name string) (*customizev1alpha1.NamespacedControllerReconciler, error) {
-	obj := &customizev1alpha1.NamespacedControllerReconciler{}
+func GetNamespacedControllerReconciler(ctx context.Context, c client.Client, namespace, name string) (*customizev1beta1.NamespacedControllerReconciler, error) {
+	obj := &customizev1beta1.NamespacedControllerReconciler{}
 	if err := c.Get(ctx, types.NamespacedName{Namespace: namespace, Name: name}, obj); err != nil {
 		return nil, err
 	}
@@ -170,24 +169,24 @@ func GetNamespacedControllerReconciler(ctx context.Context, c client.Client, nam
 }
 
 // ListNamespacedControllerReconcilers lists all NamespacedControllerReconcilers CRs in the given namespace.
-func ListNamespacedControllerReconcilers(ctx context.Context, c client.Client, namespace string) ([]customizev1alpha1.NamespacedControllerReconciler, error) {
-	list := &customizev1alpha1.NamespacedControllerReconcilerList{}
+func ListNamespacedControllerReconcilers(ctx context.Context, c client.Client, namespace string) ([]customizev1beta1.NamespacedControllerReconciler, error) {
+	list := &customizev1beta1.NamespacedControllerReconcilerList{}
 	if err := c.List(ctx, list, &client.ListOptions{Namespace: namespace}); err != nil {
 		return nil, err
 	}
 	return list.Items, nil
 }
 
-func GetControllerReconciler(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ControllerReconciler, error) {
-	obj := &customizev1alpha1.ControllerReconciler{}
+func GetControllerReconciler(ctx context.Context, c client.Client, name string) (*customizev1beta1.ControllerReconciler, error) {
+	obj := &customizev1beta1.ControllerReconciler{}
 	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
-func ListControllerReconcilers(ctx context.Context, c client.Client) ([]customizev1alpha1.ControllerReconciler, error) {
-	list := &customizev1alpha1.ControllerReconcilerList{}
+func ListControllerReconcilers(ctx context.Context, c client.Client) ([]customizev1beta1.ControllerReconciler, error) {
+	list := &customizev1beta1.ControllerReconcilerList{}
 	if err := c.List(ctx, list); err != nil {
 		return nil, err
 	}
@@ -507,7 +506,7 @@ func validateContainerResourceCustomizationValues(r customizev1beta1.ResourceReq
 	return nil
 }
 
-func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, ratelimit *customizev1alpha1.RateLimit) error {
+func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, ratelimit *customizev1beta1.RateLimit) error {
 	if ratelimit == nil {
 		return nil
 	}
@@ -527,7 +526,7 @@ func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, r
 	default:
 		return fmt.Errorf("rate limit customization for %s is not supported. "+
 			"Supported controllers: %s",
-			targetControllerName, strings.Join(customizev1alpha1.ValidRateLimitControllers, ", "))
+			targetControllerName, strings.Join(customizev1beta1.ValidRateLimitControllers, ", "))
 	}
 
 	count := 0
@@ -549,7 +548,7 @@ func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, r
 	return nil
 }
 
-func customizeRateLimitFn(target string, rateLimit *customizev1alpha1.RateLimit) func(container map[string]interface{}) error {
+func customizeRateLimitFn(target string, rateLimit *customizev1beta1.RateLimit) func(container map[string]interface{}) error {
 	return func(container map[string]interface{}) error {
 		name, _, err := unstructured.NestedString(container, "name")
 		if err != nil {
@@ -562,7 +561,7 @@ func customizeRateLimitFn(target string, rateLimit *customizev1alpha1.RateLimit)
 	}
 }
 
-func applyRateLimitToContainerArg(container map[string]interface{}, rateLimit *customizev1alpha1.RateLimit) error {
+func applyRateLimitToContainerArg(container map[string]interface{}, rateLimit *customizev1beta1.RateLimit) error {
 	if rateLimit == nil {
 		return nil
 	}
@@ -591,7 +590,7 @@ func applyRateLimitToContainerArg(container map[string]interface{}, rateLimit *c
 	return nil
 }
 
-func ApplyContainerPprof(m *manifest.Objects, targetControllerName string, pprofConfig *customizev1alpha1.PprofConfig) error {
+func ApplyContainerPprof(m *manifest.Objects, targetControllerName string, pprofConfig *customizev1beta1.PprofConfig) error {
 	if pprofConfig == nil {
 		return nil
 	}
@@ -611,7 +610,7 @@ func ApplyContainerPprof(m *manifest.Objects, targetControllerName string, pprof
 	default:
 		return fmt.Errorf("pprof config customization for %s is not supported. "+
 			"Supported controllers: %s",
-			targetControllerName, strings.Join(customizev1alpha1.SupportedPprofControllers, ", "))
+			targetControllerName, strings.Join(customizev1beta1.SupportedPprofControllers, ", "))
 	}
 
 	count := 0
@@ -633,7 +632,7 @@ func ApplyContainerPprof(m *manifest.Objects, targetControllerName string, pprof
 	return nil
 }
 
-func customizePprofConfigFn(target string, pprofConfig *customizev1alpha1.PprofConfig) func(container map[string]interface{}) error {
+func customizePprofConfigFn(target string, pprofConfig *customizev1beta1.PprofConfig) func(container map[string]interface{}) error {
 	return func(container map[string]interface{}) error {
 		name, _, err := unstructured.NestedString(container, "name")
 		if err != nil {
@@ -646,7 +645,7 @@ func customizePprofConfigFn(target string, pprofConfig *customizev1alpha1.PprofC
 	}
 }
 
-func applyPprofConfigToContainerArg(container map[string]interface{}, pprofConfig *customizev1alpha1.PprofConfig) error {
+func applyPprofConfigToContainerArg(container map[string]interface{}, pprofConfig *customizev1beta1.PprofConfig) error {
 	if pprofConfig == nil {
 		return nil
 	}

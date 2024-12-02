@@ -129,14 +129,19 @@ vet:
 	make -C operator vet
 	go vet -tags integration ./pkg/... ./cmd/... ./config/tests/...
 
-# Generate code
-.PHONY: generate
+# Generate code including the dcl (legacy)
+.PHONY: generate-including-dcl
 generate:
-	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
-	# This path will be covered by `generate-go-client` target specifically.
 	go work vendor -o temp-vendor # So we can load DCL resources
 	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
+	go generate ./pkg/apis/...
+	make -C operator generate
+	make fmt
+
+# Generate code
+.PHONY: generate
+generate:
 	go generate ./pkg/apis/...
 	make -C operator generate
 	make fmt
@@ -245,7 +250,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs ensure
+ready-pr: lint manifests resource-docs ensure fmt
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl

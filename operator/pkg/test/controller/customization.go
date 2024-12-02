@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"strings"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 
 	"google.golang.org/protobuf/proto"
@@ -128,24 +127,24 @@ var (
 			},
 		},
 	}
-	NamespacedControllerReconcilerCR = &customizev1alpha1.NamespacedControllerReconciler{
+	NamespacedControllerReconcilerCR = &customizev1beta1.NamespacedControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager",
 			Namespace: "foo-ns",
 		},
-		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
-			RateLimit: &customizev1alpha1.RateLimit{
+		Spec: customizev1beta1.NamespacedControllerReconcilerSpec{
+			RateLimit: &customizev1beta1.RateLimit{
 				Burst: 30,
 				QPS:   80,
 			},
 		},
 	}
-	ControllerReconcilerCR = &customizev1alpha1.ControllerReconciler{
+	ControllerReconcilerCR = &customizev1beta1.ControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",
 		},
-		Spec: customizev1alpha1.ControllerReconcilerSpec{
-			RateLimit: &customizev1alpha1.RateLimit{
+		Spec: customizev1beta1.ControllerReconcilerSpec{
+			RateLimit: &customizev1beta1.RateLimit{
 				Burst: 30,
 				QPS:   80,
 			},
@@ -249,13 +248,13 @@ var (
 			},
 		},
 	}
-	NamespacedControllerReconcilerCRWrongNamespace = &customizev1alpha1.NamespacedControllerReconciler{
+	NamespacedControllerReconcilerCRWrongNamespace = &customizev1beta1.NamespacedControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager",
 			Namespace: "does-not-match",
 		},
-		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
-			RateLimit: &customizev1alpha1.RateLimit{
+		Spec: customizev1beta1.NamespacedControllerReconcilerSpec{
+			RateLimit: &customizev1beta1.RateLimit{
 				Burst: 30,
 				QPS:   80,
 			},
@@ -306,24 +305,24 @@ var (
 
 var (
 	unsupportedControllerName                                = "cnrm-webhook-manager" // a valid KCC controller but its rate limit customization is not currently supported.
-	NamespacedControllerReconcilerCRForUnsupportedController = &customizev1alpha1.NamespacedControllerReconciler{
+	NamespacedControllerReconcilerCRForUnsupportedController = &customizev1beta1.NamespacedControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      unsupportedControllerName,
 			Namespace: "foo-ns",
 		},
-		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
-			RateLimit: &customizev1alpha1.RateLimit{
+		Spec: customizev1beta1.NamespacedControllerReconcilerSpec{
+			RateLimit: &customizev1beta1.RateLimit{
 				Burst: 30,
 				QPS:   80,
 			},
 		},
 	}
-	ControllerReconcilerCRForUnsupportedController = &customizev1alpha1.ControllerReconciler{
+	ControllerReconcilerCRForUnsupportedController = &customizev1beta1.ControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: unsupportedControllerName,
 		},
-		Spec: customizev1alpha1.ControllerReconcilerSpec{
-			RateLimit: &customizev1alpha1.RateLimit{
+		Spec: customizev1beta1.ControllerReconcilerSpec{
+			RateLimit: &customizev1beta1.RateLimit{
 				Burst: 30,
 				QPS:   80,
 			},
@@ -332,7 +331,7 @@ var (
 	ErrUnsupportedController = fmt.Sprintf("failed to apply rate limit customization %s: "+
 		"rate limit customization for %s is not supported. "+
 		"Supported controllers: %s",
-		unsupportedControllerName, unsupportedControllerName, strings.Join(customizev1alpha1.ValidRateLimitControllers, ", "))
+		unsupportedControllerName, unsupportedControllerName, strings.Join(customizev1beta1.ValidRateLimitControllers, ", "))
 )
 
 var ClusterModeComponents = []string{`

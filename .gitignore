@@ -154,3 +154,8 @@ Session.vim
 
 # Go workspaces
 go.work.sum
+
+# Log files that are often created by e2e runs / downloads
+e2e.log
+testlogs/
+log

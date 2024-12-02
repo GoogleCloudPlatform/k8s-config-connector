@@ -77,6 +77,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.outboundPublicIpAddresses"] = []string{"6.6.6.6", "8.8.8.8"}
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
@@ -696,6 +697,9 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Compute resources
+	visitor.sortSlices.Insert(".subnetworks")
 
 	for _, event := range events {
 		// Compute URLs: Replace any compute beta URLs with v1 URLs
