@@ -499,7 +499,7 @@ func updateProjectResourceWithExistingResourceIDs(t *testing.T, unstructs []*uns
 			if err != nil {
 				t.Fatalf("error getting billingAccountRef: %v", err)
 			}
-			// We cannot dynamically create GCP project with billingAccountRef, acquring pre-created project instead.
+			// We cannot dynamically create GCP project with billingAccountRef, acquiring pre-created project instead.
 			if found && b != "" {
 				annotations := u.GetAnnotations()
 				if annotations == nil {

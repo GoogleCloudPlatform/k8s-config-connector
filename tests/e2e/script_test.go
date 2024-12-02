@@ -239,7 +239,7 @@ func TestE2EScript(t *testing.T) {
 								t.Fatalf("timed out looking for value %s in http log", sval)
 								stopWaiting = true
 							case <-ticker.C:
-								// todo(acpana): find better asympotatic approach
+								// todo(acpana): find better asymptotic approach
 								for _, l := range h.Events.HTTPEvents {
 									if strings.Contains(l.Response.Body, sval) {
 										stopWaiting = true

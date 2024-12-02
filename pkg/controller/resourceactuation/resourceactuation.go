@@ -44,7 +44,7 @@ func DecideActuationMode(cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConne
 	return opv1beta1.DefaultActuationMode()
 }
 
-// ShouldSkip skips a resource actuatation if the ReconcileIntervalInSecondsAnnotation = 0 and the KRM resource has not changed since its last UpToDate.
+// ShouldSkip skips a resource actuation if the ReconcileIntervalInSecondsAnnotation = 0 and the KRM resource has not changed since its last UpToDate.
 // This will disable drift correction on corresponding GCP resources since the reconcileInterval is set to 0.
 func ShouldSkip(u *unstructured.Unstructured) (bool, error) {
 	generation, found, err := unstructured.NestedInt64(u.Object, "metadata", "generation")

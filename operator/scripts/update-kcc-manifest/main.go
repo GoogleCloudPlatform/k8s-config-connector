@@ -403,7 +403,7 @@ func kustomizeBuild(operatorSrcRoot string) {
 	buildPath = path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-namespaced")
 	buildNamespacedMode(operatorSrcRoot, buildPath, output, false)
 
-	// autpilot namespaced mode
+	// autopilot namespaced mode
 	buildPath = path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-autopilot-namespaced")
 	buildNamespacedMode(operatorSrcRoot, buildPath, output, true)
 }

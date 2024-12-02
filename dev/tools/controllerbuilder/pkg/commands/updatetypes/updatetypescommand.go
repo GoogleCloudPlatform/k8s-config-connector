@@ -141,7 +141,7 @@ func (u *TypeUpdater) Run() error {
 	return nil
 }
 
-// anaylze finds the new field, its parent message, and all dependent messages that need to be generated.
+// analyze finds the new field, its parent message, and all dependent messages that need to be generated.
 func (u *TypeUpdater) analyze() error {
 	parentMessage, newField, err := findNewField(u.opts.ProtoSourcePath, u.opts.parentMessageFullName, u.opts.newField)
 	if err != nil {

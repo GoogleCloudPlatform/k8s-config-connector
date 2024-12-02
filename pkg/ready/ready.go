@@ -30,7 +30,7 @@ var ready = false
 
 // SetContainerAsReady sets up an HTTP server for the readiness probe to check
 func SetContainerAsReady() {
-	// Avoid starting up another HTTP server if we had alread started one to
+	// Avoid starting up another HTTP server if we had already started one to
 	// avoid a port conflict error which would cause an application crash due
 	// to the logging.Fatal() call below.
 	if ready {

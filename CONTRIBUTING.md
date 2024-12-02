@@ -366,7 +366,7 @@ can run it locally on your dev machine with the steps below.
 If you are adding a new resource, you need to follow the steps in [NewResourceFromTerraform.md](README.ChangingTerraform.md)
 to make code changes, add test data, and run the tests for your resource.
 
-If you are working on a existing resource, test yaml should exist under
+If you are working on an existing resource, test yaml should exist under
 ./pkg/test/resourcefixture/testdata/basic, you can run the test command directly
 to make sure the test can still pass. Example command:
 

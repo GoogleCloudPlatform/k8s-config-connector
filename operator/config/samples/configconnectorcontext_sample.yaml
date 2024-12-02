@@ -17,5 +17,5 @@ kind: ConfigConnectorContext
 metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
 spec:
-  # Replace ${GSA?} with your service account's name and and ${PROJECT_ID?} with your project ID.
+  # Replace ${GSA?} with your service account's name and ${PROJECT_ID?} with your project ID.
   googleServiceAccount: "${GSA?}@${PROJECT_ID?}.iam.gserviceaccount.com"

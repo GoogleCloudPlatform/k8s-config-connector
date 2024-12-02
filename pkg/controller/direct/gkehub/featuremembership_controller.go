@@ -248,7 +248,7 @@ func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
-	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
+	//  There are no output fields in the api Object, so we can compare the desired and the actual directly.
 	if !reflect.DeepEqual(a.desired.Configmanagement, actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, actual.Mesh) {
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
 		if _, err := a.patchMembershipSpec(ctx); err != nil {

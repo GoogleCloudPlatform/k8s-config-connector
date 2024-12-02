@@ -868,7 +868,7 @@ spec:
                       type: object
                     type: array
                   gcpPublicCidrsAccessEnabled:
-                    description: Whether master is accessbile via Google Compute Engine
+                    description: Whether master is accessible via Google Compute Engine
                       Public IP addresses.
                     type: boolean
                 type: object
