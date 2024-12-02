@@ -33,10 +33,12 @@ fi
 
 if ! command -v jq; then
   echo "jq not found; installing (assuming we are running in a container)"
+  apt-get update
   apt-get install --yes jq
 fi
 
 if ! command -v zip; then
   echo "zip not found; installing (assuming we are running in a container)"
+  apt-get update
   apt-get install --yes zip
 fi
