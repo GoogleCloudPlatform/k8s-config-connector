@@ -30,7 +30,7 @@ type SelectedResource struct {
 	// Format:
 	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
 	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
-	TableRef *refv1beta1.BigQueryTableRef `json:"table,omitempty"`
+	TableRef *refv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
 }
 
 type BigQueryDatasetSource struct {

@@ -239,7 +239,12 @@ func BigQueryAnalyticsHubListingSpec_ToProto(mapCtx *direct.MapContext, in *krmv
 	dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
 	out.DiscoveryType = &dtype
 
-	out.Source = Listing_BigQueryDatasetSource_ToProto(mapCtx, in.Source.BigQueryDatasetSource)
+	if in.Source != nil {
+		// TODO(team): in the future we may have a BigQueryDataset source or a PubsubTopicSource
+		// 	We will handle one of in that case.
+		out.Source = Listing_BigQueryDatasetSource_ToProto(mapCtx, in.Source.BigQueryDatasetSource)
+	}
+
 	return out
 }
 
