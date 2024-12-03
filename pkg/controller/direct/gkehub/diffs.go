@@ -81,6 +81,9 @@ func diffConfigManagement(left *krm.FeaturemembershipConfigmanagement, right *fe
 	if left.Version != nil && !reflect.DeepEqual(left.Version, right.Version) {
 		diffs = append(diffs, "version")
 	}
+	if left.Management != nil && !reflect.DeepEqual(left.Management, right.Management) {
+		diffs = append(diffs, "management")
+	}
 	return diffs
 }
 

@@ -67,6 +67,7 @@ func ConfigManagementMembershipSpec_FromProto(mapCtx *direct.MapContext, r *api.
 	return &krm.FeaturemembershipConfigmanagement{
 		Binauthz:   FeaturemembershipBinauthz_FromProto(mapCtx, r.Binauthz),
 		ConfigSync: ConfigSyncMembershipSpec_FromProto(mapCtx, r.ConfigSync),
+		Management: direct.LazyPtr(r.Management),
 	}
 }
 

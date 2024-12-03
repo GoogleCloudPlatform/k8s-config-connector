@@ -101,6 +101,7 @@ configmanagement:
     enableHierarchicalResourceQuota: boolean
     enablePodTreeLabels: boolean
     enabled: boolean
+  management: string
   policyController:
     auditIntervalSeconds: string
     enabled: boolean
@@ -505,6 +506,16 @@ projectRef:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether Hierarchy Controller is enabled in this cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.management</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

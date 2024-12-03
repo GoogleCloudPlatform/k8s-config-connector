@@ -39,3 +39,5 @@ spec:
         syncRev: "HEAD"
         secretType: "none"
     version: "1.18.1"
+    management: "MANAGEMENT_AUTOMATIC"
+

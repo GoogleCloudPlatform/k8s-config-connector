@@ -81,6 +81,10 @@ type FeaturemembershipConfigmanagement struct {
 	/* Optional. Version of ACM to install. Defaults to the latest version. */
 	// +optional
 	Version *string `json:"version,omitempty"`
+
+	/* Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster. */
+	// +optional
+	Management *string `json:"management,omitempty"`
 }
 
 type FeaturemembershipGit struct {

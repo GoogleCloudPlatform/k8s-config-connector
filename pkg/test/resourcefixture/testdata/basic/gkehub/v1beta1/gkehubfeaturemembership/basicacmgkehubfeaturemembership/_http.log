@@ -1600,6 +1600,7 @@ User-Agent: kcc/controller-manager
           },
           "sourceFormat": "hierarchy"
         },
+        "management": "MANAGEMENT_AUTOMATIC",
         "version": "1.18.1"
       }
     }
