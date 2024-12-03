@@ -61,7 +61,7 @@ func normalizeResourceName(ctx context.Context, reader client.Reader, src client
 
 	switch ref.Kind {
 	case "Project":
-		project, err := refs.ResolveProject(ctx, reader, src, &refs.ProjectRef{
+		project, err := refs.ResolveProject(ctx, reader, src.GetNamespace(), &refs.ProjectRef{
 			Name:      ref.Name,
 			Namespace: ref.Namespace,
 			External:  ref.External,
@@ -167,7 +167,7 @@ func normalizeProjectRef(ctx context.Context, reader client.Reader, src client.O
 		return nil, nil
 	}
 
-	project, err := refs.ResolveProject(ctx, reader, src, ref)
+	project, err := refs.ResolveProject(ctx, reader, src.GetNamespace(), ref)
 	if err != nil {
 		return nil, err
 	}

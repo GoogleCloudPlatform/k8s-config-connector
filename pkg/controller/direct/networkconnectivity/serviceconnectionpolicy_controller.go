@@ -95,7 +95,7 @@ func (m *serviceConnectionPolicyModel) AdapterForObject(ctx context.Context, kub
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, kube, obj, &obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

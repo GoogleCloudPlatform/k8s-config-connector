@@ -90,7 +90,7 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 	id := &KMSKeyHandleRef{}
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

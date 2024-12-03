@@ -84,7 +84,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	var keyProject *refs.Project
 	if obj.Spec.KeyProjectRef != nil {
 		var err error
-		keyProject, err = refs.ResolveProject(ctx, reader, obj, obj.Spec.KeyProjectRef)
+		keyProject, err = refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.KeyProjectRef)
 		if err != nil {
 			return nil, fmt.Errorf("unable to resolve key project for autokeyConfig naem: %s, err: %w", obj.GetName(), err)
 		}

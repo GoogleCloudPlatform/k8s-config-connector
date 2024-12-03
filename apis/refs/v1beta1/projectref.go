@@ -68,7 +68,7 @@ func ResolveProjectFromAnnotation(ctx context.Context, reader client.Reader, src
 }
 
 // ResolveProject will resolve a ProjectRef to a Project, with the ProjectID.
-func ResolveProject(ctx context.Context, reader client.Reader, src client.Object, ref *ProjectRef) (*Project, error) {
+func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace string, ref *ProjectRef) (*Project, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -103,7 +103,7 @@ func ResolveProject(ctx context.Context, reader client.Reader, src client.Object
 		Name:      ref.Name,
 	}
 	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
+		key.Namespace = otherNamespace
 	}
 
 	project := &unstructured.Unstructured{}
@@ -136,7 +136,7 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructur
 			External: projectRefExternal,
 		}
 
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
+		project, err := ResolveProject(ctx, reader, obj.GetNamespace(), &projectRef)
 		if err != nil {
 			return "", fmt.Errorf("cannot parse projectRef.external %q in %v %v/%v: %w", projectRefExternal, obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
 		}
@@ -155,7 +155,7 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructur
 			projectRef.Namespace = obj.GetNamespace()
 		}
 
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
+		project, err := ResolveProject(ctx, reader, obj.GetNamespace(), &projectRef)
 		if err != nil {
 			return "", fmt.Errorf("cannot parse projectRef in %v %v/%v: %w", obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
 		}

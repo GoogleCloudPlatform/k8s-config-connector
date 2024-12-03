@@ -169,7 +169,7 @@ func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.Privileg
 	container := ""
 	switch containerRef.(type) {
 	case *refs.ProjectRef:
-		project, err := refs.ResolveProject(ctx, reader, obj, projectRef)
+		project, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), projectRef)
 		if err != nil {
 			return "", err
 		}

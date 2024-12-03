@@ -80,7 +80,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := apirefs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := apirefs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

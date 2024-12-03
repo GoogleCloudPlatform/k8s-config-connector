@@ -90,7 +90,7 @@ func (m *caPoolModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, refs.AsProjectRef(&obj.Spec.ProjectRef))
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), refs.AsProjectRef(&obj.Spec.ProjectRef))
 	if err != nil {
 		return nil, err
 	}
