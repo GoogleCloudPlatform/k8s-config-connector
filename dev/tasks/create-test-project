@@ -54,6 +54,7 @@ gcloud config set project "${GCP_PROJECT_ID}"
 
 gcloud services enable \
   apigee.googleapis.com \
+  bigquery.googleapis.com \
   cloudbuild.googleapis.com \
   cloudkms.googleapis.com \
   compute.googleapis.com \
