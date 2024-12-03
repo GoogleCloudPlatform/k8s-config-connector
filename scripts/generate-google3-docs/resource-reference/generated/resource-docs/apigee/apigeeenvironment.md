@@ -55,7 +55,7 @@ organizations.environments
 
 <tr>
     <td>IAMPolicy/IAMPartialPolicy Supports Conditions</td>
-    <td>Yes</td>
+    <td>No</td>
 </tr>
 <tr>
     <td>IAMPolicyMember Supports Conditions</td>
