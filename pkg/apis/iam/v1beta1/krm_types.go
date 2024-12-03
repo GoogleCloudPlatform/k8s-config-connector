@@ -14,7 +14,13 @@
 
 package v1beta1
 
-import "k8s.io/apimachinery/pkg/runtime/schema"
+import (
+	"fmt"
+	"reflect"
+
+	bigqueryconnection "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+)
 
 // *** PLEASE READ THE FOLLOWING COMMENT BEFORE MAKING CHANGES ***
 // This ResourceReference definition is duplicated in the scripts/generate-go-crd-clients/k8s/ directory.
@@ -54,6 +60,13 @@ type MemberSource struct {
 	// The ServiceIdentity whose service account (i.e., its
 	// 'status.email') is to be bound to the role.
 	ServiceIdentityRef *MemberReference `json:"serviceIdentityRef,omitempty"`
+
+	// BigQueryConnectionConnection whose service account is to be bound to the role.
+	// Use the Type field to specifie the connection type.
+	// For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`.
+	// For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
+	// For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.
+	BigQueryConnectionConnectionRef *bigqueryconnection.BigQueryConnectionServiceAccountRef `json:"bigQueryConnectionConnectionRef,omitempty"`
 }
 
 // MemberReference represents a resource with an IAM identity
@@ -78,4 +91,18 @@ type AuditLogConfig struct {
 	// Identities that do not cause logging for this type of permission. The
 	// format is the same as that for 'members' in IAMPolicy/IAMPolicyMember.
 	ExemptedMembers []Member `json:"exemptedMembers,omitempty"`
+}
+
+func (ms *MemberSource) Validate() error {
+	v := reflect.ValueOf(ms).Elem()
+	var count int
+	for i := 0; i < v.NumField(); i++ {
+		if !v.Field(i).IsNil() {
+			count++
+		}
+	}
+	if count > 1 {
+		return fmt.Errorf("%d memberFrom refs found. Only one subfield of MemberSource can be set", count)
+	}
+	return nil
 }

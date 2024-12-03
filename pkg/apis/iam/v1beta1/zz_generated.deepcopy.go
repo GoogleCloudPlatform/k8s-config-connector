@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -643,6 +644,11 @@ func (in *MemberSource) DeepCopyInto(out *MemberSource) {
 	if in.ServiceIdentityRef != nil {
 		in, out := &in.ServiceIdentityRef, &out.ServiceIdentityRef
 		*out = new(MemberReference)
+		**out = **in
+	}
+	if in.BigQueryConnectionConnectionRef != nil {
+		in, out := &in.BigQueryConnectionConnectionRef, &out.BigQueryConnectionConnectionRef
+		*out = new(bigqueryconnectionv1beta1.BigQueryConnectionServiceAccountRef)
 		**out = **in
 	}
 	return
