@@ -17,13 +17,14 @@ TODO: list contributors with `git log v1.125.0... | grep Merge | grep from | awk
 
 ## New Fields:
 
-* `Placeholder`
+* `GkeHubFeatureMembership`
+*   Added `spec.configmanagement.management` field to enable Config Sync Auto Upgrade.
 
 ## Modified Beta Reconciliation
 
 We migrated the following reconciliation from the TF-based or DCL-based controller to the new Direct controller to enhance the reliability and performance. The resource CRD is unchanged.
 
-* `Placeholder`
+* `GkeHubFeatureMembership` is now a direct resource
 
 ## New Alpha Resources (Direct Reconciler):
 
