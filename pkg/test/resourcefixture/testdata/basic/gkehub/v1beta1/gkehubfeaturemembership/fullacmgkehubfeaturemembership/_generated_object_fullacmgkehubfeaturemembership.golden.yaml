@@ -25,7 +25,6 @@ spec:
         syncRev: 264b37c21ef77165d8639d77b23d4ebb8fee053c
         syncWaitSecs: "30"
       sourceFormat: hierarchy
-    management: MANAGEMENT_AUTOMATIC
     version: 1.18.2
   featureRef:
     name: gkehubfeature-full-acm-${uniqueId}

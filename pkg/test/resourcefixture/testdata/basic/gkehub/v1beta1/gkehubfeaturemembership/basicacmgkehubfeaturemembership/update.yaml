@@ -38,6 +38,5 @@ spec:
         syncWaitSecs: "20"
         syncRev: "HEAD"
         secretType: "none"
-    version: "1.18.1"
-    management: "MANAGEMENT_AUTOMATIC"
+    version: "1.18.2"
 
