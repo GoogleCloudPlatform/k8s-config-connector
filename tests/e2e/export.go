@@ -68,6 +68,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
 		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
 
+	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
+		exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
+
 	}
 
 	if exportURI == "" {
@@ -103,7 +106,6 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		}
 		exportURI = strings.ReplaceAll(exportURI, "{.spec.collection}", collection)
 	}
-
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"
@@ -111,9 +113,17 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	outputPath := filepath.Join(outputDir, "export.yaml")
 	exportParams.Output = outputPath
 	exportParams.URI = exportURI
-	if err := export.Execute(h.Ctx, &exportParams); err != nil {
-		h.Errorf("error from export.Execute: %v", err)
-		return ""
+	switch gvk.Kind {
+	case "SecretManagerSecretVersion":
+		// Skip run export.Execute because the SecretVersion servicemappings has a broken marker
+		// that the `idTemplateCanBeUsedToMatchResourceName` is false so the Execute always fails.
+		// https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/3530c83a5e0d331640ec2160675d80336fad9c53/config/servicemappings/secretmanager.yaml#L79
+		break
+	default:
+		if err := export.Execute(h.Ctx, &exportParams); err != nil {
+			h.Errorf("error from export.Execute: %v", err)
+			return ""
+		}
 	}
 
 	output := h.MustReadFile(outputPath)

@@ -1,0 +1,38 @@
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}:addVersion?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
+
+{
+  "parent": "projects/${projectId}/secrets/secret-${uniqueId}",
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "userManaged": {
+      "replicas": [
+        {
+          "location": "us-central1"
+        }
+      ]
+    }
+  },
+  "state": 1
+}
