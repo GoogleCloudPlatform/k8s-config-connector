@@ -195,7 +195,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	}
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
-	// GCP service does not allow setting version aliases during Secret creation.
+	// GCP service does not allow setting version aliases during Secret creation.
 	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
 		Parent:   a.id.Parent().String(),

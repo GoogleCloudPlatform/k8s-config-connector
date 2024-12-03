@@ -4,7 +4,7 @@ Adding a new direct resource is similar to migrating a Terraform/DCL based Alpha
 
 ## A basic infra
 
-Developing a pure direct resource requires you to have every step setup to validate your change. Basically you need the API and mapper to write the direct controller, then you can use the controller to write the MockGCP tests. This reverses the [deep-dives step 1](../deep-dives/1-add-mockgcp-tests.md) to the end compared to other scenarios. Thus, you first PR shall include
+Developing a pure direct resource requires you to have every step setup to validate your change. Basically you need the API and mapper to write the direct controller, then you can use the controller to write the MockGCP tests. This reverses the [deep-dives step 1](../deep-dives/1-add-mockgcp-tests.md) to the end compared to other scenarios. Thus, you first PR shall include
 
 1. A basic API from the auto-generated code, including all required fields [deep-dives Step 2](../deep-dives/2-define-apis.md)
 1. A basic direct controller [deep-dives Step 3](../deep-dives/3-add-mapper.md) and [Step 4](../deep-dives/4-add-controller.md).

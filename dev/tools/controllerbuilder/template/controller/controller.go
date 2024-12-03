@@ -138,8 +138,8 @@ type {{.ProtoResource}}Adapter struct {
 var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
 
 // Find retrieves the GCP resource.
-// Return true means the object is found. This triggers Adapter ` + "`" + `Update` + "`" + ` call.
-// Return false means the object is not found. This triggers Adapter ` + "`" + `Create` + "`" + ` call.
+// Return true means the object is found. This triggers Adapter ` + "`" + `Update` + "`" + ` call.
+// Return false means the object is not found. This triggers Adapter ` + "`" + `Create` + "`" + ` call.
 // Return a non-nil error requeues the requests. 
 func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -158,7 +158,7 @@ func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-// Create creates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+// Create creates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
 func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id)
@@ -194,7 +194,7 @@ func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *direct
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+// Update updates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
 func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id)
@@ -206,7 +206,7 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	}
 
 	paths := []string{}
-	// Option 1: This option is good for proto that has ` + "`" + `field_mask` + "`" + ` for output-only, immutable, required/optional.
+	// Option 1: This option is good for proto that has ` + "`" + `field_mask` + "`" + ` for output-only, immutable, required/optional.
 	// TODO(contributor): If choosing this option, remove the "Option 2" code.
 	{
 		var err error

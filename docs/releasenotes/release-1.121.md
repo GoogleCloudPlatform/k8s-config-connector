@@ -4,7 +4,7 @@
 
 ## Announcement 
 
-* We plan to apply the `state-into-spec` default value  `Absent` to  *all the Config Connector clusters* in the  v1.123 (next to the next release).
+* We plan to apply the `state-into-spec` default value  `Absent` to  *all the Config Connector clusters* in the  v1.123 (next to the next release).
 
 ## Direct Cloud Reconciler:
 
