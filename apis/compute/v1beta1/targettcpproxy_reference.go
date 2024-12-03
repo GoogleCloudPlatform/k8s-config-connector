@@ -19,8 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -102,7 +101,7 @@ func NewComputeTargetTCPProxyRef(ctx context.Context, reader client.Reader, obj 
 	if obj.Spec.Location == nil {
 		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Region: "global"}
 	} else {
-		region := direct.ValueOf(obj.Spec.Location)
+		region := common.ValueOf(obj.Spec.Location)
 		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Region: region}
 	}
 
