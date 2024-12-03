@@ -17,6 +17,9 @@ kind: SecretManagerSecret
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    label-one: value-one
+    label-two: value-two
   name: secretmanagersecret-${uniqueId}
 spec:
   replication:
@@ -33,9 +36,6 @@ spec:
   annotations:
     "foo": secretmanagersecret
     "bar": secretmanagersecret-bar
-  labels:
-    "label-one": value-one
-    "label-two": value-two
   expireTime: "2025-10-03T15:01:23Z"
   rotation:
     nextRotationTime: "2025-10-03T15:01:23Z"

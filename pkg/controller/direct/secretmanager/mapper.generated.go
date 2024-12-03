@@ -225,7 +225,7 @@ func SecretManagerSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.Secret)
 		out.VersionAliases[k] = strconv.FormatInt(v, 10)
 	}
 	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// MISSING: Labels
 	// MISSING: VersionDestroyTtl
 	// MISSING: CustomerManagedEncryption
 	return out

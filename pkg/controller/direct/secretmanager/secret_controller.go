@@ -154,17 +154,36 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+func MergeMap(a, b map[string]string) map[string]string {
+	copy := make(map[string]string, len(a))
+	for k, v := range a {
+		copy[k] = v
+	}
+	for k, v := range b {
+		copy[k] = v
+	}
+	return copy
+}
+
+func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
+	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
+	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com")
+	return annotations
+}
+
 func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating Secret", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	desired.Spec.Labels = common.AddLabelManagedByCNRM(desired.Spec.Labels)
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Annotations = ComputeAnnotations(desired)
+	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
+
 	req := &secretmanagerpb.CreateSecretRequest{
 		Parent:   a.id.Parent().String(),
 		SecretId: a.id.ID(),
@@ -206,11 +225,12 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	desired.Spec.Labels = common.AddLabelManagedByCNRM(desired.Spec.Labels)
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Annotations = ComputeAnnotations(desired)
+	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag

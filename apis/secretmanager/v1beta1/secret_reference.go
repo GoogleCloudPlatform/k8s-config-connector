@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -79,8 +80,7 @@ func (r *SecretRef) NormalizedExternal(ctx context.Context, reader client.Reader
 		var err2 error
 		actualExternalRef, _, err2 = unstructured.NestedString(u.Object, "status", "name")
 		if err2 != nil {
-			err2 = fmt.Errorf("SecretManagerSecret `status.name` not configured: %w", err2)
-			return "", fmt.Errorf("%w\n%w", err1, err2)
+			return "", errors.Join(err1, err2)
 		}
 	}
 	if actualExternalRef == "" {

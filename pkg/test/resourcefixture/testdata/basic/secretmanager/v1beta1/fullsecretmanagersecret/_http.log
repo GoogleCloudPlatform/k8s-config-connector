@@ -349,6 +349,7 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -693,6 +694,7 @@ x-goog-request-params: parent=projects%2F${projectId}
   },
   "expireTime": "2025-10-02T15:01:23Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -733,6 +735,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2025-10-02T15:01:23Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -781,6 +784,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2025-10-02T15:01:23Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -818,6 +822,7 @@ x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretman
   "etag": "abcdef0123A=",
   "expireTime": "2025-10-03T15:01:23Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
@@ -861,6 +866,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2025-10-03T15:01:23Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
@@ -911,6 +917,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2025-10-03T15:01:23Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
