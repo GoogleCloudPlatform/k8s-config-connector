@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"reflect"
 
+	bigqueryconnection "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -65,21 +66,13 @@ type MemberSource struct {
 	// For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`.
 	// For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
 	// For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.
-	BigQueryConnectionConnectionRef *BigQueryConnectionConnectionMemberReference `json:"bigQueryConnectionConnectionRef,omitempty"`
+	BigQueryConnectionConnectionRef *bigqueryconnection.BigQueryConnectionServiceAccountRef `json:"bigQueryConnectionConnectionRef,omitempty"`
 }
 
 // MemberReference represents a resource with an IAM identity
 type MemberReference struct {
 	Namespace string `json:"namespace,omitempty"`
 	Name      string `json:"name"`
-}
-
-type BigQueryConnectionConnectionMemberReference struct {
-	Namespace string `json:"namespace,omitempty"`
-	Name      string `json:"name"`
-	// Type field specifies the connection type of the BigQueryConnectionConnection resource, whose service account is to be bound to the role.
-	// +kubebuilder:validation:Enum=spark;cloudSQL;cloudResource
-	Type string `json:"type"`
 }
 
 // IAMCondition defines the IAM condition under which an IAM binding applies
