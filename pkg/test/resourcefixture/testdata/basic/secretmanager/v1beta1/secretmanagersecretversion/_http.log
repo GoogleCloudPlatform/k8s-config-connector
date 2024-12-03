@@ -1,7 +1,6 @@
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -24,13 +23,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecretversion-dep-${uniqueId}
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecretversion-dep-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "replication": {
@@ -53,6 +52,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
@@ -63,13 +63,41 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}:addVersion?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "parent": "projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
+  "replication": {
+    "automatic": {}
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}:addVersion?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
   "payload": {
     "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
   }
@@ -93,15 +121,14 @@ X-Xss-Protection: 0
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 1
+  "state": "ENABLED"
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?%24alt=json%3Benum-encoding%3Dint
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:enable?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -121,20 +148,14 @@ X-Xss-Protection: 0
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 1
+  "state": "ENABLED"
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:disable?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
-
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1"
-}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -154,15 +175,39 @@ X-Xss-Protection: 0
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 2
+  "state": "ENABLED"
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
+  }
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -182,20 +227,145 @@ X-Xss-Protection: 0
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 2
+  "state": "ENABLED"
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:destroy?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1"
+  "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
+  }
 }
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:access?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:disable?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "DISABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "DISABLED"
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:destroy?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -216,15 +386,14 @@ X-Xss-Protection: 0
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 3
+  "state": "DESTROYED"
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -241,6 +410,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
@@ -251,10 +421,9 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
