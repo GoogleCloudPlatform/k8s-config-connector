@@ -834,6 +834,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					})
 
+					// Specific to Apigee
+					addReplacement("lastModifiedAt", "2024-04-01T12:34:56.123456Z")
+					addReplacement("createdAt", "2024-04-01T12:34:56.123456Z")
+
 					// Specific to BigQueryDataTransferConfig
 					addReplacement("nextRunTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("ownerInfo.email", "user@google.com")

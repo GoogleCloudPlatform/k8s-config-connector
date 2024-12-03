@@ -1,0 +1,125 @@
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "generic::not_found: resource organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "hostnames": [
+    "${uniqueId}.mytesthost.net"
+  ],
+  "name": "apigeeenvgroup-full-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "INSERT",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}"
+  },
+  "name": "organizations/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup",
+    "createdAt": "2024-04-01T12:34:56.123456Z",
+    "hostnames": [
+      "${uniqueId}.mytesthost.net"
+    ],
+    "lastModifiedAt": "2024-04-01T12:34:56.123456Z",
+    "name": "apigeeenvgroup-full-${uniqueId}",
+    "state": "ACTIVE"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createdAt": "2024-04-01T12:34:56.123456Z",
+  "hostnames": [
+    "${uniqueId}.mytesthost.net"
+  ],
+  "lastModifiedAt": "2024-04-01T12:34:56.123456Z",
+  "name": "apigeeenvgroup-full-${uniqueId}",
+  "state": "ACTIVE"
+}
+
+---
+
+DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "DELETE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}"
+  },
+  "name": "organizations/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
