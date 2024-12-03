@@ -164,6 +164,19 @@ func (a *SecretVersionAdapter) Create(ctx context.Context, createOp *directbase.
 	}
 	log.V(2).Info("successfully created SecretVersion", "name", a.id)
 
+	// The default status for newly created resource is "enabled".
+	// This saves the waiting time for the next reconciliation.
+	if !*a.desired.Spec.Enabled {
+		log.V(2).Info("disabling the secret version", "name", a.id)
+		req := &pb.DisableSecretVersionRequest{
+			Name: created.Name,
+			Etag: created.Etag,
+		}
+		created, err = a.gcpClient.DisableSecretVersion(ctx, req)
+		if err != nil {
+			return fmt.Errorf("disable SecretVersion %s: %w", a.id, err)
+		}
+	}
 	status := &krm.SecretManagerSecretVersionStatus{}
 	status.ObservedState = SecretManagerSecretVersionObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -262,17 +275,21 @@ func (a *SecretVersionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 // Delete implements the Adapter interface.
 func (a *SecretVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting SecretVersion", "name", a.id)
+	log.Info("destroying SecretVersion", "name", a.id)
 	req := &pb.DestroySecretVersionRequest{
 		Name: a.id.String(), Etag: a.actual.Etag}
 	_, err := a.gcpClient.DestroySecretVersion(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting SecretVersion %s: %w", a.id, err)
 	}
+	log.Info("destroyed SecretVersion", "name", a.id)
 	return true, nil
 }
 
 func updateLegacyFields(status *krm.SecretManagerSecretVersionStatus) error {
+	if status.ObservedState == nil {
+		return nil
+	}
 	status.CreateTime = status.ObservedState.CreateTime
 	status.DestroyTime = status.ObservedState.DestroyTime
 	status.Name = status.ObservedState.Name

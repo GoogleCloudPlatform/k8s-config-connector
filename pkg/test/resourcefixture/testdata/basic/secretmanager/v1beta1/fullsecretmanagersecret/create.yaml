@@ -17,9 +17,9 @@ kind: SecretManagerSecret
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
-  name: secretmanagersecret-${uniqueId}
   labels:
     label-one: value-one
+  name: secretmanagersecret-${uniqueId}
 spec:
   replication:
     automatic: true

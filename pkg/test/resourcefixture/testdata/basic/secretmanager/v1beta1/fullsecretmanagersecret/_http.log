@@ -809,7 +809,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CexpireTime%2Crotation.nextRotationTime%2Crotation.rotationPeriod%2Ctopics
+PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CexpireTime%2Clabels%2Crotation.nextRotationTime%2Crotation.rotationPeriod%2Ctopics
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
@@ -824,6 +824,7 @@ x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretman
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}",
@@ -867,6 +868,7 @@ X-Xss-Protection: 0
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
@@ -917,6 +919,7 @@ X-Xss-Protection: 0
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",

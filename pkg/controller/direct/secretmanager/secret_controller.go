@@ -38,8 +38,7 @@ import (
 )
 
 const (
-	ctrlName      = "secretmanager-controller"
-	serviceDomain = "//secretmanager.googleapis.com"
+	ctrlName = "secretmanager-controller"
 )
 
 func init() {
@@ -136,7 +135,6 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 		}
 	}
 	return nil
-
 }
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
@@ -183,7 +181,6 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 
@@ -232,11 +229,11 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Annotations = ComputeAnnotations(desired)
+	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag
-	resource.Annotations = ComputeAnnotations(desired)
-	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -262,6 +259,10 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	// Set externalRef. This field is empty after migration from the TF-based controller to the direct.
+	external := a.id.String()
+	status.ExternalRef = &external
+
 	status.Name = updated.Name
 	return op.UpdateStatus(ctx, status, nil)
 }
