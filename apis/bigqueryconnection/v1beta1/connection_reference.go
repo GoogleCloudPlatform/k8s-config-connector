@@ -156,6 +156,13 @@ func (r *BigQueryConnectionConnectionRef) NormalizedExternal(ctx context.Context
 	return r.External, nil
 }
 
+// ResolveServiceAccountID resolves the service account ID from a BigQueryConnection resource reference.
+// Supported connection types are: cloudSQL, spark, and cloudResource.
+// This function extracts the service account ID from the referenced BigQueryConnection resource based on the connection type.
+//
+// Input parameters:
+//   - namespace: Default namespace to use if not specified in the reference. This is usually the namespace of the resource referencing the BigQueryConnection
+//   - ref: Reference to the BigQueryConnection (Name, Namespace, Type)
 func ResolveServiceAccountID(ctx context.Context, reader client.Reader, namespace string, ref *iamv1beta1.BigQueryConnectionConnectionMemberReference) (string, error) {
 	key := types.NamespacedName{
 		Name:      ref.Name,
@@ -182,7 +189,7 @@ func ResolveServiceAccountID(ctx context.Context, reader client.Reader, namespac
 	}
 	path, supported := serviceAccountPaths[ref.Type]
 	if !supported {
-		return "", fmt.Errorf("invalid connection type '%s' for BigQueryConnection for IAM reference. Supported types are: cloudSQL, spark, cloudResource", ref.Type)
+		return "", fmt.Errorf("invalid bigqueryconnectionconnectionRef.type '%s'. Supported types are: cloudSQL, spark, cloudResource", ref.Type)
 	}
 
 	sa, found, err := unstructured.NestedString(u.Object, path...)
@@ -191,8 +198,8 @@ func ResolveServiceAccountID(ctx context.Context, reader client.Reader, namespac
 	}
 	if !found {
 		pathStr := strings.Join(path, ".")
-		return "", fmt.Errorf("BigQueryConnection %s/%s is not ready - field '%s' is missing", key.Namespace, key.Name, pathStr)
+		return "", fmt.Errorf("BigQueryConnection %s is not ready - field '%s' is missing", key.String(), pathStr)
 	}
 
-	return "serviceAccount:" + sa, nil // TODO: a better way to provide format/template
+	return sa, nil
 }

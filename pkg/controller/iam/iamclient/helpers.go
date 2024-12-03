@@ -107,7 +107,11 @@ func tryResolveTFMemberReference(ctx context.Context, memberFrom *v1beta1.Member
 
 func tryResolveDirectMemberReference(ctx context.Context, memberFrom *v1beta1.MemberSource, namespace string, reader client.Reader) (string, error) {
 	if memberFrom.BigQueryConnectionConnectionRef != nil {
-		return bigqueryconnection.ResolveServiceAccountID(ctx, reader, namespace, memberFrom.BigQueryConnectionConnectionRef)
+		sa, err := bigqueryconnection.ResolveServiceAccountID(ctx, reader, namespace, memberFrom.BigQueryConnectionConnectionRef)
+		if err != nil {
+			return "", err
+		}
+		return "serviceAccount:" + sa, nil
 	}
 	// TODO: handle more direct resource reference
 	return "", nil
