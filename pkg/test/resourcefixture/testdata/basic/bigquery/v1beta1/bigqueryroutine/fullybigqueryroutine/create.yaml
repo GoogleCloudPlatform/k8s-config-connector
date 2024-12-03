@@ -17,12 +17,18 @@ kind: BigQueryRoutine
 metadata:
   name: bigqueryroutine-${uniqueId}
 spec:
+  arguments:
+    - name: "ssn"
+      dataType: "{\"typeKind\":\"STRING\"}"
+      argumentKind: "FIXED_TYPE"
   datasetRef:
-    name: bigquerydataset-${uniqueId}
-  definitionBody: CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x
-    + y);
+    name: bigquerydataset${uniqueId}
+  definitionBody: SAFE.REGEXP_REPLACE(ssn, '[0-9]', 'X')
+  description: "fully configured big query routine"
+  determinismLevel: DETERMINISM_LEVEL_UNSPECIFIED
   language: SQL
   projectRef:
     external: ${projectId}
   resourceID: bigqueryroutine${uniqueId}
-  routineType: PROCEDURE
+  returnType: "{\"typeKind\":\"STRING\"}"
+  routineType: SCALAR_FUNCTION

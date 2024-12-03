@@ -13,10 +13,15 @@
 # limitations under the License.
 
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-kind: BigQueryDataset
+kind: BigQueryRoutine
 metadata:
-  name: bigquerydataset-${uniqueId}
+  name: bigqueryroutine-${uniqueId}
 spec:
+  datasetRef:
+    name: bigquerydataset${uniqueId}
+  definitionBody: CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x
+    + y);
   projectRef:
     external: ${projectId}
-  resourceID: bigquerydataset${uniqueId}
+  resourceID: bigqueryroutine${uniqueId}
+  routineType: PROCEDURE
