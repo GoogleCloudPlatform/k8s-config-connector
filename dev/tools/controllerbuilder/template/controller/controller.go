@@ -95,7 +95,7 @@ func (m *model{{.ProtoResource}}) client(ctx context.Context) (*gcp.Client, erro
 	}
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building {{.ProtoResource}} client: %w", err)
+		return nil, fmt.Errorf("error building {{.ProtoResource}} client: %w", err)
 	}
 	return gcpClient, err
 }
