@@ -41,7 +41,7 @@ spec:
         baseKeyUsage:
           certSign: true
           crlSign: true
-      extendedKeyUsage:
-        serverAuth: true
+        extendedKeyUsage:
+          serverAuth: true
   keySpec:
     algorithm: RSA_PKCS1_4096_SHA256
