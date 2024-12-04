@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/google/uuid"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -45,7 +45,7 @@ func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reade
 	location := obj.Spec.Location
 
 	// Get desired service-generated ID from spec
-	desiredServiceID := direct.ValueOf(obj.Spec.ResourceID)
+	desiredServiceID := common.ValueOf(obj.Spec.ResourceID)
 	if desiredServiceID != "" {
 		if _, err := uuid.Parse(desiredServiceID); err != nil {
 			return nil, fmt.Errorf("spec.resourceID should be in a UUID format, got %s ", desiredServiceID)
@@ -53,7 +53,7 @@ func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reade
 	}
 
 	// Get externalReference
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		tokens := strings.Split(externalRef, "/")
 
