@@ -204,8 +204,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	external := a.id.String()
 	status.ExternalRef = &external
 	status.Name = created.Name
-	err = op.UpdateStatus(ctx, status, nil)
-	if err != nil {
+	if err = op.UpdateStatus(ctx, status, nil); err != nil {
 		return err
 	}
 	// VersionAliases cannot be set in Creation, requeing the result to update the versionAlias without waiting for the reconciliation interval.

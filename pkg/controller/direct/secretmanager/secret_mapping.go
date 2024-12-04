@@ -134,7 +134,7 @@ func MapStringString_ToMapStringInt64(mapCtx *direct.MapContext, in map[string]s
 	for k, v := range in {
 		stringV, err := strconv.ParseInt(v, 10, 64)
 		if err != nil {
-			mapCtx.Errorf("%s has invalid vale, expect int64, got %s", k, v)
+			mapCtx.Errorf("%s has invalid value, expect int64, got %s", k, v)
 		}
 		out[k] = stringV
 	}
