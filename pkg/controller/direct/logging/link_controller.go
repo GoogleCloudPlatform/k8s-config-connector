@@ -142,6 +142,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	req := &loggingpb.CreateLinkRequest{
 		Parent: parent.String(),
 		Link:   resource,
+		LinkId: *a.desired.Spec.ResourceID,
 	}
 	op, err := a.gcpClient.CreateLink(ctx, req)
 	if err != nil {
