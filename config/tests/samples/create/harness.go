@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -435,7 +436,19 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
 		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
 	} else {
+		// case is: os.Getenv("E2E_GCP_TARGET") == "real"
 		h.Project = testgcp.GetDefaultProject(t)
+
+		// technically this would be sufficient for TF and DCL controllers
+		// to set the BillingProject as the resource project that is being used.
+		kccConfig.UserProjectOverride = true
+
+		// but for our direct resources we look at the BillingProject so let's set it.
+		if os.Getenv("BILLING_ACCOUNT_ID") != "" {
+			kccConfig.BillingProject = os.Getenv("BILLING_ACCOUNT_ID")
+		} else {
+			kccConfig.BillingProject = strconv.FormatInt(h.Project.ProjectNumber, 10)
+		}
 	}
 
 	eventSink := test.NewMemoryEventSink()
