@@ -51,7 +51,7 @@ echo ${VERSION} > ${BUNDLE_DIR}/version
 CRDS_FILE=$(mktemp -t crds.XXXXXXXX.yaml)
 
 # Update container registry for kustomize
-IMAGE_PREFIX=${IMAGE_PREFIX:-"gcr.io/gke-release/cnrm/"}
+IMAGE_PREFIX=${IMAGE_PREFIX:-"gcr.io/gke-release/"}
 IMAGE_TAG=${IMAGE_TAG:-${VERSION}}
 
 RECORDER_IMG=${RECORDER_IMG:-"${IMAGE_PREFIX}recorder:${IMAGE_TAG}"}
