@@ -349,7 +349,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -363,7 +362,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
@@ -845,6 +844,56 @@ x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretman
     }
   ]
 }
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "bar": "secretmanagersecret-bar",
+    "foo": "secretmanagersecret"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "expireTime": "2025-10-03T15:01:23Z",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+  "replication": {
+    "automatic": {
+      "customerManagedEncryption": {
+        "kmsKeyName": "projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      }
+    }
+  },
+  "rotation": {
+    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "rotationPeriod": "7200s"
+  },
+  "topics": [
+    {
+      "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
+    }
+  ]
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
