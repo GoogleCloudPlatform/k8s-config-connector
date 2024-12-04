@@ -15,6 +15,8 @@
 package secretmanager
 
 import (
+	"strconv"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -23,7 +25,12 @@ import (
 )
 
 func SecretManagerSecretStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.SecretManagerSecretObservedState {
-	return &krm.SecretManagerSecretObservedState{}
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretManagerSecretObservedState{}
+	out.VersionAliases = MapStringInt64_ToMapStringString(mapCtx, in.VersionAliases)
+	return out
 }
 
 func CustomerManagedEncryption_FromProto(mapCtx *direct.MapContext, in *pb.CustomerManagedEncryption) *krm.CustomerManagedEncryption {
@@ -96,8 +103,7 @@ func SecretManagerSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecretMa
 	}
 	// MISSING: Etag
 	out.Rotation = Rotation_ToProto(mapCtx, in.Rotation)
-	// MISSING: VersionAliases
-	// out.VersionAliases = in.VersionAliases
+	out.VersionAliases = MapStringString_ToMapStringInt64(mapCtx, in.VersionAliases)
 	out.Annotations = in.Annotations
 	// MISSING: Labels
 	// MISSING: VersionDestroyTtl
@@ -120,5 +126,25 @@ func Topic_ToProto(mapCtx *direct.MapContext, in *krm.Topic) *pb.Topic {
 	}
 	out := &pb.Topic{}
 	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+
+func MapStringString_ToMapStringInt64(mapCtx *direct.MapContext, in map[string]string) map[string]int64 {
+	out := map[string]int64{}
+	for k, v := range in {
+		stringV, err := strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			mapCtx.Errorf("%s has invalid vale, expect int64, got %s", k, v)
+		}
+		out[k] = stringV
+	}
+	return out
+}
+
+func MapStringInt64_ToMapStringString(mapCtx *direct.MapContext, in map[string]int64) map[string]string {
+	out := map[string]string{}
+	for k, v := range in {
+		out[k] = strconv.FormatInt(v, 10)
+	}
 	return out
 }

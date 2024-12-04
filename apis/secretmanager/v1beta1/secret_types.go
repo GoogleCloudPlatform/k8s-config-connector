@@ -197,6 +197,7 @@ type SecretManagerSecretStatus struct {
 // SecretManagerSecretSpec defines the desired state of SecretManagerSecret
 // +kcc:proto=google.cloud.secretmanager.v1.Secret
 type SecretManagerSecretObservedState struct {
+	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 }
 
 // +genclient
