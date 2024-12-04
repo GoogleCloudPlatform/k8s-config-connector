@@ -320,6 +320,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets))
 		updateMask.Paths = append(updateMask.Paths, "additional_notification_targets")
 	}
+	defaultApprovalWorkflowManualApprovalsRequireApproverJustification(parsedActual)
+	defaultApprovalWorkflowManualApprovalsRequireApproverJustification(&parsedDesired.Spec)
 	if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow) {
 		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow))
 		updateMask.Paths = append(updateMask.Paths, "approval_workflow")
@@ -385,6 +387,26 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	status.ObservedState = observedState
 	return setStatus(u, status)
+}
+
+func defaultApprovalWorkflowManualApprovalsRequireApproverJustification(spec *krm.PrivilegedAccessManagerEntitlementSpec) {
+	if spec.ApprovalWorkflow == nil {
+		spec.ApprovalWorkflow = &krm.ApprovalWorkflow{
+			ManualApprovals: &krm.ManualApprovals{
+				RequireApproverJustification: direct.PtrTo(false),
+			},
+		}
+		return
+	}
+	if spec.ApprovalWorkflow.ManualApprovals == nil {
+		spec.ApprovalWorkflow.ManualApprovals = &krm.ManualApprovals{
+			RequireApproverJustification: direct.PtrTo(false),
+		}
+		return
+	}
+	if spec.ApprovalWorkflow.ManualApprovals.RequireApproverJustification == nil {
+		spec.ApprovalWorkflow.ManualApprovals.RequireApproverJustification = direct.PtrTo(false)
+	}
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
