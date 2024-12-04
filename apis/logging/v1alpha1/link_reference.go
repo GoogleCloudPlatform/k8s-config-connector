@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &LoggingLinkRef{}
 // holds the GCP identifier for the KRM object.
 type LoggingLinkRef struct {
 	// A reference to an externally managed LoggingLink resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/links/<linkID>".
+	// Should be in the format "projects/<projectID>/locations/<location>/buckets/<bucketID>/links/<linkID>".
 	External string `json:"external,omitempty"`
 
 	// The name of a LoggingLink resource.
@@ -162,7 +162,7 @@ type LoggingLinkParent struct {
 }
 
 func (p *LoggingLinkParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/buckets/" + p.LogBucket
 }
 
 func asLoggingLinkExternal(parent *LoggingLinkParent, resourceID string) (external string) {
@@ -172,14 +172,15 @@ func asLoggingLinkExternal(parent *LoggingLinkParent, resourceID string) (extern
 func parseLoggingLinkExternal(external string) (parent *LoggingLinkParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "link" {
-		return nil, "", fmt.Errorf("format of LoggingLink external=%q was not known (use projects/<projectId>/locations/<location>/links/<linkID>)", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "bucket" || tokens[6] != "link" {
+		return nil, "", fmt.Errorf("format of LoggingLink external=%q was not known (use projects/<projectId>/locations/<location>/buckets/<bucketID>/links/<linkID>)", external)
 	}
 	parent = &LoggingLinkParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
+		LogBucket:  tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
 
