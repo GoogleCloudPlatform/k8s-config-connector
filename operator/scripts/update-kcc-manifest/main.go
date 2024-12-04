@@ -459,7 +459,7 @@ func swapContainerRegistry(manifestPath string) error {
 		return fmt.Errorf("error reading manifestPath: %w", err)
 	}
 	manifest := string(content)
-	updatedManifest := strings.ReplaceAll(manifest, "gcr.io/cnrm-eap/", "gcr.io/gke-release/cnrm/")
+	updatedManifest := strings.ReplaceAll(manifest, "gcr.io/cnrm-eap/", "gcr.io/gke-release/")
 	fileMode := os.FileMode(0644) // -rw-r--r--
 	return ioutil.WriteFile(manifestPath, []byte(updatedManifest), fileMode)
 }
