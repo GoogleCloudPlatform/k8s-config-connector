@@ -34,7 +34,7 @@ type GenerateControllerOptions struct {
 }
 
 func (o *GenerateControllerOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVarP(&o.ProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `bucket`. If `--kind` is not given, the `--proto-resource` value will also be used as the kind name with a capital letter `Storage`.")
+	cmd.Flags().StringVarP(&o.ProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `Bucket`.")
 	cmd.Flags().StringVarP(&o.Kind, "kind", "k", "", "the KCC resource Kind. requires `--proto-resource`.")
 }
 
