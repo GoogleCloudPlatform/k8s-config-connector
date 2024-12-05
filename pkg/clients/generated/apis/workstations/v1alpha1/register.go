@@ -59,11 +59,5 @@ var (
 		Kind:    reflect.TypeOf(Workstation{}).Name(),
 	}
 
-	WorkstationConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(WorkstationConfig{}).Name(),
-	}
-
 	workstationsAPIVersion = SchemeGroupVersion.String()
 )

@@ -17,7 +17,7 @@ package workstations
 import (
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -33,7 +33,7 @@ func WorkstationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Host = WorkstationConfig_HostObservedState_FromProto(mapCtx, in.Host)
 	out.Degraded = direct.LazyPtr(in.GetDegraded())
-	out.GCPConditions = WorkstationGCPConditions_FromProto_Alpha(mapCtx, in.Conditions)
+	out.GCPConditions = WorkstationGCPConditions_FromProto(mapCtx, in.Conditions)
 	return out
 }
 
@@ -67,7 +67,7 @@ func WorkstationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.Etag = direct.ValueOf(in.Etag)
 	out.Host = WorkstationConfig_HostObservedState_ToProto(mapCtx, in.Host)
 	out.Degraded = direct.ValueOf(in.Degraded)
-	out.Conditions = WorkstationGCPConditions_ToProto_Alpha(mapCtx, in.GCPConditions)
+	out.Conditions = WorkstationGCPConditions_ToProto(mapCtx, in.GCPConditions)
 	return out
 }
 
@@ -97,8 +97,8 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 	}
 	out := &krm.WorkstationConfigSpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Annotations = WorkstationAnnotations_FromProto_Alpha(mapCtx, in.Annotations)
-	out.Labels = WorkstationLabels_FromProto_Alpha(mapCtx, in.Labels)
+	out.Annotations = WorkstationAnnotations_FromProto(mapCtx, in.Annotations)
+	out.Labels = WorkstationLabels_FromProto(mapCtx, in.Labels)
 	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
 	out.RunningTimeout = direct.StringDuration_FromProto(mapCtx, in.GetRunningTimeout())
 	out.Host = WorkstationConfig_Host_FromProto(mapCtx, in.GetHost())
@@ -116,8 +116,8 @@ func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstatio
 	}
 	out := &pb.WorkstationConfig{}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Annotations = WorkstationAnnotations_ToProto_Alpha(mapCtx, in.Annotations)
-	out.Labels = WorkstationLabels_ToProto_Alpha(mapCtx, in.Labels)
+	out.Annotations = WorkstationAnnotations_ToProto(mapCtx, in.Annotations)
+	out.Labels = WorkstationLabels_ToProto(mapCtx, in.Labels)
 	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
 	out.RunningTimeout = direct.StringDuration_ToProto(mapCtx, in.RunningTimeout)
 	out.Host = WorkstationConfig_Host_ToProto(mapCtx, in.Host)

@@ -32,6 +32,7 @@ import (
 type WorkstationsV1beta1Interface interface {
 	RESTClient() rest.Interface
 	WorkstationClustersGetter
+	WorkstationConfigsGetter
 }
 
 // WorkstationsV1beta1Client is used to interact with features provided by the workstations.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type WorkstationsV1beta1Client struct {
 
 func (c *WorkstationsV1beta1Client) WorkstationClusters(namespace string) WorkstationClusterInterface {
 	return newWorkstationClusters(c, namespace)
+}
+
+func (c *WorkstationsV1beta1Client) WorkstationConfigs(namespace string) WorkstationConfigInterface {
+	return newWorkstationConfigs(c, namespace)
 }
 
 // NewForConfig creates a new WorkstationsV1beta1Client for the given config.

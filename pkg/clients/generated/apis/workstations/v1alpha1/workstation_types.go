@@ -68,6 +68,9 @@ type WorkstationSpec struct {
 	// +optional
 	Labels []WorkstationLabels `json:"labels,omitempty"`
 
+	/* Parent is a reference to the parent WorkstationConfig for this Workstation. */
+	ParentRef v1alpha1.ResourceRef `json:"parentRef"`
+
 	/* Immutable. The Workstation name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`

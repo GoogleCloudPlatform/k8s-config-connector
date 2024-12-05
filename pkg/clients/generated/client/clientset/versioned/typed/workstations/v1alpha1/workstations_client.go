@@ -32,7 +32,6 @@ import (
 type WorkstationsV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	WorkstationsGetter
-	WorkstationConfigsGetter
 }
 
 // WorkstationsV1alpha1Client is used to interact with features provided by the workstations.cnrm.cloud.google.com group.
@@ -42,10 +41,6 @@ type WorkstationsV1alpha1Client struct {
 
 func (c *WorkstationsV1alpha1Client) Workstations(namespace string) WorkstationInterface {
 	return newWorkstations(c, namespace)
-}
-
-func (c *WorkstationsV1alpha1Client) WorkstationConfigs(namespace string) WorkstationConfigInterface {
-	return newWorkstationConfigs(c, namespace)
 }
 
 // NewForConfig creates a new WorkstationsV1alpha1Client for the given config.

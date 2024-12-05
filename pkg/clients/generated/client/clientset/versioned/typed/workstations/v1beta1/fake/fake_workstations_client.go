@@ -35,6 +35,10 @@ func (c *FakeWorkstationsV1beta1) WorkstationClusters(namespace string) v1beta1.
 	return &FakeWorkstationClusters{c, namespace}
 }
 
+func (c *FakeWorkstationsV1beta1) WorkstationConfigs(namespace string) v1beta1.WorkstationConfigInterface {
+	return &FakeWorkstationConfigs{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeWorkstationsV1beta1) RESTClient() rest.Interface {
