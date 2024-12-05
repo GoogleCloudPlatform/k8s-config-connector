@@ -1,0 +1,112 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: project-${uniqueId}
+spec:
+  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: "Dependent Project"
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: container.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: anthos.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    # Abandon the resource to unblock cleanup; Otherwise it fails with error message
+    # "Error waiting for api to disable ... ensure there are no more resources managed
+    # by this service." Likely there is some delay in GKEHub resources clean up.
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: gkehub.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: anthosconfigmanagement.googleapis.com
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: container-cluster-${uniqueId}
+spec:
+  location: us-south1-a
+  initialNodeCount: 1
+  workloadIdentityConfig:
+    workloadPool: ${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}.svc.id.goog
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: sa-${uniqueId}
+spec:
+  displayName: A Test Service Account
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeature-full-csau-${uniqueId}
+  annotations:
+   # Abondon the feature resource as it is global within a project and we would hit issues when running two tests in parallel.
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: project-${uniqueId}
+  location: global
+  resourceID: configmanagement
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: gkehubmembership-full-csau-${uniqueId}
+spec:
+  location: us-south1
+  authority:
+    issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-south1-a/clusters/container-cluster-${uniqueId}
+  description: A sample GKE Hub membership
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: container-cluster-${uniqueId}
