@@ -39,7 +39,9 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.EngineConfigs = in.EngineConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.PscAutoConnectionsSpec = PscAutoConnectionSpec_FromProto(mapCtx, in.PscAutoConnectionSpec)
+	for _, pscConfig := range in.GetPscAutoConnectionsSpec() {
+		out.PscAutoConnectionsSpec = append(out.PscAutoConnectionsSpec, *PscAutoConnectionSpec_FromProto(mapCtx, &pscConfig))
+	}
 	return out
 }
 func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceSpec) *pb.Instance {
@@ -57,6 +59,8 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	out.EngineConfigs = in.EngineConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.PscAutoConnectionSpec = PscAutoConnectionSpec_ToProto(mapCtx, in.PscAutoConnectionsSpec)
+	for _, pscConfig := range in.PscAutoConnectionsSpec {
+		out.PscAutoConnectionsSpec = append(out.PscAutoConnectionsSpec, PscAutoConnectionSpec_ToProto(mapCtx, &pscConfig))
+	}
 	return out
 }

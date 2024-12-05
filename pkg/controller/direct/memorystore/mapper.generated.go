@@ -15,11 +15,11 @@
 package memorystore
 
 import (
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 )
+
 func DiscoveryEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpoint {
 	if in == nil {
 		return nil
@@ -65,8 +65,6 @@ func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instanc
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.PscAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PscAutoConnection_FromProto)
-	// MISSING: Endpoints
-	// MISSING: Mode
 	return out
 }
 func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance {
@@ -94,8 +92,6 @@ func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance 
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PscAutoConnections, PscAutoConnection_ToProto)
-	// MISSING: Endpoints
-	// MISSING: Mode
 	return out
 }
 func Instance_StateInfo_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo) *krm.Instance_StateInfo {
@@ -132,64 +128,6 @@ func Instance_StateInfo_UpdateInfo_ToProto(mapCtx *direct.MapContext, in *krm.In
 	out := &pb.Instance_StateInfo_UpdateInfo{}
 	out.TargetShardCount = in.TargetShardCount
 	out.TargetReplicaCount = in.TargetReplicaCount
-	return out
-}
-func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MemorystoreInstanceSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: State
-	// MISSING: StateInfo
-	// MISSING: Uid
-	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
-	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
-	out.ShardCount = direct.LazyPtr(in.GetShardCount())
-	// MISSING: DiscoveryEndpoints
-	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
-	out.PersistenceConfig = PersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
-	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
-	out.EngineConfigs = in.EngineConfigs
-	// MISSING: NodeConfig
-	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
-	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	// MISSING: PscAutoConnections
-	// MISSING: Endpoints
-	// MISSING: Mode
-	return out
-}
-func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: State
-	// MISSING: StateInfo
-	// MISSING: Uid
-	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_ToProto[pb.Instance_AuthorizationMode](mapCtx, in.AuthorizationMode)
-	out.TransitEncryptionMode = direct.Enum_ToProto[pb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
-	out.ShardCount = direct.ValueOf(in.ShardCount)
-	// MISSING: DiscoveryEndpoints
-	out.NodeType = direct.Enum_ToProto[pb.Instance_NodeType](mapCtx, in.NodeType)
-	out.PersistenceConfig = PersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
-	out.EngineVersion = direct.ValueOf(in.EngineVersion)
-	out.EngineConfigs = in.EngineConfigs
-	// MISSING: NodeConfig
-	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
-	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	// MISSING: PscAutoConnections
-	// MISSING: Endpoints
-	// MISSING: Mode
 	return out
 }
 func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodeConfig {
@@ -267,7 +205,6 @@ func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnec
 		return nil
 	}
 	out := &krm.PscAutoConnection{}
-	out.Port = direct.LazyPtr(in.GetPort())
 	out.PscConnectionID = direct.LazyPtr(in.GetPscConnectionId())
 	out.IpAddress = direct.LazyPtr(in.GetIpAddress())
 	out.ForwardingRule = direct.LazyPtr(in.GetForwardingRule())
@@ -283,9 +220,6 @@ func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krm.PscAutoConnect
 		return nil
 	}
 	out := &pb.PscAutoConnection{}
-	if oneof := PscAutoConnection_Port_ToProto(mapCtx, in.Port); oneof != nil {
-		out.Ports = oneof
-	}
 	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
 	out.IpAddress = direct.ValueOf(in.IpAddress)
 	out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
