@@ -398,9 +398,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              location:
-                description: The location of the WorkstationConfig.
-                type: string
               parentRef:
                 description: Parent is a reference to the parent WorkstationCluster
                   for this WorkstationConfig.
@@ -480,41 +477,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              projectRef:
-                description: Immutable. The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               readinessChecks:
                 description: Optional. Readiness checks to perform when starting a
                   workstation using this workstation configuration. Mark a workstation
@@ -577,7 +539,6 @@ spec:
                 type: string
             required:
             - parentRef
-            - projectRef
             type: object
           status:
             description: WorkstationConfigStatus defines the config connector machine
@@ -640,9 +601,9 @@ spec:
                       was soft-deleted.
                     type: string
                   etag:
-                    description: Optional. Checksum computed by the server. May be
-                      sent on update and delete requests to make sure that the client
-                      has an up-to-date value before proceeding.
+                    description: Output only. Checksum computed by the server. May
+                      be sent on update and delete requests to make sure that the
+                      client has an up-to-date value before proceeding.
                     type: string
                   gcpConditions:
                     description: Output only. Status conditions describing the current
@@ -662,11 +623,21 @@ spec:
                           type: string
                       type: object
                     type: array
-                  pooledInstances:
-                    description: Output only. Number of instances currently available
-                      in the pool for faster workstation startup.
-                    format: int32
-                    type: integer
+                  host:
+                    description: Output only. Observed state of the runtime host for
+                      the workstation configuration.
+                    properties:
+                      gceInstance:
+                        description: Output only. Observed state of the Compute Engine
+                          runtime host for the workstation configuration.
+                        properties:
+                          pooledInstances:
+                            description: Output only. Number of instances currently
+                              available in the pool for faster workstation startup.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
                   uid:
                     description: Output only. A system-assigned unique identifier
                       for this workstation configuration.

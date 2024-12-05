@@ -22,9 +22,6 @@ import (
 
 var WorkstationConfigGVK = GroupVersion.WithKind("WorkstationConfig")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host
 type WorkstationConfig_Host struct {
 	// Specifies a Compute Engine instance as the host.
@@ -274,13 +271,6 @@ type WorkstationConfig_ReadinessCheck struct {
 // WorkstationConfigSpec defines the desired state of WorkstationConfig
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig
 type WorkstationConfigSpec struct {
-	// Immutable. The Project that this resource belongs to.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// The location of the WorkstationConfig.
-	Location string `json:"location,omitempty"`
-
 	// Parent is a reference to the parent WorkstationCluster for this WorkstationConfig.
 	Parent *WorkstationClusterRef `json:"parentRef"`
 
@@ -398,6 +388,7 @@ type WorkstationConfigStatus struct {
 }
 
 // WorkstationConfigObservedState is the state of the WorkstationConfig resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig
 type WorkstationConfigObservedState struct {
 	// Output only. A system-assigned unique identifier for this workstation
 	//  configuration.
@@ -413,10 +404,14 @@ type WorkstationConfigObservedState struct {
 	// Output only. Time when this workstation configuration was soft-deleted.
 	DeleteTime *string `json:"deleteTime,omitempty"`
 
-	// Optional. Checksum computed by the server. May be sent on update and delete
-	//  requests to make sure that the client has an up-to-date value before
-	//  proceeding.
+	// Output only. Checksum computed by the server. May be sent on update and
+	//  delete requests to make sure that the client has an up-to-date value
+	//  before proceeding.
 	Etag *string `json:"etag,omitempty"`
+
+	// Output only. Observed state of the runtime host for the workstation
+	//   configuration.
+	Host *WorkstationConfig_HostObservedState `json:"host,omitempty"`
 
 	// Output only. Whether this resource is degraded, in which case it may
 	//  require user action to restore full functionality. See also the
@@ -426,7 +421,18 @@ type WorkstationConfigObservedState struct {
 
 	// Output only. Status conditions describing the current resource state.
 	GCPConditions []WorkstationServiceGCPCondition `json:"gcpConditions,omitempty"`
+}
 
+// WorkstationConfigObservedState is the state of the WorkstationConfig_Host resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host
+type WorkstationConfig_HostObservedState struct {
+	// Output only. Observed state of the Compute Engine runtime host for the workstation configuration.
+	GceInstance *WorkstationConfig_Host_GceInstanceObservedState `json:"gceInstance,omitempty"`
+}
+
+// WorkstationConfigObservedState is the state of the WorkstationConfig_Host_GceInstanceObservedState resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance
+type WorkstationConfig_Host_GceInstanceObservedState struct {
 	// Output only. Number of instances currently available in the pool for
 	//  faster workstation startup.
 	PooledInstances *int32 `json:"pooledInstances,omitempty"`
