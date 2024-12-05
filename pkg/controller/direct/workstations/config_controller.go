@@ -137,6 +137,9 @@ func (a *WorkstationConfigAdapter) Create(ctx context.Context, createOp *directb
 		return mapCtx.Err()
 	}
 
+	// Set name manually, because it is not filled-in by WorkstationConfigSpec_ToProto.
+	resource.Name = a.id.String()
+
 	req := &pb.CreateWorkstationConfigRequest{
 		Parent:              a.id.Parent().String(),
 		WorkstationConfigId: a.id.ID(),

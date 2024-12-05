@@ -297,7 +297,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Requested entity was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
 }

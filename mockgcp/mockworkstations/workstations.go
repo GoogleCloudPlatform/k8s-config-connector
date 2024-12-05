@@ -112,7 +112,7 @@ func (s *WorkstationsService) UpdateWorkstationCluster(ctx context.Context, req 
 
 func (s *WorkstationsService) DeleteWorkstationCluster(ctx context.Context, req *pb.DeleteWorkstationClusterRequest) (*longrunningpb.Operation, error) {
 	fqn := req.GetName()
-	parent, err := getParent(fqn)
+	parent, err := getWorkstationClusterParent(fqn)
 	if err != nil {
 		return nil, err
 	}
@@ -137,10 +137,125 @@ func (s *WorkstationsService) DeleteWorkstationCluster(ctx context.Context, req 
 	return op, err
 }
 
-func getParent(fqn string) (string, error) {
+func (s *WorkstationsService) GetWorkstationConfig(ctx context.Context, req *pb.GetWorkstationConfigRequest) (*pb.WorkstationConfig, error) {
+	fqn := req.GetName()
+
+	obj := &pb.WorkstationConfig{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *WorkstationsService) CreateWorkstationConfig(ctx context.Context, req *pb.CreateWorkstationConfigRequest) (*longrunningpb.Operation, error) {
+	fqn := req.GetParent() + "/workstationConfigs/" + req.GetWorkstationConfigId()
+	location, err := getWorkstationConfigLocation(fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	obj := proto.Clone(req.WorkstationConfig).(*pb.WorkstationConfig)
+	populateDefaultsForWorkstationConfig(obj, false)
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	t := timestamppb.New(time.Now())
+	metadata := &pb.OperationMetadata{
+		CreateTime:            t,
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "create",
+	}
+	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
+		metadata.EndTime = t
+		result := proto.Clone(obj).(*pb.WorkstationConfig)
+		s.storage.Update(ctx, fqn, result)
+		return result, nil
+	})
+	return op, err
+}
+
+func (s *WorkstationsService) UpdateWorkstationConfig(ctx context.Context, req *pb.UpdateWorkstationConfigRequest) (*longrunningpb.Operation, error) {
+	fqn := req.GetWorkstationConfig().GetName()
+	location, err := getWorkstationConfigLocation(fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	existing := &pb.WorkstationConfig{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	updated := proto.Clone(req.WorkstationConfig).(*pb.WorkstationConfig)
+	populateDefaultsForWorkstationConfig(updated, true)
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	t := timestamppb.New(time.Now())
+	metadata := &pb.OperationMetadata{
+		CreateTime:            t,
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "update",
+	}
+	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
+		result := proto.Clone(updated).(*pb.WorkstationConfig)
+		return result, nil
+	})
+	if err != nil {
+		return op, err
+	}
+	return op, err
+}
+
+func (s *WorkstationsService) DeleteWorkstationConfig(ctx context.Context, req *pb.DeleteWorkstationConfigRequest) (*longrunningpb.Operation, error) {
+	fqn := req.GetName()
+	location, err := getWorkstationConfigLocation(fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	deleted := &pb.WorkstationConfig{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	t := timestamppb.New(time.Now())
+	metadata := &pb.OperationMetadata{
+		CreateTime:            t,
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "delete",
+	}
+	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
+		metadata.EndTime = t
+		return &pb.WorkstationConfig{}, nil
+	})
+	return op, err
+}
+
+func getWorkstationClusterParent(fqn string) (string, error) {
 	tokens := strings.Split(fqn, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" {
 		return "", fmt.Errorf("fqn should be projects/<project>/locations/<location>/workstationClusters/<WorkstationCluster>, got %s", fqn)
+	}
+	return tokens[0] + "/" + tokens[1] + "/" + tokens[2] + "/" + tokens[3], nil
+}
+
+func getWorkstationConfigLocation(fqn string) (string, error) {
+	tokens := strings.Split(fqn, "/")
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" || tokens[6] != "workstationConfigs" {
+		return "", fmt.Errorf("fqn should be projects/<project>/locations/<location>/workstationClusters/<WorkstationCluster>/workstationConfigs/<WorkstationConfig>, got %s", fqn)
 	}
 	return tokens[0] + "/" + tokens[1] + "/" + tokens[2] + "/" + tokens[3], nil
 }
@@ -158,6 +273,44 @@ func populateDefaultsForWorkstationCluster(obj *pb.WorkstationCluster, update bo
 	}
 	if obj.PrivateClusterConfig == nil {
 		obj.PrivateClusterConfig = &pb.WorkstationCluster_PrivateClusterConfig{}
+	}
+	obj.Etag = computeEtag(obj)
+}
+
+func populateDefaultsForWorkstationConfig(obj *pb.WorkstationConfig, update bool) {
+	if obj.Uid == "" {
+		obj.Uid = fmt.Sprintf("%x", time.Now().UnixNano())
+	}
+	t := timestamppb.New(time.Now())
+	if obj.CreateTime == nil {
+		obj.CreateTime = t
+	}
+	if obj.UpdateTime == nil || update {
+		obj.UpdateTime = t
+	}
+	if obj.Container == nil {
+		obj.Container = &pb.WorkstationConfig_Container{
+			Image: "us-west1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest",
+		}
+	}
+	if obj.Host == nil {
+		obj.Host = &pb.WorkstationConfig_Host{
+			Config: &pb.WorkstationConfig_Host_GceInstance_{
+				GceInstance: &pb.WorkstationConfig_Host_GceInstance{
+					BootDiskSizeGb:             50,
+					ConfidentialInstanceConfig: &pb.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig{},
+					MachineType:                "e2-standard-4",
+					ServiceAccount:             "service-${projectNumber}@gcp-sa-workstationsvm.iam.gserviceaccount.com",
+					ShieldedInstanceConfig:     &pb.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig{},
+				},
+			},
+		}
+	}
+	if obj.ReplicaZones == nil {
+		obj.ReplicaZones = []string{
+			"us-west1-a",
+			"us-west1-b",
+		}
 	}
 	obj.Etag = computeEtag(obj)
 }
