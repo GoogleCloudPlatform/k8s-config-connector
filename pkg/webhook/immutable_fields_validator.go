@@ -178,7 +178,7 @@ func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstru
 
 func getChangesOnImmutableFields(spec, oldSpec map[string]interface{}, krmPath, dclPath []string, schema *openapi.Schema, hierarchicalRefs []corekccv1alpha1.HierarchicalReference) ([]string, error) {
 	if schema.Type != "object" {
-		return nil, fmt.Errorf("expect the schame type to be 'object', but got %v", schema.Type)
+		return nil, fmt.Errorf("expect the schema type to be 'object', but got %v", schema.Type)
 	}
 	ret := make([]string, 0)
 	for f, s := range schema.Properties {

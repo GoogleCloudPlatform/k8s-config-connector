@@ -25,7 +25,7 @@ import (
 )
 
 var (
-	yamlSeperator = []byte("---\n")
+	yamlSeparator = []byte("---\n")
 	// YAML streams are terminated with "..." which signifies the end of transmission: https://yaml.org/spec/1.2/spec.html
 	yamlTransmissionTerminator = []byte("...")
 )
@@ -76,7 +76,7 @@ func (y *YAMLStream) Next(ctx context.Context) ([]byte, *unstructured.Unstructur
 		y.nextErr = nil
 		return nil, nil, err
 	}
-	bytes = append(yamlSeperator, bytes...)
+	bytes = append(yamlSeparator, bytes...)
 	y.fillNext(ctx)
 	y.returnedAtLeastOneNonErrorResult = true
 	return bytes, unstructured, nil

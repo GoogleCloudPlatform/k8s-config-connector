@@ -784,7 +784,7 @@ spec:
             description: PlanStatus defines the observed state of Plan
             properties:
               compositionGeneration:
-                description: Composition generation last succesfully reconciled
+                description: Composition generation last successfully reconciled
                 format: int64
                 type: integer
               compositionUID:
@@ -864,7 +864,7 @@ spec:
                 format: int64
                 type: integer
               inputGeneration:
-                description: Facade's generation last succesfully reconciled
+                description: Facade's generation last successfully reconciled
                 format: int64
                 type: integer
               lastPruned:

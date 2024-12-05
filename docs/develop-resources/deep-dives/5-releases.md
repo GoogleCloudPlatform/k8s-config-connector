@@ -23,7 +23,7 @@
 
 * Add `kubebuilder:storageversion` tag to `v1beta1 `API. [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/1b19153411653329177f4ba0991c982f36970707/apis/cloudbuild/v1beta1/workerpool_types.go#L155)
 
-* Run `dev/taks/generate-crds` to patch your resource's CRD with the `v1beta1` version.
+* Run `dev/task/generate-crds` to patch your resource's CRD with the `v1beta1` version.
 
 ## 5.3 Turn on doc auto-generation (direct resource only)
 

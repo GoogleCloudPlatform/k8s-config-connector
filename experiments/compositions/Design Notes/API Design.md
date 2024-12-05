@@ -72,4 +72,4 @@ Q1. Should CRD_T be Namespace-scoped or Cluster-scoped ?
 Q2. Choice for CRD_V: Single CRD (Say CompositionValues) for all CRD_T's or Separate CRD for each CRD_T instance ?
 >  Single CRD => Too generic typing, less scope for access control
 >  Separate GVR => Better Access controls based on types, Structured API implies better error checking
->  We choose to go with Seperate GVR, one per each CRD_T instance.
+>  We choose to go with Separate GVR, one per each CRD_T instance.

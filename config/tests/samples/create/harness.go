@@ -888,7 +888,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "vpcaccess.cnrm.cloud.google.com", Kind: "VPCAccessConnector"}:
 
 			default:
-				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
+				t.Skipf("gk %v not supported by mock gcp %v; skipping", gvk.GroupKind(), name)
 			}
 		}
 	}
@@ -939,7 +939,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 		case "projectinorg":
 		default:
-			t.Skipf("test %v not suppported by vcr; skipping", name)
+			t.Skipf("test %v not supported by vcr; skipping", name)
 		}
 	}
 }
