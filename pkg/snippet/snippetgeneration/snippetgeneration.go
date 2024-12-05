@@ -117,7 +117,6 @@ var preferredSampleForResource = map[string]string{
 	"workstationcluster":                 "basic-workstationcluster",
 	"kmsautokeyconfig":                   "kmsautokeyconfig",
 	"kmskeyhandle":                       "kmskeyhandle",
-
 }
 
 type Snippet struct {
