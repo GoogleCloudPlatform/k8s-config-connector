@@ -372,6 +372,11 @@ func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.
 		SupportsAuditConfigs:     false, // No DCL-based resources support AuditConfigs.
 		ExternalReferenceFormats: []string{externalReferenceFormat},
 	}
+	// Apigee Environment does not support conditional IAM permissions
+	// Ref: https://b.corp.google.com/issues/378594862#comment6
+	if gvk.Group == "apigee.cnrm.cloud.google.com" && gvk.Kind == "ApigeeEnvironment" {
+		r.IAM.SupportsConditions = false
+	}
 	return nil
 }
 
@@ -669,7 +674,7 @@ func (d *DocGenerator) referencesSupportedByIAMPolicy() ([]iamPolicyReference, e
 		if externalReferenceFormat == "" { // Resource does not support IAM.
 			continue
 		}
-		refs = append(refs, iamPolicyReference{
+		r := iamPolicyReference{
 			Kind:       gvk.Kind,
 			IsDCLBased: true,
 			// DCL-based resources support conditions on IAMPolicy but do not support it
@@ -678,7 +683,13 @@ func (d *DocGenerator) referencesSupportedByIAMPolicy() ([]iamPolicyReference, e
 			SupportsConditions:       true,
 			SupportsAuditConfigs:     false, // No DCL-based resources support AuditConfigs.
 			ExternalReferenceFormats: []string{externalReferenceFormat},
-		})
+		}
+		// Apigee Environment does not support conditional IAM permissions
+		// Ref: https://b.corp.google.com/issues/378594862#comment6
+		if gvk.Group == "apigee.cnrm.cloud.google.com" && gvk.Kind == "ApigeeEnvironment" {
+			r.SupportsConditions = false
+		}
+		refs = append(refs, r)
 	}
 	for gvk, extOnlyType := range kcciamclient.ExternalOnlyTypes {
 		refs = append(refs, iamPolicyReference{

@@ -116,7 +116,7 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     </tr>
     <tr>
         <td><code>ApigeeEnvironment</code></td>
-        <td>Y</td>
+        <td></td>
         <td></td>
     </tr>
     <tr>

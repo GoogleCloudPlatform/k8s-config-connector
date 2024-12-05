@@ -113,7 +113,7 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     </tr>
     <tr>
         <td><code>ApigeeEnvironment</code></td>
-        <td>Y</td>
+        <td></td>
     </tr>
     <tr>
         <td><code>ArtifactRegistryRepository</code></td>
