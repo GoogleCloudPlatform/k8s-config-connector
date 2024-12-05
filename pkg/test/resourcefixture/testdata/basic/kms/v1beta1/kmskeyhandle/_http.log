@@ -1,0 +1,108 @@
+GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "keyHandle \"projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "keyHandle \"projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint&keyHandleId=5a4fa10e-995d-4ee0-a426-a220aa390320
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${uniqueId}%2Flocations%2Fus-central1
+
+{
+  "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320",
+  "resourceTypeSelector": "compute.googleapis.com/Disk"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${uniqueId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${uniqueId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.kms.v1.KeyHandle",
+    "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320",
+    "resourceTypeSelector": "compute.googleapis.com/Disk"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320",
+  "resourceTypeSelector": "compute.googleapis.com/Disk"
+}
