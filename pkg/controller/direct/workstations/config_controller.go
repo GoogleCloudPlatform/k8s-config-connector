@@ -151,7 +151,7 @@ func (a *WorkstationConfigAdapter) Create(ctx context.Context, createOp *directb
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("WorkstationConfig %s waiting creation: %w", a.id.String(), err)
+		return fmt.Errorf("waiting WorkstationConfig %s creation: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created WorkstationConfig", "name", a.id.String())
 
@@ -209,7 +209,7 @@ func (a *WorkstationConfigAdapter) Update(ctx context.Context, updateOp *directb
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("WorkstationConfig %s waiting update: %w", a.id.String(), err)
+		return fmt.Errorf("waiting WorkstationConfig %s update: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated WorkstationConfig", "name", a.id.String())
 
