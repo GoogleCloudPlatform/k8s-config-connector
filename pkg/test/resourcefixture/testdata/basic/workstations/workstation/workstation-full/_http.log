@@ -125,7 +125,6 @@ X-Xss-Protection: 0
   "name": "computenetwork-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "GLOBAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
@@ -257,11 +256,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
+  "gatewayAddress": "10.2.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.0.0.0/24",
   "kind": "compute#subnetwork",
@@ -299,7 +297,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Requested entity was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -328,125 +333,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "GLOBAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}"
-  ]
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allowSubnetCidrRoutesOverlap": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
-  "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
-  "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
-  "kind": "compute#subnetwork",
-  "logConfig": {
-    "enable": false
-  },
-  "name": "computesubnetwork-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "privateIpGoogleAccess": false,
-  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
-  "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
-  "stackType": "IPV4_ONLY"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "GLOBAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}"
-  ]
 }
 
 ---
@@ -474,7 +368,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "create"
   },
@@ -514,7 +407,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Requested entity was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -528,6 +428,7 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-west1%2Fw
 
 {
   "idleTimeout": "1200s",
+  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
   "runningTimeout": "43200s"
 }
 
@@ -543,12 +444,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "create"
   },
@@ -580,27 +479,12 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationConfig",
-    "allowedPorts": [
-      {
-        "first": 22,
-        "last": 22
-      },
-      {
-        "first": 80,
-        "last": 80
-      },
-      {
-        "first": 1024,
-        "last": 65535
-      }
-    ],
     "container": {
       "image": "us-west1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest"
     },
@@ -648,7 +532,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Requested entity was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -667,7 +558,8 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-west1%2Fw
   "displayName": "workstation-${uniqueId}",
   "labels": {
     "l-key1": "l-value1"
-  }
+  },
+  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}"
 }
 
 200 OK
@@ -682,12 +574,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "create"
   },
@@ -719,7 +609,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "create"
   },
@@ -809,12 +698,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "update"
   },
@@ -845,8 +732,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "update"
   },
@@ -926,12 +811,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "delete"
   },
@@ -963,7 +846,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "delete"
   },
@@ -992,20 +874,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowedPorts": [
-    {
-      "first": 22,
-      "last": 22
-    },
-    {
-      "first": 80,
-      "last": 80
-    },
-    {
-      "first": 1024,
-      "last": 65535
-    }
-  ],
   "container": {
     "image": "us-west1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest"
   },
@@ -1050,12 +918,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "delete"
   },
@@ -1087,11 +953,13 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationConfig"
+  }
 }
 
 ---
@@ -1143,90 +1011,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allowSubnetCidrRoutesOverlap": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
-  "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
-  "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
-  "kind": "compute#subnetwork",
-  "logConfig": {
-    "enable": false
-  },
-  "name": "computesubnetwork-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "privateIpGoogleAccess": false,
-  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
-  "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
-  "stackType": "IPV4_ONLY"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "GLOBAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}"
-  ]
 }
 
 ---
@@ -1254,11 +1046,13 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationCluster"
+  }
 }
 
 ---
@@ -1279,11 +1073,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
+  "gatewayAddress": "10.2.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.0.0.0/24",
   "kind": "compute#subnetwork",
@@ -1391,7 +1184,6 @@ X-Xss-Protection: 0
   "name": "computenetwork-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "GLOBAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
