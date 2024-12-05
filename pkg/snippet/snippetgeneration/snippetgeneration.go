@@ -116,6 +116,7 @@ var preferredSampleForResource = map[string]string{
 	"vertexaiendpoint":                   "vertexai-endpoint-network",
 	"workstationcluster":                 "basic-workstationcluster",
 	"kmsautokeyconfig":                   "kmsautokeyconfig",
+	"kmskeyhandle":                       "kmskeyhandle",
 }
 
 type Snippet struct {
