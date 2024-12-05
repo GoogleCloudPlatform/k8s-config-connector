@@ -36,6 +36,36 @@ func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreference
 	out.EnableFailureEmail = direct.ValueOf(in.EnableFailureEmail)
 	return out
 }
+func EventDrivenSchedule_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krm.EventDrivenSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventDrivenSchedule{}
+	out.PubsubSubscription = direct.LazyPtr(in.GetPubsubSubscription())
+	return out
+}
+func EventDrivenSchedule_ToProto(mapCtx *direct.MapContext, in *krm.EventDrivenSchedule) *pb.EventDrivenSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventDrivenSchedule{}
+	out.PubsubSubscription = direct.ValueOf(in.PubsubSubscription)
+	return out
+}
+func ManualSchedule_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krm.ManualSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ManualSchedule{}
+	return out
+}
+func ManualSchedule_ToProto(mapCtx *direct.MapContext, in *krm.ManualSchedule) *pb.ManualSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManualSchedule{}
+	return out
+}
 func ScheduleOptions_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions) *krm.ScheduleOptions {
 	if in == nil {
 		return nil
@@ -52,6 +82,52 @@ func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions)
 	}
 	out := &pb.ScheduleOptions{}
 	out.DisableAutoScheduling = direct.ValueOf(in.DisableAutoScheduling)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func ScheduleOptionsV2_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krm.ScheduleOptionsV2 {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScheduleOptionsV2{}
+	out.TimeBasedSchedule = TimeBasedSchedule_FromProto(mapCtx, in.GetTimeBasedSchedule())
+	out.ManualSchedule = ManualSchedule_FromProto(mapCtx, in.GetManualSchedule())
+	out.EventDrivenSchedule = EventDrivenSchedule_FromProto(mapCtx, in.GetEventDrivenSchedule())
+	return out
+}
+func ScheduleOptionsV2_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptionsV2) *pb.ScheduleOptionsV2 {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScheduleOptionsV2{}
+	if oneof := TimeBasedSchedule_ToProto(mapCtx, in.TimeBasedSchedule); oneof != nil {
+		out.Schedule = &pb.ScheduleOptionsV2_TimeBasedSchedule{TimeBasedSchedule: oneof}
+	}
+	if oneof := ManualSchedule_ToProto(mapCtx, in.ManualSchedule); oneof != nil {
+		out.Schedule = &pb.ScheduleOptionsV2_ManualSchedule{ManualSchedule: oneof}
+	}
+	if oneof := EventDrivenSchedule_ToProto(mapCtx, in.EventDrivenSchedule); oneof != nil {
+		out.Schedule = &pb.ScheduleOptionsV2_EventDrivenSchedule{EventDrivenSchedule: oneof}
+	}
+	return out
+}
+func TimeBasedSchedule_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krm.TimeBasedSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeBasedSchedule{}
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSchedule) *pb.TimeBasedSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeBasedSchedule{}
+	out.Schedule = direct.ValueOf(in.Schedule)
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
