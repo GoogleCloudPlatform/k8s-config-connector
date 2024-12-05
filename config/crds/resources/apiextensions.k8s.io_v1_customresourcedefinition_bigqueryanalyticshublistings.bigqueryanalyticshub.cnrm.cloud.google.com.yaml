@@ -248,7 +248,7 @@ spec:
                           for data clean room exchanges.
                         items:
                           properties:
-                            table:
+                            tableRef:
                               description: 'Optional. A reference to a BigQueryTable.
                                 Format: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
                                 Example:"projects/test_project/datasets/test_dataset/tables/test_table"'

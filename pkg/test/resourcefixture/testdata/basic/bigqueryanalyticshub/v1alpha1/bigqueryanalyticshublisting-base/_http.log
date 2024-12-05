@@ -219,6 +219,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 {
+  "bigqueryDataset": {},
   "discoveryType": 0,
   "displayName": "my_data_exchange"
 }
@@ -228,6 +229,11 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
+  "bigqueryDataset": {
+    "dataset": "",
+    "restrictedExportPolicy": null,
+    "selectedResources": []
+  },
   "categories": [],
   "dataProvider": null,
   "description": "",
@@ -255,6 +261,11 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
+  "bigqueryDataset": {
+    "dataset": "",
+    "restrictedExportPolicy": null,
+    "selectedResources": []
+  },
   "categories": [],
   "dataProvider": null,
   "description": "",

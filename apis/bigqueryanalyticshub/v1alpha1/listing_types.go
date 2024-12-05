@@ -30,7 +30,7 @@ type SelectedResource struct {
 	// Format:
 	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
 	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
-	TableRef *refv1beta1.BigQueryTableRef `json:"table,omitempty"`
+	TableRef *refv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
 }
 
 type BigQueryDatasetSource struct {
@@ -126,9 +126,6 @@ type BigQueryAnalyticsHubListingSpec struct {
 	// //  Note: For byte fields, the contents of the field are base64-encoded (which
 	// //  increases the size of the data by 33-36%) when using JSON on the wire.
 	// Icon []byte `json:"icon,omitempty"`
-
-	// Not yet
-	// Source *Listing_Source `json:"source,omitempty"`
 
 	/* Immutable. The name of the location this data exchange. */
 	// +required

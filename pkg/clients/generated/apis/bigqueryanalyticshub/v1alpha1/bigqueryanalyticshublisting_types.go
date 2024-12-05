@@ -85,7 +85,7 @@ type ListingRestrictedExportPolicy struct {
 type ListingSelectedResources struct {
 	/* Optional. A reference to a BigQueryTable. Format: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` Example:"projects/test_project/datasets/test_dataset/tables/test_table" */
 	// +optional
-	Table *v1alpha1.ResourceRef `json:"table,omitempty"`
+	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type ListingSource struct {
