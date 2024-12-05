@@ -65,12 +65,6 @@ var (
 		Kind:    reflect.TypeOf(KMSCryptoKey{}).Name(),
 	}
 
-	KMSKeyHandleGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(KMSKeyHandle{}).Name(),
-	}
-
 	KMSKeyRingGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
