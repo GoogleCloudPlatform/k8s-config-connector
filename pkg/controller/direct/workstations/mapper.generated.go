@@ -386,4 +386,64 @@ func WorkstationConfig_ReadinessCheck_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Port = direct.ValueOf(in.Port)
 	return out
 }
+func WorkstationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workstation) *krm.WorkstationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationObservedState{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: Reconciling
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Host = direct.LazyPtr(in.GetHost())
+	return out
+}
+func WorkstationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationObservedState) *pb.Workstation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workstation{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: Reconciling
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.State = direct.Enum_ToProto[pb.Workstation_State](mapCtx, in.State)
+	out.Host = direct.ValueOf(in.Host)
+	return out
+}
+func WorkstationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstation) *krm.WorkstationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: Reconciling
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	return out
+}
+func WorkstationSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationSpec) *pb.Workstation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workstation{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: Reconciling
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	return out
+}
 */
