@@ -183,7 +183,8 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	}
 	resource.Annotations = ComputeAnnotations(desired)
 	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
-
+	// GCP service does not allow setting version aliases during Secret creation.
+	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
 		Parent:   a.id.Parent().String(),
 		SecretId: a.id.ID(),
@@ -203,7 +204,14 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	external := a.id.String()
 	status.ExternalRef = &external
 	status.Name = created.Name
-	return op.UpdateStatus(ctx, status, nil)
+	if err = op.UpdateStatus(ctx, status, nil); err != nil {
+		return err
+	}
+	// VersionAliases cannot be set in Creation, requeing the result to update the versionAlias without waiting for the reconciliation interval.
+	if a.desired.Spec.VersionAliases != nil {
+		op.RequeueRequested = true
+	}
+	return nil
 }
 
 func topicsEqual(desired []*krm.TopicRef, actual []*secretmanagerpb.Topic) bool {

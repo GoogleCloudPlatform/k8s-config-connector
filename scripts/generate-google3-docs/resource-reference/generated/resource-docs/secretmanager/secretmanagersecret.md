@@ -555,7 +555,9 @@ conditions:
 externalRef: string
 name: string
 observedGeneration: integer
-observedState: {}
+observedState:
+  versionAliases:
+    string: string
 ```
 
 <table class="properties responsive">
@@ -640,6 +642,13 @@ observedState: {}
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.versionAliases</code></td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
