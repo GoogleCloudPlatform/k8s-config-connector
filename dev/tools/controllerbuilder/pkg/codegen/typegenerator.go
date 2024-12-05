@@ -348,6 +348,20 @@ func isAcronym(s string) bool {
 		return true
 	case "http", "https", "ssh":
 		return true
+	case "ip":
+		return true
+	case "gb":
+		return true
+	case "fs":
+		return true
+	case "pd":
+		return true
+	case "kms":
+		return true
+	case "gce":
+		return true
+	case "vtpm":
+		return true
 	default:
 		return false
 	}
