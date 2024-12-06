@@ -167,6 +167,8 @@ func (a *analyticsHubServer) UpdateListing(ctx context.Context, request *pb.Upda
 
 	for _, path := range request.GetUpdateMask().Paths {
 		switch path {
+		case "displayName":
+			obj.DisplayName = request.Listing.GetDisplayName()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
