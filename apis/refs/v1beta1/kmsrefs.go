@@ -58,9 +58,9 @@ func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src clien
 	// External should be in the `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]` format
 	if ref.External != "" {
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 8 && tokens[0] == "project" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
+		if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
 			ref = &KMSCryptoKeyRef{
-				External: fmt.Sprintf("projects/%s/secrets/%s/versions/%s", tokens[1], tokens[3], tokens[5]),
+				External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", tokens[1], tokens[3], tokens[5], tokens[7]),
 			}
 			return ref, nil
 		}
@@ -142,7 +142,7 @@ func ResolveKMSKeyRingRef(ctx context.Context, reader client.Reader, src client.
 	// External should be in the `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]` format
 	if ref.External != "" {
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 6 && tokens[0] == "project" && tokens[2] == "locations" && tokens[4] == "keyRings" {
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" {
 			ref = &KMSKeyRingRef{
 				External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s", tokens[1], tokens[3], tokens[5]),
 			}

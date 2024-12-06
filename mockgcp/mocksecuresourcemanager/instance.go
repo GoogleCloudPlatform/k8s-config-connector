@@ -70,6 +70,10 @@ func (s *secureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.
 	// TODO: State should be Creating at first, ACTIVE once done
 	obj.State = pb.Instance_ACTIVE
 
+	if req.GetInstance().GetKmsKey() != "" {
+		obj.KmsKey = req.GetInstance().GetKmsKey()
+	}
+
 	// TODO: Only fill in when ACTIVE
 	prefix := fmt.Sprintf("%s-%d", name.InstanceID, name.Project.Number)
 	domain := "." + name.Location + ".sourcemanager.dev"
