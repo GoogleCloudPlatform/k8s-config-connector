@@ -197,10 +197,10 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting-${uniqueId}
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting-${uniqueId}
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
 
 404 Not Found
 Content-Type: application/json
@@ -208,18 +208,20 @@ Content-Type: application/json
 {
   "code": 5,
   "details": [],
-  "message": "listing \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting-${uniqueId}\" not found"
+  "message": "listing \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}\" not found"
 }
 
 ---
 
-POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings?listingId=bigqueryanalyticshublisting-${uniqueId}
+POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings?listingId=bigqueryanalyticshublisting${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 {
-  "bigqueryDataset": {},
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}"
+  },
   "discoveryType": 0,
   "displayName": "my_data_exchange"
 }
@@ -230,7 +232,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "bigqueryDataset": {
-    "dataset": "",
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
     "restrictedExportPolicy": null,
     "selectedResources": []
   },
@@ -241,7 +243,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "displayName": "my_data_exchange",
   "documentation": "",
   "icon": "",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting-${uniqueId}",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
   "primaryContact": "",
   "publisher": null,
   "requestAccess": "",
@@ -251,10 +253,10 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting-${uniqueId}
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting-${uniqueId}
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
 
 200 OK
 Content-Type: application/json
@@ -262,7 +264,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 {
   "bigqueryDataset": {
-    "dataset": "",
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
     "restrictedExportPolicy": null,
     "selectedResources": []
   },
@@ -273,7 +275,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "displayName": "my_data_exchange",
   "documentation": "",
   "icon": "",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting-${uniqueId}",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
   "primaryContact": "",
   "publisher": null,
   "requestAccess": "",
@@ -283,10 +285,83 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting-${uniqueId}
+PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}?updateMask=displayName
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting-${uniqueId}
+x-goog-request-params: listing.name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}"
+  },
+  "discoveryType": 0,
+  "displayName": "updated_name",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": null,
+    "selectedResources": []
+  },
+  "categories": [],
+  "dataProvider": null,
+  "description": "",
+  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "displayName": "updated_name",
+  "documentation": "",
+  "icon": "",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "primaryContact": "",
+  "publisher": null,
+  "requestAccess": "",
+  "restrictedExportConfig": null,
+  "state": "STATE_UNSPECIFIED"
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": null,
+    "selectedResources": []
+  },
+  "categories": [],
+  "dataProvider": null,
+  "description": "",
+  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "displayName": "updated_name",
+  "documentation": "",
+  "icon": "",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "primaryContact": "",
+  "publisher": null,
+  "requestAccess": "",
+  "restrictedExportConfig": null,
+  "state": "STATE_UNSPECIFIED"
+}
+
+---
+
+DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
 
 200 OK
 Content-Type: application/json

@@ -17,7 +17,7 @@ kind: BigQueryAnalyticsHubListing
 metadata:
   name: bigqueryanalyticshublisting${uniqueId}
 spec:
-  displayName: my_data_exchange
+  displayName: updated_name
   location: US
   source:
     bigQueryDatasetSource:

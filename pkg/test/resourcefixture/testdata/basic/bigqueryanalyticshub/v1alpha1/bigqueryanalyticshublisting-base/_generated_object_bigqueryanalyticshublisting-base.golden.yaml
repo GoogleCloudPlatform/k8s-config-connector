@@ -6,19 +6,19 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-  name: bigqueryanalyticshublisting-${uniqueId}
+  name: bigqueryanalyticshublisting${uniqueId}
   namespace: ${uniqueId}
 spec:
   dataExchangeRef:
     name: bigqueryanalyticshubdataexchange${uniqueId}
-  displayName: my_data_exchange
+  displayName: updated_name
   location: US
   projectRef:
     external: ${projectId}
-  resourceID: bigqueryanalyticshublisting-${uniqueId}
+  resourceID: bigqueryanalyticshublisting${uniqueId}
   source:
     bigQueryDatasetSource:
       datasetRef:
@@ -30,6 +30,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting-${uniqueId}
-  observedGeneration: 1
+  externalRef: projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+  observedGeneration: 2
   observedState: {}

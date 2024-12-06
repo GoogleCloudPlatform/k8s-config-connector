@@ -95,24 +95,21 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 }
 
 func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *krm.BigQueryAnalyticsHubListing) error {
-	if ref := obj.Spec.DataExchangeRef; ref != nil {
-		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
-		if err != nil {
-			return fmt.Errorf("failed to resolve optional DataExchangeRef: %w", err)
-		}
-	}
-
 	if obj.Spec.Source != nil && obj.Spec.Source.BigQueryDatasetSource != nil {
 		if ref := obj.Spec.Source.BigQueryDatasetSource.Dataset; ref != nil {
-			if _, err := refs.ResolveBigQueryDataset(ctx, reader, obj, ref); err != nil {
+			id, err := refs.ResolveBigQueryDataset(ctx, reader, obj, ref)
+			if err != nil {
 				return err
 			}
+			obj.Spec.Source.BigQueryDatasetSource.Dataset.External = id.String()
 
 			for _, selectedResource := range obj.Spec.Source.BigQueryDatasetSource.SelectedResources {
 				if ref := selectedResource.TableRef; ref != nil {
-					if _, err := refs.ResolveBigQueryTable(ctx, reader, obj, ref); err != nil {
+					id, err := refs.ResolveBigQueryTable(ctx, reader, obj, ref)
+					if err != nil {
 						return err
 					}
+					selectedResource.TableRef.External = id.String()
 				}
 			}
 		}
@@ -199,6 +196,8 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	resource.Name = a.id.External
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
