@@ -111,8 +111,8 @@ func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.L
 		return nil
 	}
 	out := &krmv1alpha1.BigQueryDatasetSource{}
-	if out.Dataset != nil {
-		out.Dataset = &refs.BigQueryDatasetRef{
+	if out.DatasetRef != nil {
+		out.DatasetRef = &refs.BigQueryDatasetRef{
 			External: in.Dataset,
 		}
 	}
@@ -254,9 +254,9 @@ func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krmv1a
 	}
 	out := &pb.Listing_BigqueryDataset{}
 
-	if in.Dataset != nil {
+	if in.DatasetRef != nil {
 		out.BigqueryDataset = &pb.Listing_BigQueryDatasetSource{
-			Dataset: in.Dataset.External,
+			Dataset: in.DatasetRef.External,
 		}
 	}
 

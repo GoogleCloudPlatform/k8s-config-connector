@@ -96,12 +96,12 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 
 func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *krm.BigQueryAnalyticsHubListing) error {
 	if obj.Spec.Source != nil && obj.Spec.Source.BigQueryDatasetSource != nil {
-		if ref := obj.Spec.Source.BigQueryDatasetSource.Dataset; ref != nil {
+		if ref := obj.Spec.Source.BigQueryDatasetSource.DatasetRef; ref != nil {
 			id, err := refs.ResolveBigQueryDataset(ctx, reader, obj, ref)
 			if err != nil {
 				return err
 			}
-			obj.Spec.Source.BigQueryDatasetSource.Dataset.External = id.String()
+			obj.Spec.Source.BigQueryDatasetSource.DatasetRef.External = id.String()
 
 			for _, selectedResource := range obj.Spec.Source.BigQueryDatasetSource.SelectedResources {
 				if ref := selectedResource.TableRef; ref != nil {
