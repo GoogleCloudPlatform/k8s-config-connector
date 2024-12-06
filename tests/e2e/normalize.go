@@ -734,6 +734,26 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		return s
 	})
 
+	// Specific to LROs
+	{
+		// For reasons unclear, operations emit done: false and cancelRequested: false.
+		// This seems to violate the normal behaviour of proto bool fields with implicit presence.
+		// Easiest just to normalize away the GCP responses that are hard to produce!
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if path == "." {
+				if m["done"] == false {
+					delete(m, "done")
+				}
+			}
+
+			if path == ".metadata" {
+				if m["cancelRequested"] == false {
+					delete(m, "cancelRequested")
+				}
+			}
+		})
+	}
+
 	// Specific to DataFlow
 	{
 		visitor.ReplacePath(".job.startTime", "2024-04-01T12:34:56.123456Z")
