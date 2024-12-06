@@ -37,7 +37,7 @@ type BigQueryDatasetSource struct {
 	// +required
 	// Resource name of the dataset source for this listing.
 	//  e.g. `projects/myproject/datasets/123`
-	Dataset *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
+	DatasetRef *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
 
 	// Optional. Resources in this dataset that are selectively shared.
 	//  If this field is empty, then the entire dataset (all resources) are
