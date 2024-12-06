@@ -36,7 +36,7 @@ func FuzzBigQueryDataTransferConfigSpec(f *testing.F) {
 		fuzz.FillWithRandom(t, randStream, p1)
 
 		// Status fields
-		unimplementedFields := sets.New(
+		statusFields := sets.New(
 			".name",
 			".dataset_region",
 			".next_run_time",
@@ -44,10 +44,11 @@ func FuzzBigQueryDataTransferConfigSpec(f *testing.F) {
 			".state",
 			".update_time",
 			".user_id",
+			".error",
 		)
 
 		clearFields := &fuzz.ClearFields{
-			Paths: unimplementedFields,
+			Paths: statusFields,
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
