@@ -14,7 +14,6 @@
 
 package v1beta1
 
-
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EmailPreferences
 type EmailPreferences struct {
 	// If true, email notifications will be sent on transfer run failures.
@@ -140,21 +139,4 @@ type Any struct {
 
 	// Must be a valid serialized protocol buffer of the above specified type.
 	Value []byte `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	Details []Any `json:"details,omitempty"`
 }

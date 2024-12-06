@@ -28,6 +28,25 @@ type EncryptionConfiguration struct {
 	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
+// +kcc:proto=google.rpc.Status
+type Status struct {
+	// The status code, which should be an enum value of
+	//  [google.rpc.Code][google.rpc.Code].
+	Code *int32 `json:"code,omitempty"`
+
+	// A developer-facing error message, which should be in English. Any
+	//  user-facing error message should be localized and sent in the
+	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+	//  by the client.
+	Message *string `json:"message,omitempty"`
+
+	/* NOTYET
+	// A list of messages that carry the error details.  There is a common set of
+	//  message types for APIs to use.
+	Details []Any `json:"details,omitempty"`
+	*/
+}
+
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferConfigSpec struct {
@@ -110,6 +129,12 @@ type BigQueryDataTransferConfigSpec struct {
 	//  Note that not all data sources support service account credentials when creating a transfer config.
 	//  For the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts.
 	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// V2 options customizing different types of data transfer schedule.
+	//  This field supports existing time-based and manual transfer schedule. Also
+	//  supports Event-Driven transfer schedule. ScheduleOptionsV2 cannot be used
+	//  together with ScheduleOptions/Schedule.
+	ScheduleOptionsV2 *ScheduleOptionsV2 `json:"scheduleOptionsV2,omitempty"`
 }
 
 type Parent struct {
@@ -169,6 +194,10 @@ type BigQueryDataTransferConfigObservedState struct {
 
 	// Deprecated. Unique ID of the user on whose behalf transfer is done.
 	UserID *int64 `json:"userID,omitempty"`
+
+	// Output only. Error code with detailed information about reason of the
+	//  latest config failure.
+	Error *Status `json:"error,omitempty"`
 }
 
 // +genclient

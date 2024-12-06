@@ -19,6 +19,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
@@ -35,6 +36,7 @@ func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext
 	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
 	out.OwnerInfo = UserInfo_FromProto(mapCtx, in.GetOwnerInfo())
 	out.UserID = direct.LazyPtr(in.GetUserId())
+	out.Error = Status_FromProto(mapCtx, in.GetError())
 	return out
 }
 func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigObservedState) *pb.TransferConfig {
@@ -49,6 +51,7 @@ func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
 	out.OwnerInfo = UserInfo_ToProto(mapCtx, in.OwnerInfo)
 	out.UserId = direct.ValueOf(in.UserID)
+	out.Error = Status_ToProto(mapCtx, in.Error)
 	return out
 }
 func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigSpec {
@@ -71,6 +74,7 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out.EmailPreferences = EmailPreferences_FromProto(mapCtx, in.GetEmailPreferences())
 	out.EncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.GetEncryptionConfiguration())
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_FromProto(mapCtx, in.GetScheduleOptionsV2())
 	return out
 }
 func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigSpec) *pb.TransferConfig {
@@ -93,6 +97,7 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 	}
 	out.EmailPreferences = EmailPreferences_ToProto(mapCtx, in.EmailPreferences)
 	out.EncryptionConfiguration = EncryptionConfiguration_ToProto(mapCtx, in.EncryptionConfiguration)
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_ToProto(mapCtx, in.ScheduleOptionsV2)
 	return out
 }
 func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfiguration) *krm.EncryptionConfiguration {
@@ -141,5 +146,23 @@ func Params_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.S
 		// TODO: if we need to support more types, we need to change KRM type of Params to map[string]interface{}
 		out.Fields[k] = structpb.NewStringValue(v)
 	}
+	return out
+}
+func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
+	if in == nil {
+		return nil
+	}
+	out := &statuspb.Status{}
+	out.Code = direct.ValueOf(in.Code)
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Status{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
