@@ -146,7 +146,6 @@ import (
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
-	workstationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1alpha1"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
@@ -276,7 +275,6 @@ type Interface interface {
 	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
 	WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Interface
-	WorkstationsV1alpha1() workstationsv1alpha1.WorkstationsV1alpha1Interface
 	WorkstationsV1beta1() workstationsv1beta1.WorkstationsV1beta1Interface
 }
 
@@ -404,7 +402,6 @@ type Clientset struct {
 	vertexaiV1beta1                *vertexaiv1beta1.VertexaiV1beta1Client
 	vpcaccessV1beta1               *vpcaccessv1beta1.VpcaccessV1beta1Client
 	workflowsV1alpha1              *workflowsv1alpha1.WorkflowsV1alpha1Client
-	workstationsV1alpha1           *workstationsv1alpha1.WorkstationsV1alpha1Client
 	workstationsV1beta1            *workstationsv1beta1.WorkstationsV1beta1Client
 }
 
@@ -1013,11 +1010,6 @@ func (c *Clientset) WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Inter
 	return c.workflowsV1alpha1
 }
 
-// WorkstationsV1alpha1 retrieves the WorkstationsV1alpha1Client
-func (c *Clientset) WorkstationsV1alpha1() workstationsv1alpha1.WorkstationsV1alpha1Interface {
-	return c.workstationsV1alpha1
-}
-
 // WorkstationsV1beta1 retrieves the WorkstationsV1beta1Client
 func (c *Clientset) WorkstationsV1beta1() workstationsv1beta1.WorkstationsV1beta1Interface {
 	return c.workstationsV1beta1
@@ -1551,10 +1543,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.workstationsV1alpha1, err = workstationsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.workstationsV1beta1, err = workstationsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1701,7 +1689,6 @@ func New(c rest.Interface) *Clientset {
 	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)
 	cs.workflowsV1alpha1 = workflowsv1alpha1.New(c)
-	cs.workstationsV1alpha1 = workstationsv1alpha1.New(c)
 	cs.workstationsV1beta1 = workstationsv1beta1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)

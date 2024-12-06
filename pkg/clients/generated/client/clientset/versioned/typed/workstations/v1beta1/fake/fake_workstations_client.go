@@ -31,6 +31,10 @@ type FakeWorkstationsV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeWorkstationsV1beta1) Workstations(namespace string) v1beta1.WorkstationInterface {
+	return &FakeWorkstations{c, namespace}
+}
+
 func (c *FakeWorkstationsV1beta1) WorkstationClusters(namespace string) v1beta1.WorkstationClusterInterface {
 	return &FakeWorkstationClusters{c, namespace}
 }

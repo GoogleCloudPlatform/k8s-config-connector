@@ -31,6 +31,7 @@ import (
 
 type WorkstationsV1beta1Interface interface {
 	RESTClient() rest.Interface
+	WorkstationsGetter
 	WorkstationClustersGetter
 	WorkstationConfigsGetter
 }
@@ -38,6 +39,10 @@ type WorkstationsV1beta1Interface interface {
 // WorkstationsV1beta1Client is used to interact with features provided by the workstations.cnrm.cloud.google.com group.
 type WorkstationsV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *WorkstationsV1beta1Client) Workstations(namespace string) WorkstationInterface {
+	return newWorkstations(c, namespace)
 }
 
 func (c *WorkstationsV1beta1Client) WorkstationClusters(namespace string) WorkstationClusterInterface {

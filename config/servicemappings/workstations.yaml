@@ -28,3 +28,6 @@ spec:
     - name: google_workstations_workstationconfig
       kind: WorkstationConfig
       direct: true
+    - name: google_workstations_workstation
+      kind: Workstation
+      direct: true
