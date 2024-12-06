@@ -166,3 +166,23 @@ func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Statu
 	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
+func EventDrivenSchedule_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krm.EventDrivenSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventDrivenSchedule{}
+	if in.GetPubsubSubscription() != "" {
+		out.PubSubSubscriptionRef = &refv1beta1.PubSubSubscriptionRef{External: in.GetPubsubSubscription()}
+	}
+	return out
+}
+func EventDrivenSchedule_ToProto(mapCtx *direct.MapContext, in *krm.EventDrivenSchedule) *pb.EventDrivenSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventDrivenSchedule{}
+	if in.PubSubSubscriptionRef != nil {
+		out.PubsubSubscription = in.PubSubSubscriptionRef.External
+	}
+	return out
+}

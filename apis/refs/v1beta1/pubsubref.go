@@ -102,3 +102,80 @@ func ResolvePubSubTopic(ctx context.Context, reader client.Reader, src client.Ob
 func (t *PubSubTopic) String() string {
 	return fmt.Sprintf("projects/%s/topics/%s", t.projectID, t.topicID)
 }
+
+type PubSubSubscriptionRef struct {
+	// If provided must be in the format `projects/[project_id]/subscriptions/[subscription_id]`.
+	External string `json:"external,omitempty"`
+	// The `metadata.name` field of a `PubSubSubscription` resource.
+	Name string `json:"name,omitempty"`
+	// The `metadata.namespace` field of a `PubSubSubscription` resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type PubSubSubscription struct {
+	projectID string
+	subID     string
+}
+
+func ResolvePubSubSubscription(ctx context.Context, reader client.Reader, src client.Object, ref *PubSubSubscriptionRef) (*PubSubSubscription, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.Name == "" && ref.External == "" {
+		return nil, fmt.Errorf("must specify either name or external on PubSubSubscriptionRef")
+	}
+	if ref.Name != "" && ref.External != "" {
+		return nil, fmt.Errorf("cannot specify both name and external on PubSubSubscriptionRef")
+	}
+
+	// External is provided.
+	if ref.External != "" {
+		// External should be in the `projects/[project_id]/subscriptions/[subscriptions_id]` format.
+		tokens := strings.Split(ref.External, "/")
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "subscriptions" {
+			return &PubSubSubscription{
+				projectID: tokens[1],
+				subID:     tokens[3],
+			}, nil
+		}
+		return nil, fmt.Errorf("format of PubSubSubscriptionRef external=%q was not known (use projects/[project_id]/subscriptions/[subscriptions_id])", ref.External)
+	}
+
+	// Fetch PubSubSubscription object to construct the external form.
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "pubsub.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PubSubSubscription",
+	})
+	nn := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if nn.Namespace == "" {
+		nn.Namespace = src.GetNamespace()
+	}
+	if err := reader.Get(ctx, nn, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced PubSubSubscription %v not found", nn)
+		}
+		return nil, fmt.Errorf("error reading referenced PubSubSubscription %v: %w", nn, err)
+	}
+	projectID, err := ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return nil, err
+	}
+	subID, err := GetResourceID(u)
+	if err != nil {
+		return nil, err
+	}
+	return &PubSubSubscription{
+		projectID: projectID,
+		subID:     subID,
+	}, nil
+}
+
+func (t *PubSubSubscription) String() string {
+	return fmt.Sprintf("projects/%s/subscriptions/%s", t.projectID, t.subID)
+}

@@ -20,14 +20,6 @@ type EmailPreferences struct {
 	EnableFailureEmail *bool `json:"enableFailureEmail,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule
-type EventDrivenSchedule struct {
-	// Pub/Sub subscription name used to receive events.
-	//  Only Google Cloud Storage data source support this option.
-	//  Format: projects/{project}/subscriptions/{subscription}
-	PubsubSubscription *string `json:"pubsubSubscription,omitempty"`
-}
-
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ManualSchedule
 type ManualSchedule struct {
 }

@@ -36,22 +36,6 @@ func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreference
 	out.EnableFailureEmail = direct.ValueOf(in.EnableFailureEmail)
 	return out
 }
-func EventDrivenSchedule_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krm.EventDrivenSchedule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EventDrivenSchedule{}
-	out.PubsubSubscription = direct.LazyPtr(in.GetPubsubSubscription())
-	return out
-}
-func EventDrivenSchedule_ToProto(mapCtx *direct.MapContext, in *krm.EventDrivenSchedule) *pb.EventDrivenSchedule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EventDrivenSchedule{}
-	out.PubsubSubscription = direct.ValueOf(in.PubsubSubscription)
-	return out
-}
 func ManualSchedule_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krm.ManualSchedule {
 	if in == nil {
 		return nil

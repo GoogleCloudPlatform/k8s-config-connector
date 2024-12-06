@@ -47,6 +47,14 @@ type Status struct {
 	*/
 }
 
+// +kcc:proto=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule
+type EventDrivenSchedule struct {
+	// Pub/Sub subscription used to receive events.
+	//  Only Google Cloud Storage data source support this option.
+	//  Format: projects/{project}/subscriptions/{subscription}
+	PubSubSubscriptionRef *refv1beta1.PubSubSubscriptionRef `json:"pubSubSubscriptionRef,omitempty"`
+}
+
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferConfigSpec struct {
