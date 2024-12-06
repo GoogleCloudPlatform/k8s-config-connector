@@ -79,6 +79,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
 	visitor.replacePaths[".status.outboundPublicIpAddresses"] = []string{"6.6.6.6", "8.8.8.8"}
 
+	// Specific to CloudKMS
+	visitor.replacePaths[".primary.createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".primary.generateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
