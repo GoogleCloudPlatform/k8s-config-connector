@@ -96,6 +96,17 @@ scheduleOptions:
   disableAutoScheduling: boolean
   endTime: string
   startTime: string
+scheduleOptionsV2:
+  eventDrivenSchedule:
+    pubSubSubscriptionRef:
+      external: string
+      name: string
+      namespace: string
+  manualSchedule: {}
+  timeBasedSchedule:
+    endTime: string
+    schedule: string
+    startTime: string
 serviceAccountRef:
   external: string
   name: string
@@ -443,6 +454,128 @@ serviceAccountRef:
     </tr>
     <tr>
         <td>
+            <p><code>scheduleOptionsV2</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}V2 options customizing different types of data transfer schedule. This field supports existing time-based and manual transfer schedule. Also supports Event-Driven transfer schedule. ScheduleOptionsV2 cannot be used together with ScheduleOptions/Schedule.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.eventDrivenSchedule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Event driven transfer schedule options. If set, the transfer will be scheduled upon events arrial.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.eventDrivenSchedule.pubSubSubscriptionRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Pub/Sub subscription used to receive events. Only Google Cloud Storage data source support this option. Format: projects/{project}/subscriptions/{subscription}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.eventDrivenSchedule.pubSubSubscriptionRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}If provided must be in the format `projects/[project_id]/subscriptions/[subscription_id]`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.eventDrivenSchedule.pubSubSubscriptionRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `metadata.name` field of a `PubSubSubscription` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.eventDrivenSchedule.pubSubSubscriptionRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `PubSubSubscription` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.manualSchedule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Manual transfer schedule. If set, the transfer run will not be auto-scheduled by the system, unless the client invokes StartManualTransferRuns.  This is equivalent to disable_auto_scheduling = true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.timeBasedSchedule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Time based transfer schedule options. This is the default schedule option.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.timeBasedSchedule.endTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.timeBasedSchedule.schedule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Data transfer schedule.
+ If the data source does not support a custom schedule, this should be
+ empty. If it is empty, the default value for the data source will be used.
+ The specified times are in UTC.
+ Examples of valid format:
+ `1st,3rd monday of month 15:30`,
+ `every wed,fri of jan,jun 13:15`, and
+ `first sunday of quarter 00:00`.
+ See more explanation about the format here:
+ https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+
+ NOTE: The minimum interval time between recurring transfers depends on the
+ data source; refer to the documentation for your data source.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduleOptionsV2.timeBasedSchedule.startTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Specifies time to start scheduling transfer runs. The first run will be scheduled at or after the start time according to a recurrence pattern defined in the schedule string. The start time can be changed at any moment.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>serviceAccountRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -499,6 +632,9 @@ externalRef: string
 observedGeneration: integer
 observedState:
   datasetRegion: string
+  error:
+    code: integer
+    message: string
   name: string
   nextRunTime: string
   ownerInfo:
@@ -590,6 +726,27 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. Region in which BigQuery dataset is located.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.error</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. Error code with detailed information about reason of the latest config failure.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.error.code</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.error.message</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
