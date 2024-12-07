@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package updatetypes
+package typeupdater
 
 import (
 	"fmt"
@@ -30,11 +30,11 @@ import (
 )
 
 func (u *TypeUpdater) insertGoField() error {
-	klog.Infof("inserting the generated Go code for field %s", u.newField.field.Name())
+	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 
-	targetComment := fmt.Sprintf("+kcc:proto=%s", u.generatedGoField.parentMessage)
+	targetComment := fmt.Sprintf("+kcc:proto=%s", u.newField.parent.FullName())
 
-	filepath.WalkDir(u.opts.apiDirectory, func(path string, d fs.DirEntry, err error) error {
+	filepath.WalkDir(u.opts.APIDirectory, func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || filepath.Ext(path) != ".go" {
 			return nil
 		}
@@ -90,9 +90,9 @@ func (u *TypeUpdater) insertGoField() error {
 		if endPos != 0 {
 			var newSrcBytes []byte
 			// TODO: ues the same field ordering as in proto message
-			newSrcBytes = append(newSrcBytes, srcBytes[:endPos-1]...)        // up to before '}'
-			newSrcBytes = append(newSrcBytes, u.generatedGoField.content...) // insert new field
-			newSrcBytes = append(newSrcBytes, srcBytes[endPos-1:]...)        // include the '}'
+			newSrcBytes = append(newSrcBytes, srcBytes[:endPos-1]...)         // up to before '}'
+			newSrcBytes = append(newSrcBytes, u.newField.generatedContent...) // insert new field
+			newSrcBytes = append(newSrcBytes, srcBytes[endPos-1:]...)         // include the '}'
 
 			if err := os.WriteFile(path, newSrcBytes, d.Type()); err != nil {
 				return err
