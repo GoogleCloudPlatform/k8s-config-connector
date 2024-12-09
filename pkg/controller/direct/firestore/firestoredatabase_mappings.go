@@ -35,6 +35,21 @@ func FirestoreDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	return out
 }
 
+func FirestoreDatabaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseObservedState) *pb.Database {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Database{}
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.VersionRetentionPeriod = direct.Duration_ToProto(mapCtx, in.VersionRetentionPeriod)
+	out.EarliestVersionTime = direct.StringTimestamp_ToProto(mapCtx, in.EarliestVersionTime)
+	out.KeyPrefix = direct.ValueOf(in.KeyPrefix)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+
 func FirestoreDatabaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseSpec {
 	if in == nil {
 		return nil
@@ -52,10 +67,7 @@ func FirestoreDatabaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreD
 	}
 	out := &pb.Database{}
 	out.LocationId = direct.ValueOf(in.LocationID)
-	out.Type = pb.Database_FIRESTORE_NATIVE
 	out.ConcurrencyMode = direct.Enum_ToProto[pb.Database_ConcurrencyMode](mapCtx, in.ConcurrencyMode)
 	out.PointInTimeRecoveryEnablement = direct.Enum_ToProto[pb.Database_PointInTimeRecoveryEnablement](mapCtx, in.PointInTimeRecoveryEnablement)
-	out.AppEngineIntegrationMode = pb.Database_DISABLED
-	out.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
 	return out
 }
