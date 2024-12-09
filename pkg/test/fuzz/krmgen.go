@@ -17,6 +17,7 @@ package fuzz
 import (
 	"math/rand"
 	"reflect"
+	"strconv"
 	"testing"
 )
 
@@ -32,8 +33,10 @@ type RandomFiller struct {
 func NewRandomFiller(seed int64, enumBoundsMap map[string]int64, enumValuesMap map[string][]interface{}) *RandomFiller {
 	return &RandomFiller{
 		randStream:                rand.New(rand.NewSource(seed)),
-		intEnumAllowableValues:    enumBoundsMap,
-		stringEnumAllowableValues: enumValuesMap,
+		intEnumAllowableValues:    enumBoundsMap, // [0,7]
+		stringEnumAllowableValues: enumValuesMap, // {"foo", "bar"}
+		// []string{"foo", "bar"} => treat these string fields as ints and fill them with in convertable values
+		// another edge case time encoded in a string field
 	}
 }
 
@@ -107,6 +110,51 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, field reflect.Value) {
 
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
+			//t.Log("todo acpana struct field names:", field.Type().Field(i).Name )
+			if field.Type().Field(i).Name == "SyncWaitSecs" { // this func capitlizes the first letter
+				structField := field.Field(i)
+				// TODO double check
+				if structField.Kind() == reflect.Ptr {
+					if structField.IsNil() {
+						structField.Set(reflect.New(structField.Type().Elem()))
+					}
+					structField = structField.Elem()
+					// rf.fillWithRandom(t, field.Elem())
+					// return
+				}
+				structField.SetString(strconv.FormatInt(rf.randStream.Int63(), 10))
+				t.Log("todo acpana it worked")
+				continue
+			}
+			if field.Type().Field(i).Name == "AuditIntervalSeconds" { // this func capitlizes the first letter
+				structField := field.Field(i)
+				//t.Logf("todo acpana before operation -- Field: %s, Type: %s", structField.Type().Name(), structField.Type().Elem())
+				// TODO double check
+				if structField.Kind() == reflect.Ptr {
+					t.Logf("todo acpana before operation -- Field: %s, Type: %s", structField.Type().Name(), structField.Type().Elem())
+					if structField.IsNil() {
+						structField.Set(reflect.New(structField.Type().Elem()))
+					}
+					structField = structField.Elem()
+					// rf.fillWithRandom(t, field.Elem())
+					// return
+				} else {
+					t.Logf("todo acpana before operation -- Field: %s, Type: %s", structField.Type().Name(), structField.Type())
+				}
+				t.Logf("todo acpana after operation -- Field: %s, Type: %s", structField.Type().Name(), structField.Type())
+
+				// there are two AuditIntervalSeconds fields: one *string one *int64
+				switch structField.Kind() {
+				case reflect.String:
+					structField.SetString(strconv.FormatInt(rf.randStream.Int63(), 10))
+				case reflect.Int64:
+					structField.SetInt(rf.randStream.Int63())
+				default:
+					t.Errorf("AuditIntervalSeconds type undefined: %v", structField.Kind())
+				}
+
+				continue
+			}
 			rf.fillWithRandom(t, field.Field(i))
 		}
 
