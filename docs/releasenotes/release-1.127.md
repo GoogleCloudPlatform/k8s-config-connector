@@ -13,13 +13,17 @@ TODO: list contributors with `git log v1.126.0... | grep Merge | grep from | awk
 
 * `Placeholder`
 
-## New Fields:
-
-* `Placeholder`
-
 ## Modified Beta Reconciliation
 
-We migrated the following reconciliation from the TF-based or DCL-based controller to the new Direct controller to enhance the reliability and performance. The resource CRD is unchanged.
+
+We have added support for direct reconciliation to more resources, with opt-in behaviour. The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object. The following resources now have direct reconciliation support (and we list some of the issues that this fixes): 
+
+* [`ComputeTargetTCPProxy`](https://cloud.google.com/compute/docs/reference/rest/v1/targetTcpProxies)
+
+  * Use regional TargetRCPProxy via the `spec.location` configuration.
+
+
+## New Fields:
 
 * `Placeholder`
 
