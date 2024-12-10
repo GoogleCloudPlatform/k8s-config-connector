@@ -63,6 +63,7 @@ SUPPORTED_SERVICES=(
   dataflow.googleapis.com
   datafusion.googleapis.com
   dataproc.googleapis.com
+  discoveryengine.googleapis.com
   dlp.googleapis.com
   dns.googleapis.com
   edgenetwork.googleapis.com
