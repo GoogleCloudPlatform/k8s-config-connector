@@ -26,6 +26,7 @@ import (
 
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -177,8 +178,8 @@ func (v *MapperGenerator) GenerateMappers() error {
 		}
 		out := v.getOutputFile(k)
 		out.packageName = lastGoComponent(goPackage)
-		
-		 {
+
+		{
 			pbPackage := pair.ProtoGoPackage
 			krmPackage := pair.KRMType.GoPackage
 
@@ -740,28 +741,33 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 }
 
 func (v *MapperGenerator) fieldExistInCounterpartStruct(goType *gocode.GoStruct, krmFieldName string) bool {
-	counterpartTypeName := getCounterpartTypeName(goType.Name)
-	if counterpartTypeName == "" {
+	counterpartTypeNames := getPotentialCounterpartTypeNames(goType.Name)
+	if counterpartTypeNames.Len() == 0 {
 		return false
 	}
 
 	for _, pair := range v.typePairs {
-		if pair.KRMType.Name == counterpartTypeName {
-			return fieldExistInStruct(pair.KRMType, krmFieldName)
+		if counterpartTypeNames.Has(pair.KRMType.Name) && fieldExistInStruct(pair.KRMType, krmFieldName) {
+			return true
 		}
 	}
 
 	return false
 }
 
-func getCounterpartTypeName(goTypeName string) string {
+func getPotentialCounterpartTypeNames(goTypeName string) sets.String {
 	switch {
 	case strings.HasSuffix(goTypeName, "Spec"):
-		return strings.TrimSuffix(goTypeName, "Spec") + "ObservedState"
+		return sets.NewString(
+			strings.TrimSuffix(goTypeName, "Spec")+"ObservedState",
+			strings.TrimSuffix(goTypeName, "Spec")+"Status",
+		)
 	case strings.HasSuffix(goTypeName, "ObservedState"):
-		return strings.TrimSuffix(goTypeName, "ObservedState") + "Spec"
+		return sets.NewString(strings.TrimSuffix(goTypeName, "ObservedState") + "Spec")
+	case strings.HasSuffix(goTypeName, "Status"):
+		return sets.NewString(strings.TrimSuffix(goTypeName, "Status") + "Spec")
 	default:
-		return ""
+		return nil
 	}
 }
 
