@@ -67,3 +67,14 @@ cd tools/patch-proto
 #   // Optional. The configuration for Private Service Connect (PSC) for the cluster.
 #   PscConfig psc_config = 31 [(google.api.field_behavior) = OPTIONAL];
 # EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto --service "ProjectsServer" --mode "replace" <<EOF
+
+  // Provisions a new Apigee organization with a functioning runtime. This is the standard way to create trial organizations for a free Apigee trial.
+  rpc ProvisionOrganizationProject(ProvisionOrganizationProjectRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*}:provisionOrganization"
+      body: "project"
+    };
+  };
+EOF
