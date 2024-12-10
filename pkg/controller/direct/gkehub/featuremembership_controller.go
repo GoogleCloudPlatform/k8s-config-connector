@@ -183,16 +183,15 @@ func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 
 func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error) {
 	feature := a.actual
-	mSpecs := feature.MembershipSpecs
-	if mSpecs == nil {
-		mSpecs = make(map[string]featureapi.MembershipFeatureSpec)
-	}
+	mSpecs := make(map[string]featureapi.MembershipFeatureSpec)
 	// only change the feature configuration for the associated membership
 	desiredApiObj, err := featureMembershipSpecKRMtoMembershipFeatureSpecAPI(&a.desired.Spec)
 	if err != nil {
 		return nil, err
 	}
 	mSpecs[a.membershipID] = *desiredApiObj
+	// MembershipSpecs is a map of membership spec. Here we only patch one membership.
+	// GKE Hub server doesn't patch other memberships if they are not present in the membershipSpecs map.
 	feature.MembershipSpecs = mSpecs
 	op, err := a.hubClient.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
 	if err != nil {
