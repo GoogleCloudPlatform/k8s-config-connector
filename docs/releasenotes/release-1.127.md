@@ -22,6 +22,9 @@ We have added support for direct reconciliation to more resources, with opt-in b
 
   * Use regional TargetRCPProxy via the `spec.location` configuration.
 
+* [`GkeHubFeatureMembership`](https://cloud.google.com/kubernetes-engine/fleet-management/docs/fleet-concepts/fleet-features)
+
+  * Enable [ConfigSync Auto-upgrade](https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/how-to/upgrade-config-sync) via `spec.configmanagement.management: MANAGEMENT_AUTOMATIC`
 
 ## New Fields:
 

@@ -16,14 +16,6 @@
 
  * Manage the provisioning of a CryptoKey.
 
-## Modified Beta Reconciliation
-
-We have added support for direct reconciliation to more resources, with opt-in behaviour. The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object. The following resources now have direct reconciliation support (and we list some of the issues that this fixes): 
-
-* [`GkeHubFeatureMembership`](https://cloud.google.com/kubernetes-engine/fleet-management/docs/fleet-concepts/fleet-features)
-
-  * Enable [ConfigSync Auto-upgrade](https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/how-to/upgrade-config-sync) via `spec.configmanagement.management: MANAGEMENT_AUTOMATIC`
-
 ## New Fields:
 
 * `IAMPolicyMember`
