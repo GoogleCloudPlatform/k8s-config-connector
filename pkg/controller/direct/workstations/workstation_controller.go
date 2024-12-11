@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 
 	gcp "cloud.google.com/go/workstations/apiv1"
 	"cloud.google.com/go/workstations/apiv1/workstationspb"
@@ -39,6 +40,32 @@ import (
 
 func init() {
 	registry.RegisterModel(krm.WorkstationGVK, NewWorkstationModel)
+	fuzztesting.RegisterKRMFuzzer(workstationFuzzer())
+}
+
+func workstationFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&workstationspb.Workstation{},
+		WorkstationSpec_FromProto, WorkstationSpec_ToProto,
+		WorkstationObservedState_FromProto, WorkstationObservedState_ToProto,
+	)
+
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".reconciling")
+
+	f.SpecFields.Insert(".display_name")
+	f.SpecFields.Insert(".annotations")
+	f.SpecFields.Insert(".labels")
+
+	f.StatusFields.Insert(".uid")
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".start_time")
+	f.StatusFields.Insert(".delete_time")
+	f.StatusFields.Insert(".etag")
+	f.StatusFields.Insert(".state")
+	f.StatusFields.Insert(".host")
+
+	return f
 }
 
 func NewWorkstationModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
