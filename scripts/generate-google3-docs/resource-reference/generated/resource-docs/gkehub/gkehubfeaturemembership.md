@@ -97,6 +97,7 @@ configmanagement:
       syncWaitSecs: string
     preventDrift: boolean
     sourceFormat: string
+    stopSyncing: boolean
   hierarchyController:
     enableHierarchicalResourceQuota: boolean
     enablePodTreeLabels: boolean
@@ -466,6 +467,16 @@ projectRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies whether the Config Sync Repo is in "hierarchical" or "unstructured" mode.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.configSync.stopSyncing</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Set to true to stop syncing configurations for a single cluster. This field is only available on clusters using Config Sync auto-upgrades or on Config Sync version 1.20.0 or later. Defaults: false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

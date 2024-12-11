@@ -28,6 +28,7 @@ spec:
   configmanagement:
     configSync:
       sourceFormat: hierarchy
+      stopSyncing: true
       git:
         gcpServiceAccountRef:
           name: sa-${uniqueId} 
@@ -38,5 +39,5 @@ spec:
         syncWaitSecs: "20"
         syncRev: "HEAD"
         secretType: "none"
-    version: "1.18.2"
+    version: "1.20.0"
 

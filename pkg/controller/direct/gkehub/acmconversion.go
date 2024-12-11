@@ -143,6 +143,9 @@ func convertKRMtoAPI_ConfigSync(r *krm.FeaturemembershipConfigSync) (*featureapi
 	if r.SourceFormat != nil {
 		apiObj.SourceFormat = *r.SourceFormat
 	}
+	if r.StopSyncing != nil {
+		apiObj.StopSyncing = *r.StopSyncing
+	}
 	return &apiObj, nil
 }
 

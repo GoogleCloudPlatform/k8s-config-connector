@@ -226,6 +226,12 @@ spec:
                         description: Specifies whether the Config Sync Repo is in
                           "hierarchical" or "unstructured" mode.
                         type: string
+                      stopSyncing:
+                        description: 'Set to true to stop syncing configurations for
+                          a single cluster. This field is only available on clusters
+                          using Config Sync auto-upgrades or on Config Sync version
+                          1.20.0 or later. Defaults: false.'
+                        type: boolean
                     type: object
                   hierarchyController:
                     description: Hierarchy Controller is no longer available. Use

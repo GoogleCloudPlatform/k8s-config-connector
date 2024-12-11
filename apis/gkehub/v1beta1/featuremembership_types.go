@@ -59,6 +59,10 @@ type FeaturemembershipConfigSync struct {
 	/* Specifies whether the Config Sync Repo is in "hierarchical" or "unstructured" mode. */
 	// +optional
 	SourceFormat *string `json:"sourceFormat,omitempty"`
+
+	/* Set to true to stop syncing configurations for a single cluster. This field is only available on clusters using Config Sync auto-upgrades or on Config Sync version 1.20.0 or later. Defaults: false. */
+	// +optional
+	StopSyncing *bool `json:"stopSyncing,omitempty"`
 }
 
 type FeaturemembershipConfigmanagement struct {
