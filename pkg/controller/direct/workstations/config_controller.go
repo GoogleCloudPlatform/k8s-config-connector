@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 
 	gcp "cloud.google.com/go/workstations/apiv1"
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
@@ -39,6 +40,40 @@ import (
 
 func init() {
 	registry.RegisterModel(krm.WorkstationConfigGVK, NewWorkstationConfigModel)
+	fuzztesting.RegisterKRMFuzzer(workstationConfigFuzzer())
+}
+
+func workstationConfigFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.WorkstationConfig{},
+		WorkstationConfigSpec_FromProto, WorkstationConfigSpec_ToProto,
+		WorkstationConfigObservedState_FromProto, WorkstationConfigObservedState_ToProto,
+	)
+
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".reconciling")
+	f.UnimplementedFields.Insert(".conditions")
+
+	f.SpecFields.Insert(".display_name")
+	f.SpecFields.Insert(".annotations")
+	f.SpecFields.Insert(".labels")
+	f.SpecFields.Insert(".idle_timeout")
+	f.SpecFields.Insert(".running_timeout")
+	f.SpecFields.Insert(".host")
+	f.SpecFields.Insert(".persistent_directories")
+	f.SpecFields.Insert(".container")
+	f.SpecFields.Insert(".encryption_key")
+	f.SpecFields.Insert(".readiness_checks")
+	f.SpecFields.Insert(".replica_zones")
+
+	f.StatusFields.Insert(".uid")
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".delete_time")
+	f.StatusFields.Insert(".etag")
+	f.StatusFields.Insert(".host.gce_instance.pooled_instances")
+	f.StatusFields.Insert(".degraded")
+
+	return f
 }
 
 func NewWorkstationConfigModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -132,7 +167,8 @@ func (a *WorkstationConfigAdapter) Create(ctx context.Context, createOp *directb
 		return err
 	}
 	// Convert to proto
-	resource := WorkstationConfigSpec_ToProto(mapCtx, &desired.Spec, nil)
+	resource := WorkstationConfigSpec_ToProto(mapCtx, &desired.Spec)
+	ApplyWorkstationConfigGCPDefaults(mapCtx, &desired.Spec, resource, nil)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -176,7 +212,8 @@ func (a *WorkstationConfigAdapter) Update(ctx context.Context, updateOp *directb
 		return err
 	}
 	// Convert to proto
-	resource := WorkstationConfigSpec_ToProto(mapCtx, &desired.Spec, a.actual)
+	resource := WorkstationConfigSpec_ToProto(mapCtx, &desired.Spec)
+	ApplyWorkstationConfigGCPDefaults(mapCtx, &desired.Spec, resource, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
