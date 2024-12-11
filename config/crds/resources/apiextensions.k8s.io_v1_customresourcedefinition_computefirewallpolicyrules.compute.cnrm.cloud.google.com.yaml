@@ -102,14 +102,13 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed ComputeFirewallPolicy
-                      resource. Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.
+                      resource. Should be in the format "locations/global/firewallPolicies/{{firewallPolicy}}".
                     type: string
                   name:
-                    description: The `name` field of a `ComputeFirewallPolicy` resource.
+                    description: The name of a ComputeFirewallPolicy resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeFirewallPolicy`
-                      resource.
+                    description: The namespace of a ComputeFirewallPolicy resource.
                     type: string
                 type: object
               match:

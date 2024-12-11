@@ -53,7 +53,7 @@ type firewallPolicyRuleModel struct {
 var _ directbase.Model = &firewallPolicyRuleModel{}
 
 type firewallPolicyRuleAdapter struct {
-	id                     *krm.ComputeFirewallPolicyRuleRef
+	ref                    *krm.ComputeFirewallPolicyRuleRef
 	firewallPoliciesClient *gcp.FirewallPoliciesClient
 	desired                *krm.ComputeFirewallPolicyRule
 	actual                 *computepb.FirewallPolicyRule
@@ -87,7 +87,7 @@ func (m *firewallPolicyRuleModel) AdapterForObject(ctx context.Context, reader c
 	}
 
 	firewallPolicyRuleAdapter := &firewallPolicyRuleAdapter{
-		id:      firewallPolicyRuleRef,
+		ref:     firewallPolicyRuleRef,
 		desired: obj,
 		reader:  reader,
 	}
@@ -109,7 +109,7 @@ func (m *firewallPolicyRuleModel) AdapterForURL(ctx context.Context, url string)
 
 func (a *firewallPolicyRuleAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting ComputeFirewallPolicyRule", "name", a.id.External)
+	log.V(2).Info("getting ComputeFirewallPolicyRule", "name", a.ref.External)
 
 	firewallPolicyRule, err := a.get(ctx)
 	if err != nil {
@@ -119,7 +119,7 @@ func (a *firewallPolicyRuleAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsBadRequest(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.id.External, err)
+		return false, fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.ref.External, err)
 	}
 	a.actual = firewallPolicyRule
 	return true, nil
@@ -132,7 +132,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 	}
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ComputeFirewallPolicyRule", "name", a.id.External)
+	log.V(2).Info("creating ComputeFirewallPolicyRule", "name", a.ref.External)
 
 	mapCtx := &direct.MapContext{}
 
@@ -143,44 +143,36 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return fmt.Errorf("get ComputeFirewallPolicyRule parent %s: %w", a.id.External, err)
-	}
+	tokens := strings.Split(a.ref.External, "/")
+	firewallPolicy := tokens[3]
 
 	req := &computepb.AddRuleFirewallPolicyRequest{
 		FirewallPolicyRuleResource: firewallPolicyRule,
-		FirewallPolicy:             parent.FirewallPolicy,
+		FirewallPolicy:             firewallPolicy,
 	}
 	op, err := a.firewallPoliciesClient.AddRule(ctx, req)
 
 	if err != nil {
-		return fmt.Errorf("creating ComputeFirewallPolicyRule %s: %w", a.id.External, err)
+		return fmt.Errorf("creating ComputeFirewallPolicyRule %s: %w", a.ref.External, err)
 	}
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
-			return fmt.Errorf("waiting ComputeFirewallPolicyRule %s create failed: %w", a.id.External, err)
+			return fmt.Errorf("waiting ComputeFirewallPolicyRule %s create failed: %w", a.ref.External, err)
 		}
 	}
-	log.V(2).Info("successfully created ComputeFirewallPolicyRule", "name", a.id.External)
+	log.V(2).Info("successfully created ComputeFirewallPolicyRule", "name", a.ref.External)
 
 	// Get the created resource
 	created, err := a.get(ctx)
 	if err != nil {
-		return fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.id.External, err)
+		return fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.ref.External, err)
 	}
 
 	status := &krm.ComputeFirewallPolicyRuleStatus{}
 	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, created)
 
-	parent, err = a.id.Parent()
-	if err != nil {
-		return err
-	}
-
-	priority := strconv.Itoa(int(*created.Priority))
-	externalRef := parent.String() + "/rules/" + priority
+	externalRef := krm.AsComputeFirewallPolicyRuleExternal(firewallPolicy, int64(*created.Priority))
 	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -194,7 +186,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	}
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating ComputeFirewallPolicyRule", "name", a.id.External)
+	log.V(2).Info("updating ComputeFirewallPolicyRule", "name", a.ref.External)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -208,39 +200,35 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 
 	updated := &computepb.FirewallPolicyRule{}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return fmt.Errorf("get ComputeFirewallPolicyRule parent %s: %w", a.id.External, err)
-	}
-
-	tokens := strings.Split(a.id.External, "/")
+	tokens := strings.Split(a.ref.External, "/")
+	firewallPolicy := tokens[3]
 	priority, err := strconv.ParseInt(tokens[5], 10, 32)
 	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
 	if err != nil {
-		return fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id.External, err)
+		return fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.ref.External, err)
 	}
 
 	updateReq := &computepb.PatchRuleFirewallPolicyRequest{
 		FirewallPolicyRuleResource: firewallPolicyRule,
-		FirewallPolicy:             parent.FirewallPolicy,
+		FirewallPolicy:             firewallPolicy,
 		Priority:                   direct.PtrTo(int32(priority)),
 	}
 	op, err := a.firewallPoliciesClient.PatchRule(ctx, updateReq)
 	if err != nil {
-		return fmt.Errorf("updating ComputeFirewallPolicyRule %s: %w", a.id.External, err)
+		return fmt.Errorf("updating ComputeFirewallPolicyRule %s: %w", a.ref.External, err)
 	}
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
-			return fmt.Errorf("waiting ComputeFirewallPolicyRule %s update failed: %w", a.id.External, err)
+			return fmt.Errorf("waiting ComputeFirewallPolicyRule %s update failed: %w", a.ref.External, err)
 		}
 	}
-	log.V(2).Info("successfully updated ComputeFirewallPolicyRule", "name", a.id.External)
+	log.V(2).Info("successfully updated ComputeFirewallPolicyRule", "name", a.ref.External)
 
 	// Get the updated resource
 	updated, err = a.get(ctx)
 	if err != nil {
-		return fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.id.External, err)
+		return fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.ref.External, err)
 	}
 
 	status := &krm.ComputeFirewallPolicyRuleStatus{}
@@ -250,7 +238,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 
 func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
-		return nil, fmt.Errorf("firewallPolicyRule %s not found", a.id.External)
+		return nil, fmt.Errorf("firewallPolicyRule %s not found", a.ref.External)
 	}
 
 	mc := &direct.MapContext{}
@@ -273,34 +261,30 @@ func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.U
 // Delete implements the Adapter interface.
 func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting ComputeFirewallPolicyRule", "name", a.id.External)
+	log.V(2).Info("deleting ComputeFirewallPolicyRule", "name", a.ref.External)
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return false, fmt.Errorf("get ComputeFirewallPolicyRule parent %s: %w", a.id.External, err)
-	}
-
-	tokens := strings.Split(a.id.External, "/")
+	tokens := strings.Split(a.ref.External, "/")
+	firewallPolicy := tokens[3]
 	priority, err := strconv.ParseInt(tokens[5], 10, 32)
 	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
 	if err != nil {
-		return false, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id.External, err)
+		return false, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.ref.External, err)
 	}
 	delReq := &computepb.RemoveRuleFirewallPolicyRequest{
-		FirewallPolicy: parent.FirewallPolicy,
+		FirewallPolicy: firewallPolicy,
 		Priority:       direct.PtrTo(int32(priority)),
 	}
 	op, err := a.firewallPoliciesClient.RemoveRule(ctx, delReq)
 	if err != nil {
-		return false, fmt.Errorf("deleting ComputeFirewallPolicyRule %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting ComputeFirewallPolicyRule %s: %w", a.ref.External, err)
 	}
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
-			return false, fmt.Errorf("waiting ComputeFirewallPolicyRule %s delete failed: %w", a.id.External, err)
+			return false, fmt.Errorf("waiting ComputeFirewallPolicyRule %s delete failed: %w", a.ref.External, err)
 		}
 	}
-	log.V(2).Info("successfully deleted ComputeFirewallPolicyRule", "name", a.id.External)
+	log.V(2).Info("successfully deleted ComputeFirewallPolicyRule", "name", a.ref.External)
 
 	// Get the deleted rules
 	_, err = a.get(ctx)
@@ -311,20 +295,16 @@ func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *direct
 }
 
 func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepb.FirewallPolicyRule, error) {
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, fmt.Errorf("get ComputeFirewallPolicyRule parent %s: %w", a.id.External, err)
-	}
-
-	tokens := strings.Split(a.id.External, "/")
+	tokens := strings.Split(a.ref.External, "/")
+	firewallPolicy := tokens[3]
 	priority, err := strconv.ParseInt(tokens[5], 10, 32)
 	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
 	if err != nil {
-		return nil, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id.External, err)
+		return nil, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.ref.External, err)
 	}
 
 	getReq := &computepb.GetRuleFirewallPolicyRequest{
-		FirewallPolicy: parent.FirewallPolicy,
+		FirewallPolicy: firewallPolicy,
 		Priority:       direct.PtrTo(int32(priority)),
 	}
 	return a.firewallPoliciesClient.GetRule(ctx, getReq)
