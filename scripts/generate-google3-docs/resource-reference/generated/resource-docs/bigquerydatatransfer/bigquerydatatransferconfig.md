@@ -479,7 +479,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Pub/Sub subscription used to receive events. Only Google Cloud Storage data source support this option. Format: projects/{project}/subscriptions/{subscription}{% endverbatim %}</p>
+            <p>{% verbatim %}Pub/Sub subscription used to receive events. Only Google Cloud Storage data source support this option.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

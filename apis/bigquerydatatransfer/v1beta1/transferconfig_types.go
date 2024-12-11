@@ -51,7 +51,6 @@ type Status struct {
 type EventDrivenSchedule struct {
 	// Pub/Sub subscription used to receive events.
 	//  Only Google Cloud Storage data source support this option.
-	//  Format: projects/{project}/subscriptions/{subscription}
 	PubSubSubscriptionRef *refv1beta1.PubSubSubscriptionRef `json:"pubSubSubscriptionRef,omitempty"`
 }
 

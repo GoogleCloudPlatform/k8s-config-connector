@@ -678,9 +678,8 @@ spec:
                       transfer will be scheduled upon events arrial.
                     properties:
                       pubSubSubscriptionRef:
-                        description: 'Pub/Sub subscription used to receive events.
+                        description: Pub/Sub subscription used to receive events.
                           Only Google Cloud Storage data source support this option.
-                          Format: projects/{project}/subscriptions/{subscription}'
                         oneOf:
                         - not:
                             required:
