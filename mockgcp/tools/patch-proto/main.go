@@ -28,6 +28,7 @@ import (
 	sitter "github.com/smacker/go-tree-sitter"
 	"github.com/smacker/go-tree-sitter/protobuf"
 	"github.com/spf13/cobra"
+	"github.com/thediveo/enumflag/v2"
 )
 
 func main() {
@@ -43,35 +44,67 @@ func run(ctx context.Context) error {
 
 	cmd := cobra.Command{
 		Use:   "proto-patch",
-		Short: "patches a message in a proto file",
-		Long:  `Inserts the contents of stdin at the end of the message in the proto file.`,
+		Short: "patches a proto file",
+		Long:  `Patches the contents of stdin into a proto file.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			insert, err := io.ReadAll(os.Stdin)
+			patch, err := io.ReadAll(os.Stdin)
 			if err != nil {
 				return fmt.Errorf("reading stdin: %w", err)
 			}
-			opt.Insertion = insert
+			opt.Patch = patch
 
 			return RunProtoPatch(ctx, opt)
 		},
 	}
 	cmd.Flags().StringVar(&opt.ProtoPath, "file", opt.ProtoPath, "path to proto file to patch")
-	cmd.Flags().StringVar(&opt.Message, "message", opt.Message, "message file to patch")
+	cmd.Flags().VarP(
+		enumflag.New(&opt.Mode, "mode", ProtoPatchModeIDs, enumflag.EnumCaseInsensitive),
+		"mode", "m",
+		"patch mode; can be 'append' or 'replace'")
+
+	cmd.Flags().StringVar(&opt.Message, "message", opt.Message, "message name to patch")
+	cmd.Flags().StringVar(&opt.Service, "service", opt.Service, "service name to patch")
+
+	cmd.MarkFlagsOneRequired("message", "service")
+	cmd.MarkFlagsMutuallyExclusive("message", "service")
 
 	return cmd.Execute()
+}
+
+type ProtoPatchMode enumflag.Flag
+
+const (
+	ProtoPatchModeAppend ProtoPatchMode = iota
+	ProtoPatchModeReplace
+)
+
+var ProtoPatchModeIDs = map[ProtoPatchMode][]string{
+	ProtoPatchModeAppend:  {"append"},
+	ProtoPatchModeReplace: {"replace"},
 }
 
 type ProtoPatchOptions struct {
 	ProtoPath string
 	Message   string
-	Insertion []byte
+	Service   string
+	Mode      ProtoPatchMode
+	Patch     []byte
 }
 
 func RunProtoPatch(ctx context.Context, opt ProtoPatchOptions) error {
-	x := &insertPatchIntoMessage{
-		Message:   opt.Message,
-		Insertion: opt.Insertion,
+	x := &patchProto{
+		Patch: opt.Patch,
+		Mode:  opt.Mode,
 	}
+
+	if opt.Message != "" {
+		x.Id = ProtoIdentifierMessage
+		x.Name = opt.Message
+	} else if opt.Service != "" {
+		x.Id = ProtoIdentifierService
+		x.Name = opt.Service
+	}
+
 	protoPath := opt.ProtoPath
 
 	srcBytes, err := os.ReadFile(protoPath)
@@ -96,7 +129,7 @@ func RunProtoPatch(ctx context.Context, opt ProtoPatchOptions) error {
 	}
 
 	if x.Out == nil {
-		return fmt.Errorf("message %q not found in file %q", x.Message, protoPath)
+		return fmt.Errorf("identifier %q not found in file %q", x.Name, protoPath)
 	}
 	if err := os.WriteFile(protoPath, x.Out, 0644); err != nil {
 		return fmt.Errorf("writing to file %q: %w", protoPath, err)
@@ -105,16 +138,27 @@ func RunProtoPatch(ctx context.Context, opt ProtoPatchOptions) error {
 	return nil
 }
 
-type insertPatchIntoMessage struct {
-	Source    []byte
-	Insertion []byte
-	Message   string
-	Errors    []error
+type ProtoIdentifier string
+
+const (
+	ProtoIdentifierMessage ProtoIdentifier = "message"
+	ProtoIdentifierService ProtoIdentifier = "service"
+)
+
+type patchProto struct {
+	Mode ProtoPatchMode
+	Id   ProtoIdentifier
+
+	Source []byte
+	Patch  []byte
+	Name   string
+
+	Errors []error
 
 	Out []byte
 }
 
-func (x *insertPatchIntoMessage) VisitNode(depth int, cursor *sitter.TreeCursor) {
+func (x *patchProto) VisitNode(depth int, cursor *sitter.TreeCursor) {
 	node := cursor.CurrentNode()
 
 	// fmt.Printf("%s[%d:%s] %s\n", strings.Repeat("  ", depth), node.Symbol(), node.Type(), node.Content(x.Source))
@@ -145,7 +189,16 @@ func (x *insertPatchIntoMessage) VisitNode(depth int, cursor *sitter.TreeCursor)
 	case "message":
 		// e.g. message MyMessage { ... }
 		descend = false
-		x.VisitMessage(depth, cursor.CurrentNode())
+		if x.Id == ProtoIdentifierMessage {
+			x.VisitMessage(depth, cursor.CurrentNode())
+		}
+
+	case "service":
+		// e.g. service MyService { ... }
+		descend = false
+		if x.Id == ProtoIdentifierService {
+			x.VisitService(depth, cursor.CurrentNode())
+		}
 
 	default:
 		x.Errors = append(x.Errors, fmt.Errorf("unknown top-level node %q", protobuf.GetLanguage().SymbolName(node.Symbol())))
@@ -162,7 +215,7 @@ func (x *insertPatchIntoMessage) VisitNode(depth int, cursor *sitter.TreeCursor)
 	}
 }
 
-func (x *insertPatchIntoMessage) VisitMessage(depth int, node *sitter.Node) {
+func (x *patchProto) VisitMessage(depth int, node *sitter.Node) {
 	klog.V(2).Infof("%s[%d:%s] %s\n", strings.Repeat("  ", depth), node.Symbol(), node.Type(), node.Content(x.Source))
 
 	messageName := ""
@@ -182,7 +235,7 @@ func (x *insertPatchIntoMessage) VisitMessage(depth int, node *sitter.Node) {
 		}
 	}
 
-	if messageName == x.Message {
+	if messageName == x.Name {
 		if messageBody == nil {
 			x.Errors = append(x.Errors, fmt.Errorf("could not find message definition for message %q", messageName))
 			return
@@ -190,12 +243,49 @@ func (x *insertPatchIntoMessage) VisitMessage(depth int, node *sitter.Node) {
 
 		var out bytes.Buffer
 		out.Write(x.Source[:messageBody.StartByte()])
-		messageBodyContents := string(x.Source[messageBody.StartByte():messageBody.EndByte()])
-		messageBodyContents = strings.TrimSuffix(messageBodyContents, "}")
-		out.WriteString(messageBodyContents)
-		out.Write(x.Insertion)
+		if x.Mode == ProtoPatchModeAppend {
+			messageBodyContents := string(x.Source[messageBody.StartByte():messageBody.EndByte()])
+			messageBodyContents = strings.TrimSuffix(messageBodyContents, "}")
+			out.WriteString(messageBodyContents)
+		} else if x.Mode == ProtoPatchModeReplace {
+			out.WriteString("{\n")
+		}
+		out.Write(x.Patch)
 		out.WriteString("\n}")
 		out.Write(x.Source[messageBody.EndByte():])
+
+		x.Out = out.Bytes()
+	}
+}
+
+func (x *patchProto) VisitService(depth int, node *sitter.Node) {
+	klog.V(2).Infof("%s[%d:%s] %s\n", strings.Repeat("  ", depth), node.Symbol(), node.Type(), node.Content(x.Source))
+
+	childCount := int(node.ChildCount())
+	var serviceName *sitter.Node
+	var serviceBodyIdx int
+	for i := 0; i < childCount; i++ {
+		child := node.Child(i)
+		if protobuf.GetLanguage().SymbolName(child.Symbol()) == "service_name" {
+			serviceName = child
+			serviceBodyIdx = i + 1
+			break
+		}
+	}
+
+	if serviceName.Content(x.Source) == x.Name {
+		serviceBodyStart := node.Child(serviceBodyIdx)
+		lastChild := node.Child(childCount - 1)
+
+		var out bytes.Buffer
+		out.Write(x.Source[:serviceBodyStart.EndByte()])
+		if x.Mode == ProtoPatchModeAppend {
+			out.Write(x.Source[serviceBodyStart.EndByte():lastChild.StartByte()])
+		}
+		out.WriteString("\n")
+		out.Write(x.Patch)
+		out.WriteString(string(x.Source[lastChild.StartByte():lastChild.EndByte()]))
+		out.Write(x.Source[lastChild.EndByte():])
 
 		x.Out = out.Bytes()
 	}
