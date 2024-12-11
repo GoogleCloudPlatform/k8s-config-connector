@@ -167,6 +167,12 @@ func EnumSlice_FromProto[U ProtoEnum](mapCtx *MapContext, in []U) []string {
 func LazyPtr[V comparable](v V) *V {
 	var defaultV V
 	if v == defaultV {
+		// Special handling for booleans
+		if b, ok := any(v).(bool); ok && !b {
+			// Return a pointer to a false boolean instead of nil
+			return &v
+		}
+		// For all other zero-value types, return nil
 		return nil
 	}
 	return &v
