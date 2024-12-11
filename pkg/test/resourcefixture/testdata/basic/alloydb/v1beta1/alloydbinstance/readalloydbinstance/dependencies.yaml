@@ -12,70 +12,72 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# apiVersion: compute.cnrm.cloud.google.com/v1beta1
-# kind: ComputeNetwork
-# metadata:
-#   name: default
-#   annotations:
-#     cnrm.cloud.google.com/deletion-policy: "abandon"
-# spec:
-#   description: Default network for the project
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: computenetwork-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computenetwork-20241211
 spec:
-  resourceID: computenetwork${uniqueId}
+  resourceID: computenetwork20241211
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: alloydbcluster-20241211
 spec:
   initialUser:
     password: 
       value: alloydb-pg
   location: europe-southwest1
   networkRef: 
-    external: projects/${projectId}/global/networks/computenetwork${uniqueId}
+    external: projects/${projectId}/global/networks/computenetwork20241211
   projectRef:
     external: ${projectId}
-  resourceID: alloydbcluster${uniqueId}
+  resourceID: alloydbcluster20241211
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computeaddress-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computeaddress-20241211
 spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241211
   prefixLength: 16
   purpose: VPC_PEERING
-  resourceID: computeaddress${uniqueId}
+  resourceID: computeaddress20241211
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: servicenetworkingconnection-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: servicenetworkingconnection-20241211
 spec:
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241211
   reservedPeeringRanges:
-  - name: computeaddress-${uniqueId}
+  - name: computeaddress-20241211
   service: servicenetworking.googleapis.com
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: alloydbinstance-20241211
 spec:
   clusterRef: 
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-20241211
   instanceTypeRef:
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-20241211
   machineConfig:
     cpuCount: 2
-  resourceID: alloydbinstance${uniqueId}
+  resourceID: alloydbinstance20241211

@@ -15,12 +15,14 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: alloydbinstance-2024120901
 spec:
   clusterRef: 
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-2024120901
   availabilityType: REGIONAL
   instanceTypeRef:
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-2024120901
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"

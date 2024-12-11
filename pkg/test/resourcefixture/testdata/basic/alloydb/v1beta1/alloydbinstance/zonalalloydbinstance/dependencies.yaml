@@ -15,14 +15,18 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: computenetwork-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computenetwork-20241211zonal
 spec:
   autoCreateSubnetworks: false
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: alloydbcluster-20241211zonal
 spec:
   initialUser:
     password:
@@ -30,29 +34,33 @@ spec:
   location: europe-central2
   networkConfig:
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: computenetwork-20241211zonal
   projectRef:
     external: ${projectId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computeaddress-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computeaddress-20241211zonal
 spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241211zonal
   prefixLength: 16
   purpose: VPC_PEERING
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: servicenetworkingconnection-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: servicenetworkingconnection-20241211zonal
 spec:
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241211zonal
   reservedPeeringRanges:
-  - name: computeaddress-${uniqueId}
+  - name: computeaddress-20241211zonal
   service: servicenetworking.googleapis.com

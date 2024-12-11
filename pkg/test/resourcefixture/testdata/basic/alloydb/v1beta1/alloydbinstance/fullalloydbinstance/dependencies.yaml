@@ -15,45 +15,53 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: computenetwork-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computenetwork-20241204
 spec:
   autoCreateSubnetworks: false
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: alloydbcluster-20241204
 spec:
   initialUser:
     password:
       value: alloydb-pg
   location: europe-north1
   networkRef:
-    external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+    external: projects/${projectId}/global/networks/computenetwork-20241204
   projectRef:
     external: ${projectId}
-  resourceID: alloydbcluster${uniqueId}
+  resourceID: alloydbcluster20241204
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computeaddress-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computeaddress-20241204
 spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241204
   prefixLength: 16
   purpose: VPC_PEERING
-  resourceID: computeaddress${uniqueId}
+  resourceID: computeaddress20241204
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: servicenetworkingconnection-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: servicenetworkingconnection-20241204
 spec:
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241204
   reservedPeeringRanges:
-  - name: computeaddress-${uniqueId}
+  - name: computeaddress-20241204
   service: servicenetworking.googleapis.com

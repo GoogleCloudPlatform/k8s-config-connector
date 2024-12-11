@@ -15,12 +15,14 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: alloydbinstance-20241211zonal
 spec:
   clusterRef:
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-20241211zonal
   availabilityType: ZONAL
   instanceTypeRef:
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-20241211zonal
   machineConfig:
     cpuCount: 2

@@ -2,27 +2,26 @@ apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
-  name: alloydbinstance-2-${uniqueId}
+  name: alloydbinstance-2-20241210
   namespace: ${uniqueId}
 spec:
   availabilityType: REGIONAL
   clusterRef:
-    name: alloydbcluster-2-${uniqueId}
+    name: alloydbcluster-2-20241210
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
   instanceTypeRef:
-    name: alloydbcluster-2-${uniqueId}
+    name: alloydbcluster-2-20241210
   machineConfig:
     cpuCount: 2
-  resourceID: alloydbinstance-2-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -31,9 +30,10 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
+  externalRef: //alloydb.googleapis.com/projects/${projectId}/locations/europe-west2/clusters/alloydbcluster-2-20241210/instances/alloydbinstance-2-20241210
   ipAddress: 10.1.2.3
-  name: projects/${projectId}/locations/europe-west2/clusters/alloydbcluster-2-${uniqueId}/instances/alloydbinstance-2-${uniqueId}
-  observedGeneration: 3
+  name: projects/${projectId}/locations/europe-west2/clusters/alloydbcluster-2-20241210/instances/alloydbinstance-2-20241210
+  observedGeneration: 2
   state: READY
   uid: "12345678"
   updateTime: "1970-01-01T00:00:00Z"

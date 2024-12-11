@@ -179,7 +179,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 	}
 
 	name := k8s.GetNamespacedName(u)
-	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
+	err := wait.PollImmediate(20*time.Second, timeout, func() (done bool, err error) {
 		done = true
 		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
 		err = t.GetClient().Get(t.Ctx, name, u)

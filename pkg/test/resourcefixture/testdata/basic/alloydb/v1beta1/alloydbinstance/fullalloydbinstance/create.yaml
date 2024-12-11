@@ -15,15 +15,17 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: alloydbinstance-2024120401
 spec:
   clusterRef: 
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-20241204
   instanceTypeRef:
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-20241204
   machineConfig:
     cpuCount: 2
-  resourceID: alloydbinstance${uniqueId}
+  resourceID: alloydbinstance2024120401
   databaseFlags:
     password.enforce_complexity: "on"
   networkConfig:
