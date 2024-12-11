@@ -20,6 +20,7 @@ import (
 	"testing"
 )
 
+type OverrideFiller func(t *testing.T, fieldName string, field reflect.Value)
 type RandomFiller struct {
 	randStream *rand.Rand
 
@@ -27,6 +28,26 @@ type RandomFiller struct {
 	intEnumAllowableValues map[string]int64
 	// for non iota based enums, holds the set of allowable values for a named enum type
 	stringEnumAllowableValues map[string][]interface{}
+
+	fieldOverrides map[string]OverrideFiller
+}
+
+type FillerConfig struct {
+	// for iota based enums, defines the upper bound for a named enum type
+	IntEnumAllowableValues map[string]int64
+	// for non iota based enums, holds the set of allowable values for a named enum type
+	StringEnumAllowableValues map[string][]interface{}
+
+	FieldOverrides map[string]OverrideFiller
+}
+
+func NewRandomFillerWithConfig(seed int64, fc *FillerConfig) *RandomFiller {
+	return &RandomFiller{
+		randStream:                rand.New(rand.NewSource(seed)),
+		intEnumAllowableValues:    fc.IntEnumAllowableValues,
+		stringEnumAllowableValues: fc.StringEnumAllowableValues,
+		fieldOverrides:            fc.FieldOverrides,
+	}
 }
 
 func NewRandomFiller(seed int64, enumBoundsMap map[string]int64, enumValuesMap map[string][]interface{}) *RandomFiller {
@@ -34,21 +55,29 @@ func NewRandomFiller(seed int64, enumBoundsMap map[string]int64, enumValuesMap m
 		randStream:                rand.New(rand.NewSource(seed)),
 		intEnumAllowableValues:    enumBoundsMap,
 		stringEnumAllowableValues: enumValuesMap,
+		fieldOverrides:            map[string]OverrideFiller{},
 	}
 }
 
 // Fill populates the fields of a struct with random values. Enums are handled separately in the
 // two maps passed to the RandomFiller.
 func (rf *RandomFiller) Fill(t *testing.T, obj interface{}) {
-	rf.fillWithRandom(t, reflect.ValueOf(obj).Elem())
+	rf.fillWithRandom(t, "", reflect.ValueOf(obj).Elem())
 }
 
-func (rf *RandomFiller) fillWithRandom(t *testing.T, field reflect.Value) {
+func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field reflect.Value) {
+	if rf.fieldOverrides != nil {
+		if override, ok := rf.fieldOverrides[fieldName]; ok {
+			override(t, fieldName, field)
+			return
+		}
+	}
+
 	if field.Kind() == reflect.Ptr {
 		if field.IsNil() {
 			field.Set(reflect.New(field.Type().Elem()))
 		}
-		rf.fillWithRandom(t, field.Elem())
+		rf.fillWithRandom(t, fieldName, field.Elem())
 		return
 	}
 
@@ -88,7 +117,7 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, field reflect.Value) {
 		slice := reflect.MakeSlice(field.Type(), count, count)
 		for j := 0; j < count; j++ {
 			element := reflect.New(field.Type().Elem()).Elem()
-			rf.fillWithRandom(t, element)
+			rf.fillWithRandom(t, "", element) // don't need to pass in a field name for slice elements
 			slice.Index(j).Set(element)
 		}
 		field.Set(slice)
@@ -99,15 +128,18 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, field reflect.Value) {
 		for j := 0; j < count; j++ {
 			key := reflect.New(field.Type().Key()).Elem()
 			value := reflect.New(field.Type().Elem()).Elem()
-			rf.fillWithRandom(t, key)
-			rf.fillWithRandom(t, value)
+			rf.fillWithRandom(t, "", key)   // no need to pass in a field name for keys
+			rf.fillWithRandom(t, "", value) // no need to pass in a field name for values
 			mapType.SetMapIndex(key, value)
 		}
 		field.Set(mapType)
 
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
-			rf.fillWithRandom(t, field.Field(i))
+			structFieldName := field.Type().Field(i).Name
+			nestedStructFieldname := fieldName + "." + structFieldName
+
+			rf.fillWithRandom(t, nestedStructFieldname, field.Field(i))
 		}
 
 	default:
