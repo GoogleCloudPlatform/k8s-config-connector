@@ -17,6 +17,7 @@ package fuzz
 import (
 	"math/rand"
 	"reflect"
+	"strconv"
 	"testing"
 )
 
@@ -107,6 +108,18 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, field reflect.Value) {
 
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
+			// specific to bigquerydataset
+			if field.Type().Field(i).Name == "MaxTimeTravelHours" {
+				structField := field.Field(i)
+				if structField.Kind() == reflect.Ptr {
+					if structField.IsNil() {
+						structField.Set(reflect.New(structField.Type().Elem()))
+					}
+					structField = structField.Elem()
+				}
+				structField.SetString(strconv.FormatInt(rf.randStream.Int63(), 10))
+				continue
+			}
 			rf.fillWithRandom(t, field.Field(i))
 		}
 
