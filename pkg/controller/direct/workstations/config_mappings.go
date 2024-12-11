@@ -110,7 +110,7 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 	return out
 }
 
-func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfigSpec, actual *pb.WorkstationConfig) *pb.WorkstationConfig {
+func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfigSpec) *pb.WorkstationConfig {
 	if in == nil {
 		return nil
 	}
@@ -126,8 +126,6 @@ func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstatio
 	out.EncryptionKey = WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx, in.EncryptionKey)
 	out.ReadinessChecks = direct.Slice_ToProto(mapCtx, in.ReadinessChecks, WorkstationConfig_ReadinessCheck_ToProto)
 	out.ReplicaZones = in.ReplicaZones
-
-	ApplyWorkstationConfigGCPDefaults(mapCtx, in, out, actual)
 
 	return out
 }
