@@ -15,14 +15,18 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: computenetwork-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computenetwork-20241210
 spec:
   autoCreateSubnetworks: false
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-1-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: alloydbcluster-1-20241210
 spec:
   initialUser:
     password:
@@ -30,59 +34,68 @@ spec:
   location: europe-west1
   networkConfig:
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: computenetwork-20241210
   projectRef:
     external: ${projectId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computeaddress-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computeaddress-20241210
 spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241210
   prefixLength: 16
   purpose: VPC_PEERING
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: servicenetworkingconnection-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: servicenetworkingconnection-20241210
 spec:
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-20241210
   reservedPeeringRanges:
-  - name: computeaddress-${uniqueId}
+  - name: computeaddress-20241210
   service: servicenetworking.googleapis.com
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbinstance-1-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: alloydbinstance-1-20241210
 spec:
   clusterRef:
-    name: alloydbcluster-1-${uniqueId}
+    name: alloydbcluster-1-20241210
   availabilityType: REGIONAL
   instanceTypeRef:
-    name: alloydbcluster-1-${uniqueId}
+    name: alloydbcluster-1-20241210
   machineConfig:
     cpuCount: 2
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-2-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: alloydbcluster-2-20241210
 spec:
   location: europe-west2
   networkConfig:
     networkRef: 
-      name: computenetwork-${uniqueId}
+      name: computenetwork-20241210
   projectRef:
     external: ${projectId}
   clusterType: SECONDARY
   secondaryConfig:
     primaryClusterNameRef:
-      name: alloydbcluster-1-${uniqueId}
+      name: alloydbcluster-1-20241210
   deletionPolicy: "FORCE"

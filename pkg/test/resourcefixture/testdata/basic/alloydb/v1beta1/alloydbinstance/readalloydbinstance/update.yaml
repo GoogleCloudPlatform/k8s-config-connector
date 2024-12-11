@@ -15,12 +15,14 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbreadinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: alloydbreadinstance-20241211
 spec:
   clusterRef: 
-    name: alloydbcluster-${uniqueId}
+    name: alloydbcluster-20241211
   instanceTypeRef:
     external: READ_POOL
   readPoolConfig:
     nodeCount: 3
-  resourceID: alloydbreadinstance${uniqueId}
+  resourceID: alloydbreadinstance20241211

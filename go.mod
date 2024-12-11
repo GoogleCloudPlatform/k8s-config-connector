@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.22
+go 1.22.0
 
 toolchain go1.23.2
 
@@ -66,7 +66,7 @@ require (
 	go.opencensus.io v0.24.0
 	go.uber.org/zap v1.26.0
 	golang.org/x/oauth2 v0.23.0
-	golang.org/x/sync v0.8.0
+	golang.org/x/sync v0.9.0
 	golang.org/x/time v0.7.0
 	google.golang.org/api v0.203.0
 	google.golang.org/genproto v0.0.0-20241015192408-796eee8c2d53
@@ -80,6 +80,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.27.9
 	k8s.io/apimachinery v0.27.11
 	k8s.io/client-go v0.27.11
+	k8s.io/klog/examples v0.0.0-20241125110655-fa118f5f4770
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.15.2
 	sigs.k8s.io/controller-tools v0.6.2
@@ -224,13 +225,13 @@ require (
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	golang.org/x/crypto v0.28.0 // indirect
-	golang.org/x/mod v0.20.0 // indirect
-	golang.org/x/net v0.30.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
-	golang.org/x/term v0.25.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
-	golang.org/x/tools v0.24.0 // indirect
+	golang.org/x/crypto v0.29.0 // indirect
+	golang.org/x/mod v0.22.0 // indirect
+	golang.org/x/net v0.31.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/term v0.26.0 // indirect
+	golang.org/x/text v0.20.0 // indirect
+	golang.org/x/tools v0.27.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
