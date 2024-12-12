@@ -5,7 +5,7 @@ This scenario meant to do the following:
 >  NOTE: This resources should be managed by the CCC we created
 - Pause KCC by setting the CCC's object `actuationMode` to Paused.
 - Apply the same KCC resource and change the "description" field. Observe no change to the resource on the cloud provider.
-> NOTE: The way to assess that there is no change in the actual resource is by determinig that the http log 
+> NOTE: The way to assess that there is no change in the actual resource is by determining that the http log 
 > file does not include any calls to the GCP provider. IOW, the log file is not present.
 - "Un pause" KCC by setting the CCC's object `actuationMode` to Reconciling.
 - Observe the resource from the cloud provider matches the previous intent.

@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	spannerDatabaseURLGoldenFile = "testdata/expected-spanner-datbase-url-to-unstructured-resource-stream.golden.yaml"
+	spannerDatabaseURLGoldenFile = "testdata/expected-spanner-database-url-to-unstructured-resource-stream.golden.yaml"
 	spannerDatabaseURL           = "https://spanner.googleapis.com/v1/projects/test-project/instances/spannerdatabase-dep/databases/asdf"
 )
 

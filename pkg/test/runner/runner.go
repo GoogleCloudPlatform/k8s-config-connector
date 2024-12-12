@@ -82,7 +82,7 @@ func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T
 		cleanupFuncs := make([]func(), 0, len(testContext.DependencyUnstructs))
 		for _, u := range testContext.DependencyUnstructs {
 			if err := sysContext.Manager.GetClient().Create(ctx, u); err != nil {
-				t.Fatalf("error creating dependecy '%v' for resource '%v/%v': %v", u.GetKind(), testContext.CreateUnstruct.GetName(), testContext.CreateUnstruct.GetKind(), err)
+				t.Fatalf("error creating dependency '%v' for resource '%v/%v': %v", u.GetKind(), testContext.CreateUnstruct.GetName(), testContext.CreateUnstruct.GetKind(), err)
 			}
 			cleanupFuncs = append(cleanupFuncs, sysContext.Reconciler.BuildCleanupFunc(ctx, u, testreconciler.CleanupPolicyAlways))
 			sysContext.Reconciler.Reconcile(ctx, u, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, u), nil)

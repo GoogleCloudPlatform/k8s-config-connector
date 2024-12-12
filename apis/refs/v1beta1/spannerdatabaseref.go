@@ -87,9 +87,9 @@ func ResolveSpannerDatabaseRef(ctx context.Context, reader client.Reader, obj cl
 	})
 	if err := reader.Get(ctx, key, spannerdatabase); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced Spanner databse %v not found", key)
+			return nil, fmt.Errorf("referenced Spanner database %v not found", key)
 		}
-		return nil, fmt.Errorf("error reading referenced Spanner databse %v: %w", key, err)
+		return nil, fmt.Errorf("error reading referenced Spanner database %v: %w", key, err)
 	}
 
 	resourceID, _, err := unstructured.NestedString(spannerdatabase.Object, "spec", "resourceID")

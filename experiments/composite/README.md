@@ -8,7 +8,7 @@ kubectl apply --server-side -f config/crd
 kubectl apply --server-side -f config/samples
 ```
 
-The sample includes a composite defition for a new type "XNamespace":
+The sample includes a composite definition for a new type "XNamespace":
 
 ```
 kubectl get compositedefinitions

@@ -246,7 +246,7 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 
 1.  Fill out the `resourceAvailableInAssetInventory`. Set to false.
 
-1.  Add `hierarchicalReferences` if they exist. Determine if the corresonding
+1.  Add `hierarchicalReferences` if they exist. Determine if the corresponding
     Terraform resource exposes one or more parent resources through top-level
     fields. These fields can have names like `org_id`, `parent_org_id`,
     `parent_folder_id`, `folder`, `project`, etc. Additionally, we consider

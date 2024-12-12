@@ -289,7 +289,7 @@ func (c *ccCluster) ClusterUp() error {
 
 	err = c.WaitForWorkloads()
 	if err != nil {
-		return fmt.Errorf("Error Waiting for Deloyments. err: %v", err)
+		return fmt.Errorf("Error Waiting for Deployments. err: %v", err)
 	}
 
 	// HACK - Ties this lib to Composition. Shall figure out callback lateron.

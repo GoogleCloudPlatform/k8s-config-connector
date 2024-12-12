@@ -199,7 +199,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
 
 	if u.GetKind() == "Project" {
-		// For some tests that talk to the Mock Resource Manager, the Project object's ProjectID and ProjectNumber are dynamcially generated.
+		// For some tests that talk to the Mock Resource Manager, the Project object's ProjectID and ProjectNumber are dynamically generated.
 		// We do not want to overrride this with the default mocked Project "mock-project".
 		visitor.replacePaths[".status.number"] = "${projectNumber}"
 	}

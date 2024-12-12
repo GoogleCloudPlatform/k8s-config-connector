@@ -13,7 +13,7 @@ This ensures that when the Input API is deleted, the expanded resources are dele
 
 ## Set Input API as the owner
 
-Input API is set as the `OwnerRef`. This allows for the usecase where the `Plan` doesnt need to exist in the same namespace as the Input API and the expanded resources. We are not yet sure of this usecase and pattern and hence would like to deletgate this option to a later date. 
+Input API is set as the `OwnerRef`. This allows for the usecase where the `Plan` doesnt need to exist in the same namespace as the Input API and the expanded resources. We are not yet sure of this usecase and pattern and hence would like to delegate this option to a later date. 
 
 ## Auto-inject OwnerRef in applylib
 
