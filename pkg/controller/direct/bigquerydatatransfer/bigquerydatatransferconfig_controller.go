@@ -98,6 +98,17 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		obj.Spec.PubSubTopicRef.External = topic.String()
 	}
 
+	// Resolve PubSubSubscription Ref
+	if obj.Spec.ScheduleOptionsV2 != nil &&
+		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule != nil &&
+		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef != nil {
+		subscription, err := refv1beta1.ResolvePubSubSubscription(ctx, reader, obj, obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef.External = subscription.String()
+	}
+
 	// Resolve BigQueryDataSet Ref
 	if obj.Spec.DatasetRef != nil {
 		dataset, err := refv1beta1.ResolveBigQueryDataset(ctx, reader, obj, obj.Spec.DatasetRef)

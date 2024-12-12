@@ -108,12 +108,13 @@ go run . generate-types  \
 # BigQueryDataTransferConfig
 go run . generate-types \
     --service google.cloud.bigquery.datatransfer.v1 \
-    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1 \
-    --resource BigQueryDataTransferConfig:TransferConfig
+    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1beta1 \
+    --resource BigQueryDataTransferConfig:TransferConfig \
+    --skip-scaffold-files # skipping because the files were generated using a previous pattern, making them incompatible with the new scaffolding approach.
 
 go run . generate-mapper \
     --service google.cloud.bigquery.datatransfer.v1 \
-    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1
+    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1beta1
 
 # Firestore
 go run . generate-types \

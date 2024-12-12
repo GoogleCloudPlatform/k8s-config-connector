@@ -36,6 +36,7 @@ type GenerateCRDOptions struct {
 	*options.GenerateOptions
 
 	OutputAPIDirectory string
+	SkipScaffoldFiles  bool
 
 	Resources ResourceList
 }
@@ -83,6 +84,7 @@ func (o *GenerateCRDOptions) InitDefaults() error {
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
 	cmd.Flags().Var(&o.Resources, "resource", "the KRM Kind and the equivalent proto resource separated with a colon.  e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`.  Can be specified multiple times.")
+	cmd.Flags().BoolVar(&o.SkipScaffoldFiles, "skip-scaffold-files", false, "skip generating scaffold files (types, refs, and identity)")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -171,29 +173,33 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			return err
 		}
 
-		kind := resource.Kind
-		if !scaffolder.TypeFileNotExist(resource.ProtoName) {
-			fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToTypeFile(resource.ProtoName))
+		if o.SkipScaffoldFiles {
+			log.Info("skipping scaffolding type, refs and identity files", "resource", resource.ProtoName)
 		} else {
-			err := scaffolder.AddTypeFile(resource.ProtoName, kind)
-			if err != nil {
-				return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource.ProtoName), err)
+			kind := resource.Kind
+			if !scaffolder.TypeFileNotExist(resource.ProtoName) {
+				fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToTypeFile(resource.ProtoName))
+			} else {
+				err := scaffolder.AddTypeFile(resource.ProtoName, kind)
+				if err != nil {
+					return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource.ProtoName), err)
+				}
 			}
-		}
-		if scaffolder.RefsFileExist(kind, resource.ProtoName) {
-			fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToRefsFile(kind, resource.ProtoName))
-		} else {
-			err := scaffolder.AddRefsFile(kind, resource.ProtoName)
-			if err != nil {
-				return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(kind, resource.ProtoName), err)
+			if scaffolder.RefsFileExist(kind, resource.ProtoName) {
+				fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToRefsFile(kind, resource.ProtoName))
+			} else {
+				err := scaffolder.AddRefsFile(kind, resource.ProtoName)
+				if err != nil {
+					return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(kind, resource.ProtoName), err)
+				}
 			}
-		}
-		if scaffolder.IdentityFileExist(kind, resource.ProtoName) {
-			fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(kind, resource.ProtoName))
-		} else {
-			err := scaffolder.AddIdentityFile(kind, resource.ProtoName)
-			if err != nil {
-				return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(kind, resource.ProtoName), err)
+			if scaffolder.IdentityFileExist(kind, resource.ProtoName) {
+				fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(kind, resource.ProtoName))
+			} else {
+				err := scaffolder.AddIdentityFile(kind, resource.ProtoName)
+				if err != nil {
+					return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(kind, resource.ProtoName), err)
+				}
 			}
 		}
 	}

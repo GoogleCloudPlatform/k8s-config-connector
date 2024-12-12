@@ -20,6 +20,10 @@ type EmailPreferences struct {
 	EnableFailureEmail *bool `json:"enableFailureEmail,omitempty"`
 }
 
+// +kcc:proto=google.cloud.bigquery.datatransfer.v1.ManualSchedule
+type ManualSchedule struct {
+}
+
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptions
 type ScheduleOptions struct {
 	// If true, automatic scheduling of data transfer runs for this configuration
@@ -42,8 +46,89 @@ type ScheduleOptions struct {
 	EndTime *string `json:"endTime,omitempty"`
 }
 
+// +kcc:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptionsV2
+type ScheduleOptionsV2 struct {
+	// Time based transfer schedule options. This is the default schedule
+	//  option.
+	TimeBasedSchedule *TimeBasedSchedule `json:"timeBasedSchedule,omitempty"`
+
+	// Manual transfer schedule. If set, the transfer run will not be
+	//  auto-scheduled by the system, unless the client invokes
+	//  StartManualTransferRuns.  This is equivalent to
+	//  disable_auto_scheduling = true.
+	ManualSchedule *ManualSchedule `json:"manualSchedule,omitempty"`
+
+	// Event driven transfer schedule options. If set, the transfer will be
+	//  scheduled upon events arrial.
+	EventDrivenSchedule *EventDrivenSchedule `json:"eventDrivenSchedule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.datatransfer.v1.TimeBasedSchedule
+type TimeBasedSchedule struct {
+	// Data transfer schedule.
+	//  If the data source does not support a custom schedule, this should be
+	//  empty. If it is empty, the default value for the data source will be used.
+	//  The specified times are in UTC.
+	//  Examples of valid format:
+	//  `1st,3rd monday of month 15:30`,
+	//  `every wed,fri of jan,jun 13:15`, and
+	//  `first sunday of quarter 00:00`.
+	//  See more explanation about the format here:
+	//  https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+	//
+	//  NOTE: The minimum interval time between recurring transfers depends on the
+	//  data source; refer to the documentation for your data source.
+	Schedule *string `json:"schedule,omitempty"`
+
+	// Specifies time to start scheduling transfer runs. The first run will be
+	//  scheduled at or after the start time according to a recurrence pattern
+	//  defined in the schedule string. The start time can be changed at any
+	//  moment.
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Defines time to stop scheduling transfer runs. A transfer run cannot be
+	//  scheduled at or after the end time. The end time can be changed at any
+	//  moment.
+	EndTime *string `json:"endTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.UserInfo
 type UserInfo struct {
 	// E-mail address of the user.
 	Email *string `json:"email,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	Value []byte `json:"value,omitempty"`
 }
