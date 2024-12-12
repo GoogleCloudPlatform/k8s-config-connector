@@ -247,6 +247,10 @@ func (a *WorkstationAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	req := &workstationspb.DeleteWorkstationRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteWorkstation(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if workstation is not found (assume it was already deleted).
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting Workstation %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Workstation", "name", a.id)
