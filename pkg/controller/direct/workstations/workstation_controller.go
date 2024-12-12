@@ -103,7 +103,7 @@ var _ directbase.Adapter = &WorkstationAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
-// Return true means the object is not found. This triggers Adapter `Create` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *WorkstationAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
