@@ -119,13 +119,12 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Availability type of an Instance. Defaults to REGIONAL for both primary and read instances.
+            <p>{% verbatim %}Availability type of an Instance. If empty, defaults to REGIONAL for primary instances.
 
-Note that primary and read instances can have different availability types.
-Only READ_POOL instance supports ZONAL type. Users can't specify the zone for READ_POOL instance.
-Zone is automatically chosen from the list of zones in the region specified.
-Read pool of size 1 can only have zonal availability. Read pools with node count of 2 or more
-can have regional availability (nodes are present in 2 or more zones in a region). Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].{% endverbatim %}</p>
+For read pools, availabilityType is always UNSPECIFIED. Instances in the
+read pools are evenly distributed across available zones within the region
+(i.e. read pools with more than one node will have a node in at least two zones).
+Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

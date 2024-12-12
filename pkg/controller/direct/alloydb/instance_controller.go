@@ -132,13 +132,11 @@ var _ directbase.Adapter = &instanceAdapter{}
 func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting instance", "name", a.id)
-	fmt.Printf("getting instance: %v\n", a.id)
 
 	req := &alloydbpb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
 	if err != nil {
 		log.V(2).Info("error getting instance", "name", a.id, "error", err)
-		fmt.Printf("instance error: %+v\n", err)
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
@@ -146,7 +144,6 @@ func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting instance %q: %w", a.id, err)
 	}
 
-	fmt.Printf("retrieved instance: %+v\n", instancepb)
 	a.actual = instancepb
 	return true, nil
 }
@@ -155,7 +152,6 @@ func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating instance", "name", a.id)
-	fmt.Printf("creating instance: %v\n", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -234,14 +230,13 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	desiredLabels["managed-by-cnrm"] = "true"
 	if !reflect.DeepEqual(a.actual.GetLabels(), desiredLabels) {
 		log.V(2).Info("'metadata.labels' field is updated (-old +new)", cmp.Diff(a.actual.GetLabels(), desiredLabels))
-		updatePaths = append(updatePaths, "availability_type")
+		updatePaths = append(updatePaths, "labels")
 	}
 
 	if len(updatePaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
-	fmt.Printf("maqiuyu... updateMasks: %+v\n", updatePaths)
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: updatePaths,
 	}
@@ -377,12 +372,6 @@ func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 
 	req := &alloydbpb.DeleteInstanceRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteInstance(ctx, req)
-	if op != nil {
-		opMetadata, opErr := op.Metadata()
-		fmt.Printf("maqiuyu... delete operation: %v\n%v\nMetadata:\n%+v\nErr while getting metadata\n%v\n", op.Name(), op.Done(), opMetadata, opErr)
-	} else {
-		fmt.Printf("maqiuyu... delete operation not triggered. Maybe there is an error? %+v\n", err)
-	}
 	if err != nil {
 		log.V(2).Info("error deleting instance", "name", a.id, "error", err)
 		if direct.IsNotFound(err) {
