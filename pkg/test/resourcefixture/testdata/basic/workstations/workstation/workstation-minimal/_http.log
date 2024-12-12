@@ -552,7 +552,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
 
 {
-  "displayName": "workstation-${uniqueId}",
   "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}"
 }
 
@@ -610,7 +609,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.Workstation",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "workstation-${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "state": "STATE_STOPPED",
@@ -639,7 +637,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "workstation-${uniqueId}",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
   "state": 4,

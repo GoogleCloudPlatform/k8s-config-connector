@@ -555,7 +555,7 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-west1%2Fw
   "annotations": {
     "a-key1": "a-value1"
   },
-  "displayName": "workstation-${uniqueId}",
+  "displayName": "workstation-${uniqueId}-displayname",
   "labels": {
     "l-key1": "l-value1"
   },
@@ -619,7 +619,7 @@ X-Xss-Protection: 0
       "a-key1": "a-value1"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "workstation-${uniqueId}",
+    "displayName": "workstation-${uniqueId}-displayname",
     "etag": "abcdef0123A=",
     "labels": {
       "l-key1": "l-value1"
@@ -654,7 +654,7 @@ X-Xss-Protection: 0
     "a-key1": "a-value1"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "workstation-${uniqueId}",
+  "displayName": "workstation-${uniqueId}-displayname",
   "etag": "abcdef0123A=",
   "labels": {
     "l-key1": "l-value1"
@@ -667,7 +667,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2Clabels
+PATCH https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CdisplayName%2Clabels
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: workstation.name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
@@ -677,7 +677,7 @@ x-goog-request-params: workstation.name=projects%2F${projectId}%2Flocations%2Fus
     "a-key1": "a-value1",
     "a-key2": "a-value2"
   },
-  "displayName": "workstation-${uniqueId}",
+  "displayName": "workstation-${uniqueId}-displayname-updated",
   "etag": "abcdef0123A=",
   "labels": {
     "l-key1": "l-value1",
@@ -743,7 +743,7 @@ X-Xss-Protection: 0
       "a-key2": "a-value2"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "workstation-${uniqueId}",
+    "displayName": "workstation-${uniqueId}-displayname-updated",
     "etag": "abcdef0123A=",
     "labels": {
       "l-key1": "l-value1",
@@ -780,7 +780,7 @@ X-Xss-Protection: 0
     "a-key2": "a-value2"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "workstation-${uniqueId}",
+  "displayName": "workstation-${uniqueId}-displayname-updated",
   "etag": "abcdef0123A=",
   "labels": {
     "l-key1": "l-value1",

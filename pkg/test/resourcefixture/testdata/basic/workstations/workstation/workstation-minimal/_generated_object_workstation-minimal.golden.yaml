@@ -10,7 +10,6 @@ metadata:
   name: workstation-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  displayName: workstation-${uniqueId}
   parentRef:
     name: workstationconfig-${uniqueId}
 status:

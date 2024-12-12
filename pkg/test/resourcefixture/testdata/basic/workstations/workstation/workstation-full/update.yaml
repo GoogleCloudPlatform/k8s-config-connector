@@ -19,7 +19,7 @@ metadata:
 spec:
   parentRef:
     name: workstationconfig-${uniqueId}
-  displayName: workstation-${uniqueId}
+  displayName: workstation-${uniqueId}-displayname-updated
   annotations:
     - key: a-key1
       value: a-value1

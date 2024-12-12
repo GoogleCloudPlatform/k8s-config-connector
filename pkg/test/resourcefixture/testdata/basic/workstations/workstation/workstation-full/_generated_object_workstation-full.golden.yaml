@@ -15,7 +15,7 @@ spec:
     value: a-value1
   - key: a-key2
     value: a-value2
-  displayName: workstation-${uniqueId}
+  displayName: workstation-${uniqueId}-displayname-updated
   labels:
   - key: l-key1
     value: l-value1
