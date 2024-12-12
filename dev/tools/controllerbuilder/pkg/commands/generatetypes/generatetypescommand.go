@@ -28,7 +28,6 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 )
 
 type GenerateCRDOptions struct {
@@ -37,39 +36,7 @@ type GenerateCRDOptions struct {
 	OutputAPIDirectory string
 	SkipScaffoldFiles  bool
 
-	Resources ResourceList
-}
-
-type Resource struct {
-	Kind              string
-	ProtoName         string
-	SkipScaffoldFiles bool
-}
-
-type ResourceList []Resource
-
-var _ pflag.Value = &ResourceList{}
-
-func (r *ResourceList) Type() string { return "resources" }
-
-func (r *ResourceList) String() string {
-	var sb strings.Builder
-	for _, res := range *r {
-		fmt.Fprintf(&sb, "%s:%s", res.Kind, res.ProtoName)
-	}
-	return sb.String()
-}
-
-func (r *ResourceList) Set(s string) error {
-	tokens := strings.Split(s, ":")
-	if len(tokens) != 2 || tokens[0] == "" || tokens[1] == "" {
-		return fmt.Errorf("expected [KRMKind]:[ProtoResourceName], got %q", s)
-	}
-	*r = append(*r, Resource{
-		Kind:      tokens[0],
-		ProtoName: tokens[1],
-	})
-	return nil
+	Resources options.ResourceList
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -225,7 +192,7 @@ func (o *GenerateCRDOptions) loadAndApplyConfig() error {
 	o.ServiceName = config.Service
 	o.APIVersion = config.APIVersion
 	for _, res := range config.Resources {
-		o.Resources = append(o.Resources, Resource{
+		o.Resources = append(o.Resources, options.Resource{
 			Kind:              res.Kind,
 			ProtoName:         res.ProtoName,
 			SkipScaffoldFiles: res.SkipScaffoldFiles,
