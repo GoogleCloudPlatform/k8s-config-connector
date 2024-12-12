@@ -16,7 +16,7 @@
 
 * `CloudBuildWorkerPool`
 * `CloudIDSEndpoint`
-* `ComputeMangedSSLCertificate`
+* `ComputeManagedSSLCertificate`
 
 ## New Fields:
 

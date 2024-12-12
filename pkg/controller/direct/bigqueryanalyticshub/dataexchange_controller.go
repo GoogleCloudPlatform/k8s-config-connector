@@ -206,7 +206,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	mapCtx := &direct.MapContext{}
 
 	// TODO(kcc): Autogen "func immutable()" for each field
-	// TODO(kcc): autogen updateMastk.path for mutable gcp fields.
+	// TODO(kcc): autogen updateMask.path for mutable gcp fields.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")

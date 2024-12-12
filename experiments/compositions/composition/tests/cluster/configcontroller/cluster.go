@@ -292,7 +292,7 @@ func (c *ccCluster) ClusterUp() error {
 		return fmt.Errorf("Error Waiting for Deloyments. err: %v", err)
 	}
 
-	// HACK - Ties this lib to Composition. Shall figure out callback lateron.
+	// HACK - Ties this lib to Composition. Shall figure out callback later on.
 	// May be parameterize manifests with context
 	contextObj := utils.GetContextObj(c.Context())
 	err = c.Client.Create(context.Background(), contextObj)

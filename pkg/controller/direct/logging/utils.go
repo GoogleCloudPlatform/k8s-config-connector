@@ -109,7 +109,7 @@ func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*uns
 
 	u := &unstructured.Unstructured{}
 	if err := util.Marshal(lm, u); err != nil {
-		return nil, fmt.Errorf("error marshing logMetric to unstructured %w", err)
+		return nil, fmt.Errorf("error marshalling logMetric to unstructured %w", err)
 	}
 
 	return u, nil

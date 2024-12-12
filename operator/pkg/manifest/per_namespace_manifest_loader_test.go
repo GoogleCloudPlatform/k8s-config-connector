@@ -55,7 +55,7 @@ func TestManifestLoader_ResolveNamespacedComponents(t *testing.T) {
 			ctx := context.TODO()
 			m, err := ml.ResolveManifest(ctx, tc.ccc)
 			if err != nil {
-				t.Fatalf("unexpected error while loadding the manifest for namespaced components: %v", err)
+				t.Fatalf("unexpected error while loading the manifest for namespaced components: %v", err)
 			}
 
 			if !reflect.DeepEqual(m, tc.result) {

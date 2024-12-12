@@ -67,7 +67,7 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 		acmSpec := spec.GetConfigmanagement()
 		if acmSpec != nil {
 			if acmSpec.GetConfigSync() == nil && acmSpec.GetHierarchyController() == nil && acmSpec.GetPolicyController() == nil {
-				return nil, fmt.Errorf("none of configsync or hierarchycontroller or policycontroller is specified under configmanagement for memebership %s", id)
+				return nil, fmt.Errorf("none of configsync or hierarchycontroller or policycontroller is specified under configmanagement for membership %s", id)
 			}
 		}
 	}

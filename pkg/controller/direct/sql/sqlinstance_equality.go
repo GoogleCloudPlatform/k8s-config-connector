@@ -487,7 +487,7 @@ func AclEntryListsMatch(desired []*api.AclEntry, actual []*api.AclEntry) bool {
 	if len(desired) != len(actual) {
 		return false
 	}
-	// We mustiterate over the AclEntry lists in sorted order,
+	// We must iterate over the AclEntry lists in sorted order,
 	// so that the comparison is deterministic.
 	sort.Sort(AclEntriesByName(desired))
 	sort.Sort(AclEntriesByName(actual))

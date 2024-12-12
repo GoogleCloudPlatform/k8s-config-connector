@@ -39,7 +39,7 @@ var (
 	supportedKinds        = []string{"ComputeAddress"}
 )
 
-func GetComputeMangedSSLCertificateResourceOverrides() ResourceOverrides {
+func GetComputeManagedSSLCertificateResourceOverrides() ResourceOverrides {
 	return ResourceOverrides{
 		Kind: "ComputeManagedSSLCertificate",
 		Overrides: []ResourceOverride{
