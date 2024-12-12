@@ -43,6 +43,7 @@ func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
 	u := &unstructured.Unstructured{}
 	err := yaml.Unmarshal(bytes, u)
 	if err != nil {
+		t.Logf("bytes in string:\n%+v\n", string(bytes))
 		t.Fatalf("error unmarshalling bytes to unstruct: %v", err)
 	}
 	addTestLabels(u)
