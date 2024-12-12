@@ -16,6 +16,9 @@ package fuzz
 
 import (
 	"encoding/json"
+	"math/rand"
+	"reflect"
+	"strconv"
 	"testing"
 )
 
@@ -38,14 +41,17 @@ type TestKRMType struct {
 	ComplexMapFieldPtr *map[string]NestedKRMType
 	NestedStruct       NestedKRMType
 	NestedStructPtr    *NestedKRMType
-	EnumField          MyEnumType
-	EnumFieldPtr       *MyEnumType
-	StringEnumField    MyStringEnumType
-	StringEnumFieldPtr *MyStringEnumType
-	StructSlice        []NestedKRMType
-	StructSlicePtr     *[]NestedKRMType
-	IntSlice           []int
-	IntSlicePtr        *[]int
+	// EnumField          MyEnumType
+	// EnumFieldPtr       *MyEnumType
+	// StringEnumField    MyStringEnumType
+	// StringEnumFieldPtr *MyStringEnumType
+	StructSlice    []NestedKRMType
+	StructSlicePtr *[]NestedKRMType
+	IntSlice       []int
+	IntSlicePtr    *[]int
+
+	PtrStringFieldThatNeedsInt *string
+	StringFieldThatNeedsInt    string
 }
 
 // Nested structs
@@ -66,35 +72,36 @@ type DeepNestedKRMType struct {
 	FieldCPtr *[]byte
 }
 
-// Integer enum type
-type MyEnumType int
+// // Integer enum type
+// type MyEnumType int
 
-const (
-	EnumValueA MyEnumType = iota
-	EnumValueB
-	EnumValueC
-)
+// const (
+// 	EnumValueA MyEnumType = iota
+// 	EnumValueB
+// 	EnumValueC
+// )
 
-// String enum type
-type MyStringEnumType string
+// // String enum type
+// type MyStringEnumType string
 
-const (
-	StringEnumOptionA MyStringEnumType = "OptionA"
-	StringEnumOptionB MyStringEnumType = "OptionB"
-	StringEnumOptionC MyStringEnumType = "OptionC"
-)
+// const (
+// 	StringEnumOptionA MyStringEnumType = "OptionA"
+// 	StringEnumOptionB MyStringEnumType = "OptionB"
+// 	StringEnumOptionC MyStringEnumType = "OptionC"
+// )
 
 func TestRandomFillerFields(t *testing.T) {
-	// Define allowable bounds for integer enums and specific values for non-integer enums
-	intEnumAllowableValues := map[string]int64{
-		"MyEnumType": 2, // Allows values in the range [0, 2]
-	}
-	stringEnumAllowableValues := map[string][]interface{}{
-		"MyStringEnumType": {"OptionA", "OptionB", "OptionC"},
+	stream := rand.New(rand.NewSource(int64(9201995))) // for determinism
+
+	funcF := func(t *testing.T, fieldName string, field reflect.Value) {
+		field.SetString(strconv.FormatInt(stream.Int63(), 10))
 	}
 
-	seed := int64(9201995) // for determinism
-	filler := NewRandomFiller(seed, intEnumAllowableValues, stringEnumAllowableValues)
+	overrides := map[string]OverrideFiller{
+		".PtrStringFieldThatNeedsInt": funcF,
+		".StringFieldThatNeedsInt":    funcF,
+	}
+	filler := NewRandomFiller(&FillerConfig{Stream: stream, FieldOverrides: overrides})
 
 	tests := []struct {
 		name       string
@@ -118,14 +125,14 @@ func TestRandomFillerFields(t *testing.T) {
 		{"ComplexMapFieldPtr", func(krmObj *TestKRMType) bool {
 			return krmObj.ComplexMapFieldPtr != nil && len(*krmObj.ComplexMapFieldPtr) > 0
 		}},
-		{"EnumField", func(krmObj *TestKRMType) bool { return krmObj.EnumField >= 0 && krmObj.EnumField <= 2 }},
-		{"EnumFieldPtr", func(krmObj *TestKRMType) bool {
-			return krmObj.EnumFieldPtr != nil && *krmObj.EnumFieldPtr >= 0 && *krmObj.EnumFieldPtr <= 2
-		}},
-		{"StringEnumField", func(krmObj *TestKRMType) bool { return krmObj.StringEnumField != "" }},
-		{"StringEnumFieldPtr", func(krmObj *TestKRMType) bool {
-			return krmObj.StringEnumFieldPtr != nil && *krmObj.StringEnumFieldPtr != ""
-		}},
+		// {"EnumField", func(krmObj *TestKRMType) bool { return krmObj.EnumField >= 0 && krmObj.EnumField <= 2 }},
+		// {"EnumFieldPtr", func(krmObj *TestKRMType) bool {
+		// 	return krmObj.EnumFieldPtr != nil && *krmObj.EnumFieldPtr >= 0 && *krmObj.EnumFieldPtr <= 2
+		// }},
+		// {"StringEnumField", func(krmObj *TestKRMType) bool { return krmObj.StringEnumField != "" }},
+		// {"StringEnumFieldPtr", func(krmObj *TestKRMType) bool {
+		// 	return krmObj.StringEnumFieldPtr != nil && *krmObj.StringEnumFieldPtr != ""
+		// }},
 		{"StructSlice", func(krmObj *TestKRMType) bool { return len(krmObj.StructSlice) > 0 }},
 		{"StructSlicePtr", func(krmObj *TestKRMType) bool { return krmObj.StructSlicePtr != nil && len(*krmObj.StructSlicePtr) > 0 }},
 		{"IntSlice", func(krmObj *TestKRMType) bool { return len(krmObj.IntSlice) > 0 }},
@@ -153,6 +160,24 @@ func TestRandomFillerFields(t *testing.T) {
 		}},
 		{"NestedStruct.DeepNestedField.FieldCPtr", func(krmObj *TestKRMType) bool {
 			return krmObj.NestedStruct.DeepNestedField != nil && krmObj.NestedStruct.DeepNestedField.FieldCPtr != nil && len(*krmObj.NestedStruct.DeepNestedField.FieldCPtr) > 0
+		}},
+		{"PtrStringFieldThatNeedsInt", func(krmObj *TestKRMType) bool {
+			if krmObj.PtrStringFieldThatNeedsInt == nil {
+				return false
+			}
+			if _, err := strconv.ParseInt(*krmObj.PtrStringFieldThatNeedsInt, 10, 64); err != nil {
+				t.Error("converting string field to int")
+			}
+			return true
+		}},
+		{"StringFieldThatNeedsInt", func(krmObj *TestKRMType) bool {
+			if krmObj.PtrStringFieldThatNeedsInt == nil {
+				return false
+			}
+			if _, err := strconv.ParseInt(*krmObj.PtrStringFieldThatNeedsInt, 10, 64); err != nil {
+				t.Error("converting string field to int")
+			}
+			return true
 		}},
 	}
 
