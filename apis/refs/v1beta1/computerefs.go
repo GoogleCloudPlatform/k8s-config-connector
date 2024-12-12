@@ -200,7 +200,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 				External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, subnetID),
 			}, nil
 		}
-		return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/<projectId>/global/networks/<networkid>)", ref.External)
+		return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/<projectId>/regions/<region>/subnetworks/<networkid>)", ref.External)
 	}
 
 	if ref.Name == "" {
