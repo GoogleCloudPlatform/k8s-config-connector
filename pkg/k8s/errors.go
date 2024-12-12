@@ -233,16 +233,3 @@ func (e *ImmutableFieldsMutationError) Error() string {
 func NewImmutableFieldsMutationError(immutableFields []string) *ImmutableFieldsMutationError {
 	return &ImmutableFieldsMutationError{immutableFields}
 }
-
-type InvalidFormatError struct {
-	value  string
-	format string
-}
-
-func (e *InvalidFormatError) Error() string {
-	return fmt.Sprintf("invalid format: %s. Allowed format(s): %s", e.value, e.format)
-}
-
-func NewInvalidFormatError(value, format string) *InvalidFormatError {
-	return &InvalidFormatError{value, format}
-}
