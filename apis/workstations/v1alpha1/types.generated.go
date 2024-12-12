@@ -111,41 +111,28 @@ type WorkstationCluster_PrivateClusterConfig struct {
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig
 type WorkstationConfig struct {
 	// Full name of this workstation configuration.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Human-readable name for this workstation configuration.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Output only. A system-assigned unique identifier for this workstation
-	//  configuration.
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Indicates whether this workstation configuration is currently
-	//  being updated to match its intended state.
-	Reconciling *bool `json:"reconciling,omitempty"`
-
 	// Optional. Client-specified annotations.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.annotations
 	Annotations map[string]string `json:"annotations,omitempty"`
 
 	// Optional.
 	//  [Labels](https://cloud.google.com/workstations/docs/label-resources) that
 	//  are applied to the workstation configuration and that are also propagated
 	//  to the underlying Compute Engine resources.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
-
-	// Output only. Time when this workstation configuration was created.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Time when this workstation configuration was most recently
-	//  updated.
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Time when this workstation configuration was soft-deleted.
-	DeleteTime *string `json:"deleteTime,omitempty"`
 
 	// Optional. Checksum computed by the server. May be sent on update and delete
 	//  requests to make sure that the client has an up-to-date value before
 	//  proceeding.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.etag
 	Etag *string `json:"etag,omitempty"`
 
 	// Optional. Number of seconds to wait before automatically stopping a
@@ -157,6 +144,7 @@ type WorkstationConfig struct {
 	//  [duration](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#duration)
 	//  terminated by `s` for seconds—for example, `"7200s"` (2 hours).
 	//  The default is `"1200s"` (20 minutes).
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.idle_timeout
 	IdleTimeout *string `json:"idleTimeout,omitempty"`
 
 	// Optional. Number of seconds that a workstation can run until it is
@@ -181,16 +169,20 @@ type WorkstationConfig struct {
 	//  Warning: A value of `"0s"` indicates that Cloud Workstations VMs created
 	//  with this configuration have no maximum running time. This is strongly
 	//  discouraged because you incur costs and will not pick up security updates.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.running_timeout
 	RunningTimeout *string `json:"runningTimeout,omitempty"`
 
 	// Optional. Runtime host for the workstation.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.host
 	Host *WorkstationConfig_Host `json:"host,omitempty"`
 
 	// Optional. Directories to persist across workstation sessions.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.persistent_directories
 	PersistentDirectories []WorkstationConfig_PersistentDirectory `json:"persistentDirectories,omitempty"`
 
 	// Optional. Container that runs upon startup for each workstation using this
 	//  workstation configuration.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.container
 	Container *WorkstationConfig_Container `json:"container,omitempty"`
 
 	// Immutable. Encrypts resources of this workstation configuration using a
@@ -211,11 +203,13 @@ type WorkstationConfig struct {
 	//  stops within 7 hours.
 	//
 	//  Immutable after the workstation configuration is created.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.encryption_key
 	EncryptionKey *WorkstationConfig_CustomerEncryptionKey `json:"encryptionKey,omitempty"`
 
 	// Optional. Readiness checks to perform when starting a workstation using
 	//  this workstation configuration. Mark a workstation as running only after
 	//  all specified readiness checks return 200 status codes.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.readiness_checks
 	ReadinessChecks []WorkstationConfig_ReadinessCheck `json:"readinessChecks,omitempty"`
 
 	// Optional. Immutable. Specifies the zones used to replicate the VM and disk
@@ -225,16 +219,8 @@ type WorkstationConfig struct {
 	//  zones within the region are used.
 	//
 	//  Immutable after the workstation configuration is created.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.replica_zones
 	ReplicaZones []string `json:"replicaZones,omitempty"`
-
-	// Output only. Whether this resource is degraded, in which case it may
-	//  require user action to restore full functionality. See also the
-	//  [conditions][google.cloud.workstations.v1.WorkstationConfig.conditions]
-	//  field.
-	Degraded *bool `json:"degraded,omitempty"`
-
-	// Output only. Status conditions describing the current resource state.
-	Conditions []Status `json:"conditions,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Container
@@ -251,23 +237,29 @@ type WorkstationConfig_Container struct {
 	//  must be specified in the workstation configuration and must have
 	//  permission to pull the specified image. Otherwise, the image must be
 	//  publicly accessible.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Container.image
 	Image *string `json:"image,omitempty"`
 
 	// Optional. If set, overrides the default ENTRYPOINT specified by the
 	//  image.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Container.command
 	Command []string `json:"command,omitempty"`
 
 	// Optional. Arguments passed to the entrypoint.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Container.args
 	Args []string `json:"args,omitempty"`
 
 	// Optional. Environment variables passed to the container's entrypoint.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Container.env
 	Env map[string]string `json:"env,omitempty"`
 
 	// Optional. If set, overrides the default DIR specified by the image.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Container.working_dir
 	WorkingDir *string `json:"workingDir,omitempty"`
 
 	// Optional. If set, overrides the USER specified in the image with the
 	//  given uid.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Container.run_as_user
 	RunAsUser *int32 `json:"runAsUser,omitempty"`
 }
 
@@ -276,7 +268,8 @@ type WorkstationConfig_CustomerEncryptionKey struct {
 	// Immutable. The name of the Google Cloud KMS encryption key. For example,
 	//  `"projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME"`.
 	//  The key must be in the same region as the workstation configuration.
-	KmsKey *string `json:"kmsKey,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.CustomerEncryptionKey.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
 
 	// Immutable. The service account to use with the specified
 	//  KMS key. We recommend that you use a separate service account
@@ -285,13 +278,15 @@ type WorkstationConfig_CustomerEncryptionKey struct {
 	//  duties](https://cloud.google.com/kms/docs/separation-of-duties) and
 	//  `gcloud kms keys add-iam-policy-binding`
 	//  [`--member`](https://cloud.google.com/sdk/gcloud/reference/kms/keys/add-iam-policy-binding#--member).
-	KmsKeyServiceAccount *string `json:"kmsKeyServiceAccount,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.CustomerEncryptionKey.kms_key_service_account
+	KMSKeyServiceAccount *string `json:"kmsKeyServiceAccount,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host
 type WorkstationConfig_Host struct {
 	// Specifies a Compute Engine instance as the host.
-	GceInstance *WorkstationConfig_Host_GceInstance `json:"gceInstance,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.gce_instance
+	GCEInstance *WorkstationConfig_Host_GceInstance `json:"gceInstance,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance
@@ -301,6 +296,7 @@ type WorkstationConfig_Host_GceInstance struct {
 	//  Cloud Workstations supports, see the list of
 	//  [available machine
 	//  types](https://cloud.google.com/workstations/docs/available-machine-types).
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.machine_type
 	MachineType *string `json:"machineType,omitempty"`
 
 	// Optional. The email address of the service account for Cloud
@@ -320,6 +316,7 @@ type WorkstationConfig_Host_GceInstance struct {
 	//  If not set, VMs run with a service account provided by the
 	//  Cloud Workstations service, and the image must be publicly
 	//  accessible.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.service_account
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 
 	// Optional. Scopes to grant to the
@@ -327,6 +324,7 @@ type WorkstationConfig_Host_GceInstance struct {
 	//  Various scopes are automatically added based on feature usage. When
 	//  specified, users of workstations under this configuration must have
 	//  `iam.serviceAccounts.actAs` on the service account.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.service_account_scopes
 	ServiceAccountScopes []string `json:"serviceAccountScopes,omitempty"`
 
 	// Optional. Network tags to add to the Compute Engine VMs backing the
@@ -336,16 +334,14 @@ type WorkstationConfig_Host_GceInstance struct {
 	//  created with this configuration. These network tags enable the creation
 	//  of [firewall
 	//  rules](https://cloud.google.com/workstations/docs/configure-firewall-rules).
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.tags
 	Tags []string `json:"tags,omitempty"`
 
 	// Optional. The number of VMs that the system should keep idle so that
 	//  new workstations can be started quickly for new users. Defaults to `0`
 	//  in the API.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.pool_size
 	PoolSize *int32 `json:"poolSize,omitempty"`
-
-	// Output only. Number of instances currently available in the pool for
-	//  faster workstation startup.
-	PooledInstances *int32 `json:"pooledInstances,omitempty"`
 
 	// Optional. When set to true, disables public IP addresses for VMs. If
 	//  you disable public IP addresses, you must set up Private Google Access
@@ -354,7 +350,8 @@ type WorkstationConfig_Host_GceInstance struct {
 	//  Container Registry and Artifact Registry, make sure that you set
 	//  up DNS records for domains `*.gcr.io` and `*.pkg.dev`.
 	//  Defaults to false (VMs have public IP addresses).
-	DisablePublicIpAddresses *bool `json:"disablePublicIpAddresses,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.disable_public_ip_addresses
+	DisablePublicIPAddresses *bool `json:"disablePublicIPAddresses,omitempty"`
 
 	// Optional. Whether to enable nested virtualization on Cloud Workstations
 	//  VMs created under this workstation configuration.
@@ -390,43 +387,53 @@ type WorkstationConfig_Host_GceInstance struct {
 	//  [Ubuntu
 	//  LTS](https://cloud.google.com/compute/docs/images/os-details#ubuntu_lts)
 	//  image.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.enable_nested_virtualization
 	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
 
 	// Optional. A set of Compute Engine Shielded instance options.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.shielded_instance_config
 	ShieldedInstanceConfig *WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
 
 	// Optional. A set of Compute Engine Confidential VM instance options.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.confidential_instance_config
 	ConfidentialInstanceConfig *WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
 
 	// Optional. The size of the boot disk for the VM in gigabytes (GB).
 	//  The minimum boot disk size is `30` GB. Defaults to `50` GB.
-	BootDiskSizeGb *int32 `json:"bootDiskSizeGb,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.boot_disk_size_gb
+	BootDiskSizeGB *int32 `json:"bootDiskSizeGB,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceConfidentialInstanceConfig
 type WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig struct {
 	// Optional. Whether the instance has confidential compute enabled.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceConfidentialInstanceConfig.enable_confidential_compute
 	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceShieldedInstanceConfig
 type WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig struct {
 	// Optional. Whether the instance has Secure Boot enabled.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceShieldedInstanceConfig.enable_secure_boot
 	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 
 	// Optional. Whether the instance has the vTPM enabled.
-	EnableVtpm *bool `json:"enableVtpm,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceShieldedInstanceConfig.enable_vtpm
+	EnableVTPM *bool `json:"enableVTPM,omitempty"`
 
 	// Optional. Whether the instance has integrity monitoring enabled.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceShieldedInstanceConfig.enable_integrity_monitoring
 	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory
 type WorkstationConfig_PersistentDirectory struct {
 	// A PersistentDirectory backed by a Compute Engine persistent disk.
-	GcePd *WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk `json:"gcePd,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.gce_pd
+	GCEPD *WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk `json:"gcePD,omitempty"`
 
 	// Optional. Location of this directory in the running workstation.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.mount_path
 	MountPath *string `json:"mountPath,omitempty"`
 }
 
@@ -442,18 +449,21 @@ type WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk struct {
 	//  [disk_type][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.disk_type]
 	//  must be
 	//  `"pd-balanced"` or `"pd-ssd"`.
-	SizeGb *int32 `json:"sizeGb,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.size_gb
+	SizeGB *int32 `json:"sizeGB,omitempty"`
 
 	// Optional. Type of file system that the disk should be formatted with.
 	//  The workstation image must support this file system type. Must be empty
 	//  if
 	//  [source_snapshot][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot]
 	//  is set. Defaults to `"ext4"`.
-	FsType *string `json:"fsType,omitempty"`
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.fs_type
+	FSType *string `json:"fsType,omitempty"`
 
 	// Optional. The [type of the persistent
 	//  disk](https://cloud.google.com/compute/docs/disks#disk-types) for the
 	//  home directory. Defaults to `"pd-standard"`.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.disk_type
 	DiskType *string `json:"diskType,omitempty"`
 
 	// Optional. Name of the snapshot to use as the source for the disk. If
@@ -462,21 +472,81 @@ type WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk struct {
 	//  and
 	//  [fs_type][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.fs_type]
 	//  must be empty.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot
 	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
 
 	// Optional. Whether the persistent disk should be deleted when the
 	//  workstation is deleted. Valid values are `DELETE` and `RETAIN`.
 	//  Defaults to `DELETE`.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.reclaim_policy
 	ReclaimPolicy *string `json:"reclaimPolicy,omitempty"`
 }
 
 // +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.ReadinessCheck
 type WorkstationConfig_ReadinessCheck struct {
 	// Optional. Path to which the request should be sent.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.ReadinessCheck.path
 	Path *string `json:"path,omitempty"`
 
 	// Optional. Port to which the request should be sent.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.ReadinessCheck.port
 	Port *int32 `json:"port,omitempty"`
+}
+
+// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig
+type WorkstationConfigObservedState struct {
+	// Output only. A system-assigned unique identifier for this workstation
+	//  configuration.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Indicates whether this workstation configuration is currently
+	//  being updated to match its intended state.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.reconciling
+	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// Output only. Time when this workstation configuration was created.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time when this workstation configuration was most recently
+	//  updated.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Time when this workstation configuration was soft-deleted.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Optional. Runtime host for the workstation.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.host
+	Host *WorkstationConfig_HostObservedState `json:"host,omitempty"`
+
+	// Output only. Whether this resource is degraded, in which case it may
+	//  require user action to restore full functionality. See also the
+	//  [conditions][google.cloud.workstations.v1.WorkstationConfig.conditions]
+	//  field.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.degraded
+	Degraded *bool `json:"degraded,omitempty"`
+
+	// Output only. Status conditions describing the current resource state.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.conditions
+	Conditions []Status `json:"conditions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host
+type WorkstationConfig_HostObservedState struct {
+	// Specifies a Compute Engine instance as the host.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.gce_instance
+	GCEInstance *WorkstationConfig_Host_GceInstanceObservedState `json:"gceInstance,omitempty"`
+}
+
+// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance
+type WorkstationConfig_Host_GceInstanceObservedState struct {
+	// Output only. Number of instances currently available in the pool for
+	//  faster workstation startup.
+	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.pooled_instances
+	PooledInstances *int32 `json:"pooledInstances,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.Any
