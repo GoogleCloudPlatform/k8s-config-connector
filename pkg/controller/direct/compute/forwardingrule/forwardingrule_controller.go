@@ -27,6 +27,7 @@ import (
 	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -537,5 +538,41 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 	u.Object["status"] = status
 
+	return nil
+}
+
+// This function get the normalized external values and convert it to the API required format
+func resolveBackendService(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
+	// API required format: selfLink
+	referenceContext := refsv1beta1.ReferenceContext{IsDirectOnly: false, TargetField: "status.selfLink"}
+	computeBasePath := "https://www.googleapis.com/compute/v1/"
+	ref := obj.Spec.BackendServiceRef
+	if ref != nil {
+		// Get normalized external
+		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return fmt.Errorf("failed to get BackendServiceRef: %w", err)
+		}
+		// Convert normalized external to API required format
+		v := ref.External
+		// If object is DirectOnly, it is created by direct controller.
+		if referenceContext.IsDirectOnly {
+			// add the compute prefix in front
+			obj.Spec.BackendServiceRef.External = computeBasePath + v
+			return nil
+		}
+		// If object not DirectOnly, it can be created by either direct controller or legacy controller, depends on user's settings.
+		_, _, err = krm.ParseComputeBackendServiceExternal(v)
+		// Value follows KCC external format, likely it's created by direct controller
+		if err == nil {
+			// add the compute prefix in front
+			obj.Spec.BackendServiceRef.External = computeBasePath + v
+			return nil
+		}
+		// For backward compatibility, we also accept values that does not match the KCC external format.(likely it's created by legacy controller)
+		// Return the value as is and let the API handle it
+		obj.Spec.BackendServiceRef.External = v
+		return nil
+	}
 	return nil
 }

@@ -178,49 +178,6 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 		External: address}, nil
 }
 
-func ResolveComputeBackendService(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeBackendServiceRef) (*refs.ComputeBackendServiceRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeBackendService, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeBackendService",
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	// targetField: self_link
-	// See compute servicemappings for details
-	selfLink, _, err := unstructured.NestedString(computeBackendService.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
-		return nil, fmt.Errorf("cannot get selfLink for referenced %s %v (status.selfLink is empty)", computeBackendService.GetKind(), computeBackendService.GetNamespace())
-	}
-	return &refs.ComputeBackendServiceRef{
-		External: selfLink}, nil
-}
-
 func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeServiceAttachmentRef) (*refs.ComputeServiceAttachmentRef, error) {
 	if ref == nil {
 		return nil, nil
@@ -557,13 +514,8 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 	}
 
 	// Get backend service
-	if obj.Spec.BackendServiceRef != nil {
-		backendServiceRef, err := ResolveComputeBackendService(ctx, reader, obj, obj.Spec.BackendServiceRef)
-		if err != nil {
-			return err
-
-		}
-		obj.Spec.BackendServiceRef.External = backendServiceRef.External
+	if err := resolveBackendService(ctx, reader, obj); err != nil {
+		return err
 	}
 
 	// Get ip address, ip address is optional
