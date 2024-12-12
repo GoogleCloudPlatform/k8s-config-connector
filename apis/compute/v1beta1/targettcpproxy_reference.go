@@ -97,12 +97,12 @@ func NewComputeTargetTCPProxyRef(ctx context.Context, reader client.Reader, obj 
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	// Get Region
+	// Get Location
 	if obj.Spec.Location == nil {
-		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Region: "global"}
+		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Location: "global"}
 	} else {
-		region := common.ValueOf(obj.Spec.Location)
-		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Region: region}
+		location := common.ValueOf(obj.Spec.Location)
+		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Location: location}
 	}
 
 	// Get desired ID
@@ -154,14 +154,14 @@ func (r *ComputeTargetTCPProxyRef) Parent() (*ComputeTargetTCPProxyParent, error
 
 type ComputeTargetTCPProxyParent struct {
 	ProjectID string
-	Region    string
+	Location  string
 }
 
 func (p *ComputeTargetTCPProxyParent) String() string {
-	if p.Region == "global" {
+	if p.Location == "global" {
 		return "projects/" + p.ProjectID + "/global"
 	} else {
-		return "projects/" + p.ProjectID + "/regions/" + p.Region
+		return "projects/" + p.ProjectID + "/regions/" + p.Location
 	}
 }
 
@@ -172,16 +172,17 @@ func asComputeTargetTCPProxyExternal(parent *ComputeTargetTCPProxyParent, resour
 func parseComputeTargetTCPProxyExternal(external string) (parent *ComputeTargetTCPProxyParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[3] == "targetTcpProxies" {
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "targetTcpProxies" {
 		parent = &ComputeTargetTCPProxyParent{
 			ProjectID: tokens[1],
+			Location:  "global",
 		}
 		resourceID = tokens[4]
 		return parent, resourceID, nil
 	} else if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "targetTcpProxies" {
 		parent = &ComputeTargetTCPProxyParent{
 			ProjectID: tokens[1],
-			Region:    tokens[3],
+			Location:  tokens[3],
 		}
 		resourceID = tokens[5]
 		return parent, resourceID, nil
