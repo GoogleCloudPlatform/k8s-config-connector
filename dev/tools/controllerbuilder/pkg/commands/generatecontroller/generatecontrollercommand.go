@@ -49,12 +49,6 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 			if opt.Resource == (options.Resource{}) {
 				return fmt.Errorf("--resource flag is required")
 			}
-			if opt.Resource.Kind == "" {
-				return fmt.Errorf("need to specify KRM Kind in --resource")
-			}
-			if opt.Resource.ProtoName == "" {
-				return fmt.Errorf("need to specify proto resource name in --resource")
-			}
 
 			if baseOptions.APIVersion == "" {
 				return fmt.Errorf("--api-version is required")
