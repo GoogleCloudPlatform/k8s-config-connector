@@ -22,7 +22,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # example usage
 go run . update-types \
-    --parent-message-full-name "google.monitoring.dashboard.v1.Dashboard" \
-    --new-field "row_layout" \
+    --parent-message "google.monitoring.dashboard.v1.Dashboard" \
+    --field-to-insert "row_layout" \
     --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1 \
     --ignored-fields "google.monitoring.dashboard.v1.PickTimeSeriesFilter.interval"

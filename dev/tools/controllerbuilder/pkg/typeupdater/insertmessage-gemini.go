@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package updatetypes
+package typeupdater
 
 import (
 	"context"
@@ -54,8 +54,8 @@ func (u *TypeUpdater) insertGoMessagesGemini() error {
 	}
 	// provide the content of the Go structs
 	goStructs := ""
-	for _, s := range u.generatedGoStructs {
-		goStructs += string(s.content) + "\n"
+	for _, s := range u.dependentMessages {
+		goStructs += string(s.generatedContent) + "\n"
 	}
 
 	session.History = append(session.History, &genai.Content{
@@ -65,7 +65,7 @@ func (u *TypeUpdater) insertGoMessagesGemini() error {
 		Role: "user",
 	})
 	// provide content of the existing Go files
-	files, err := listFiles(u.opts.apiDirectory)
+	files, err := listFiles(u.opts.APIDirectory)
 	if err != nil {
 		return fmt.Errorf("error listing files: %w", err)
 	}

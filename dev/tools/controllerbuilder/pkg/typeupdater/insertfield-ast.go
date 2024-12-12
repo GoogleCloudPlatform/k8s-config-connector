@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package updatetypes
+package typeupdater
 
 import (
 	"fmt"
@@ -25,16 +25,24 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"google.golang.org/genproto/googleapis/api/annotations"
 
 	"k8s.io/klog/v2"
 )
 
+type target struct {
+	goName string
+	endPos int
+}
+
 func (u *TypeUpdater) insertGoField() error {
-	klog.Infof("inserting the generated Go code for field %s", u.newField.field.Name())
+	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 
-	targetComment := fmt.Sprintf("+kcc:proto=%s", u.generatedGoField.parentMessage)
+	targetComment := fmt.Sprintf("+kcc:proto=%s", u.newField.parent.FullName())
+	outputOnly := common.IsFieldBehavior(u.newField.proto, annotations.FieldBehavior_OUTPUT_ONLY)
 
-	filepath.WalkDir(u.opts.apiDirectory, func(path string, d fs.DirEntry, err error) error {
+	filepath.WalkDir(u.opts.APIDirectory, func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || filepath.Ext(path) != ".go" {
 			return nil
 		}
@@ -55,13 +63,12 @@ func (u *TypeUpdater) insertGoField() error {
 		// use a CommentMap to associate comments with nodes
 		docMap := gocode.NewDocMap(fset, file)
 
-		// find the target Go struct and its ending position in the source
-		var endPos int
+		// find the target Go struct and the ending position in the source
+		// there are 2 cases considered.
+		// - case 1, there is only 1 matching target.
+		// - case 2, there are two matching targets (Spec and ObservedState).
+		var targets []target
 		ast.Inspect(file, func(n ast.Node) bool {
-			if endPos != 0 {
-				return false // already found the target
-			}
-
 			ts, ok := n.(*ast.TypeSpec)
 			if !ok {
 				return true
@@ -80,19 +87,35 @@ func (u *TypeUpdater) insertGoField() error {
 				return true // empty struct? this should not happen
 			}
 
-			klog.Infof("found target Go struct %s", ts.Name.Name)
-
-			endPos = int(fset.Position(st.End()).Offset)
-			return false // stop searching, we found the target Go struct
+			klog.Infof("found potential target Go struct %s", ts.Name.Name)
+			targets = append(targets, target{
+				goName: ts.Name.Name,
+				endPos: int(fset.Position(st.End()).Offset),
+			})
+			return true // continue searching for potential target Go struct
 		})
 
-		// if the target Go struct was found, modify the source bytes
-		if endPos != 0 {
+		var chosenTarget *target
+		if len(targets) == 0 { // no target, continue to next file
+			return nil
+		} else if len(targets) == 1 { // case 1, one matching Go struct
+			chosenTarget = &targets[0]
+		} else if len(targets) == 2 { // case 2, Spec/ObservedState pair
+			for _, t := range targets {
+				if !outputOnly && strings.HasSuffix(t.goName, "Spec") ||
+					outputOnly && strings.HasSuffix(t.goName, "ObservedState") {
+					chosenTarget = &t
+					break
+				}
+			}
+		}
+
+		if chosenTarget != nil { // target Go struct was found, modify the source bytes
 			var newSrcBytes []byte
-			// TODO: ues the same field ordering as in proto message
-			newSrcBytes = append(newSrcBytes, srcBytes[:endPos-1]...)        // up to before '}'
-			newSrcBytes = append(newSrcBytes, u.generatedGoField.content...) // insert new field
-			newSrcBytes = append(newSrcBytes, srcBytes[endPos-1:]...)        // include the '}'
+			// TODO: use the same field ordering as in proto message?
+			newSrcBytes = append(newSrcBytes, srcBytes[:chosenTarget.endPos-1]...) // up to before '}'
+			newSrcBytes = append(newSrcBytes, u.newField.generatedContent...)      // insert new field
+			newSrcBytes = append(newSrcBytes, srcBytes[chosenTarget.endPos-1:]...) // include the '}'
 
 			if err := os.WriteFile(path, newSrcBytes, d.Type()); err != nil {
 				return err

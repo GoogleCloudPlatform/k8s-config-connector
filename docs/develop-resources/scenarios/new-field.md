@@ -11,23 +11,22 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
 go run . update-types \
-    --parent-message-full-name "google.monitoring.dashboard.v1.Dashboard" \
-    --new-field "row_layout" \
+    --parent-message "google.monitoring.dashboard.v1.Dashboard" \
+    --field-to-insert "row_layout" \
     --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1
 ```
 
-* `--parent-message-full-name`
+* `--parent-message`
 
 Fully qualified name of the proto message holding the new field.
 
-* `--new-field`
+* `--field-to-insert`
 
-Name of the new field.
-
+Name of the new proto field to be inserted.
 
 * `--api-dir`
 
-The apis directory the contains the existing API types of the resource.
+The `/apis` directory containing the existing API types for the resource. If a resource has multiple API versions, the `--api-dir` flag should specify the desired version. For example: `${REPO_ROOT}/apis/monitoring/v1beta1`.
 
 
     1. Run 3.1 Generate the API and proto mapper to update the mapper files.

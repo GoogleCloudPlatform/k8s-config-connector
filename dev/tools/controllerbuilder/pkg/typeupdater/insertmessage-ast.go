@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package updatetypes
+package typeupdater
 
 import (
 	"fmt"
@@ -28,14 +28,19 @@ import (
 	"k8s.io/klog/v2"
 )
 
-type protoStruct struct {
-	name string    // fully qualified name of the proto message
-	end  token.Pos // the ending position of the corresponding Go struct in file
+type goStruct struct {
+	name  string // fully qualified name of the proto message
+	start int    // byte offset of the start of this struct
+	end   int    // byte offset of the end of this struct
 }
 
 func (u *TypeUpdater) insertGoMessages() error {
+	if len(u.dependentMessages) == 0 {
+		return nil
+	}
+
 	// find the file containing existing Go types
-	goTypesFile, err := findGoTypesFile(u.opts.apiDirectory)
+	goTypesFile, err := findGoTypesFile(u.opts.APIDirectory)
 	if err != nil {
 		return err
 	}
@@ -51,7 +56,7 @@ func (u *TypeUpdater) insertGoMessages() error {
 	docMap := gocode.NewDocMap(fset, file)
 
 	// collect existing structs with `+kcc:proto` comments
-	existingStructs := []protoStruct{}
+	existingStructs := []goStruct{}
 	ast.Inspect(file, func(n ast.Node) bool {
 		ts, ok := n.(*ast.TypeSpec)
 		if !ok {
@@ -68,12 +73,16 @@ func (u *TypeUpdater) insertGoMessages() error {
 			return true // not a valid comment for proto name, continue
 		}
 		existingStructs = append(existingStructs,
-			protoStruct{
-				name: name,
-				end:  n.End(),
+			goStruct{
+				name:  name,
+				start: fset.Position(n.Pos()).Offset,
+				end:   fset.Position(n.End()).Offset,
 			})
 		return true
 	})
+	if len(existingStructs) == 0 {
+		return fmt.Errorf("no Go struct was found in file %s", goTypesFile)
+	}
 
 	// read the existing go types file
 	srcBytes, err := os.ReadFile(goTypesFile)
@@ -84,38 +93,50 @@ func (u *TypeUpdater) insertGoMessages() error {
 	// update the go types file
 	// maintain the ordering of the go types based on alphabetical order of the corresponding proto message name
 	newSrcBytes := srcBytes
-	for _, newStruct := range u.generatedGoStructs {
+	for _, msg := range u.dependentMessages {
+		targetName := string(msg.proto.FullName())
+
 		// find the correct insertion point
 		insertIndex := 0
-		insertPos := 0
+		insertPos := existingStructs[0].start
 		for i, existing := range existingStructs {
-			if newStruct.name < existing.name {
+			if targetName < existing.name {
+				// found the first struct that should come after the new one
 				insertIndex = i
 				break
 			}
-			insertPos = int(fset.Position(existing.end).Offset) // update insertPos to the end of the current struct
+			insertPos = existing.end // update insertPos to the end of the current struct
 		}
 
-		// insert the new struct at the calculated position
-		newSrcBytes = append(newSrcBytes[:insertPos], append(newStruct.content, newSrcBytes[insertPos:]...)...)
-		insertPos += len(newStruct.content) // update to the end of the newly inserted struct
-
-		// update the end positions of all subsequent structs
-		for j := insertIndex; j < len(existingStructs); j++ {
-			existingStructs[j].end += token.Pos(len(newStruct.content))
+		if insertIndex == len(existingStructs) { //  append at the end
+			insertPos = existingStructs[insertIndex-1].end
 		}
 
-		// update the existing structs list to include the newly inserted struct
+		// insert the new struct to file
+		newSrcBytes = append(newSrcBytes[:insertPos],
+			append(msg.generatedContent, newSrcBytes[insertPos:]...)...)
+
+		// update existing structs list
+		newStruct := goStruct{
+			name:  targetName,
+			start: insertPos,
+			end:   insertPos + len(msg.generatedContent),
+		}
 		existingStructs = append(existingStructs[:insertIndex],
-			append([]protoStruct{{name: newStruct.name, end: token.Pos(insertPos)}},
-				existingStructs[insertIndex:]...)...)
+			append([]goStruct{newStruct}, existingStructs[insertIndex:]...)...)
+		// update the start and end positions of all subsequent structs
+		for j := insertIndex + 1; j < len(existingStructs); j++ {
+			existingStructs[j].start += len(msg.generatedContent)
+			existingStructs[j].end += len(msg.generatedContent)
+		}
 
-		klog.Infof("inserted the generated Go struct for proto message %s", newStruct.name)
+		klog.Infof("inserted the generated Go struct for proto message %s", targetName)
 	}
 
 	if err := os.WriteFile(goTypesFile, newSrcBytes, 0644); err != nil {
 		return err
 	}
+	klog.Infof("modified file %s", goTypesFile)
 
 	return nil
 }

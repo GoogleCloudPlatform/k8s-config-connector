@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package updatetypes
+package typeupdater
 
 import (
 	"context"
@@ -28,7 +28,7 @@ import (
 )
 
 func (u *TypeUpdater) insertGoFieldGemini() error {
-	klog.Infof("inserting the generated Go code for field %s", u.newField.field.Name())
+	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
 	if err != nil {
@@ -50,7 +50,7 @@ func (u *TypeUpdater) insertGoFieldGemini() error {
 						Could you find the Go struct which has comment "+kcc:proto=%s" with no following suffix,
 						and insert the Go field into the found Go struct.
 						In your response, only include what is asked for.
-					`, u.generatedGoField.parentMessage)),
+					`, u.newField.parent.FullName())),
 			},
 			Role: "user",
 		},
@@ -58,12 +58,12 @@ func (u *TypeUpdater) insertGoFieldGemini() error {
 	// provide the content of the new Go field
 	session.History = append(session.History, &genai.Content{
 		Parts: []genai.Part{
-			genai.Text(fmt.Sprintf("new Go field:\n%s\n\n", u.generatedGoField.content)),
+			genai.Text(fmt.Sprintf("new Go field:\n%s\n\n", u.newField.generatedContent)),
 		},
 		Role: "user",
 	})
 	// provide content of the existing Go files
-	files, err := listFiles(u.opts.apiDirectory)
+	files, err := listFiles(u.opts.APIDirectory)
 	if err != nil {
 		return fmt.Errorf("error listing files: %w", err)
 	}
