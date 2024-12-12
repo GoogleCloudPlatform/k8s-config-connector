@@ -175,6 +175,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to DataFlow
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 
+	// Specific to SecretManager
+	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"
 	visitor.replacePaths[".status.observedState.azure.identity"] = "117243083562690747295"

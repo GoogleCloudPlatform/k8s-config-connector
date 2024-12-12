@@ -20,9 +20,24 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   labels:
     label-one: value-one
+    label-two: value-two
   name: secretmanagersecret-${uniqueId}
 spec:
   replication:
     userManaged:
       replicas:
-      - location: us-central1
+      - customerManagedEncryption:
+          kmsKeyRef:
+            name: kmscryptokey-${uniqueId}
+        location: us-central1
+  topics:
+    - topicRef:
+        name: topic-2-${uniqueId}
+  annotations:
+    "foo": secretmanagersecret
+    "bar": secretmanagersecret-bar
+  # ttl and expireTime are OneOf. expireTime is tested in the *-full-auto test suite.
+  ttl: 110s
+  rotation:
+    nextRotationTime: "2025-10-03T15:01:23Z"
+    rotationPeriod: "7200s"

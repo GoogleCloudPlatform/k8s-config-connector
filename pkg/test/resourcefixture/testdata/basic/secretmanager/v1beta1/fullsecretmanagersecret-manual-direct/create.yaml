@@ -25,4 +25,16 @@ spec:
   replication:
     userManaged:
       replicas:
-      - location: us-central1
+      - customerManagedEncryption:
+          kmsKeyRef:
+            name: kmscryptokey-${uniqueId}
+        location: us-central1
+  topics:
+    - topicRef:
+        name: topic-${uniqueId}
+  annotations:
+    "foo": secretmanagersecret
+  ttl: 100s
+  rotation:
+    nextRotationTime: "2025-10-02T15:01:23Z"
+    rotationPeriod: "3600s"

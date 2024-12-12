@@ -19,27 +19,21 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
     label-one: value-one
-    label-two: value-two
   name: secretmanagersecret-${uniqueId}
 spec:
   replication:
-    automatic: true
-    # TF-based resource is broken, got the error even if not changing this field 
-    # "cannot make changes to immutable field(s): [Field Name: replication.0.auto.#, Got: 1, Wanted: 0]"
-    auto:
-      customerManagedEncryption:
-        kmsKeyRef:
-          name: kmscryptokey-${uniqueId}
+    userManaged:
+      replicas:
+      - customerManagedEncryption:
+          kmsKeyRef:
+            name: kmscryptokey-${uniqueId}
+        location: us-central1
   topics:
     - topicRef:
-        name: topic-2-${uniqueId}
+        name: topic-${uniqueId}
   annotations:
     "foo": secretmanagersecret
-    "bar": secretmanagersecret-bar
-  expireTime: "2025-10-03T15:01:23Z"
+  ttl: 100s
   rotation:
-    nextRotationTime: "2025-10-03T15:01:23Z"
-    rotationPeriod: "7200s"
-  # versionAliases:
-  #   "foo": "111"
-  #   "bar": "222"
+    nextRotationTime: "2025-10-02T15:01:23Z"
+    rotationPeriod: "3600s"
