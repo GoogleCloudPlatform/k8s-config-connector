@@ -513,7 +513,7 @@ versionAliases:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Input only. The TTL for the [Secret][google.cloud.secretmanager.v1.Secret].{% endverbatim %}</p>
+            <p>{% verbatim %}Input only. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

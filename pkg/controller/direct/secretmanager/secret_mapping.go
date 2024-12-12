@@ -101,6 +101,9 @@ func SecretManagerSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecretMa
 	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
 		out.Expiration = &pb.Secret_ExpireTime{ExpireTime: oneof}
 	}
+	if oneof := direct.Duration_ToProto(mapCtx, in.TTL); oneof != nil {
+		out.Expiration = &pb.Secret_Ttl{Ttl: oneof}
+	}
 	// MISSING: Etag
 	out.Rotation = Rotation_ToProto(mapCtx, in.Rotation)
 	out.VersionAliases = MapStringString_ToMapStringInt64(mapCtx, in.VersionAliases)
