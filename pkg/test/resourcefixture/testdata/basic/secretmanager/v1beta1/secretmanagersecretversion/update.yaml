@@ -17,6 +17,7 @@ kind: SecretManagerSecretVersion
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    alpha.cnrm.cloud.google.com/reconciler: direct
   name: secretmanagersecretversion-${uniqueId}
 spec:
   enabled: false
