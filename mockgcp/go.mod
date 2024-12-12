@@ -6,7 +6,7 @@ toolchain go1.23.2
 
 require (
 	cloud.google.com/go/bigtable v1.33.0
-	cloud.google.com/go/compute v1.28.1
+	cloud.google.com/go/compute v1.29.0
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/iam v1.2.1
 	cloud.google.com/go/longrunning v0.6.1
