@@ -169,6 +169,24 @@ func (a *analyticsHubServer) UpdateListing(ctx context.Context, request *pb.Upda
 		switch path {
 		case "displayName":
 			obj.DisplayName = request.Listing.GetDisplayName()
+		case "description":
+			obj.Description = request.Listing.GetDescription()
+		case "documentation":
+			obj.Documentation = request.Listing.GetDocumentation()
+		case "primaryContact":
+			obj.PrimaryContact = request.Listing.GetPrimaryContact()
+		case "discoveryType":
+			obj.DiscoveryType = request.Listing.GetDiscoveryType().Enum()
+		case "publisher":
+			obj.Publisher = request.Listing.GetPublisher()
+		case "dataProvider":
+			obj.DataProvider = request.Listing.GetDataProvider()
+		case "requestAccess":
+			obj.RequestAccess = request.Listing.GetRequestAccess()
+		case "source":
+			obj.Source = request.Listing.GetSource()
+		case "categories":
+			obj.Categories = request.Listing.GetCategories()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
