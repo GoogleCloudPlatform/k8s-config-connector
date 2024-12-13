@@ -21,8 +21,8 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # example usage
-go run . update-types \
+go run . update-types insert \
     --parent "google.monitoring.dashboard.v1.Dashboard" \
-    --insert-field "row_layout" \
+    --field "row_layout" \
     --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1 \
     --ignored-fields "google.monitoring.dashboard.v1.PickTimeSeriesFilter.interval"

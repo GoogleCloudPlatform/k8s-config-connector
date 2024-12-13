@@ -15,27 +15,23 @@
 package updatetypes
 
 import (
-	"context"
 	"fmt"
 	"os"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/typeupdater"
 
 	"github.com/spf13/cobra"
 )
 
-type UpdateTypeOptions struct {
+type baseUpdateTypeOptions struct {
 	*options.GenerateOptions
 
-	parentMessage    string // The fully qualified name of the parent proto message of the field to be inserted
-	insertField      string
 	ignoredFields    string // TODO: could be part of GenerateOptions
 	apiDirectory     string
 	apiGoPackagePath string
 }
 
-func (o *UpdateTypeOptions) InitDefaults() error {
+func (o *baseUpdateTypeOptions) InitDefaults() error {
 	root, err := options.RepoRoot()
 	if err != nil {
 		return err
@@ -45,9 +41,7 @@ func (o *UpdateTypeOptions) InitDefaults() error {
 	return nil
 }
 
-func (o *UpdateTypeOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&o.parentMessage, "parent", o.parentMessage, "Fully qualified name of the proto message holding the new field. e.g. `google.cloud.bigquery.datatransfer.v1.TransferConfig`")
-	cmd.Flags().StringVar(&o.insertField, "insert-field", o.insertField, "Name of the new field to be inserted, e.g. `schedule_options_v2`")
+func (o *baseUpdateTypeOptions) BindFlags(cmd *cobra.Command) {
 	// TODO: Update this flag to accept a file path pointing to the ignored fields YAML file.
 	cmd.Flags().StringVar(&o.ignoredFields, "ignored-fields", o.ignoredFields, "Comma-separated list of fields to ignore")
 	cmd.Flags().StringVar(&o.apiDirectory, "api-dir", o.apiDirectory, "Base directory for APIs")
@@ -55,10 +49,9 @@ func (o *UpdateTypeOptions) BindFlags(cmd *cobra.Command) {
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
-	opt := &UpdateTypeOptions{
+	opt := &baseUpdateTypeOptions{
 		GenerateOptions: baseOptions,
 	}
-
 	if err := opt.InitDefaults(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
 		os.Exit(1)
@@ -67,35 +60,12 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update-types",
 		Short: "update KRM types for a proto service",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			ctx := cmd.Context()
-			if err := runFieldInserter(ctx, opt); err != nil {
-				return err
-			}
-			return nil
-		},
 	}
 
 	opt.BindFlags(cmd)
 
+	// subcommands
+	cmd.AddCommand(buildInsertCommand(opt))
+
 	return cmd
-}
-
-func runFieldInserter(ctx context.Context, opt *UpdateTypeOptions) error {
-	if opt.apiDirectory == "" {
-		return fmt.Errorf("--api-dir is required")
-	}
-
-	fieldInserter := typeupdater.NewFieldInserter(&typeupdater.InsertFieldOptions{
-		ProtoSourcePath:       opt.GenerateOptions.ProtoSourcePath,
-		ParentMessageFullName: opt.parentMessage,
-		FieldToInsert:         opt.insertField,
-		IgnoredFields:         opt.ignoredFields,
-		APIDirectory:          opt.apiDirectory,
-		GoPackagePath:         opt.apiGoPackagePath,
-	})
-	if err := fieldInserter.Run(); err != nil {
-		return err
-	}
-	return nil
 }

@@ -10,19 +10,19 @@ Run the following command. This should add the new field and all of its dependen
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
-go run . update-types \
+go run . update-types insert \
     --parent "google.monitoring.dashboard.v1.Dashboard" \
-    --insert-field "row_layout" \
+    --field "row_layout" \
     --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1
 ```
 
-* `--parent-message`
+* `--parent`
 
 Fully qualified name of the proto message holding the new field.
 
-* `--field-to-insert`
+* `--field`
 
-Name of the new proto field to be inserted.
+Name of the proto field to be inserted under the parent message.
 
 * `--api-dir`
 
