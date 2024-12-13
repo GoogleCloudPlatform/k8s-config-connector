@@ -1,0 +1,53 @@
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryAnalyticsHubListing
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: bigqueryanalyticshublisting${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  categories:
+  - CATEGORY_SCIENCE_AND_RESEARCH
+  - CATEGORY_COMMERCE
+  dataExchangeRef:
+    name: bigqueryanalyticshubdataexchange${uniqueId}
+  dataProvider:
+    name: updated
+    primaryContact: updated@updated.com
+  description: updated
+  discoveryType: DISCOVERY_TYPE_PRIVATE
+  displayName: another_dataexchange
+  documentation: updated
+  location: US
+  primaryContact: updated@updated.com
+  projectRef:
+    external: ${projectId}
+  publisher:
+    name: updated
+    primaryContact: updated@updated.com
+  requestAccess: req@req.com
+  resourceID: bigqueryanalyticshublisting${uniqueId}
+  source:
+    bigQueryDatasetSource:
+      datasetRef:
+        name: bigquerydataset${uniqueId}
+      restrictedExportPolicy:
+        enabled: true
+        restrictDirectTableAccess: true
+        restrictQueryResult: false
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+  observedGeneration: 2
+  observedState: {}
