@@ -22,6 +22,9 @@ spec:
   version: v1beta1
   serviceHostName: "workstations.googleapis.com"
   resources:
+    - name: google_workstations_workstation
+      kind: Workstation
+      direct: true
     - name: google_workstations_workstationcluster
       kind: WorkstationCluster
       direct: true

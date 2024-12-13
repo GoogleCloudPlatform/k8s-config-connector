@@ -150,7 +150,7 @@ go run . generate-types \
 
 go run . generate-types \
     --service google.cloud.workstations.v1 \
-    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --api-version workstations.cnrm.cloud.google.com/v1beta1 \
     --resource Workstation:Workstation
 
 go run . generate-mapper \
