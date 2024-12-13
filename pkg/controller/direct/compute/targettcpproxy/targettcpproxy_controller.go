@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -40,11 +41,30 @@ import (
 const ctrlName = "firewallpolicyrule-controller"
 
 func init() {
-	registry.RegisterModel(krm.ComputeTargetTCPProxyGVK, NewtargetTCPProxyModel)
+	rg := &TargetTCPProxyReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.ComputeTargetTCPProxyGVK, NewTargetTCPProxyModel, rg)
 }
 
-func NewtargetTCPProxyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+func NewTargetTCPProxyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &targetTCPProxyModel{config: config}, nil
+}
+
+type TargetTCPProxyReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
+
+var _ kccpredicate.ReconcileGate = &TargetTCPProxyReconcileGate{}
+
+func (r *TargetTCPProxyReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
+	obj := &krm.ComputeTargetTCPProxy{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
+		return false
+	}
+	// Run the direct reconciler only when spec.location is specified and not global
+	return obj.Spec.Location != nil && obj.Spec.Location != direct.PtrTo("global")
 }
 
 type targetTCPProxyModel struct {
