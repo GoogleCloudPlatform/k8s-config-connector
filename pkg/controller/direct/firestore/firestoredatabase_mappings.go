@@ -16,7 +16,7 @@ package firestore
 
 import (
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 

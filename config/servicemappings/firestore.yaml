@@ -22,6 +22,9 @@ spec:
   version: v1beta1
   serviceHostName: "firestore.googleapis.com"
   resources:
+    - name: google_firestore_database
+      kind: FirestoreDatabase
+      direct: true
     - name: google_firestore_index
       kind: FirestoreIndex
       serverGeneratedIDField: "name"
