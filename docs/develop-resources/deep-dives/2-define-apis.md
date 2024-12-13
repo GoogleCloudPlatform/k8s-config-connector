@@ -101,5 +101,5 @@ According to the above principles, you can decide how to process the following.
 
 ### Exit Criteria
 
-* The API PRs shall pass the MockGCP tests. This requires a dirct controller or a Terraform/DCL based controller.
+* The API PRs shall pass the MockGCP tests. This requires a dirct controller or a Terraform/DCL based controller. If the API was modified (during migration of a Terraform/DCL-based Alpha to direct Alpha), MockGCP will not pass until the direct controller is implemented.
 * For Beta resource, all fields shall be covered and properly handled (no `/*NOTYET*/` comments).
