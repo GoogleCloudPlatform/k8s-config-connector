@@ -6,7 +6,7 @@ metadata:
   labels:
     cnrm-test: "true"
     managed-by-cnrm: "true"
-  name: bigquerytablesample${uniqueId}
+  name: bigquerydatasetsample${uniqueId}-bigquerytablesample${uniqueId}
 spec:
   datasetRef:
     external: bigquerydatasetsample${uniqueId}
