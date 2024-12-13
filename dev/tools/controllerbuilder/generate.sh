@@ -148,6 +148,11 @@ go run . generate-types \
     --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
     --resource WorkstationConfig:WorkstationConfig
 
+go run . generate-types \
+    --service google.cloud.workstations.v1 \
+    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --resource Workstation:Workstation
+
 go run . generate-mapper \
     --service google.cloud.workstations.v1 \
     --api-version workstations.cnrm.cloud.google.com/v1beta1

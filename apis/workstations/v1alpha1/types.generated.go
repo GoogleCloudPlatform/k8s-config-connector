@@ -530,4 +530,57 @@ type Status struct {
 	//  message types for APIs to use.
 	Details []Any `json:"details,omitempty"`
 }
+
+// +kcc:proto=google.cloud.workstations.v1.Workstation
+type Workstation struct {
+	// Full name of this workstation.
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Human-readable name for this workstation.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. A system-assigned unique identifier for this workstation.
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Indicates whether this workstation is currently being updated
+	//  to match its intended state.
+	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// Optional. Client-specified annotations.
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Optional.
+	//  [Labels](https://cloud.google.com/workstations/docs/label-resources) that
+	//  are applied to the workstation and that are also propagated to the
+	//  underlying Compute Engine resources.
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Output only. Time when this workstation was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time when this workstation was most recently updated.
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Time when this workstation was most recently successfully
+	//  started, regardless of the workstation's initial state.
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when this workstation was soft-deleted.
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Optional. Checksum computed by the server. May be sent on update and delete
+	//  requests to make sure that the client has an up-to-date value before
+	//  proceeding.
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. Current state of the workstation.
+	State *string `json:"state,omitempty"`
+
+	// Output only. Host to which clients can send HTTPS traffic that will be
+	//  received by the workstation. Authorized traffic will be received to the
+	//  workstation as HTTP on port 80. To send traffic to a different port,
+	//  clients may prefix the host with the destination port in the format
+	//  `{port}-{host}`.
+	Host *string `json:"host,omitempty"`
+}
 */
