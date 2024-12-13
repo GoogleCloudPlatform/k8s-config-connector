@@ -36,7 +36,7 @@ type target struct {
 	endPos int
 }
 
-func (u *TypeUpdater) insertGoField() error {
+func (u *FieldInserter) insertGoField() error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 
 	targetComment := fmt.Sprintf("+kcc:proto=%s", u.newField.parent.FullName())

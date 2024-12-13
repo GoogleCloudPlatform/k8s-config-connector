@@ -34,7 +34,7 @@ type goStruct struct {
 	end   int    // byte offset of the end of this struct
 }
 
-func (u *TypeUpdater) insertGoMessages() error {
+func (u *FieldInserter) insertGoMessages() error {
 	if len(u.dependentMessages) == 0 {
 		return nil
 	}

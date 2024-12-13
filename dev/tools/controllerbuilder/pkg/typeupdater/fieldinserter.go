@@ -32,7 +32,7 @@ import (
 
 const kccProtoPrefix = "+kcc:proto="
 
-type UpdaterOptions struct {
+type InsertFieldOptions struct {
 	ParentMessageFullName string
 	FieldToInsert         string
 	IgnoredFields         string
@@ -41,8 +41,8 @@ type UpdaterOptions struct {
 	GoPackagePath         string
 }
 
-type TypeUpdater struct {
-	opts *UpdaterOptions
+type FieldInserter struct {
+	opts *InsertFieldOptions
 	// newField is the internal representation of the field to be inserted
 	newField newField
 	// dependentMessages is a map nested messages under the new field to be inserted.
@@ -62,13 +62,13 @@ type newMessage struct {
 	generatedContent []byte // the content of the generated Go type corresponding to this message
 }
 
-func NewTypeUpdater(opts *UpdaterOptions) *TypeUpdater {
-	return &TypeUpdater{
+func NewFieldInserter(opts *InsertFieldOptions) *FieldInserter {
+	return &FieldInserter{
 		opts: opts,
 	}
 }
 
-func (u *TypeUpdater) Run() error {
+func (u *FieldInserter) Run() error {
 	// 1. find new field and its dependent proto messages that needs to be generated
 	if err := u.analyze(); err != nil {
 		return err
@@ -91,7 +91,7 @@ func (u *TypeUpdater) Run() error {
 }
 
 // anaylze finds the new field, its parent message, and all dependent messages that need to be generated.
-func (u *TypeUpdater) analyze() error {
+func (u *FieldInserter) analyze() error {
 	// find the new proto field to be inserted
 	newProtoField, parent, err := findNewField(u.opts.ProtoSourcePath, u.opts.ParentMessageFullName, u.opts.FieldToInsert)
 	if err != nil {
@@ -179,7 +179,7 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 	return nil
 }
 
-func (u *TypeUpdater) generate() error {
+func (u *FieldInserter) generate() error {
 	var buf bytes.Buffer
 	klog.Infof("generate Go code for field %s", u.newField.proto.Name())
 	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false)

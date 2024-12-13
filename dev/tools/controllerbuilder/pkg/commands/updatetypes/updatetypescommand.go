@@ -69,7 +69,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Short: "update KRM types for a proto service",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
-			if err := runTypeUpdater(ctx, opt); err != nil {
+			if err := runFieldInserter(ctx, opt); err != nil {
 				return err
 			}
 			return nil
@@ -81,21 +81,20 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	return cmd
 }
 
-func runTypeUpdater(ctx context.Context, opt *UpdateTypeOptions) error {
+func runFieldInserter(ctx context.Context, opt *UpdateTypeOptions) error {
 	if opt.apiDirectory == "" {
 		return fmt.Errorf("--api-dir is required")
 	}
 
-	typeUpdaterOpts := &typeupdater.UpdaterOptions{
+	fieldInserter := typeupdater.NewFieldInserter(&typeupdater.InsertFieldOptions{
 		ProtoSourcePath:       opt.GenerateOptions.ProtoSourcePath,
 		ParentMessageFullName: opt.parentMessage,
 		FieldToInsert:         opt.insertField,
 		IgnoredFields:         opt.ignoredFields,
 		APIDirectory:          opt.apiDirectory,
 		GoPackagePath:         opt.apiGoPackagePath,
-	}
-	updater := typeupdater.NewTypeUpdater(typeUpdaterOpts)
-	if err := updater.Run(); err != nil {
+	})
+	if err := fieldInserter.Run(); err != nil {
 		return err
 	}
 	return nil
