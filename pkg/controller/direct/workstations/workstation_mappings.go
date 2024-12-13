@@ -16,7 +16,7 @@ package workstations
 
 import (
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -58,8 +58,8 @@ func WorkstationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstation) *k
 	}
 	out := &krm.WorkstationSpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Annotations = WorkstationAnnotations_FromProto_Alpha(mapCtx, in.Annotations)
-	out.Labels = WorkstationLabels_FromProto_Alpha(mapCtx, in.Labels)
+	out.Annotations = WorkstationAnnotations_FromProto(mapCtx, in.Annotations)
+	out.Labels = WorkstationLabels_FromProto(mapCtx, in.Labels)
 	return out
 }
 
@@ -69,7 +69,7 @@ func WorkstationSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationSpec)
 	}
 	out := &pb.Workstation{}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Annotations = WorkstationAnnotations_ToProto_Alpha(mapCtx, in.Annotations)
-	out.Labels = WorkstationLabels_ToProto_Alpha(mapCtx, in.Labels)
+	out.Annotations = WorkstationAnnotations_ToProto(mapCtx, in.Annotations)
+	out.Labels = WorkstationLabels_ToProto(mapCtx, in.Labels)
 	return out
 }

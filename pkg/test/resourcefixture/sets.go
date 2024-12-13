@@ -98,6 +98,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"BigQueryAnalyticsHubDataExchange",
 		"WorkstationCluster",
 		"WorkstationConfig",
+		"Workstation",
 		"KMSAutokeyConfig",
 		"KMSKeyHandle",
 	}
