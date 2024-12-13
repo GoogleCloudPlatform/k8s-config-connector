@@ -227,7 +227,12 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.External)
-		return nil
+		status := &krm.{{.Kind}}Status{}
+		status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths)}
