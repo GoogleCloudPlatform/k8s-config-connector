@@ -17,11 +17,13 @@ package mockspanner
 import (
 	"context"
 	"reflect"
+	"slices"
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/instance/v1"
+	"google.golang.org/genproto/protobuf/field_mask"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -69,7 +71,7 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 
 	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
 	obj.Name = fqn
-	s.populateDefaultsForSpannerInstance(obj, obj)
+	s.populateDefaultsForSpannerInstance(obj, obj, nil)
 	obj.State = pb.Instance_READY
 
 	// Metadata instance include ReplicaComputeCapacity even if not specify
@@ -96,16 +98,27 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	})
 }
 
-func (s *SpannerInstanceV1) populateDefaultsForSpannerInstance(update, obj *pb.Instance) {
+func (s *SpannerInstanceV1) populateDefaultsForSpannerInstance(update, obj *pb.Instance, f *field_mask.FieldMask) {
 	// At most one of either node_count or processing_units should be present.
 	// https://cloud.google.com/spanner/docs/compute-capacity
 	// 1 nodeCount equals 1000 processingUnits
-	if 1000*update.NodeCount > update.ProcessingUnits {
-		obj.ProcessingUnits = 1000 * update.NodeCount
-		obj.NodeCount = update.NodeCount
+	if f != nil && len(f.Paths) > 0 {
+		if slices.Contains[[]string](f.Paths, "node_count") {
+			obj.NodeCount = update.NodeCount
+			obj.ProcessingUnits = update.NodeCount * 1000
+		}
+		if slices.Contains[[]string](f.Paths, "processing_units") {
+			obj.ProcessingUnits = update.ProcessingUnits
+			obj.NodeCount = update.ProcessingUnits / 1000
+		}
 	} else {
-		obj.ProcessingUnits = update.ProcessingUnits
-		obj.NodeCount = update.ProcessingUnits / 1000
+		if 1000*update.NodeCount > update.ProcessingUnits {
+			obj.ProcessingUnits = 1000 * update.NodeCount
+			obj.NodeCount = update.NodeCount
+		} else {
+			obj.ProcessingUnits = update.ProcessingUnits
+			obj.NodeCount = update.ProcessingUnits / 1000
+		}
 	}
 }
 
@@ -152,8 +165,7 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 
 		}
 	}
-
-	s.populateDefaultsForSpannerInstance(req.Instance, obj)
+	s.populateDefaultsForSpannerInstance(req.Instance, obj, req.FieldMask)
 	// Metadata instance include ReplicaComputeCapacity even if not specify
 	cloneObj := proto.Clone(obj).(*pb.Instance)
 	s.populateReplicaComputeCapacityForSpannerInstance(cloneObj)
