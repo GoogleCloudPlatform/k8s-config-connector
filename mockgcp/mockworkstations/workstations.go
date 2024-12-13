@@ -244,6 +244,113 @@ func (s *WorkstationsService) DeleteWorkstationConfig(ctx context.Context, req *
 	return op, err
 }
 
+func (s *WorkstationsService) GetWorkstation(ctx context.Context, req *pb.GetWorkstationRequest) (*pb.Workstation, error) {
+	fqn := req.GetName()
+
+	obj := &pb.Workstation{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *WorkstationsService) CreateWorkstation(ctx context.Context, req *pb.CreateWorkstationRequest) (*longrunningpb.Operation, error) {
+	fqn := req.GetParent() + "/workstations/" + req.GetWorkstationId()
+	location, err := getWorkstationLocation(fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	obj := proto.Clone(req.Workstation).(*pb.Workstation)
+	populateDefaultsForWorkstation(obj, false)
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	t := timestamppb.New(time.Now())
+	metadata := &pb.OperationMetadata{
+		CreateTime:            t,
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "create",
+	}
+	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
+		metadata.EndTime = t
+		result := proto.Clone(obj).(*pb.Workstation)
+		s.storage.Update(ctx, fqn, result)
+		return result, nil
+	})
+	return op, err
+}
+
+func (s *WorkstationsService) UpdateWorkstation(ctx context.Context, req *pb.UpdateWorkstationRequest) (*longrunningpb.Operation, error) {
+	fqn := req.GetWorkstation().GetName()
+	location, err := getWorkstationLocation(fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	existing := &pb.Workstation{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	updated := proto.Clone(req.Workstation).(*pb.Workstation)
+	populateDefaultsForWorkstation(updated, true)
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	t := timestamppb.New(time.Now())
+	metadata := &pb.OperationMetadata{
+		CreateTime:            t,
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "update",
+	}
+	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
+		result := proto.Clone(updated).(*pb.Workstation)
+		return result, nil
+	})
+	if err != nil {
+		return op, err
+	}
+	return op, err
+}
+
+func (s *WorkstationsService) DeleteWorkstation(ctx context.Context, req *pb.DeleteWorkstationRequest) (*longrunningpb.Operation, error) {
+	fqn := req.GetName()
+	location, err := getWorkstationLocation(fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	deleted := &pb.Workstation{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	t := timestamppb.New(time.Now())
+	metadata := &pb.OperationMetadata{
+		CreateTime:            t,
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "delete",
+	}
+	op, err := s.operations.StartLRO(ctx, location, metadata, func() (proto.Message, error) {
+		metadata.EndTime = t
+		return &pb.Workstation{}, nil
+	})
+	return op, err
+}
+
 func getWorkstationClusterParent(fqn string) (string, error) {
 	tokens := strings.Split(fqn, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" {
@@ -256,6 +363,14 @@ func getWorkstationConfigLocation(fqn string) (string, error) {
 	tokens := strings.Split(fqn, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" || tokens[6] != "workstationConfigs" {
 		return "", fmt.Errorf("fqn should be projects/<project>/locations/<location>/workstationClusters/<WorkstationCluster>/workstationConfigs/<WorkstationConfig>, got %s", fqn)
+	}
+	return tokens[0] + "/" + tokens[1] + "/" + tokens[2] + "/" + tokens[3], nil
+}
+
+func getWorkstationLocation(fqn string) (string, error) {
+	tokens := strings.Split(fqn, "/")
+	if len(tokens) != 10 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" || tokens[6] != "workstationConfigs" || tokens[8] != "workstations" {
+		return "", fmt.Errorf("fqn should be projects/<project>/locations/<location>/workstationClusters/<WorkstationCluster>/workstationConfigs/<WorkstationConfig>/workstations/<Workstation>, got %s", fqn)
 	}
 	return tokens[0] + "/" + tokens[1] + "/" + tokens[2] + "/" + tokens[3], nil
 }
@@ -313,6 +428,21 @@ func populateDefaultsForWorkstationConfig(obj *pb.WorkstationConfig, update bool
 		}
 	}
 	obj.Etag = computeEtag(obj)
+}
+
+func populateDefaultsForWorkstation(obj *pb.Workstation, update bool) {
+	if obj.Uid == "" {
+		obj.Uid = fmt.Sprintf("%x", time.Now().UnixNano())
+	}
+	t := timestamppb.New(time.Now())
+	if obj.CreateTime == nil {
+		obj.CreateTime = t
+	}
+	if obj.UpdateTime == nil || update {
+		obj.UpdateTime = t
+	}
+	obj.Etag = computeEtag(obj)
+	obj.State = pb.Workstation_STATE_STOPPED
 }
 
 func populateOutputsForWorkstationCluster(obj *pb.WorkstationCluster, fqn string) {

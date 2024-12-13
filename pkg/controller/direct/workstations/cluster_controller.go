@@ -313,6 +313,10 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	req := &pb.DeleteWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
 	op, err := a.gcpClient.DeleteWorkstationCluster(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if workstation is not found (assume it was already deleted).
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting WorkstationCluster %s: %w", a.id.FullyQualifiedName(), err)
 	}
 

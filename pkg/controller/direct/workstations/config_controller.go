@@ -151,7 +151,7 @@ func (a *WorkstationConfigAdapter) Create(ctx context.Context, createOp *directb
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("WorkstationConfig %s waiting creation: %w", a.id.String(), err)
+		return fmt.Errorf("waiting WorkstationConfig %s creation: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created WorkstationConfig", "name", a.id.String())
 
@@ -209,7 +209,7 @@ func (a *WorkstationConfigAdapter) Update(ctx context.Context, updateOp *directb
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("WorkstationConfig %s waiting update: %w", a.id.String(), err)
+		return fmt.Errorf("waiting WorkstationConfig %s update: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated WorkstationConfig", "name", a.id.String())
 
@@ -254,6 +254,10 @@ func (a *WorkstationConfigAdapter) Delete(ctx context.Context, deleteOp *directb
 	req := &pb.DeleteWorkstationConfigRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteWorkstationConfig(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if workstation is not found (assume it was already deleted).
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting WorkstationConfig %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted WorkstationConfig", "name", a.id.String())

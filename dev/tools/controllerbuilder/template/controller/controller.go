@@ -139,7 +139,7 @@ var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter ` + "`" + `Update` + "`" + ` call.
-// Return true means the object is not found. This triggers Adapter ` + "`" + `Create` + "`" + ` call.
+// Return false means the object is not found. This triggers Adapter ` + "`" + `Create` + "`" + ` call.
 // Return a non-nil error requeues the requests. 
 func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
