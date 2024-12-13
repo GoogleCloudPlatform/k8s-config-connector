@@ -38,7 +38,7 @@ type UpdateTypeOptions struct {
 func (o *UpdateTypeOptions) InitDefaults() error {
 	root, err := options.RepoRoot()
 	if err != nil {
-		return nil
+		return err
 	}
 	o.apiDirectory = root + "/apis/"
 	o.goPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"

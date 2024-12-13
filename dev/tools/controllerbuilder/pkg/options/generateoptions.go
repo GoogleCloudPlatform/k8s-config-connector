@@ -30,7 +30,7 @@ type GenerateOptions struct {
 func (o *GenerateOptions) InitDefaults() error {
 	root, err := RepoRoot()
 	if err != nil {
-		return nil
+		return err
 	}
 	o.ProtoSourcePath = root + "/.build/googleapis.pb"
 	return nil

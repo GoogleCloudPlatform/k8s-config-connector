@@ -177,8 +177,8 @@ func (v *MapperGenerator) GenerateMappers() error {
 		}
 		out := v.getOutputFile(k)
 		out.packageName = lastGoComponent(goPackage)
-		
-		 {
+
+		{
 			pbPackage := pair.ProtoGoPackage
 			krmPackage := pair.KRMType.GoPackage
 
@@ -236,7 +236,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					continue
 				}
 
-				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for Spec and observedState structs which map to the same proto message.
+				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for Spec and ObservedState structs which map to the same proto message.
 					fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
 				}
 				continue
@@ -404,7 +404,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					continue
 				}
 
-				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for spec and state structs which map to the same proto message.
+				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for spec and observedState structs which map to the same proto message.
 					fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
 				}
 				continue

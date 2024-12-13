@@ -50,7 +50,7 @@ func (o *GenerateBasicReconcilerOptions) BindFlags(cmd *cobra.Command) {
 func (o *GenerateBasicReconcilerOptions) InitDefaults() error {
 	root, err := options.RepoRoot()
 	if err != nil {
-		return nil
+		return err
 	}
 	o.APIGoPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
 	o.APIDirectory = root + "/apis/"

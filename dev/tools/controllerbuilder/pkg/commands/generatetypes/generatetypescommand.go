@@ -75,7 +75,7 @@ func (r *ResourceList) Set(s string) error {
 func (o *GenerateCRDOptions) InitDefaults() error {
 	root, err := options.RepoRoot()
 	if err != nil {
-		return nil
+		return err
 	}
 	o.OutputAPIDirectory = root + "/apis/"
 	return nil
@@ -168,7 +168,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 	for _, resource := range o.Resources {
 		resourceProtoFullName := o.ServiceName + "." + resource.ProtoName
-		log.Info("visting proto", "name", resourceProtoFullName)
+		log.Info("visiting proto", "name", resourceProtoFullName)
 		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
 			return err
 		}

@@ -108,11 +108,11 @@ func FormatImports(path string, out []byte) error {
 		Comments:  true,
 		AllErrors: true,
 		Fragment:  true}
-	formatedOut, err := imports.Process(path, out, importOps)
+	formattedOut, err := imports.Process(path, out, importOps)
 	if err != nil {
 		return fmt.Errorf("format controller file %s: %w", path, err)
 	}
-	return WriteToFile(path, formatedOut)
+	return WriteToFile(path, formattedOut)
 }
 
 func WriteToFile(path string, out []byte) error {
