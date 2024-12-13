@@ -116,6 +116,7 @@ var preferredSampleForResource = map[string]string{
 	"vertexaidataset":                    "vertexai-dataset-encryptionkey",
 	"vertexaiendpoint":                   "vertexai-endpoint-network",
 	"workstationcluster":                 "basic-workstationcluster",
+	"workstationconfig":                  "basic-workstationconfig",
 	"kmsautokeyconfig":                   "kmsautokeyconfig",
 	"kmskeyhandle":                       "kmskeyhandle",
 }
