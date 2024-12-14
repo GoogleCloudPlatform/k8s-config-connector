@@ -117,7 +117,8 @@ func NewBigQueryAnalyticsHubListingRef(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("cannot parse dataExchangeRef for listing ref: %w", err)
 	}
 
-	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location, DataExchangeID: dataExchangeID.ID()}
+	deID := dataExchangeID.ID()
+	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location, DataExchangeID: deID}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -126,6 +127,9 @@ func NewBigQueryAnalyticsHubListingRef(ctx context.Context, reader client.Reader
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+	if deID == "" {
+		return nil, fmt.Errorf("cannot resolve dataExchange ID")
 	}
 
 	// Use approved External
@@ -150,8 +154,12 @@ func NewBigQueryAnalyticsHubListingRef(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 			resourceID, actualResourceID)
 	}
+	if actualParent.DataExchangeID != deID {
+		return nil, fmt.Errorf("spec.dataExchangeRef changed, expect %s, got %s", actualParent.DataExchangeID, deID)
+	}
+
 	id.External = externalRef
-	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location}
+	id.parent = &BigQueryAnalyticsHubListingParent{ProjectID: projectID, Location: location, DataExchangeID: deID}
 	return id, nil
 }
 
