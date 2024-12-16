@@ -93,3 +93,19 @@ if [[ "${changed_file_count}" != "0" ]] || [[ "${added_reference_doc_file_count}
     git ls-files --others --exclude-standard scripts/generate-google3-docs/resource-reference/generated/
     exit 1
 fi
+
+### This check ensures that the generated Go types for direct resources are not manually modified by accident.
+### Ensures that the code generation tools can be safely re-run.
+### This check ignores copyright year changes.
+make generate-types
+diff_output=$(git diff --unified=0 | grep -v -E "^(diff --git|index |--- |\+\+\+ |@@ |[+-][[:space:]]*// Copyright.*Google LLC)") || true
+if echo "$diff_output" | grep -q "^[+-]"; then
+    echo "Full diff (excluding copyright changes):"
+    echo "$diff_output"
+    echo "ERROR: The generated types are outdated. Run 'make generate-types' to update them."
+    echo "If you need to modify any types, first move them out of the generated file."
+    echo "Then run 'make generate-types' again to ensure the generated file remains unchanged."
+    echo "Affected files:"
+    git diff --name-only
+    exit 1
+fi
