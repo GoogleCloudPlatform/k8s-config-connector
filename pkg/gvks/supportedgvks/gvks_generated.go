@@ -500,6 +500,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "bigqueryanalyticshub.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigQueryAnalyticsHubListing",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "bigqueryconnection.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "BigQueryConnectionConnection",

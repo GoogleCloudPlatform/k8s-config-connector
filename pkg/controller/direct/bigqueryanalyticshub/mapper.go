@@ -16,28 +16,27 @@ package bigqueryanalyticshub
 
 import (
 	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1alpha1"
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
-func BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krmv1beta1.BigQueryAnalyticsHubDataExchangeObservedState {
+func BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.BigQueryAnalyticsHubDataExchangeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.BigQueryAnalyticsHubDataExchangeObservedState{}
+	out := &krm.BigQueryAnalyticsHubDataExchangeObservedState{}
 	out.ListingCount = direct.LazyPtr(int64(in.GetListingCount()))
 	// MISSING: SharingEnvironmentConfig // not yet
 	return out
 }
 
-func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krmv1beta1.BigQueryAnalyticsHubDataExchangeSpec {
+func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.BigQueryAnalyticsHubDataExchangeSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.BigQueryAnalyticsHubDataExchangeSpec{}
+	out := &krm.BigQueryAnalyticsHubDataExchangeSpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
@@ -48,7 +47,7 @@ func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.DiscoveryType = direct.Enum_FromProto(mapCtx, in.GetDiscoveryType())
 	return out
 }
-func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigQueryAnalyticsHubDataExchangeSpec) *pb.DataExchange {
+func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryAnalyticsHubDataExchangeSpec) *pb.DataExchange {
 	if in == nil {
 		return nil
 	}
@@ -81,11 +80,11 @@ func Categories_FromProto(mapCtx *direct.MapContext, in []pb.Listing_Category) [
 	return ret
 }
 
-func BigQueryAnalyticsHubListingSpec_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krmv1alpha1.BigQueryAnalyticsHubListingSpec {
+func BigQueryAnalyticsHubListingSpec_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.BigQueryAnalyticsHubListingSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BigQueryAnalyticsHubListingSpec{}
+	out := &krm.BigQueryAnalyticsHubListingSpec{}
 
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -99,18 +98,18 @@ func BigQueryAnalyticsHubListingSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: RestrictedExportConfig // not yet
 	out.DiscoveryType = direct.Enum_FromProto(mapCtx, in.GetDiscoveryType())
 
-	out.Source = &krmv1alpha1.Source{
+	out.Source = &krm.Source{
 		// TODO(KCC): in the future enforce mutual exclusion / one of b/w BigQueryDatasetSource and PubSubTopicSource
 		BigQueryDatasetSource: Listing_BigQueryDatasetSource_FromProto(mapCtx, in.GetBigqueryDataset()),
 	}
 	return out
 }
 
-func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource) *krmv1alpha1.BigQueryDatasetSource {
+func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource) *krm.BigQueryDatasetSource {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BigQueryDatasetSource{}
+	out := &krm.BigQueryDatasetSource{}
 	if out.DatasetRef != nil {
 		out.DatasetRef = &refs.BigQueryDatasetRef{
 			External: in.Dataset,
@@ -122,11 +121,11 @@ func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.L
 	return out
 }
 
-func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_SelectedResource) *krmv1alpha1.SelectedResource {
+func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_SelectedResource) *krm.SelectedResource {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.SelectedResource{}
+	out := &krm.SelectedResource{}
 	if in.GetTable() != "" {
 		out.TableRef = &refs.BigQueryTableRef{
 			External: in.GetTable(),
@@ -135,7 +134,7 @@ func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.Map
 
 	return out
 }
-func Listing_BigQueryDatasetSource_SelectedResource_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SelectedResource) *pb.Listing_BigQueryDatasetSource_SelectedResource {
+func Listing_BigQueryDatasetSource_SelectedResource_ToProto(mapCtx *direct.MapContext, in *krm.SelectedResource) *pb.Listing_BigQueryDatasetSource_SelectedResource {
 	if in == nil {
 		return nil
 	}
@@ -149,11 +148,11 @@ func Listing_BigQueryDatasetSource_SelectedResource_ToProto(mapCtx *direct.MapCo
 	return out
 }
 
-func Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy) *krmv1alpha1.RestrictedExportPolicy {
+func Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy) *krm.RestrictedExportPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.RestrictedExportPolicy{}
+	out := &krm.RestrictedExportPolicy{}
 	if in.GetEnabled() != nil {
 		out.Enabled = direct.LazyPtr(in.GetEnabled().GetValue())
 	}
@@ -166,7 +165,7 @@ func Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx *dire
 
 	return out
 }
-func Listing_BigQueryDatasetSource_RestrictedExportPolicy_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RestrictedExportPolicy) *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy {
+func Listing_BigQueryDatasetSource_RestrictedExportPolicy_ToProto(mapCtx *direct.MapContext, in *krm.RestrictedExportPolicy) *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy {
 	if in == nil {
 		return nil
 	}
@@ -184,18 +183,18 @@ func Listing_BigQueryDatasetSource_RestrictedExportPolicy_ToProto(mapCtx *direct
 	return out
 }
 
-func BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krmv1alpha1.BigQueryAnalyticsHubListingObservedState {
+func BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.BigQueryAnalyticsHubListingObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BigQueryAnalyticsHubListingObservedState{}
+	out := &krm.BigQueryAnalyticsHubListingObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: Icon // not yet
 	// MISSING: RestrictedExportConfig // not yet
 	return out
 }
 
-func BigQueryAnalyticsHubListingObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryAnalyticsHubListingObservedState) *pb.Listing {
+func BigQueryAnalyticsHubListingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryAnalyticsHubListingObservedState) *pb.Listing {
 	if in == nil {
 		return nil
 	}
@@ -219,7 +218,7 @@ func Categories_ToProto(mapCtx *direct.MapContext, in []string) []pb.Listing_Cat
 	return ret
 }
 
-func BigQueryAnalyticsHubListingSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryAnalyticsHubListingSpec) *pb.Listing {
+func BigQueryAnalyticsHubListingSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryAnalyticsHubListingSpec) *pb.Listing {
 	if in == nil {
 		return nil
 	}
@@ -248,7 +247,7 @@ func BigQueryAnalyticsHubListingSpec_ToProto(mapCtx *direct.MapContext, in *krmv
 	return out
 }
 
-func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDatasetSource) *pb.Listing_BigqueryDataset {
+func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDatasetSource) *pb.Listing_BigqueryDataset {
 	if in == nil {
 		return nil
 	}
@@ -281,17 +280,17 @@ func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krmv1a
 	return out
 }
 
-func DataProvider_FromProto(mapCtx *direct.MapContext, in *pb.DataProvider) *krmv1alpha1.DataProvider {
+func DataProvider_FromProto(mapCtx *direct.MapContext, in *pb.DataProvider) *krm.DataProvider {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.DataProvider{}
+	out := &krm.DataProvider{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
 	return out
 }
 
-func DataProvider_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataProvider) *pb.DataProvider {
+func DataProvider_ToProto(mapCtx *direct.MapContext, in *krm.DataProvider) *pb.DataProvider {
 	if in == nil {
 		return nil
 	}
@@ -301,17 +300,17 @@ func DataProvider_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataProvide
 	return out
 }
 
-func Publisher_FromProto(mapCtx *direct.MapContext, in *pb.Publisher) *krmv1alpha1.Publisher {
+func Publisher_FromProto(mapCtx *direct.MapContext, in *pb.Publisher) *krm.Publisher {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Publisher{}
+	out := &krm.Publisher{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
 	return out
 }
 
-func Publisher_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Publisher) *pb.Publisher {
+func Publisher_ToProto(mapCtx *direct.MapContext, in *krm.Publisher) *pb.Publisher {
 	if in == nil {
 		return nil
 	}

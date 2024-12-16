@@ -25,3 +25,6 @@ spec:
     - name: google_bigquery_analytics_hub_data_exchange
       kind: BigQueryAnalyticsHubDataExchange
       direct: true
+    - name: google_bigquery_analytics_hub_listing
+      kind: BigQueryAnalyticsHubListing
+      direct: true

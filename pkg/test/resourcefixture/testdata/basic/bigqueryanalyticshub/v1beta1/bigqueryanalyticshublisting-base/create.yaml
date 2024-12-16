@@ -12,35 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1beta1
 kind: BigQueryAnalyticsHubListing
 metadata:
   name: bigqueryanalyticshublisting${uniqueId}
 spec:
-  categories:
-  - CATEGORY_EDUCATION
-  - CATEGORY_COMMERCE
-  dataProvider:
-    name: 32684e480e8b319
-    primaryContact: someone@something.com
-  description: 4f3e1a795f733350
-  discoveryType: DISCOVERY_TYPE_PUBLIC
-  documentation: 53867799b03c0bbb
-  primaryContact: someone@something.com
-  publisher:
-    name: 495e3f7dfb12a9d3
-    primaryContact: someone@something.com
-  requestAccess: someone@something.com
+  displayName: my_data_exchange
+  location: US
   source:
     bigQueryDatasetSource:
       datasetRef:
         name: bigquerydataset${uniqueId}
-      restrictedExportPolicy:
-        enabled: true
-        restrictDirectTableAccess: true
-        restrictQueryResult: false
-  displayName: my_data_exchange
-  location: US
   dataExchangeRef:
     name: bigqueryanalyticshubdataexchange${uniqueId}
   projectRef:
