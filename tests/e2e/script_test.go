@@ -335,11 +335,11 @@ func TestE2EScript(t *testing.T) {
 								gotPath := expectedPath
 								wantObj, err := getKubeObjectInStringFromFile(wantPath)
 								if err != nil {
-									h.Fatalf(err.Error())
+									h.Fatalf("%s", err.Error())
 								}
 								gotObj, err := getKubeObjectInStringFromFile(gotPath)
 								if err != nil {
-									h.Fatalf(err.Error())
+									h.Fatalf("%s", err.Error())
 								}
 								diff := getDiffInSpecs(wantObj, gotObj)
 								if diff != "" {
