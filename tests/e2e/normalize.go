@@ -150,6 +150,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
 
+	// Specific to Secret Manager
+	visitor.replacePaths[".spec.expireTime"] = "2025-10-03T15:01:23Z"
+
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
@@ -178,6 +181,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to DataFlow
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
+
+	// Specific to SecretManager
+	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"

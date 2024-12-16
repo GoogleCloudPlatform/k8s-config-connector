@@ -122,6 +122,18 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 				secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
 			}
 		}
+		if secret.Spec.Replication.UserManaged != nil {
+			for _, r := range secret.Spec.Replication.UserManaged.Replicas {
+				if r.CustomerManagedEncryption != nil {
+					kmsKeyRef := r.CustomerManagedEncryption.KmsKeyRef
+					kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
+					if err != nil {
+						return err
+					}
+					r.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
+				}
+			}
+		}
 	}
 	if len(secret.Spec.TopicRefs) != 0 {
 		for _, topicRef := range secret.Spec.TopicRefs {
@@ -246,7 +258,10 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	if err != nil {
 		return err
 	}
-
+	if paths.Has("ttl") {
+		paths = paths.Delete("ttl")
+		resource.Expiration = a.actual.Expiration
+	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil

@@ -84,6 +84,13 @@ func (s *SecretsV1) populateDefaultsForSecret(ctx context.Context, obj *pb.Secre
 			return fmt.Errorf("Aliases cannot be assigned to versions that don't exist")
 		}
 	}
+	// TTL and ExpireTime are OneOf, but the GCP service always converts TTL to expireTime before storing the object.
+	if obj.GetTtl() != nil {
+		expirateTime := timestamppb.Now().AsTime().Add(obj.GetTtl().AsDuration())
+		obj.Expiration = &pb.Secret_ExpireTime{
+			ExpireTime: timestamppb.New(expirateTime),
+		}
+	}
 	return nil
 }
 
@@ -153,6 +160,10 @@ func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretReques
 		case "expireTime":
 			updated.Expiration = &pb.Secret_ExpireTime{
 				ExpireTime: req.Secret.GetExpireTime(),
+			}
+		case "ttl":
+			updated.Expiration = &pb.Secret_Ttl{
+				Ttl: req.Secret.GetTtl(),
 			}
 		case "expiration":
 			updated.Expiration = req.Secret.GetExpiration()

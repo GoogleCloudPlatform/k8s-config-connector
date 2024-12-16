@@ -13,13 +13,28 @@
 # limitations under the License.
 
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecretVersion
+kind: SecretManagerSecret
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
-    alpha.cnrm.cloud.google.com/reconciler: direct
-  name: secretmanagersecretversion-${uniqueId}
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    label-one: value-one
+  name: secretmanagersecret-${uniqueId}
 spec:
-  enabled: false
-  secretRef:
-    name: secretmanagersecretversion-dep-${uniqueId}
+  replication:
+    userManaged:
+      replicas:
+      - customerManagedEncryption:
+          kmsKeyRef:
+            name: kmscryptokey-${uniqueId}
+        location: us-central1
+  topics:
+    - topicRef:
+        name: topic-${uniqueId}
+  annotations:
+    "foo": secretmanagersecret
+  ttl: 100s
+  rotation:
+    nextRotationTime: "2025-10-02T15:01:23Z"
+    rotationPeriod: "3600s"

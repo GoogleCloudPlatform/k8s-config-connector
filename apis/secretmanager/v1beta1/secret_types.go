@@ -48,8 +48,7 @@ type SecretManagerSecretSpec struct {
 	//  This is always provided on output, regardless of what was sent on input.
 	ExpireTime *string `json:"expireTime,omitempty"`
 
-	// Input only. The TTL for the
-	//  [Secret][google.cloud.secretmanager.v1.Secret].
+	// Input only. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".
 	TTL *string `json:"ttl,omitempty"`
 
 	// Optional. Rotation policy attached to the
