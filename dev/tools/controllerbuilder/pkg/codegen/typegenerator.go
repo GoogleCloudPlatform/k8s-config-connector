@@ -226,6 +226,7 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 		}
 	}
 
+	fmt.Fprintf(out, "\t// +kcc:proto=%s\n", field.FullName())
 	fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
 		goFieldName,
 		goType,
