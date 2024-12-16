@@ -9,7 +9,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: gkehubfeaturemembership-full-acm-${uniqueId}
+  name: gkehubfeaturemembership-basic-csau-${uniqueId}
   namespace: ${uniqueId}
 spec:
   configmanagement:
@@ -18,22 +18,22 @@ spec:
         gcpServiceAccountRef:
           name: sa-${uniqueId}
         httpsProxy: https://github.com
-        policyDir: config-sync-quickstart/multirepo/root
+        policyDir: config-connector
         secretType: none
-        syncBranch: main
-        syncRepo: https://github.com/GoogleCloudPlatform/anthos-config-management-samples
-        syncRev: 264b37c21ef77165d8639d77b23d4ebb8fee053c
-        syncWaitSecs: "30"
+        syncBranch: master
+        syncRepo: https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit
+        syncRev: HEAD
+        syncWaitSecs: "20"
       sourceFormat: hierarchy
-    version: 1.18.2
+    management: MANAGEMENT_AUTOMATIC
   featureRef:
-    name: gkehubfeature-full-acm-${uniqueId}
+    name: gkehubfeature-basic-csau-${uniqueId}
   location: global
-  membershipLocation: us-central1
+  membershipLocation: us-south1
   membershipRef:
-    name: gkehubmembership-full-acm-${uniqueId}
+    name: gkehubmembership-basic-csau-${uniqueId}
   projectRef:
-    name: gkehubfm-${uniqueId}
+    name: project-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

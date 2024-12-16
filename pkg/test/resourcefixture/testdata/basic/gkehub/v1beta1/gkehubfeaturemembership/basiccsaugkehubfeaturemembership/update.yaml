@@ -15,16 +15,16 @@
 apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeatureMembership
 metadata:
-  name: gkehubfeaturemembership-full-acm-${uniqueId}
+  name: gkehubfeaturemembership-basic-csau-${uniqueId}
 spec:
   projectRef:
-    name: gkehubfm-${uniqueId}
+    name: project-${uniqueId}
   location: global
-  membershipLocation: us-central1
+  membershipLocation: us-south1
   membershipRef:
-    name: gkehubmembership-full-acm-${uniqueId}
+    name: gkehubmembership-basic-csau-${uniqueId}
   featureRef:
-    name: gkehubfeature-full-acm-${uniqueId}
+    name: gkehubfeature-basic-csau-${uniqueId}
   configmanagement:
     configSync:
       sourceFormat: hierarchy
@@ -32,10 +32,11 @@ spec:
         gcpServiceAccountRef:
           name: sa-${uniqueId} 
         httpsProxy: "https://github.com"
-        syncRepo: "https://github.com/GoogleCloudPlatform/anthos-config-management-samples"
-        syncBranch: "main"
-        policyDir: "config-sync-quickstart/multirepo/root"
-        syncWaitSecs: "30"
-        syncRev: "264b37c21ef77165d8639d77b23d4ebb8fee053c"
+        syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
+        syncBranch: "master"
+        policyDir: "config-connector"
+        syncWaitSecs: "20"
+        syncRev: "HEAD"
         secretType: "none"
-    version: "1.18.2"
+    management: "MANAGEMENT_AUTOMATIC"
+
