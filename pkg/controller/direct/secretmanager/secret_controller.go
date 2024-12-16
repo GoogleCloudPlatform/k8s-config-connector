@@ -258,7 +258,10 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	if err != nil {
 		return err
 	}
-
+	if paths.Has("ttl") {
+		paths = paths.Delete("ttl")
+		resource.Expiration = a.actual.Expiration
+	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
