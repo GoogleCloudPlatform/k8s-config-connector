@@ -87,6 +87,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to CloudKMS
 	visitor.replacePaths[".primary.createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".primary.generateTime"] = "2024-04-01T12:34:56.123456Z"
+	//Specific to Apigee
+	visitor.replacePaths[".status.observedState.createdAt"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.lastModifiedAt"] = "1970-01-01T00:00:00Z"
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"

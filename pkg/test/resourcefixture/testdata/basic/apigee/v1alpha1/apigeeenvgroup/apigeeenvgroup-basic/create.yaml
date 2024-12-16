@@ -19,4 +19,5 @@ metadata:
 spec:
   hostnames:
     - ${uniqueId}.mytesthost.net
-  orgId: organizations/${projectId}
+  organizationRef:
+    external: organizations/${projectId}
