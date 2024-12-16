@@ -116,7 +116,7 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 		case "spec":
 			obj.Spec = req.GetResource().Spec
 		case "membershipSpecs":
-			obj.MembershipSpecs = req.GetResource().GetMembershipSpecs()
+			obj.MembershipSpecs = updateMembershipSpecsMap(obj.MembershipSpecs, req.GetResource().GetMembershipSpecs())
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -137,6 +137,16 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
 		return result, nil
 	})
+}
+
+func updateMembershipSpecsMap(membershipSpecs, membershipSpecsPatch map[string]*pb.MembershipFeatureSpec) map[string]*pb.MembershipFeatureSpec {
+	if membershipSpecs == nil {
+		membershipSpecs = make(map[string]*pb.MembershipFeatureSpec)
+	}
+	for k, v := range membershipSpecsPatch {
+		membershipSpecs[k] = v
+	}
+	return membershipSpecs
 }
 
 func (s *GKEHubFeature) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureRequest) (*longrunning.Operation, error) {
