@@ -66,6 +66,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 
 	// subcommands
 	cmd.AddCommand(buildInsertCommand(opt))
+	cmd.AddCommand(buildSyncCommand(opt))
 
 	return cmd
 }

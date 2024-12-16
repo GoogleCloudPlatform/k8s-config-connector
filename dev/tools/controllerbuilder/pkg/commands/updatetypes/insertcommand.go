@@ -77,7 +77,7 @@ func runInsert(opt *insertFieldOptions) func(*cobra.Command, []string) error {
 	}
 }
 
-func runFieldInserter(ctx context.Context, opt *insertFieldOptions) error {
+func runFieldInserter(_ context.Context, opt *insertFieldOptions) error {
 	fieldInserter := typeupdater.NewFieldInserter(&typeupdater.InsertFieldOptions{
 		ProtoSourcePath:       opt.GenerateOptions.ProtoSourcePath,
 		ParentMessageFullName: opt.parent,

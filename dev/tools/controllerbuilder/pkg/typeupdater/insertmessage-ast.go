@@ -23,6 +23,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 
 	"k8s.io/klog/v2"
@@ -180,10 +181,10 @@ func protoNameFromComment(cg *ast.CommentGroup) (string, error) {
 	for _, c := range cg.List {
 		trimmed := strings.TrimPrefix(c.Text, "//")
 		trimmed = strings.TrimSpace(trimmed)
-		if !strings.HasPrefix(trimmed, kccProtoPrefix) {
+		if !strings.HasPrefix(trimmed, codegen.KCCProtoMessageAnnotation+"=") {
 			continue
 		}
-		return strings.TrimSpace(strings.TrimPrefix(trimmed, kccProtoPrefix)), nil // found the comment with proto name
+		return strings.TrimSpace(strings.TrimPrefix(trimmed, codegen.KCCProtoMessageAnnotation+"=")), nil // found the comment with proto name
 	}
 	return "", fmt.Errorf("not found")
 }

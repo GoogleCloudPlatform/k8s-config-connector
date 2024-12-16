@@ -30,8 +30,6 @@ import (
 	"k8s.io/klog/v2"
 )
 
-const kccProtoPrefix = "+kcc:proto="
-
 type InsertFieldOptions struct {
 	ParentMessageFullName string
 	FieldToInsert         string
@@ -182,7 +180,7 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 func (u *FieldInserter) generate() error {
 	var buf bytes.Buffer
 	klog.Infof("generate Go code for field %s", u.newField.proto.Name())
-	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false)
+	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false) // TODO: add support for transitive output fields
 	u.newField.generatedContent = buf.Bytes()
 
 	for key, msg := range u.dependentMessages {
