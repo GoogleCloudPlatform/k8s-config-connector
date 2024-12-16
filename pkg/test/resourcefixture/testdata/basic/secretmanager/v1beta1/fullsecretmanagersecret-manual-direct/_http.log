@@ -39,7 +39,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-12-16T17:46:15.964697052Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
 }
 
@@ -61,7 +61,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-12-16T17:46:15.964697052Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
 }
 
@@ -116,7 +116,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-12-16T17:46:16.636854246Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
@@ -156,7 +156,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-12-16T17:46:16.636854246Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
@@ -349,6 +349,7 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -362,7 +363,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
@@ -735,9 +736,9 @@ X-Xss-Protection: 0
   "annotations": {
     "foo": "secretmanagersecret"
   },
-  "createTime": "2024-12-16T17:46:42.588737Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2024-12-16T17:48:21.686076167Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -789,9 +790,9 @@ X-Xss-Protection: 0
   "annotations": {
     "foo": "secretmanagersecret"
   },
-  "createTime": "2024-12-16T17:46:42.588737Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2024-12-16T17:48:21.686076167Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -834,7 +835,7 @@ x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretman
     "foo": "secretmanagersecret"
   },
   "etag": "abcdef0123A=",
-  "expireTime": "2024-12-16T17:48:21.686076167Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -881,9 +882,9 @@ X-Xss-Protection: 0
     "bar": "secretmanagersecret-bar",
     "foo": "secretmanagersecret"
   },
-  "createTime": "2024-12-16T17:46:42.588737Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2024-12-16T17:48:21.686076167Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -936,9 +937,9 @@ X-Xss-Protection: 0
     "bar": "secretmanagersecret-bar",
     "foo": "secretmanagersecret"
   },
-  "createTime": "2024-12-16T17:46:42.588737Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2024-12-16T17:48:21.686076167Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -992,9 +993,9 @@ X-Xss-Protection: 0
     "bar": "secretmanagersecret-bar",
     "foo": "secretmanagersecret"
   },
-  "createTime": "2024-12-16T17:46:42.588737Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2024-12-16T17:48:21.686076167Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -1392,7 +1393,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-12-16T17:46:16.636854246Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
@@ -1465,7 +1466,7 @@ X-Xss-Protection: 0
 
 {
   "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-  "createTime": "2024-12-16T17:46:16.636854246Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyTime": "2024-04-01T12:34:56.123456Z",
   "generateTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
@@ -1491,6 +1492,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-12-16T17:46:15.964697052Z",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
 }
