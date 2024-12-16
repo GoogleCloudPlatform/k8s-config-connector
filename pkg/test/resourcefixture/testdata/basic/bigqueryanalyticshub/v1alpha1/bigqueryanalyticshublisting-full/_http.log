@@ -1,0 +1,574 @@
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}"
+  },
+  "friendlyName": "my-bigquerydataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "friendlyName": "my-bigquerydataset",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "friendlyName": "my-bigquerydataset",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "dataExchange \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}\" not found"
+}
+
+---
+
+POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges?dataExchangeId=bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS
+
+{
+  "discoveryType": 0,
+  "displayName": "my_data_exchange"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "description": "",
+  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "displayName": "my_data_exchange",
+  "documentation": "",
+  "icon": "",
+  "listingCount": 0,
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "primaryContact": "",
+  "sharingEnvironmentConfig": null
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "listing \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}\" not found"
+}
+
+---
+
+POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings?listingId=bigqueryanalyticshublisting${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": {
+      "enabled": true,
+      "restrictDirectTableAccess": true,
+      "restrictQueryResult": false
+    }
+  },
+  "categories": [
+    7,
+    3
+  ],
+  "dataProvider": {
+    "name": "32684e480e8b319",
+    "primaryContact": "someone@something.com"
+  },
+  "description": "4f3e1a795f733350",
+  "discoveryType": 2,
+  "displayName": "my_data_exchange",
+  "documentation": "53867799b03c0bbb",
+  "primaryContact": "someone@something.com",
+  "publisher": {
+    "name": "495e3f7dfb12a9d3",
+    "primaryContact": "someone@something.com"
+  },
+  "requestAccess": "someone@something.com"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": {
+      "enabled": true,
+      "restrictDirectTableAccess": true,
+      "restrictQueryResult": false
+    },
+    "selectedResources": []
+  },
+  "categories": [
+    "CATEGORY_EDUCATION",
+    "CATEGORY_COMMERCE"
+  ],
+  "dataProvider": {
+    "name": "32684e480e8b319",
+    "primaryContact": "someone@something.com"
+  },
+  "description": "4f3e1a795f733350",
+  "discoveryType": "DISCOVERY_TYPE_PUBLIC",
+  "displayName": "my_data_exchange",
+  "documentation": "53867799b03c0bbb",
+  "icon": "",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "primaryContact": "someone@something.com",
+  "publisher": {
+    "name": "495e3f7dfb12a9d3",
+    "primaryContact": "someone@something.com"
+  },
+  "requestAccess": "someone@something.com",
+  "restrictedExportConfig": null,
+  "state": "STATE_UNSPECIFIED"
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": {
+      "enabled": true,
+      "restrictDirectTableAccess": true,
+      "restrictQueryResult": false
+    },
+    "selectedResources": []
+  },
+  "categories": [
+    "CATEGORY_EDUCATION",
+    "CATEGORY_COMMERCE"
+  ],
+  "dataProvider": {
+    "name": "32684e480e8b319",
+    "primaryContact": "someone@something.com"
+  },
+  "description": "4f3e1a795f733350",
+  "discoveryType": "DISCOVERY_TYPE_PUBLIC",
+  "displayName": "my_data_exchange",
+  "documentation": "53867799b03c0bbb",
+  "icon": "",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "primaryContact": "someone@something.com",
+  "publisher": {
+    "name": "495e3f7dfb12a9d3",
+    "primaryContact": "someone@something.com"
+  },
+  "requestAccess": "someone@something.com",
+  "restrictedExportConfig": null,
+  "state": "STATE_UNSPECIFIED"
+}
+
+---
+
+PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}?updateMask=displayName%2Cdescription%2CprimaryContact%2Cdocumentation%2CdiscoveryType%2CdataProvider%2Cpublisher%2Ccategories
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: listing.name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": {
+      "enabled": true,
+      "restrictDirectTableAccess": true,
+      "restrictQueryResult": false
+    }
+  },
+  "categories": [
+    17,
+    3
+  ],
+  "dataProvider": {
+    "name": "updated",
+    "primaryContact": "updated@updated.com"
+  },
+  "description": "updated",
+  "discoveryType": 1,
+  "displayName": "another_dataexchange",
+  "documentation": "updated",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "primaryContact": "updated@updated.com",
+  "publisher": {
+    "name": "updated",
+    "primaryContact": "updated@updated.com"
+  },
+  "requestAccess": "req@req.com"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": {
+      "enabled": true,
+      "restrictDirectTableAccess": true,
+      "restrictQueryResult": false
+    },
+    "selectedResources": []
+  },
+  "categories": [
+    "CATEGORY_SCIENCE_AND_RESEARCH",
+    "CATEGORY_COMMERCE"
+  ],
+  "dataProvider": {
+    "name": "updated",
+    "primaryContact": "updated@updated.com"
+  },
+  "description": "updated",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
+  "displayName": "another_dataexchange",
+  "documentation": "updated",
+  "icon": "",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "primaryContact": "updated@updated.com",
+  "publisher": {
+    "name": "updated",
+    "primaryContact": "updated@updated.com"
+  },
+  "requestAccess": "someone@something.com",
+  "restrictedExportConfig": null,
+  "state": "STATE_UNSPECIFIED"
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "bigqueryDataset": {
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "restrictedExportPolicy": {
+      "enabled": true,
+      "restrictDirectTableAccess": true,
+      "restrictQueryResult": false
+    },
+    "selectedResources": []
+  },
+  "categories": [
+    "CATEGORY_SCIENCE_AND_RESEARCH",
+    "CATEGORY_COMMERCE"
+  ],
+  "dataProvider": {
+    "name": "updated",
+    "primaryContact": "updated@updated.com"
+  },
+  "description": "updated",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
+  "displayName": "another_dataexchange",
+  "documentation": "updated",
+  "icon": "",
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "primaryContact": "updated@updated.com",
+  "publisher": {
+    "name": "updated",
+    "primaryContact": "updated@updated.com"
+  },
+  "requestAccess": "someone@something.com",
+  "restrictedExportConfig": null,
+  "state": "STATE_UNSPECIFIED"
+}
+
+---
+
+DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+Grpc-Metadata-X-Http-Code: 204
+
+{}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "description": "",
+  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "displayName": "my_data_exchange",
+  "documentation": "",
+  "icon": "",
+  "listingCount": 0,
+  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "primaryContact": "",
+  "sharingEnvironmentConfig": null
+}
+
+---
+
+DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+Grpc-Metadata-X-Http-Code: 204
+
+{}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "friendlyName": "my-bigquerydataset",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
