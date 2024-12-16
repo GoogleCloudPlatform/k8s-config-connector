@@ -123,8 +123,8 @@ func (f *generatedFile) Write(addCopyright bool) error {
 	return nil
 }
 
-func (v *generatorBase) WriteFiles(addCopyright bool) error {
-	for _, f := range v.generatedFiles {
+func (g *generatorBase) WriteFiles(addCopyright bool) error {
+	for _, f := range g.generatedFiles {
 		if err := f.Write(addCopyright); err != nil {
 			return err
 		}
@@ -132,7 +132,7 @@ func (v *generatorBase) WriteFiles(addCopyright bool) error {
 	return nil
 }
 
-func (g *TypeGenerator) findTypeDeclaration(goTypeName string, srcDir string, skipGenerated bool) (*string, error) {
+func (g *generatorBase) findTypeDeclaration(goTypeName string, srcDir string, skipGenerated bool) (*string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		if os.IsNotExist(err) { // type declaration does not exist
@@ -165,7 +165,7 @@ func (g *TypeGenerator) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
-func (g *TypeGenerator) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
+func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)

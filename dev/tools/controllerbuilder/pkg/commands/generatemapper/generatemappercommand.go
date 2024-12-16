@@ -40,7 +40,7 @@ type GenerateMapperOptions struct {
 func (o *GenerateMapperOptions) InitDefaults() error {
 	root, err := options.RepoRoot()
 	if err != nil {
-		return nil
+		return err
 	}
 	o.APIGoPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
 	o.APIDirectory = root + "/apis/"

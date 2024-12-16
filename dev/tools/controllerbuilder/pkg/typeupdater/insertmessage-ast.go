@@ -168,7 +168,7 @@ func findGoTypesFile(directory string) (string, error) {
 		return "", err
 	}
 	if goTypesFile == "" {
-		return "", fmt.Errorf("did not found Go types file in directory %s", directory)
+		return "", fmt.Errorf("did not find Go types file in directory %s", directory)
 	}
 	return goTypesFile, nil
 }
