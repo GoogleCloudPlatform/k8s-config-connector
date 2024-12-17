@@ -17,6 +17,7 @@ package mockalloydb
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
@@ -188,7 +189,8 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
-		switch path {
+		topLevelField := strings.Split(path, ".")[0]
+		switch topLevelField {
 		case "labels":
 			obj.Labels = req.Instance.GetLabels()
 		case "annotations":
