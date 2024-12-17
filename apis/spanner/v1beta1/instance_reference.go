@@ -168,6 +168,10 @@ func parseSpannerInstanceExternal(external string) (parent *SpannerInstanceParen
 	return parent, resourceID, nil
 }
 
+func (r *SpannerInstanceRef) SpannerInstanceConfigPrefix() string {
+	return fmt.Sprintf("projects/%s/instanceConfigs/", r.parent.ProjectID)
+}
+
 func valueOf[T any](t *T) T {
 	var zeroVal T
 	if t == nil {

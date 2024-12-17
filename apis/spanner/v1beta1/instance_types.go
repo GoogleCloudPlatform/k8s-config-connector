@@ -40,10 +40,10 @@ type SpannerInstanceSpec struct {
 	DisplayName string `json:"displayName"`
 
 	// +optional
-	NumNodes *int64 `json:"numNodes,omitempty"`
+	NumNodes *int32 `json:"numNodes,omitempty"`
 
 	// +optional
-	ProcessingUnits *int64 `json:"processingUnits,omitempty"`
+	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.

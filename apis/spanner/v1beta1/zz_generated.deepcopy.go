@@ -418,12 +418,12 @@ func (in *SpannerInstanceSpec) DeepCopyInto(out *SpannerInstanceSpec) {
 	*out = *in
 	if in.NumNodes != nil {
 		in, out := &in.NumNodes, &out.NumNodes
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ProcessingUnits != nil {
 		in, out := &in.ProcessingUnits, &out.ProcessingUnits
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ResourceID != nil {
