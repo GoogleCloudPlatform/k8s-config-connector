@@ -79,7 +79,7 @@ var _ refsv1beta1.ExternalNormalizer = &BigQueryConnectionConnectionRef{}
 // holds the GCP identifier for the KRM object.
 type BigQueryConnectionConnectionRef struct {
 	// A reference to an externally managed BigQueryConnectionConnection resource.
-	// Should be in the format `projects/<projectID>/locations/<location>/connections/<connectionID>`.
+	// Should be in the format `projects/{{projectID}}/locations/{{location}}/connections/{{connectionID}}`.
 	External string `json:"external,omitempty"`
 
 	// The `name` of a `BigQueryConnectionConnection` resource.
@@ -91,7 +91,7 @@ type BigQueryConnectionConnectionRef struct {
 func parseExternal(external string) (string, string, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-		return "", "", "", fmt.Errorf("external should be projects/<project>/locations/<location>/connections/<Connection>, got %s", external)
+		return "", "", "", fmt.Errorf("external should be projects/{{project}}/locations/{{location}}/connections/{{Connection}}, got %s", external)
 	}
 	return tokens[1], tokens[3], tokens[5], nil
 }
@@ -130,7 +130,7 @@ func (r *BigQueryConnectionConnectionRef) NormalizedExternal(ctx context.Context
 		r.External = strings.TrimPrefix(r.External, "/")
 		tokens := strings.Split(r.External, "/")
 		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
+			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/{{projectId}}/locations/{{location}}/connections/{{connectionID}})", r.External)
 		}
 		return r.External, nil
 	}

@@ -58,7 +58,7 @@ func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reade
 		tokens := strings.Split(externalRef, "/")
 
 		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-			return nil, fmt.Errorf("externalRef should be projects/<project>/locations/<location>/connections/<Connection>, got %s", externalRef)
+			return nil, fmt.Errorf("externalRef should be projects/{{project}}/locations/{{location}}/connections/{{Connection}}, got %s", externalRef)
 		}
 		id.parent = "projects/" + tokens[1] + "/locations/" + tokens[3]
 
@@ -93,7 +93,7 @@ var _ refsv1beta1.ExternalNormalizer = &BigQueryConnectionConnectionRef{}
 // holds the GCP identifier for the KRM object.
 type BigQueryConnectionConnectionRef struct {
 	// A reference to an externally managed BigQueryConnectionConnection resource.
-	// Should be in the format `projects/<projectID>/locations/<location>/connections/<connectionID>`.
+	// Should be in the format `projects/{{projectID}}/locations/{{location}}/connections/{{connectionID}}`.
 	External string `json:"external,omitempty"`
 
 	// The `name` of a `BigQueryConnectionConnection` resource.
@@ -112,7 +112,7 @@ func (r *BigQueryConnectionConnectionRef) Parent() (string, error) {
 		r.External = strings.TrimPrefix(r.External, "/")
 		tokens := strings.Split(r.External, "/")
 		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
+			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/{{projectId}}/locations/{{location}}/connections/{{connectionID}})", r.External)
 		}
 		r.parent = "projects/" + tokens[1] + "/locations/" + tokens[3]
 		return r.parent, nil
@@ -130,7 +130,7 @@ func (r *BigQueryConnectionConnectionRef) NormalizedExternal(ctx context.Context
 		r.External = strings.TrimPrefix(r.External, "/")
 		tokens := strings.Split(r.External, "/")
 		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connections" {
-			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/<projectId>/locations/<location>/connections/<connectionID>)", r.External)
+			return "", fmt.Errorf("format of BigQueryConnectionConnection external=%q was not known (use projects/{{projectId}}/locations/{{location}}/connections/{{connectionID}})", r.External)
 		}
 		return r.External, nil
 	}

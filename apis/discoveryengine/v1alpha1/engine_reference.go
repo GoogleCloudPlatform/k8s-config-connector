@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineEngineRef{}
 // holds the GCP identifier for the KRM object.
 type DiscoveryEngineEngineRef struct {
 	// A reference to an externally managed DiscoveryEngineEngine resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/engines/<engineID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/engines/{{engineID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DiscoveryEngineEngine resource.
@@ -189,5 +189,5 @@ func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngine
 			DataStore:      tokens[7],
 		}, nil
 	}
-	return nil, fmt.Errorf("format of DiscoveryEngineEngine external=%q was not known (use projects/<projectId>/locations/<location>/collections/<collectionID>/engines/<engineID>)", external)
+	return nil, fmt.Errorf("format of DiscoveryEngineEngine external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}})", external)
 }

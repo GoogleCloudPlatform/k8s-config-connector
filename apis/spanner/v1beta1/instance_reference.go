@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &SpannerInstanceRef{}
 // holds the GCP identifier for the KRM object.
 type SpannerInstanceRef struct {
 	// A reference to an externally managed SpannerInstance resource.
-	// Should be in the format "projects/<projectID>/instances/<instanceID>".
+	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SpannerInstance resource.
@@ -159,7 +159,7 @@ func parseSpannerInstanceExternal(external string) (parent *SpannerInstanceParen
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "instances" {
-		return nil, "", fmt.Errorf("format of SpannerInstance external=%q was not known (use projects/<projectId>/instances/<instanceID>)", external)
+		return nil, "", fmt.Errorf("format of SpannerInstance external=%q was not known (use projects/{{projectId}}/instances/{{instanceID}})", external)
 	}
 	parent = &SpannerInstanceParent{
 		ProjectID: tokens[1],

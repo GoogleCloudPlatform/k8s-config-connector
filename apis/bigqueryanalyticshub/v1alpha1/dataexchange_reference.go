@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &BigQueryAnalyticsHubDataExchangeRef{}
 // holds the GCP identifier for the KRM object.
 type BigQueryAnalyticsHubDataExchangeRef struct {
 	// A reference to an externally managed BigQueryAnalyticsHubDataExchange resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/dataexchanges/<dataexchangeID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryAnalyticsHubDataExchange resource.
@@ -168,7 +168,7 @@ func parseBigQueryAnalyticsHubDataExchangeExternal(external string) (parent *Big
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "dataexchange" {
-		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubDataExchange external=%q was not known (use projects/<projectId>/locations/<location>/dataexchanges/<dataexchangeID>)", external)
+		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubDataExchange external=%q was not known (use projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}})", external)
 	}
 	parent = &BigQueryAnalyticsHubDataExchangeParent{
 		ProjectID: tokens[1],

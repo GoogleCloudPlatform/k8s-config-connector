@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &WorkstationClusterRef{}
 // holds the GCP identifier for the KRM object.
 type WorkstationClusterRef struct {
 	// A reference to an externally managed WorkstationCluster resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a WorkstationCluster resource.
@@ -165,7 +165,7 @@ func parseWorkstationClusterExternal(external string) (parent *WorkstationCluste
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" {
-		return nil, "", fmt.Errorf("format of WorkstationCluster external=%q was not known (use projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>)", external)
+		return nil, "", fmt.Errorf("format of WorkstationCluster external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}})", external)
 	}
 	parent = &WorkstationClusterParent{
 		ProjectID: tokens[1],

@@ -158,7 +158,7 @@ spec:
                   properties:
                     external:
                       description: A reference to an externally managed DiscoveryEngineDataStore
-                        resource. Should be in the format "projects/<projectID>/locations/<location>/datastores/<datastoreID>".
+                        resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
                       type: string
                     name:
                       description: The name of a DiscoveryEngineDataStore resource.

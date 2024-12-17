@@ -168,7 +168,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

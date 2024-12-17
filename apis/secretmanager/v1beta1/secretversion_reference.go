@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &SecretVersionRef{}
 // holds the GCP identifier for the KRM object.
 type SecretVersionRef struct {
 	// A reference to an externally managed SecretManagerSecretVersion resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/secretversions/<secretversionID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SecretManagerSecretVersion resource.
@@ -90,7 +90,7 @@ func ParseSecretVersionExternal(external string) (*SecretVersionIdentity, error)
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "secrets" || tokens[4] != "versions" {
-		return nil, fmt.Errorf("format of SecretManagerSecretVersion external=%q was not known (use projects/<projectId>/secrets/<secretID>/versions/<versionID>)", external)
+		return nil, fmt.Errorf("format of SecretManagerSecretVersion external=%q was not known (use projects/{{projectId}}/secrets/{{secretID}}/versions/{{versionID}})", external)
 	}
 	return &SecretVersionIdentity{
 		parent: &SecretVersionParent{ProjectID: tokens[1], SecretID: tokens[3]},

@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineDataStoreRef{}
 // holds the GCP identifier for the KRM object.
 type DiscoveryEngineDataStoreRef struct {
 	// A reference to an externally managed DiscoveryEngineDataStore resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/datastores/<datastoreID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DiscoveryEngineDataStore resource.
@@ -190,7 +190,7 @@ func ParseDiscoveryEngineDataStoreExternal(external string) (*DiscoveryEngineDat
 			DataStore:      tokens[7],
 		}, nil
 	}
-	return nil, fmt.Errorf("format of DiscoveryEngineDataStore external=%q was not known (use projects/<projectId>/locations/<location>/collections/<collectionID>/dataStores/<dataStoreID>)", external)
+	return nil, fmt.Errorf("format of DiscoveryEngineDataStore external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/dataStores/{{dataStoreID}})", external)
 }
 
 func valueOf[T any](t *T) T {
