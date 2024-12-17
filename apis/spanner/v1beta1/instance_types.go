@@ -66,10 +66,20 @@ type SpannerInstanceStatus struct {
 	/* Instance status: 'CREATING' or 'READY'. */
 	// +optional
 	State *string `json:"state,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *SpannerInstanceObservedState `json:"observedState,omitempty"`
 }
 
 // SpannerInstanceObservedState is the state of the SpannerInstance resource as most recently observed in GCP.
 type SpannerInstanceObservedState struct {
+	/* NOTYET
+	// NumNodes and ProcessUnits is output fields with AutoScaler is set.
+	NumNodes *int32 `json:"numNodes,omitempty"`
+
+	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
+	*/
 }
 
 // +genclient
