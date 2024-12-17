@@ -15,7 +15,13 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -40,4 +46,17 @@ func GetLocation(u *unstructured.Unstructured) (string, error) {
 		return "", fmt.Errorf("spec.location not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
 	}
 	return location, nil
+}
+
+func ResolveResourceName(ctx context.Context, reader client.Reader, key client.ObjectKey, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
+	resource := &unstructured.Unstructured{}
+	resource.SetGroupVersionKind(gvk)
+	if err := reader.Get(ctx, key, resource); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(resource.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
+	}
+
+	return resource, nil
 }

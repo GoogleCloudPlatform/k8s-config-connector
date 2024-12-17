@@ -181,9 +181,8 @@ func (a *targetTCPProxyAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	var err error
-
-	err = resolveDependencies(ctx, a.reader, a.desired)
+	// Resolve dependencies
+	err := resolveBackendService(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
@@ -193,7 +192,6 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-
 	targetTCPProxy := ComputeTargetTCPProxySpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -256,9 +254,8 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 }
 
 func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	var err error
-
-	err = resolveDependencies(ctx, a.reader, a.desired)
+	// Resolve dependencies
+	err := resolveBackendService(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
@@ -428,4 +425,32 @@ func (a *targetTCPProxyAdapter) get(ctx context.Context) (*computepb.TargetTcpPr
 		}
 		return a.regionalTargetTcpProxiesClient.Get(ctx, getReq)
 	}
+}
+
+// This function get the normalized external values and convert it to the API required format
+func resolveBackendService(ctx context.Context, reader client.Reader, obj *krm.ComputeTargetTCPProxy) error {
+	// API required format: selfLink
+	computeBasePath := "https://www.googleapis.com/compute/v1/"
+	ref := obj.Spec.BackendServiceRef
+	if ref != nil {
+		// Get normalized external
+		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return fmt.Errorf("failed to get BackendServiceRef: %w", err)
+		}
+		// Convert normalized external to API required format
+		v := ref.External
+		_, err = krm.ParseBackendServiceExternal(v)
+		// Value follows KCC external format, likely it's created by direct controller
+		if err == nil {
+			// add the compute prefix in front
+			obj.Spec.BackendServiceRef.External = computeBasePath + v
+			return nil
+		}
+		// For backward compatibility, we also accept values that does not match the KCC external format.(likely it's created by legacy controller)
+		// Return the value as is and let the API handle it
+		obj.Spec.BackendServiceRef.External = v
+		return nil
+	}
+	return nil
 }

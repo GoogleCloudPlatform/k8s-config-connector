@@ -15,21 +15,20 @@
 package targettcpproxy
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeTargetTCPProxySpec_BackendServiceRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeBackendServiceRef {
+func ComputeTargetTCPProxySpec_BackendServiceRef_FromProto(mapCtx *direct.MapContext, in string) *krm.ComputeBackendServiceRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeBackendServiceRef{
+	return &krm.ComputeBackendServiceRef{
 		External: in,
 	}
 }
 
-func ComputeTargetTCPProxySpec_BackendServiceRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeBackendServiceRef) *string {
+func ComputeTargetTCPProxySpec_BackendServiceRef_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendServiceRef) *string {
 	if in == nil {
 		return nil
 	}

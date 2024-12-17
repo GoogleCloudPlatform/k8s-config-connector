@@ -20,6 +20,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+type ReferenceContext struct {
+	// Whether a referenced resource is only managed by direct controller
+	IsDirectOnly bool
+
+	// the referenced resource's field that will be extracted and set as the value of referenced field
+	// If IsDirectOnly is false, TargetField is required
+	TargetField string
+}
+
 type ExternalNormalizer interface {
 	// NormalizedExternal expects the implemented struct has a "External" field, and this function
 	// assigns a value to the "External" field if it is empty.

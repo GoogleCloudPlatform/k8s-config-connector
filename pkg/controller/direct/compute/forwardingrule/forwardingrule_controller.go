@@ -539,3 +539,31 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 	return nil
 }
+
+// This function get the normalized external values and convert it to the API required format
+func resolveBackendService(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
+	// API required format: selfLink
+	computeBasePath := "https://www.googleapis.com/compute/v1/"
+	ref := obj.Spec.BackendServiceRef
+	if ref != nil {
+		// Get normalized external
+		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return fmt.Errorf("failed to get BackendServiceRef: %w", err)
+		}
+		// Convert normalized external to API required format
+		v := ref.External
+		_, err = krm.ParseBackendServiceExternal(v)
+		// Value follows KCC external format, likely it's created by direct controller
+		if err == nil {
+			// add the compute prefix in front
+			obj.Spec.BackendServiceRef.External = computeBasePath + v
+			return nil
+		}
+		// For backward compatibility, we also accept values that does not match the KCC external format.(likely it's created by legacy controller)
+		// Return the value as is and let the API handle it
+		obj.Spec.BackendServiceRef.External = v
+		return nil
+	}
+	return nil
+}
