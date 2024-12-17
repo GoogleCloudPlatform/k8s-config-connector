@@ -28,11 +28,11 @@ import (
 type UpdateTypeOptions struct {
 	*options.GenerateOptions
 
-	parentNessage string // The fully qualified name of the parent prroto message of the field to be inserted
-	fieldToInsert string
-	ignoredFields string // TODO: could be part of GenerateOptions
-	apiDirectory  string
-	goPackagePath string
+	parentMessage    string // The fully qualified name of the parent proto message of the field to be inserted
+	insertField      string
+	ignoredFields    string // TODO: could be part of GenerateOptions
+	apiDirectory     string
+	apiGoPackagePath string
 }
 
 func (o *UpdateTypeOptions) InitDefaults() error {
@@ -41,17 +41,17 @@ func (o *UpdateTypeOptions) InitDefaults() error {
 		return err
 	}
 	o.apiDirectory = root + "/apis/"
-	o.goPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
+	o.apiGoPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
 	return nil
 }
 
 func (o *UpdateTypeOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&o.parentNessage, "parent-message", o.parentNessage, "Fully qualified name of the proto message holding the new field. e.g. `google.cloud.bigquery.datatransfer.v1.TransferConfig`")
-	cmd.Flags().StringVar(&o.fieldToInsert, "field-to-insert", o.fieldToInsert, "Name of the new field to be inserted, e.g. `schedule_options_v2`")
+	cmd.Flags().StringVar(&o.parentMessage, "parent", o.parentMessage, "Fully qualified name of the proto message holding the new field. e.g. `google.cloud.bigquery.datatransfer.v1.TransferConfig`")
+	cmd.Flags().StringVar(&o.insertField, "insert-field", o.insertField, "Name of the new field to be inserted, e.g. `schedule_options_v2`")
 	// TODO: Update this flag to accept a file path pointing to the ignored fields YAML file.
 	cmd.Flags().StringVar(&o.ignoredFields, "ignored-fields", o.ignoredFields, "Comma-separated list of fields to ignore")
 	cmd.Flags().StringVar(&o.apiDirectory, "api-dir", o.apiDirectory, "Base directory for APIs")
-	cmd.Flags().StringVar(&o.goPackagePath, "api-go-package-path", o.goPackagePath, "Package path")
+	cmd.Flags().StringVar(&o.apiGoPackagePath, "api-go-package-path", o.apiGoPackagePath, "API Go package path")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -88,11 +88,11 @@ func runTypeUpdater(ctx context.Context, opt *UpdateTypeOptions) error {
 
 	typeUpdaterOpts := &typeupdater.UpdaterOptions{
 		ProtoSourcePath:       opt.GenerateOptions.ProtoSourcePath,
-		ParentMessageFullName: opt.parentNessage,
-		FieldToInsert:         opt.fieldToInsert,
+		ParentMessageFullName: opt.parentMessage,
+		FieldToInsert:         opt.insertField,
 		IgnoredFields:         opt.ignoredFields,
 		APIDirectory:          opt.apiDirectory,
-		GoPackagePath:         opt.goPackagePath,
+		GoPackagePath:         opt.apiGoPackagePath,
 	}
 	updater := typeupdater.NewTypeUpdater(typeUpdaterOpts)
 	if err := updater.Run(); err != nil {
