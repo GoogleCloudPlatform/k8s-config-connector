@@ -413,6 +413,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/filestore/filestoreinstance.md
 - title: "Firestore"
   section:
+  - title: "FirestoreDatabase"
+    path: /config-connector/docs/reference/resource-docs/firestore/firestoredatabase.md
   - title: "FirestoreIndex"
     path: /config-connector/docs/reference/resource-docs/firestore/firestoreindex.md
 - title: "Google Kubernetes Engine (GKE)"

@@ -92,6 +92,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"BigQueryDataTransferConfig",
 		"CloudBuildWorkerPool",
 		"DataformRepository",
+		"FirestoreDatabase",
 		"NetworkConnectivityServiceConnectionPolicy",
 		"PrivilegedAccessManagerEntitlement",
 		"RedisCluster",

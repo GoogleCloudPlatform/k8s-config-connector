@@ -81,6 +81,7 @@ var preferredSampleForResource = map[string]string{
 	"dlpjobtrigger":                      "big-query-job-trigger",
 	"dnsrecordset":                       "dns-a-record-set",
 	"edgecontainercluster":               "edgecontainercluster-remote-control-plane",
+	"firestoredatabase":                  "basic-firestoredatabase",
 	"folder":                             "folder-in-folder",
 	"gkehubfeature":                      "multi-cluster-ingress-feature",
 	"gkehubfeaturemembership":            "config-management-feature-membership",

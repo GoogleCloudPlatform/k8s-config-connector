@@ -496,6 +496,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/firestore/docs/">{{firestore_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/firestore/firestoredatabase.md">FirestoreDatabase</a></td>
+</tr>
+<tr>
+  <td><a href="/firestore/docs/">{{firestore_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/firestore/firestoreindex.md">FirestoreIndex</a></td>
 </tr>
 <tr>

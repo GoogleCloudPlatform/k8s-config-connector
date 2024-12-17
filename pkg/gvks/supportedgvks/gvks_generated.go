@@ -2700,6 +2700,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "firestore.cnrm.cloud.google.com",
 		Version: "v1beta1",
+		Kind:    "FirestoreDatabase",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "firestore.cnrm.cloud.google.com",
+		Version: "v1beta1",
 		Kind:    "FirestoreIndex",
 	}: {
 		Labels: map[string]string{

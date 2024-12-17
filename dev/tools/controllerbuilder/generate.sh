@@ -119,12 +119,12 @@ go run . generate-mapper \
 # Firestore
 go run . generate-types \
     --service google.firestore.admin.v1 \
-    --api-version firestore.cnrm.cloud.google.com/v1alpha1 \
+    --api-version firestore.cnrm.cloud.google.com/v1beta1 \
     --resource FirestoreDatabase:Database
 
 go run . generate-mapper \
     --service google.firestore.admin.v1 \
-    --api-version firestore.cnrm.cloud.google.com/v1alpha1
+    --api-version firestore.cnrm.cloud.google.com/v1beta1
 
 # Certificate Manager DNSAuthorization
 go run . generate-types \
