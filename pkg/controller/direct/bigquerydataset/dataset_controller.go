@@ -75,7 +75,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewBigQueryDatasetRef(ctx, reader, obj)
+	id, err := krm.NewDatasetIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id         *krm.BigQueryDatasetRef
+	id         *krm.DatasetIdentity
 	gcpService *api.Service
 	desired    *krm.BigQueryDataset
 	actual     *api.Dataset
@@ -110,19 +110,15 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting BigQueryDataset", "name", a.id.External)
+	log.V(2).Info("getting BigQueryDataset", "name", a.id.String())
 
-	parent, datasetId, err := krm.ParseBigQueryDatasetExternal(a.id.External)
-	if err != nil {
-		return false, fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
-	}
-	datasetGetCall := a.gcpService.Datasets.Get(parent.ProjectID, datasetId)
+	datasetGetCall := a.gcpService.Datasets.Get(a.id.Parent().ProjectID, a.id.ID())
 	datasetpb, err := datasetGetCall.Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting BigQueryDataset %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting BigQueryDataset %q: %w", a.id.String(), err)
 	}
 	a.actual = datasetpb
 	return true, nil
@@ -131,7 +127,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating Dataset", "name", a.id.External)
+	log.V(2).Info("creating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desiredDataset := BigQueryDatasetSpec_ToAPI(mapCtx, &a.desired.Spec, a.desired.Name)
@@ -140,10 +136,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		desiredDataset.Labels[k] = v
 	}
 	desiredDataset.Labels["managed-by-cnrm"] = "true"
-	parent, _, err := krm.ParseBigQueryDatasetExternal(a.id.External)
-	if err != nil {
-		return fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
-	}
+
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
 		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
@@ -152,19 +145,21 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		}
 		desiredDataset.DefaultEncryptionConfiguration.KmsKeyName = kmsRef.External
 	}
-	insertDatasetCall := a.gcpService.Datasets.Insert(parent.ProjectID, desiredDataset)
+	insertDatasetCall := a.gcpService.Datasets.Insert(a.id.Parent().ProjectID, desiredDataset)
 	inserted, err := insertDatasetCall.Do()
 	if err != nil {
-		return fmt.Errorf("inserting Dataset %s: %w", a.id.External, err)
+		return fmt.Errorf("inserting Dataset %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully inserted Dataset", "name", a.id.External)
+	log.V(2).Info("successfully inserted Dataset", "name", a.id.String())
 
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromAPI(mapCtx, inserted)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+
+	external := a.id.String()
+	status.ExternalRef = &external
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -172,7 +167,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating Dataset", "name", a.id.External)
+	log.V(2).Info("updating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	// Convert KRM object to proto message
@@ -245,20 +240,16 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
-	parent, datasetId, err := krm.ParseBigQueryDatasetExternal(a.id.External)
-	if err != nil {
-		return fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
-	}
 
 	if desired.Access == nil || len(desired.Access) == 0 {
 		resource.Access = a.actual.Access
 	}
-	updateDatasetCall := a.gcpService.Datasets.Update(parent.ProjectID, datasetId, resource)
+	updateDatasetCall := a.gcpService.Datasets.Update(a.id.Parent().ProjectID, a.id.ID(), resource)
 	updated, err := updateDatasetCall.Do()
 	if err != nil {
-		return fmt.Errorf("updating Dataset %s: %w", a.id.External, err)
+		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully updated Dataset", "name", a.id.External)
+	log.V(2).Info("successfully updated Dataset", "name", a.id.String())
 
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromAPI(mapCtx, updated)
@@ -280,12 +271,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent, _, err := krm.ParseBigQueryDatasetExternal(a.id.External)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
-	}
 
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Parent().ProjectID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -297,18 +284,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting Dataset", "name", a.id.External)
+	log.V(2).Info("deleting Dataset", "name", a.id.String())
 
-	parent, datasetId, err := krm.ParseBigQueryDatasetExternal(a.id.External)
+	deleteDatasetCall := a.gcpService.Datasets.Delete(a.id.Parent().ProjectID, a.id.ID())
+	err := deleteDatasetCall.Do()
 	if err != nil {
-		return false, fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
+		return false, fmt.Errorf("deleting Dataset %s: %w", a.id.String(), err)
 	}
-	deleteDatasetCall := a.gcpService.Datasets.Delete(parent.ProjectID, datasetId)
-	err = deleteDatasetCall.Do()
-	if err != nil {
-		return false, fmt.Errorf("deleting Dataset %s: %w", a.id.External, err)
-	}
-	log.V(2).Info("successfully deleted Dataset", "name", a.id.External)
+	log.V(2).Info("successfully deleted Dataset", "name", a.id.String())
 
 	return true, nil
 }
