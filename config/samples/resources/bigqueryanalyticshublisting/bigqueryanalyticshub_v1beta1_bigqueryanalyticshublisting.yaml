@@ -12,19 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: core.cnrm.cloud.google.com/v1alpha1
-kind: ServiceMapping
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1beta1
+kind: BigQueryAnalyticsHubListing
 metadata:
-  name: bigqueryanalyticshub.cnrm.cloud.google.com
-  namespace: cnrm-system
+  name: bigqueryanalyticshublistingsample
 spec:
-  name: BigQueryAnalyticsHub
-  version: v1beta1
-  serviceHostName: "analyticshub.googleapis.com"
-  resources:
-    - name: google_bigquery_analytics_hub_data_exchange
-      kind: BigQueryAnalyticsHubDataExchange
-      direct: true
-    - name: google_bigquery_analytics_hub_listing
-      kind: BigQueryAnalyticsHubListing
-      direct: true
+  displayName: my_listing
+  location: US
+  source:
+    bigQueryDatasetSource:
+      datasetRef:
+        name: bigqueryanalyticshublisting-dep
+  dataExchangeRef:
+    name: bigqueryanalyticshublistingdep
+  projectRef:
+    external: ${PROJECT_ID?}

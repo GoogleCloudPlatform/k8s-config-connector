@@ -78,6 +78,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshubdataexchange.md">BigQueryAnalyticsHubDataExchange</a></td>
 </tr>
 <tr>
+  <td><a href="/bigquery/docs/query-overview">{{analytics_hub_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshublisting.md">BigQueryAnalyticsHubListing</a></td>
+</tr>
+<tr>
 <tr>
   <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection.md">BigqueryConnectionConnection</a></td>

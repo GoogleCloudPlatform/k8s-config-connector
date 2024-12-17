@@ -47,6 +47,8 @@ toc:
   section:
   - title: "BigQueryAnalyticsHubDataExchange"
     path: /config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshubdataexchange.md
+  - title: "BigQueryAnalyticsHubListing"
+    path: /config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshublisting.md
 - title: "BigQuery"
   section:
   - title: "BigqueryConnectionConnection"

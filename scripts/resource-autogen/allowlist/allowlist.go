@@ -55,7 +55,6 @@ var (
 		"beyondcorp/google_beyondcorp_app_connector",
 		"beyondcorp/google_beyondcorp_app_gateway",
 		"bigquery/google_bigquery_dataset_access",
-		"bigquery_analytics_hub/google_bigquery_analytics_hub_listing",
 		"bigquery_datapolicy/google_bigquery_datapolicy_data_policy",
 		"bigquery_reservation/google_bigquery_capacity_commitment",
 		"bigquery_reservation/google_bigquery_reservation",

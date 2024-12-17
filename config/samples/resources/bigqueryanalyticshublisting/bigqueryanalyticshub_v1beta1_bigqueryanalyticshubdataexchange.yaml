@@ -12,19 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
-kind: BigQueryAnalyticsHubListing
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1beta1
+kind: BigQueryAnalyticsHubDataExchange
 metadata:
-  name: bigqueryanalyticshublisting${uniqueId}
+  name: bigqueryanalyticshublistingdep
 spec:
-  displayName: updated_name
+  displayName: my_data_exchange
   location: US
-  source:
-    bigQueryDatasetSource:
-      datasetRef:
-        name: bigquerydataset${uniqueId}
-  dataExchangeRef:
-    name: bigqueryanalyticshubdataexchange${uniqueId}
   projectRef:
-    external: ${projectId}
-  resourceID: bigqueryanalyticshublisting${uniqueId}
+    external: ${PROJECT_ID?}
