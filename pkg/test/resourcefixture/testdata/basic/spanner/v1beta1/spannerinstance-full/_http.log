@@ -1,6 +1,7 @@
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -22,9 +23,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?alt=json
+POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}
 
 {
   "instance": {
@@ -35,9 +37,11 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 2
   },
-  "instanceId": "spannerinstance-sample-${uniqueId}"
+  "instanceId": "spannerinstance-sample-${uniqueId}",
+  "parent": "projects/${projectId}"
 }
 
 200 OK
@@ -72,7 +76,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "state": "READY"
+      "state": 2
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -81,9 +85,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -138,9 +143,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -164,28 +170,29 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 2,
   "processingUnits": 2000,
-  "state": "READY",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
-  "fieldMask": "nodeCount,displayName",
+  "fieldMask": "displayName,nodeCount,labels",
   "instance": {
+    "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "New spanner Instance Sample",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/%!s(\u003cnil\u003e)",
-    "nodeCount": 3,
-    "processingUnits": 2000
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
+    "nodeCount": 3
   }
 }
 
@@ -222,7 +229,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "state": "READY",
+      "state": 2,
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -232,9 +239,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -290,9 +298,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -316,15 +325,16 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 3,
   "processingUnits": 3000,
-  "state": "READY",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Cache-Control: private
