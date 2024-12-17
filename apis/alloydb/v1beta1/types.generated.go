@@ -30,7 +30,7 @@ type Instance_ClientConnectionConfig struct {
 	RequireConnectors *bool `json:"requireConnectors,omitempty"`
 
 	// Optional. SSL configuration option for this instance.
-	SslConfig *SslConfig `json:"sslConfig,omitempty"`
+	SSLConfig *SSLConfig `json:"sslConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
@@ -42,11 +42,11 @@ type Instance_InstanceNetworkConfig struct {
 	// Optional. Enabling public ip for the instance. If a user wishes
 	// to disable this, please also clear the list of the authorized
 	// external networks set on the same instance.
-	EnablePublicIp *bool `json:"enablePublicIp,omitempty"`
+	EnablePublicIP *bool `json:"enablePublicIp,omitempty"`
 
 	// Optional. Enabling an outbound public IP address to support a database
 	//  server sending requests out into the internet.
-	EnableOutboundPublicIp *bool `json:"enableOutboundPublicIp,omitempty"`
+	EnableOutboundPublicIP *bool `json:"enableOutboundPublicIp,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
@@ -58,7 +58,7 @@ type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.MachineConfig
 type Instance_MachineConfig struct {
 	// The number of CPU's in the VM instance.
-	CpuCount *int32 `json:"cpuCount,omitempty"`
+	CPUCount *int32 `json:"cpuCount,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
@@ -70,7 +70,7 @@ type Instance_Node struct {
 	ID *string `json:"id,omitempty"`
 
 	// The private IP address of the VM e.g. "10.57.0.34".
-	Ip *string `json:"ip,omitempty"`
+	IP *string `json:"ip,omitempty"`
 
 	// Determined by state of the compute VM and postgres-service health.
 	//  Compute VM state can have values listed in
@@ -135,7 +135,7 @@ type Instance_PscInstanceConfig struct {
 
 	// Output only. The DNS name of the instance for PSC connectivity.
 	//  Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
-	PscDnsName *string `json:"pscDnsName,omitempty"`
+	PSCDNSName *string `json:"pscDnsName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
@@ -171,11 +171,11 @@ type Instance_UpdatePolicy struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.SslConfig
-type SslConfig struct {
+type SSLConfig struct {
 	// Optional. SSL mode. Specifies client-server SSL/TLS connection behavior.
-	SslMode *string `json:"sslMode,omitempty"`
+	SSLMode *string `json:"sslMode,omitempty"`
 
 	// Optional. Certificate Authority (CA) source. Only CA_SOURCE_MANAGED is
 	//  supported currently, and is the default value.
-	CaSource *string `json:"caSource,omitempty"`
+	CASource *string `json:"caSource,omitempty"`
 }

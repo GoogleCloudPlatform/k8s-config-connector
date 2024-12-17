@@ -43,7 +43,7 @@ func Instance_ClientConnectionConfig_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.Instance_ClientConnectionConfig{}
 	out.RequireConnectors = direct.LazyPtr(in.GetRequireConnectors())
-	out.SslConfig = SslConfig_FromProto(mapCtx, in.GetSslConfig())
+	out.SSLConfig = SslConfig_FromProto(mapCtx, in.GetSslConfig())
 	return out
 }
 func Instance_ClientConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ClientConnectionConfig) *pb.Instance_ClientConnectionConfig {
@@ -52,7 +52,7 @@ func Instance_ClientConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Instance_ClientConnectionConfig{}
 	out.RequireConnectors = direct.ValueOf(in.RequireConnectors)
-	out.SslConfig = SslConfig_ToProto(mapCtx, in.SslConfig)
+	out.SslConfig = SslConfig_ToProto(mapCtx, in.SSLConfig)
 	return out
 }
 func Instance_InstanceNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceNetworkConfig) *krm.Instance_InstanceNetworkConfig {
@@ -61,8 +61,8 @@ func Instance_InstanceNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.Instance_InstanceNetworkConfig{}
 	out.AuthorizedExternalNetworks = direct.Slice_FromProto(mapCtx, in.AuthorizedExternalNetworks, Instance_InstanceNetworkConfig_AuthorizedNetwork_FromProto)
-	out.EnablePublicIp = direct.LazyPtr(in.GetEnablePublicIp())
-	out.EnableOutboundPublicIp = direct.LazyPtr(in.GetEnableOutboundPublicIp())
+	out.EnablePublicIP = direct.LazyPtr(in.GetEnablePublicIp())
+	out.EnableOutboundPublicIP = direct.LazyPtr(in.GetEnableOutboundPublicIp())
 	return out
 }
 func Instance_InstanceNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_InstanceNetworkConfig) *pb.Instance_InstanceNetworkConfig {
@@ -71,8 +71,8 @@ func Instance_InstanceNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.I
 	}
 	out := &pb.Instance_InstanceNetworkConfig{}
 	out.AuthorizedExternalNetworks = direct.Slice_ToProto(mapCtx, in.AuthorizedExternalNetworks, Instance_InstanceNetworkConfig_AuthorizedNetwork_ToProto)
-	out.EnablePublicIp = direct.ValueOf(in.EnablePublicIp)
-	out.EnableOutboundPublicIp = direct.ValueOf(in.EnableOutboundPublicIp)
+	out.EnablePublicIp = direct.ValueOf(in.EnablePublicIP)
+	out.EnableOutboundPublicIp = direct.ValueOf(in.EnableOutboundPublicIP)
 	return out
 }
 func Instance_InstanceNetworkConfig_AuthorizedNetwork_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceNetworkConfig_AuthorizedNetwork) *krm.Instance_InstanceNetworkConfig_AuthorizedNetwork {
@@ -96,7 +96,7 @@ func Instance_MachineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 		return nil
 	}
 	out := &krm.Instance_MachineConfig{}
-	out.CpuCount = direct.LazyPtr(in.GetCpuCount())
+	out.CPUCount = direct.LazyPtr(in.GetCpuCount())
 	return out
 }
 func Instance_MachineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_MachineConfig) *pb.Instance_MachineConfig {
@@ -104,7 +104,7 @@ func Instance_MachineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 		return nil
 	}
 	out := &pb.Instance_MachineConfig{}
-	out.CpuCount = direct.ValueOf(in.CpuCount)
+	out.CpuCount = direct.ValueOf(in.CPUCount)
 	return out
 }
 func Instance_Node_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Node) *krm.Instance_Node {
@@ -114,7 +114,7 @@ func Instance_Node_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Node) *k
 	out := &krm.Instance_Node{}
 	out.ZoneID = direct.LazyPtr(in.GetZoneId())
 	out.ID = direct.LazyPtr(in.GetId())
-	out.Ip = direct.LazyPtr(in.GetIp())
+	out.IP = direct.LazyPtr(in.GetIp())
 	out.State = direct.LazyPtr(in.GetState())
 	return out
 }
@@ -125,7 +125,7 @@ func Instance_Node_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Node) *pb
 	out := &pb.Instance_Node{}
 	out.ZoneId = direct.ValueOf(in.ZoneID)
 	out.Id = direct.ValueOf(in.ID)
-	out.Ip = direct.ValueOf(in.Ip)
+	out.Ip = direct.ValueOf(in.IP)
 	out.State = direct.ValueOf(in.State)
 	return out
 }
@@ -168,7 +168,7 @@ func Instance_PscInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Inst
 	out := &krm.Instance_PscInstanceConfig{}
 	out.ServiceAttachmentLink = direct.LazyPtr(in.GetServiceAttachmentLink())
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
-	out.PscDnsName = direct.LazyPtr(in.GetPscDnsName())
+	out.PSCDNSName = direct.LazyPtr(in.GetPscDnsName())
 	return out
 }
 func Instance_PscInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PscInstanceConfig) *pb.Instance_PscInstanceConfig {
@@ -178,7 +178,7 @@ func Instance_PscInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Insta
 	out := &pb.Instance_PscInstanceConfig{}
 	out.ServiceAttachmentLink = direct.ValueOf(in.ServiceAttachmentLink)
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
-	out.PscDnsName = direct.ValueOf(in.PscDnsName)
+	out.PscDnsName = direct.ValueOf(in.PSCDNSName)
 	return out
 }
 func Instance_QueryInsightsInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_QueryInsightsInstanceConfig) *krm.Instance_QueryInsightsInstanceConfig {
@@ -235,21 +235,21 @@ func Instance_UpdatePolicy_ToProto(mapCtx *direct.MapContext, in *krm.Instance_U
 	out.Mode = direct.Enum_ToProto[pb.Instance_UpdatePolicy_Mode](mapCtx, in.Mode)
 	return out
 }
-func SslConfig_FromProto(mapCtx *direct.MapContext, in *pb.SslConfig) *krm.SslConfig {
+func SslConfig_FromProto(mapCtx *direct.MapContext, in *pb.SslConfig) *krm.SSLConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SslConfig{}
-	out.SslMode = direct.Enum_FromProto(mapCtx, in.GetSslMode())
-	out.CaSource = direct.Enum_FromProto(mapCtx, in.GetCaSource())
+	out := &krm.SSLConfig{}
+	out.SSLMode = direct.Enum_FromProto(mapCtx, in.GetSslMode())
+	out.CASource = direct.Enum_FromProto(mapCtx, in.GetCaSource())
 	return out
 }
-func SslConfig_ToProto(mapCtx *direct.MapContext, in *krm.SslConfig) *pb.SslConfig {
+func SslConfig_ToProto(mapCtx *direct.MapContext, in *krm.SSLConfig) *pb.SslConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SslConfig{}
-	out.SslMode = direct.Enum_ToProto[pb.SslConfig_SslMode](mapCtx, in.SslMode)
-	out.CaSource = direct.Enum_ToProto[pb.SslConfig_CaSource](mapCtx, in.CaSource)
+	out.SslMode = direct.Enum_ToProto[pb.SslConfig_SslMode](mapCtx, in.SSLMode)
+	out.CaSource = direct.Enum_ToProto[pb.SslConfig_CaSource](mapCtx, in.CASource)
 	return out
 }

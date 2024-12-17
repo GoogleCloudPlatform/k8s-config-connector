@@ -63,7 +63,7 @@ type AlloyDBInstanceSpec struct {
 	// can ONLY be specified for ZONAL instances. If present for a REGIONAL
 	// instance, an error will be thrown. If this is absent for a ZONAL
 	// instance, instance is created in a random zone with available capacity.
-	GceZone *string `json:"gceZone,omitempty"`
+	GCEZone *string `json:"gceZone,omitempty"`
 
 	// We recommend that you use `instanceTypeRef` instead.
 	// The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]
@@ -120,7 +120,7 @@ type AlloyDBInstanceStatus struct {
 
 	// The IP address for the Instance. This is the connection
 	// endpoint for an end-user application.
-	IpAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string `json:"ipAddress,omitempty"`
 
 	// The name of the instance resource.
 	Name *string `json:"name,omitempty"`
@@ -128,12 +128,12 @@ type AlloyDBInstanceStatus struct {
 	// The outbound public IP addresses for the instance. This is available ONLY when
 	// networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
 	// for outbound connections.
-	OutboundPublicIpAddresses []string `json:"outboundPublicIpAddresses,omitempty"`
+	OutboundPublicIPAddresses []string `json:"outboundPublicIpAddresses,omitempty"`
 
 	// The public IP addresses for the Instance. This is available
 	// ONLY when networkConfig.enablePublicIp is set to true. This is the
 	// connection endpoint for an end-user application.
-	PublicIpAddress *string `json:"publicIpAddress,omitempty"`
+	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 
 	// Set to true if the current state of Instance does not
 	// match the user's intended state, and the service is actively updating

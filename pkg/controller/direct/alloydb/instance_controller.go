@@ -127,7 +127,7 @@ var _ directbase.Adapter = &instanceAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
-// Return true means the object is not found. This triggers Adapter `Create` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -290,8 +290,8 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		log.V(2).Info("'spec.displayName' field is updated (-old +new)", cmp.Diff(actual.DisplayName, desired.DisplayName))
 		updatePaths = append(updatePaths, "display_name")
 	}
-	if desired.GceZone != nil && !reflect.DeepEqual(actual.GceZone, desired.GceZone) {
-		log.V(2).Info("'spec.gceZone' field is updated (-old +new)", cmp.Diff(actual.GceZone, desired.GceZone))
+	if desired.GCEZone != nil && !reflect.DeepEqual(actual.GCEZone, desired.GCEZone) {
+		log.V(2).Info("'spec.gceZone' field is updated (-old +new)", cmp.Diff(actual.GCEZone, desired.GCEZone))
 		updatePaths = append(updatePaths, "gce_zone")
 	}
 	if desired.InstanceType != nil && !reflect.DeepEqual(actual.InstanceType, desired.InstanceType) {
@@ -300,18 +300,18 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 	}
 	// TODO: Test machineConfig unset and empty struct
 	if desired.MachineConfig != nil {
-		if desired.MachineConfig.CpuCount != nil && !reflect.DeepEqual(actual.MachineConfig.CpuCount, desired.MachineConfig.CpuCount) {
-			log.V(2).Info("'spec.machineConfig.cpuCount' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.CpuCount, desired.MachineConfig.CpuCount))
+		if desired.MachineConfig.CPUCount != nil && !reflect.DeepEqual(actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount) {
+			log.V(2).Info("'spec.machineConfig.cpuCount' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount))
 			updatePaths = append(updatePaths, "machine_config.cpu_count")
 		}
 	}
 	if desired.NetworkConfig != nil {
-		if desired.NetworkConfig.EnablePublicIp != nil && !reflect.DeepEqual(actual.NetworkConfig.EnablePublicIp, desired.NetworkConfig.EnablePublicIp) {
-			log.V(2).Info("'spec.networkConfig.enablePublicIp' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.EnablePublicIp, desired.NetworkConfig.EnablePublicIp))
+		if desired.NetworkConfig.EnablePublicIP != nil && !reflect.DeepEqual(actual.NetworkConfig.EnablePublicIP, desired.NetworkConfig.EnablePublicIP) {
+			log.V(2).Info("'spec.networkConfig.enablePublicIp' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.EnablePublicIP, desired.NetworkConfig.EnablePublicIP))
 			updatePaths = append(updatePaths, "network_config.enable_public_ip")
 		}
-		if desired.NetworkConfig.EnableOutboundPublicIp != nil && !reflect.DeepEqual(actual.NetworkConfig.EnableOutboundPublicIp, desired.NetworkConfig.EnableOutboundPublicIp) {
-			log.V(2).Info("'spec.networkConfig.enableOutboundPublicIp' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.EnableOutboundPublicIp, desired.NetworkConfig.EnableOutboundPublicIp))
+		if desired.NetworkConfig.EnableOutboundPublicIP != nil && !reflect.DeepEqual(actual.NetworkConfig.EnableOutboundPublicIP, desired.NetworkConfig.EnableOutboundPublicIP) {
+			log.V(2).Info("'spec.networkConfig.enableOutboundPublicIp' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.EnableOutboundPublicIP, desired.NetworkConfig.EnableOutboundPublicIP))
 			updatePaths = append(updatePaths, "network_config.enable_outbound_public_ip")
 		}
 		if desired.NetworkConfig.AuthorizedExternalNetworks != nil && !reflect.DeepEqual(actual.NetworkConfig.AuthorizedExternalNetworks, desired.NetworkConfig.AuthorizedExternalNetworks) {
