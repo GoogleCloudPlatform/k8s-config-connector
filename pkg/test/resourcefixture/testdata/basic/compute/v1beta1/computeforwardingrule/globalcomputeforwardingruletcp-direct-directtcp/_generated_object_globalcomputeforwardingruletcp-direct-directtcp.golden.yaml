@@ -2,31 +2,27 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-two
-  name: computeregionalforwardingrule-${uniqueId}
+  name: computeglobalforwardingrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: A regional forwarding rule
+  description: A global forwarding rule
   ipAddress:
-    ip: 10.1.2.2
+    addressRef:
+      name: computeaddress-${uniqueId}
   ipProtocol: TCP
-  loadBalancingScheme: INTERNAL_MANAGED
-  location: us-central1
-  networkRef:
-    name: network-${uniqueId}
-  portRange: "90"
-  resourceID: computeregionalforwardingrule-${uniqueId}
-  subnetworkRef:
-    name: subnetwork-${uniqueId}
+  loadBalancingScheme: EXTERNAL
+  location: global
+  portRange: "110"
   target:
     targetTCPProxyRef:
       name: computetargettcpproxy2-${uniqueId}
@@ -38,6 +34,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
+  externalRef: //compute.googleapis.com/projects/${projectId}/global/forwardingrules/computeglobalforwardingrule-${uniqueId}
   labelFingerprint: abcdef0123A=
-  observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
+  observedGeneration: 2
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}

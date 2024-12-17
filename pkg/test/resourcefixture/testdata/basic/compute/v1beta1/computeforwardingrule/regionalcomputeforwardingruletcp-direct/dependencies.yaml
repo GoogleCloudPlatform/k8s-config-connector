@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,33 +13,46 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeAddress
+kind: ComputeNetwork
 metadata:
-  name: computeaddress-${uniqueId}
+  name: network-${uniqueId}
 spec:
-  description: a test global address
-  location: global
+  autoCreateSubnetworks: false
+  routingMode: "REGIONAL"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeHealthCheck
+kind: ComputeSubnetwork
 metadata:
-  name: computehealthcheck-${uniqueId}
+  name: subnetwork-${uniqueId}
 spec:
-  checkIntervalSec: 10
-  httpHealthCheck:
-    port: 80
-  location: global
+  region: us-central1
+  ipCidrRange: "10.1.2.0/24"
+  networkRef:
+    name: network-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: proxyonlysubnetwork-${uniqueId}
+spec:
+  region: us-central1
+  ipCidrRange: "10.129.0.0/23"
+  networkRef:
+    name: network-${uniqueId}
+  role: "ACTIVE"
+  purpose: "REGIONAL_MANAGED_PROXY"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   name: computebackendservice-${uniqueId}
 spec:
-  healthChecks:
-    - healthCheckRef:
-        name: computehealthcheck-${uniqueId}
-  location: global
+  location: us-central1
   protocol: TCP
+  # Default loadBalancingScheme for regional backend service is INTERNAL
+  # Set to INTERNAL_MANAGED when being referenced by Regional Target TCP Proxy
+  # googleapi error: Regional Target TCP Proxy cannot be used with BackendServices with schema INTERNAL
+  loadBalancingScheme: INTERNAL_MANAGED
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetTCPProxy
@@ -52,6 +65,7 @@ spec:
   backendServiceRef:
     name: computebackendservice-${uniqueId}
   proxyHeader: NONE
+  location: us-central1
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetTCPProxy
@@ -64,3 +78,4 @@ spec:
   backendServiceRef:
     name: computebackendservice-${uniqueId}
   proxyHeader: NONE
+  location: us-central1

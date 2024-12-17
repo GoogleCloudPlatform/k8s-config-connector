@@ -102,6 +102,7 @@ kind: ComputeForwardingRule
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeforwardingrule-${uniqueId}
 spec:
   location: "us-west1"
