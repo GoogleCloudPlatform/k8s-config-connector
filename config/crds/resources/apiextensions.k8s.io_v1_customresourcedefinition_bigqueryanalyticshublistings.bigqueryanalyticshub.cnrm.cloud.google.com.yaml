@@ -85,7 +85,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed BigQueryAnalyticsHubDataExchange
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{ocation}}/dataexchanges/{{dataexchangeID}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".
                     type: string
                   name:
                     description: The name of a BigQueryAnalyticsHubDataExchange resource.
@@ -413,7 +413,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed BigQueryAnalyticsHubDataExchange
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{ocation}}/dataexchanges/{{dataexchangeID}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".
                     type: string
                   name:
                     description: The name of a BigQueryAnalyticsHubDataExchange resource.
