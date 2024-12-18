@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &BigQueryAnalyticsHubDataExchangeRef{}
 // holds the GCP identifier for the KRM object.
 type BigQueryAnalyticsHubDataExchangeRef struct {
 	// A reference to an externally managed BigQueryAnalyticsHubDataExchange resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{ocation}}/dataexchanges/{{dataexchangeID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryAnalyticsHubDataExchange resource.
