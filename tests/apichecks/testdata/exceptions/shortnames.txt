@@ -1,4 +1,3 @@
-[shortnames] crd=bigqueryanalyticshublistings.bigqueryanalyticshub.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=configconnectorcontexts.core.cnrm.cloud.google.com: missing shortnames
