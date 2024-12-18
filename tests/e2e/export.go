@@ -47,6 +47,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	if !found && expectations.Location {
 		h.T.Error("expected to find location or region in obj but did not find it")
 	}
+
+	statusSelfLink, _, _ := unstructured.NestedString(obj.Object, "status", "selfLink")
+
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
@@ -55,6 +58,11 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
+	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
+		if statusSelfLink == "" {
+			h.T.Errorf("status.selfLink not set in BigQueryTable object")
+		}
+		exportURI = strings.ReplaceAll(statusSelfLink, "https://bigquery.googleapis.com/bigquery/v2/", "//bigquery.googleapis.com/")
 
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
