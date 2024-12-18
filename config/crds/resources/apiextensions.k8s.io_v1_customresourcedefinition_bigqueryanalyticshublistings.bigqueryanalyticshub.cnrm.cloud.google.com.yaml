@@ -16,6 +16,9 @@ spec:
     kind: BigQueryAnalyticsHubListing
     listKind: BigQueryAnalyticsHubListingList
     plural: bigqueryanalyticshublistings
+    shortNames:
+    - gcpbigqueryanalyticshublisting
+    - gcpbigqueryanalyticshublistings
     singular: bigqueryanalyticshublisting
   preserveUnknownFields: false
   scope: Namespaced
