@@ -17,7 +17,11 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
+
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -68,6 +72,36 @@ func parseSecureSourceManagerExternal(external string) (*ProjectIDAndLocation, s
 	}
 
 	return nil, "", fmt.Errorf("format of SecureSourceManagerInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
+}
+
+// ConvertToProjectNumber converts the external reference to use a project number.
+func (r *SecureSourceManagerInstanceRef) ConvertToProjectNumber(ctx context.Context, projectsClient *resourcemanager.ProjectsClient) error {
+	if r == nil {
+		return nil
+	}
+
+	parent, id, err := parseSecureSourceManagerExternal(r.External)
+
+	// Check if the project number is already a valid integer
+	// If not, we need to look it up
+	projectNumber, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		req := &resourcemanagerpb.GetProjectRequest{
+			Name: "projects/" + parent.ProjectID,
+		}
+		project, err := projectsClient.GetProject(ctx, req)
+		if err != nil {
+			return fmt.Errorf("error getting project %q: %w", req.Name, err)
+		}
+		n, err := strconv.ParseInt(strings.TrimPrefix(project.Name, "projects/"), 10, 64)
+		if err != nil {
+			return fmt.Errorf("error parsing project number for %q: %w", project.Name, err)
+		}
+		projectNumber = n
+	}
+	parent.ProjectID = strconv.FormatInt(projectNumber, 10)
+	r.External = fmt.Sprintf("%s/instances/%s", parent.String(), id)
+	return nil
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SecureSourceManagerInstance.

@@ -19,6 +19,10 @@ import (
 	"fmt"
 	"strings"
 
+	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	gcp "cloud.google.com/go/securesourcemanager/apiv1"
+	securesourcemanagerpb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -26,9 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	gcp "cloud.google.com/go/securesourcemanager/apiv1"
-
-	securesourcemanagerpb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -70,15 +71,13 @@ func (m *modelSecureSourceManagerRepository) AdapterForObject(ctx context.Contex
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Resolve SecureSourceManagerInstanceRef
-	instanceRef := obj.Spec.InstanceRef
-	normalizedExternal, err := instanceRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	id, err := krm.NewSecureSourceManagerRepositoryRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	obj.Spec.InstanceRef.External = normalizedExternal
 
-	id, err := krm.NewSecureSourceManagerRepositoryRef(ctx, reader, obj)
+	// Get Project GCP client
+	projectClient, err := m.projectsClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -89,10 +88,25 @@ func (m *modelSecureSourceManagerRepository) AdapterForObject(ctx context.Contex
 		return nil, err
 	}
 	return &SecureSourceManagerRepositoryAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:            id,
+		projectClient: projectClient,
+		gcpClient:     gcpClient,
+		reader:        reader,
+		desired:       obj,
 	}, nil
+}
+
+func (m *modelSecureSourceManagerRepository) projectsClient(ctx context.Context) (*cloudresourcemanager.ProjectsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	crmClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building cloudresourcemanager client: %w", err)
+	}
+	return crmClient, err
 }
 
 func (m *modelSecureSourceManagerRepository) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -101,10 +115,12 @@ func (m *modelSecureSourceManagerRepository) AdapterForURL(ctx context.Context, 
 }
 
 type SecureSourceManagerRepositoryAdapter struct {
-	id        *krm.SecureSourceManagerRepositoryRef
-	gcpClient *gcp.Client
-	desired   *krm.SecureSourceManagerRepository
-	actual    *securesourcemanagerpb.Repository
+	id            *krm.SecureSourceManagerRepositoryRef
+	projectClient *cloudresourcemanager.ProjectsClient
+	gcpClient     *gcp.Client
+	reader        client.Reader
+	desired       *krm.SecureSourceManagerRepository
+	actual        *securesourcemanagerpb.Repository
 }
 
 var _ directbase.Adapter = &SecureSourceManagerRepositoryAdapter{}
@@ -132,6 +148,18 @@ func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, creat
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+
+	// Resolve SecureSourceManagerInstanceRef
+	instanceRef := a.desired.Spec.InstanceRef
+	normalizedExternal, err := instanceRef.NormalizedExternal(ctx, a.reader, desired.Namespace)
+	if err != nil {
+		return err
+	}
+	desired.Spec.InstanceRef.External = normalizedExternal
+	if err := desired.Spec.InstanceRef.ConvertToProjectNumber(ctx, a.projectClient); err != nil {
+		return err
+	}
+
 	resource := SecureSourceManagerRepositorySpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

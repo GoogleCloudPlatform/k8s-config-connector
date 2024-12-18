@@ -42,7 +42,7 @@ func (s *secureSourceManagerServer) GetRepository(ctx context.Context, req *pb.G
 	obj := &pb.Repository{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "\"Resource '%s' was not found\"", fqn)
 		}
 		return nil, err
 	}
@@ -65,14 +65,13 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
-	obj.UpdateTime = timestamppb.New(now)
 
 	instanceName, err := s.parseInstanceName(obj.GetInstance())
 	if err != nil {
 		return nil, err
 	}
-
-	obj.InitialConfig = req.GetRepository().GetInitialConfig()
+	// Real GCP doesn't include initial config field.
+	obj.InitialConfig = nil
 
 	prefix := fmt.Sprintf("https://%s-%d", instanceName.InstanceID, name.Project.Number)
 	domain := "." + name.Location + ".sourcemanager.dev"
@@ -82,21 +81,16 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 		GitHttps: prefix + "-git" + domain + fmt.Sprintf("/%s/%s.git", name.Project.ID, req.GetRepositoryId()),
 	}
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
 	op := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "create",
 		ApiVersion: "v1",
 	}
-	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		op.EndTime = timestamppb.Now()
-		return obj, nil
-	})
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return s.operations.DoneLRO(ctx, "", op, obj)
 }
 
 func (s *secureSourceManagerServer) DeleteRepository(ctx context.Context, req *pb.DeleteRepositoryRequest) (*longrunning.Operation, error) {
@@ -119,11 +113,8 @@ func (s *secureSourceManagerServer) DeleteRepository(ctx context.Context, req *p
 		Verb:       "delete",
 		ApiVersion: "v1",
 	}
-	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		op.EndTime = timestamppb.Now()
-		return &emptypb.Empty{}, nil
-	})
+
+	return s.operations.DoneLRO(ctx, "", op, &emptypb.Empty{})
 }
 
 type RepositoryName struct {
