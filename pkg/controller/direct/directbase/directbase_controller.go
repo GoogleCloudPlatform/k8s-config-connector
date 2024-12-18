@@ -128,8 +128,6 @@ type Deps struct {
 }
 
 // DirectReconciler is a reconciler for reconciling resources that support the Model/Adapter pattern.
-// It is currently an adaptation of the existing terraform based-reconciler, and thus uses things like k8s.Resource.
-// TODO: Move away from k8s.Resource to unstructured.Unstructured.
 type DirectReconciler struct {
 	lifecyclehandler.LifecycleHandler
 	client.Client
