@@ -4,7 +4,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-dep-${uniqueId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -32,7 +31,6 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 {}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -43,10 +41,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "create"
   },
@@ -61,7 +61,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -78,6 +77,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "create"
   },
@@ -105,7 +105,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fssmrepository-${uniqueId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -118,7 +117,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "\"Resource 'projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}' was not found\"",
+    "message": "Resource \"projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}\" was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -131,7 +130,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -143,10 +141,13 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}",
+  "parent": "folders/${folderID}",
   "projectId": "${projectId}",
-  "state": 1
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -161,7 +162,6 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -177,6 +177,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
     "verb": "create"
   },
@@ -202,7 +203,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fssmrepository-${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -231,7 +231,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fssmrepository-${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -247,6 +246,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
     "verb": "delete"
   },
@@ -264,7 +264,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-dep-${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -295,7 +294,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-dep-${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -306,10 +304,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "delete"
   },
@@ -324,7 +324,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -341,6 +340,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
     "verb": "delete"
   },
