@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &SecureSourceManagerInstanceRef{}
 // holds the GCP identifier for the KRM object.
 type SecureSourceManagerInstanceRef struct {
 	// A reference to an externally managed SecureSourceManagerInstance resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/instances/<instanceID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SecureSourceManagerInstance resource.
@@ -67,7 +67,7 @@ func parseSecureSourceManagerExternal(external string) (*ProjectIDAndLocation, s
 		return parent, resourceID, nil
 	}
 
-	return nil, "", fmt.Errorf("format of SecureSourceManagerInstance external=%q was not known (use projects/<projectId>/locations/<location>/instances/<instanceID>)", external)
+	return nil, "", fmt.Errorf("format of SecureSourceManagerInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SecureSourceManagerInstance.

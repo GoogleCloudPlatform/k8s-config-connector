@@ -109,7 +109,7 @@ func New{{.ProtoResource}}Identity(ctx context.Context, reader client.Reader, ob
 func Parse{{.ProtoResource}}External(external string) (parent *{{.ProtoResource}}Parent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "{{.ProtoResource | ToLower }}s" {
-		return nil, "", fmt.Errorf("format of {{.Kind}} external=%q was not known (use projects/<projectId>/locations/<location>/{{.ProtoResource | ToLower }}s/<{{.ProtoResource | ToLower }}ID>)", external)
+		return nil, "", fmt.Errorf("format of {{.Kind}} external=%q was not known (use projects/{{"{{"}}projectID{{"}}"}}/locations/{{"{{"}}location{{"}}"}}/{{.ProtoResource | ToLower }}s/{{"{{"}}{{.ProtoResource | ToLower }}ID{{"}}"}})", external)
 	}
 	parent = &{{.ProtoResource}}Parent{
 		ProjectID: tokens[1],

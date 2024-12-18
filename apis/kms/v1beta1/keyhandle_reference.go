@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &KMSKeyHandleRef{}
 // holds the GCP identifier for the KRM object.
 type KMSKeyHandleRef struct {
 	// A reference to an externally managed KMSKeyHandle resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/keyHandles/<keyhandleID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/keyHandles/{{keyhandleID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a KMSKeyHandle resource.
@@ -106,7 +106,7 @@ func NewKMSKeyHandleRef(ctx context.Context, reader client.Reader, obj *KMSKeyHa
 
 	// At this point we are expecting desiredHandleID to be either empty or valid uuid
 	// 1. if desiredHandleID empty:
-	// id.external will be projects/<pid>/locations/<loc>/keyHandles/. i.e without resourceID.
+	// id.external will be projects/{{pid}}/locations/{{loc}}/keyHandles/. i.e without resourceID.
 	// A call will be made to find() with invalid externalID which will return false.
 	// 2. if desiredHandleID is a valid UUID: id.external will be valid.
 
@@ -178,7 +178,7 @@ func ParseKMSKeyHandleExternal(external string) (parent *KMSKeyHandleParent, res
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "keyHandles" {
-		return nil, "", fmt.Errorf("format of KMSKeyHandle external=%q was not known (use projects/<projectId>/locations/<location>/keyHandles/<keyhandleID>)", external)
+		return nil, "", fmt.Errorf("format of KMSKeyHandle external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyHandles/{{keyhandleID}})", external)
 	}
 	parent = &KMSKeyHandleParent{
 		ProjectID: tokens[1],
@@ -192,7 +192,7 @@ func AsKMSKeyHandleExternal_FromSpec(spec *KMSKeyHandleSpec) (parent *KMSKeyHand
 	external := strings.TrimPrefix(spec.ProjectRef.External, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 2 || tokens[0] != "projects" {
-		return nil, "", fmt.Errorf("invalid projectRef found in KMSKeyHandle=%q was not known (use projects/<projectId>)", external)
+		return nil, "", fmt.Errorf("invalid projectRef found in KMSKeyHandle=%q was not known (use projects/{{projectId}})", external)
 	}
 	parent = &KMSKeyHandleParent{
 		ProjectID: tokens[1],

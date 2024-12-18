@@ -50,7 +50,7 @@ func asID(externalRef string) (*FirestoreDatabaseIdentity, error) {
 	tokens := strings.Split(path, "/")
 
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "databases" {
-		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/databases/<firestoredatabase>, got %s",
+		return nil, fmt.Errorf("externalRef should be %s/projects/{{projectID}}/databases/{{firestoredatabase}}, got %s",
 			serviceDomain, externalRef)
 	}
 	return &FirestoreDatabaseIdentity{

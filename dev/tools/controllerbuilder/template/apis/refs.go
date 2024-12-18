@@ -34,7 +34,7 @@ var _ refsv1beta1.ExternalNormalizer = &{{.ProtoResource}}Ref{}
 // holds the GCP identifier for the KRM object.
 type {{.ProtoResource}}Ref struct {
 	// A reference to an externally managed {{.Kind}} resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/{{.ProtoResource | ToLower }}s/<{{.ProtoResource | ToLower }}ID>".
+	// Should be in the format "projects/{{"{{"}}projectID{{"}}"}}/locations/{{"{{"}}location{{"}}"}}/{{.ProtoResource | ToLower }}s/{{"{{"}}{{.ProtoResource | ToLower }}ID{{"}}"}}".
 	External string ` + "`" + `json:"external,omitempty"` + "`" + `
 
 	// The name of a {{.Kind}} resource.

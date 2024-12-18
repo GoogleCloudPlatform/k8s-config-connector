@@ -236,7 +236,7 @@ spec:
                   properties:
                     external:
                       description: A reference to an externally managed Compute Network
-                        resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
+                        resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                       type: string
                     name:
                       description: The `name` field of a `ComputeNetwork` resource.

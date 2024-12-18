@@ -108,7 +108,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed WorkstationConfig
-                      resource. Should be in the format "projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>/workstationConfigs/<workstationconfigID>".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}/workstationConfigs/{{workstationconfigID}}".
                     type: string
                   name:
                     description: The name of a WorkstationConfig resource.

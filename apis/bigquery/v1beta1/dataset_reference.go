@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &BigQueryDatasetRef{}
 // holds the GCP identifier for the KRM object.
 type BigQueryDatasetRef struct {
 	// A reference to an externally managed BigQueryDataset resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/datasets/<datasetID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/datasets/{{datasetID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryDataset resource.
@@ -164,7 +164,7 @@ func ParseBigQueryDatasetExternal(external string) (parent *BigQueryDatasetParen
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "datasets" {
-		return nil, "", fmt.Errorf("format of BigQueryDataset external=%q was not known (use projects/<projectId>/datasets/<datasetID>)", external)
+		return nil, "", fmt.Errorf("format of BigQueryDataset external=%q was not known (use projects/{{projectID}}/datasets/{{datasetID}})", external)
 	}
 	parent = &BigQueryDatasetParent{
 		ProjectID: tokens[1],

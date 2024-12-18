@@ -34,8 +34,8 @@ var _ refsv1beta1.ExternalNormalizer = &ComputeTargetTCPProxyRef{}
 // holds the GCP identifier for the KRM object.
 type ComputeTargetTCPProxyRef struct {
 	// A reference to an externally managed ComputeTargetTCPProxy resource.
-	// Should be in the format "projects/<projectID>/global/targetTcpProxies/<targettcpproxyID>"
-	// or "projects/<projectID>/regions/<region>/targetTcpProxies/<targettcpproxyID>".
+	// Should be in the format "projects/{{projectID}}/global/targetTcpProxies/{{targettcpproxyID}}"
+	// or "projects/{{projectID}}/regions/{{region}}/targetTcpProxies/{{targettcpproxyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeTargetTCPProxy resource.

@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &MemorystoreInstanceRef{}
 // holds the GCP identifier for the KRM object.
 type MemorystoreInstanceRef struct {
 	// A reference to an externally managed MemorystoreInstance resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/instances/<instanceID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a MemorystoreInstance resource.
@@ -168,7 +168,7 @@ func parseMemorystoreInstanceExternal(external string) (parent *MemorystoreInsta
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instance" {
-		return nil, "", fmt.Errorf("format of MemorystoreInstance external=%q was not known (use projects/<projectId>/locations/<location>/instances/<instanceID>)", external)
+		return nil, "", fmt.Errorf("format of MemorystoreInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
 	}
 	parent = &MemorystoreInstanceParent{
 		ProjectID: tokens[1],

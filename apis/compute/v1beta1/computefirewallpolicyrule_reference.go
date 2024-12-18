@@ -34,7 +34,7 @@ var _ refsv1beta1.ExternalNormalizer = &ComputeFirewallPolicyRuleRef{}
 // holds the GCP identifier for the KRM object.
 type ComputeFirewallPolicyRuleRef struct {
 	// A reference to an externally managed ComputeFirewallPolicyRule resource.
-	// Should be in the format "locations/global/firewallPolicies/<firewallPolicy>/rules/<priority>".
+	// Should be in the format "locations/global/firewallPolicies/{{firewallPolicy}}/rules/{{priority}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeFirewallPolicyRule resource.
@@ -158,7 +158,7 @@ func asComputeFirewallPolicyRuleExternal(parent *ComputeFirewallPolicyRuleParent
 func parseComputeFirewallPolicyRuleExternal(external string) (parent *ComputeFirewallPolicyRuleParent, priority int64, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "locations" || tokens[2] != "firewallPolicies" || tokens[4] != "rules" {
-		return nil, -1, fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use firewallPolicies/<firewallPolicy>/rules/<priority>)", external)
+		return nil, -1, fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use firewallPolicies/{{firewallPolicy}}/rules/{{priority}})", external)
 	}
 	parent = &ComputeFirewallPolicyRuleParent{
 		FirewallPolicy: tokens[3],

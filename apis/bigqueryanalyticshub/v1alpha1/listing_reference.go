@@ -34,7 +34,7 @@ var _ refsv1beta1.ExternalNormalizer = &BigQueryAnalyticsHubListingRef{}
 // holds the GCP identifier for the KRM object.
 type BigQueryAnalyticsHubListingRef struct {
 	// A reference to an externally managed BigQueryAnalyticsHubListing resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/listings/<listingID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/listings/{{listingID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryAnalyticsHubListing resource.
@@ -187,7 +187,7 @@ func parseBigQueryAnalyticsHubListingExternal(external string) (parent *BigQuery
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "dataExchanges" || tokens[6] != "listings" {
-		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubListing external=%q was not known (use projects/<projectID>/locations/<location>/dataExchanges/<dataExchangeID>/listings/<listingID>)", external)
+		return nil, "", fmt.Errorf("format of BigQueryAnalyticsHubListing external=%q was not known (use projects/{{projectID}}/locations/{{location}}/dataExchanges/{{dataExchangeID}}/listings/{{listingID}})", external)
 	}
 	parent = &BigQueryAnalyticsHubListingParent{
 		ProjectID:      tokens[1],

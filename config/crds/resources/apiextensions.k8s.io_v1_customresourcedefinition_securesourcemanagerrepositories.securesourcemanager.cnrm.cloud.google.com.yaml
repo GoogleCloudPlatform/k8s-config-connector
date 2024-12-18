@@ -223,7 +223,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed SecureSourceManagerInstance
-                      resource. Should be in the format "projects/<projectID>/locations/<location>/instances/<instanceID>".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
                     type: string
                   name:
                     description: The name of a SecureSourceManagerInstance resource.
