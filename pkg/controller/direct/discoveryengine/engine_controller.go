@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
@@ -104,7 +105,18 @@ func (m *modelDiscoveryEngineEngine) AdapterForObject(ctx context.Context, reade
 }
 
 func (m *modelDiscoveryEngineEngine) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
+	log := klog.FromContext(ctx)
+	if strings.HasPrefix(url, "//discoveryengine.googleapis.com/") {
+		id, err := krm.ParseDiscoveryEngineEngineExternal(url)
+		if err != nil {
+			log.V(2).Error(err, "url did not match DiscoveryEngineEngine format", "url", url)
+		} else {
+			return &DiscoveryEngineEngineAdapter{
+				model: m,
+				id:    id,
+			}, nil
+		}
+	}
 	return nil, nil
 }
 
@@ -219,7 +231,6 @@ func (a *DiscoveryEngineEngineAdapter) Export(ctx context.Context) (*unstructure
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
 
 	obj := &krm.DiscoveryEngineEngine{}
 	mapCtx := &direct.MapContext{}
@@ -230,15 +241,16 @@ func (a *DiscoveryEngineEngineAdapter) Export(ctx context.Context) (*unstructure
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
 	obj.Spec.Location = a.id.Location
 	obj.Spec.Collection = a.id.Collection
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
+	u := &unstructured.Unstructured{Object: uObj}
 	u.SetName(a.id.Engine)
 	u.SetGroupVersionKind(krm.DiscoveryEngineEngineGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 
