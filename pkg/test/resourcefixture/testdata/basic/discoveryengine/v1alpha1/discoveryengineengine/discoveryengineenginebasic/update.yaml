@@ -13,13 +13,15 @@
 # limitations under the License.
 
 apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
-kind: DiscoveryEngineDataStore
+kind: DiscoveryEngineEngine
 metadata:
-  name: datastore-${uniqueId}
+  name: engine-${uniqueId}
 spec:
   projectRef:
     external: projects/${projectId}
   location: global
   collection: default_collection
-  displayName: "My first data store"
-  industryVertical: GENERIC
+  displayName: "Updated DisplayName"
+  solutionType: SOLUTION_TYPE_CHAT
+  dataStoreRefs:
+  - name: datastore-${uniqueId}

@@ -15,6 +15,9 @@
 package discoveryengine
 
 import (
+	"fmt"
+	"strings"
+
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -65,7 +68,16 @@ func DiscoveryEngineEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Engin
 	out.DisableAnalytics = direct.LazyPtr(in.GetDisableAnalytics())
 
 	for _, dataStoreID := range in.DataStoreIds {
-		out.DataStoreRefs = append(out.DataStoreRefs, &krm.DiscoveryEngineDataStoreRef{External: dataStoreID})
+		tokens := strings.Split(in.Name, "/")
+		if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "collections" || tokens[6] != "engines" {
+			mapCtx.Errorf("unexpected name %q in DiscoveryEngineEngineSpec_FromProto", in.Name)
+			continue
+		}
+		projectID := tokens[1]
+		location := tokens[3]
+		collection := tokens[5]
+		external := fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s", projectID, location, collection, dataStoreID)
+		out.DataStoreRefs = append(out.DataStoreRefs, krm.DiscoveryEngineDataStoreRef{External: external})
 	}
 
 	return out
@@ -91,7 +103,12 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 	out.DisableAnalytics = direct.ValueOf(in.DisableAnalytics)
 
 	for _, dataStoreRef := range in.DataStoreRefs {
-		out.DataStoreIds = append(out.DataStoreIds, dataStoreRef.External)
+		id, err := krm.ParseDiscoveryEngineDataStoreExternal(dataStoreRef.External)
+		if err != nil {
+			mapCtx.Errorf("parsing ref: %w", err)
+			continue
+		}
+		out.DataStoreIds = append(out.DataStoreIds, id.DataStore)
 	}
 
 	return out
