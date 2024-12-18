@@ -129,7 +129,7 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 }
 
 // SupportsIAM returns true if this resource supports IAM (not all GCP resources do).
-// An error will be returned if IsDirect(groupKind) is not true.
+// An error will be returned if IsDirectByGK(groupKind) is not true.
 func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 	// TODO: Move to registration somehow?
 	switch groupKind {
@@ -144,6 +144,8 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 	case schema.GroupKind{Group: "securesourcemanager.cnrm.cloud.google.com", Kind: "SecureSourceManagerInstance"}:
 		return false, nil
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
+		return false, nil
+	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineEngine"}:
 		return false, nil
 	}
 	klog.Warningf("groupKind %v is not recognized as a direct kind for SupportsIAM check", groupKind)

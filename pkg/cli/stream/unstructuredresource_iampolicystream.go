@@ -88,7 +88,7 @@ func (s *UnstructuredResourceAndIAMPolicyStream) Next(ctx context.Context) (*uns
 func (s *UnstructuredResourceAndIAMPolicyStream) fillNextIAMPolicyIfSupportedAndIfNonEmpty(u *unstructured.Unstructured) error {
 	hasIAMSupport, err := s.iamClient.SupportsIAM(u)
 	if err != nil {
-		return fmt.Errorf("error determining if resource supports iam: %w", err)
+		return fmt.Errorf("error determining if resource %v supports iam: %w", u.GroupVersionKind(), err)
 	}
 	if !hasIAMSupport {
 		return nil

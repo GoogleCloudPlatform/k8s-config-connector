@@ -48,9 +48,9 @@ func New(tfProvider *schema.Provider, smloader *servicemappingloader.ServiceMapp
 }
 
 func (i *iamClient) SupportsIAM(unstructured *unstructured.Unstructured) (bool, error) {
-	groundKind := unstructured.GroupVersionKind().GroupKind()
-	if registry.IsDirectByGK(groundKind) {
-		return registry.SupportsIAM(groundKind)
+	groupKind := unstructured.GroupVersionKind().GroupKind()
+	if registry.IsDirectByGK(groupKind) {
+		return registry.SupportsIAM(groupKind)
 	}
 
 	rc, err := i.smLoader.GetResourceConfig(unstructured)

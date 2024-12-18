@@ -184,7 +184,24 @@ type refNormalizer struct {
 	project *refs.Project
 }
 
+type Normalizable interface {
+	NormalizedExternal(context.Context, client.Reader, string) (string, error)
+}
+
 func (r *refNormalizer) VisitField(path string, v any) error {
+	ctx := r.ctx
+
+	if v == nil {
+		return nil
+	}
+
+	if normalizable, ok := v.(Normalizable); ok {
+		_, err := normalizable.NormalizedExternal(ctx, r.kube, r.src.GetNamespace())
+		if err != nil {
+			return err
+		}
+		return nil
+	}
 	if logsPanel, ok := v.(*krm.LogsPanel); ok {
 		for i := range logsPanel.ResourceNames {
 			if ref, err := normalizeResourceName(r.ctx, r.kube, r.src, &logsPanel.ResourceNames[i]); err != nil {

@@ -1,0 +1,15 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineEngine
+metadata:
+  name: engine-${uniqueId}
+spec:
+  collection: default_collection
+  dataStoreRefs:
+  - external: projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}
+  displayName: Updated DisplayName
+  location: global
+  projectRef:
+    external: ${projectId}
+  searchEngineConfig:
+    searchTier: SEARCH_TIER_STANDARD
+  solutionType: SOLUTION_TYPE_SEARCH

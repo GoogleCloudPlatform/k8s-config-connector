@@ -59,6 +59,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
 
+	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineEngine"}:
+		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/engines/{resourceID}"
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
