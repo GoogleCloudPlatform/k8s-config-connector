@@ -118,7 +118,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "\"Resource 'projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}' was not found\"",
+    "message": "Resource \"projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}\" was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -185,6 +185,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
     "verb": "create"
   },
@@ -255,6 +256,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}",
     "verb": "delete"
   },

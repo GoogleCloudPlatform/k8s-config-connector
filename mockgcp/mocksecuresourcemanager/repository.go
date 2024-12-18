@@ -42,7 +42,7 @@ func (s *secureSourceManagerServer) GetRepository(ctx context.Context, req *pb.G
 	obj := &pb.Repository{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "\"Resource '%s' was not found\"", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource \"%s\" was not found", fqn)
 		}
 		return nil, err
 	}
@@ -90,7 +90,10 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return s.operations.DoneLRO(ctx, "", op, obj)
+	return s.operations.DoneLRO(ctx, "", op, func() *pb.Repository {
+		op.EndTime = timestamppb.New(now)
+		return obj
+	}())
 }
 
 func (s *secureSourceManagerServer) DeleteRepository(ctx context.Context, req *pb.DeleteRepositoryRequest) (*longrunning.Operation, error) {
@@ -114,7 +117,10 @@ func (s *secureSourceManagerServer) DeleteRepository(ctx context.Context, req *p
 		ApiVersion: "v1",
 	}
 
-	return s.operations.DoneLRO(ctx, "", op, &emptypb.Empty{})
+	return s.operations.DoneLRO(ctx, "", op, func() *emptypb.Empty {
+		op.EndTime = timestamppb.New(now)
+		return &emptypb.Empty{}
+	}())
 }
 
 type RepositoryName struct {
