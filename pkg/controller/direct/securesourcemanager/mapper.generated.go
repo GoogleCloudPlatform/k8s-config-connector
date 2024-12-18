@@ -43,32 +43,6 @@ func Instance_HostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Hos
 	out.GitSsh = direct.ValueOf(in.GitSSH)
 	return out
 }
-func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance_PrivateConfig{}
-	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
-	if in.GetCaPool() != "" {
-		out.CaPoolRef = &refs.PrivateCACAPoolRef{External: in.GetCaPool()}
-	}
-	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
-	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
-	return out
-}
-func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_PrivateConfig{}
-	out.IsPrivate = direct.ValueOf(in.IsPrivate)
-	if in.CaPoolRef != nil {
-		out.CaPool = in.CaPoolRef.External
-	}
-	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
-	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
-	return out
-}
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
 	if in == nil {
 		return nil
