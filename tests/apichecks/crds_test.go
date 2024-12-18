@@ -372,3 +372,21 @@ func TestCRDCamelCase(t *testing.T) {
 		t.Fatal(errs)
 	}
 }
+
+func TestCRDShortNames(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		if len(crd.Spec.Names.ShortNames) == 0 {
+			errs = append(errs, fmt.Sprintf("[shortnames] crd=%s: missing shortnames", crd.Name))
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/shortnames.txt", want)
+}
