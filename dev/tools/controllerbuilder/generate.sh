@@ -29,6 +29,7 @@ go run . generate-types \
     --service google.cloud.discoveryengine.v1 \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
     --resource DiscoveryEngineDataStore:DataStore \
+    --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
     --resource DiscoveryEngineEngine:Engine
 
 # go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/dev/tools/proto-to-mapper/third_party/googleapis/ <<EOF
