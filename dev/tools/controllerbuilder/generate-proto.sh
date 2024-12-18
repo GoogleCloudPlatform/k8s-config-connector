@@ -31,9 +31,17 @@ GOOGLEAPI_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/m
 cd ${REPO_ROOT}/.build/third_party
 git clone https://github.com/googleapis/googleapis.git ${THIRD_PARTY}/googleapis || (cd ${THIRD_PARTY}/googleapis && git reset --hard ${GOOGLEAPI_VERSION})
 
-which protoc || sudo apt install -y protobuf-compiler
-# On mac:
-# sudo brew install protobuf
+if (which protoc); then
+    echo "Found protoc version $(protoc --version)"
+else
+    echo "Installing protoc"
+    if [ "$(uname)" == "Darwin" ]; then
+      brew install protobuf
+    else
+      sudo apt install -y protobuf-compiler
+    fi
+fi
+
 
 protoc --include_imports --include_source_info \
     -I ${THIRD_PARTY}/googleapis/ \
