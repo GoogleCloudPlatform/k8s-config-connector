@@ -21,6 +21,7 @@ import (
 
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
@@ -67,6 +68,9 @@ func (a *managementConflictAnnotationDefaulter) Handle(ctx context.Context, req 
 	if err := a.client.Get(ctx, apimachinerytypes.NamespacedName{Name: obj.GetNamespace()}, ns); err != nil {
 		return admission.Errored(http.StatusInternalServerError,
 			fmt.Errorf("error getting Namespace %v: %w", obj.GetNamespace(), err))
+	}
+	if supportedgvks.IsDirectByGVK(obj.GroupVersionKind()) {
+		return admission.Allowed("")
 	}
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
 		return defaultManagementConflictAnnotationForDCLBasedResources(obj, ns, a.dclSchemaLoader, a.serviceMetadataLoader)
