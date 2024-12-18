@@ -34,7 +34,7 @@ var _ refsv1beta1.ExternalNormalizer = &ComputeFirewallPolicyRuleRef{}
 // holds the GCP identifier for the KRM object.
 type ComputeFirewallPolicyRuleRef struct {
 	// A reference to an externally managed ComputeFirewallPolicyRule resource.
-	// Should be in the format "locations/global/firewallPolicies/<firewallPolicy>/rules/<priority>".
+	// Should be in the format "locations/global/firewallPolicies/{{firewallPolicy}}/rules/{{priority}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeFirewallPolicyRule resource.
@@ -42,8 +42,6 @@ type ComputeFirewallPolicyRuleRef struct {
 
 	// The namespace of a ComputeFirewallPolicyRule resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent *ComputeFirewallPolicyRuleParent
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on ComputeFirewallPolicyRule.
@@ -75,31 +73,40 @@ func (r *ComputeFirewallPolicyRuleRef) NormalizedExternal(ctx context.Context, r
 		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeFirewallPolicyRuleGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	actualExternalRef, found, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+		return "", fmt.Errorf("error getting status.externalRef for %s %s/%s: %w", u.GetKind(), u.GetNamespace(), u.GetName(), err)
 	}
-	if actualExternalRef == "" {
-		return "", fmt.Errorf("ComputeFirewallPolicyRule is not ready yet")
+
+	// If status.externalRef does not exist, it's created by legacy controller. Get values from target field.
+	if !found {
+		resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
+		if err != nil {
+			return "", fmt.Errorf("reading spec.resourceID from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+		}
+		if resourceID == "" {
+			resourceID = u.GetName()
+		}
+		r.External = resourceID
+	} else {
+		r.External = actualExternalRef
 	}
-	r.External = actualExternalRef
 	return r.External, nil
 }
 
 // New builds a NewComputeFirewallPolicyRuleRef from the Config Connector ComputeFirewallPolicyRule object.
 func NewComputeFirewallPolicyRuleRef(ctx context.Context, reader client.Reader, obj *ComputeFirewallPolicyRule) (*ComputeFirewallPolicyRuleRef, error) {
-	id := &ComputeFirewallPolicyRuleRef{}
+	ref := &ComputeFirewallPolicyRuleRef{}
 
-	firewallPolicyRef, err := refsv1beta1.ResolveComputeFirewallPolicy(ctx, reader, obj, obj.Spec.FirewallPolicyRef)
+	firewallPolicyRef := obj.Spec.FirewallPolicyRef
+	normalizedRef, err := firewallPolicyRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
 		return nil, err
 	}
-	firewallPolicy := firewallPolicyRef.External
+	firewallPolicy := normalizedRef
 	if firewallPolicy == "" {
 		return nil, fmt.Errorf("cannot resolve firewallPolicy")
 	}
-
-	id.parent = &ComputeFirewallPolicyRuleParent{FirewallPolicy: firewallPolicy}
 
 	// Get priority. Priority is a required field
 	priority := obj.Spec.Priority
@@ -107,66 +114,41 @@ func NewComputeFirewallPolicyRuleRef(ctx context.Context, reader client.Reader, 
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		id.External = asComputeFirewallPolicyRuleExternal(id.parent, priority)
-		return id, nil
+		ref.External = AsComputeFirewallPolicyRuleExternal(firewallPolicy, priority)
+		return ref, nil
 	}
 
 	// Validate desired with actual
-	actualParent, actualPriority, err := parseComputeFirewallPolicyRuleExternal(externalRef)
+	actualFirewallPolicy, actualPriority, err := parseComputeFirewallPolicyRuleExternal(externalRef)
 	if err != nil {
 		return nil, err
 	}
-	if actualParent.FirewallPolicy != firewallPolicy {
-		return nil, fmt.Errorf("spec.firewallPolicyRef changed, expect %s, got %s", actualParent.FirewallPolicy, firewallPolicy)
+	if actualFirewallPolicy != firewallPolicy {
+		return nil, fmt.Errorf("spec.firewallPolicyRef changed, expect %s, got %s", actualFirewallPolicy, firewallPolicy)
 	}
 	if actualPriority != priority {
 		return nil, fmt.Errorf("cannot reset `spec.priority` to %d, since it has already assigned to %d",
 			priority, actualPriority)
 	}
-	id.External = externalRef
-	id.parent = &ComputeFirewallPolicyRuleParent{FirewallPolicy: firewallPolicy}
-	return id, nil
+	ref.External = externalRef
+	return ref, nil
 }
 
-func (r *ComputeFirewallPolicyRuleRef) Parent() (*ComputeFirewallPolicyRuleParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, _, err := parseComputeFirewallPolicyRuleExternal(r.External)
-		if err != nil {
-			return nil, err
-		}
-		return parent, nil
-	}
-	return nil, fmt.Errorf("ComputeFirewallPolicyRule not initialized from `NewComputeFirewallPolicyRuleRef` or `NormalizedExternal`")
-}
-
-type ComputeFirewallPolicyRuleParent struct {
-	FirewallPolicy string
-}
-
-func (p *ComputeFirewallPolicyRuleParent) String() string {
-	return "locations/global/firewallPolicies/" + p.FirewallPolicy
-}
-
-func asComputeFirewallPolicyRuleExternal(parent *ComputeFirewallPolicyRuleParent, priority int64) (external string) {
+func AsComputeFirewallPolicyRuleExternal(firewallPolicy string, priority int64) (external string) {
 	p := strconv.Itoa(int(priority))
-	return parent.String() + "/rules/" + p
+	return "locations/global/firewallPolicies/" + firewallPolicy + "/rules/" + p
 }
 
-func parseComputeFirewallPolicyRuleExternal(external string) (parent *ComputeFirewallPolicyRuleParent, priority int64, err error) {
+func parseComputeFirewallPolicyRuleExternal(external string) (firewallPolicy string, priority int64, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "locations" || tokens[2] != "firewallPolicies" || tokens[4] != "rules" {
-		return nil, -1, fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use firewallPolicies/<firewallPolicy>/rules/<priority>)", external)
+	if len(tokens) != 6 || tokens[0] != "locations" || tokens[1] != "global" || tokens[2] != "firewallPolicies" || tokens[4] != "rules" {
+		return "", -1, fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use location/global/firewallPolicies/{{firewallPolicy}}/rules/{{priority}})", external)
 	}
-	parent = &ComputeFirewallPolicyRuleParent{
-		FirewallPolicy: tokens[3],
-	}
+	firewallPolicy = tokens[3]
 	p, err := strconv.ParseInt(tokens[5], 10, 32)
 	if err != nil {
-		return nil, -1, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule external=%q to an integer: %w", tokens[5], external, err)
+		return "", -1, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule external=%q to an integer: %w", tokens[5], external, err)
 	}
 	priority = p
-	return parent, priority, nil
+	return firewallPolicy, priority, nil
 }
