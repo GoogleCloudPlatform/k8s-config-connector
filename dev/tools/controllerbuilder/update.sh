@@ -30,5 +30,8 @@ go run . update-types insert \
 # example usage of syncing a message with all of its dependencies from proto package
 go run . update-types sync \
     --service google.cloud.bigquery.datatransfer.v1 \
-    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1beta1 \ 
+    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1beta1 \
     --legacy-mode  # this is a flag to indicate that the resource is previously generated with KRM fields without proto annotations
+
+# Fix up formatting
+${REPO_ROOT}/dev/tasks/fix-gofmt

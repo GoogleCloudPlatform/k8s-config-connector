@@ -17,6 +17,7 @@ package v1beta1
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EmailPreferences
 type EmailPreferences struct {
 	// If true, email notifications will be sent on transfer run failures.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EmailPreferences.enable_failure_email
 	EnableFailureEmail *bool `json:"enableFailureEmail,omitempty"`
 }
 
@@ -30,6 +31,7 @@ type ScheduleOptions struct {
 	//  will be disabled. The runs can be started on ad-hoc basis using
 	//  StartManualTransferRuns API. When automatic scheduling is disabled, the
 	//  TransferConfig.schedule field will be ignored.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptions.disable_auto_scheduling
 	DisableAutoScheduling *bool `json:"disableAutoScheduling,omitempty"`
 
 	// Specifies time to start scheduling transfer runs. The first run will be
@@ -37,12 +39,14 @@ type ScheduleOptions struct {
 	//  defined in the schedule string. The start time can be changed at any
 	//  moment. The time when a data transfer can be triggered manually is not
 	//  limited by this option.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptions.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Defines time to stop scheduling transfer runs. A transfer run cannot be
 	//  scheduled at or after the end time. The end time can be changed at any
 	//  moment. The time when a data transfer can be triggered manually is not
 	//  limited by this option.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptions.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
 
@@ -50,16 +54,19 @@ type ScheduleOptions struct {
 type ScheduleOptionsV2 struct {
 	// Time based transfer schedule options. This is the default schedule
 	//  option.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptionsV2.time_based_schedule
 	TimeBasedSchedule *TimeBasedSchedule `json:"timeBasedSchedule,omitempty"`
 
 	// Manual transfer schedule. If set, the transfer run will not be
 	//  auto-scheduled by the system, unless the client invokes
 	//  StartManualTransferRuns.  This is equivalent to
 	//  disable_auto_scheduling = true.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptionsV2.manual_schedule
 	ManualSchedule *ManualSchedule `json:"manualSchedule,omitempty"`
 
 	// Event driven transfer schedule options. If set, the transfer will be
 	//  scheduled upon events arrial.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptionsV2.event_driven_schedule
 	EventDrivenSchedule *EventDrivenSchedule `json:"eventDrivenSchedule,omitempty"`
 }
 
@@ -78,23 +85,27 @@ type TimeBasedSchedule struct {
 	//
 	//  NOTE: The minimum interval time between recurring transfers depends on the
 	//  data source; refer to the documentation for your data source.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TimeBasedSchedule.schedule
 	Schedule *string `json:"schedule,omitempty"`
 
 	// Specifies time to start scheduling transfer runs. The first run will be
 	//  scheduled at or after the start time according to a recurrence pattern
 	//  defined in the schedule string. The start time can be changed at any
 	//  moment.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TimeBasedSchedule.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Defines time to stop scheduling transfer runs. A transfer run cannot be
 	//  scheduled at or after the end time. The end time can be changed at any
 	//  moment.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TimeBasedSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.UserInfo
 type UserInfo struct {
 	// E-mail address of the user.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.UserInfo.email
 	Email *string `json:"email,omitempty"`
 }
 
@@ -127,8 +138,10 @@ type Any struct {
 	//
 	//  Schemes other than `http`, `https` (or the empty scheme) might be
 	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
 	TypeURL *string `json:"typeURL,omitempty"`
 
 	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }

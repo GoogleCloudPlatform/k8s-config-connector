@@ -32,12 +32,14 @@ type EncryptionConfiguration struct {
 type Status struct {
 	// The status code, which should be an enum value of
 	//  [google.rpc.Code][google.rpc.Code].
+	// +kcc:proto:field=google.rpc.Status.code
 	Code *int32 `json:"code,omitempty"`
 
 	// A developer-facing error message, which should be in English. Any
 	//  user-facing error message should be localized and sent in the
 	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
 	//  by the client.
+	// +kcc:proto:field=google.rpc.Status.message
 	Message *string `json:"message,omitempty"`
 
 	/* NOTYET
@@ -63,14 +65,16 @@ type BigQueryDataTransferConfigSpec struct {
 	//  for just [today-1].
 	//  Only valid if the data source supports the feature. Set the value to 0
 	//  to use the default value.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.data_refresh_window_days
 	DataRefreshWindowDays *int32 `json:"dataRefreshWindowDays,omitempty"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="DataSourceID field is immutable"
 	// Immutable.
+	// +required
 	// Data source ID. This cannot be changed once data transfer is created. The
 	//  full list of available data source IDs can be returned through an API call:
 	//  https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list
-	// +required
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.data_source_id
 	DataSourceID *string `json:"dataSourceID,omitempty"`
 
 	// The BigQuery target dataset id.
@@ -79,13 +83,16 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
 	//  this transfer config.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.disabled
 	Disabled *bool `json:"disabled,omitempty"`
 
 	// User specified display name for the data transfer.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Email notifications will be sent according to these preferences
 	//  to the email address of the user who owns this transfer config.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.email_preferences
 	EmailPreferences *EmailPreferences `json:"emailPreferences,omitempty"`
 
 	// The encryption configuration part. Currently, it is only used for the
@@ -93,17 +100,19 @@ type BigQueryDataTransferConfigSpec struct {
 	//  granted permissions to use the key. Read methods will return the key name
 	//  applied in effect. Write methods will apply the key if it is present, or
 	//  otherwise try to apply project default keys if it is absent.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.encryption_configuration
 	EncryptionConfiguration *EncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
 
 	// Pub/Sub topic where notifications will be sent after transfer runs
 	//  associated with this transfer config finish.
 	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
 
+	// +required
 	// Parameters specific to each data source. For more information see the
 	//  bq tab in the 'Setting up a data transfer' section for each data source.
 	//  For example the parameters for Cloud Storage transfers are listed here:
 	//  https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
-	// +required
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.params
 	Params map[string]string `json:"params,omitempty"`
 
 	Parent `json:",inline"`
@@ -124,9 +133,11 @@ type BigQueryDataTransferConfigSpec struct {
 	//
 	//  NOTE: The minimum interval time between recurring transfers depends on the
 	//  data source; refer to the documentation for your data source.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule
 	Schedule *string `json:"schedule,omitempty"`
 
 	// Options customizing the data transfer schedule.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule_options
 	ScheduleOptions *ScheduleOptions `json:"scheduleOptions,omitempty"`
 
 	// Service account email. If this field is set, the transfer config will be created with this service account's credentials.
@@ -135,10 +146,10 @@ type BigQueryDataTransferConfigSpec struct {
 	//  For the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts.
 	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
-	// V2 options customizing different types of data transfer schedule.
-	//  This field supports existing time-based and manual transfer schedule. Also
-	//  supports Event-Driven transfer schedule. ScheduleOptionsV2 cannot be used
-	//  together with ScheduleOptions/Schedule.
+	// Options customizing different types of data transfer schedule.
+	//  This field replaces "schedule" and "schedule_options" fields.
+	//  ScheduleOptionsV2 cannot be used together with ScheduleOptions/Schedule.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule_options_v2
 	ScheduleOptionsV2 *ScheduleOptionsV2 `json:"scheduleOptionsV2,omitempty"`
 }
 
@@ -172,6 +183,7 @@ type BigQueryDataTransferConfigStatus struct {
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferConfigObservedState struct {
 	// Output only. Region in which BigQuery dataset is located.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.dataset_region
 	DatasetRegion *string `json:"datasetRegion,omitempty"`
 
 	// Identifier. The resource name of the transfer config.
@@ -181,27 +193,34 @@ type BigQueryDataTransferConfigObservedState struct {
 	//  where `config_id` is usually a UUID, even though it is not
 	//  guaranteed or required. The name is ignored when creating a transfer
 	//  config.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. Next time when data transfer will run.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.next_run_time
 	NextRunTime *string `json:"nextRunTime,omitempty"`
 
 	// Output only. Information about the user whose credentials are used to
 	//  transfer data. Populated only for `transferConfigs.get` requests. In case
 	//  the user information is not available, this field will not be populated.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.owner_info
 	OwnerInfo *UserInfo `json:"ownerInfo,omitempty"`
 
 	// Output only. State of the most recently updated transfer run.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.state
 	State *string `json:"state,omitempty"`
 
 	// Output only. Data transfer modification time. Ignored by server on input.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Deprecated. Unique ID of the user on whose behalf transfer is done.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.user_id
 	UserID *int64 `json:"userID,omitempty"`
 
 	// Output only. Error code with detailed information about reason of the
 	//  latest config failure.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.error
 	Error *Status `json:"error,omitempty"`
 }
 
