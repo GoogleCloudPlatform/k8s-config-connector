@@ -760,7 +760,7 @@ runningTimeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed WorkstationCluster resource. Should be in the format "projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed WorkstationCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

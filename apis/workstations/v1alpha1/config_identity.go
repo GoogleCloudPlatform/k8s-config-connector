@@ -119,7 +119,7 @@ func NewWorkstationConfigIdentity(ctx context.Context, reader client.Reader, obj
 func ParseWorkstationConfigExternal(external string) (parent *WorkstationConfigParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workstationClusters" || tokens[6] != "workstationConfigs" {
-		return nil, "", fmt.Errorf("format of Workstation external=%q was not known (use projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>/workstationConfigs/<workstationconfigID>)", external)
+		return nil, "", fmt.Errorf("format of Workstation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}/workstationConfigs/{{workstationconfigID}})", external)
 	}
 	parent = &WorkstationConfigParent{
 		ProjectID: tokens[1],

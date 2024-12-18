@@ -1048,7 +1048,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed WorkstationCluster
-                      resource. Should be in the format "projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}".
                     type: string
                   name:
                     description: The name of a WorkstationCluster resource.

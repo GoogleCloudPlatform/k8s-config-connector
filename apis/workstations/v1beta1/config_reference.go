@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &WorkstationConfigRef{}
 // holds the GCP identifier for the KRM object.
 type WorkstationConfigRef struct {
 	// A reference to an externally managed WorkstationConfig resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/workstationClusters/<workstationclusterID>/workstationConfigs/<workstationconfigID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}/workstationConfigs/{{workstationconfigID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a WorkstationConfig resource.
