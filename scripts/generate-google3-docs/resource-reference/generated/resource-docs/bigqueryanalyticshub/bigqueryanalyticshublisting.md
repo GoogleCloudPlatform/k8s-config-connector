@@ -149,7 +149,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed BigQueryAnalyticsHubDataExchange resource. Should be in the format "projects/<projectID>/locations/<location>/dataexchanges/<dataexchangeID>".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed BigQueryAnalyticsHubDataExchange resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
