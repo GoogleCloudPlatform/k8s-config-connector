@@ -141,7 +141,7 @@ func ResolveBigQueryTable(ctx context.Context, reader client.Reader, src client.
 	if ref.External != "" {
 		// External should be in the `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` format.
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "datasets" && tokens[4] == "tables" {
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "datasets" && tokens[4] == "tables" {
 			return &BigQueryTable{
 				projectID: tokens[1],
 				datasetID: tokens[3],
