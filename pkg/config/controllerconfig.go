@@ -15,8 +15,12 @@
 package config
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 
+	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
 )
@@ -40,6 +44,25 @@ type ControllerConfig struct {
 	// GCPTokenSource mints OAuth2 tokens to be passed with GCP API calls,
 	// allowing use of a non-default OAuth2 identity
 	GCPTokenSource oauth2.TokenSource
+
+	// ProjectMapper maps between project ids and numbers
+	ProjectMapper *projects.ProjectMapper
+}
+
+func (c *ControllerConfig) Init(ctx context.Context) error {
+	if c.ProjectMapper == nil {
+		opts, err := c.RESTClientOptions()
+		if err != nil {
+			return err
+		}
+
+		projectsClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
+		if err != nil {
+			return fmt.Errorf("building cloudresourcemanager client: %w", err)
+		}
+		c.ProjectMapper = projects.NewProjectMapper(projectsClient)
+	}
+	return nil
 }
 
 func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
