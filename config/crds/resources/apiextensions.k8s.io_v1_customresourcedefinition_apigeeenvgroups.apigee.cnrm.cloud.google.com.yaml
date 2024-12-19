@@ -92,12 +92,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The ApigeeEnvgroup name. If not given, the
-                  metadata.name will be used.
+                description: The ApigeeEnvgroup name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - organizationRef
             type: object

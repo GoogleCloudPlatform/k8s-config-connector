@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 	"time"
 
@@ -158,17 +159,23 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("patching ApigeeEnvgroup", a.fullyQualifiedName())
-
+	mapCtx := &direct.MapContext{}
 	updateMask := fieldmaskpb.FieldMask{}
 
-	if !reflect.DeepEqual(a.desired.Hostnames, a.actual.Hostnames) {
+	// Sorts the Hostname lists so that the comparison is deterministic
+	if !reflect.DeepEqual(asSortedCopy(a.desired.Hostnames), asSortedCopy(a.actual.Hostnames)) {
 		log.V(2).Info("change detected: hostnames")
 		updateMask.Paths = append(updateMask.Paths, "hostnames")
 	}
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		status := &krm.ApigeeEnvgroupStatus{}
+		status.ObservedState = ApigeeEnvgroupObservedState_FromApi(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	clusterName := a.id.String()
@@ -187,7 +194,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated ApigeeEnvgroup", "ApigeeEnvgroup", updated)
 
 	status := &krm.ApigeeEnvgroupStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = ApigeeEnvgroupObservedState_FromApi(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -261,4 +267,12 @@ func (a *Adapter) waitForOp(ctx context.Context, op *api.GoogleLongrunningOperat
 
 func (a *Adapter) fullyQualifiedName() string {
 	return a.id.String()
+}
+
+func asSortedCopy(in []string) []string {
+	out := make([]string, len(in))
+	copy(out, in)
+	sort.Strings(out)
+
+	return out
 }

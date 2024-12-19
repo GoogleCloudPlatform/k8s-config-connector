@@ -32,6 +32,18 @@ func ApigeeEnvgroupObservedState_FromApi(mapCtx *direct.MapContext, in *api.Goog
 	return out
 }
 
+func ApigeeEnvgroupObservedState_ToApi(mapCtx *direct.MapContext, in *krm.ApigeeEnvgroupObservedState) *api.GoogleCloudApigeeV1EnvironmentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &api.GoogleCloudApigeeV1EnvironmentGroup{}
+	out.CreatedAt = direct.ValueOf(in.CreatedAt)
+	out.LastModifiedAt = direct.ValueOf(in.LastModifiedAt)
+	out.Name = direct.ValueOf(in.Name)
+	out.State = direct.ValueOf(in.State)
+	return out
+}
+
 func ApigeeEnvgroupSpec_FromApi(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1EnvironmentGroup) *krm.ApigeeEnvgroupSpec {
 	if in == nil {
 		return nil

@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &GoogleCloudApigeeV1EnvironmentGroupRef{}
 // holds the GCP identifier for the KRM object.
 type GoogleCloudApigeeV1EnvironmentGroupRef struct {
 	// A reference to an externally managed ApigeeEnvgroup resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/googlecloudapigeev1environmentgroups/<googlecloudapigeev1environmentgroupID>".
+	// Should be in the format "organizations/{{organization}}/envgroups/{{envgroup}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ApigeeEnvgroup resource.

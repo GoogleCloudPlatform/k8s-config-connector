@@ -170,10 +170,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			return err
 		}
 
-		if err := typeGenerator.WriteVisitedMessages(); err != nil {
-			return err
-		}
-
 		if o.SkipScaffoldFiles {
 			log.Info("skipping scaffolding type, refs and identity files", "resource", resource.ProtoName)
 		} else {

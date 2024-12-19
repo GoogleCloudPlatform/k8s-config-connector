@@ -101,7 +101,7 @@ func NewGoogleCloudApigeeV1EnvironmentGroupIdentity(ctx context.Context, reader 
 func ParseGoogleCloudApigeeV1EnvironmentGroupExternal(external string) (parent *GoogleCloudApigeeV1EnvironmentGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "envgroups" {
-		return nil, "", fmt.Errorf("external should be organizations/<organization>/envgroups/<envgroup>, got %s",
+		return nil, "", fmt.Errorf("format of ApigeeEnvgroup external=%q was not known (use organizations/{{organization}}/envgroups/{{envgroup}})",
 			external)
 	}
 	parent = &GoogleCloudApigeeV1EnvironmentGroupParent{

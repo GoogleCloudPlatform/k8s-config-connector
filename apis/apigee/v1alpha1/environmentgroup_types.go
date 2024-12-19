@@ -31,8 +31,6 @@ type Parent struct {
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup
 type ApigeeEnvgroupSpec struct {
 	Parent `json:",inline"`
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
 	// The ApigeeEnvgroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Host names for this environment group.
@@ -71,7 +69,6 @@ type ApigeeEnvgroupObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeenvgroup;gcpapigeeenvgroups
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

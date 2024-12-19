@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -84,7 +85,7 @@ func ResolveOrganization(ctx context.Context, reader client.Reader, src client.O
 
 	if err := reader.Get(ctx, key, organization); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced Organization %v not found", key)
+			return nil, k8s.NewReferenceNotFoundError(organization.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced Organization %v: %w", key, err)
 	}
