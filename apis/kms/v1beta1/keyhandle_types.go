@@ -30,6 +30,7 @@ type KMSKeyHandleSpec struct {
 	// The KMS Key Handle ID used for resource creation or acquisition.
 	// For creation: If specified, this value is used as the key handle ID. If not provided, a UUID will be generated and assigned as the key handle ID.
 	// For acquisition: This field must be provided to identify the key handle resource to acquire.
+	// Cannot be changed after create, except for updating from empty string to the actual resource ID.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Project hosting KMSKeyHandle

@@ -233,7 +233,8 @@ spec:
                 type: object
               resourceID:
                 description: The BigQueryDataTransferConfig name. If not given, the
-                  metadata.name will be used.
+                  metadata.name will be used. Cannot be changed after create, except
+                  for updating from empty string to the actual resource ID.
                 type: string
               schedule:
                 description: |-
@@ -619,7 +620,8 @@ spec:
                 type: object
               resourceID:
                 description: The BigQueryDataTransferConfig name. If not given, the
-                  metadata.name will be used.
+                  metadata.name will be used. Cannot be changed after create, except
+                  for updating from empty string to the actual resource ID.
                 type: string
               schedule:
                 description: |-

@@ -168,7 +168,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. Cannot be changed after create, except for updating from empty string to the actual resource ID.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
