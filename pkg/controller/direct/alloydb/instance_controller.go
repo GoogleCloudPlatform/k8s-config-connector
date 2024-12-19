@@ -242,6 +242,9 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return err
 	}
 	desiredLabels := a.desired.GetObjectMeta().GetLabels()
+	if desiredLabels == nil {
+		desiredLabels = make(map[string]string)
+	}
 	desiredLabels["managed-by-cnrm"] = "true"
 	if !reflect.DeepEqual(a.actual.GetLabels(), desiredLabels) {
 		log.V(2).Info("'metadata.labels' field is updated (-old +new)", cmp.Diff(a.actual.GetLabels(), desiredLabels))
