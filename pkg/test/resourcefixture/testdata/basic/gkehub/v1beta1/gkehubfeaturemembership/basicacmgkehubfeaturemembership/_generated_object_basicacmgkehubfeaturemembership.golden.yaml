@@ -25,7 +25,8 @@ spec:
         syncRev: HEAD
         syncWaitSecs: "20"
       sourceFormat: hierarchy
-    version: 1.18.2
+      stopSyncing: true
+    version: 1.20.0
   featureRef:
     name: gkehubfeature-basic-acm-${uniqueId}
   location: global

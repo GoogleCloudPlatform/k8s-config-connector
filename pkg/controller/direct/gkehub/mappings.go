@@ -120,6 +120,7 @@ func ConfigSyncMembershipSpec_FromProto(mapCtx *direct.MapContext, r *api.Config
 
 	out := &krm.FeaturemembershipConfigSync{}
 	out.PreventDrift = direct.LazyPtr(r.PreventDrift)
+	out.StopSyncing = direct.LazyPtr(r.StopSyncing)
 	out.SourceFormat = direct.LazyPtr(r.SourceFormat)
 	out.Git = GitMembershipSpec_FromProto(mapCtx, r.Git)
 	out.Oci = OciMembershipSpec_FromProto(mapCtx, r.Oci)

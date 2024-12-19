@@ -117,6 +117,9 @@ func diffConfigSync(left *krm.FeaturemembershipConfigSync, right *featureapi.Con
 	if left.PreventDrift != nil && !reflect.DeepEqual(left.PreventDrift, right.PreventDrift) {
 		diffs = append(diffs, "preventDrift")
 	}
+	if left.StopSyncing != nil && !reflect.DeepEqual(left.StopSyncing, right.StopSyncing) {
+		diffs = append(diffs, "stopSyncing")
+	}
 	if left.SourceFormat != nil && !reflect.DeepEqual(left.SourceFormat, right.SourceFormat) {
 		diffs = append(diffs, "sourceFormat")
 	}
