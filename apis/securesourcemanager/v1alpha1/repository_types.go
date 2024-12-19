@@ -35,9 +35,8 @@ type SecureSourceManagerRepositorySpec struct {
 	// +required
 	Location string `json:"location"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
 	// The SecureSourceManagerRepository name. If not given, the metadata.name will be used.
+	// Cannot be changed after create, except for updating from empty string to the actual resource ID.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The name of the instance in which the repository is hosted, formatted as

@@ -268,12 +268,10 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The SecureSourceManagerRepository name. If
-                  not given, the metadata.name will be used.
+                description: The SecureSourceManagerRepository name. If not given,
+                  the metadata.name will be used. Cannot be changed after create,
+                  except for updating from empty string to the actual resource ID.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - instanceRef
             - location

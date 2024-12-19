@@ -25,9 +25,8 @@ var DiscoveryEngineDataStoreGVK = GroupVersion.WithKind("DiscoveryEngineDataStor
 // DiscoveryEngineDataStoreSpec defines the desired state of DiscoveryEngineDataStore
 // +kcc:proto=google.cloud.discoveryengine.v1.DataStore
 type DiscoveryEngineDataStoreSpec struct {
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
 	// The DiscoveryEngineDataStore name. If not given, the metadata.name will be used.
+	// Cannot be changed after create, except for updating from empty string to the actual resource ID.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The data store display name.

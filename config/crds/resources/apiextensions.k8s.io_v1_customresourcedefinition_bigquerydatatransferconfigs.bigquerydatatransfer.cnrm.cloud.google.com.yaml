@@ -232,12 +232,10 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The BigQueryDataTransferConfig name. If not
-                  given, the metadata.name will be used.
+                description: The BigQueryDataTransferConfig name. If not given, the
+                  metadata.name will be used. Cannot be changed after create, except
+                  for updating from empty string to the actual resource ID.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               schedule:
                 description: |-
                   Data transfer schedule.
@@ -621,12 +619,10 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The BigQueryDataTransferConfig name. If not
-                  given, the metadata.name will be used.
+                description: The BigQueryDataTransferConfig name. If not given, the
+                  metadata.name will be used. Cannot be changed after create, except
+                  for updating from empty string to the actual resource ID.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               schedule:
                 description: |-
                   Data transfer schedule.
