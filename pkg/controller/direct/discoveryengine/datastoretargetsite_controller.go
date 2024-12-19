@@ -17,18 +17,17 @@ package discoveryengine
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/changedetection"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -214,26 +213,18 @@ func (a *dataStoreTargetSiteAdapter) Update(ctx context.Context, updateOp *direc
 	fqn := a.link.String()
 
 	log := klog.FromContext(ctx)
+
+	// We can't use field comparisons because the input fields provided_uri_pattern and exact_match are not returned
+
+	if changedetection.ShouldReconcileBasedOnUpdatedAt(ctx, updateOp.GetUnstructured(), "status.observedState.updateTime", a.actual.UpdateTime) {
+		log.V(2).Info("skipping update of discoveryengine targetSite (no changes)")
+		return nil
+	}
+
 	log.V(2).Info("updating discoveryengine targetSite", "name", fqn)
 
 	desired := direct.ProtoClone(a.desired)
 	desired.Name = fqn
-
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.ProvidedUriPattern, a.actual.ProvidedUriPattern) {
-		updateMask.Paths = append(updateMask.Paths, "provided_uri_pattern")
-	}
-	if !reflect.DeepEqual(a.desired.Type, a.actual.Type) {
-		updateMask.Paths = append(updateMask.Paths, "type")
-	}
-	if !reflect.DeepEqual(a.desired.ExactMatch, a.actual.ExactMatch) {
-		updateMask.Paths = append(updateMask.Paths, "exact_match")
-	}
-
-	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", fqn)
-		return nil
-	}
 
 	req := &pb.UpdateTargetSiteRequest{
 		TargetSite: desired,
@@ -260,6 +251,7 @@ func (a *dataStoreTargetSiteAdapter) Update(ctx context.Context, updateOp *direc
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
