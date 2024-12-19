@@ -77,10 +77,10 @@ spec:
                   in length.
                 type: string
               numNodes:
-                format: int64
+                format: int32
                 type: integer
               processingUnits:
-                format: int64
+                format: int32
                 type: integer
               resourceID:
                 description: Immutable. The SpannerInstance name. If not given, the
@@ -135,6 +135,10 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
               state:
                 description: 'Instance status: ''CREATING'' or ''READY''.'
                 type: string

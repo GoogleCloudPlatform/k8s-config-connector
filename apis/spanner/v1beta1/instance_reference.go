@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -41,8 +42,6 @@ type SpannerInstanceRef struct {
 
 	// The namespace of a SpannerInstance resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent *SpannerInstanceParent
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SpannerInstance.
@@ -54,7 +53,7 @@ func (r *SpannerInstanceRef) NormalizedExternal(ctx context.Context, reader clie
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := parseSpannerInstanceExternal(r.External); err != nil {
+		if _, err := ParseSpannerInstanceExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -74,9 +73,15 @@ func (r *SpannerInstanceRef) NormalizedExternal(ctx context.Context, reader clie
 		return "", fmt.Errorf("reading referenced %s %s: %w", SpannerInstanceGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	actualExternalRef, _, err1 := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err1 != nil {
+		err1 = fmt.Errorf("SecretManagerSecret `status.externalRef` not configured: %w", err1)
+		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
+		var err2 error
+		actualExternalRef, _, err2 = unstructured.NestedString(u.Object, "status", "name")
+		if err2 != nil {
+			return "", errors.Join(err1, err2)
+		}
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
@@ -85,93 +90,21 @@ func (r *SpannerInstanceRef) NormalizedExternal(ctx context.Context, reader clie
 	return r.External, nil
 }
 
-// New builds a SpannerInstanceRef from the Config Connector SpannerInstance object.
-func NewSpannerInstanceRef(ctx context.Context, reader client.Reader, obj *SpannerInstance, u *unstructured.Unstructured) (*SpannerInstanceRef, error) {
-	id := &SpannerInstanceRef{}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return nil, err
-	}
-
-	id.parent = &SpannerInstanceParent{ProjectID: projectID}
-
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = asSpannerInstanceExternal(id.parent, resourceID)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseSpannerInstanceExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	id.parent = &SpannerInstanceParent{ProjectID: projectID}
-	return id, nil
-}
-
-func (r *SpannerInstanceRef) Parent() (*SpannerInstanceParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, _, err := parseSpannerInstanceExternal(r.External)
-		if err != nil {
-			return nil, err
-		}
-		return parent, nil
-	}
-	return nil, fmt.Errorf("SpannerInstanceRef not initialized from `NewSpannerInstanceRef` or `NormalizedExternal`")
-}
-
-type SpannerInstanceParent struct {
-	ProjectID string
-}
-
-func (p *SpannerInstanceParent) String() string {
-	return "projects/" + p.ProjectID
-}
-
 func asSpannerInstanceExternal(parent *SpannerInstanceParent, resourceID string) (external string) {
 	return parent.String() + "/instances/" + resourceID
 }
 
-func parseSpannerInstanceExternal(external string) (parent *SpannerInstanceParent, resourceID string, err error) {
+func ParseSpannerInstanceExternal(external string) (*SpannerInstanceIdentity, error) {
+	if external == "" {
+		return nil, fmt.Errorf("missing external value")
+	}
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "instances" {
-		return nil, "", fmt.Errorf("format of SpannerInstance external=%q was not known (use projects/{{projectId}}/instances/{{instanceID}})", external)
+		return nil, fmt.Errorf("format of SpannerInstance external=%q was not known (use projects/{{projectId}}/instances/{{instanceID}})", external)
 	}
-	parent = &SpannerInstanceParent{
-		ProjectID: tokens[1],
-	}
-	resourceID = tokens[3]
-	return parent, resourceID, nil
-}
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
+	return &SpannerInstanceIdentity{
+		parent: &SpannerInstanceParent{ProjectID: tokens[1]},
+		id:     tokens[3],
+	}, nil
 }

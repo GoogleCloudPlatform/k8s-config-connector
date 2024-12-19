@@ -87,6 +87,8 @@ cloud.google.com/go/securesourcemanager v1.1.1 h1:raOxRsR507ALLlc5yG79LK7O2TuDbD
 cloud.google.com/go/securesourcemanager v1.1.1/go.mod h1:qMVTY4bzBRhcrUe0B8KvDCK5mhGQD6PyrHbzqOn3TLQ=
 cloud.google.com/go/security v1.18.2 h1:9Nzp9LGjiDvHqy7X7Q9GrS5lIHN0bI8RvDjkrl4ILO0=
 cloud.google.com/go/security v1.18.2/go.mod h1:3EwTcYw8554iEtgK8VxAjZaq2unFehcsgFIF9nOvQmU=
+cloud.google.com/go/spanner v1.73.0 h1:0bab8QDn6MNj9lNK6XyGAVFhMlhMU2waePPa6GZNoi8=
+cloud.google.com/go/spanner v1.73.0/go.mod h1:mw98ua5ggQXVWwp83yjwggqEmW9t8rjs9Po1ohcUGW4=
 cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiyrjsg+URw=
 cloud.google.com/go/storage v1.5.0/go.mod h1:tpKbwo567HUNpVclU5sGELwQWBDZ8gh0ZeosJ0Rtdos=
 cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohlUTyfDhBk=
