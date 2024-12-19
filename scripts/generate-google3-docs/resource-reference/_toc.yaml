@@ -573,3 +573,5 @@ toc:
     path: /config-connector/docs/reference/resource-docs/workstations/workstationcluster.md
   - title: "WorkstationConfig"
     path: /config-connector/docs/reference/resource-docs/workstations/workstationconfig.md
+  - title: "Workstation"
+    path: /config-connector/docs/reference/resource-docs/workstations/workstation.md

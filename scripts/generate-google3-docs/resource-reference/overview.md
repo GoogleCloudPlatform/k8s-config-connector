@@ -906,6 +906,10 @@ issues for {{product_name_short}}.
   <td><a href="/workstations/docs/">{{workstations_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/workstations/workstationconfig.md">WorkstationConfig</a></td>
 </tr>
+<tr>
+  <td><a href="/workstations/docs/">{{workstations_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/workstations/workstation.md">Workstation</a></td>
+</tr>
 </tbody>
 </table>
 </devsite-filter>
