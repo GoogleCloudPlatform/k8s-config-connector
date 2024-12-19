@@ -5,6 +5,7 @@ X-Goog-User-Project: ${projectId}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2F${dataStoreID}
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -38,6 +39,7 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcol
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -56,8 +58,7 @@ X-Xss-Protection: 0
     "defaultSchemaId": "default_schema",
     "displayName": "KCC Test DisplayName",
     "industryVertical": 1,
-    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-    "servingConfigDataStore": {}
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
   }
 }
 
@@ -76,6 +77,7 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcol
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -106,6 +108,7 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectNumber}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -117,17 +120,10 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "${projectId}",
   "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/${projectNumber}",
-  "parent": "folders/${folderID}",
   "projectId": "${projectId}",
-  "state": 1,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "state": 1
 }
 
 ---
@@ -139,6 +135,7 @@ X-Goog-User-Project: ${projectId}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2F${dataStoreID}%2FsiteSearchEngine%2FtargetSites%2F${targetSiteID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -165,6 +162,7 @@ X-Goog-User-Project: ${projectId}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2F${dataStoreID}%2FsiteSearchEngine%2FtargetSites%2F${targetSiteID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -187,6 +185,7 @@ X-Goog-User-Project: ${projectId}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2F${dataStoreID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -202,8 +201,7 @@ X-Xss-Protection: 0
   "defaultSchemaId": "default_schema",
   "displayName": "KCC Test DisplayName",
   "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "servingConfigDataStore": {}
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
 }
 
 ---
@@ -215,6 +213,7 @@ X-Goog-User-Project: ${projectId}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2F${dataStoreID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
