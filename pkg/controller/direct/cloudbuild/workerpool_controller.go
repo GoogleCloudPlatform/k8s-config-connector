@@ -23,10 +23,10 @@ import (
 
 	gcp "cloud.google.com/go/cloudbuild/apiv1/v2"
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
-	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -67,19 +67,6 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 		return nil, fmt.Errorf("building cloudbuild client: %w", err)
 	}
 	return gcpClient, err
-}
-
-func (m *model) projectsClient(ctx context.Context) (*cloudresourcemanager.ProjectsClient, error) {
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	crmClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building cloudresourcemanager client: %w", err)
-	}
-	return crmClient, err
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -134,12 +121,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		}
 	}
 
-	// Get Project GCP client
-	projectClient, err := m.projectsClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	// Get CloudBuild GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -148,7 +129,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	return &Adapter{
 		id:            id,
-		projectClient: projectClient,
+		projectMapper: m.config.ProjectMapper,
 		gcpClient:     gcpClient,
 		reader:        reader,
 		desired:       obj,
@@ -170,6 +151,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 		}
 
 		return &Adapter{
+			projectMapper: m.config.ProjectMapper,
 			id: &CloudBuildWorkerPoolIdentity{
 				project:    tokens[1],
 				location:   tokens[3],
@@ -184,7 +166,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 type Adapter struct {
 	id            *CloudBuildWorkerPoolIdentity
-	projectClient *cloudresourcemanager.ProjectsClient
+	projectMapper *projects.ProjectMapper
 	gcpClient     *gcp.Client
 	reader        client.Reader
 	desired       *krm.CloudBuildWorkerPool
@@ -370,7 +352,7 @@ func (a *Adapter) resolveDependencies(ctx context.Context, reader client.Reader,
 			return err
 		}
 
-		if err := networkSpec.PeeredNetworkRef.ConvertToProjectNumber(ctx, a.projectClient); err != nil {
+		if err := networkSpec.PeeredNetworkRef.ConvertToProjectNumber(ctx, a.projectMapper); err != nil {
 			return err
 		}
 	}
