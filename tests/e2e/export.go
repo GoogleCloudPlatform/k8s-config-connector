@@ -67,6 +67,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
 
+	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStoreTargetSite"}:
+		exportURI = "//discoveryengine.googleapis.com/{.status.externalRef}"
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
@@ -114,6 +117,14 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		}
 		exportURI = strings.ReplaceAll(exportURI, "{.spec.collection}", collection)
 	}
+	if strings.Contains(exportURI, "{.status.externalRef}") {
+		collection, _, _ := unstructured.NestedString(obj.Object, "status", "externalRef")
+		if collection == "" {
+			h.Errorf("unable to determine status.externalRef")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{.status.externalRef}", collection)
+	}
+
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"

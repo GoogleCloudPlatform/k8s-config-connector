@@ -146,6 +146,13 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 		return "${targetHttpsProxyID}"
 	case "targetSslProxies":
 		return "${targetSslProxyID}"
+
+	// discoveryengine
+	case "dataStores":
+		return "${dataStoreID}"
+	case "targetSites":
+		return "${targetSiteID}"
+
 	default:
 		return ""
 	}

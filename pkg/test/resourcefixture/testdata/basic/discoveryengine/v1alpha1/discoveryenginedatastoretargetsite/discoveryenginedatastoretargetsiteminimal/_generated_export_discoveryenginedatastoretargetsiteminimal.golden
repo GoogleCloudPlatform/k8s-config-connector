@@ -1,0 +1,10 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineDataStoreTargetSite
+metadata:
+  name: 1812a456a340534d
+spec:
+  dataStoreRef:
+    external: projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}
+  exactMatch: true
+  providedUriPattern: cloud.google.com/generative-ai-app-builder/*
+  type: INCLUDE

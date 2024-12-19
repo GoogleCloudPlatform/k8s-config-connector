@@ -52,11 +52,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataStoreServiceServer(grpcServer, &dataStoreService{MockService: s})
+	pb.RegisterSiteSearchEngineServiceServer(grpcServer, &siteSearchEngineService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pbhttp.RegisterDataStoreServiceHandler,
+		pbhttp.RegisterSiteSearchEngineServiceHandler,
 	// s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}")
 	)
 	if err != nil {
