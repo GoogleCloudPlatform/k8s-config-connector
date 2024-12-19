@@ -15,8 +15,13 @@
 package v1alpha1
 
 import (
+	"context"
 	"fmt"
 	"strings"
+
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // GoogleCloudApigeeV1EnvironmentGroupIdentity defines the resource reference to ApigeeEnvgroup, which "External" field
@@ -27,7 +32,7 @@ type GoogleCloudApigeeV1EnvironmentGroupIdentity struct {
 }
 
 func (i *GoogleCloudApigeeV1EnvironmentGroupIdentity) String() string {
-	return i.parent.String() + "/googlecloudapigeev1environmentgroups/" + i.id
+	return fmt.Sprintf("%s/envgroups/%s", i.parent.String(), i.id)
 }
 
 func (i *GoogleCloudApigeeV1EnvironmentGroupIdentity) ID() string {
@@ -39,74 +44,69 @@ func (i *GoogleCloudApigeeV1EnvironmentGroupIdentity) Parent() *GoogleCloudApige
 }
 
 type GoogleCloudApigeeV1EnvironmentGroupParent struct {
-	ProjectID string
-	Location  string
+	Organization string
 }
 
 func (p *GoogleCloudApigeeV1EnvironmentGroupParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "organizations/" + p.Organization
 }
 
-// // New builds a GoogleCloudApigeeV1EnvironmentGroupIdentity from the Config Connector GoogleCloudApigeeV1EnvironmentGroup object.
-// func NewGoogleCloudApigeeV1EnvironmentGroupIdentity(ctx context.Context, reader client.Reader, obj *ApigeeEnvgroup) (*GoogleCloudApigeeV1EnvironmentGroupIdentity, error) {
+// New builds a GoogleCloudApigeeV1EnvironmentGroupIdentity from the Config Connector GoogleCloudApigeeV1EnvironmentGroup object.
+func NewGoogleCloudApigeeV1EnvironmentGroupIdentity(ctx context.Context, reader client.Reader, obj *ApigeeEnvgroup) (*GoogleCloudApigeeV1EnvironmentGroupIdentity, error) {
+	// Get Parent
+	orgRef, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.Parent.OrganizationRef)
+	if err != nil {
+		return nil, err
+	}
+	orgName := orgRef.OrganizationName
+	if orgName == "" {
+		return nil, fmt.Errorf("cannot resolve organization")
+	}
 
-// 	// Get Parent
-// 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	projectID := projectRef.ProjectID
-// 	if projectID == "" {
-// 		return nil, fmt.Errorf("cannot resolve project")
-// 	}
-// 	location := obj.Spec.Location
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
 
-// 	// Get desired ID
-// 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-// 	if resourceID == "" {
-// 		resourceID = obj.GetName()
-// 	}
-// 	if resourceID == "" {
-// 		return nil, fmt.Errorf("cannot resolve resource ID")
-// 	}
+	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 
-// 	// Use approved External
-// 	externalRef := common.ValueOf(obj.Status.ExternalRef)
-// 	if externalRef != "" {
-// 		// Validate desired with actual
-// 		actualParent, actualResourceID, err := ParseGoogleCloudApigeeV1EnvironmentGroupExternal(externalRef)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		if actualParent.ProjectID != projectID {
-// 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-// 		}
-// 		if actualParent.Location != location {
-// 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-// 		}
-// 		if actualResourceID != resourceID {
-// 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-// 				resourceID, actualResourceID)
-// 		}
-// 	}
-// 	return &GoogleCloudApigeeV1EnvironmentGroupIdentity{
-// 		parent: &GoogleCloudApigeeV1EnvironmentGroupParent{
-// 			ProjectID: projectID,
-// 			Location:  location,
-// 		},
-// 		id: resourceID,
-// 	}, nil
-// }
+	if externalRef != "" {
+		// Validate desired with actual
+		actualParent, actualResourceID, err := ParseGoogleCloudApigeeV1EnvironmentGroupExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+
+		if actualParent.Organization != orgName {
+			return nil, fmt.Errorf("ApigeeEnvgroup %s/%s has Spec.Parent.OrganizationRef changed, expect %s, got %s",
+				obj.GetNamespace(), obj.GetName(), actualParent.Organization, orgRef.OrganizationName)
+		}
+		if actualResourceID != resourceID {
+			return nil, fmt.Errorf("ApigeeEnvgroup %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
+				obj.GetNamespace(), obj.GetName(), actualResourceID, resourceID)
+		}
+	}
+
+	return &GoogleCloudApigeeV1EnvironmentGroupIdentity{
+		parent: &GoogleCloudApigeeV1EnvironmentGroupParent{
+			Organization: orgName,
+		},
+		id: resourceID,
+	}, nil
+}
 
 func ParseGoogleCloudApigeeV1EnvironmentGroupExternal(external string) (parent *GoogleCloudApigeeV1EnvironmentGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "googlecloudapigeev1environmentgroups" {
-		return nil, "", fmt.Errorf("format of ApigeeEnvgroup external=%q was not known (use projects/<projectId>/locations/<location>/googlecloudapigeev1environmentgroups/<googlecloudapigeev1environmentgroupID>)", external)
+	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "envgroups" {
+		return nil, "", fmt.Errorf("external should be organizations/<organization>/envgroups/<envgroup>, got %s",
+			external)
 	}
 	parent = &GoogleCloudApigeeV1EnvironmentGroupParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		Organization: tokens[1],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
