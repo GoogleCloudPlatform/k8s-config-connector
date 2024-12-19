@@ -102,6 +102,56 @@ func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dis
 	// MISSING: StartingSchema
 	return out
 }
+func DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krm.DiscoveryEngineDataStoreTargetSiteObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineDataStoreTargetSiteObservedState{}
+	// MISSING: Name
+	out.GeneratedUriPattern = direct.LazyPtr(in.GetGeneratedUriPattern())
+	out.RootDomainUri = direct.LazyPtr(in.GetRootDomainUri())
+	out.SiteVerificationInfo = SiteVerificationInfo_FromProto(mapCtx, in.GetSiteVerificationInfo())
+	out.IndexingStatus = direct.Enum_FromProto(mapCtx, in.GetIndexingStatus())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.FailureReason = TargetSite_FailureReason_FromProto(mapCtx, in.GetFailureReason())
+	return out
+}
+func DiscoveryEngineDataStoreTargetSiteObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreTargetSiteObservedState) *pb.TargetSite {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSite{}
+	// MISSING: Name
+	out.GeneratedUriPattern = direct.ValueOf(in.GeneratedUriPattern)
+	out.RootDomainUri = direct.ValueOf(in.RootDomainUri)
+	out.SiteVerificationInfo = SiteVerificationInfo_ToProto(mapCtx, in.SiteVerificationInfo)
+	out.IndexingStatus = direct.Enum_ToProto[pb.TargetSite_IndexingStatus](mapCtx, in.IndexingStatus)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.FailureReason = TargetSite_FailureReason_ToProto(mapCtx, in.FailureReason)
+	return out
+}
+func DiscoveryEngineDataStoreTargetSiteSpec_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krm.DiscoveryEngineDataStoreTargetSiteSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineDataStoreTargetSiteSpec{}
+	// MISSING: Name
+	out.ProvidedUriPattern = direct.LazyPtr(in.GetProvidedUriPattern())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
+	return out
+}
+func DiscoveryEngineDataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreTargetSiteSpec) *pb.TargetSite {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSite{}
+	// MISSING: Name
+	out.ProvidedUriPattern = direct.ValueOf(in.ProvidedUriPattern)
+	out.Type = direct.Enum_ToProto[pb.TargetSite_Type](mapCtx, in.Type)
+	out.ExactMatch = direct.ValueOf(in.ExactMatch)
+	return out
+}
 func DiscoveryEngineEngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krm.DiscoveryEngineEngineObservedState {
 	if in == nil {
 		return nil
@@ -352,6 +402,58 @@ func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
 		out.Schema = oneof
 	}
 	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func SiteVerificationInfo_FromProto(mapCtx *direct.MapContext, in *pb.SiteVerificationInfo) *krm.SiteVerificationInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SiteVerificationInfo{}
+	out.SiteVerificationState = direct.Enum_FromProto(mapCtx, in.GetSiteVerificationState())
+	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
+	return out
+}
+func SiteVerificationInfo_ToProto(mapCtx *direct.MapContext, in *krm.SiteVerificationInfo) *pb.SiteVerificationInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SiteVerificationInfo{}
+	out.SiteVerificationState = direct.Enum_ToProto[pb.SiteVerificationInfo_SiteVerificationState](mapCtx, in.SiteVerificationState)
+	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
+	return out
+}
+func TargetSite_FailureReason_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite_FailureReason) *krm.TargetSite_FailureReason {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetSite_FailureReason{}
+	out.QuotaFailure = TargetSite_FailureReason_QuotaFailure_FromProto(mapCtx, in.GetQuotaFailure())
+	return out
+}
+func TargetSite_FailureReason_ToProto(mapCtx *direct.MapContext, in *krm.TargetSite_FailureReason) *pb.TargetSite_FailureReason {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSite_FailureReason{}
+	if oneof := TargetSite_FailureReason_QuotaFailure_ToProto(mapCtx, in.QuotaFailure); oneof != nil {
+		out.Failure = &pb.TargetSite_FailureReason_QuotaFailure_{QuotaFailure: oneof}
+	}
+	return out
+}
+func TargetSite_FailureReason_QuotaFailure_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite_FailureReason_QuotaFailure) *krm.TargetSite_FailureReason_QuotaFailure {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetSite_FailureReason_QuotaFailure{}
+	out.TotalRequiredQuota = direct.LazyPtr(in.GetTotalRequiredQuota())
+	return out
+}
+func TargetSite_FailureReason_QuotaFailure_ToProto(mapCtx *direct.MapContext, in *krm.TargetSite_FailureReason_QuotaFailure) *pb.TargetSite_FailureReason_QuotaFailure {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSite_FailureReason_QuotaFailure{}
+	out.TotalRequiredQuota = direct.ValueOf(in.TotalRequiredQuota)
 	return out
 }
 func WorkspaceConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkspaceConfig) *krm.WorkspaceConfig {

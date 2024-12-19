@@ -22,7 +22,7 @@ import (
 	"io"
 	"strings"
 
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 // ExtractToolMarkers extracts tool markers from source code.
