@@ -228,7 +228,24 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return r.ReplaceAllLiteralString(s, "deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=12345678")
 	})
 
+	// Try to extract resource IDs from status.externalRef and replace them
+	{
+		r := NewReplacements()
+
+		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+		if externalRef != "" {
+			r.ExtractIDsFromLinks(externalRef)
+
+			for k, v := range r.PathIDs {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, k, v)
+				})
+			}
+		}
+	}
+
 	// Try to extract resource IDs from links and replace them
+	// Note: these might now be handled by status.externalLink above
 	{
 		name, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "name")
 		if name == "" {
