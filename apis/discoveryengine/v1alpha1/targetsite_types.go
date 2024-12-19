@@ -27,10 +27,7 @@ type DiscoveryEngineDataStoreTargetSiteSpec struct {
 	// The DataStore this target site should be part of.
 	DataStoreRef *DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
-	// The DiscoveryEngineDataStoreTargetSite name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	// The resource ID is server-generated, so no ResourceID field
 
 	// Required. Input only. The user provided URI pattern from which the
 	// `generated_uri_pattern` is generated.

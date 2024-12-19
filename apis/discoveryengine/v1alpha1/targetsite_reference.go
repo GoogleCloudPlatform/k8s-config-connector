@@ -43,12 +43,16 @@ type TargetSiteRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// TargetStoreLink defines the full identity for a DataStoreTargetSite
+// TargetSiteLink defines the full identity for a DataStoreTargetSite
 //
 // +k8s:deepcopy-gen=false
-type TargetStoreLink struct {
+type TargetSiteLink struct {
 	*DiscoveryEngineDataStoreID
-	DataStore string
+	TargetSite string
+}
+
+func (l *TargetSiteLink) String() string {
+	return l.DiscoveryEngineDataStoreID.String() + "/siteSearchEngine/targetSites/" + l.TargetSite
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on DiscoveryEngineDataStoreTargetSite.
@@ -91,11 +95,44 @@ func (r *TargetSiteRef) NormalizedExternal(ctx context.Context, reader client.Re
 	return r.External, nil
 }
 
-func ParseTargetSiteExternal(external string) (*TargetStoreLink, error) {
+// NewTargetSiteLinkFromObject builds a TargetSiteLink from the Config Connector object.
+func NewTargetSiteLinkFromObject(ctx context.Context, reader client.Reader, obj *DiscoveryEngineDataStoreTargetSite) (*DiscoveryEngineDataStoreID, *TargetSiteLink, error) {
+	if obj.Spec.DataStoreRef == nil {
+		return nil, nil, fmt.Errorf("spec.dataStoreRef not set")
+	}
+	dataStoreRef := *obj.Spec.DataStoreRef
+	if _, err := dataStoreRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, nil, fmt.Errorf("resolving spec.dataStoreRef: %w", err)
+	}
+	dataStoreLink, err := ParseDiscoveryEngineDataStoreExternal(dataStoreRef.External)
+	if err != nil {
+		return nil, nil, fmt.Errorf("parsing dataStoreRef.external=%q: %w", dataStoreRef.External, err)
+	}
+
+	var link *TargetSiteLink
+
+	// Validate the status.externalRef, if set
+	externalRef := valueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		externalLink, err := ParseTargetSiteExternal(externalRef)
+		if err != nil {
+			return nil, nil, err
+		}
+		if externalLink.DiscoveryEngineDataStoreID.String() != dataStoreLink.String() {
+			return nil, nil, fmt.Errorf("cannot change object key after creation; status=%q, new=%q",
+				externalLink.DiscoveryEngineDataStoreID.String(), dataStoreLink.String())
+		}
+		link = externalLink
+	}
+	return dataStoreLink, link, nil
+}
+
+func ParseTargetSiteExternal(external string) (*TargetSiteLink, error) {
 	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
 	s = strings.TrimPrefix(s, "/")
 	tokens := strings.Split(s, "/")
-	if len(tokens) == 10 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "dataStores" && tokens[8] == "targetSites" {
+	if len(tokens) == 11 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "dataStores" && tokens[8] == "siteSearchEngine" && tokens[9] == "targetSites" {
 		projectAndLocation := &ProjectAndLocation{
 			ProjectID: tokens[1],
 			Location:  tokens[3],
@@ -108,11 +145,11 @@ func ParseTargetSiteExternal(external string) (*TargetStoreLink, error) {
 			CollectionLink: collection,
 			DataStore:      tokens[7],
 		}
-		targetStoreLink := &TargetStoreLink{
+		targetStoreLink := &TargetSiteLink{
 			DiscoveryEngineDataStoreID: dataStoreLink,
-			DataStore:                  tokens[9],
+			TargetSite:                 tokens[10],
 		}
 		return targetStoreLink, nil
 	}
-	return nil, fmt.Errorf("format of DiscoveryEngineDataStoreTargetSite external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/dataStores/{{dataStoreID}}/targetSites/{{targetSiteID}})", external)
+	return nil, fmt.Errorf("format of DiscoveryEngineDataStoreTargetSite external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/dataStores/{{dataStoreID}}/siteSearchEngine/targetSites/{{targetSiteID}})", external)
 }
