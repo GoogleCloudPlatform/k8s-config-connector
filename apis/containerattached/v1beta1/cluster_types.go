@@ -28,8 +28,7 @@ type ContainerAttachedClusterSpec struct {
 	/* The ID of the project in which the resource belongs.*/
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable, Optional.
+	// Optional.
 	// The ContainerAttachedCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 

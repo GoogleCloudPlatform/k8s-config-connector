@@ -45,8 +45,6 @@ type SpannerInstanceSpec struct {
 	// +optional
 	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
 	// The SpannerInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }

@@ -955,7 +955,7 @@ runningTimeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The WorkstationConfig name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The WorkstationConfig name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

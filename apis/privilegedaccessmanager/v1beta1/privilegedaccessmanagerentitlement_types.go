@@ -51,7 +51,6 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 	// Immutable.
 	// The PrivilegedAccessManagerEntitlement name. If not given, the
 	// 'metadata.name' will be used.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

@@ -219,7 +219,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Workstation name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The Workstation name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

@@ -28,8 +28,6 @@ var SecretManagerSecretGVK = GroupVersion.WithKind("SecretManagerSecret")
 // SecretManagerSecretSpec defines the desired state of SecretManagerSecret
 // +kcc:proto=google.cloud.secretmanager.v1.Secret
 type SecretManagerSecretSpec struct {
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
 	// The SecretManagerSecret name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 

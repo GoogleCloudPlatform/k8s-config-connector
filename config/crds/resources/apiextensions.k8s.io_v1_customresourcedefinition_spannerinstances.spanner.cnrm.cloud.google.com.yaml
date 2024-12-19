@@ -83,12 +83,9 @@ spec:
                 format: int32
                 type: integer
               resourceID:
-                description: Immutable. The SpannerInstance name. If not given, the
-                  metadata.name will be used.
+                description: The SpannerInstance name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - config
             - displayName

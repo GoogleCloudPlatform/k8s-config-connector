@@ -202,12 +202,9 @@ spec:
                 - message: ResourceID field is immutable
                   rule: self == oldSelf
               resourceID:
-                description: Immutable. The WorkstationCluster name. If not given,
-                  the metadata.name will be used.
+                description: The WorkstationCluster name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               subnetworkRef:
                 description: Immutable. Reference to the Compute Engine subnetwork
                   in which instances associated with this workstation cluster will
@@ -548,12 +545,9 @@ spec:
                 - message: ResourceID field is immutable
                   rule: self == oldSelf
               resourceID:
-                description: Immutable. The WorkstationCluster name. If not given,
-                  the metadata.name will be used.
+                description: The WorkstationCluster name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               subnetworkRef:
                 description: Immutable. Reference to the Compute Engine subnetwork
                   in which instances associated with this workstation cluster will

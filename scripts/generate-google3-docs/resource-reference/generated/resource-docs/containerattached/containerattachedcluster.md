@@ -512,7 +512,7 @@ while clusters with private issuers need to provide both 'issuerUrl' and 'jwks'.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable, Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

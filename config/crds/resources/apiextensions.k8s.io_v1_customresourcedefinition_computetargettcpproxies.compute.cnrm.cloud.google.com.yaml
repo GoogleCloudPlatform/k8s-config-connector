@@ -116,12 +116,9 @@ spec:
                   ["NONE", "PROXY_V1"].'
                 type: string
               resourceID:
-                description: Immutable. The ComputeTargetTCPProxy name. If not given,
-                  the metadata.name will be used.
+                description: The ComputeTargetTCPProxy name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID is immutable
-                  rule: self == oldSelf
             required:
             - backendServiceRef
             type: object

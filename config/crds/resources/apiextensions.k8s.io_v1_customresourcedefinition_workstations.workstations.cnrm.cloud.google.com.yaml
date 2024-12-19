@@ -118,12 +118,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The Workstation name. If not given, the metadata.name
+                description: The Workstation name. If not given, the metadata.name
                   will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - parentRef
             type: object
@@ -310,12 +307,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The Workstation name. If not given, the metadata.name
+                description: The Workstation name. If not given, the metadata.name
                   will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - parentRef
             type: object

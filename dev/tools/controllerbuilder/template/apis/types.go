@@ -37,8 +37,6 @@ var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 // +kcc:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}Spec struct {
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
 	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
 }

@@ -53,8 +53,7 @@ type ComputeTargetTCPProxySpec struct {
 	// the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID is immutable"
-	// Immutable. The ComputeTargetTCPProxy name. If not given, the metadata.name will be used.
+	// The ComputeTargetTCPProxy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 

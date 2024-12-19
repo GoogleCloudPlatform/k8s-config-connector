@@ -395,7 +395,7 @@ versionAliases:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The SecretManagerSecret name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The SecretManagerSecret name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -27,8 +27,6 @@ type WorkstationSpec struct {
 	// Parent is a reference to the parent WorkstationConfig for this Workstation.
 	Parent *WorkstationConfigRef `json:"parentRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	// Immutable.
 	// The Workstation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 

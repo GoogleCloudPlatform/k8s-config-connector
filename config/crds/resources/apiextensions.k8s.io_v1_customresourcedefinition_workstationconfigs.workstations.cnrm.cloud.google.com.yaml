@@ -506,12 +506,9 @@ spec:
                   type: string
                 type: array
               resourceID:
-                description: Immutable. The WorkstationConfig name. If not given,
-                  the metadata.name will be used.
+                description: The WorkstationConfig name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               runningTimeout:
                 description: |-
                   Optional. Number of seconds that a workstation can run until it is
@@ -1136,12 +1133,9 @@ spec:
                   type: string
                 type: array
               resourceID:
-                description: Immutable. The WorkstationConfig name. If not given,
-                  the metadata.name will be used.
+                description: The WorkstationConfig name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               runningTimeout:
                 description: |-
                   Optional. Number of seconds that a workstation can run until it is
