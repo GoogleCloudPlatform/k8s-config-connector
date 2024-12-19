@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -28,11 +27,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ComputeTargetTCPProxyRef{}
+var _ refsv1beta1.ExternalNormalizer = &TargetTCPProxyRef{}
 
-// ComputeTargetTCPProxyRef defines the resource reference to ComputeTargetTCPProxy, which "External" field
+// TargetTCPProxyRef defines the resource reference to ComputeTargetTCPProxy, which "External" field
 // holds the GCP identifier for the KRM object.
-type ComputeTargetTCPProxyRef struct {
+type TargetTCPProxyRef struct {
 	// A reference to an externally managed ComputeTargetTCPProxy resource.
 	// Should be in the format "projects/{{projectID}}/global/targetTcpProxies/{{targettcpproxyID}}"
 	// or "projects/{{projectID}}/regions/{{region}}/targetTcpProxies/{{targettcpproxyID}}".
@@ -43,20 +42,18 @@ type ComputeTargetTCPProxyRef struct {
 
 	// The namespace of a ComputeTargetTCPProxy resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent *ComputeTargetTCPProxyParent
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on ComputeTargetTCPProxy.
 // If the "External" is given in the other resource's spec.ComputeTargetTCPProxyRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeTargetTCPProxy object from the cluster.
-func (r *ComputeTargetTCPProxyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *TargetTCPProxyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeTargetTCPProxyGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := parseComputeTargetTCPProxyExternal(r.External); err != nil {
+		if _, err := parseTargetTCPProxyExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -87,114 +84,19 @@ func (r *ComputeTargetTCPProxyRef) NormalizedExternal(ctx context.Context, reade
 	return r.External, nil
 }
 
-// New builds a ComputeTargetTCPProxyRef from the Config Connector ComputeTargetTCPProxy object.
-func NewComputeTargetTCPProxyRef(ctx context.Context, reader client.Reader, obj *ComputeTargetTCPProxy, u *unstructured.Unstructured) (*ComputeTargetTCPProxyRef, error) {
-	id := &ComputeTargetTCPProxyRef{}
-
-	// Get Parent
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	// Get Location
-	if obj.Spec.Location == nil {
-		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Location: "global"}
-	} else {
-		location := common.ValueOf(obj.Spec.Location)
-		id.parent = &ComputeTargetTCPProxyParent{ProjectID: projectID, Location: location}
-	}
-
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = asComputeTargetTCPProxyExternal(id.parent, resourceID)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseComputeTargetTCPProxyExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	return id, nil
-}
-
-func (r *ComputeTargetTCPProxyRef) Parent() (*ComputeTargetTCPProxyParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, _, err := parseComputeTargetTCPProxyExternal(r.External)
-		if err != nil {
-			return nil, err
-		}
-		return parent, nil
-	}
-	return nil, fmt.Errorf("ComputeTargetTCPProxyRef not initialized from `NewComputeTargetTCPProxyRef` or `NormalizedExternal`")
-}
-
-type ComputeTargetTCPProxyParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *ComputeTargetTCPProxyParent) String() string {
-	if p.Location == "global" {
-		return "projects/" + p.ProjectID + "/global"
-	} else {
-		return "projects/" + p.ProjectID + "/regions/" + p.Location
-	}
-}
-
-func asComputeTargetTCPProxyExternal(parent *ComputeTargetTCPProxyParent, resourceID string) (external string) {
-	return parent.String() + "/targetTcpProxies/" + resourceID
-}
-
-func parseComputeTargetTCPProxyExternal(external string) (parent *ComputeTargetTCPProxyParent, resourceID string, err error) {
+func parseTargetTCPProxyExternal(external string) (*TargetTCPProxyIdentity, error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "targetTcpProxies" {
-		parent = &ComputeTargetTCPProxyParent{
-			ProjectID: tokens[1],
-			Location:  "global",
-		}
-		resourceID = tokens[4]
-		return parent, resourceID, nil
+		return &TargetTCPProxyIdentity{
+			parent: &TargetTCPProxyParent{ProjectID: tokens[1], Location: "global"},
+			id:     tokens[4],
+		}, nil
 	} else if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "targetTcpProxies" {
-		parent = &ComputeTargetTCPProxyParent{
-			ProjectID: tokens[1],
-			Location:  tokens[3],
-		}
-		resourceID = tokens[5]
-		return parent, resourceID, nil
+		return &TargetTCPProxyIdentity{
+			parent: &TargetTCPProxyParent{ProjectID: tokens[1], Location: tokens[3]},
+			id:     tokens[5],
+		}, nil
 	}
-	return nil, "", fmt.Errorf("ExternalRef format invalid: %s", external)
-
-}
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
+	return nil, fmt.Errorf("format of ComputeTargetTCPProxy external=%q was not known (use projects/{{projectID}}/global/targetTcpProxies/{{targettcpproxyID}} or projects/{{projectID}}/regions/{{region}}/targetTcpProxies/{{targettcpproxyID}})", external)
 }

@@ -75,7 +75,7 @@ type targetTCPProxyModel struct {
 var _ directbase.Model = &targetTCPProxyModel{}
 
 type targetTCPProxyAdapter struct {
-	id                             *krm.ComputeTargetTCPProxyRef
+	id                             *krm.TargetTCPProxyIdentity
 	targetTcpProxiesClient         *gcp.TargetTcpProxiesClient
 	regionalTargetTcpProxiesClient *gcp.RegionTargetTcpProxiesClient
 	desired                        *krm.ComputeTargetTCPProxy
@@ -117,22 +117,19 @@ func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, reader clien
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	computeTargetTCPProxyRef, err := krm.NewComputeTargetTCPProxyRef(ctx, reader, obj, u)
+	id, err := krm.NewTargetTCPProxyIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
 	}
 
 	targetTCPProxyAdapter := &targetTCPProxyAdapter{
-		id:      computeTargetTCPProxyRef,
+		id:      id,
 		desired: obj,
 		reader:  reader,
 	}
 
 	// Get location
-	parent, err := computeTargetTCPProxyRef.Parent()
-	if err != nil {
-		return nil, fmt.Errorf("get ComputeTargetTCPProxyAdapter parent %s: %w", computeTargetTCPProxyRef.External, err)
-	}
+	parent := id.Parent()
 	location := parent.Location
 
 	// Handle API/TF default values
@@ -167,14 +164,14 @@ func (m *targetTCPProxyModel) AdapterForURL(ctx context.Context, url string) (di
 
 func (a *targetTCPProxyAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting ComputeTargetTCPProxy", "name", a.id.External)
+	log.V(2).Info("getting ComputeTargetTCPProxy", "name", a.id)
 
 	targetTCPProxy, err := a.get(ctx)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting ComputeTargetTCPProxy %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting ComputeTargetTCPProxy %q: %w", a.id, err)
 	}
 	a.actual = targetTCPProxy
 	return true, nil
@@ -189,7 +186,7 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	}
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ComputeTargetTCPProxy", "name", a.id.External)
+	log.V(2).Info("creating ComputeTargetTCPProxy", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -199,13 +196,10 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return fmt.Errorf("get ComputeTargetTCPProxy parent %s: %w", a.id.External, err)
-	}
+	parent := a.id.Parent()
 	location := parent.Location
 
-	tokens := strings.Split(a.id.External, "/")
+	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
 	op := &gcp.Operation{}
@@ -225,30 +219,27 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	}
 
 	if err != nil {
-		return fmt.Errorf("creating ComputeTargetTCPProxy %s: %w", a.id.External, err)
+		return fmt.Errorf("creating ComputeTargetTCPProxy %s: %w", a.id, err)
 	}
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
-			return fmt.Errorf("waiting ComputeTargetTCPProxy %s create failed: %w", a.id.External, err)
+			return fmt.Errorf("waiting ComputeTargetTCPProxy %s create failed: %w", a.id, err)
 		}
 	}
-	log.V(2).Info("successfully created ComputeTargetTCPProxy", "name", a.id.External)
+	log.V(2).Info("successfully created ComputeTargetTCPProxy", "name", a.id)
 
 	// Get the created resource
 	created := &computepb.TargetTcpProxy{}
 	created, err = a.get(ctx)
 	if err != nil {
-		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id.External, err)
+		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
 	}
 
 	status := &krm.ComputeTargetTCPProxyStatus{}
 	status = ComputeTargetTCPProxyStatus_FromProto(mapCtx, created)
 
-	parent, err = a.id.Parent()
-	if err != nil {
-		return err
-	}
+	parent = a.id.Parent()
 
 	externalRef := parent.String() + "/targetTcpProxies/" + direct.ValueOf(created.Name)
 	status.ExternalRef = &externalRef
@@ -264,7 +255,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating ComputeTargetTCPProxy", "name", a.id.External)
+	log.V(2).Info("updating ComputeTargetTCPProxy", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -276,10 +267,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	op := &gcp.Operation{}
 	updated := &computepb.TargetTcpProxy{}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return fmt.Errorf("get ComputeTargetTCPProxy parent %s: %w", a.id.External, err)
-	}
+	parent := a.id.Parent()
 	location := parent.Location
 
 	// Regional API does not support Update
@@ -288,7 +276,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
 	}
 
-	tokens := strings.Split(a.id.External, "/")
+	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
@@ -299,15 +287,15 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		}
 		op, err = a.targetTcpProxiesClient.SetProxyHeader(ctx, setProxyHeaderReq)
 		if err != nil {
-			return fmt.Errorf("updating ComputeTargetTCPProxy proxy header %s: %w", a.id.External, err)
+			return fmt.Errorf("updating ComputeTargetTCPProxy proxy header %s: %w", a.id, err)
 		}
 		if !op.Done() {
 			err = op.Wait(ctx)
 			if err != nil {
-				return fmt.Errorf("waiting ComputeTargetTCPProxy proxy header %s update failed: %w", a.id.External, err)
+				return fmt.Errorf("waiting ComputeTargetTCPProxy proxy header %s update failed: %w", a.id, err)
 			}
 		}
-		log.V(2).Info("successfully updated ComputeTargetTCPProxy proxy header", "name", a.id.External)
+		log.V(2).Info("successfully updated ComputeTargetTCPProxy proxy header", "name", a.id)
 	}
 
 	if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) {
@@ -318,22 +306,22 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		}
 		op, err = a.targetTcpProxiesClient.SetBackendService(ctx, setBackendServiceReq)
 		if err != nil {
-			return fmt.Errorf("updating ComputeTargetTCPProxy backend service %s: %w", a.id.External, err)
+			return fmt.Errorf("updating ComputeTargetTCPProxy backend service %s: %w", a.id, err)
 		}
 		if !op.Done() {
 			err = op.Wait(ctx)
 			if err != nil {
-				return fmt.Errorf("waiting ComputeTargetTCPProxy backend service %s update failed: %w", a.id.External, err)
+				return fmt.Errorf("waiting ComputeTargetTCPProxy backend service %s update failed: %w", a.id, err)
 			}
 		}
-		log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id.External)
+		log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id)
 
 	}
 
 	// Get the updated resource
 	updated, err = a.get(ctx)
 	if err != nil {
-		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id.External, err)
+		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
 	}
 
 	status := &krm.ComputeTargetTCPProxyStatus{}
@@ -343,7 +331,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 
 func (a *targetTCPProxyAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
-		return nil, fmt.Errorf("targetTcpProxy %s not found", a.id.External)
+		return nil, fmt.Errorf("targetTcpProxy %s not found", a.id)
 	}
 
 	mc := &direct.MapContext{}
@@ -368,16 +356,14 @@ func (a *targetTCPProxyAdapter) Export(ctx context.Context) (*unstructured.Unstr
 // Delete implements the Adapter interface.
 func (a *targetTCPProxyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting ComputeTargetTcpProxy", "name", a.id.External)
+	log.V(2).Info("deleting ComputeTargetTcpProxy", "name", a.id)
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return false, fmt.Errorf("get ComputeTargetTcpProxy parent %s: %w", a.id.External, err)
-	}
+	parent := a.id.Parent()
 	location := parent.Location
 
+	var err error
 	op := &gcp.Operation{}
-	tokens := strings.Split(a.id.External, "/")
+	tokens := strings.Split(a.id.String(), "/")
 	if location == "global" {
 		delReq := &computepb.DeleteTargetTcpProxyRequest{
 			Project:        parent.ProjectID,
@@ -394,26 +380,23 @@ func (a *targetTCPProxyAdapter) Delete(ctx context.Context, deleteOp *directbase
 	}
 
 	if err != nil {
-		return false, fmt.Errorf("deleting ComputeTargetTcpProxy %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting ComputeTargetTcpProxy %s: %w", a.id, err)
 	}
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
-			return false, fmt.Errorf("waiting ComputeTargetTcpProxy %s delete failed: %w", a.id.External, err)
+			return false, fmt.Errorf("waiting ComputeTargetTcpProxy %s delete failed: %w", a.id, err)
 		}
 	}
-	log.V(2).Info("successfully deleted ComputeTargetTcpProxy", "name", a.id.External)
+	log.V(2).Info("successfully deleted ComputeTargetTcpProxy", "name", a.id)
 	return true, nil
 }
 
 func (a *targetTCPProxyAdapter) get(ctx context.Context) (*computepb.TargetTcpProxy, error) {
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, fmt.Errorf("get ComputeTargetTcpProxy parent %s: %w", a.id.External, err)
-	}
+	parent := a.id.Parent()
 	location := parent.Location
 
-	tokens := strings.Split(a.id.External, "/")
+	tokens := strings.Split(a.id.String(), "/")
 	if location == "global" {
 		getReq := &computepb.GetTargetTcpProxyRequest{
 			Project:        parent.ProjectID,

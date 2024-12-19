@@ -20,6 +20,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -105,7 +106,7 @@ func NewComputeFirewallPolicyRuleRef(ctx context.Context, reader client.Reader, 
 	priority := obj.Spec.Priority
 
 	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
 		id.External = asComputeFirewallPolicyRuleExternal(id.parent, priority)
 		return id, nil
