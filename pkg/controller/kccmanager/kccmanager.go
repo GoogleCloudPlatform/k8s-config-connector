@@ -144,6 +144,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		UserAgent:           gcp.KCCUserAgent,
 	}
 
+	if err := controllerConfig.Init(ctx); err != nil {
+		return nil, err
+	}
+
 	// Initialize direct controllers
 	if err := registry.Init(ctx, controllerConfig); err != nil {
 		return nil, err
