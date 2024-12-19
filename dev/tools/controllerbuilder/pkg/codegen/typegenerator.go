@@ -30,6 +30,14 @@ import (
 	"k8s.io/klog/v2"
 )
 
+const (
+	// KCCProtoMessageAnnotation is used for go structs that map to proto messages
+	KCCProtoMessageAnnotation = "+kcc:proto"
+
+	// KCCProtoFieldAnnotation is used for go struct fields that map to proto fields
+	KCCProtoFieldAnnotation = "+kcc:proto:field"
+)
+
 // Some special-case values that are not obvious how to map in KRM
 var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Timestamp":   "string",
@@ -154,7 +162,7 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	goType := goNameForProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
-	fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
+	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
@@ -226,7 +234,7 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 		}
 	}
 
-	fmt.Fprintf(out, "\t// +kcc:proto=%s\n", field.FullName())
+	fmt.Fprintf(out, "\t// %s=%s\n", KCCProtoFieldAnnotation, field.FullName())
 	fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
 		goFieldName,
 		goType,
