@@ -145,7 +145,7 @@ go run . generate-types \
 
 go run . generate-types \
     --service google.cloud.workstations.v1 \
-    --api-version workstations.cnrm.cloud.google.com/v1alpha1 \
+    --api-version workstations.cnrm.cloud.google.com/v1beta1 \
     --resource WorkstationConfig:WorkstationConfig
 
 go run . generate-types \

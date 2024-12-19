@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -23,7 +23,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// WorkstationConfigIdentity defines the resource reference to WorkstationConfig.
+// WorkstationConfigIdentity defines the resource reference to WorkstationConfig, which "External" field
+// holds the GCP identifier for the KRM object.
 type WorkstationConfigIdentity struct {
 	parent *WorkstationConfigParent
 	id     string
