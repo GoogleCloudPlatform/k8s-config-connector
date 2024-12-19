@@ -256,6 +256,9 @@ func (a *dataStoreAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	req := &pb.DeleteDataStoreRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteDataStore(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("deleting discoveryengine datastore %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted discoveryengine datastore", "name", a.id)
