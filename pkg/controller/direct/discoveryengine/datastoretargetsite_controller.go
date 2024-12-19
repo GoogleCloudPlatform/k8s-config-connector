@@ -285,6 +285,15 @@ func (a *dataStoreTargetSiteAdapter) Export(ctx context.Context) (*unstructured.
 		External: link.DiscoveryEngineDataStoreID.String(),
 	}
 
+	// provided_uri_pattern and exact_match are not returned
+	// Reconstruct them the best we can for export...
+	if obj.Spec.ExactMatch == nil {
+		obj.Spec.ExactMatch = direct.PtrTo(true)
+	}
+	if obj.Spec.ProvidedUriPattern == nil {
+		obj.Spec.ProvidedUriPattern = direct.PtrTo(a.actual.GeneratedUriPattern)
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
