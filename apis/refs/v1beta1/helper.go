@@ -41,11 +41,3 @@ func GetLocation(u *unstructured.Unstructured) (string, error) {
 	}
 	return location, nil
 }
-
-func lazyPtr[V comparable](v V) *V {
-	var defaultV V
-	if v == defaultV {
-		return nil
-	}
-	return &v
-}

@@ -64,11 +64,7 @@ func (m *instanceModel) client(ctx context.Context) (*gcp.AlloyDBAdminClient, er
 	return gcpClient, err
 }
 
-func validateRequiredFields(ctx context.Context, reader client.Reader, obj *krm.AlloyDBInstance) error {
-	if obj.Spec.InstanceType != nil && obj.Spec.InstanceTypeRef != nil {
-		return fmt.Errorf("one and only one of 'spec.InstanceTypeRef' " +
-			"and 'spec.InstanceType' should be configured: both are configured")
-	}
+func resolveInstanceType(ctx context.Context, reader client.Reader, obj *krm.AlloyDBInstance, isDeletion bool) error {
 	if obj.Spec.InstanceType == nil && obj.Spec.InstanceTypeRef == nil {
 		return fmt.Errorf("one and only one of 'spec.InstanceTypeRef' " +
 			"and 'spec.InstanceType' should be configured: neither is configured")
@@ -76,16 +72,26 @@ func validateRequiredFields(ctx context.Context, reader client.Reader, obj *krm.
 
 	var instanceType *string
 	if obj.Spec.InstanceType != nil {
+		instanceType = obj.Spec.InstanceType
 		if *instanceType == "" {
 			return fmt.Errorf("'spec.InstanceType' should be configured with a non-empty string")
 		}
-		instanceType = obj.Spec.InstanceType
 	}
 	if obj.Spec.InstanceTypeRef != nil {
+		plainTextInstanceType := instanceType
 		var err error
 		instanceType, err = refsv1beta1.ResolveAlloyDBClusterType(ctx, reader, obj, obj.Spec.InstanceTypeRef)
 		if err != nil {
-			return fmt.Errorf("cannot resolve `spec.InstanceTypeRef`: %w", err)
+			if !isDeletion {
+				// TODO: Read instance type from observed state because it's necessary during deletion.
+				return fmt.Errorf("cannot resolve `spec.InstanceTypeRef`: %w", err)
+			}
+		}
+		if plainTextInstanceType != nil && *plainTextInstanceType != *instanceType {
+			return fmt.Errorf("'spec.InstanceTypeRef' and 'spec.InstanceType' "+
+				"resolve into different values: spec.InstanceTypeRef resolves to "+
+				"instanceType %q, spec.InstanceType is %q: they must be the same",
+				*instanceType, *plainTextInstanceType)
 		}
 	}
 	obj.Spec.InstanceType = instanceType
@@ -160,7 +166,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("creating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := validateRequiredFields(ctx, a.reader, a.desired); err != nil {
+	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
 		return err
 	}
 
@@ -217,7 +223,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -227,7 +233,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("updating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := validateRequiredFields(ctx, a.reader, a.desired); err != nil {
+	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
 		return err
 	}
 
@@ -253,6 +259,14 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	if len(updatePaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
+		if *a.desired.Status.ExternalRef == "" {
+			// If it is the first reconciliation after switching to direct controller,
+			// then update Status to fill out the ExternalRef even if there is
+			// no update.
+			status := a.desired.Status
+			status.ExternalRef = direct.LazyPtr(a.id.String())
+			return updateOp.UpdateStatus(ctx, status, nil)
+		}
 		return nil
 	}
 	updateMask := &fieldmaskpb.FieldMask{
@@ -278,6 +292,11 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("successfully updated instance", "name", a.id)
 
 	status := AlloyDBInstanceStatus_FromProto(mapCtx, updated)
+	if *a.desired.Status.ExternalRef == "" {
+		// If it is the first reconciliation after switching to direct controller,
+		// then fill out the ExternalRef.
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+	}
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -376,6 +395,11 @@ func (a *instanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting instance", "name", a.id)
+
+	// instanceType must be resolved before calling DELETE.
+	if err := resolveInstanceType(ctx, a.reader, a.desired, true); err != nil {
+		return false, err
+	}
 
 	// Returning true directly if it is to delete a secondary instance.
 	// Technically the secondary instance is only abandoned but not deleted.

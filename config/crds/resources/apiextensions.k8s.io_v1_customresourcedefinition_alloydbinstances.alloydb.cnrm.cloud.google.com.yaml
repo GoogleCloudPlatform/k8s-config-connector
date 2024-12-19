@@ -219,8 +219,8 @@ spec:
                     type: integer
                 type: object
               resourceID:
-                description: Immutable. Optional. The instanceId of the resource.
-                  If not given, the metadata.name will be used.
+                description: Optional. The instanceId of the resource. If not given,
+                  the metadata.name will be used.
                 type: string
             required:
             - clusterRef
@@ -506,8 +506,8 @@ spec:
                     type: integer
                 type: object
               resourceID:
-                description: Immutable. Optional. The instanceId of the resource.
-                  If not given, the metadata.name will be used.
+                description: Optional. The instanceId of the resource. If not given,
+                  the metadata.name will be used.
                 type: string
             required:
             - clusterRef

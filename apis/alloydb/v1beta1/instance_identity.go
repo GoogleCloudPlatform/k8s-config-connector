@@ -24,10 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const serviceDomain = "//alloydb.googleapis.com"
-
-// InstanceIdentity defines the resource reference to AlloyDBInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceIdentity defines the resource reference to AlloyDBInstance.
 type InstanceIdentity struct {
 	parent *InstanceParent
 	id     string
@@ -45,18 +42,14 @@ func (i *InstanceIdentity) Parent() *InstanceParent {
 	return i.parent
 }
 
-// AsExternalRef builds a externalRef from a PrivilegedAccessManagerEntitlement.
-func (i *InstanceIdentity) AsExternalRef() *string {
-	er := serviceDomain + "/" + i.String()
-	return &er
-}
-
 type InstanceParent struct {
-	clusterName string
+	projectID string
+	location  string
+	clusterID string
 }
 
 func (p *InstanceParent) String() string {
-	return p.clusterName
+	return "projects/" + p.projectID + "/locations/" + p.location + "/clusters/" + p.clusterID
 }
 
 // New builds a InstanceIdentity from the Config Connector Instance object.
@@ -81,12 +74,12 @@ func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *AlloyDB
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseInstanceExternalRef(externalRef)
+		actualParent, actualResourceID, err := ParseInstanceExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.clusterName != clusterRef.String() {
-			return nil, fmt.Errorf("spec.clusterRef changed, expect %s, got %s", actualParent.clusterName, clusterRef)
+		if actualParent.String() != clusterRef.String() {
+			return nil, fmt.Errorf("spec.clusterRef changed, expect %s, got %s", actualParent.String(), clusterRef)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -95,7 +88,9 @@ func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *AlloyDB
 	}
 	return &InstanceIdentity{
 		parent: &InstanceParent{
-			clusterName: clusterRef.String(),
+			projectID: clusterRef.ProjectID,
+			location:  clusterRef.Location,
+			clusterID: clusterRef.ClusterID,
 		},
 		id: resourceID,
 	}, nil

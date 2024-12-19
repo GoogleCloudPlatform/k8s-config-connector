@@ -368,7 +368,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The instanceId of the resource. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The instanceId of the resource. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
