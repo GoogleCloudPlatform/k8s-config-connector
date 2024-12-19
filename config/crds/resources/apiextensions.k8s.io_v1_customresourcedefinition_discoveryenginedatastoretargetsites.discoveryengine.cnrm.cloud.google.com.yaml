@@ -102,13 +102,6 @@ spec:
                 description: Required. Input only. The user provided URI pattern from
                   which the `generated_uri_pattern` is generated.
                 type: string
-              resourceID:
-                description: Immutable. The DiscoveryEngineDataStoreTargetSite name.
-                  If not given, the metadata.name will be used.
-                type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               type:
                 description: The type of the target site, e.g., whether the site is
                   to be included or excluded.

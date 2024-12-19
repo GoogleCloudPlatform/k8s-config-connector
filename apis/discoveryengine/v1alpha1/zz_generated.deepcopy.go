@@ -410,11 +410,6 @@ func (in *DiscoveryEngineDataStoreTargetSiteSpec) DeepCopyInto(out *DiscoveryEng
 		*out = new(DiscoveryEngineDataStoreRef)
 		**out = **in
 	}
-	if in.ResourceID != nil {
-		in, out := &in.ResourceID, &out.ResourceID
-		*out = new(string)
-		**out = **in
-	}
 	if in.ProvidedUriPattern != nil {
 		in, out := &in.ProvidedUriPattern, &out.ProvidedUriPattern
 		*out = new(string)
