@@ -238,6 +238,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for Spec and ObservedState structs which map to the same proto message.
 					fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
+					for k := range goFields {
+						if strings.EqualFold(k, krmFieldName) {
+							fmt.Fprintf(out, "\t// (near miss): %q vs %q\n", krmFieldName, k)
+						}
+					}
 				}
 				continue
 			}
@@ -406,6 +411,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				if !v.fieldExistInCounterpartStruct(goType, krmFieldName) && !v.fieldExistInCounterpartStruct(goType, krmFieldName+"Ref") { // special handling for spec and observedState structs which map to the same proto message.
 					fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
+					for k := range goFields {
+						if strings.EqualFold(k, krmFieldName) {
+							fmt.Fprintf(out, "\t// (near miss): %q vs %q\n", krmFieldName, k)
+						}
+					}
 				}
 				continue
 			}
