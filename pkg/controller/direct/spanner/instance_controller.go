@@ -37,6 +37,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+const (
+	ctrlName = "spanner-controller"
+)
+
 func init() {
 	registry.RegisterModel(krm.SpannerInstanceGVK, NewSpannerInstanceModel)
 }
@@ -70,7 +74,7 @@ func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader clie
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSpannerInstanceRef(ctx, reader, obj, u)
+	id, err := krm.NewSpannerInstanceIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
 	}
@@ -88,10 +92,9 @@ func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader clie
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 	return &SpannerInstanceAdapter{
-		id:         id,
-		gcpClient:  gcpClient,
-		desired:    obj,
-		resourceID: resourceID,
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   obj,
 	}, nil
 }
 
@@ -101,26 +104,25 @@ func (m *modelSpannerInstance) AdapterForURL(ctx context.Context, url string) (d
 }
 
 type SpannerInstanceAdapter struct {
-	id         *krm.SpannerInstanceRef
-	gcpClient  *gcp.InstanceAdminClient
-	desired    *krm.SpannerInstance
-	actual     *spannerpb.Instance
-	resourceID string
+	id        *krm.SpannerInstanceIdentity
+	gcpClient *gcp.InstanceAdminClient
+	desired   *krm.SpannerInstance
+	actual    *spannerpb.Instance
 }
 
 var _ directbase.Adapter = &SpannerInstanceAdapter{}
 
 func (a *SpannerInstanceAdapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("getting SpannerInstance", "name", a.id.External)
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("getting SpannerInstance", "name", a.id)
 
-	req := &spannerpb.GetInstanceRequest{Name: a.id.External}
+	req := &spannerpb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting SpannerInstance %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting SpannerInstance %q: %w", a.id, err)
 	}
 
 	a.actual = instancepb
@@ -128,8 +130,8 @@ func (a *SpannerInstanceAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Instance", "name", a.id.External)
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("creating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -142,55 +144,50 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	if resource.NodeCount == 0 && resource.ProcessingUnits == 0 {
 		resource.NodeCount = 1
 	}
-	resource.Name = a.id.External
+	resource.Name = a.id.String()
 	resource.Labels = desired.Labels
 	resource.Labels["managed-by-cnrm"] = "true"
-	resource.Name = a.id.External
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
-
 	req := &spannerpb.CreateInstanceRequest{
-		InstanceId: a.resourceID,
+		InstanceId: a.id.ID(),
 		Instance:   resource,
-		Parent:     parent.String(),
+		Parent:     a.id.Parent().String(),
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Instance %s: %w", a.id.External, err)
+		return fmt.Errorf("creating Instance %s: %w", a.id, err)
 	}
+
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Instance %s waiting creation: %w", a.id.External, err)
+		return fmt.Errorf("Instance %s waiting creation: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created Instance", "name", a.id.External)
+	log.V(2).Info("successfully created Instance", "name", a.id)
 
 	status := &krm.SpannerInstanceStatus{}
 	status.State = State_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	external := a.id.String()
+	status.ExternalRef = &external
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Instance", "name", a.id.External)
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("updating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 	if err := a.SpecValidation(); err != nil {
 		return err
 	}
 	desired := a.desired.DeepCopy()
 	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
-	resource.Name = a.id.External
+	resource.Name = a.id.String()
 	resource.Labels = desired.Labels
 	resource.Labels["managed-by-cnrm"] = "true"
-	resource.Name = a.id.External
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -212,23 +209,23 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 
 	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.External)
+		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
-	resource.Name = a.id.External
+
 	req := &spannerpb.UpdateInstanceRequest{
 		FieldMask: updateMask,
 		Instance:  resource,
 	}
 	op, err := a.gcpClient.UpdateInstance(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating Instance %s: %w", a.id.External, err)
+		return fmt.Errorf("updating Instance %s: %w", a.id, err)
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Instance %s waiting update: %w", a.id.External, err)
+		return fmt.Errorf("Instance %s waiting update: %w", a.id, err)
 	}
-	log.V(2).Info("successfully updated Instance", "name", a.id.External)
+	log.V(2).Info("successfully updated Instance", "name", a.id)
 
 	status := &krm.SpannerInstanceStatus{}
 	status.State = State_FromProto(mapCtx, updated)
@@ -264,15 +261,15 @@ func (a *SpannerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 // Delete implements the Adapter interface.
 func (a *SpannerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Instance", "name", a.id.External)
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("deleting Instance", "name", a.id)
 
-	req := &spannerpb.DeleteInstanceRequest{Name: a.id.External}
+	req := &spannerpb.DeleteInstanceRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteInstance(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting Instance %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting Instance %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Instance", "name", a.id.External)
+	log.V(2).Info("successfully deleted Instance", "name", a.id)
 	return true, nil
 }
 
