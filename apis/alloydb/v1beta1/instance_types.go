@@ -30,7 +30,6 @@ type AlloyDBInstanceSpec struct {
 	// +required
 	ClusterRef *refs.AlloyDBClusterRef `json:"clusterRef,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.
 	// Optional. The instanceId of the resource. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

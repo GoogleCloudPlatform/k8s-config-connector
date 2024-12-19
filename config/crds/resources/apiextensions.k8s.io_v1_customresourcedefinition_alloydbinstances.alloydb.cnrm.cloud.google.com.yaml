@@ -222,9 +222,6 @@ spec:
                 description: Immutable. Optional. The instanceId of the resource.
                   If not given, the metadata.name will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - clusterRef
             type: object
@@ -512,9 +509,6 @@ spec:
                 description: Immutable. Optional. The instanceId of the resource.
                   If not given, the metadata.name will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - clusterRef
             type: object

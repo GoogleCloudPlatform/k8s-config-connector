@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -80,4 +81,24 @@ func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Read
 	}
 	r.External = actualExternalRef
 	return r.External, nil
+}
+
+func ParseInstanceExternalRef(externalRef string) (parent *InstanceParent, resourceID string, err error) {
+	if !strings.HasPrefix(externalRef, serviceDomain) {
+		return nil, "", fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
+	}
+	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
+	return ParseInstanceExternal(path)
+}
+
+func ParseInstanceExternal(external string) (parent *InstanceParent, resourceID string, err error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" || tokens[6] != "instances" {
+		return nil, "", fmt.Errorf("format of AlloyDBInstance external=%q was not known (use projects/<projectId>/locations/<location>/clusters/<clusterID>/instances/<instanceID>)", external)
+	}
+	parent = &InstanceParent{
+		clusterName: fmt.Sprintf("%s/%s/%s/%s/%s/%s", tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]),
+	}
+	resourceID = tokens[7]
+	return parent, resourceID, nil
 }

@@ -64,6 +64,34 @@ func (m *instanceModel) client(ctx context.Context) (*gcp.AlloyDBAdminClient, er
 	return gcpClient, err
 }
 
+func validateRequiredFields(ctx context.Context, reader client.Reader, obj *krm.AlloyDBInstance) error {
+	if obj.Spec.InstanceType != nil && obj.Spec.InstanceTypeRef != nil {
+		return fmt.Errorf("one and only one of 'spec.InstanceTypeRef' " +
+			"and 'spec.InstanceType' should be configured: both are configured")
+	}
+	if obj.Spec.InstanceType == nil && obj.Spec.InstanceTypeRef == nil {
+		return fmt.Errorf("one and only one of 'spec.InstanceTypeRef' " +
+			"and 'spec.InstanceType' should be configured: neither is configured")
+	}
+
+	var instanceType *string
+	if obj.Spec.InstanceType != nil {
+		if *instanceType == "" {
+			return fmt.Errorf("'spec.InstanceType' should be configured with a non-empty string")
+		}
+		instanceType = obj.Spec.InstanceType
+	}
+	if obj.Spec.InstanceTypeRef != nil {
+		var err error
+		instanceType, err = refsv1beta1.ResolveAlloyDBClusterType(ctx, reader, obj, obj.Spec.InstanceTypeRef)
+		if err != nil {
+			return fmt.Errorf("cannot resolve `spec.InstanceTypeRef`: %w", err)
+		}
+	}
+	obj.Spec.InstanceType = instanceType
+	return nil
+}
+
 func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.AlloyDBInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -75,30 +103,6 @@ func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, err
 	}
 
-	if obj.Spec.InstanceType != nil && obj.Spec.InstanceTypeRef != nil {
-		return nil, fmt.Errorf("one and only one of 'spec.InstanceTypeRef' " +
-			"and 'spec.InstanceType' should be configured: both are configured")
-	}
-	if obj.Spec.InstanceType == nil && obj.Spec.InstanceTypeRef == nil {
-		return nil, fmt.Errorf("one and only one of 'spec.InstanceTypeRef' " +
-			"and 'spec.InstanceType' should be configured: neither is configured")
-	}
-
-	var instanceType *string
-	if obj.Spec.InstanceType != nil {
-		if *instanceType == "" {
-			return nil, fmt.Errorf("'spec.InstanceType' should be configured with a non-empty string")
-		}
-		instanceType = obj.Spec.InstanceType
-	}
-	if obj.Spec.InstanceTypeRef != nil {
-		instanceType, err = refsv1beta1.ResolveAlloyDBClusterType(ctx, reader, obj, obj.Spec.InstanceTypeRef)
-		if err != nil {
-			return nil, fmt.Errorf("cannot resolve `spec.InstanceTypeRef`: %w", err)
-		}
-	}
-	obj.Spec.InstanceType = instanceType
-
 	// Get alloydb GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -107,6 +111,7 @@ func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Read
 	return &instanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
+		reader:    reader,
 		desired:   obj,
 	}, nil
 }
@@ -119,6 +124,7 @@ func (m *instanceModel) AdapterForURL(ctx context.Context, url string) (directba
 type instanceAdapter struct {
 	id        *krm.InstanceIdentity
 	gcpClient *gcp.AlloyDBAdminClient
+	reader    client.Reader
 	desired   *krm.AlloyDBInstance
 	actual    *alloydbpb.Instance
 }
@@ -153,6 +159,10 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	if err := validateRequiredFields(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
 
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
@@ -217,11 +227,16 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("updating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
+	if err := validateRequiredFields(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
+
 	parsedActual := AlloyDBInstanceSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
+	// TODO: Change to CompareProtoMessage once we support all the files in the instance pb.
 	updatePaths, err := compareInstance(ctx, parsedActual, &a.desired.Spec)
 	if err != nil {
 		return err
