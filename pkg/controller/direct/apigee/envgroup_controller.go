@@ -37,10 +37,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const (
-	serviceDomain = "//apigee.googleapis.com"
-	ctrlName      = "apigee-envgroup-controller"
-)
+const ctrlName = "apigee-envgroup-controller"
 
 func init() {
 	registry.RegisterModel(krm.ApigeeEnvgroupGVK, NewApigeeEnvgroupModel)
@@ -72,16 +69,18 @@ func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader clien
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewGoogleCloudApigeeV1EnvironmentGroupIdentity(ctx, reader, obj)
+	id, err := krm.NewEnvironmentGroupIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := ApigeeEnvgroup_ToApi(mapCtx, obj)
+	desired := ApigeeEnvgroupSpec_ToApi(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	desired.Name = id.ID()
 
 	return &Adapter{
 		id:                   id,
@@ -96,7 +95,7 @@ func (m *modelApigeeEnvgroup) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type Adapter struct {
-	id                   *krm.GoogleCloudApigeeV1EnvironmentGroupIdentity
+	id                   *krm.EnvironmentGroupIdentity
 	desired              *api.GoogleCloudApigeeV1EnvironmentGroup
 	actual               *api.GoogleCloudApigeeV1EnvironmentGroup
 	apigeeEnvgroupClient *apigeeEnvgroupClient
@@ -106,7 +105,7 @@ var _ directbase.Adapter = &Adapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
-// Return true means the object is not found. This triggers Adapter `Create` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)

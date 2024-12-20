@@ -26,11 +26,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &GoogleCloudApigeeV1EnvironmentGroupRef{}
+var _ refsv1beta1.ExternalNormalizer = &EnvironmentGroupRef{}
 
-// GoogleCloudApigeeV1EnvironmentGroupRef defines the resource reference to ApigeeEnvgroup, which "External" field
+// EnvironmentGroupRef defines the resource reference to ApigeeEnvgroup, which "External" field
 // holds the GCP identifier for the KRM object.
-type GoogleCloudApigeeV1EnvironmentGroupRef struct {
+type EnvironmentGroupRef struct {
 	// A reference to an externally managed ApigeeEnvgroup resource.
 	// Should be in the format "organizations/{{organization}}/envgroups/{{envgroup}}".
 	External string `json:"external,omitempty"`
@@ -45,13 +45,13 @@ type GoogleCloudApigeeV1EnvironmentGroupRef struct {
 // NormalizedExternal provision the "External" value for other resource that depends on ApigeeEnvgroup.
 // If the "External" is given in the other resource's spec.ApigeeEnvgroupRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual ApigeeEnvgroup object from the cluster.
-func (r *GoogleCloudApigeeV1EnvironmentGroupRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *EnvironmentGroupRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", ApigeeEnvgroupGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseGoogleCloudApigeeV1EnvironmentGroupExternal(r.External); err != nil {
+		if _, _, err := ParseEnvironmentGroupExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

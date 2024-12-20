@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -26,6 +27,13 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var (
+	GroupVersion          = schema.GroupVersion{Group: "apigeeorganizations.apigee.cnrm.cloud.google.com", Version: "v1beta1"}
+	ApigeeOrganizationGVK = GroupVersion.WithKind("ApigeeOrganization")
+)
+
+var _ refsv1beta1.ExternalNormalizer = &OrganizationRef{}
 
 type OrganizationRef struct {
 	/* The Organization selfLink, when not managed by Config Connector. */
@@ -40,61 +48,61 @@ type Organization struct {
 	OrganizationName string
 }
 
-func (s *Organization) FullyQualifiedName() string {
-	return "organizations/" + s.OrganizationName
+func (o *Organization) FullyQualifiedName() string {
+	return "organizations/" + o.OrganizationName
 }
-func ResolveOrganization(ctx context.Context, reader client.Reader, src client.Object, ref *OrganizationRef) (*Organization, error) {
-	if ref == nil {
-		return nil, nil
+
+func (r *OrganizationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if r.External != "" && r.Name != "" {
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", ApigeeOrganizationGVK.Kind)
 	}
 
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on organization reference")
-		}
+	// From given External
+	if r.External != "" {
+		external := strings.TrimPrefix(r.External, "/")
+		tokens := strings.Split(external, "/")
 
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 1 {
-			return &Organization{OrganizationName: tokens[0]}, nil
-		}
 		if len(tokens) == 2 && tokens[0] == "organizations" {
-			return &Organization{OrganizationName: tokens[1]}, nil
+			return r.External, nil
 		}
-		return nil, fmt.Errorf("format of organization external=%q was not known (use organization/<orgId> or <orgId>)", ref.External)
-
+		return "", fmt.Errorf("format of Organization external=%q was not known (use organization/{{orgId}})", external)
 	}
 
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on organization reference")
+	// From the Config Connector object
+	if r.Namespace == "" {
+		r.Namespace = otherNamespace
 	}
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(ApigeeOrganizationGVK)
 
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	organization := &unstructured.Unstructured{}
-	organization.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "apigee.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "ApigeeOrganization",
-	})
-
-	if err := reader.Get(ctx, key, organization); err != nil {
+	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(organization.GroupVersionKind(), key)
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return nil, fmt.Errorf("error reading referenced Organization %v: %w", key, err)
+		return "", fmt.Errorf("error reading referenced %s %s: %w", ApigeeOrganizationGVK, key, err)
 	}
 
-	orgID, err := GetResourceID(organization)
-
+	// get external from status.externalRef. This is the most trustworthy place.
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
-		return nil, err
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if actualExternalRef == "" {
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 
-	return &Organization{OrganizationName: orgID}, nil
+	r.External = actualExternalRef
+	return r.External, nil
+}
+
+func ParseOrganizationExternal(external string) (resourceID string, err error) {
+	tokens := strings.Split(external, "/")
+
+	if len(tokens) != 2 || tokens[0] != "organizations" {
+		return "", fmt.Errorf("format of ApigeeOrganization external=%q was not known (use organizations/{{organization}})",
+			external)
+	}
+	resourceID = tokens[1]
+	return resourceID, nil
 }
