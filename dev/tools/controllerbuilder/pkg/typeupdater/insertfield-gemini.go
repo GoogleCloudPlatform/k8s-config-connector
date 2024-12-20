@@ -22,15 +22,15 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/option"
+	"cloud.google.com/go/vertexai/genai"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
 func (u *TypeUpdater) insertGoFieldGemini() error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 	ctx := context.Background()
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+	client, err := llm.BuildGeminiClient(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}

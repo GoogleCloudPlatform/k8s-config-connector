@@ -18,15 +18,14 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/option"
+	"cloud.google.com/go/vertexai/genai"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 )
 
 func (u *TypeUpdater) insertGoMessagesGemini() error {
 	ctx := context.Background()
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+	client, err := llm.BuildGeminiClient(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}

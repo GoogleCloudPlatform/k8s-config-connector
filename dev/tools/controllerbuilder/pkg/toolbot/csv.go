@@ -23,8 +23,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/option"
+	"cloud.google.com/go/vertexai/genai"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -194,7 +194,9 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, src []byte) ([]*DataP
 
 // RunGemini runs a prompt against Gemini, generating context based on the source code.
 func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Writer) error {
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+	log := klog.FromContext(ctx)
+
+	client, err := llm.BuildGeminiClient(ctx)
 	if err != nil {
 		return fmt.Errorf("building gemini client: %w", err)
 	}
@@ -218,6 +220,8 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 		}
 		parts = append(parts, dataPoint.ToGenAIParts()...)
 	}
+
+	log.Info("context information", "num(parts)", len(parts))
 
 	// We also include the input data point.
 	parts = append(parts, input.ToGenAIParts()...)
