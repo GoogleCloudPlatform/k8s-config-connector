@@ -11,7 +11,9 @@ TODO: list contributors with `git log v1.126.0... | grep Merge | grep from | awk
 
 ## New Beta Resources (Direct Reconciler):
 
-* `Placeholder`
+* `WorkstationConfig`
+* `Workstation`
+* `FirestoreDatabase`
 
 ## New Fields:
 
