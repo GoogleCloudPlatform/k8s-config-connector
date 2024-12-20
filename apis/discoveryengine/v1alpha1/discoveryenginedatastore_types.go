@@ -26,7 +26,6 @@ var DiscoveryEngineDataStoreGVK = GroupVersion.WithKind("DiscoveryEngineDataStor
 // +kcc:proto=google.cloud.discoveryengine.v1.DataStore
 type DiscoveryEngineDataStoreSpec struct {
 	// The DiscoveryEngineDataStore name. If not given, the metadata.name will be used.
-	// Cannot be changed after create, except for updating from empty string to the actual resource ID.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The data store display name.

@@ -50,7 +50,6 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 
 	// The PrivilegedAccessManagerEntitlement name. If not given, the
 	// 'metadata.name' will be used.
-	// Cannot be changed after create, except for updating from empty string to the actual resource ID.
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
