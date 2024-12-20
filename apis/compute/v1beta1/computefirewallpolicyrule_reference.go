@@ -83,8 +83,7 @@ func (r *ComputeFirewallPolicyRuleRef) NormalizedExternal(ctx context.Context, r
 	if actualExternalRef == "" {
 		return "", fmt.Errorf("ComputeFirewallPolicyRule is not ready yet")
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a NewComputeFirewallPolicyRuleRef from the Config Connector ComputeFirewallPolicyRule object.

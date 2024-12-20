@@ -78,6 +78,5 @@ func (r *WorkstationConfigRef) NormalizedExternal(ctx context.Context, reader cl
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }

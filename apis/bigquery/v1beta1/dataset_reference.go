@@ -78,6 +78,5 @@ func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reade
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }

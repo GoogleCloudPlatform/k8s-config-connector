@@ -88,8 +88,7 @@ func (r *DiscoveryEngineDataStoreRef) NormalizedExternal(ctx context.Context, re
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a DiscoveryEngineDataStoreRef from the Config Connector DiscoveryEngineDataStore object.

@@ -81,8 +81,7 @@ func (r *KMSAutokeyConfigRef) NormalizedExternal(ctx context.Context, reader cli
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a KMSAutokeyConfigRef from the Config Connector KMSAutokeyConfig object.

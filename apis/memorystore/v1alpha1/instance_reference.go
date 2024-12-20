@@ -81,8 +81,7 @@ func (r *MemorystoreInstanceRef) NormalizedExternal(ctx context.Context, reader 
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a MemorystoreInstanceRef from the Config Connector MemorystoreInstance object.

@@ -81,8 +81,7 @@ func (r *SecureSourceManagerRepositoryRef) NormalizedExternal(ctx context.Contex
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a SecureSourceManagerRepositoryRef from the Config Connector SecureSourceManagerRepository object.

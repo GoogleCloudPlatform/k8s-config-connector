@@ -81,8 +81,7 @@ func (r *BigQueryAnalyticsHubDataExchangeRef) NormalizedExternal(ctx context.Con
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 // New builds a BigQueryAnalyticsHubDataExchangeRef from the Config Connector BigQueryAnalyticsHubDataExchange object.

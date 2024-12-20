@@ -151,6 +151,5 @@ func (r *BigQueryConnectionConnectionRef) NormalizedExternal(ctx context.Context
 	if actualExternalRef == "" {
 		return "", fmt.Errorf("BigQueryConnectionConnection is not ready yet.")
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }

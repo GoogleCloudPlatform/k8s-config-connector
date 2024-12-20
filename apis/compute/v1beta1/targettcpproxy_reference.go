@@ -80,8 +80,7 @@ func (r *TargetTCPProxyRef) NormalizedExternal(ctx context.Context, reader clien
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return actualExternalRef, nil
 }
 
 func parseTargetTCPProxyExternal(external string) (*TargetTCPProxyIdentity, error) {
