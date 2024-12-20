@@ -21,6 +21,30 @@ metadata:
 spec:
   inputAPIGroup: dataflowflextemplateconfigs.idp.mycompany.com
   expanders:
+  # STAGE 1: Enable necessary APIs.
+  - type: jinja2
+    version: v0.0.1
+    name: enable-services
+    template: |
+      {% set services=[
+        'dataflow.googleapis.com',
+        'storage.googleapis.com'
+      ] %}
+      {% for service in services %}
+      ---
+      apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+      kind: Service
+      metadata:
+        annotations:
+          cnrm.cloud.google.com/deletion-policy: "abandon"
+          cnrm.cloud.google.com/disable-dependent-services: "false"
+        name: {{service}}
+        namespace: config-control
+      spec:
+        resourceID: {{service}}
+      {% endfor %}
+
+  # STAGE 2: Create GCS Bucket
   - type: jinja2  # create-gcs-bucket
     name: create-gcs-bucket
     template: |
@@ -31,6 +55,8 @@ spec:
         namespace: config-control
       spec:
         uniformBucketLevelAccess: true
+
+  # STAGE 3: Launch the Dataflow Template
   - type: jinja2  # launch-dataflow-template
     name: launch-dataflow-template
     template: |
