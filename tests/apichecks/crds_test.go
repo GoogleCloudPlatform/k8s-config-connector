@@ -23,7 +23,14 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+	"sigs.k8s.io/yaml"
+
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -389,4 +396,151 @@ func TestCRDShortNames(t *testing.T) {
 	sort.Strings(errs)
 	want := strings.Join(errs, "\n")
 	test.CompareGoldenFile(t, "testdata/exceptions/shortnames.txt", want)
+}
+
+// Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
+func TestCRDFieldPresenceInUnstructured(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	unstructs := loadUnstructs(t)
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+
+			if version.Name == "v1alpha1" {
+				continue
+			}
+
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider fields under `spec`
+				if !strings.HasPrefix(fieldPath, ".spec.") {
+					return
+				}
+
+				// skip the resource id field
+				if strings.HasSuffix(fieldPath, ".resourceID") {
+					return
+				}
+
+				// Check for "Ref" fields
+				if strings.HasSuffix(fieldPath, "Ref") {
+					hasExternal := false
+					hasName := false
+
+					// Check for specific related fields
+					for _, obj := range unstructs {
+						if hasField(obj.Object, fieldPath+".external") {
+							hasExternal = true
+						}
+						if hasField(obj.Object, fieldPath+".name") {
+							hasName = true
+						}
+					}
+
+					// Only report an error if neither external nor name is set
+					if !hasExternal && !hasName {
+						errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set; neither 'external' nor 'name' are set", crd.Name, version.Name, fieldPath))
+					}
+					return
+				}
+
+				// Skip non-terminal fields (fields with children or slices)
+				if field.props != nil {
+					if len(field.props.Properties) > 0 || field.props.Type == "object" {
+						return
+					}
+					if field.props.Type == "array" && field.props.Items != nil {
+						return // Skip the array itself; focus on its elements
+					}
+				}
+
+				// Any XYZRef field was already handled and handling the children will just double count
+				if strings.Contains(fieldPath, "Ref") {
+					return
+				}
+
+				// Check if field exists in any unstructured object
+				missing := true
+				for _, obj := range unstructs {
+					if hasField(obj.Object, fieldPath) {
+						missing = false
+						break
+					}
+				}
+
+				if missing {
+					errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+}
+
+func loadUnstructs(t *testing.T) []*unstructured.Unstructured {
+	t.Helper()
+	unstructs := []*unstructured.Unstructured{}
+	fixtures := resourcefixture.Load(t)
+
+	for _, fixture := range fixtures {
+		fixture := fixture
+		createResource := bytesToUnstructured(t, fixture.Create)
+		updateResource := bytesToUnstructured(t, fixture.Update)
+
+		unstructs = append(unstructs, createResource, updateResource)
+	}
+
+	return unstructs
+}
+
+var (
+	testID      = testvariable.NewUniqueID()
+	testProject = testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}
+)
+
+func bytesToUnstructured(t *testing.T, bytes []byte) *unstructured.Unstructured {
+	t.Helper()
+
+	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, testProject)
+	return ToUnstruct(t, updatedBytes)
+}
+
+// hasField checks if an unstructured object contains the given field path.
+func hasField(obj map[string]interface{}, fieldPath string) bool {
+	parts := strings.Split(strings.TrimPrefix(fieldPath, "."), ".")
+	current := obj
+
+	for _, part := range parts {
+		if next, ok := current[part]; ok {
+			if nextMap, ok := next.(map[string]interface{}); ok {
+				current = nextMap
+			} else {
+				return true
+			}
+		} else {
+			return false
+		}
+	}
+	return false
+}
+
+func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
+	t.Helper()
+
+	var obj map[string]interface{}
+	err := yaml.Unmarshal(bytes, &obj)
+	if err != nil {
+		t.Errorf("error unmarshalling bytes %s to unstruct: %v", string(bytes), err)
+	}
+
+	return &unstructured.Unstructured{Object: obj}
 }
