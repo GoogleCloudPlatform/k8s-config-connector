@@ -29,6 +29,12 @@ Create a directory for your resource [pkg/test/resourcefixture/testdata/basic](p
 Just to add the `create.yaml`,  `update.yaml` and `dependencies.yaml` (if applicable) to each bottommost directory.
 These three files are all Kubernetes config files, except that `create.yaml` and `update.yaml` only holds the your Config Connector CR object, and the `dependencies.yaml` holds all the dependent objects.
 
+Note: Do not add your GCP Project (the output of `gcloud config get project`) as a dependency in `dependencies.yaml` and run `hack/record-gcp` (even with the `cnrm.cloud.google.com/deletion-policy: abandon` annotation). If your GCP project is listed as a dependency, Config Connector will add the label `cnrm-test: true` to your project during test runs (because it labels all test resources with `cnrm-test: true`). This is likely not desirable, because the label indicates that your GCP project is a test resource. Instead, you can refer to your development project in the `create.yaml` and `update.yaml` resources via an external project reference, with the `${projectId}` template variable. For example:
+```
+  projectRef:
+    external: ${projectId}
+```
+
 ## 1.2 Write the MockGCP server
 
 Follow [this guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/mockgcp/README.md) to write a mock gcp server.
