@@ -43,6 +43,8 @@ spec:
       containers:
         - type: project
           tfField: project
+      mutableButUnreadableFields:
+        - deletion_policy
     - name: google_sql_database_instance
       kind: SQLInstance
       metadataMapping:

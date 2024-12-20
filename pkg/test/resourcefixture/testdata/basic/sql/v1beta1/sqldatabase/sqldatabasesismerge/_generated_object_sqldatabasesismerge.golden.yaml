@@ -3,24 +3,24 @@ kind: SQLDatabase
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"DELETE"}}'
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
+    cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
-    newkey: newval
-  name: sqldatabase-sample-${uniqueId}
+  name: sqldatabase-${uniqueId}
   namespace: ${uniqueId}
 spec:
   charset: utf8mb4
   collation: utf8mb4_bin
+  deletionPolicy: DELETE
   instanceRef:
-    name: sqlinstance-sample-${uniqueId}
-  resourceID: sqldatabase-sample-${uniqueId}
+    name: sqlinstance-${uniqueId}
+  resourceID: sqldatabase-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -29,4 +29,4 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/databases/sqldatabase-${uniqueId}
