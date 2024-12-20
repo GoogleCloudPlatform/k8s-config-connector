@@ -144,3 +144,17 @@ func BasedOnDCL(serviceMetaLoader metadata.ServiceMetadataLoader) []schema.Group
 	}
 	return gvkList
 }
+
+func IsDirectByGVK(gvk schema.GroupVersionKind) bool {
+	metadata, ok := SupportedGVKs[gvk]
+	if !ok {
+		return false
+	}
+	if metadata.Labels[k8s.TF2CRDLabel] == "true" {
+		return false
+	}
+	if metadata.Labels[k8s.DCL2CRDLabel] == "true" {
+		return false
+	}
+	return true
+}
