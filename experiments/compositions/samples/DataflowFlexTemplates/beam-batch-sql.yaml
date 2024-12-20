@@ -1,0 +1,13 @@
+pipeline:
+  type: chain
+  transforms:
+    - type: ReadFromBigQuery
+      name: read-from-bigquery
+      config:
+        table_spec: test-gcp-tse.zq.s3
+    - type: Sql
+      config:
+        query: "SELECT * from PCOLLECTION"
+    - type: WriteToJson
+      config:
+        path: gs://samples-beamyamldemo/output.json
