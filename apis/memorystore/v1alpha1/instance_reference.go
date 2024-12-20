@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -41,8 +42,6 @@ type MemorystoreInstanceRef struct {
 
 	// The namespace of a MemorystoreInstance resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent *MemorystoreInstanceParent
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on MemorystoreInstance.
@@ -54,7 +53,7 @@ func (r *MemorystoreInstanceRef) NormalizedExternal(ctx context.Context, reader 
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := parseMemorystoreInstanceExternal(r.External); err != nil {
+		if _, err := ParseMemorystoreInstanceExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -74,81 +73,21 @@ func (r *MemorystoreInstanceRef) NormalizedExternal(ctx context.Context, reader 
 		return "", fmt.Errorf("reading referenced %s %s: %w", MemorystoreInstanceGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	actualExternalRef, _, err1 := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err1 != nil {
+		err1 = fmt.Errorf("MemorystoreInstance `status.externalRef` not configured: %w", err1)
+		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
+		var err2 error
+		actualExternalRef, _, err2 = unstructured.NestedString(u.Object, "status", "name")
+		if err2 != nil {
+			return "", errors.Join(err1, err2)
+		}
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 	r.External = actualExternalRef
 	return r.External, nil
-}
-
-// New builds a MemorystoreInstanceRef from the Config Connector MemorystoreInstance object.
-func NewMemorystoreInstanceRef(ctx context.Context, reader client.Reader, obj *MemorystoreInstance) (*MemorystoreInstanceRef, error) {
-	id := &MemorystoreInstanceRef{}
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-	id.parent = &MemorystoreInstanceParent{ProjectID: projectID, Location: location}
-
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = asMemorystoreInstanceExternal(id.parent, resourceID)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseMemorystoreInstanceExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-	}
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	id.parent = &MemorystoreInstanceParent{ProjectID: projectID, Location: location}
-	return id, nil
-}
-
-func (r *MemorystoreInstanceRef) Parent() (*MemorystoreInstanceParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, _, err := parseMemorystoreInstanceExternal(r.External)
-		if err != nil {
-			return nil, err
-		}
-		return parent, nil
-	}
-	return nil, fmt.Errorf("MemorystoreInstanceRef not initialized from `NewMemorystoreInstanceRef` or `NormalizedExternal`")
 }
 
 type MemorystoreInstanceParent struct {
@@ -160,28 +99,17 @@ func (p *MemorystoreInstanceParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-func asMemorystoreInstanceExternal(parent *MemorystoreInstanceParent, resourceID string) (external string) {
-	return parent.String() + "/instances/" + resourceID
-}
-
-func parseMemorystoreInstanceExternal(external string) (parent *MemorystoreInstanceParent, resourceID string, err error) {
+func ParseMemorystoreInstanceExternal(external string) (*MemoryStoreInstanceIdentity, error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instance" {
-		return nil, "", fmt.Errorf("format of MemorystoreInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
+		return nil, fmt.Errorf("format of MemorystoreInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
 	}
-	parent = &MemorystoreInstanceParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
-}
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
+	return &MemoryStoreInstanceIdentity{
+		parent: &MemorystoreInstanceParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		},
+		id: tokens[5],
+	}, nil
 }
