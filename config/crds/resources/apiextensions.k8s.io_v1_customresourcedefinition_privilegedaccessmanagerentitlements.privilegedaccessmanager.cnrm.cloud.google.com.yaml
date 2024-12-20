@@ -304,8 +304,7 @@ spec:
                 type: object
               resourceID:
                 description: The PrivilegedAccessManagerEntitlement name. If not given,
-                  the 'metadata.name' will be used. Cannot be changed after create,
-                  except for updating from empty string to the actual resource ID.
+                  the 'metadata.name' will be used.
                 type: string
             required:
             - eligibleUsers
@@ -669,9 +668,7 @@ spec:
                 type: object
               resourceID:
                 description: Immutable. The PrivilegedAccessManagerEntitlement name.
-                  If not given, the 'metadata.name' will be used. Cannot be changed
-                  after create, except for updating from empty string to the actual
-                  resource ID.
+                  If not given, the 'metadata.name' will be used.
                 type: string
             required:
             - eligibleUsers

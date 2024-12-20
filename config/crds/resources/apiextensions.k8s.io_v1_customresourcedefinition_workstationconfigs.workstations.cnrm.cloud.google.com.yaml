@@ -507,8 +507,7 @@ spec:
                 type: array
               resourceID:
                 description: The WorkstationConfig name. If not given, the metadata.name
-                  will be used. Cannot be changed after create, except for updating
-                  from empty string to the actual resource ID.
+                  will be used.
                 type: string
               runningTimeout:
                 description: |-
@@ -1135,8 +1134,7 @@ spec:
                 type: array
               resourceID:
                 description: The WorkstationConfig name. If not given, the metadata.name
-                  will be used. Cannot be changed after create, except for updating
-                  from empty string to the actual resource ID.
+                  will be used.
                 type: string
               runningTimeout:
                 description: |-
