@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	"google.golang.org/grpc"
 
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -62,6 +63,9 @@ type Config struct {
 	// HTTPClient is the http client to use by KCC.
 	// Currently only used in tests.
 	HTTPClient *http.Client
+
+	// GRPCUnaryClientInterceptor is the GRPC interceptor for use in tests.
+	GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
 
 	// GCPAccessToken allows configuration of a static access token for accessing GCP.
 	// Currently only used in tests.
@@ -138,10 +142,11 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
 	controllerConfig := &config.ControllerConfig{
-		UserProjectOverride: cfg.UserProjectOverride,
-		BillingProject:      cfg.BillingProject,
-		HTTPClient:          cfg.HTTPClient,
-		UserAgent:           gcp.KCCUserAgent,
+		UserProjectOverride:        cfg.UserProjectOverride,
+		BillingProject:             cfg.BillingProject,
+		HTTPClient:                 cfg.HTTPClient,
+		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
+		UserAgent:                  gcp.KCCUserAgent,
 	}
 
 	// Initialize direct controllers
