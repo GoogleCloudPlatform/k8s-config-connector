@@ -197,13 +197,12 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	}
 
 	parent := a.id.Parent()
-	location := parent.Location
 
 	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
 	op := &gcp.Operation{}
-	if location == "global" {
+	if parent.Location == "global" {
 		req := &computepb.InsertTargetTcpProxyRequest{
 			Project:                parent.ProjectID,
 			TargetTcpProxyResource: targetTCPProxy,
@@ -212,7 +211,7 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	} else {
 		req := &computepb.InsertRegionTargetTcpProxyRequest{
 			Project:                parent.ProjectID,
-			Region:                 location,
+			Region:                 parent.Location,
 			TargetTcpProxyResource: targetTCPProxy,
 		}
 		op, err = a.regionalTargetTcpProxiesClient.Insert(ctx, req)
@@ -239,9 +238,7 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	status := &krm.ComputeTargetTCPProxyStatus{}
 	status = ComputeTargetTCPProxyStatus_FromProto(mapCtx, created)
 
-	parent = a.id.Parent()
-
-	externalRef := parent.String() + "/targetTcpProxies/" + direct.ValueOf(created.Name)
+	externalRef := a.id.String()
 	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -268,10 +265,9 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	updated := &computepb.TargetTcpProxy{}
 
 	parent := a.id.Parent()
-	location := parent.Location
 
 	// Regional API does not support Update
-	if location != "global" {
+	if parent.Location != "global" {
 		return fmt.Errorf("update operation not supported for resource %v %v",
 			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
 	}
@@ -359,12 +355,11 @@ func (a *targetTCPProxyAdapter) Delete(ctx context.Context, deleteOp *directbase
 	log.V(2).Info("deleting ComputeTargetTcpProxy", "name", a.id)
 
 	parent := a.id.Parent()
-	location := parent.Location
 
 	var err error
 	op := &gcp.Operation{}
 	tokens := strings.Split(a.id.String(), "/")
-	if location == "global" {
+	if parent.Location == "global" {
 		delReq := &computepb.DeleteTargetTcpProxyRequest{
 			Project:        parent.ProjectID,
 			TargetTcpProxy: tokens[len(tokens)-1],
@@ -373,7 +368,7 @@ func (a *targetTCPProxyAdapter) Delete(ctx context.Context, deleteOp *directbase
 	} else {
 		delReq := &computepb.DeleteRegionTargetTcpProxyRequest{
 			Project:        parent.ProjectID,
-			Region:         location,
+			Region:         parent.Location,
 			TargetTcpProxy: tokens[len(tokens)-1],
 		}
 		op, err = a.regionalTargetTcpProxiesClient.Delete(ctx, delReq)
