@@ -15,8 +15,6 @@
 package supportedgvks
 
 import (
-	"fmt"
-
 	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -45,10 +43,7 @@ func ManualResources(smLoader *servicemappingloader.ServiceMappingLoader, servic
 func resourcesWithDirect(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaLoader metadata.ServiceMetadataLoader, includesAutoGen bool) ([]schema.GroupVersionKind, error) {
 	gvks := resources(smLoader, serviceMetaLoader, includesAutoGen)
 
-	directGVKs, err := DirectResources()
-	if err != nil {
-		return nil, fmt.Errorf("error getting direct resource GVKs: %w", err)
-	}
+	directGVKs := DirectResources()
 	for _, gvk := range gvks {
 		if _, ok := directGVKs[gvk]; ok {
 			delete(directGVKs, gvk)
@@ -66,7 +61,7 @@ func resources(smLoader *servicemappingloader.ServiceMappingLoader, serviceMetaL
 	return gvks
 }
 
-func DirectResources() (map[schema.GroupVersionKind]bool, error) {
+func DirectResources() map[schema.GroupVersionKind]bool {
 	handWrittenIAMTypes := make(map[schema.GroupVersionKind]bool)
 	directResources := make(map[schema.GroupVersionKind]bool)
 	for _, gvk := range BasedOnHandwrittenIAMTypes() {
@@ -84,7 +79,7 @@ func DirectResources() (map[schema.GroupVersionKind]bool, error) {
 		}
 		directResources[gvk] = true
 	}
-	return directResources, nil
+	return directResources
 }
 
 // AllDynamicTypes returns GroupVersionKinds generated from:
@@ -157,4 +152,18 @@ func IsDirectByGVK(gvk schema.GroupVersionKind) bool {
 		return false
 	}
 	return true
+}
+
+func IsTFBasedByGVK(gvk schema.GroupVersionKind) bool {
+	metadata, ok := SupportedGVKs[gvk]
+	if !ok {
+		return false
+	}
+	if metadata.Labels[k8s.TF2CRDLabel] == "true" {
+		return true
+	}
+	if metadata.Labels[k8s.DCL2CRDLabel] == "true" {
+		return false
+	}
+	return false
 }

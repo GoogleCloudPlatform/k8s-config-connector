@@ -139,8 +139,7 @@ var (
 )
 
 var (
-	dclSchemaLoader       dclschemaloader.DCLSchemaLoader
-	serviceMetadataLoader dclmetadata.ServiceMetadataLoader
+	dclSchemaLoader dclschemaloader.DCLSchemaLoader
 )
 
 func main() {
@@ -156,18 +155,16 @@ func main() {
 	if err != nil {
 		log.Fatal(fmt.Errorf("error creating a DCL schema loader: %w", err))
 	}
-	serviceMetadataLoader = dclmetadata.New()
+	serviceMetadataLoader := dclmetadata.New()
 	manualResources, err := supportedgvks.ManualResources(smLoader, serviceMetadataLoader)
 	if err != nil {
 		log.Fatalf("error getting manual resources: %v", err)
 	}
-	directGVKs, err := supportedgvks.DirectResources()
-	if err != nil {
-		log.Fatalf("error getting direct resource GVKs: %v", err)
-	}
+	directGVKs := supportedgvks.DirectResources()
 	docGenerator := &DocGenerator{
-		smLoader:   smLoader,
-		directGVKs: directGVKs,
+		smLoader:              smLoader,
+		serviceMetadataLoader: serviceMetadataLoader,
+		directGVKs:            directGVKs,
 	}
 	for _, gvk := range manualResources {
 		if strings.HasPrefix(gvk.Version, "v1alpha") {
@@ -181,8 +178,9 @@ func main() {
 }
 
 type DocGenerator struct {
-	smLoader   *servicemappingloader.ServiceMappingLoader
-	directGVKs map[schema.GroupVersionKind]bool
+	smLoader              *servicemappingloader.ServiceMappingLoader
+	serviceMetadataLoader dclmetadata.ServiceMetadataLoader
+	directGVKs            map[schema.GroupVersionKind]bool
 }
 
 func (d *DocGenerator) generateDocForGVK(gvk schema.GroupVersionKind) error {
@@ -299,18 +297,18 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 	if err = buildFieldDescriptions(r, crd, gvk.Version); err != nil {
 		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
 	}
-	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, d.smLoader, serviceMetadataLoader).Seconds())
+	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, d.smLoader, d.serviceMetadataLoader).Seconds())
 	isDirectGVK := d.directGVKs[gvk]
 	if err != nil {
 		return nil, fmt.Errorf("error checking whether GVK is direct: %w", err)
 	}
-	if dclmetadata.IsDCLBasedResourceKind(gvk, serviceMetadataLoader) {
-		resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
+	if dclmetadata.IsDCLBasedResourceKind(gvk, d.serviceMetadataLoader) {
+		resourceMetadata, found := d.serviceMetadataLoader.GetResourceWithGVK(gvk)
 		if !found {
 			return nil, fmt.Errorf("error finding the DCL based resource %v", gvk)
 		}
 		r.IsAlphaResource = resourceMetadata.DCLVersion == "alpha"
-		if err := handleAnnotationsAndIAMSettingsForDCLBasedResource(r, gvk); err != nil {
+		if err := d.handleAnnotationsAndIAMSettingsForDCLBasedResource(r, gvk); err != nil {
 			return nil, fmt.Errorf("error processing the DCL based resource %v: %w", gvk, err)
 		}
 	} else {
@@ -338,13 +336,13 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 	return r, nil
 }
 
-func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.GroupVersionKind) error {
+func (d *DocGenerator) handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.GroupVersionKind) error {
 	annotationSet := sets.NewString()
-	resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
+	resourceMetadata, found := d.serviceMetadataLoader.GetResourceWithGVK(gvk)
 	if !found {
 		return fmt.Errorf("ServiceMetadata for resource with GroupVersionKind %v not found", gvk)
 	}
-	containers, err := dclcontainer.GetContainersForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
+	containers, err := dclcontainer.GetContainersForGVK(gvk, d.serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
 		return err
 	}
@@ -356,7 +354,7 @@ func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.
 		}
 	}
 	setAnnotations(r, annotationSet)
-	externalReferenceFormat, err := getDCLExternalReferenceFormatIfSupportsIAM(gvk)
+	externalReferenceFormat, err := d.getDCLExternalReferenceFormatIfSupportsIAM(gvk)
 	if err != nil {
 		return err
 	}
@@ -469,8 +467,8 @@ func iamExternalReferenceFormatsFor(gvk schema.GroupVersionKind, rcs []*v1alpha1
 	}
 }
 
-func getDCLExternalReferenceFormatIfSupportsIAM(gvk schema.GroupVersionKind) (string, error) {
-	dclSchema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
+func (d *DocGenerator) getDCLExternalReferenceFormatIfSupportsIAM(gvk schema.GroupVersionKind) (string, error) {
+	dclSchema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, d.serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
 		return "", err
 	}
@@ -502,7 +500,10 @@ func (d *DocGenerator) buildSamples(kind, sampleDirPath string) (map[string]stri
 			if err != nil {
 				return nil, fmt.Errorf("error building sample at %v: %w", subDirPath, err)
 			}
-			name := d.titleForSample(subDir)
+			name, err := d.titleForSample(subDir)
+			if err != nil {
+				return nil, fmt.Errorf("error constructing sample title at %v: %w", subDirPath, err)
+			}
 			sampleYAMLs[name] = sample
 		}
 	} else {
@@ -666,8 +667,8 @@ func (d *DocGenerator) referencesSupportedByIAMPolicy() ([]iamPolicyReference, e
 			ExternalReferenceFormats: externalReferenceFormats,
 		})
 	}
-	for _, gvk := range supportedgvks.BasedOnDCL(serviceMetadataLoader) {
-		externalReferenceFormat, err := getDCLExternalReferenceFormatIfSupportsIAM(gvk)
+	for _, gvk := range supportedgvks.BasedOnDCL(d.serviceMetadataLoader) {
+		externalReferenceFormat, err := d.getDCLExternalReferenceFormatIfSupportsIAM(gvk)
 		if err != nil {
 			return nil, err
 		}
@@ -725,8 +726,8 @@ func (d *DocGenerator) referencesSupportedByIAMPolicyMember() ([]iamPolicyMember
 			ExternalReferenceFormats: externalReferenceFormats,
 		})
 	}
-	for _, gvk := range supportedgvks.BasedOnDCL(serviceMetadataLoader) {
-		externalReferenceFormat, err := getDCLExternalReferenceFormatIfSupportsIAM(gvk)
+	for _, gvk := range supportedgvks.BasedOnDCL(d.serviceMetadataLoader) {
+		externalReferenceFormat, err := d.getDCLExternalReferenceFormatIfSupportsIAM(gvk)
 		if err != nil {
 			return nil, err
 		}
@@ -788,15 +789,18 @@ func (d *DocGenerator) referencesSupportedByIAMAuditConfig() ([]iamAuditConfigRe
 }
 
 // titleForSample returns the title that should be used for the sample
-func (d *DocGenerator) titleForSample(dir fs.FileInfo) string {
+func (d *DocGenerator) titleForSample(dir fs.FileInfo) (string, error) {
 	serviceMappingNames := make(map[string]v1alpha1.ServiceMapping)
-	resourceKinds := make(map[string]v1alpha1.ResourceConfig)
+	resourceKinds := make(map[string]string)
 	for _, sm := range d.smLoader.GetServiceMappings() {
 		serviceMappingNames[strings.ToLower(sm.Spec.Name)] = sm
-
-		for _, resource := range sm.Spec.Resources {
-			resourceKinds[strings.ToLower(resource.Kind)] = resource
-		}
+	}
+	gvks, err := supportedgvks.All(d.smLoader, d.serviceMetadataLoader)
+	if err != nil {
+		return "", err
+	}
+	for _, gvk := range gvks {
+		resourceKinds[strings.ToLower(gvk.Kind)] = gvk.Kind
 	}
 	split := strings.Split(dir.Name(), "-")
 	var words []string
@@ -806,9 +810,9 @@ func (d *DocGenerator) titleForSample(dir fs.FileInfo) string {
 			// If it's a well-known service, use its correctly capitalized name (PubSub, VertexAI etc)
 			word = serviceMapping.Spec.Name
 		}
-		if resource, ok := resourceKinds[strings.ToLower(word)]; ok {
+		if resourceKind, ok := resourceKinds[strings.ToLower(word)]; ok {
 			// If it's a well-known kind, use the correct capitalization
-			word = resource.Kind
+			word = resourceKind
 		}
 		for _, s := range allowedSpellings {
 			if strings.EqualFold(s, word) {
@@ -817,7 +821,7 @@ func (d *DocGenerator) titleForSample(dir fs.FileInfo) string {
 		}
 		words = append(words, word)
 	}
-	return strings.Join(words, " ")
+	return strings.Join(words, " "), nil
 }
 
 func resourceSupportsIAMPolicyAndPolicyMember(rc *v1alpha1.ResourceConfig) bool {
