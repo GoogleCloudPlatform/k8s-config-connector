@@ -177,7 +177,7 @@ func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	// MISSING: Description
 	if in.GetInstance() != "" {
-		out.InstanceRef = &krm.SecureSourceManagerInstanceRef{External: in.GetInstance()}
+		out.InstanceRef = SecureSourceManagerRepositorySpec_InstanceRef_FromProto(mapCtx, in.GetInstance())
 	}
 	// MISSING: Uid
 	// MISSING: CreateTime

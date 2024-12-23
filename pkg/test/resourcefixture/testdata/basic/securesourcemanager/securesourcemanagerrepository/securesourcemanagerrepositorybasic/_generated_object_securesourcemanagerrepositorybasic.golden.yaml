@@ -1,0 +1,31 @@
+apiVersion: securesourcemanager.cnrm.cloud.google.com/v1alpha1
+kind: SecureSourceManagerRepository
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: ssmrepository-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  instanceRef:
+    name: ssminstance-dep-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    uris:
+      api: https://ssminstance-dep-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}
+      gitHTTPS: https://ssminstance-dep-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev/${projectId}/ssmrepository-${uniqueId}.git
+      html: https://ssminstance-dep-${uniqueId}-${projectNumber}.us-central1.sourcemanager.dev/${projectId}/ssmrepository-${uniqueId}
