@@ -98,7 +98,7 @@ spec:
                   always normalized to generate the URI pattern to be used by the
                   search engine.
                 type: boolean
-              providedUriPattern:
+              providedURIPattern:
                 description: Required. Input only. The user provided URI pattern from
                   which the `generated_uri_pattern` is generated.
                 type: string
@@ -167,14 +167,14 @@ spec:
                             type: integer
                         type: object
                     type: object
-                  generatedUriPattern:
+                  generatedURIPattern:
                     description: Output only. This is system-generated based on the
                       provided_uri.
                     type: string
                   indexingStatus:
                     description: Output only. Indexing status.
                     type: string
-                  rootDomainUri:
+                  rootDomainURI:
                     description: Output only. Root domain of the provided_uri.
                     type: string
                   siteVerificationInfo:
