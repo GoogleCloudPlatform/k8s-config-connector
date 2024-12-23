@@ -4,10 +4,10 @@ pipeline:
     - type: ReadFromBigQuery
       name: read-from-bigquery
       config:
-        table_spec: test-gcp-tse.zq.s3
+        table_spec: # project.dataset.table
     - type: Sql
       config:
         query: "SELECT * from PCOLLECTION"
     - type: WriteToJson
       config:
-        path: gs://samples-beamyamldemo/output.json
+        path: # gs://your-output-bucket/
