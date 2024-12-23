@@ -192,7 +192,7 @@ func TestCRDsAcronyms(t *testing.T) {
 					case "id":
 						isAcronym = true
 
-					case "url":
+					case "url", "uri":
 						isAcronym = true
 					case "cdn":
 						isAcronym = true
