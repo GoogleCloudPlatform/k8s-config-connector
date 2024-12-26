@@ -26,7 +26,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs>/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs"</a></td>
+<td><a href="/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs">/workstations/docs/reference/rest/v1/projects.locations.workstationClusters.workstationConfigs</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
