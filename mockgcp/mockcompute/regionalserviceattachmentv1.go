@@ -46,6 +46,9 @@ func (s *RegionalServiceAttachmentV1) Get(ctx context.Context, req *pb.GetServic
 
 	obj := &pb.ServiceAttachment{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -79,7 +82,7 @@ func (s *RegionalServiceAttachmentV1) Insert(ctx context.Context, req *pb.Insert
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("insert"),
+		OperationType: PtrTo("compute.serviceAttachments.insert"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
@@ -115,7 +118,7 @@ func (s *RegionalServiceAttachmentV1) Patch(ctx context.Context, req *pb.PatchSe
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("patch"),
+		OperationType: PtrTo("compute.serviceAttachments.patch"),
 		User:          PtrTo("user@example.com"),
 	}
 
@@ -141,7 +144,7 @@ func (s *RegionalServiceAttachmentV1) Delete(ctx context.Context, req *pb.Delete
 	op := &pb.Operation{
 		TargetId:      deleted.Id,
 		TargetLink:    deleted.SelfLink,
-		OperationType: PtrTo("delete"),
+		OperationType: PtrTo("compute.serviceAttachments.delete"),
 		User:          PtrTo("user@example.com"),
 	}
 

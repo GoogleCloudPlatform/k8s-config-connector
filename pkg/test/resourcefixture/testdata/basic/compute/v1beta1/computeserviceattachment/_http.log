@@ -1,4 +1,4 @@
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+GET https://cloudresourcemanager.googleapis.com/v1/projects/kccdep-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 403 Forbidden
@@ -65,7 +65,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     "id": "${organizationID}",
     "type": "organization"
   },
-  "projectId": "example-project-01"
+  "projectId": "kccdep-${uniqueId}"
 }
 
 200 OK
@@ -117,14 +117,14 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectNumber}",
     "parent": "organizations/${organizationID}",
-    "projectId": "example-project-01",
+    "projectId": "kccdep-${uniqueId}",
     "state": "ACTIVE"
   }
 }
 
 ---
 
-PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+PUT https://cloudbilling.googleapis.com/v1/projects/kccdep-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -146,13 +146,13 @@ X-Xss-Protection: 0
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
+  "name": "projects/kccdep-${uniqueId}/billingInfo",
+  "projectId": "kccdep-${uniqueId}"
 }
 
 ---
 
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+GET https://cloudbilling.googleapis.com/v1/projects/kccdep-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -169,13 +169,13 @@ X-Xss-Protection: 0
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
+  "name": "projects/kccdep-${uniqueId}/billingInfo",
+  "projectId": "kccdep-${uniqueId}"
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+GET https://cloudresourcemanager.googleapis.com/v1/projects/kccdep-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -201,13 +201,13 @@ X-Xss-Protection: 0
     "id": "${organizationID}",
     "type": "organization"
   },
-  "projectId": "example-project-01",
+  "projectId": "kccdep-${uniqueId}",
   "projectNumber": "${projectNumber}"
 }
 
 ---
 
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+GET https://cloudbilling.googleapis.com/v1/projects/kccdep-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -224,13 +224,13 @@ X-Xss-Protection: 0
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
+  "name": "projects/kccdep-${uniqueId}/billingInfo",
+  "projectId": "kccdep-${uniqueId}"
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/kccdep-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -248,7 +248,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/compute.googleapis.com:enable?alt=json&prettyPrint=false
+POST https://serviceusage.googleapis.com/v1/projects/kccdep-${uniqueId}/services/compute.googleapis.com:enable?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -309,7 +309,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/kccdep-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -335,7 +335,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -356,203 +356,14 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}"
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default network for the project",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}"
-}
-
----
-
-PATCH https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default network for the project",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -573,17 +384,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found",
+        "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found"
+    "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -599,8 +410,8 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
-  "region": "projects/example-project-01/global/regions/us-west1",
+  "network": "projects/kccdep-${uniqueId}/global/networks/${networkID}",
+  "region": "projects/kccdep-${uniqueId}/global/regions/us-west1",
   "subsetting": {
     "policy": "NONE"
   }
@@ -623,14 +434,44 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -659,9 +500,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
-  "region": "projects/example-project-01/global/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "network": "projects/kccdep-${uniqueId}/global/networks/${networkID}",
+  "region": "projects/kccdep-${uniqueId}/global/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "subsetting": {
     "policy": "NONE"
   }
@@ -669,7 +510,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -690,17 +531,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found",
+        "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found"
+    "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -710,9 +551,9 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "enable": false
   },
   "name": "computesubnetwork-1-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "projects/example-project-01/global/regions/us-west1"
+  "region": "projects/kccdep-${uniqueId}/global/regions/us-west1"
 }
 
 200 OK
@@ -733,18 +574,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -766,18 +607,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -804,18 +645,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-1-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -836,17 +677,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found",
+        "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found"
+    "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -856,9 +697,9 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "enable": false
   },
   "name": "computesubnetwork-2-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "projects/example-project-01/global/regions/us-west1"
+  "region": "projects/kccdep-${uniqueId}/global/regions/us-west1"
 }
 
 200 OK
@@ -879,18 +720,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -912,18 +753,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -950,18 +791,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-2-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -982,17 +823,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found",
+        "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found"
+    "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -1002,9 +843,9 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "enable": false
   },
   "name": "computesubnetwork-3-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "purpose": "PRIVATE",
-  "region": "projects/example-project-01/global/regions/us-west1"
+  "region": "projects/kccdep-${uniqueId}/global/regions/us-west1"
 }
 
 200 OK
@@ -1025,18 +866,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1058,18 +899,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -1096,21 +937,21 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-3-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Cache-Control: private
@@ -1129,24 +970,24 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found",
+        "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found"
+    "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules
+POST https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1
 
 {
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "description": "A test forwarding rule with internal load balancing scheme",
   "labels": {
     "cnrm-test": "true",
@@ -1154,9 +995,9 @@ x-goog-request-params: project=example-project-01&region=us-west1
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "subnetwork": "projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 200 OK
@@ -1177,21 +1018,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&operation=${operationID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -1212,21 +1053,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1242,7 +1083,7 @@ X-Xss-Protection: 0
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
@@ -1251,19 +1092,19 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&resource=${forwardingRuleID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&resource=${forwardingRuleID}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1292,21 +1133,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "setLabels",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1322,7 +1163,7 @@ X-Xss-Protection: 0
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
@@ -1335,11 +1176,11 @@ X-Xss-Protection: 0
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 ---
@@ -1758,7 +1599,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1779,17 +1620,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
+        "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
+    "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments?alt=json
+POST https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1808,9 +1649,9 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   "enableProxyProtocol": false,
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
   ],
-  "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
+  "targetService": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
 }
 
 200 OK
@@ -1829,20 +1670,20 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.serviceAttachments.insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1863,20 +1704,20 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "insert",
+  "operationType": "compute.serviceAttachments.insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1910,15 +1751,15 @@ X-Xss-Protection: 0
   "kind": "compute#serviceAttachment",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
-  "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetService": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
 }
 
 ---
 
-PATCH https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+PATCH https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1937,7 +1778,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   "fingerprint": "abcdef0123A=",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
   ]
 }
 
@@ -1957,20 +1798,20 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "patch",
+  "operationType": "compute.serviceAttachments.patch",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1991,20 +1832,20 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "patch",
+  "operationType": "compute.serviceAttachments.patch",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -2038,15 +1879,15 @@ X-Xss-Protection: 0
   "kind": "compute#serviceAttachment",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
-  "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetService": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
 }
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+DELETE https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -2066,20 +1907,20 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
+  "operationType": "compute.serviceAttachments.delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -2100,20 +1941,20 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "delete",
+  "operationType": "compute.serviceAttachments.delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -2134,11 +1975,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
+        "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
+    "message": "The resource 'projects/kccdep-${uniqueId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}' was not found"
   }
 }
 
@@ -2290,10 +2131,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -2309,7 +2150,7 @@ X-Xss-Protection: 0
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
@@ -2322,19 +2163,19 @@ X-Xss-Protection: 0
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+DELETE https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -2354,21 +2195,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/controller-manager
-x-goog-request-params: project=example-project-01&region=us-west1&operation=${operationID}
+x-goog-request-params: project=kccdep-${uniqueId}&region=us-west1&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -2389,18 +2230,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2427,18 +2268,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-3-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2460,18 +2301,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -2493,18 +2334,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2531,18 +2372,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-2-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2564,18 +2405,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -2597,18 +2438,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2635,18 +2476,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-1-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2668,18 +2509,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -2701,18 +2542,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2741,9 +2582,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
-  "region": "projects/example-project-01/global/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "network": "projects/kccdep-${uniqueId}/global/networks/${networkID}",
+  "region": "projects/kccdep-${uniqueId}/global/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "subsetting": {
     "policy": "NONE"
   }
@@ -2751,7 +2592,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -2772,14 +2613,44 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/kccdep-${uniqueId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/kccdep-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
