@@ -131,7 +131,7 @@ vet:
 
 # Generate code including the dcl (legacy)
 .PHONY: generate-including-dcl
-generate:
+generate-including-dcl:
 	go work vendor -o temp-vendor # So we can load DCL resources
 	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
