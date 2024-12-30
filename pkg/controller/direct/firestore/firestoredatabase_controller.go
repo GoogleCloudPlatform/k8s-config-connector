@@ -25,10 +25,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 
 	gcp "cloud.google.com/go/firestore/apiv1"
 	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
 	firestorepb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -46,6 +48,39 @@ const (
 
 func init() {
 	registry.RegisterModel(krm.FirestoreDatabaseGVK, NewModel)
+	fuzztesting.RegisterKRMFuzzer(firestoreDatabaseFuzzer())
+}
+
+func firestoreDatabaseFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Database{},
+		FirestoreDatabaseSpec_FromProto, FirestoreDatabaseSpec_ToProto,
+		FirestoreDatabaseObservedState_FromProto, FirestoreDatabaseObservedState_ToProto,
+	)
+
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".delete_time")
+	f.UnimplementedFields.Insert(".key_prefix")
+	f.UnimplementedFields.Insert(".cmek_config")
+	f.UnimplementedFields.Insert(".previous_id")
+	f.UnimplementedFields.Insert(".source_info")
+
+	// Default value fields set by controller
+	f.UnimplementedFields.Insert(".type")
+	f.UnimplementedFields.Insert(".app_engine_integration_mode")
+	f.UnimplementedFields.Insert(".delete_protection_state")
+
+	f.SpecFields.Insert(".location_id")
+	f.SpecFields.Insert(".concurrency_mode")
+	f.SpecFields.Insert(".point_in_time_recovery_enablement")
+
+	f.StatusFields.Insert(".uid")
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".version_retention_period")
+	f.StatusFields.Insert(".earliest_version_time")
+	f.StatusFields.Insert(".etag")
+
+	return f
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -195,6 +230,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	resource.Name = a.id.FullyQualifiedName()
 
+	// Apply default values.
+	ApplyFirestoreDatabaseDefaults(resource)
+
 	req := &firestorepb.CreateDatabaseRequest{
 		Parent:     a.id.Parent(),
 		Database:   resource,
@@ -232,6 +270,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	// Apply default values.
+	ApplyFirestoreDatabaseDefaults(resource)
 
 	newDb := proto.Clone(a.actual).(*firestorepb.Database)
 
