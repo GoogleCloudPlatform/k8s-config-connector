@@ -178,10 +178,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
 	addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
-	// Specific to Apigee
-	addReplacement("lastModifiedAt", "2024-04-01T12:34:56.123456Z")
-	addReplacement("createdAt", "2024-04-01T12:34:56.123456Z")
-
 	// Specific to Sql
 	addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
