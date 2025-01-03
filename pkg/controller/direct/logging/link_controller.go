@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+
 	//"net/http"
 
 	gcp "cloud.google.com/go/logging/apiv2"
@@ -55,13 +56,13 @@ type modelLoggingLink struct {
 }
 
 func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
-	
+
 	/*
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
+		var opts []option.ClientOption
+		opts, err := m.config.RESTClientOptions()
+		if err != nil {
+			return nil, err
+		}
 	*/
 
 	gcpClient, err := gcp.NewConfigRESTClient(ctx)

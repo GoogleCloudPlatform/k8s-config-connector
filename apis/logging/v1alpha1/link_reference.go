@@ -178,7 +178,7 @@ func parseLoggingLinkExternal(external string) (parent *LoggingLinkParent, resou
 	parent = &LoggingLinkParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
-		LogBucket:  tokens[5],
+		LogBucket: tokens[5],
 	}
 	resourceID = tokens[7]
 	return parent, resourceID, nil

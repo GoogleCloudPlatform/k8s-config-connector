@@ -23,9 +23,9 @@ package mocklogging
 import (
 	"context"
 	// "fmt"
+	"fmt"
 	"strings"
 	"time"
-    "fmt"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
@@ -72,7 +72,7 @@ func (s *linkService) createLinkDefaultObjects(ctx context.Context, name *loggin
 func (s *linkService) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.Link, error) {
 	name, err := s.parseLoggingLinkName(req.Name)
 	fmt.Printf("MOCK LOGGING GET LINK")
-	
+
 	if err != nil {
 		return nil, err
 	}
