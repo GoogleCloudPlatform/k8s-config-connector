@@ -25,8 +25,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	//"net/http"
 
 	gcp "cloud.google.com/go/logging/apiv2"
+	//"google.golang.org/api/option"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 
 	//"google.golang.org/api/option"
@@ -53,17 +55,20 @@ type modelLoggingLink struct {
 }
 
 func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
+	
 	/*
-		var opts []option.ClientOption
-		opts, err := m.config.RESTClientOptions()
-		if err != nil {
-			return nil, err
-		}
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
 	*/
-	gcpClient, err := gcp.NewConfigClient(ctx)
+
+	gcpClient, err := gcp.NewConfigRESTClient(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("building Logging Config client: %w", err)
 	}
+	fmt.Printf("CLIENT SET UP WITHOUT ERROR\n")
 	return gcpClient, err
 }
 
@@ -80,7 +85,6 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 
 	// TODO(tylerreid): 4.2 need some ResolveLogBucketRef here?
 
-	// Get logging GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -107,15 +111,18 @@ type LoggingLinkAdapter struct {
 var _ directbase.Adapter = &LoggingLinkAdapter{}
 
 func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
+	fmt.Printf("HELLO FROM INSIDE FIND STATEMENT: %q\n", a.id.External)
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LoggingLink", "name", a.id.External)
 
 	req := &loggingpb.GetLinkRequest{Name: a.id.External}
 	linkpb, err := a.gcpClient.GetLink(ctx, req)
 	if err != nil {
+		fmt.Printf("ERROR from GetLink - %v\n", err)
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
+		fmt.Printf("Inside if 2\n")
 		return false, fmt.Errorf("getting LoggingLink %q: %w", a.id.External, err)
 	}
 
@@ -124,8 +131,11 @@ func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Link", "name", a.id.External)
+	u := createOp.GetUnstructured()
+	fmt.Printf("HELLO FROM INSIDE CREATE STATEMENT")
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("creating object", "u", u)
+
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -142,7 +152,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	req := &loggingpb.CreateLinkRequest{
 		Parent: parent.String(),
 		Link:   resource,
-		LinkId: *a.desired.Spec.ResourceID,
+		LinkId: *desired.Spec.ResourceID,
 	}
 	op, err := a.gcpClient.CreateLink(ctx, req)
 	if err != nil {
@@ -166,6 +176,8 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	// TODO Delete this
 	// No Update method for logging links
+	//Return update not supported from gemmahou CL
+	// https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3252/files
 	return nil
 
 	/*

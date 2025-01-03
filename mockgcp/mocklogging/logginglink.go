@@ -25,6 +25,7 @@ import (
 	// "fmt"
 	"strings"
 	"time"
+    "fmt"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
@@ -70,6 +71,8 @@ func (s *linkService) createLinkDefaultObjects(ctx context.Context, name *loggin
 
 func (s *linkService) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.Link, error) {
 	name, err := s.parseLoggingLinkName(req.Name)
+	fmt.Printf("MOCK LOGGING GET LINK")
+	
 	if err != nil {
 		return nil, err
 	}
@@ -90,6 +93,7 @@ func (s *linkService) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.
 }
 
 func (s *linkService) CreateLink(ctx context.Context, req *pb.CreateLinkRequest) (*pb.Link, error) {
+	fmt.Printf("MOCK LOGGING CREATE LINK")
 	reqName := req.Parent + "/links/" + req.GetLinkId()
 	name, err := s.parseLoggingLinkName(reqName)
 	if err != nil {

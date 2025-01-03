@@ -267,11 +267,14 @@ func IsBadRequest(err error) bool {
 
 // HasHTTPCode returns true if the given error is an HTTP response with the given code.
 func HasHTTPCode(err error, code int) bool {
+	fmt.Printf("tylerreid start of httpcode -\n")
+
 	if err == nil {
 		return false
 	}
 	apiError := &apierror.APIError{}
 	if errors.As(err, &apiError) {
+		fmt.Printf("tylerreid httpcode - %v\n", apiError.HTTPCode())
 		if apiError.HTTPCode() == code {
 			return true
 		}
