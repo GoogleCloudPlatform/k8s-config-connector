@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -424,8 +425,14 @@ func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 
 	err = op.Wait(ctx)
 	if err != nil {
-		log.V(2).Info("error waiting instance delete", "name", a.id, "error", err)
-		return false, fmt.Errorf("waiting delete instance %s: %w", a.id, err)
+		// "(line 15:3): missing \"value\" field" is likely a protolib error but
+		// not a real server side error. When it happens, it usually means the
+		// deletion has been completed successfully but the returned empty
+		// struct can't be parsed by the protolib.
+		if !strings.Contains(err.Error(), "(line 15:3): missing \"value\" field") {
+			log.V(2).Info("error waiting instance delete", "name", a.id, "error", err)
+			return false, fmt.Errorf("waiting delete instance %s: %w", a.id, err)
+		}
 	}
 
 	log.V(2).Info("successfully deleted instance", "name", a.id)
