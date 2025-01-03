@@ -59,11 +59,6 @@ func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader clien
 		return nil, err
 	}
 
-	apigeeEnvgroupClient, err := gcpClient.newApigeeEnvgroupClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	obj := &krm.ApigeeEnvgroup{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -83,9 +78,10 @@ func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader clien
 	desired.Name = id.ID()
 
 	return &Adapter{
-		id:                   id,
-		desired:              desired,
-		apigeeEnvgroupClient: apigeeEnvgroupClient,
+		id:               id,
+		desired:          desired,
+		envgroupsClient:  gcpClient.envgroupsClient(),
+		operationsClient: gcpClient.operationsClient(),
 	}, nil
 }
 
@@ -95,10 +91,11 @@ func (m *modelApigeeEnvgroup) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type Adapter struct {
-	id                   *krm.EnvironmentGroupIdentity
-	desired              *api.GoogleCloudApigeeV1EnvironmentGroup
-	actual               *api.GoogleCloudApigeeV1EnvironmentGroup
-	apigeeEnvgroupClient *apigeeEnvgroupClient
+	id               *krm.EnvironmentGroupIdentity
+	desired          *api.GoogleCloudApigeeV1EnvironmentGroup
+	actual           *api.GoogleCloudApigeeV1EnvironmentGroup
+	envgroupsClient  *api.OrganizationsEnvgroupsService
+	operationsClient *api.OrganizationsOperationsService
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -111,7 +108,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting ApigeeEnvgroup", "name", a.id)
 
-	envgroup, err := a.apigeeEnvgroupClient.featureClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
+	envgroup, err := a.envgroupsClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -129,7 +126,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("creating ApigeeEnvgroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	op, err := a.apigeeEnvgroupClient.featureClient.Create(a.id.Parent().String(), a.desired).Context(ctx).Do()
+	op, err := a.envgroupsClient.Create(a.id.Parent().String(), a.desired).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating ApigeeEnvgroup %s: %w", a.fullyQualifiedName(), err)
 	}
@@ -138,7 +135,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("waiting for ApigeeEnvgroup %s creation: %w", a.id, err)
 	}
 
-	created, err := a.apigeeEnvgroupClient.featureClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
+	created, err := a.envgroupsClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("getting created ApigeeEnvgroup: %w", err)
 	}
@@ -178,7 +175,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	clusterName := a.id.String()
-	op, err := a.apigeeEnvgroupClient.featureClient.Patch(clusterName, a.desired).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()
+	op, err := a.envgroupsClient.Patch(clusterName, a.desired).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()
 	if err != nil {
 		return err
 	}
@@ -186,7 +183,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("waiting for ApigeeEnvgroup update %s: %w", a.id, err)
 	}
 
-	updated, err := a.apigeeEnvgroupClient.featureClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
+	updated, err := a.envgroupsClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("getting updated ApigeeEnvgroup: %w", err)
 	}
@@ -231,7 +228,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting ApigeeEnvgroup", "name", a.id)
 
-	op, err := a.apigeeEnvgroupClient.featureClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()
+	op, err := a.envgroupsClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()
 
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -249,7 +246,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 
 func (a *Adapter) waitForOp(ctx context.Context, op *api.GoogleLongrunningOperation) error {
 	for {
-		current, err := a.apigeeEnvgroupClient.operationClient.Get(op.Name).Context(ctx).Do()
+		current, err := a.operationsClient.Get(op.Name).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting operation status of %q: %w", op.Name, err)
 		}

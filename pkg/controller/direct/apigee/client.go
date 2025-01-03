@@ -23,32 +23,32 @@ import (
 )
 
 type gcpClient struct {
-	config config.ControllerConfig
+	config  config.ControllerConfig
+	service *api.Service
 }
 
 func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
 	gcpClient := &gcpClient{
 		config: *config,
 	}
-	return gcpClient, nil
-}
 
-type apigeeEnvgroupClient struct {
-	featureClient   *api.OrganizationsEnvgroupsService
-	operationClient *api.OrganizationsOperationsService
-}
-
-func (m *gcpClient) newApigeeEnvgroupClient(ctx context.Context) (*apigeeEnvgroupClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	service, err := api.NewService(ctx, opts...)
+
+	gcpClient.service, err = api.NewService(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building ApigeeEnvgroup client: %w", err)
+		return nil, fmt.Errorf("building gcp service client: %w", err)
 	}
-	return &apigeeEnvgroupClient{
-		featureClient:   api.NewOrganizationsEnvgroupsService(service),
-		operationClient: api.NewOrganizationsOperationsService(service),
-	}, err
+
+	return gcpClient, nil
+}
+
+func (m *gcpClient) envgroupsClient() *api.OrganizationsEnvgroupsService {
+	return api.NewOrganizationsEnvgroupsService(m.service)
+}
+
+func (m *gcpClient) operationsClient() *api.OrganizationsOperationsService {
+	return api.NewOrganizationsOperationsService(m.service)
 }
