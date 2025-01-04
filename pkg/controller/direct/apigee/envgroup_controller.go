@@ -70,7 +70,7 @@ func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader clien
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := ApigeeEnvgroupSpec_ToApi(mapCtx, &obj.Spec)
+	desired := obj
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -92,7 +92,7 @@ func (m *modelApigeeEnvgroup) AdapterForURL(ctx context.Context, url string) (di
 
 type Adapter struct {
 	id               *krm.EnvironmentGroupIdentity
-	desired          *api.GoogleCloudApigeeV1EnvironmentGroup
+	desired          *krm.ApigeeEnvgroup
 	actual           *api.GoogleCloudApigeeV1EnvironmentGroup
 	envgroupsClient  *api.OrganizationsEnvgroupsService
 	operationsClient *api.OrganizationsOperationsService
@@ -126,7 +126,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("creating ApigeeEnvgroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	op, err := a.envgroupsClient.Create(a.id.Parent().String(), a.desired).Context(ctx).Do()
+	req := ApigeeEnvgroupSpec_ToApi(mapCtx, &a.desired.Spec, a.desired.Name)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	op, err := a.envgroupsClient.Create(a.id.Parent().String(), req).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating ApigeeEnvgroup %s: %w", a.fullyQualifiedName(), err)
 	}
@@ -158,8 +163,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	mapCtx := &direct.MapContext{}
 	updateMask := fieldmaskpb.FieldMask{}
 
+	req := ApigeeEnvgroupSpec_ToApi(mapCtx, &a.desired.Spec, a.desired.Name)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	// Sorts the Hostname lists so that the comparison is deterministic
-	if !reflect.DeepEqual(asSortedCopy(a.desired.Hostnames), asSortedCopy(a.actual.Hostnames)) {
+	if !reflect.DeepEqual(asSortedCopy(req.Hostnames), asSortedCopy(a.actual.Hostnames)) {
 		log.V(2).Info("change detected: hostnames")
 		updateMask.Paths = append(updateMask.Paths, "hostnames")
 	}
@@ -175,7 +185,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	clusterName := a.id.String()
-	op, err := a.envgroupsClient.Patch(clusterName, a.desired).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()
+	op, err := a.envgroupsClient.Patch(clusterName, req).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()
 	if err != nil {
 		return err
 	}

@@ -54,12 +54,13 @@ func ApigeeEnvgroupSpec_FromApi(mapCtx *direct.MapContext, in *api.GoogleCloudAp
 	return out
 }
 
-func ApigeeEnvgroupSpec_ToApi(mapCtx *direct.MapContext, in *krm.ApigeeEnvgroupSpec) *api.GoogleCloudApigeeV1EnvironmentGroup {
+func ApigeeEnvgroupSpec_ToApi(mapCtx *direct.MapContext, in *krm.ApigeeEnvgroupSpec, name string) *api.GoogleCloudApigeeV1EnvironmentGroup {
 	if in == nil {
 		return nil
 	}
 	out := &api.GoogleCloudApigeeV1EnvironmentGroup{}
 	out.Hostnames = in.Hostnames
+	out.Name = name
 
 	return out
 }
