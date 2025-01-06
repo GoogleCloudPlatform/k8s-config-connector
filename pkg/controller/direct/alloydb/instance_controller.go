@@ -184,7 +184,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	var created *alloydbpb.Instance
 	instanceType := a.desired.Spec.InstanceType
-	if instanceType != nil && *instanceType == "SECONDARY" {
+	if *instanceType == "SECONDARY" {
 		req := &alloydbpb.CreateSecondaryInstanceRequest{
 			Parent:     a.id.Parent().String(),
 			InstanceId: a.id.ID(),
@@ -403,7 +403,6 @@ func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	}
 
 	// Returning true directly if it is to delete a secondary instance.
-	// Technically the secondary instance is only abandoned but not deleted.
 	// This is because deletion of secondary instance is not supported. Instead,
 	// users should delete the secondary cluster which will forcefully delete
 	// the associated secondary instance.

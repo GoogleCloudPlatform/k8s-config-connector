@@ -204,7 +204,7 @@ Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].{% endve
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}We recommend that you use `instanceTypeRef` instead. The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% endverbatim %}</p>
+            <p>{% verbatim %}Not recommended. We recommend that you use `instanceTypeRef` instead. The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

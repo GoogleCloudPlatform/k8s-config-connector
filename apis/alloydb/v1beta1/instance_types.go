@@ -63,7 +63,7 @@ type AlloyDBInstanceSpec struct {
 	// instance, instance is created in a random zone with available capacity.
 	GCEZone *string `json:"gceZone,omitempty"`
 
-	// We recommend that you use `instanceTypeRef` instead.
+	// Not recommended. We recommend that you use `instanceTypeRef` instead.
 	// The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]
 	InstanceType *string `json:"instanceType,omitempty"`
 

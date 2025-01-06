@@ -58,7 +58,7 @@ func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *AlloyDB
 	// Get Parent
 	clusterRef, err := refsv1beta1.ResolveAlloyDBCluster(ctx, reader, obj, obj.Spec.ClusterRef)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve AlloyDBCluster ref: %w", err)
+		return nil, err
 	}
 
 	// Get desired ID
@@ -70,8 +70,14 @@ func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *AlloyDB
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved ExternalRef
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	// '.status.externalRef' could be unset before the upgrade so only parse it
+	// when the value is non-nil.
+	var externalRef string
+	if obj.Status.ExternalRef != nil {
+		// Use approved ExternalRef
+		externalRef = common.ValueOf(obj.Status.ExternalRef)
+	}
+
 	if externalRef != "" {
 		// Validate desired with actual
 		actualParent, actualResourceID, err := ParseInstanceExternal(externalRef)

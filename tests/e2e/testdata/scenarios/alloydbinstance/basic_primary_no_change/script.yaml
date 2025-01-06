@@ -12,6 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Adding this scenario test to cover the nochange behavior in presubmit tests.
+# This is because TestAllInSeries function doesn't cover the nochange test step.
+#
+# During the re-reconciliation / drift-correction every 5-15 minutes, commonly
+# there shouldn't be any change (i.e. the "nochange") in both the KRM object and
+# the underlying GCP resource, so NO PATCH/POST API call should be made to the
+# underlying GCP resource. If there is a PATCH/POST call made when both the KRM
+# object and the underlying GCP resource are unchanged, it means something is
+# wrong in the Update logic.
+
 # 00
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork

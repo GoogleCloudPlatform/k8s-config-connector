@@ -126,8 +126,8 @@ spec:
                   instance, instance is created in a random zone with available capacity.
                 type: string
               instanceType:
-                description: 'We recommend that you use `instanceTypeRef` instead.
-                  The type of the instance. Possible values: [PRIMARY, READ_POOL,
+                description: 'Not recommended. We recommend that you use `instanceTypeRef`
+                  instead. The type of the instance. Possible values: [PRIMARY, READ_POOL,
                   SECONDARY]'
                 type: string
               instanceTypeRef:
@@ -413,8 +413,8 @@ spec:
                   instance, instance is created in a random zone with available capacity.
                 type: string
               instanceType:
-                description: 'We recommend that you use `instanceTypeRef` instead.
-                  The type of the instance. Possible values: [PRIMARY, READ_POOL,
+                description: 'Not recommended. We recommend that you use `instanceTypeRef`
+                  instead. The type of the instance. Possible values: [PRIMARY, READ_POOL,
                   SECONDARY]'
                 type: string
               instanceTypeRef:
