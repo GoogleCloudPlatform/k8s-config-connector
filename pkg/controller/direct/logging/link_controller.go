@@ -86,6 +86,15 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 
 	// TODO(tylerreid): 4.2 need some ResolveLogBucketRef here?
 
+	// Get ResourceID
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -133,7 +142,6 @@ func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
-	fmt.Printf("HELLO FROM INSIDE CREATE STATEMENT")
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating object", "u", u)
 
@@ -150,14 +158,30 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	if err != nil {
 		return err
 	}
+
+	resourceID := direct.ValueOf(desired.Spec.ResourceID)
+    if resourceID == "" {
+		log.V(2).Info("ResourceID is not set, will use metadata.name")
+		resourceID = desired.Name
+	} else {
+		log.V(2).Info("ResourceID is set, will use")
+		resourceID = *desired.Spec.ResourceID
+	}
+
+	// TODO: IT appears that the resourceID is not set.  It should map to metadata.name, but this isn't going through
+	fmt.Printf("CREATE STATEMENT: Parent <%v>\n", parent.String())
+	fmt.Printf("CREATE STATEMENT: Link <%v>\n", resource)
+	fmt.Printf("CREATE STATEMENT: LinkId <%v>\n", resourceID)
 	req := &loggingpb.CreateLinkRequest{
 		Parent: parent.String(),
 		Link:   resource,
-		LinkId: *desired.Spec.ResourceID,
+		LinkId: resourceID,
 	}
+	fmt.Printf("About to create link\n", resourceID)
 	op, err := a.gcpClient.CreateLink(ctx, req)
+	fmt.Printf("Created link: Err <%v>\n", err)
 	if err != nil {
-		return fmt.Errorf("creating Link %s: %w", a.id.External, err)
+		return fmt.Errorf("creating Link %s: %w\n", a.id.External, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
@@ -238,6 +262,7 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	
 	// TODO(user): Update other resource references
 	/* TODO Bucket Ref?
 	parent, err := a.id.Parent()
@@ -262,8 +287,10 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 // Delete implements the Adapter interface.
 func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	fmt.Printf("INSIDE DELETE COMMAND")
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Link", "name", a.id.External)
+	fmt.Printf("Deleting Link:  <%v>\n", a.id.External)
 
 	req := &loggingpb.DeleteLinkRequest{Name: a.id.External}
 	op, err := a.gcpClient.DeleteLink(ctx, req)
