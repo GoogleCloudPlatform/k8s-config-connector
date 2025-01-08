@@ -27,23 +27,21 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/memorystore/apiv1"
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 
-	// TODO(contributor): Update the import with the google cloud client api protobuf
 	memorystorepb "cloud.google.com/go/memorystore/v1beta/memorystorepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
-	registry.RegisterModel(krm.MemorystoreInstanceGVK, NewMemorystoreInstanceModel)
+	registry.RegisterModel(krm.MemorystoreInstanceGVK, NewinstanceModel)
 }
 
 func NewinstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -75,9 +73,52 @@ func (m *modelinstance) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewinstanceIdentity(ctx, reader, obj)
+	// Get ResourceID
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 	if err != nil {
 		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	// Get location
+	location := obj.Spec.Parent.Location
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	var id *krm.MemoryStoreInstanceIdentity
+	externalRef := direct.ValueOf(obj.Status.ExternalRef)
+	if externalRef == "" {
+		id = BuildID(projectID, location, resourceID)
+	} else {
+		id, err = asID(externalRef)
+		if err != nil {
+			return nil, err
+		}
+
+		if id.Parent.Project != projectID {
+			return nil, fmt.Errorf("MemorystoreInstance %s/%s has spec.projectRef changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
+		}
+		if id.Parent.Location != location {
+			return nil, fmt.Errorf("MemorystoreInstance %s/%s has spec.location changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
+		}
+		if id.ID() != resourceID {
+			return nil, fmt.Errorf("MemorystoreInstance  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.ID, resourceID)
+		}
 	}
 
 	// Get memorystore GCP client
@@ -98,9 +139,9 @@ func (m *modelinstance) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type instanceAdapter struct {
-	id        *krm.instanceRef
+	id        *krm.MemorystoreInstanceRef
 	gcpClient *gcp.Client
-	desired   *krm.instance
+	desired   *krm.Instance
 	actual    *memorystorepb.instance
 }
 
@@ -141,8 +182,9 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &memorystorepb.CreateinstanceRequest{
-		Parent:   a.id.Parent().String(),
-		instance: resource,
+		Parent:     a.id.Parent.String(),
+		instance:   resource,
+		InstanceId: a.id.Name,
 	}
 	op, err := a.gcpClient.Createinstance(ctx, req)
 	if err != nil {
@@ -188,8 +230,20 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	// Option 2: manually add all mutable fields.
 	// TODO(contributor): If choosing this option, remove the "Option 1" code.
 	{
-		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-			paths = append(paths, "display_name")
+		if !reflect.DeepEqual(a.desired.Spec.ReplicaCount, a.actual.ReplicaCount) {
+			paths = append(paths, "replica_count")
+		}
+		if !reflect.DeepEqual(a.desired.Spec.ShardCount, a.actual.ShardCount) {
+			paths = append(paths, "shard_count")
+		}
+		if !reflect.DeepEqual(a.desired.Spec.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
+			paths = append(paths, "deletion_protection_enabled")
+		}
+		if !reflect.DeepEqual(a.desired.Spec.PersistenceConfig, a.actual.PersistenceConfig) {
+			paths = append(paths, "persistent_config")
+		}
+		if !reflect.DeepEqual(a.desired.Spec.RedisConfigs, a.actual.RedisConfigs) {
+			paths = append(paths, "redis_configs")
 		}
 	}
 
@@ -202,27 +256,34 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &memorystorepb.UpdateinstanceRequest{
-		Name:       a.id.External,
-		UpdateMask: updateMask,
-		instance:   desiredPb,
+	var latest *pb.Instance
+	if len(paths) > 0 {
+		// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
+		for _, path := range paths {
+			updateMask := &fieldmaskpb.FieldMask{
+				Paths: []string{path},
+			}
+			req := &memorystorepb.UpdateinstanceRequest{
+				Name:       a.id.External,
+				UpdateMask: updateMask,
+				instance:   desiredPb,
+			}
+			op, err := a.gcpClient.Updateinstance(ctx, req)
+			if err != nil {
+				return fmt.Errorf("updating instance %s: %w", a.id.External, err)
+			}
+			latest, err := op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("instance %s waiting update: %w", a.id.External, err)
+			}
+		}
 	}
-	op, err := a.gcpClient.Updateinstance(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating instance %s: %w", a.id.External, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("instance %s waiting update: %w", a.id.External, err)
-	}
+
 	log.V(2).Info("successfully updated instance", "name", a.id.External)
 
 	status := &krm.MemorystoreInstanceStatus{}
-	status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
