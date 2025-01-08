@@ -132,7 +132,6 @@ func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		fmt.Printf("Inside if 2\n")
 		return false, fmt.Errorf("getting LoggingLink %q: %w", a.id.External, err)
 	}
 

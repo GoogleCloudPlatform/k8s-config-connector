@@ -172,7 +172,7 @@ func asLoggingLinkExternal(parent *LoggingLinkParent, resourceID string) (extern
 func parseLoggingLinkExternal(external string) (parent *LoggingLinkParent, resourceID string, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "bucket" || tokens[6] != "link" {
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "buckets" || tokens[6] != "links" {
 		return nil, "", fmt.Errorf("format of LoggingLink external=%q was not known (use projects/<projectId>/locations/<location>/buckets/<bucketID>/links/<linkID>)", external)
 	}
 	parent = &LoggingLinkParent{
