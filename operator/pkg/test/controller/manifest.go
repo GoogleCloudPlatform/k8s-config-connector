@@ -22,7 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cluster"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"

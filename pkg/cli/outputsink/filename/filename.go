@@ -27,7 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceskeleton"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	"github.com/gosimple/slug"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"

@@ -28,7 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 

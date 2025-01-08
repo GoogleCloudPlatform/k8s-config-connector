@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/mapslice"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	goyaml "gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )

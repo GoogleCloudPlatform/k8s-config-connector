@@ -40,7 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	crdgen "sigs.k8s.io/controller-tools/pkg/crd"
 	"sigs.k8s.io/controller-tools/pkg/genall"
