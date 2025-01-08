@@ -104,6 +104,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
 		./third_party/googleapis/mockgcp/firestore/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
+		./third_party/googleapis/mockgcp/iam/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/logging/v2/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/metricsscope/v1/*.proto \

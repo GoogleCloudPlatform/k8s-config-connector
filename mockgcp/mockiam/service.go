@@ -16,27 +16,35 @@ package mockiam
 
 import (
 	"context"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"net/http"
 
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
+	v1_pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
+	v1beta_pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/v1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // MockService represents a mocked IAM service.
 type MockService struct {
 	*common.MockEnvironment
-	storage storage.Storage
-
-	serverV1 *ServerV1
+	storage      storage.Storage
+	operations   *operations.Operations
+	serverV1     *ServerV1
+	serverV1Beta *ServerV1Beta
 }
 
 type ServerV1 struct {
 	*MockService
-	pb.UnimplementedIAMServer
+	v1_pb.UnimplementedIAMServer
+}
+
+type ServerV1Beta struct {
+	*MockService
+	v1beta_pb.UnimplementedWorkloadIdentityPoolsServer
 }
 
 // New creates a MockService
@@ -44,8 +52,10 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	s.serverV1 = &ServerV1{MockService: s}
+	s.serverV1Beta = &ServerV1Beta{MockService: s}
 	return s
 }
 
@@ -54,10 +64,19 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterIAMServer(grpcServer, s.serverV1)
+	v1_pb.RegisterIAMServer(grpcServer, s.serverV1)
+	v1beta_pb.RegisterWorkloadIdentityPoolsServer(grpcServer, s.serverV1Beta)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	return httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterIAMHandler)
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		v1_pb.RegisterIAMHandler,
+		v1beta_pb.RegisterWorkloadIdentityPoolsHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return mux, nil
 }
