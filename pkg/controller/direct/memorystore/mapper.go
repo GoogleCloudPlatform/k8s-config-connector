@@ -87,3 +87,19 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	}
 	return out
 }
+func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MemorystoreInstanceObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func MemorystoreInstanceStatusObservedState_FromProto(mapCtx *direct.MapContext, updated *pb.Instance) *krm.MemorystoreInstanceObservedState {
+	if updated == nil {
+		return nil
+	}
+	out := &krm.MemorystoreInstanceObservedState{}
+	out.State = direct.Enum_FromProto[pb.Instance_State](mapCtx, updated.State)
+	return out
+}

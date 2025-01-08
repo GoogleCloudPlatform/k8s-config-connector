@@ -23,11 +23,10 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	gcp "cloud.google.com/go/memorystore/apiv1"
+	gcp "cloud.google.com/go/memorystore/apiv1beta"
 	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 
 	memorystorepb "cloud.google.com/go/memorystore/v1beta/memorystorepb"
@@ -54,6 +53,15 @@ type modelinstance struct {
 	config config.ControllerConfig
 }
 
+type instanceAdapter struct {
+	id        *krm.MemoryStoreInstanceIdentity
+	gcpClient *gcp.Client
+	desired   *krm.MemorystoreInstance
+	actual    *memorystorepb.instance
+}
+
+var _ directbase.Adapter = &instanceAdapter{}
+
 func (m *modelinstance) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
@@ -73,52 +81,9 @@ func (m *modelinstance) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
+	id, err := krm.NewMemoryStoreInstanceIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	// Get location
-	location := obj.Spec.Parent.Location
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-
-	var id *krm.MemoryStoreInstanceIdentity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(projectID, location, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.Parent.Project != projectID {
-			return nil, fmt.Errorf("MemorystoreInstance %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
-		}
-		if id.Parent.Location != location {
-			return nil, fmt.Errorf("MemorystoreInstance %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
-		}
-		if id.ID() != resourceID {
-			return nil, fmt.Errorf("MemorystoreInstance  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.ID, resourceID)
-		}
 	}
 
 	// Get memorystore GCP client
@@ -138,15 +103,6 @@ func (m *modelinstance) AdapterForURL(ctx context.Context, url string) (directba
 	return nil, nil
 }
 
-type instanceAdapter struct {
-	id        *krm.MemorystoreInstanceRef
-	gcpClient *gcp.Client
-	desired   *krm.Instance
-	actual    *memorystorepb.instance
-}
-
-var _ directbase.Adapter = &instanceAdapter{}
-
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
 // Return false means the object is not found. This triggers Adapter `Create` call.
@@ -156,7 +112,7 @@ func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting instance", "name", a.id)
 
 	req := &memorystorepb.GetinstanceRequest{Name: a.id}
-	instancepb, err := a.gcpClient.Getinstance(ctx, req)
+	instancepb, err := a.gcpClient.GetInstance(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -182,11 +138,10 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &memorystorepb.CreateinstanceRequest{
-		Parent:     a.id.Parent.String(),
 		instance:   resource,
-		InstanceId: a.id.Name,
+		InstanceId: a.id.ID(),
 	}
-	op, err := a.gcpClient.Createinstance(ctx, req)
+	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating instance %s: %w", a.id, err)
 	}
@@ -201,7 +156,8 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -217,18 +173,6 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	paths := []string{}
-	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
-	{
-		var err error
-		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-		if err != nil {
-			return err
-		}
-	}
-
-	// Option 2: manually add all mutable fields.
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
 	{
 		if !reflect.DeepEqual(a.desired.Spec.ReplicaCount, a.actual.ReplicaCount) {
 			paths = append(paths, "replica_count")
@@ -242,13 +186,13 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		if !reflect.DeepEqual(a.desired.Spec.PersistenceConfig, a.actual.PersistenceConfig) {
 			paths = append(paths, "persistent_config")
 		}
-		if !reflect.DeepEqual(a.desired.Spec.RedisConfigs, a.actual.RedisConfigs) {
-			paths = append(paths, "redis_configs")
+		if !reflect.DeepEqual(a.desired.Spec.EngineConfigs, a.actual.EngineConfigs) {
+			paths = append(paths, "engine_configs")
 		}
 	}
 
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.External)
+		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.MemorystoreInstanceStatus{}
 		status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
@@ -265,22 +209,24 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 				Paths: []string{path},
 			}
 			req := &memorystorepb.UpdateinstanceRequest{
-				Name:       a.id.External,
+				Name:       a.id,
 				UpdateMask: updateMask,
 				instance:   desiredPb,
 			}
-			op, err := a.gcpClient.Updateinstance(ctx, req)
+			op, err := a.gcpClient.UpdateInstance(ctx, req)
 			if err != nil {
-				return fmt.Errorf("updating instance %s: %w", a.id.External, err)
+				return fmt.Errorf("updating instance %s: %w", a.id, err)
 			}
-			latest, err := op.Wait(ctx)
+			latest, err = op.Wait(ctx)
 			if err != nil {
-				return fmt.Errorf("instance %s waiting update: %w", a.id.External, err)
+				return fmt.Errorf("instance %s waiting update: %w", a.id, err)
 			}
 		}
+	} else {
+		latest = a.actual
 	}
 
-	log.V(2).Info("successfully updated instance", "name", a.id.External)
+	log.V(2).Info("successfully updated instance", "name", a.id)
 
 	status := &krm.MemorystoreInstanceStatus{}
 	status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, latest)
@@ -323,7 +269,7 @@ func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	log.V(2).Info("deleting instance", "name", a.id)
 
 	req := &memorystorepb.DeleteinstanceRequest{Name: a.id.String()}
-	op, err := a.gcpClient.Deleteinstance(ctx, req)
+	op, err := a.gcpClient.DeleteInstance(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting instance %s: %w", a.id, err)
 	}
