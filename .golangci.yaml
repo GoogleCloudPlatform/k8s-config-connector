@@ -23,6 +23,7 @@ issues:
 linters:
   disable-all: true
   enable:
+    - depguard
     - errcheck
     - errorlint
     # - exportloopref
@@ -60,3 +61,9 @@ linters-settings:
       - shadow
       - testinggoroutine
       - unusedwrite
+  depguard:
+    rules:
+      main:
+        deny:
+          - pkg: "github.com/ghodss/yaml"
+            desc: Use "sigs.k8s.io/yaml"

@@ -16,6 +16,9 @@ spec:
     kind: WorkstationCluster
     listKind: WorkstationClusterList
     plural: workstationclusters
+    shortNames:
+    - gcpworkstationcluster
+    - gcpworkstationclusters
     singular: workstationcluster
   preserveUnknownFields: false
   scope: Namespaced
