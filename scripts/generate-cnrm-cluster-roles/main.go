@@ -28,7 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	rbacv1 "k8s.io/api/rbac/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

@@ -12,4 +12,3 @@
 [shortnames] crd=privilegedaccessmanagerentitlements.privilegedaccessmanager.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=redisclusters.redis.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com: missing shortnames
-[shortnames] crd=workstationclusters.workstations.cnrm.cloud.google.com: missing shortnames
