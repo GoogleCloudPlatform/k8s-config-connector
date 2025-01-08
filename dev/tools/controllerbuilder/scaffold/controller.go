@@ -18,14 +18,18 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/fs"
+	"go/format"
+	"go/parser"
+	"go/token"
 	"os"
 	"path/filepath"
+	"runtime/debug"
 	"strings"
 	"text/template"
 
 	ccTemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/fatih/color"
+	"golang.org/x/tools/go/ast/astutil"
 	"golang.org/x/tools/imports"
 )
 
@@ -38,14 +42,47 @@ var funcMap = template.FuncMap{
 	"ToLower": strings.ToLower,
 }
 
-func Scaffold(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
-	if err := generateController(service, kind, cArgs); err != nil {
+func RegisterController(service, kind string) error {
+	// Read register file
+	directControllerPkgPath, err := buildDirectControllerPath()
+	if err != nil {
+		return nil
+	}
+	registerFilePath := filepath.Join(directControllerPkgPath, "register", "register.go")
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, registerFilePath, nil, parser.ParseComments)
+	if err != nil {
 		return err
 	}
+
+	// Get main model name
+	bi, ok := debug.ReadBuildInfo()
+	if !ok {
+		return fmt.Errorf("could not read build info")
+	}
+	modelPath := strings.TrimSuffix(bi.Main.Path, currRelPath)
+
+	importPath := filepath.Join(modelPath, directControllerRelPath, service)
+	added := astutil.AddNamedImport(fset, f, "_", importPath)
+	if !added {
+		fmt.Printf("skip registering controller %s\n", service)
+		return nil
+	}
+
+	out := &bytes.Buffer{}
+	err = format.Node(out, fset, f)
+	if err != nil {
+		return fmt.Errorf("error formatting code: %w", err)
+	}
+
+	if err := FormatImports(registerFilePath, out.Bytes()); err != nil {
+		return err
+	}
+	color.HiGreen("New controller %s has been registered.\n", kind)
 	return nil
 }
 
-func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
+func GenerateController(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
 	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
 	if err != nil {
 		return fmt.Errorf("parse controller template: %w", err)
@@ -60,6 +97,12 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 	if err != nil {
 		return err
 	}
+	if _, err := os.Stat(controllerFilePath); err == nil {
+		fmt.Printf("file %s already exists, skipping\n", controllerFilePath)
+		return nil
+	} else if !errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf("unexpected controller file: %w", err)
+	}
 
 	// Write the generated controller.go to  pkg/controller/direct/<service>/<resource>_controller.go
 	if err := WriteToFile(controllerFilePath, controllerOutput.Bytes()); err != nil {
@@ -69,11 +112,11 @@ func generateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 	if err := FormatImports(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
-	color.HiGreen("New controller %s has been generated. \nEnjoy it!\n", kind)
+	color.HiGreen("New controller %s has been generated.", kind)
 	return nil
 }
 
-func buildResourcePath(service, filename string) (string, error) {
+func buildDirectControllerPath() (string, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return "", fmt.Errorf("get current working directory: %w", err)
@@ -83,24 +126,21 @@ func buildResourcePath(service, filename string) (string, error) {
 		return "", fmt.Errorf("get absolute path %s: %w", pwd, err)
 	}
 	seg := strings.Split(abs, currRelPath)
-	controllerDir := filepath.Join(seg[0], directControllerRelPath, service)
+	return filepath.Join(seg[0], directControllerRelPath), nil
+}
+
+func buildControllerPath(service, protoResource string) (string, error) {
+	filename := strings.ToLower(protoResource) + "_controller.go"
+	directControllerPkgPath, err := buildDirectControllerPath()
+	if err != nil {
+		return "", nil
+	}
+	controllerDir := filepath.Join(directControllerPkgPath, service)
 	err = os.MkdirAll(controllerDir, os.ModePerm)
 	if err != nil {
 		return "", fmt.Errorf("create controller directory %s: %w", controllerDir, err)
 	}
-	resourceFilePath := filepath.Join(controllerDir, filename)
-	if _, err = os.Stat(resourceFilePath); err != nil {
-		if !errors.Is(err, fs.ErrNotExist) {
-			return "", fmt.Errorf("could not stat path %s: %w", resourceFilePath, err)
-		}
-		// otherwise create the file
-		return resourceFilePath, nil
-	}
-	return "", fmt.Errorf("file %s already exist", resourceFilePath)
-}
-
-func buildControllerPath(service, protoResource string) (string, error) {
-	return buildResourcePath(service, strings.ToLower(protoResource)+"_controller.go")
+	return filepath.Join(controllerDir, filename), nil
 }
 
 func FormatImports(path string, out []byte) error {
