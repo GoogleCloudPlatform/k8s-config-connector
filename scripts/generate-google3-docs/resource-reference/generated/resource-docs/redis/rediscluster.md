@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>rediscluster</td>
+<td>gcprediscluster<br>gcpredisclusters<br>rediscluster</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
