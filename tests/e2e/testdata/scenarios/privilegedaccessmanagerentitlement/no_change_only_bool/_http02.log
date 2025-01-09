@@ -1,0 +1,164 @@
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=folders%2F123451001%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://privilegedaccessmanager.googleapis.com/v1/folders/123451001/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=folders%2F123451001%2Flocations%2Fglobal
+
+{
+  "additionalNotificationTargets": {
+    "adminEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ],
+    "requesterEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ]
+  },
+  "approvalWorkflow": {
+    "manualApprovals": {}
+  },
+  "eligibleUsers": [
+    {
+      "principals": [
+        "serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    }
+  ],
+  "maxRequestDuration": "1800s",
+  "privilegedAccess": {
+    "gcpIamAccess": {
+      "resource": "//cloudresourcemanager.googleapis.com/folders/123451001",
+      "resourceType": "cloudresourcemanager.googleapis.com/Folder",
+      "roleBindings": [
+        {
+          "conditionExpression": "request.time \u003e timestamp(\"2019-12-31T12:00:00.000Z\")",
+          "role": "roles/pubsub.viewer"
+        }
+      ]
+    }
+  },
+  "requesterJustificationConfig": {
+    "notMandatory": {}
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "folders/123451001/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/123451001/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=folders%2F123451001%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "folders/123451001/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
+    "additionalNotificationTargets": {
+      "adminEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "requesterEmailRecipients": [
+        "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    },
+    "approvalWorkflow": {
+      "manualApprovals": {}
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "eligibleUsers": [
+      {
+        "principals": [
+          "serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ]
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "maxRequestDuration": "1800s",
+    "name": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "privilegedAccess": {
+      "gcpIamAccess": {
+        "resource": "//cloudresourcemanager.googleapis.com/folders/123451001",
+        "resourceType": "cloudresourcemanager.googleapis.com/Folder",
+        "roleBindings": [
+          {
+            "conditionExpression": "request.time \u003e timestamp(\"2019-12-31T12:00:00.000Z\")",
+            "role": "roles/pubsub.viewer"
+          }
+        ]
+      }
+    },
+    "requesterJustificationConfig": {
+      "notMandatory": {}
+    },
+    "state": "AVAILABLE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

@@ -2,7 +2,6 @@ apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
 kind: PrivilegedAccessManagerEntitlement
 metadata:
   annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -17,16 +16,6 @@ spec:
     requesterEmailRecipients:
     - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
     - gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
-  approvalWorkflow:
-    manualApprovals:
-      requireApproverJustification: false
-      steps:
-      - approvalsNeeded: 1
-        approverEmailRecipients:
-        - gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
-        approvers:
-        - principals:
-          - group:kcc-eng@google.com
   eligibleUsers:
   - principals:
     - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com

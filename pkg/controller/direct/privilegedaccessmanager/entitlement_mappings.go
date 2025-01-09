@@ -50,7 +50,7 @@ func ManualApprovals_FromProto(mapCtx *direct.MapContext, in *pb.ManualApprovals
 		return nil
 	}
 	out := &krm.ManualApprovals{}
-	out.RequireApproverJustification = direct.LazyPtr(in.GetRequireApproverJustification())
+	out.RequireApproverJustification = direct.PtrTo(in.GetRequireApproverJustification())
 	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Step_FromProto)
 	return out
 }

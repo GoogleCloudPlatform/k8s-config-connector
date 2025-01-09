@@ -1,0 +1,74 @@
+GET https://privilegedaccessmanager.googleapis.com/v1/folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=folders%2F123451001%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additionalNotificationTargets": {
+    "adminEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ],
+    "requesterEmailRecipients": [
+      "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    ]
+  },
+  "approvalWorkflow": {
+    "manualApprovals": {
+      "steps": [
+        {
+          "approvalsNeeded": 1,
+          "approverEmailRecipients": [
+            "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "approvers": [
+            {
+              "principals": [
+                "group:kcc-eng@google.com"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "eligibleUsers": [
+    {
+      "principals": [
+        "serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ]
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "maxRequestDuration": "1800s",
+  "name": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+  "privilegedAccess": {
+    "gcpIamAccess": {
+      "resource": "//cloudresourcemanager.googleapis.com/folders/123451001",
+      "resourceType": "cloudresourcemanager.googleapis.com/Folder",
+      "roleBindings": [
+        {
+          "conditionExpression": "request.time \u003e timestamp(\"2019-12-31T12:00:00.000Z\")",
+          "role": "roles/pubsub.viewer"
+        }
+      ]
+    }
+  },
+  "requesterJustificationConfig": {
+    "notMandatory": {}
+  },
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
