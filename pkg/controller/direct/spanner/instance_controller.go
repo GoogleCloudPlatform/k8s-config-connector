@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
@@ -42,7 +43,18 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.SpannerInstanceGVK, NewSpannerInstanceModel)
+	rg := &InstanceReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.SpannerInstanceGVK, NewSpannerInstanceModel, rg)
+}
+
+type InstanceReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
+
+var _ kccpredicate.ReconcileGate = &InstanceReconcileGate{}
+
+func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	return r.optIn.ShouldReconcile(o)
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -139,9 +151,9 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 		return err
 	}
 	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
-	// If node count or processing unit is not specify,
+	// If node count or processing unit and auto-scaling config is not specify,
 	// Default NodeCount to 1.
-	if resource.NodeCount == 0 && resource.ProcessingUnits == 0 {
+	if resource.NodeCount == 0 && resource.ProcessingUnits == 0 && resource.AutoscalingConfig == nil {
 		resource.NodeCount = 1
 	}
 	resource.Name = a.id.String()
@@ -166,8 +178,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	}
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
-	status := &krm.SpannerInstanceStatus{}
-	status.State = State_FromProto(mapCtx, created)
+	status := SpannerInstanceStatus_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -197,15 +208,21 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	// If node count is unset, the field become unmanaged.
-	if a.desired.Spec.NumNodes != nil && !reflect.DeepEqual(a.desired.Spec.NumNodes, a.actual.NodeCount) {
+	// If autoscaling is set, this field become output-only.
+	if a.desired.Spec.AutoscalingConfig != nil && a.desired.Spec.NumNodes != nil && !reflect.DeepEqual(a.desired.Spec.NumNodes, a.actual.NodeCount) {
 		updateMask.Paths = append(updateMask.Paths, "node_count")
 	}
 	// If processing unit is unset, the field become unmanaged.
-	if a.desired.Spec.ProcessingUnits != nil && !reflect.DeepEqual(a.desired.Spec.ProcessingUnits, a.actual.ProcessingUnits) {
+	// If autoscaling is set, this field become output-only.
+	if a.desired.Spec.AutoscalingConfig != nil && a.desired.Spec.ProcessingUnits != nil && !reflect.DeepEqual(a.desired.Spec.ProcessingUnits, a.actual.ProcessingUnits) {
 		updateMask.Paths = append(updateMask.Paths, "processing_units")
 	}
 	if !reflect.DeepEqual(a.desired.ObjectMeta.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
+	}
+
+	if !reflect.DeepEqual(a.desired.Spec.AutoscalingConfig, a.actual.AutoscalingConfig) {
+		updateMask.Paths = append(updateMask.Paths, "autoscaling_config")
 	}
 
 	if len(updateMask.Paths) == 0 {
@@ -227,8 +244,7 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 	log.V(2).Info("successfully updated Instance", "name", a.id)
 
-	status := &krm.SpannerInstanceStatus{}
-	status.State = State_FromProto(mapCtx, updated)
+	status := SpannerInstanceStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

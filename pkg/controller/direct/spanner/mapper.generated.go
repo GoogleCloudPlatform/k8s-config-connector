@@ -15,8 +15,6 @@
 package spanner
 
 import (
-	"strings"
-
 	pb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -29,7 +27,6 @@ func AutoscalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingCo
 	out := &krm.AutoscalingConfig{}
 	out.AutoscalingLimits = AutoscalingConfig_AutoscalingLimits_FromProto(mapCtx, in.GetAutoscalingLimits())
 	out.AutoscalingTargets = AutoscalingConfig_AutoscalingTargets_FromProto(mapCtx, in.GetAutoscalingTargets())
-	out.AsymmetricAutoscalingOptions = direct.Slice_FromProto(mapCtx, in.AsymmetricAutoscalingOptions, AutoscalingConfig_AsymmetricAutoscalingOption_FromProto)
 	return out
 }
 func AutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingConfig) *pb.AutoscalingConfig {
@@ -39,7 +36,6 @@ func AutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingCon
 	out := &pb.AutoscalingConfig{}
 	out.AutoscalingLimits = AutoscalingConfig_AutoscalingLimits_ToProto(mapCtx, in.AutoscalingLimits)
 	out.AutoscalingTargets = AutoscalingConfig_AutoscalingTargets_ToProto(mapCtx, in.AutoscalingTargets)
-	out.AsymmetricAutoscalingOptions = direct.Slice_ToProto(mapCtx, in.AsymmetricAutoscalingOptions, AutoscalingConfig_AsymmetricAutoscalingOption_ToProto)
 	return out
 }
 func AutoscalingConfig_AsymmetricAutoscalingOption_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingConfig_AsymmetricAutoscalingOption) *krm.AutoscalingConfig_AsymmetricAutoscalingOption {
@@ -204,27 +200,5 @@ func ReplicaSelection_ToProto(mapCtx *direct.MapContext, in *krm.ReplicaSelectio
 	}
 	out := &pb.ReplicaSelection{}
 	out.Location = direct.ValueOf(in.Location)
-	return out
-}
-func SpannerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance, configPrefix string) *krm.SpannerInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpannerInstanceSpec{}
-	out.Config = strings.TrimPrefix(in.GetConfig(), configPrefix)
-	out.DisplayName = in.GetDisplayName()
-	out.ProcessingUnits = direct.LazyPtr(in.GetProcessingUnits())
-	out.NumNodes = direct.LazyPtr(in.GetNodeCount())
-	return out
-}
-func SpannerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInstanceSpec, configPrefix string) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	out.Config = configPrefix + in.Config
-	out.DisplayName = in.DisplayName
-	out.NodeCount = direct.ValueOf(in.NumNodes)
-	out.ProcessingUnits = direct.ValueOf(in.ProcessingUnits)
 	return out
 }
