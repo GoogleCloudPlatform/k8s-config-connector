@@ -45,6 +45,18 @@ type SpannerInstanceSpec struct {
 	// +optional
 	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
 
+	// Optional. The autoscaling configuration. Autoscaling is enabled if this
+	// field is set. When autoscaling is enabled, node_count and processing_units
+	// are treated as OUTPUT_ONLY fields and reflect the current compute capacity
+	// allocated to the instance.
+	// +optional
+	AutoscalingConfig *AutoscalingConfig `json:"autoscalingConfig,omitempty"`
+
+	// Optional. The `Edition` of the current instance.
+	// +optional
+	// +kubebuilder:validation:Enum=EDITION_UNSPECIFIED;STANDARD;ENTERPRISE;ENTERPRISE_PLUS
+	Edition *string `json:"edition,omitempty"`
+
 	// The SpannerInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -72,12 +84,9 @@ type SpannerInstanceStatus struct {
 
 // SpannerInstanceObservedState is the state of the SpannerInstance resource as most recently observed in GCP.
 type SpannerInstanceObservedState struct {
-	/* NOTYET
 	// NumNodes and ProcessUnits is output fields with AutoScaler is set.
-	NumNodes *int32 `json:"numNodes,omitempty"`
-
+	NumNodes        *int32 `json:"numNodes,omitempty"`
 	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
-	*/
 }
 
 // +genclient
