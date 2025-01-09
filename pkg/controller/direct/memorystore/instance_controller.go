@@ -27,9 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	gcp "cloud.google.com/go/memorystore/apiv1beta"
-	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 
-	memorystorepb "cloud.google.com/go/memorystore/v1beta/memorystorepb"
+	memorystorepb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -57,7 +56,7 @@ type instanceAdapter struct {
 	id        *krm.MemoryStoreInstanceIdentity
 	gcpClient *gcp.Client
 	desired   *krm.MemorystoreInstance
-	actual    *memorystorepb.instance
+	actual    *memorystorepb.Instance
 }
 
 var _ directbase.Adapter = &instanceAdapter{}
@@ -111,7 +110,7 @@ func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting instance", "name", a.id)
 
-	req := &memorystorepb.GetinstanceRequest{Name: a.id}
+	req := &memorystorepb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -137,9 +136,10 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &memorystorepb.CreateinstanceRequest{
-		instance:   resource,
+	req := &memorystorepb.CreateInstanceRequest{
+		Instance:   resource,
 		InstanceId: a.id.ID(),
+		Parent:     a.id.Parent().String(),
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
@@ -201,17 +201,16 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	var latest *pb.Instance
+	var latest *memorystorepb.Instance
 	if len(paths) > 0 {
 		// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 		for _, path := range paths {
 			updateMask := &fieldmaskpb.FieldMask{
 				Paths: []string{path},
 			}
-			req := &memorystorepb.UpdateinstanceRequest{
-				Name:       a.id,
+			req := &memorystorepb.UpdateInstanceRequest{
 				UpdateMask: updateMask,
-				instance:   desiredPb,
+				Instance:   desiredPb,
 			}
 			op, err := a.gcpClient.UpdateInstance(ctx, req)
 			if err != nil {
@@ -256,7 +255,7 @@ func (a *instanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.MemorystoreInstanceGVK)
 
 	u.Object = uObj
@@ -268,7 +267,7 @@ func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting instance", "name", a.id)
 
-	req := &memorystorepb.DeleteinstanceRequest{Name: a.id.String()}
+	req := &memorystorepb.DeleteInstanceRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteInstance(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting instance %s: %w", a.id, err)
