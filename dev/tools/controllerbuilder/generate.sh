@@ -176,7 +176,7 @@ go run main.go generate-types \
 
 go run . generate-mapper \
    --service google.spanner.admin.instance.v1  \
-   --api-version "spanner.cnrm.cloud.google.com/v1beta1" \
+   --api-version "spanner.cnrm.cloud.google.com/v1beta1"
 
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
