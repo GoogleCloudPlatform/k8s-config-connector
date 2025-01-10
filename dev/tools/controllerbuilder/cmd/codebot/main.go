@@ -96,7 +96,6 @@ func run(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}
-
 	defer llmClient.Close()
 
 	var chatSession *codebot.Chat
