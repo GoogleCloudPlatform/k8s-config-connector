@@ -16,6 +16,9 @@ spec:
     kind: PrivilegedAccessManagerEntitlement
     listKind: PrivilegedAccessManagerEntitlementList
     plural: privilegedaccessmanagerentitlements
+    shortNames:
+    - gcpprivilegedaccessmanagerentitlement
+    - gcpprivilegedaccessmanagerentitlements
     singular: privilegedaccessmanagerentitlement
   preserveUnknownFields: false
   scope: Namespaced
