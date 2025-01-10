@@ -32,7 +32,7 @@ go run . generate-types \
     --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
     --resource DiscoveryEngineEngine:Engine
 
-# go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/dev/tools/proto-to-mapper/third_party/googleapis/ <<EOF
+# go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF
 # // +kcc:proto=google.cloud.discoveryengine.v1.Engine
 # EOF
 
