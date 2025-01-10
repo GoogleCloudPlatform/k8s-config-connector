@@ -225,7 +225,7 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		updateMask.Paths = append(updateMask.Paths, "autoscaling_config")
 	}
 
-	if !reflect.DeepEqual(resource.Edition, a.actual.Edition){
+	if !reflect.DeepEqual(resource.Edition, a.actual.Edition) {
 		updateMask.Paths = append(updateMask.Paths, "edition")
 	}
 
