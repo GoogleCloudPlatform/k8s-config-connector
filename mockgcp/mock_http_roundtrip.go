@@ -135,15 +135,8 @@ type Interface interface {
 	// Run starts the grpc service, until ctx is closed
 	Run(ctx context.Context) error
 
-	// ListServices returns metadata for all registered services.
-	ListServices() []ServiceInfo
-
 	// We can dispatch test commands
 	SupportsTestCommands
-}
-
-type ServiceInfo struct {
-	Hosts []string
 }
 
 type SupportsTestCommands interface {
@@ -295,16 +288,6 @@ func (m *mockRoundTripper) Run(ctx context.Context) error {
 		m.server.Stop()
 	}()
 	return m.server.Serve(m.grpcListener)
-}
-
-func (m *mockRoundTripper) ListServices() []ServiceInfo {
-	var services []ServiceInfo
-	for _, service := range m.services {
-		services = append(services, ServiceInfo{
-			Hosts: service.impl.ExpectedHosts(),
-		})
-	}
-	return services
 }
 
 func (m *mockRoundTripper) RunTestCommand(ctx context.Context, serviceName string, command string) error {

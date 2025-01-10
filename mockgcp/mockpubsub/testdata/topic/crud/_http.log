@@ -1,6 +1,5 @@
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/test-${uniqueId}?alt=json
 Accept: application/json
-Accept-Encoding: gzip, deflate
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 62
@@ -29,7 +28,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/test-${uniqueId}?alt=json
 Accept: application/json
-Accept-Encoding: gzip, deflate
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0
@@ -53,7 +51,6 @@ X-Xss-Protection: 0
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/test-${uniqueId}?alt=json
 Accept: application/json
-Accept-Encoding: gzip, deflate
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0

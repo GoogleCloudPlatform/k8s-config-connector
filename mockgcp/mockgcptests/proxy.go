@@ -59,6 +59,11 @@ func (p *Proxy) runRequest(req *http.Request) (*http.Response, error) {
 
 	proxyReq.Header = make(http.Header)
 	for k, values := range req.Header {
+		// klog.Infof("%v => %v", k, values)
+		if strings.ToLower(k) == "accept-encoding" {
+			// Avoid having to handle gzip from real GCP
+			continue
+		}
 		for _, v := range values {
 			proxyReq.Header.Add(k, v)
 		}
@@ -89,16 +94,22 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 	config.AddConfig("proxy/port", strconv.Itoa(proxyEndpoint.Port))
 
 	// We need to register these over http, to stop gcloud trying to use TUNNEL with our proxy
-	services := mockgcp.ListServices()
+
+	// We need a hard-coded list, because we don't always mockgcp available
+	services := []string{
+		"compute.googleapis.com",
+		"pubsub.googleapis.com",
+		"storage.googleapis.com",
+		"cloudresourcemanager.googleapis.com",
+		"serviceusage.googleapis.com",
+	}
 	for _, service := range services {
-		for _, host := range service.Hosts {
-			if strings.HasSuffix(host, ".googleapis.com") {
-				key := strings.TrimSuffix(host, ".googleapis.com")
-				config.AddConfig(fmt.Sprintf("api_endpoint_overrides/%v", key), fmt.Sprintf("http://%s.googleapis.com/", key))
-			} else {
-				// Probably not actually fatal, but unexpected (today)
-				klog.Fatalf("unhandled host %q", host)
-			}
+		if strings.HasSuffix(service, ".googleapis.com") {
+			key := strings.TrimSuffix(service, ".googleapis.com")
+			config.AddConfig(fmt.Sprintf("api_endpoint_overrides/%v", key), fmt.Sprintf("http://%s.googleapis.com/", key))
+		} else {
+			// Probably not actually fatal, but unexpected (today)
+			klog.Fatalf("unhandled host %q", service)
 		}
 	}
 
