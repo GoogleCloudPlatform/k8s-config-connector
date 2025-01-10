@@ -1,7 +1,6 @@
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
 Cache-Control: private
@@ -23,10 +22,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?%24alt=json%3Benum-encoding%3Dint
+POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
   "instance": {
@@ -37,11 +35,9 @@ x-goog-request-params: parent=projects%2F${projectId}
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 2
   },
-  "instanceId": "spannerinstance-sample-${uniqueId}",
-  "parent": "projects/${projectId}"
+  "instanceId": "spannerinstance-sample-${uniqueId}"
 }
 
 200 OK
@@ -59,7 +55,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Spanner Instance Sample",
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -76,7 +75,8 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "state": 2
+      "resourceLocation": "us-west1",
+      "state": "READY"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -85,10 +85,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -108,7 +107,11 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Spanner Instance Sample",
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -117,6 +120,7 @@ X-Xss-Protection: 0
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 2,
       "processingUnits": 2000,
+      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -127,7 +131,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Spanner Instance Sample",
+    "edition": "STANDARD",
+    "instanceType": "PROVISIONED",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
@@ -136,6 +143,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 2,
     "processingUnits": 2000,
+    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -143,10 +151,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -161,7 +168,10 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultBackupScheduleType": "AUTOMATIC",
   "displayName": "Spanner Instance Sample",
+  "edition": "STANDARD",
+  "instanceType": "PROVISIONED",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -170,29 +180,30 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 2,
   "processingUnits": 2000,
-  "state": 2,
+  "resourceLocation": "us-west1",
+  "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "fieldMask": "displayName,nodeCount,labels",
+  "fieldMask": "nodeCount,displayName,labels",
   "instance": {
-    "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "New spanner Instance Sample",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
+      "label-two": "value-two",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-    "nodeCount": 3
+    "name": "projects/${projectId}/instances/%!s(\u003cnil\u003e)",
+    "nodeCount": 3,
+    "processingUnits": 2000
   }
 }
 
@@ -212,10 +223,14 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "Spanner Instance Sample",
+      "defaultBackupScheduleType": "AUTOMATIC",
+      "displayName": "New spanner Instance Sample",
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
+        "label-two": "value-two",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -229,7 +244,8 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "state": 2,
+      "resourceLocation": "us-west1",
+      "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -239,10 +255,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -263,15 +278,20 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "Spanner Instance Sample",
+      "defaultBackupScheduleType": "AUTOMATIC",
+      "displayName": "New spanner Instance Sample",
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
+        "label-two": "value-two",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 3,
       "processingUnits": 3000,
+      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -282,15 +302,20 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "Spanner Instance Sample",
+    "defaultBackupScheduleType": "AUTOMATIC",
+    "displayName": "New spanner Instance Sample",
+    "edition": "STANDARD",
+    "instanceType": "PROVISIONED",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
+      "label-two": "value-two",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 3,
     "processingUnits": 3000,
+    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -298,10 +323,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -316,25 +340,29 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Spanner Instance Sample",
+  "defaultBackupScheduleType": "AUTOMATIC",
+  "displayName": "New spanner Instance Sample",
+  "edition": "STANDARD",
+  "instanceType": "PROVISIONED",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
+    "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 3,
   "processingUnits": 3000,
-  "state": 2,
+  "resourceLocation": "us-west1",
+  "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private
