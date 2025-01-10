@@ -106,13 +106,12 @@ var _ directbase.Adapter = &Adapter{}
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting KeyHandle", "name", a.id.String())
-	_, idIsSet, err := a.id.KeyHandleID()
-	if err != nil {
-		return false, err
-	}
+	_, idIsSet := a.id.KeyHandleID()
+
 	if !idIsSet {
 		return false, nil
 	}
+
 	req := &kmspb.GetKeyHandleRequest{Name: a.id.String()}
 	keyhandlepb, err := a.gcpClient.GetKeyHandle(ctx, req)
 	if err != nil {
@@ -138,10 +137,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	parent := a.id.Parent()
-	id, idIsSet, err := a.id.KeyHandleID()
-	if err != nil {
-		return err
-	}
+	id, idIsSet := a.id.KeyHandleID()
 
 	req := &kmspb.CreateKeyHandleRequest{
 		Parent:    parent.String(),

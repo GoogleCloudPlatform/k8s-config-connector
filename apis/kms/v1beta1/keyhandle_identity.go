@@ -112,11 +112,8 @@ func ParseKMSKeyHandleExternal(external string) (parent *KMSKeyHandleParent, res
 	return parent, resourceID, nil
 }
 
-func (r *KMSKeyHandleIdentity) KeyHandleID() (string, bool, error) {
-	if r.id != "" {
-		return r.id, r.id != "", nil
-	}
-	return "", false, fmt.Errorf("KMSKeyHandleIdentity not normalized to External form or not created from `New()`")
+func (r *KMSKeyHandleIdentity) KeyHandleID() (string, bool) {
+	return r.id, r.id != ""
 }
 
 func asKMSKeyHandleExternal_FromSpec(spec *KMSKeyHandleSpec) (parent *KMSKeyHandleParent, resourceID string, err error) {
