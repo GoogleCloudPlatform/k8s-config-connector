@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>bigquerydatatransferconfig</td>
+<td>gcpbigquerydatatransferconfig<br>gcpbigquerydatatransferconfigs<br>bigquerydatatransferconfig</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

@@ -17,6 +17,9 @@ spec:
     kind: RedisCluster
     listKind: RedisClusterList
     plural: redisclusters
+    shortNames:
+    - gcprediscluster
+    - gcpredisclusters
     singular: rediscluster
   preserveUnknownFields: false
   scope: Namespaced

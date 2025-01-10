@@ -24,7 +24,7 @@ MockGCP test is required for the direct resource development.
 
 ## 1.1 Add the test suite
 
-Create a directory for your resource [pkg/test/resourcefixture/testdata/basic](pkg/test/resourcefixture/testdata/basic), following the naming convention as other directories. The bottommost directory name is the test suite name. You can create as many directory as your test needs.
+Create a directory for your resource [pkg/test/resourcefixture/testdata/basic](../../../pkg/test/resourcefixture/testdata/basic), following the naming convention as other directories. The bottommost directory name is the test suite name. You can create as many directory as your test needs.
 
 Just to add the `create.yaml`,  `update.yaml` and `dependencies.yaml` (if applicable) to each bottommost directory.
 These three files are all Kubernetes config files, except that `create.yaml` and `update.yaml` only holds the your Config Connector CR object, and the `dependencies.yaml` holds all the dependent objects.

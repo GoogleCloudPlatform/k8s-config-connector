@@ -16,6 +16,9 @@ spec:
     kind: BigQueryDataTransferConfig
     listKind: BigQueryDataTransferConfigList
     plural: bigquerydatatransferconfigs
+    shortNames:
+    - gcpbigquerydatatransferconfig
+    - gcpbigquerydatatransferconfigs
     singular: bigquerydatatransferconfig
   preserveUnknownFields: false
   scope: Namespaced

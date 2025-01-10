@@ -152,6 +152,7 @@ type CloudBuildWorkerPoolObservedState struct {
 // CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool API
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudbuildworkerpool;gcpcloudbuildworkerpools
 type CloudBuildWorkerPool struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

@@ -16,6 +16,9 @@ spec:
     kind: FirestoreDatabase
     listKind: FirestoreDatabaseList
     plural: firestoredatabases
+    shortNames:
+    - gcpfirestoredatabase
+    - gcpfirestoredatabases
     singular: firestoredatabase
   preserveUnknownFields: false
   scope: Namespaced
