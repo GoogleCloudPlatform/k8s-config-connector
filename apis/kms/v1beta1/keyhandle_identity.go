@@ -114,7 +114,7 @@ func ParseKMSKeyHandleExternal(external string) (parent *KMSKeyHandleParent, res
 
 func (r *KMSKeyHandleIdentity) KeyHandleID() (string, bool, error) {
 	if r.id != "" {
-		return r.id, true, nil
+		return r.id, r.id != "", nil
 	}
 	return "", false, fmt.Errorf("KMSKeyHandleIdentity not normalized to External form or not created from `New()`")
 }
