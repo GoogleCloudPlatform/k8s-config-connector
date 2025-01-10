@@ -209,20 +209,24 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 	// If node count is unset, the field become unmanaged.
 	// If autoscaling is set, this field become output-only.
-	if a.desired.Spec.AutoscalingConfig != nil && a.desired.Spec.NumNodes != nil && !reflect.DeepEqual(a.desired.Spec.NumNodes, a.actual.NodeCount) {
+	if a.desired.Spec.AutoscalingConfig == nil && a.desired.Spec.NumNodes != nil && !reflect.DeepEqual(resource.NodeCount, a.actual.NodeCount) {
 		updateMask.Paths = append(updateMask.Paths, "node_count")
 	}
 	// If processing unit is unset, the field become unmanaged.
 	// If autoscaling is set, this field become output-only.
-	if a.desired.Spec.AutoscalingConfig != nil && a.desired.Spec.ProcessingUnits != nil && !reflect.DeepEqual(a.desired.Spec.ProcessingUnits, a.actual.ProcessingUnits) {
+	if a.desired.Spec.AutoscalingConfig == nil && a.desired.Spec.ProcessingUnits != nil && !reflect.DeepEqual(resource.ProcessingUnits, a.actual.ProcessingUnits) {
 		updateMask.Paths = append(updateMask.Paths, "processing_units")
 	}
-	if !reflect.DeepEqual(a.desired.ObjectMeta.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
-	if !reflect.DeepEqual(a.desired.Spec.AutoscalingConfig, a.actual.AutoscalingConfig) {
+	if !reflect.DeepEqual(resource.AutoscalingConfig, a.actual.AutoscalingConfig) {
 		updateMask.Paths = append(updateMask.Paths, "autoscaling_config")
+	}
+
+	if !reflect.DeepEqual(resource.Edition, a.actual.Edition){
+		updateMask.Paths = append(updateMask.Paths, "edition")
 	}
 
 	if len(updateMask.Paths) == 0 {
