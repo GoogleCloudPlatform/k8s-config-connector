@@ -21,7 +21,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"cloud.google.com/go/vertexai/genai"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
@@ -30,37 +30,37 @@ type FunctionResult struct {
 	Error    error
 }
 
-func (c *Chat) runFunctionCall(ctx context.Context, functionCall genai.FunctionCall) (*FunctionResult, error) {
+func (c *Chat) runFunctionCall(ctx context.Context, functionCall llm.FunctionCall) (*FunctionResult, error) {
 	switch functionCall.Name {
 	case "EditFile":
 		t := &EditFile{}
-		result, err := t.Run(ctx, c, functionCall.Args)
+		result, err := t.Run(ctx, c, functionCall.Arguments)
 		return &FunctionResult{
 			Response: result,
 			Error:    err,
 		}, nil
 	case "VerifyCode":
 		t := &VerifyCode{}
-		result, err := t.Run(ctx, c, functionCall.Args)
+		result, err := t.Run(ctx, c, functionCall.Arguments)
 		return &FunctionResult{
 			Response: result,
 			Error:    err,
 		}, nil
 	case "ReadFile":
 		t := &ReadFile{}
-		result, err := t.Run(ctx, c, functionCall.Args)
+		result, err := t.Run(ctx, c, functionCall.Arguments)
 		return &FunctionResult{
 			Response: result,
 			Error:    err,
 		}, nil
 	case "create_file":
-		result, err := c.runCreateFile(ctx, functionCall.Args)
+		result, err := c.runCreateFile(ctx, functionCall.Arguments)
 		return &FunctionResult{
 			Response: result,
 			Error:    err,
 		}, nil
 	case "ast_edit":
-		result, err := c.runASTEdit(ctx, functionCall.Args)
+		result, err := c.runASTEdit(ctx, functionCall.Arguments)
 		return &FunctionResult{
 			Response: result,
 			Error:    err,
@@ -68,7 +68,7 @@ func (c *Chat) runFunctionCall(ctx context.Context, functionCall genai.FunctionC
 
 	case "FindInWorkspace":
 		t := &FindInWorkspace{}
-		result, err := t.Run(ctx, c, functionCall.Args)
+		result, err := t.Run(ctx, c, functionCall.Arguments)
 		return &FunctionResult{
 			Response: result,
 			Error:    err,

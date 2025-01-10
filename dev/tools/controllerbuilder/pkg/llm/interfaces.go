@@ -12,22 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package codebot
+package llm
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"context"
+	"io"
 )
 
-func RegisterTool(tool Tool) {
-	tools = append(tools, tool)
+type Client interface {
+	io.Closer
+	StartChat(systemPrompt string) Chat
 }
 
-var tools []Tool
-
-type Tool interface {
-	BuildFunctionDefinition() *llm.FunctionDefinition
+type Chat interface {
+	SendMessage(ctx context.Context, userParts ...string) (Response, error)
+	SetFunctionDefinitions(functionDefinitions []*FunctionDefinition) error
+	SendFunctionResults(ctx context.Context, functionResults []FunctionCallResult) (Response, error)
+	// AdditionalUserInput(s string)
 }
 
-func GetTools() []Tool {
-	return tools
+type Response interface {
+	UsageMetadata() any
+	Candidates() []Candidate
+}
+
+type Candidate interface {
+	Parts() []Part
+}
+
+type Part interface {
+	AsText() (string, bool)
+	AsFunctionCalls() ([]FunctionCall, bool)
 }

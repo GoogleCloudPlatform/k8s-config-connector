@@ -22,8 +22,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"cloud.google.com/go/vertexai/genai"
-	"k8s.io/klog"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"k8s.io/klog/v2"
 )
 
 // edit_file seems less robust than ast_edit; it keeps only doing a single-line find...
@@ -59,30 +59,30 @@ func (t *EditFile) Run(ctx context.Context, c *Chat, args map[string]any) (*Edit
 	return results, nil
 }
 
-func (t *EditFile) BuildFunctionDefinition() *genai.FunctionDeclaration {
-	declaration := &genai.FunctionDeclaration{
+func (t *EditFile) BuildFunctionDefinition() *llm.FunctionDefinition {
+	declaration := &llm.FunctionDefinition{
 		Name: "EditFile",
 		Description: `
 Make a change to an existing file in the user's workspace, by replacing existing_text with new_text.  This tool only applies the first replacement.
 `,
-		Parameters: &genai.Schema{
-			Type:     genai.TypeObject,
+		Parameters: &llm.Schema{
+			Type:     llm.TypeObject,
 			Required: []string{"existing_text", "new_text", "filename"},
-			Properties: map[string]*genai.Schema{
+			Properties: map[string]*llm.Schema{
 				"existing_text": {
-					Type: genai.TypeString,
+					Type: llm.TypeString,
 					Description: `
 The text to find, which will be replaced with the contents of the new_text argument.  Provide all the lines of the existing content you want to replace.
 `,
 				},
 				"new_text": {
-					Type: genai.TypeString,
+					Type: llm.TypeString,
 					Description: `
 The text that should replace the contents of the existing_text argument.
 `,
 				},
 				"filename": {
-					Type:        genai.TypeString,
+					Type:        llm.TypeString,
 					Description: "The path to the file you want to change",
 				},
 			},
@@ -113,6 +113,7 @@ func (t *EditFile) runEditFile(ctx context.Context, baseDir string) (*EditFileRe
 		return nil, fmt.Errorf("writing file %q: %w", p, err)
 	}
 
+	klog.Infof("wrote %v: %v", p, string(newContents))
 	return &EditFileResults{
 		Success: true,
 	}, nil

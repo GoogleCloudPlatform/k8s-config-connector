@@ -21,7 +21,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"cloud.google.com/go/vertexai/genai"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
@@ -59,18 +59,18 @@ func (t *ReadFile) Run(ctx context.Context, c *Chat, args map[string]any) (*Read
 	}, nil
 }
 
-func (t *ReadFile) BuildFunctionDefinition() *genai.FunctionDeclaration {
-	declaration := &genai.FunctionDeclaration{
+func (t *ReadFile) BuildFunctionDefinition() *llm.FunctionDefinition {
+	declaration := &llm.FunctionDefinition{
 		Name: "ReadFile",
 		Description: `
 Reads the contents of a file in the workspace.  This returns the full contents of the given project file.
 `,
-		Parameters: &genai.Schema{
-			Type:     genai.TypeObject,
+		Parameters: &llm.Schema{
+			Type:     llm.TypeObject,
 			Required: []string{"filename"},
-			Properties: map[string]*genai.Schema{
+			Properties: map[string]*llm.Schema{
 				"filename": {
-					Type: genai.TypeString,
+					Type: llm.TypeString,
 					Description: `
 The path to the file in the workspace you want to read.
 `,

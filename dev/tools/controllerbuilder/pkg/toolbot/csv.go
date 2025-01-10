@@ -23,7 +23,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
@@ -196,40 +195,34 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, src []byte) ([]*DataP
 func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
-	client, err := llm.BuildGeminiClient(ctx)
+	client, err := llm.BuildVertexAIClient(ctx)
 	if err != nil {
 		return fmt.Errorf("building gemini client: %w", err)
 	}
 	defer client.Close()
 
-	model := client.GenerativeModel("gemini-1.5-pro-002")
+	systemPrompt := "" // TODO
+	chat := client.StartChat(systemPrompt)
 
-	// Some values that are recommended by aistudio
-	model.SetTemperature(1)
-	model.SetTopK(40)
-	model.SetTopP(0.95)
-	model.SetMaxOutputTokens(8192)
-	model.ResponseMIMEType = "text/plain"
-
-	var parts []genai.Part
+	var userParts []string
 
 	// We only include data points for the same tool as the input.
 	for _, dataPoint := range x.dataPoints {
 		if dataPoint.Type != input.Type {
 			continue
 		}
-		parts = append(parts, dataPoint.ToGenAIParts()...)
+		userParts = append(userParts, dataPoint.ToGenAIParts()...)
 	}
 
-	log.Info("context information", "num(parts)", len(parts))
+	log.Info("context information", "num(parts)", len(userParts))
 
 	// We also include the input data point.
-	parts = append(parts, input.ToGenAIParts()...)
+	userParts = append(userParts, input.ToGenAIParts()...)
 
 	// We also include a prompt for Gemini to fill in.
-	parts = append(parts, genai.Text("out "))
+	userParts = append(userParts, "out ")
 
-	resp, err := model.GenerateContent(ctx, parts...)
+	resp, err := chat.SendMessage(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("generating content with gemini: %w", err)
 	}
@@ -237,11 +230,9 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 	// Print the usage metadata (includes token count i.e. cost)
 	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata)
 
-	for _, candidate := range resp.Candidates {
-		content := candidate.Content
-
-		for _, part := range content.Parts {
-			if text, ok := part.(genai.Text); ok {
+	for _, candidate := range resp.Candidates() {
+		for _, part := range candidate.Parts() {
+			if text, ok := part.AsText(); ok {
 				klog.Infof("TEXT: %+v", text)
 				out.Write([]byte(text + "\n"))
 			} else {
