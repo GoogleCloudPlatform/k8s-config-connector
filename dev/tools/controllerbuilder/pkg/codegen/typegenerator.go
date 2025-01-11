@@ -86,7 +86,7 @@ func (g *TypeGenerator) visitMessage(messageDescriptor protoreflect.MessageDescr
 
 	g.visitedMessages = append(g.visitedMessages, messageDescriptor)
 
-	msgs, err := findDependenciesForMessage(messageDescriptor)
+	msgs, err := FindDependenciesForMessage(messageDescriptor, nil) // TODO: explicitly set ignored fields when generating Go types
 	if err != nil {
 		return err
 	}
@@ -376,12 +376,12 @@ func isAcronym(s string) bool {
 	}
 }
 
-// findDependenciesForMessage recursively explores the dependent proto messages of the given message.
-func findDependenciesForMessage(message protoreflect.MessageDescriptor) ([]protoreflect.MessageDescriptor, error) {
+// FindDependenciesForMessage recursively explores the dependent proto messages of the given message.
+func FindDependenciesForMessage(message protoreflect.MessageDescriptor, ignoredFields sets.String) ([]protoreflect.MessageDescriptor, error) {
 	msgs := make(map[string]protoreflect.MessageDescriptor)
 	for i := 0; i < message.Fields().Len(); i++ {
 		field := message.Fields().Get(i)
-		FindDependenciesForField(field, msgs, nil) // TODO: explicitly set ignored fields when generating Go types
+		FindDependenciesForField(field, msgs, ignoredFields)
 	}
 
 	RemoveNotMappedToGoStruct(msgs)
