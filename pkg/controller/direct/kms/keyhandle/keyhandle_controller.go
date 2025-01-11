@@ -73,7 +73,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewKMSKeyHandleRef(ctx, reader, obj)
+	id, err := krm.NewKMSKeyHandleIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *krm.KMSKeyHandleRef
+	id        *krm.KMSKeyHandleIdentity
 	gcpClient *gcp.AutokeyClient
 	desired   *krm.KMSKeyHandle
 	actual    *kmspb.KeyHandle
@@ -105,21 +105,20 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting KeyHandle", "name", a.id.External)
-	_, idIsSet, err := a.id.KeyHandleID()
-	if err != nil {
-		return false, err
-	}
+	log.V(2).Info("getting KeyHandle", "name", a.id.String())
+	_, idIsSet := a.id.KeyHandleID()
+
 	if !idIsSet {
 		return false, nil
 	}
-	req := &kmspb.GetKeyHandleRequest{Name: a.id.External}
+
+	req := &kmspb.GetKeyHandleRequest{Name: a.id.String()}
 	keyhandlepb, err := a.gcpClient.GetKeyHandle(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting KeyHandle %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting KeyHandle %q: %w", a.id.String(), err)
 	}
 
 	a.actual = keyhandlepb
@@ -137,14 +136,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
-	id, idIsSet, err := a.id.KeyHandleID()
-	if err != nil {
-		return err
-	}
+	parent := a.id.Parent()
+	id, idIsSet := a.id.KeyHandleID()
 
 	req := &kmspb.CreateKeyHandleRequest{
 		Parent:    parent.String(),
@@ -155,13 +148,13 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	op, err := a.gcpClient.CreateKeyHandle(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating KeyHandle %s: %w", a.id.External, err)
+		return fmt.Errorf("creating KeyHandle %s: %w", a.id.String(), err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("KeyHandle %s waiting creation: %w", a.id.External, err)
+		return fmt.Errorf("KeyHandle %s waiting creation: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created KeyHandle", "name", a.id.External)
+	log.V(2).Info("successfully created KeyHandle", "name", a.id.String())
 
 	status := &krm.KMSKeyHandleStatus{}
 	status.ObservedState = KMSKeyHandleStatusObservedState_FromProto(mapCtx, created)
@@ -190,10 +183,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, err
-	}
+	parent := a.id.Parent()
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
 	obj.Spec.Location = direct.LazyPtr(parent.Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -208,6 +198,6 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete operation not supported for KeyHandle, so this operation is a no-op.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Error(fmt.Errorf("delete operation not supported on KeyHandle, name: %s", a.id.External), "delete operation on KeyHandle resource not supported,")
+	log.V(2).Error(fmt.Errorf("delete operation not supported on KeyHandle, name: %s", a.id.String()), "delete operation on KeyHandle resource not supported,")
 	return false, nil
 }
