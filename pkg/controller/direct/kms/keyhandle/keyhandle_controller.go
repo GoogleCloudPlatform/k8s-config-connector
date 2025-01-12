@@ -168,7 +168,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 // Update operation not supported for KeyHandle.
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update operation not supported for KeyHandle resource")
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("update operation not supported for KeyHandle resource")
+	return nil
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
