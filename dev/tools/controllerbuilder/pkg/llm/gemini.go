@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"cloud.google.com/go/vertexai/genai"
+	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
 	"k8s.io/klog/v2"
 )
@@ -35,15 +36,14 @@ func BuildGeminiClient(ctx context.Context) (*genai.Client, error) {
 
 	if s := os.Getenv("GEMINI_API_KEY"); s != "" {
 		opts = append(opts, option.WithAPIKey(s))
+	} else {
+		// Some account can not use GEMINI_API_KEY but requires stricter access control via OAuth.
+		creds, err := google.FindDefaultCredentials(ctx, "https://www.googleapis.com/auth/generative-language", "https://www.googleapis.com/auth/cloud-platform")
+		if err != nil {
+			return nil, fmt.Errorf("finding default credentials: %w", err)
+		}
+		opts = append(opts, option.WithCredentials(creds))
 	}
-	// else {
-	// 	creds, err := google.FindDefaultCredentials(ctx, "https://www.googleapis.com/auth/generative-language", "https://www.googleapis.com/auth/cloud-platform")
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("finding default credentials: %w", err)
-	// 	}
-	// 	opts = append(opts, option.WithCredentials(creds))
-	// }
-
 	projectID := ""
 	location := ""
 
