@@ -51,7 +51,7 @@ require (
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
 	github.com/hashicorp/terraform-provider-google-beta v3.73.0+incompatible
 	github.com/huandu/go-clone v1.7.2
-	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
+	github.com/nasa9084/go-openapi v0.0.0-20240619113810-c62c58bb3428
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/onsi/gomega v1.27.10
 	github.com/pkg/errors v0.9.1
