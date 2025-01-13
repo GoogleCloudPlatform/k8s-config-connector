@@ -178,5 +178,11 @@ go run . generate-mapper \
    --service google.spanner.admin.instance.v1  \
    --api-version "spanner.cnrm.cloud.google.com/v1beta1"
 
+# IAMSettings
+go run . generate-types \
+    --service google.cloud.iap.v1 \
+    --api-version iap.cnrm.cloud.google.com/v1alpha1 \
+    --resource IAPSettings:IapSettings
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
