@@ -32,7 +32,6 @@ var _ refsv1beta1.ExternalNormalizer = &IAPSettingsRef{}
 // holds the GCP identifier for the KRM object.
 type IAPSettingsRef struct {
 	// A reference to an externally managed IAPSettings resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/iapsettingss/{{iapsettingsID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a IAPSettings resource.
@@ -51,8 +50,8 @@ func (r *IAPSettingsRef) NormalizedExternal(ctx context.Context, reader client.R
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseIAPSettingsExternal(r.External); err != nil {
-			return "", err
+		if err := ValidateIAPSettingsID(r.External); err != nil {
+			return "", fmt.Errorf("invalid format of IAPSettings external %s: %w", r.External, err)
 		}
 		return r.External, nil
 	}
@@ -77,6 +76,9 @@ func (r *IAPSettingsRef) NormalizedExternal(ctx context.Context, reader client.R
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	if err := ValidateIAPSettingsID(actualExternalRef); err != nil {
+		return "", fmt.Errorf("invalid format of IAPSettings status.externalRef %s: %w", actualExternalRef, err)
 	}
 	r.External = actualExternalRef
 	return r.External, nil
