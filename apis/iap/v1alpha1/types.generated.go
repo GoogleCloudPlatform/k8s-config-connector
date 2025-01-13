@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.iap.v1.AccessDeniedPageSettings
 type AccessDeniedPageSettings struct {
 	// The URI to be redirected to when access is denied.
@@ -164,21 +163,6 @@ type GcipSettings struct {
 	//  though it could be overridden at the sub resource level.
 	// +kcc:proto:field=google.cloud.iap.v1.GcipSettings.login_page_uri
 	LoginPageURI *string `json:"loginPageURI,omitempty"`
-}
-
-// +kcc:proto=google.cloud.iap.v1.IapSettings
-type IapSettings struct {
-	// Required. The resource name of the IAP protected resource.
-	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.name
-	Name *string `json:"name,omitempty"`
-
-	// Top level wrapper for all access related setting in IAP
-	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.access_settings
-	AccessSettings *AccessSettings `json:"accessSettings,omitempty"`
-
-	// Top level wrapper for all application related settings in IAP
-	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.application_settings
-	ApplicationSettings *ApplicationSettings `json:"applicationSettings,omitempty"`
 }
 
 // +kcc:proto=google.cloud.iap.v1.OAuthSettings

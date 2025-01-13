@@ -24,8 +24,33 @@ var IAPSettingsGVK = GroupVersion.WithKind("IAPSettings")
 // IAPSettingsSpec defines the desired state of IAPSettings
 // +kcc:proto=google.cloud.iap.v1.IapSettings
 type IAPSettingsSpec struct {
-	// The IAPSettings name. If not given, the metadata.name will be used.
+	// The IAPSettings name.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. The resource name of the IAP protected resource.
+	// The name could have the following format:
+	//	 organizations/{organization_id}
+	//	 folders/{folder_id}
+	//	 projects/{projects_id}
+	//	 projects/{projects_id}/iap_web
+	//	 projects/{projects_id}/iap_web/compute
+	//	 projects/{projects_id}/iap_web/compute-{region}
+	//	 projects/{projects_id}/iap_web/compute/service/{service_id}
+	//	 projects/{projects_id}/iap_web/compute-{region}/service/{service_id}
+	//	 projects/{projects_id}/iap_web/appengine-{app_id}
+	//	 projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}
+	//	 projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}
+	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Top level wrapper for all access related setting in IAP
+	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.access_settings
+	AccessSettings *AccessSettings `json:"accessSettings,omitempty"`
+
+	// Top level wrapper for all application related settings in IAP
+	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.application_settings
+	ApplicationSettings *ApplicationSettings `json:"applicationSettings,omitempty"`
 }
 
 // IAPSettingsStatus defines the config connector machine state of IAPSettings
@@ -41,14 +66,16 @@ type IAPSettingsStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *IAPSettingsObservedState `json:"observedState,omitempty"`
+	// NOTYET: there is no output only field
+	// ObservedState *IAPSettingsObservedState `json:"observedState,omitempty"`
 }
 
 // IAPSettingsSpec defines the desired state of IAPSettings
 // +kcc:proto=google.cloud.iap.v1.IapSettings
 // IAPSettingsObservedState is the state of the IAPSettings resource as most recently observed in GCP.
-type IAPSettingsObservedState struct {
-}
+// NOTYET: there is no output only field
+// type IAPSettingsObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
