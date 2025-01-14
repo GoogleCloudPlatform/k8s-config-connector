@@ -184,5 +184,9 @@ go run . generate-types \
     --api-version iap.cnrm.cloud.google.com/v1alpha1 \
     --resource IAPSettings:IapSettings
 
+go run . generate-mapper \
+    --service google.cloud.iap.v1 \
+    --api-version iap.cnrm.cloud.google.com/v1alpha1
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

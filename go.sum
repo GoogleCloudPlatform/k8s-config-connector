@@ -63,6 +63,8 @@ cloud.google.com/go/gkemulticloud v1.4.1 h1:SvVD2nJTGScEDYygIQ5dI14oFYhgtJx8Hazk
 cloud.google.com/go/gkemulticloud v1.4.1/go.mod h1:KRvPYcx53bztNwNInrezdfNF+wwUom8Y3FuJBwhvFpQ=
 cloud.google.com/go/iam v1.2.2 h1:ozUSofHUGf/F4tCNy/mu9tHLTaxZFLOUiKzjcgWHGIA=
 cloud.google.com/go/iam v1.2.2/go.mod h1:0Ys8ccaZHdI1dEUilwzqng/6ps2YB6vRsjIe00/+6JY=
+cloud.google.com/go/iap v1.10.2 h1:rvM+FNIF2wIbwUU8299FhhVGak2f7oOvbW8J/I5oflE=
+cloud.google.com/go/iap v1.10.2/go.mod h1:cClgtI09VIfazEK6VMJr6bX8KQfuQ/D3xqX+d0wrUlI=
 cloud.google.com/go/kms v1.20.1 h1:og29Wv59uf2FVaZlesaiDAqHFzHaoUyHI3HYp9VUHVg=
 cloud.google.com/go/kms v1.20.1/go.mod h1:LywpNiVCvzYNJWS9JUcGJSVTNSwPwi0vBAotzDqn2nc=
 cloud.google.com/go/longrunning v0.6.2 h1:xjDfh1pQcWPEvnfjZmwjKQEcHnpz6lHjfy7Fo0MK+hc=
