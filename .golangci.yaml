@@ -26,7 +26,6 @@ linters:
     - depguard
     - errcheck
     - errorlint
-    # - exportloopref
     # - forcetypeassert
     # - gci
     # - gocritic

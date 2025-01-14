@@ -35,7 +35,6 @@ linters:
   enable:
     - dupl
     - errcheck
-    - exportloopref
     - goconst
     - gocyclo
     - gofmt

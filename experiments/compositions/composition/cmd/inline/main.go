@@ -123,7 +123,7 @@ func (s *InlineSyncer) CopyToFileSystem() error {
 	}
 
 	if template == "" {
-		return fmt.Errorf("template not found for expander: " + s.expanderName)
+		return fmt.Errorf("template not found for expander: %s", s.expanderName)
 	}
 
 	// Get crdp.spec.stages[name]
