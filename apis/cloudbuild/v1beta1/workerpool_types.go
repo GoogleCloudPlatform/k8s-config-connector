@@ -22,6 +22,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var CloudBuildWorkerPoolGVK = GroupVersion.WithKind("CloudBuildWorkerPool")
+
 // +kcc:proto=google.devtools.cloudbuild.v1.WorkerPool
 // CloudBuildWorkerPoolSpec defines the desired state of Instance
 type CloudBuildWorkerPoolSpec struct {

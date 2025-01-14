@@ -105,33 +105,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	// Get location
-	location := obj.Spec.Location
 
-	var id *CloudBuildWorkerPoolIdentity
-
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(projectID, location, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.project != projectID {
-			return nil, fmt.Errorf("CloudBuildWorkerPool %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.project, projectID)
-		}
-		if id.location != location {
-			return nil, fmt.Errorf("CloudBuildWorkerPool %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.location, location)
-		}
-		// TODO: need to support more cases
-		if id.workerpool != resourceID {
-			return nil, fmt.Errorf("CloudBuildWorkerPool  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.workerpool, resourceID)
-		}
+	id, err := krm.NewWorkerPoolIdentity(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
 
 	// Get Project GCP client
@@ -168,13 +145,13 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 		if err != nil {
 			return nil, err
 		}
+		id, err := krm.ParseWorkerPoolIdentityFromExternal(ctx, url)
+		if err != nil {
+			return nil, err
+		}
 
 		return &Adapter{
-			id: &CloudBuildWorkerPoolIdentity{
-				project:    tokens[1],
-				location:   tokens[3],
-				workerpool: tokens[5],
-			},
+			id:        id,
 			gcpClient: gcpClient,
 		}, nil
 	}
@@ -183,7 +160,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id            *CloudBuildWorkerPoolIdentity
+	id            *krm.WorkerPoolIdentity
 	projectClient *cloudresourcemanager.ProjectsClient
 	gcpClient     *gcp.Client
 	reader        client.Reader
@@ -194,13 +171,13 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	req := &cloudbuildpb.GetWorkerPoolRequest{Name: a.id.FullyQualifiedName()}
+	req := &cloudbuildpb.GetWorkerPoolRequest{Name: a.id.String()}
 	workerpoolpb, err := a.gcpClient.GetWorkerPool(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting cloudbuildworkerpool %q: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("getting cloudbuildworkerpool %q: %w", a.id.String(), err)
 	}
 
 	a.actual = workerpoolpb
@@ -225,10 +202,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	wp.Name = a.id.FullyQualifiedName()
+	wp.Name = a.id.String()
 	req := &cloudbuildpb.CreateWorkerPoolRequest{
-		Parent:       a.id.Parent(),
-		WorkerPoolId: a.id.workerpool,
+		Parent:       a.id.Parent().String(),
+		WorkerPoolId: a.id.ID(),
 		WorkerPool:   wp,
 	}
 	op, err := a.gcpClient.CreateWorkerPool(ctx, req)
@@ -245,7 +222,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
+	external := a.id.String()
+	status.ExternalRef = &external
 	return setStatus(u, status)
 }
 
@@ -265,7 +243,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	wp.Name = a.id.FullyQualifiedName()
+	wp.Name = a.id.String()
 	wp.Etag = a.actual.Etag
 
 	paths, err := common.CompareProtoMessage(wp, a.actual, common.BasicDiff)
@@ -274,7 +252,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.AsExternalRef())
+		log.V(2).Info("no field needs update", "name", a.id.String())
 		return nil
 	}
 	req := &cloudbuildpb.UpdateWorkerPoolRequest{
@@ -312,8 +290,9 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: *a.id.AsExternalRef()}
-	obj.Spec.Location = a.id.location
+
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.String()}
+	obj.Spec.Location = a.id.Location()
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -326,19 +305,19 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 // TODO: Delete can rely on status.externalRef and do not need spec.projectRef.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	req := &cloudbuildpb.DeleteWorkerPoolRequest{Name: a.id.FullyQualifiedName(), AllowMissing: true}
+	req := &cloudbuildpb.DeleteWorkerPoolRequest{Name: a.id.String(), AllowMissing: true}
 	op, err := a.gcpClient.DeleteWorkerPool(ctx, req)
 	if err != nil {
 		// likely a server bug. worker_pool can be successfully deleted.
 		if !strings.Contains(err.Error(), "(line 12:3): missing \"value\" field") {
-			return false, fmt.Errorf("deleting cloudbuildworkerpool %s: %w", a.id.FullyQualifiedName(), err)
+			return false, fmt.Errorf("deleting cloudbuildworkerpool %s: %w", a.id.String(), err)
 		}
 	}
 	err = op.Wait(ctx)
 	if err != nil {
 		// likely a server bug. worker_pool can be successfully deleted.
 		if !strings.Contains(err.Error(), "(line 12:3): missing \"value\" field") {
-			return false, fmt.Errorf("waiting delete cloudbuildworkerpool %s: %w", a.id.FullyQualifiedName(), err)
+			return false, fmt.Errorf("waiting delete cloudbuildworkerpool %s: %w", a.id.String(), err)
 		}
 	}
 	return true, nil
