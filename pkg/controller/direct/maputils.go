@@ -211,6 +211,38 @@ func StringDuration_ToProto(mapCtx *MapContext, s *string) *durationpb.Duration 
 	return durationpb.New(td)
 }
 
+func StringValue_FromProto(mapCtx *MapContext, in *wrapperspb.StringValue) *string {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func StringValue_ToProto(mapCtx *MapContext, in *string) *wrapperspb.StringValue {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.String(*in)
+	return out
+}
+
+func BoolValue_FromProto(mapCtx *MapContext, in *wrapperspb.BoolValue) *bool {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func BoolValue_ToProto(mapCtx *MapContext, in *bool) *wrapperspb.BoolValue {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.Bool(*in)
+	return out
+}
+
 func PtrTo[T any](t T) *T {
 	return &t
 }
