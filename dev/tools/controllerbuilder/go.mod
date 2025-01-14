@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerb
 
 go 1.22.0
 
-toolchain go1.23.2
+toolchain go1.23.4
 
 require (
 	cloud.google.com/go/vertexai v0.13.2

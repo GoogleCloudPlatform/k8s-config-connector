@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 
 go 1.22
 
-toolchain go1.23.2
+toolchain go1.23.4
 
 require (
 	cloud.google.com/go/bigtable v1.33.0
