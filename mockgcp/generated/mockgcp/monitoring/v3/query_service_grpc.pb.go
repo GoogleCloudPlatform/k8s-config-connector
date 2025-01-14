@@ -22,7 +22,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QueryServiceClient interface {
-	// Queries time series using Monitoring Query Language.
+	// Deprecated: Do not use.
+	// Queries time series by using Monitoring Query Language (MQL). We recommend
+	// using PromQL instead of MQL. For more information about the status of MQL,
+	// see the [MQL deprecation
+	// notice](https://cloud.google.com/stackdriver/docs/deprecations/mql).
 	QueryTimeSeries(ctx context.Context, in *QueryTimeSeriesRequest, opts ...grpc.CallOption) (*QueryTimeSeriesResponse, error)
 }
 
@@ -34,6 +38,7 @@ func NewQueryServiceClient(cc grpc.ClientConnInterface) QueryServiceClient {
 	return &queryServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *queryServiceClient) QueryTimeSeries(ctx context.Context, in *QueryTimeSeriesRequest, opts ...grpc.CallOption) (*QueryTimeSeriesResponse, error) {
 	out := new(QueryTimeSeriesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.monitoring.v3.QueryService/QueryTimeSeries", in, out, opts...)
@@ -47,7 +52,11 @@ func (c *queryServiceClient) QueryTimeSeries(ctx context.Context, in *QueryTimeS
 // All implementations must embed UnimplementedQueryServiceServer
 // for forward compatibility
 type QueryServiceServer interface {
-	// Queries time series using Monitoring Query Language.
+	// Deprecated: Do not use.
+	// Queries time series by using Monitoring Query Language (MQL). We recommend
+	// using PromQL instead of MQL. For more information about the status of MQL,
+	// see the [MQL deprecation
+	// notice](https://cloud.google.com/stackdriver/docs/deprecations/mql).
 	QueryTimeSeries(context.Context, *QueryTimeSeriesRequest) (*QueryTimeSeriesResponse, error)
 	mustEmbedUnimplementedQueryServiceServer()
 }

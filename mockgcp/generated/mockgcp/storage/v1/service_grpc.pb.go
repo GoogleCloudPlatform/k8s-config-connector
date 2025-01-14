@@ -2353,6 +2353,8 @@ type ObjectsServerClient interface {
 	InsertObject(ctx context.Context, in *InsertObjectRequest, opts ...grpc.CallOption) (*Object, error)
 	// Retrieves a list of objects matching the criteria.
 	ListObjects(ctx context.Context, in *ListObjectsRequest, opts ...grpc.CallOption) (*Objects, error)
+	// Moves the source object to the destination object in the same bucket.
+	MoveObject(ctx context.Context, in *MoveObjectRequest, opts ...grpc.CallOption) (*Object, error)
 	// Patches an object's metadata.
 	PatchObject(ctx context.Context, in *PatchObjectRequest, opts ...grpc.CallOption) (*Object, error)
 	// Restores a soft-deleted object.
@@ -2436,6 +2438,15 @@ func (c *objectsServerClient) ListObjects(ctx context.Context, in *ListObjectsRe
 	return out, nil
 }
 
+func (c *objectsServerClient) MoveObject(ctx context.Context, in *MoveObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/MoveObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *objectsServerClient) PatchObject(ctx context.Context, in *PatchObjectRequest, opts ...grpc.CallOption) (*Object, error) {
 	out := new(Object)
 	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.ObjectsServer/PatchObject", in, out, opts...)
@@ -2499,6 +2510,8 @@ type ObjectsServerServer interface {
 	InsertObject(context.Context, *InsertObjectRequest) (*Object, error)
 	// Retrieves a list of objects matching the criteria.
 	ListObjects(context.Context, *ListObjectsRequest) (*Objects, error)
+	// Moves the source object to the destination object in the same bucket.
+	MoveObject(context.Context, *MoveObjectRequest) (*Object, error)
 	// Patches an object's metadata.
 	PatchObject(context.Context, *PatchObjectRequest) (*Object, error)
 	// Restores a soft-deleted object.
@@ -2536,6 +2549,9 @@ func (UnimplementedObjectsServerServer) InsertObject(context.Context, *InsertObj
 }
 func (UnimplementedObjectsServerServer) ListObjects(context.Context, *ListObjectsRequest) (*Objects, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListObjects not implemented")
+}
+func (UnimplementedObjectsServerServer) MoveObject(context.Context, *MoveObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MoveObject not implemented")
 }
 func (UnimplementedObjectsServerServer) PatchObject(context.Context, *PatchObjectRequest) (*Object, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchObject not implemented")
@@ -2691,6 +2707,24 @@ func _ObjectsServer_ListObjects_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ObjectsServer_MoveObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).MoveObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.storage.v1.ObjectsServer/MoveObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).MoveObject(ctx, req.(*MoveObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ObjectsServer_PatchObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchObjectRequest)
 	if err := dec(in); err != nil {
@@ -2815,6 +2849,10 @@ var ObjectsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListObjects",
 			Handler:    _ObjectsServer_ListObjects_Handler,
+		},
+		{
+			MethodName: "MoveObject",
+			Handler:    _ObjectsServer_MoveObject_Handler,
 		},
 		{
 			MethodName: "PatchObject",

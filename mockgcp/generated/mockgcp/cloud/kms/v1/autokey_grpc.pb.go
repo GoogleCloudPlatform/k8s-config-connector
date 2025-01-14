@@ -26,9 +26,9 @@ type AutokeyClient interface {
 	// Creates a new [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle], triggering the
 	// provisioning of a new [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey] for CMEK
 	// use with the given resource type in the configured key project and the same
-	// location. [GetOperation][Operations.GetOperation] should be used to resolve
-	// the resulting long-running operation and get the resulting
-	// [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle] and
+	// location. [GetOperation][google.longrunning.Operations.GetOperation] should
+	// be used to resolve the resulting long-running operation and get the
+	// resulting [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle] and
 	// [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
 	CreateKeyHandle(ctx context.Context, in *CreateKeyHandleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Returns the [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle].
@@ -79,9 +79,9 @@ type AutokeyServer interface {
 	// Creates a new [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle], triggering the
 	// provisioning of a new [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey] for CMEK
 	// use with the given resource type in the configured key project and the same
-	// location. [GetOperation][Operations.GetOperation] should be used to resolve
-	// the resulting long-running operation and get the resulting
-	// [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle] and
+	// location. [GetOperation][google.longrunning.Operations.GetOperation] should
+	// be used to resolve the resulting long-running operation and get the
+	// resulting [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle] and
 	// [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
 	CreateKeyHandle(context.Context, *CreateKeyHandleRequest) (*longrunningpb.Operation, error)
 	// Returns the [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle].

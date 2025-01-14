@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -3851,29 +3851,45 @@ message GoogleCloudApigeeV1EntityMetadata {
 message GoogleCloudApigeeV1Environment {
   // Optional. API Proxy type supported by the environment. The type can be set when creating the Environment and cannot be changed.
   string api_proxy_type = 1 [json_name="apiProxyType"];
+  // Optional. The algorithm to resolve IP. This will affect Analytics, API Security, and other features that use the client ip. To remove a client ip resolution config, update the field to an empty value. Example: '{ "clientIpResolutionConfig" = {} }' For more information, see: https://cloud.google.com/apigee/docs/api-platform/system-administration/client-ip-resolution.
+  GoogleCloudApigeeV1EnvironmentClientIPResolutionConfig client_ip_resolution_config = 2 [json_name="clientIpResolutionConfig"];
   // Output only. Creation time of this environment as milliseconds since epoch.
-  int64 created_at = 2 [json_name="createdAt"];
+  int64 created_at = 3 [json_name="createdAt"];
   // Optional. Deployment type supported by the environment. The deployment type can be set when creating the environment and cannot be changed. When you enable archive deployment, you will be **prevented from performing** a [subset of actions](/apigee/docs/api-platform/local-development/overview#prevented-actions) within the environment, including: * Managing the deployment of API proxy or shared flow revisions * Creating, updating, or deleting resource files * Creating, updating, or deleting target servers
-  string deployment_type = 3 [json_name="deploymentType"];
+  string deployment_type = 4 [json_name="deploymentType"];
   // Optional. Description of the environment.
-  string description = 4 [json_name="description"];
+  string description = 5 [json_name="description"];
   // Optional. Display name for this environment.
-  string display_name = 5 [json_name="displayName"];
+  string display_name = 6 [json_name="displayName"];
   // Optional. URI of the forward proxy to be applied to the runtime instances in this environment. Must be in the format of {scheme}://{hostname}:{port}. Note that the scheme must be one of "http" or "https", and the port must be supplied. To remove a forward proxy setting, update the field to an empty value. Note: At this time, PUT operations to add forwardProxyUri to an existing environment fail if the environment has nodeConfig set up. To successfully add the forwardProxyUri setting in this case, include the NodeConfig details with the request.
-  string forward_proxy_uri = 6 [json_name="forwardProxyUri"];
-  bool has_attached_flow_hooks = 7 [json_name="hasAttachedFlowHooks"];
+  string forward_proxy_uri = 7 [json_name="forwardProxyUri"];
+  bool has_attached_flow_hooks = 8 [json_name="hasAttachedFlowHooks"];
   // Output only. Last modification time of this environment as milliseconds since epoch.
-  int64 last_modified_at = 8 [json_name="lastModifiedAt"];
+  int64 last_modified_at = 9 [json_name="lastModifiedAt"];
   // Required. Name of the environment. Values must match the regular expression `^[.\\p{Alnum}-_]{1,255}$`
-  string name = 9 [json_name="name"];
+  string name = 10 [json_name="name"];
   // Optional. NodeConfig of the environment.
-  GoogleCloudApigeeV1NodeConfig node_config = 10 [json_name="nodeConfig"];
+  GoogleCloudApigeeV1NodeConfig node_config = 11 [json_name="nodeConfig"];
   // Optional. Key-value pairs that may be used for customizing the environment.
-  GoogleCloudApigeeV1Properties properties = 11 [json_name="properties"];
+  GoogleCloudApigeeV1Properties properties = 12 [json_name="properties"];
   // Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use.
-  string state = 12 [json_name="state"];
+  string state = 13 [json_name="state"];
   // Optional. EnvironmentType selected for the environment.
-  string type = 13 [json_name="type"];
+  string type = 14 [json_name="type"];
+}
+
+// Configuration for resolving the client ip.
+message GoogleCloudApigeeV1EnvironmentClientIPResolutionConfig {
+  // Resolves the client ip based on a custom header.
+  GoogleCloudApigeeV1EnvironmentClientIPResolutionConfigHeaderIndexAlgorithm header_index_algorithm = 1 [json_name="headerIndexAlgorithm"];
+}
+
+// Resolves the client ip based on a custom header.
+message GoogleCloudApigeeV1EnvironmentClientIPResolutionConfigHeaderIndexAlgorithm {
+  // Required. The index of the ip in the header. Positive indices 0, 1, 2, 3 chooses indices from the left (first ips) Negative indices -1, -2, -3 chooses indices from the right (last ips)
+  int32 ip_header_index = 1 [json_name="ipHeaderIndex"];
+  // Required. The name of the header to extract the client ip from. We are currently only supporting the X-Forwarded-For header.
+  string ip_header_name = 2 [json_name="ipHeaderName"];
 }
 
 message GoogleCloudApigeeV1EnvironmentConfig {
@@ -4696,7 +4712,7 @@ message GoogleCloudApigeeV1Organization {
   string apigee_project_id = 5 [json_name="apigeeProjectId"];
   // Not used by Apigee.
   repeated string attributes = 6 [json_name="attributes"];
-  // Compute Engine network used for Service Networking to be peered with Apigee runtime instances. See [Getting started with the Service Networking API](https://cloud.google.com/service-infrastructure/docs/service-networking/getting-started). Valid only when [RuntimeType](#RuntimeType) is set to `CLOUD`. The value must be set before the creation of a runtime instance and can be updated only when there are no runtime instances. For example: `default`. Apigee also supports shared VPC (that is, the host network project is not the same as the one that is peering with Apigee). See [Shared VPC overview](https://cloud.google.com/vpc/docs/shared-vpc). To use a shared VPC network, use the following format: `projects/{host-project-id}/{region}/networks/{network-name}`. For example: `projects/my-sharedvpc-host/global/networks/mynetwork` **Note:** Not supported for Apigee hybrid.
+  // Compute Engine network used for Service Networking to be peered with Apigee runtime instances. See [Getting started with the Service Networking API](https://cloud.google.com/service-infrastructure/docs/service-networking/getting-started). Valid only when [RuntimeType](#RuntimeType) is set to `CLOUD`. The value must be set before the creation of a runtime instance and can be updated only when there are no runtime instances. For example: `default`. When changing authorizedNetwork, you must reconfigure VPC peering. After VPC peering with previous network is deleted, [run the following command](https://cloud.google.com/sdk/gcloud/reference/services/vpc-peerings/delete): `gcloud services vpc-peerings delete --network=NETWORK`, where `NETWORK` is the name of the previous network. This will delete the previous Service Networking. Otherwise, you will get the following error: `The resource 'projects/...-tp' is already linked to another shared VPC host 'projects/...-tp`. Apigee also supports shared VPC (that is, the host network project is not the same as the one that is peering with Apigee). See [Shared VPC overview](https://cloud.google.com/vpc/docs/shared-vpc). To use a shared VPC network, use the following format: `projects/{host-project-id}/{region}/networks/{network-name}`. For example: `projects/my-sharedvpc-host/global/networks/mynetwork` **Note:** Not supported for Apigee hybrid.
   string authorized_network = 7 [json_name="authorizedNetwork"];
   // Billing type of the Apigee organization. See [Apigee pricing](https://cloud.google.com/apigee/pricing).
   string billing_type = 8 [json_name="billingType"];
