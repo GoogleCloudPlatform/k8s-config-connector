@@ -243,6 +243,7 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 		for _, part := range content.Parts {
 			if text, ok := part.(genai.Text); ok {
 				klog.Infof("TEXT: %+v", text)
+				out.Write([]byte(text + "\n"))
 			} else {
 				klog.Infof("UNKNOWN: %T %+v", part, part)
 			}
