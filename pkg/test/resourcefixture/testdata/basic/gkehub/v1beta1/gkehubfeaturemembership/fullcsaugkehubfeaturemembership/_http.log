@@ -1519,7 +1519,8 @@ X-Xss-Protection: 0
               "syncWaitSecs": "20"
             },
             "sourceFormat": "hierarchy"
-          }
+          },
+          "management": "MANAGEMENT_MANUAL"
         }
       }
     },
@@ -1567,7 +1568,8 @@ X-Xss-Protection: 0
             "syncWaitSecs": "20"
           },
           "sourceFormat": "hierarchy"
-        }
+        },
+        "management": "MANAGEMENT_MANUAL"
       }
     }
   },
@@ -1677,7 +1679,8 @@ X-Xss-Protection: 0
               "syncWaitSecs": "30"
             },
             "sourceFormat": "hierarchy"
-          }
+          },
+          "management": "MANAGEMENT_AUTOMATIC"
         }
       }
     },
@@ -1725,7 +1728,8 @@ X-Xss-Protection: 0
             "syncWaitSecs": "30"
           },
           "sourceFormat": "hierarchy"
-        }
+        },
+        "management": "MANAGEMENT_AUTOMATIC"
       }
     }
   },
