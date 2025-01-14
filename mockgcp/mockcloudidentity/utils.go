@@ -14,6 +14,14 @@
 
 package mockcloudidentity
 
+import (
+	"fmt"
+
+	"google.golang.org/genproto/googleapis/longrunning"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
+)
+
 func PtrTo[T any](t T) *T {
 	return &t
 }
@@ -24,4 +32,17 @@ func ValueOf[T any](p *T) T {
 		v = *p
 	}
 	return v
+}
+
+func buildLRO(obj proto.Message) (*longrunning.Operation, error) {
+	responseAny, err := anypb.New(obj)
+	if err != nil {
+		return nil, fmt.Errorf("error building anypb for response: %w", err)
+	}
+	lro := &longrunning.Operation{}
+	lro.Done = true
+	lro.Result = &longrunning.Operation_Response{
+		Response: responseAny,
+	}
+	return lro, nil
 }
