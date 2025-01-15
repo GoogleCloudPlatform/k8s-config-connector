@@ -42,7 +42,7 @@ type Options struct {
 
 func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Client, error) {
 	if opt.UserAgent == "" {
-		opt.UserAgent = gcp.KCCUserAgent
+		opt.UserAgent = gcp.KCCUserAgent()
 	}
 
 	if opt.HTTPClient == nil {
@@ -144,7 +144,7 @@ func SetUserAgentWithBlueprintAttribution(dclConfig *dcl.Config, resource metav1
 	if !found {
 		return dclConfig
 	}
-	userAgentWithBlueprintAttribution := fmt.Sprintf("%v blueprints/%v", gcp.KCCUserAgent, bp)
+	userAgentWithBlueprintAttribution := fmt.Sprintf("%v blueprints/%v", gcp.KCCUserAgent(), bp)
 	newConfig := dclConfig.Clone(dcl.WithUserAgent(userAgentWithBlueprintAttribution))
 	return newConfig
 }

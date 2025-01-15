@@ -30,7 +30,7 @@ func TestSetUserAgentWithBlueprintAttribution(t *testing.T) {
 	kind := "Test1Foo"
 	apiVersion := "test1.cnrm.cloud.google.com/v1alpha1"
 	bp := "test-blueprint"
-	dclConfig := dcl.NewConfig(dcl.WithUserAgent(gcp.KCCUserAgent))
+	dclConfig := dcl.NewConfig(dcl.WithUserAgent(gcp.KCCUserAgent()))
 	tests := []struct {
 		name           string
 		obj            metav1.Object

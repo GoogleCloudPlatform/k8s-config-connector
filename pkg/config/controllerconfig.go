@@ -23,6 +23,7 @@ import (
 )
 
 type ControllerConfig struct {
+	// UserAgent sets the User-Agent to pass in HTTP request headers
 	UserAgent string
 
 	// UserProjectOverride provides the option to use the resource project for preconditions, quota, and billing,

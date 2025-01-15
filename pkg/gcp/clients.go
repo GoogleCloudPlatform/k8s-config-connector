@@ -16,7 +16,9 @@ package gcp
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iam/v1"
@@ -24,7 +26,12 @@ import (
 )
 
 // The user agent to track KCC's attribution to GCP usages
-const KCCUserAgent = "kcc/controller-manager"
+func KCCUserAgent() string {
+	kccVersion := version.GetVersion()
+	// Note: try to keep in sync with third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/framework_utils.go
+	userAgent := fmt.Sprintf("kcc/%s (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/%s", kccVersion, kccVersion)
+	return userAgent
+}
 
 func NewIAMClient(ctx context.Context) (*iam.Service, error) {
 	httpClient, err := google.DefaultClient(ctx, iam.CloudPlatformScope)
@@ -35,7 +42,7 @@ func NewIAMClient(ctx context.Context) (*iam.Service, error) {
 	if err != nil {
 		return nil, err
 	}
-	client.UserAgent = KCCUserAgent
+	client.UserAgent = KCCUserAgent()
 	return client, nil
 }
 
@@ -48,7 +55,7 @@ func NewStorageClient(ctx context.Context) (*storage.Service, error) {
 	if err != nil {
 		return nil, err
 	}
-	client.UserAgent = KCCUserAgent
+	client.UserAgent = KCCUserAgent()
 	return client, nil
 }
 
@@ -62,6 +69,6 @@ func NewCloudResourceManagerClient(ctx context.Context) (*cloudresourcemanager.S
 	if err != nil {
 		return nil, err
 	}
-	client.UserAgent = KCCUserAgent
+	client.UserAgent = KCCUserAgent()
 	return client, nil
 }

@@ -42,7 +42,7 @@ type Parameters struct {
 func (p *Parameters) ControllerConfig() *config.ControllerConfig {
 	c := &config.ControllerConfig{
 		HTTPClient: p.HTTPClient,
-		UserAgent:  gcp.KCCUserAgent,
+		UserAgent:  gcp.KCCUserAgent(),
 	}
 	if p.GCPAccessToken != "" {
 		c.GCPTokenSource = oauth2.StaticTokenSource(
