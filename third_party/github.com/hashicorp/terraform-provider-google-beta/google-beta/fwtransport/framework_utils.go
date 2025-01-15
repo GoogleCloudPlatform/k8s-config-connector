@@ -23,7 +23,7 @@ const uaEnvVar = "TF_APPEND_USER_AGENT"
 var KCCVersion = "dev"
 
 func CompileUserAgentString(ctx context.Context, name, tfVersion, provVersion string) string {
-	ua := fmt.Sprintf("kcc/%s (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/%s", KCCVersion, provVersion)
+	ua := fmt.Sprintf("kcc/%s (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/%s", KCCVersion, KCCVersion)
 
 	if add := os.Getenv(uaEnvVar); add != "" {
 		add = strings.TrimSpace(add)
