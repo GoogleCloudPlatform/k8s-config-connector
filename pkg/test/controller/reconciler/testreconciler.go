@@ -19,7 +19,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
+	"strconv"
 	"testing"
 	"time"
 
@@ -43,6 +45,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 
@@ -112,9 +115,22 @@ func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Pro
 	dclConverter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 
 	// Initialize direct controllers
-	if err := registry.Init(context.TODO(), &config.ControllerConfig{
+	kccConfig := &config.ControllerConfig{
 		HTTPClient: httpClient,
-	}); err != nil {
+	}
+	p := testgcp.GetDefaultProject(t)
+	// technically this would be sufficient for TF and DCL controllers
+	// to set the BillingProject as the resource project that is being used.
+	kccConfig.UserProjectOverride = true
+
+	// but for our direct resources we look at the BillingProject so let's set it.
+	if os.Getenv("BILLING_ACCOUNT_ID") != "" {
+		kccConfig.BillingProject = os.Getenv("BILLING_ACCOUNT_ID")
+	} else {
+		kccConfig.BillingProject = strconv.FormatInt(p.ProjectNumber, 10)
+	}
+
+	if err := registry.Init(context.TODO(), kccConfig); err != nil {
 		t.Fatalf("error initializing direct registry: %v", err)
 	}
 
