@@ -1,7 +1,7 @@
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -26,8 +26,8 @@ X-Xss-Protection: 0
 
 POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "columnLayout": {
@@ -202,8 +202,8 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -301,8 +301,8 @@ X-Xss-Protection: 0
 
 PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 {
   "columnLayout": {
@@ -478,8 +478,8 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -577,8 +577,8 @@ X-Xss-Protection: 0
 
 PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 {
   "columnLayout": {
@@ -746,8 +746,8 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -841,8 +841,8 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 200 OK
 Cache-Control: private

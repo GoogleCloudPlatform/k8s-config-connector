@@ -1,6 +1,6 @@
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private
@@ -25,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Tracks a combination of estimates of trade volume for a given resource, in $USD per hour.",
@@ -94,7 +94,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private
@@ -119,7 +119,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -179,7 +179,7 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -258,7 +258,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private

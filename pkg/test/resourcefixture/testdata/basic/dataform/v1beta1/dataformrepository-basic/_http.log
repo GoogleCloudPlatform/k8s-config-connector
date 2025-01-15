@@ -1,7 +1,7 @@
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
 
 404 Not Found
 Content-Type: application/json
@@ -16,8 +16,8 @@ Content-Type: application/json
 
 POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=dataformrepository-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 {}
 
@@ -40,8 +40,8 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
 
 200 OK
 Content-Type: application/json
@@ -62,8 +62,8 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
 
 200 OK
 Content-Type: application/json

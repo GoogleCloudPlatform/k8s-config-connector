@@ -1,7 +1,7 @@
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -25,8 +25,8 @@ X-Xss-Protection: 0
 
 POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "instance": {
@@ -87,8 +87,8 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -145,8 +145,8 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -178,8 +178,8 @@ X-Xss-Protection: 0
 
 PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
   "fieldMask": "displayName,nodeCount,labels",
@@ -241,8 +241,8 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -300,8 +300,8 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -333,8 +333,8 @@ X-Xss-Protection: 0
 
 DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Cache-Control: private
