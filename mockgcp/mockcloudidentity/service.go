@@ -17,6 +17,7 @@ package mockcloudidentity
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -65,5 +66,19 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	return mux, nil
+	// DCL sends a trailing slash, but that is not technically correct
+	// and it trips up grpc-gateway (https://github.com/grpc-ecosystem/grpc-gateway/issues/472)
+	// e.g. POST https://cloudidentity.googleapis.com/v1beta1/groups/1946c1f7c26/memberships/?alt=json
+	removeTrailingSlash := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasSuffix(u.Path, "/memberships/") {
+			u2 := *u
+			u2.Path = strings.TrimSuffix(u2.Path, "/")
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		mux.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(removeTrailingSlash), nil
 }
