@@ -7,7 +7,6 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: spannerinstances.spanner.cnrm.cloud.google.com
 spec:
   group: spanner.cnrm.cloud.google.com
