@@ -100,6 +100,82 @@ func (s *groupsMembershipsServer) CreateGroupsMembership(ctx context.Context, re
 // Search transitive memberships of a group. **Note:** This feature is only available to Google Workspace Enterprise Standard, Enterprise Plus, and Enterprise for Education; and Cloud Identity Premium accounts. A transitive membership is any direct or indirect membership of a group. Actor must have view permissions to all transitive memberships.
 // SearchTransitiveMembershipsGroupsMembership(ctx context.Context, in *SearchTransitiveMembershipsGroupsMembershipRequest, opts ...grpc.CallOption) (*SearchTransitiveMembershipsResponse, error)
 
+func (s *groupsMembershipsServer) ModifyMembershipRolesGroupsMembership(ctx context.Context, req *pb.ModifyMembershipRolesGroupsMembershipRequest) (*pb.ModifyMembershipRolesResponse, error) {
+	name, err := s.parseMembershipName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Membership{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.PermissionDenied, "Error(2017): Permission denied for group resource '%s' (or it may not exist).", fqn)
+		}
+		return nil, err
+	}
+
+	retObj := proto.Clone(obj).(*pb.Membership)
+	response := &pb.ModifyMembershipRolesResponse{
+		Membership: retObj,
+	}
+
+	gm := req.GetGroupsMembership()
+	if gm == nil {
+		return response, nil
+	}
+
+	for i := range gm.RemoveRoles {
+		for j := range retObj.Roles {
+			if gm.RemoveRoles[i] == *retObj.Roles[j].Name {
+				retObj.Roles = append(retObj.Roles[:j], retObj.Roles[j+1:]...)
+				break
+			}
+		}
+	}
+
+	for _, role := range gm.AddRoles {
+		retObj.Roles = append(retObj.Roles, role)
+	}
+
+	// From proto defn:
+	// The fully-qualified names of fields to update. May only contain the field `expiry_detail.expire_time`.
+	// FieldMask *string `protobuf:"bytes,1,opt,name=field_mask,json=fieldMask" json:"field_mask,omitempty"`
+	// The `MembershipRole`s to be updated. Only `MEMBER` `MembershipRoles` can currently be updated. May only contain a `MembershipRole` with `name` `MEMBER`.
+	// MembershipRole *MembershipRole `protobuf:"bytes,2,opt,name=membership_role,json=membershipRole" json:"membership_role,omitempty"`
+	for i := range gm.UpdateRolesParams {
+		umr := gm.UpdateRolesParams[i].GetMembershipRole()
+		if umr == nil {
+			continue
+		}
+		if *umr.Name != "MEMBER" {
+			continue
+		}
+		if umr.ExpiryDetail == nil {
+			continue
+		}
+		if umr.ExpiryDetail.ExpireTime == nil {
+			continue
+		}
+		if *gm.UpdateRolesParams[i].FieldMask != "expiry_detail.expire_time" {
+			continue
+		}
+
+		for j := range retObj.Roles {
+			if *umr.Name == *retObj.Roles[j].Name {
+				retObj.Roles[j].ExpiryDetail = proto.Clone(umr.ExpiryDetail).(*pb.ExpiryDetail)
+				break
+			}
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, retObj); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (s *groupsMembershipsServer) DeleteGroupsMembership(ctx context.Context, req *pb.DeleteGroupsMembershipRequest) (*longrunning.Operation, error) {
 	name, err := s.parseMembershipName(req.GetName())
 	if err != nil {
