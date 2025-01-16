@@ -29,8 +29,8 @@ import (
 )
 
 var (
-	GroupVersion          = schema.GroupVersion{Group: "apigeeorganizations.apigee.cnrm.cloud.google.com", Version: "v1beta1"}
-	ApigeeOrganizationGVK = GroupVersion.WithKind("ApigeeOrganization")
+	ApigeeGroupVersion    = schema.GroupVersion{Group: "apigeeorganizations.apigee.cnrm.cloud.google.com", Version: "v1beta1"}
+	ApigeeOrganizationGVK = ApigeeGroupVersion.WithKind("ApigeeOrganization")
 )
 
 var _ refsv1beta1.ExternalNormalizer = &ApigeeOrganizationRef{}
@@ -65,7 +65,7 @@ func (r *ApigeeOrganizationRef) NormalizedExternal(ctx context.Context, reader c
 		if len(tokens) == 2 && tokens[0] == "organizations" {
 			return r.External, nil
 		}
-		return "", fmt.Errorf("format of Organization external=%q was not known (use organization/{{orgId}})", external)
+		return "", fmt.Errorf("format of Organization external=%q was not known (use organizations/{{orgId}})", external)
 	}
 
 	// From the Config Connector object
