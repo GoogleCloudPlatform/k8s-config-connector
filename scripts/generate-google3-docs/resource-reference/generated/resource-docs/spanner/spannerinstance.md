@@ -419,6 +419,8 @@ metadata:
   labels:
     label-one: "value-one"
   name: spannerinstance-sample
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
   displayName: Spanner Instance Sample
