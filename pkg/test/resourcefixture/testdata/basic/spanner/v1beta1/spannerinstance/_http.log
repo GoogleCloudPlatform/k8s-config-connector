@@ -130,6 +130,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Spanner Instance Sample",
     "edition": "STANDARD",
@@ -165,6 +166,7 @@ X-Xss-Protection: 0
 
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
   "displayName": "Spanner Instance Sample",
   "edition": 1,
@@ -217,6 +219,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.UpdateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": 2,
       "displayName": "Spanner Instance Sample",
       "labels": {
@@ -268,6 +271,7 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Spanner Instance Sample",
       "labels": {
@@ -287,6 +291,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Spanner Instance Sample",
     "labels": {
@@ -321,6 +326,7 @@ X-Xss-Protection: 0
 
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
   "displayName": "Spanner Instance Sample",
   "labels": {

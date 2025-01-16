@@ -78,6 +78,7 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	cloneObj := proto.Clone(obj).(*pb.Instance)
 	s.populateReplicaComputeCapacityForSpannerInstance(cloneObj)
 
+	obj.CreateTime = now
 	obj.UpdateTime = now
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

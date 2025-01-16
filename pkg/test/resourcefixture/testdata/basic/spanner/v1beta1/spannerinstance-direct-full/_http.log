@@ -170,6 +170,7 @@ X-Xss-Protection: 0
       }
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Spanner Instance Sample",
     "edition": "ENTERPRISE",
@@ -215,6 +216,7 @@ X-Xss-Protection: 0
     }
   },
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
   "displayName": "Spanner Instance Sample",
   "edition": 2,
@@ -251,7 +253,7 @@ x-goog-request-params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
       }
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "New spanner Instance Sample",
+    "displayName": "Updated spanner Instance Sample",
     "edition": 3,
     "labels": {
       "cnrm-test": "true",
@@ -287,8 +289,9 @@ X-Xss-Protection: 0
         }
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": 2,
-      "displayName": "New spanner Instance Sample",
+      "displayName": "Updated spanner Instance Sample",
       "edition": 3,
       "labels": {
         "cnrm-test": "true",
@@ -349,8 +352,9 @@ X-Xss-Protection: 0
         }
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "New spanner Instance Sample",
+      "displayName": "Updated spanner Instance Sample",
       "edition": "ENTERPRISE_PLUS",
       "labels": {
         "cnrm-test": "true",
@@ -379,8 +383,9 @@ X-Xss-Protection: 0
       }
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "New spanner Instance Sample",
+    "displayName": "Updated spanner Instance Sample",
     "edition": "ENTERPRISE_PLUS",
     "labels": {
       "cnrm-test": "true",
@@ -424,8 +429,9 @@ X-Xss-Protection: 0
     }
   },
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
-  "displayName": "New spanner Instance Sample",
+  "displayName": "Updated spanner Instance Sample",
   "edition": 3,
   "labels": {
     "cnrm-test": "true",

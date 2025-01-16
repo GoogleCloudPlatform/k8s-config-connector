@@ -22,7 +22,7 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
-  displayName: New spanner Instance Sample
+  displayName: Updated spanner Instance Sample
   autoscalingConfig:
     autoscalingLimits:
       maxNodes: 5
