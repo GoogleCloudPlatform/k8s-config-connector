@@ -32,11 +32,11 @@ import (
 //	projects/{projects_id}/iap_web
 //	projects/{projects_id}/iap_web/compute
 //	projects/{projects_id}/iap_web/compute-{region}
-//	projects/{projects_id}/iap_web/compute/service/{service_id}
-//	projects/{projects_id}/iap_web/compute-{region}/service/{service_id}
+//	projects/{projects_id}/iap_web/compute/services/{service_id}
+//	projects/{projects_id}/iap_web/compute-{region}/services/{service_id}
 //	projects/{projects_id}/iap_web/appengine-{app_id}
-//	projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}
-//	projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}
+//	projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}
+//	projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}/versions/{version_id}
 type IAPSettingsIdentity struct {
 	id string
 }
@@ -125,16 +125,16 @@ func ValidateIAPSettingsID(id string) error {
 		if !strings.HasPrefix(parts[3], "compute") && !strings.HasPrefix(parts[3], "appengine-") {
 			return fmt.Errorf("invalid IAP web resource type %q: must start with 'compute' or 'appengine-'", parts[3])
 		}
-	case 6: // projects/{project_id}/iap_web/(compute|compute-{region}|appengine-{app_id})/service/{service_id}
-		if parts[4] != "service" {
-			return fmt.Errorf("invalid service path %q: fifth segment must be 'service', got %q", id, parts[4])
+	case 6: // projects/{project_id}/iap_web/(compute|compute-{region}|appengine-{app_id})/services/{service_id}
+		if parts[4] != "services" {
+			return fmt.Errorf("invalid service path %q: fifth segment must be 'services', got %q", id, parts[4])
 		}
-	case 8: // projects/{project_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}
+	case 8: // projects/{project_id}/iap_web/appengine-{app_id}/services/{service_id}/versions/{version_id}
 		if !strings.HasPrefix(parts[3], "appengine-") {
 			return fmt.Errorf("invalid path %q: version paths are only valid for App Engine resources (must start with 'appengine-')", id)
 		}
-		if parts[4] != "service" || parts[6] != "version" {
-			return fmt.Errorf("invalid App Engine version path %q: must follow pattern 'appengine-{app_id}/service/{service_id}/version/{version_id}'", id)
+		if parts[4] != "services" || parts[6] != "versions" {
+			return fmt.Errorf("invalid App Engine version path %q: must follow pattern 'appengine-{app_id}/services/{service_id}/versions/{version_id}'", id)
 		}
 	default:
 		return fmt.Errorf("invalid number of path segments in IAP settings ID %q: got %d segments, expected 2, 3, 4, 6, or 8", id, len(parts))
