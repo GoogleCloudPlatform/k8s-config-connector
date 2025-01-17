@@ -21,17 +21,19 @@ type AutoscalingConfig struct {
 
 	// Required. The autoscaling targets for an instance.
 	AutoscalingTargets *AutoscalingConfig_AutoscalingTargets `json:"autoscalingTargets,omitempty"`
-
-	// Optional. Optional asymmetric autoscaling options.
-	//  Replicas matching the replica selection criteria will be autoscaled
-	//  independently from other replicas. The autoscaler will scale the replicas
-	//  based on the utilization of replicas identified by the replica selection.
-	//  Replica selections should not overlap with each other.
-	//
-	//  Other replicas (those do not match any replica selection) will be
-	//  autoscaled together and will have the same compute capacity allocated to
-	//  them.
-	AsymmetricAutoscalingOptions []AutoscalingConfig_AsymmetricAutoscalingOption `json:"asymmetricAutoscalingOptions,omitempty"`
+	/*
+		NOT YET supported in GCP API
+		// Optional. Optional asymmetric autoscaling options.
+		//  Replicas matching the replica selection criteria will be autoscaled
+		//  independently from other replicas. The autoscaler will scale the replicas
+		//  based on the utilization of replicas identified by the replica selection.
+		//  Replica selections should not overlap with each other.
+		//
+		//  Other replicas (those do not match any replica selection) will be
+		//  autoscaled together and will have the same compute capacity allocated to
+		//  them.
+		AsymmetricAutoscalingOptions []AutoscalingConfig_AsymmetricAutoscalingOption `json:"asymmetricAutoscalingOptions,omitempty"`
+	*/
 }
 
 // +kcc:proto=google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption

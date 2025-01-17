@@ -11,6 +11,7 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-one
+    label-two: value-two
   name: spannerinstance-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -26,4 +27,7 @@ status:
     type: Ready
   externalRef: projects/${projectId}/instances/spannerinstance-sample-${uniqueId}
   observedGeneration: 2
+  observedState:
+    numNodes: 3
+    processingUnits: 3000
   state: READY

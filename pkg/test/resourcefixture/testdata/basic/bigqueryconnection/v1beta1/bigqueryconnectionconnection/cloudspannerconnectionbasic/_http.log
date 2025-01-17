@@ -58,7 +58,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "defaultBackupScheduleType": 2,
       "displayName": "Spanner Database Dependency",
+      "edition": 1,
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -106,7 +108,9 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Spanner Database Dependency",
+      "edition": "STANDARD",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -124,7 +128,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Spanner Database Dependency",
+    "edition": "STANDARD",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -542,7 +548,9 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultBackupScheduleType": 2,
   "displayName": "Spanner Database Dependency",
+  "edition": 1,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"

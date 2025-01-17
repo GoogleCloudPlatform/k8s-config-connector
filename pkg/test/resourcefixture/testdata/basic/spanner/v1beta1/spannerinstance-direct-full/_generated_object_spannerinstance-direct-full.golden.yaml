@@ -2,6 +2,7 @@ apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
@@ -14,9 +15,16 @@ metadata:
   name: spannerinstance-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  autoscalingConfig:
+    autoscalingLimits:
+      maxNodes: 5
+      minNodes: 3
+    autoscalingTargets:
+      highPriorityCpuUtilizationPercent: 90
+      storageUtilizationPercent: 90
   config: regional-us-west1
-  displayName: Spanner Instance Sample
-  numNodes: 3
+  displayName: Updated spanner Instance Sample
+  edition: ENTERPRISE_PLUS
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
