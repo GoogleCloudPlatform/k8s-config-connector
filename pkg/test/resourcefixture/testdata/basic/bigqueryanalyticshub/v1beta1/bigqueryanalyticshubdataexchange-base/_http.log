@@ -1,7 +1,7 @@
 GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 404 Not Found
 Content-Type: application/json
@@ -16,8 +16,8 @@ Content-Type: application/json
 
 POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges?dataExchangeId=bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 
 {
   "discoveryType": 0,
@@ -44,8 +44,8 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
 Content-Type: application/json
@@ -67,8 +67,8 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
 Content-Type: application/json

@@ -1,8 +1,8 @@
 GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 X-Goog-User-Project: ${projectId}
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -27,9 +27,9 @@ X-Xss-Protection: 0
 
 POST https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores?%24alt=json%3Benum-encoding%3Dint&dataStoreId=datastore-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection
 X-Goog-User-Project: ${projectId}
-x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection
 
 {
   "displayName": "My first data store",
@@ -64,9 +64,9 @@ X-Xss-Protection: 0
 
 GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 X-Goog-User-Project: ${projectId}
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -91,9 +91,9 @@ X-Xss-Protection: 0
 
 PATCH https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: data_store.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 X-Goog-User-Project: ${projectId}
-x-goog-request-params: data_store.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 
 {
   "displayName": "Updated display name",
@@ -124,9 +124,9 @@ X-Xss-Protection: 0
 
 GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 X-Goog-User-Project: ${projectId}
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -151,9 +151,9 @@ X-Xss-Protection: 0
 
 DELETE https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 X-Goog-User-Project: ${projectId}
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 
 200 OK
 Cache-Control: private

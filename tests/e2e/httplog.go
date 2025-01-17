@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
 )
@@ -85,6 +86,22 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		}
 		return true
 	})
+
+	return events
+}
+
+// RewriteUserAgent removes volatile values from the user agent:
+// it replaces the version with ${kccVersion}.
+func RewriteUserAgent(events test.LogEntries) test.LogEntries {
+	// Remove operation polling requests (ones where the operation is not ready)
+	for _, event := range events {
+		userAgent := event.Request.Header.Get("User-Agent")
+		if userAgent != "" {
+			currentVersion := version.GetVersion()
+			userAgent = strings.ReplaceAll(userAgent, currentVersion, "${kccVersion}")
+			event.Request.Header.Set("User-Agent", userAgent)
+		}
+	}
 
 	return events
 }
@@ -224,6 +241,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 }
 
 func (x *Normalizer) Preprocess(events []*test.LogEntry) {
+	events = RewriteUserAgent(events)
 
 	// Find "easy" operations and resources by looking for fully-qualified methods
 	for _, event := range events {

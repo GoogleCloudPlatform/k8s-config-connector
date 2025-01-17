@@ -133,7 +133,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	dclOptions.UserProjectOverride = cfg.UserProjectOverride
 	dclOptions.BillingProject = cfg.BillingProject
 	dclOptions.HTTPClient = cfg.HTTPClient
-	dclOptions.UserAgent = gcp.KCCUserAgent
+	dclOptions.UserAgent = gcp.KCCUserAgent()
 
 	dclConfig, err := clientconfig.New(ctx, dclOptions)
 	if err != nil {
@@ -146,7 +146,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		BillingProject:             cfg.BillingProject,
 		HTTPClient:                 cfg.HTTPClient,
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
-		UserAgent:                  gcp.KCCUserAgent,
+		UserAgent:                  gcp.KCCUserAgent(),
 	}
 
 	// Initialize direct controllers

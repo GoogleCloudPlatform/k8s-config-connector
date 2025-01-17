@@ -1,7 +1,7 @@
 GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -26,8 +26,8 @@ X-Xss-Protection: 0
 
 POST https://firestore.googleapis.com/v1/projects/${projectId}/databases?%24alt=json%3Benum-encoding%3Dint&databaseId=firestoredatabase-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "appEngineIntegrationMode": 2,
@@ -77,8 +77,8 @@ X-Xss-Protection: 0
 
 GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -119,8 +119,8 @@ X-Xss-Protection: 0
 
 GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -153,8 +153,8 @@ X-Xss-Protection: 0
 
 PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=concurrencyMode%2CpointInTimeRecoveryEnablement
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: database.name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: database.name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
 
 {
   "appEngineIntegrationMode": 2,
@@ -210,8 +210,8 @@ X-Xss-Protection: 0
 
 GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -252,8 +252,8 @@ X-Xss-Protection: 0
 
 GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -286,8 +286,8 @@ X-Xss-Protection: 0
 
 DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&etag=abcdef0123A
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -327,8 +327,8 @@ X-Xss-Protection: 0
 
 GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private

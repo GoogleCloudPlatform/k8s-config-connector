@@ -1,7 +1,7 @@
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -26,8 +26,8 @@ X-Xss-Protection: 0
 
 POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations?%24alt=json%3Benum-encoding%3Dint&dnsAuthorizationId=certificatemanagerdnsauthorization-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
   "domain": "${uniqueId}.hashicorptest.com",
@@ -63,8 +63,8 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -106,8 +106,8 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -141,8 +141,8 @@ X-Xss-Protection: 0
 
 PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: dns_authorization.name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dns_authorization.name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
 
 {
   "description": "Updated sample description",
@@ -180,8 +180,8 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -224,8 +224,8 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -261,8 +261,8 @@ X-Xss-Protection: 0
 
 DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdnsAuthorizations%2Fcertificatemanagerdnsauthorization-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -290,8 +290,8 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private

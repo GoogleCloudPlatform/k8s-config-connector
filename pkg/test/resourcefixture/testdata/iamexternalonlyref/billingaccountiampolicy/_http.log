@@ -1,5 +1,5 @@
-GET https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:getIamPolicy?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
@@ -18,9 +18,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:setIamPolicy?alt=json&prettyPrint=false
+POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -66,8 +66,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:getIamPolicy?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private

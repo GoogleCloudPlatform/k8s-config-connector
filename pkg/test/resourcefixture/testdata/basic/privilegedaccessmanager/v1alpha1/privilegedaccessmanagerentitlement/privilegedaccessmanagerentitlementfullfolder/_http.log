@@ -1,5 +1,5 @@
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Cache-Control: private
@@ -31,7 +31,7 @@ X-Xss-Protection: 0
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "gsa-1-${uniqueId}",
@@ -61,7 +61,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
@@ -86,7 +86,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Cache-Control: private
@@ -118,7 +118,7 @@ X-Xss-Protection: 0
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "gsa-2-${uniqueId}",
@@ -148,7 +148,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
@@ -174,8 +174,8 @@ X-Xss-Protection: 0
 
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -200,8 +200,8 @@ X-Xss-Protection: 0
 
 POST https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements?%24alt=json%3Benum-encoding%3Dint&entitlementId=privilegedaccessmanagerentitlement-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=folders%2F${folderID}%2Flocations%2Fglobal
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=folders%2F${folderID}%2Flocations%2Fglobal
 
 {
   "additionalNotificationTargets": {
@@ -285,8 +285,8 @@ X-Xss-Protection: 0
 
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -376,8 +376,8 @@ X-Xss-Protection: 0
 
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -453,8 +453,8 @@ X-Xss-Protection: 0
 
 PATCH https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=additionalNotificationTargets%2CapprovalWorkflow%2CeligibleUsers%2CmaxRequestDuration%2CprivilegedAccess
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: entitlement.name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: entitlement.name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 {
   "additionalNotificationTargets": {
@@ -541,8 +541,8 @@ X-Xss-Protection: 0
 
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -633,8 +633,8 @@ X-Xss-Protection: 0
 
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -711,8 +711,8 @@ X-Xss-Protection: 0
 
 DELETE https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -742,8 +742,8 @@ X-Xss-Protection: 0
 
 GET https://privilegedaccessmanager.googleapis.com/v1/folders/${folderID}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -833,7 +833,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
@@ -858,7 +858,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
@@ -876,7 +876,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
@@ -901,7 +901,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
