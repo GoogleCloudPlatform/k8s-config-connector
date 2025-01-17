@@ -15,7 +15,6 @@
 package codebot
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -27,14 +26,29 @@ import (
 )
 
 type FunctionResult struct {
-	Response map[string]any
+	Response any
 	Error    error
 }
 
 func (c *Chat) runFunctionCall(ctx context.Context, functionCall genai.FunctionCall) (*FunctionResult, error) {
 	switch functionCall.Name {
-	case "edit_file":
-		result, err := c.runEditFile(ctx, functionCall.Args)
+	case "EditFile":
+		t := &EditFile{}
+		result, err := t.Run(ctx, c, functionCall.Args)
+		return &FunctionResult{
+			Response: result,
+			Error:    err,
+		}, nil
+	case "VerifyCode":
+		t := &VerifyCode{}
+		result, err := t.Run(ctx, c, functionCall.Args)
+		return &FunctionResult{
+			Response: result,
+			Error:    err,
+		}, nil
+	case "ReadFile":
+		t := &ReadFile{}
+		result, err := t.Run(ctx, c, functionCall.Args)
 		return &FunctionResult{
 			Response: result,
 			Error:    err,
@@ -52,54 +66,17 @@ func (c *Chat) runFunctionCall(ctx context.Context, functionCall genai.FunctionC
 			Error:    err,
 		}, nil
 
+	case "FindInWorkspace":
+		t := &FindInWorkspace{}
+		result, err := t.Run(ctx, c, functionCall.Args)
+		return &FunctionResult{
+			Response: result,
+			Error:    err,
+		}, nil
 	default:
 		// TODO: Fatal or return an error?
 		return nil, fmt.Errorf("unknown function %q", functionCall.Name)
 	}
-}
-
-type EditFile struct {
-	Find     string `json:"existing_text"`
-	Replace  string `json:"new_text"`
-	Filename string `json:"filename"`
-}
-
-func (c *Chat) runEditFile(ctx context.Context, args map[string]any) (map[string]any, error) {
-	b, err := json.Marshal(args)
-	if err != nil {
-		return nil, fmt.Errorf("converting to json: %w", err)
-	}
-	var editFile EditFile
-	if err := json.Unmarshal(b, &editFile); err != nil {
-		return nil, fmt.Errorf("unmarshalling %T: %w", &editFile, err)
-	}
-
-	result := make(map[string]any)
-
-	klog.Infof("EditFile: %+v", editFile)
-
-	p := filepath.Join(c.baseDir, editFile.Filename)
-	fileContents, err := os.ReadFile(p)
-	if err != nil {
-		return nil, fmt.Errorf("reading file %q: %w", p, err)
-	}
-
-	if editFile.Find == "" {
-		return nil, fmt.Errorf("the find argument is requiremnt")
-	}
-
-	ix := bytes.Index(fileContents, []byte(editFile.Find))
-	if ix == -1 {
-		return nil, fmt.Errorf("could not find the `find` string %q in the file %q", editFile.Find, p)
-	}
-
-	newContents := bytes.Replace(fileContents, []byte(editFile.Find), []byte(editFile.Replace), 1)
-	if err := os.WriteFile(p, newContents, 0644); err != nil {
-		return nil, fmt.Errorf("writing file %q: %w", p, err)
-	}
-
-	result["result"] = "success"
-	return result, nil
 }
 
 type CreateFile struct {

@@ -70,37 +70,6 @@ If you think the code should be changed, use the tools to apply those changes in
 
 	var functionDeclarations []*genai.FunctionDeclaration
 
-	// edit_file seems less robust than ast_edit; it keeps only doing a single-line find...
-	// TODO: Try giving an example?
-	functionDeclarations = append(functionDeclarations, &genai.FunctionDeclaration{
-		Name: "edit_file",
-		Description: `
-Make a change to an existing file in the user's workspace, by replacing existing_text with new_text.  This tool only applies the first replacement.
-	`,
-		Parameters: &genai.Schema{
-			Type:     genai.TypeObject,
-			Required: []string{"existing_text", "new_text", "filename"},
-			Properties: map[string]*genai.Schema{
-				"existing_text": {
-					Type: genai.TypeString,
-					Description: `
-The text to find, which will be replaced with the contents of the new_text argument.  Provide all the lines of the existing content you want to replace.
-`,
-				},
-				"new_text": {
-					Type: genai.TypeString,
-					Description: `
-The text that should replace the contents of the existing_text argument.
-`,
-				},
-				"filename": {
-					Type:        genai.TypeString,
-					Description: "The path to the file you want to change",
-				},
-			},
-		},
-	})
-
 	functionDeclarations = append(functionDeclarations, &genai.FunctionDeclaration{
 		Name: "create_file",
 		Description: `
@@ -123,6 +92,10 @@ The text that should be the contents of the new file.
 			},
 		},
 	})
+
+	for _, tool := range GetTools() {
+		functionDeclarations = append(functionDeclarations, tool.BuildFunctionDefinition())
+	}
 
 	// 	functionDeclarations = append(functionDeclarations, &genai.FunctionDeclaration{
 	// 		Name: "ast_edit",
