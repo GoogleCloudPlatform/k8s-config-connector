@@ -866,6 +866,20 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						delete(obj, "state") // data transfer run state, which depends on timing
 					})
 
+					// Specific to IAPSettings
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if val, found, _ := unstructured.NestedString(obj, "name"); found {
+							tokens := strings.Split(val, "/")
+							// e.g. "projects/project-id/iap_web/compute-us-central1/services/service-id"
+							if len(tokens) >= 6 && tokens[0] == "projects" && tokens[2] == "iap_web" && strings.Contains(tokens[3], "compute") && tokens[4] == "services" {
+								tokens[len(tokens)-1] = "${serviceId}"
+								if err := unstructured.SetNestedField(obj, strings.Join(tokens, "/"), "name"); err != nil {
+									t.Fatalf("FAIL: setting nested field: %v", err)
+								}
+							}
+						}
+					})
+
 					// Remove error details which can contain confidential information
 					jsonMutators = append(jsonMutators, func(obj map[string]any) {
 						response := obj["error"]

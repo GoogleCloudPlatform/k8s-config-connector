@@ -312,7 +312,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
-			if n >= 2 {
+			if n >= 3 {
+				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
 				typeName := tokens[len(tokens)-2]
 				firewallPolicyId := tokens[len(tokens)-3]
 				if typeName == "rules" {
