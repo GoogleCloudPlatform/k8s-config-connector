@@ -1137,7 +1137,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1162,7 +1162,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships?alt=json&membershipId=gkehubmembership-full-poco-${uniqueId}
+POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships?alt=json&membershipId=${membershipID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1206,7 +1206,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}/operations/${operationID}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/${membershipID}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1261,7 +1261,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1339,7 +1339,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10",
@@ -1419,7 +1419,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+      "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {
         "policycontroller": {
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "10",
@@ -1473,7 +1473,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10",
@@ -1513,7 +1513,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
@@ -1597,7 +1597,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+      "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {
         "policycontroller": {
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "15",
@@ -1654,7 +1654,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {
+    "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {
       "policycontroller": {
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
@@ -1697,7 +1697,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {}
+    "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {}
   },
   "name": "projects/example-project-01/locations/global/features/policycontroller",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1756,7 +1756,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}": {}
+      "projects/example-project-01/locations/us-west1/memberships/${membershipID}": {}
     },
     "name": "projects/example-project-01/locations/global/features/policycontroller",
     "resourceState": {
@@ -1768,7 +1768,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1812,7 +1812,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1843,7 +1843,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/gkehubmembership-full-poco-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-west1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 

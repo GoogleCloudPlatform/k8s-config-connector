@@ -1163,7 +1163,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1188,7 +1188,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships?alt=json&membershipId=gkehubmembership-mesh-${uniqueId}
+POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships?alt=json&membershipId=${membershipID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1232,7 +1232,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}/operations/${operationID}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1287,7 +1287,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1365,7 +1365,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
       "mesh": {
         "management": "MANAGEMENT_MANUAL"
       }
@@ -1427,7 +1427,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {
+      "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
         "mesh": {
           "management": "MANAGEMENT_MANUAL"
         }
@@ -1463,7 +1463,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
       "mesh": {
         "management": "MANAGEMENT_MANUAL"
       }
@@ -1485,7 +1485,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
       "mesh": {
         "management": "MANAGEMENT_AUTOMATIC"
       }
@@ -1548,7 +1548,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {
+      "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
         "mesh": {
           "management": "MANAGEMENT_AUTOMATIC"
         }
@@ -1584,7 +1584,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
       "mesh": {
         "management": "MANAGEMENT_AUTOMATIC"
       }
@@ -1606,7 +1606,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {}
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {}
   },
   "name": "projects/example-project-01/locations/global/features/servicemesh",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1665,7 +1665,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {}
+      "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {}
     },
     "name": "projects/example-project-01/locations/global/features/servicemesh",
     "resourceState": {
@@ -1677,7 +1677,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1721,7 +1721,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1752,7 +1752,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1798,7 +1798,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-mesh-${uniqueId}": {}
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {}
   },
   "name": "projects/example-project-01/locations/global/features/servicemesh",
   "updateTime": "2024-04-01T12:34:56.123456Z"
