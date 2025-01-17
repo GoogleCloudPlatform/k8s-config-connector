@@ -18,7 +18,7 @@ metadata:
   name: memorystoreinstance-${uniqueId}
 spec:
   shardCount: 3
-  pscAutoConnections:
+  pscAutoConnectionsSpec:
   - networkRef:
       external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   - projectRef:

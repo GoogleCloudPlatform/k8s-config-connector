@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockredis
+package mockmemorystore
 
 import (
 	"context"
@@ -23,8 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pbcluster "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/cluster/v1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -46,20 +45,17 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"redis.googleapis.com"}
+	return []string{"memorystore.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterCloudRedisServer(grpcServer, &redisServer{MockService: s})
-	pbcluster.RegisterCloudRedisClusterServer(grpcServer, &clusterServer{MockService: s})
+	pb.RegisterMemorystoreServer(grpcServer, &instanceServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterCloudRedisHandler,
-		pbcluster.RegisterCloudRedisClusterHandler,
+		pb.RegisterMemorystoreHandler,
 		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
 		return nil, err

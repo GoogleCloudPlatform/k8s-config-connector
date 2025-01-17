@@ -173,22 +173,20 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	paths := []string{}
-	{
-		if !reflect.DeepEqual(a.desired.Spec.ReplicaCount, a.actual.ReplicaCount) {
-			paths = append(paths, "replica_count")
-		}
-		if !reflect.DeepEqual(a.desired.Spec.ShardCount, a.actual.ShardCount) {
-			paths = append(paths, "shard_count")
-		}
-		if !reflect.DeepEqual(a.desired.Spec.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
-			paths = append(paths, "deletion_protection_enabled")
-		}
-		if !reflect.DeepEqual(a.desired.Spec.PersistenceConfig, a.actual.PersistenceConfig) {
-			paths = append(paths, "persistent_config")
-		}
-		if !reflect.DeepEqual(a.desired.Spec.EngineConfigs, a.actual.EngineConfigs) {
-			paths = append(paths, "engine_configs")
-		}
+	if !reflect.DeepEqual(a.desired.Spec.ReplicaCount, a.actual.ReplicaCount) {
+		paths = append(paths, "replica_count")
+	}
+	if !reflect.DeepEqual(a.desired.Spec.ShardCount, a.actual.ShardCount) {
+		paths = append(paths, "shard_count")
+	}
+	if !reflect.DeepEqual(a.desired.Spec.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
+		paths = append(paths, "deletion_protection_enabled")
+	}
+	if !reflect.DeepEqual(a.desired.Spec.PersistenceConfig, a.actual.PersistenceConfig) {
+		paths = append(paths, "persistent_config")
+	}
+	if !reflect.DeepEqual(a.desired.Spec.EngineConfigs, a.actual.EngineConfigs) {
+		paths = append(paths, "engine_configs")
 	}
 
 	if len(paths) == 0 {
