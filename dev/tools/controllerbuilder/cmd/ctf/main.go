@@ -26,6 +26,7 @@ import (
 
 	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"k8s.io/klog/v2"
 )
 
@@ -112,7 +113,9 @@ go 1.21
 		return fmt.Errorf("expected build error from scenario, but got no error")
 	}
 
-	chat, err := codebot.NewChat(ctx, tmpDir, contextFiles)
+	u := ui.NewTerminalUI()
+
+	chat, err := codebot.NewChat(ctx, tmpDir, contextFiles, u)
 	if err != nil {
 		return err
 	}
