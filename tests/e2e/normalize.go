@@ -185,6 +185,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to SecretManager
 	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
 
+	// Specific to CloudIdentityMembership
+	visitor.replacePaths[".membership.createTime"] = "2025-01-17T18:51:02.320337735Z"
+	visitor.replacePaths[".membership.updateTime"] = "2025-01-17T18:51:02.320337735Z"
+
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"
 	visitor.replacePaths[".status.observedState.azure.identity"] = "117243083562690747295"
@@ -339,6 +343,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${groupID}")
+				})
+
+			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityMembership"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${membershipID}")
 				})
 			}
 		}

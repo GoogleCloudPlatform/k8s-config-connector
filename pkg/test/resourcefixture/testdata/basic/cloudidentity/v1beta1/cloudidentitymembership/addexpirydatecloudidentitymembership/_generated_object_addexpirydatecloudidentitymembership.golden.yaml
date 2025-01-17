@@ -17,7 +17,7 @@ spec:
     name: cloudidentitygroup-${uniqueId}
   preferredMemberKey:
     id: test2@${ISOLATED_TEST_ORG_NAME}
-  resourceID: 19471824c77
+  resourceID: ${membershipID}
   roles:
   - expiryDetail:
       expireTime: "2222-10-02T15:01:23Z"

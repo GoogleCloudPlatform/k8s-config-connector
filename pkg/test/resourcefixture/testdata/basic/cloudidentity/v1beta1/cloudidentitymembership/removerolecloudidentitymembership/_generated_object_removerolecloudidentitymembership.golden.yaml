@@ -17,7 +17,7 @@ spec:
     name: cloudidentitygroup-${uniqueId}
   preferredMemberKey:
     id: test2@${ISOLATED_TEST_ORG_NAME}
-  resourceID: "19471798744"
+  resourceID: ${membershipID}
   roles:
   - name: MEMBER
 status:
