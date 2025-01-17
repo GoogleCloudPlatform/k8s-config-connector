@@ -684,7 +684,7 @@ func (h *Harness) ExportParams() exportparameters.Parameters {
 }
 
 func (h *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudresourcemanagerv1.Service {
-	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(httpClient))
+	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(httpClient), option.WithUserAgent(gcp.KCCUserAgent()))
 	if err != nil {
 		h.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
 	}

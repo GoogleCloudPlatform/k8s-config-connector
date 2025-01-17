@@ -31,6 +31,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 	"k8s.io/klog/v2"
 
@@ -368,6 +369,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				if h.KubeEvents != nil {
 					verifyKubeWatches(h)
 				}
+
+				// Verify HTTP log with static checks
+				verifyUserAgent(h)
 
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
@@ -960,6 +964,39 @@ func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
 
 	if err := c.Create(ctx, cc); err != nil {
 		t.Fatalf("FAIL: error creating CC: %v", err)
+	}
+}
+
+// verifyUserAgent verifies that the user agent is set to the expected KCC user agent for all requests
+func verifyUserAgent(h *create.Harness) {
+	for _, event := range h.Events.HTTPEvents {
+		userAgent := event.Request.Header.Get("User-Agent")
+
+		// We don't capture the user-agent for GRPC
+		if userAgent == "" && event.Request.Method == "GRPC" {
+			continue
+		}
+
+		tokens := strings.Split(userAgent, " ")
+		var keepTokens []string
+		for _, token := range tokens {
+			// We ignore the google-api-go-client/ prefix; it's added by the GCP client library and difficult to remove.
+			if strings.HasPrefix(token, "google-api-go-client/") {
+				continue
+			}
+			// Similarly we ignore the DCL suffix
+			if strings.HasPrefix(token, "DeclarativeClientLib/") {
+				continue
+			}
+			keepTokens = append(keepTokens, token)
+		}
+
+		got := strings.Join(keepTokens, " ")
+		want := gcp.KCCUserAgent()
+		if got != want {
+			h.Logf("request is %+v", event.Request)
+			h.Errorf("FAIL: unexpected user agent for request %v %v.  got %q, expected %q", event.Request.Method, event.Request.URL, got, want)
+		}
 	}
 }
 
