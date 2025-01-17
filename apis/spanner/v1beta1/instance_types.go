@@ -53,8 +53,8 @@ type SpannerInstanceSpec struct {
 	AutoscalingConfig *AutoscalingConfig `json:"autoscalingConfig,omitempty"`
 
 	// Optional. The `Edition` of the current instance.
+	// Currently accepted values are EDITION_UNSPECIFIED, STANDARD, ENTERPRISE, ENTERPRISE_PLUS
 	// +optional
-	// +kubebuilder:validation:Enum=EDITION_UNSPECIFIED;STANDARD;ENTERPRISE;ENTERPRISE_PLUS
 	Edition *string `json:"edition,omitempty"`
 
 	// The SpannerInstance name. If not given, the metadata.name will be used.
