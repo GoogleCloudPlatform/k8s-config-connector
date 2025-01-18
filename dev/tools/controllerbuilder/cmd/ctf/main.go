@@ -103,6 +103,8 @@ go 1.21
 		}
 	}
 
+	contextFiles = nil
+
 	buildResults, err := runGoBuild(ctx, tmpDir)
 	if err != nil {
 		return err
@@ -113,7 +115,17 @@ go 1.21
 		return fmt.Errorf("expected build error from scenario, but got no error")
 	}
 
-	llmClient, err := llm.BuildVertexAIClient(ctx)
+	// llmClient, err := llm.BuildVertexAIClient(ctx)
+	// if err != nil {
+	// 	return fmt.Errorf("initializing LLM: %w", err)
+	// }
+
+	// llmClient, err := llm.BuildGeminiClient(ctx)
+	// if err != nil {
+	// 	return fmt.Errorf("initializing gemini: %w", err)
+	// }
+
+	llmClient, err := llm.BuildOllamaClient(ctx)
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}

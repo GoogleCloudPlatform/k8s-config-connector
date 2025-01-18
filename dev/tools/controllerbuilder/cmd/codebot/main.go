@@ -92,10 +92,16 @@ func run(ctx context.Context) error {
 		}
 	}
 
-	llmClient, err := llm.BuildVertexAIClient(ctx)
+	// llmClient, err := llm.BuildVertexAIClient(ctx)
+	// if err != nil {
+	// 	return fmt.Errorf("initializing LLM: %w", err)
+	// }
+
+	llmClient, err := llm.BuildOllamaClient(ctx)
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}
+
 	defer llmClient.Close()
 
 	var chatSession *codebot.Chat
