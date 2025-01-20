@@ -35,7 +35,7 @@ import (
 func UpdateGoFile(ctx context.Context, file string, output *bytes.Buffer) error {
 	klog := klog.FromContext(ctx)
 
-	goCode := extractGoCode(output.Bytes())
+	goCode := ExtractGoCode(output.Bytes())
 	if goCode == "" {
 		return fmt.Errorf("no go code in %s", output)
 	}
@@ -49,7 +49,7 @@ func UpdateGoFile(ctx context.Context, file string, output *bytes.Buffer) error 
 
 // The data is normally a combination of go code (with triple quote code blocks marker ```go ... ```)
 // and wording explanation for the recommendation.
-func extractGoCode(data []byte) string {
+func ExtractGoCode(data []byte) string {
 	re := regexp.MustCompile("(?s)```go\n(.*?)```")
 	matches := re.FindStringSubmatch(string(data))
 	if len(matches) == 2 {
