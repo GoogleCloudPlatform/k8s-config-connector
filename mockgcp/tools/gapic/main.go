@@ -61,7 +61,7 @@ func run(ctx context.Context) error {
 	decoder := json.NewDecoder(bytes.NewReader(b))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(doc); err != nil {
-		return fmt.Errorf("parsing json %q: %w", p, err)
+		return fmt.Errorf("parsing json %q (with DisallowUnknownFields): %w", p, err)
 	}
 
 	c := protogen.NewOpenAPIConverter(protoPackage, doc)
