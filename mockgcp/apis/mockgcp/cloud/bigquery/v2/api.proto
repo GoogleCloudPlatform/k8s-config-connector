@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -661,7 +661,7 @@ message ClusterInfo {
 
 // Configures table clustering.
 message Clustering {
-  // One or more fields on which data should be clustered. Only top-level, non-repeated, simple-type fields are supported. The ordering of the clustering fields should be prioritized from most to least important for filtering purposes. Additional information on limitations can be found here: https://cloud.google.com/bigquery/docs/creating-clustered-tables#limitations
+  // One or more fields on which data should be clustered. Only top-level, non-repeated, simple-type fields are supported. The ordering of the clustering fields should be prioritized from most to least important for filtering purposes. For additional information, see [Introduction to clustered tables](https://cloud.google.com/bigquery/docs/clustered-tables#limitations).
   repeated string fields = 1 [json_name="fields"];
 }
 
@@ -1076,19 +1076,19 @@ message Expr {
   optional string title = 4 [json_name="title"];
 }
 
-// Options defining open source compatible datasets living in the BigQuery catalog. Contains metadata of open source database, schema or namespace represented by the current dataset.
+// Options defining open source compatible datasets living in the BigQuery catalog. Contains metadata of open source database, schema, or namespace represented by the current dataset.
 message ExternalCatalogDatasetOptions {
   // Optional. The storage location URI for all tables in the dataset. Equivalent to hive metastore's database locationUri. Maximum length of 1024 characters.
   optional string default_storage_location_uri = 1 [json_name="defaultStorageLocationUri"];
-  // Optional. A map of key value pairs defining the parameters and properties of the open source schema. Maximum size of 2Mib.
+  // Optional. A map of key value pairs defining the parameters and properties of the open source schema. Maximum size of 2MiB.
   map<string, string> parameters = 2 [json_name="parameters"];
 }
 
-// Metadata about open source compatible table. The fields contained in these options correspond to hive metastore's table level properties.
+// Metadata about open source compatible table. The fields contained in these options correspond to Hive metastore's table-level properties.
 message ExternalCatalogTableOptions {
-  // Optional. The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connection is needed to read the open source table from BigQuery Engine. The connection_id can have the form `..` or `projects//locations//connections/`.
+  // Optional. A connection ID that specifies the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or Amazon S3. This connection is needed to read the open source table from BigQuery. The connection_id format must be either `..` or `projects//locations//connections/`.
   optional string connection_id = 1 [json_name="connectionId"];
-  // Optional. A map of key value pairs defining the parameters and properties of the open source table. Corresponds with hive meta store table parameters. Maximum size of 4Mib.
+  // Optional. A map of the key-value pairs defining the parameters and properties of the open source table. Corresponds with Hive metastore table parameters. Maximum size of 4MiB.
   map<string, string> parameters = 2 [json_name="parameters"];
   // Optional. A storage descriptor containing information about the physical storage of this table.
   optional StorageDescriptor storage_descriptor = 3 [json_name="storageDescriptor"];
@@ -1820,7 +1820,7 @@ message JobStatistics2 {
   optional SearchStatistics search_statistics = 33 [json_name="searchStatistics"];
   // Output only. Statistics of a Spark procedure job.
   optional SparkStatistics spark_statistics = 34 [json_name="sparkStatistics"];
-  // Output only. The type of query statement, if valid. Possible values: * `SELECT`: [`SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_list) statement. * `ASSERT`: [`ASSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/debugging-statements#assert) statement. * `INSERT`: [`INSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#insert_statement) statement. * `UPDATE`: [`UPDATE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#update_statement) statement. * `DELETE`: [`DELETE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `MERGE`: [`MERGE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `CREATE_TABLE`: [`CREATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement, without `AS SELECT`. * `CREATE_TABLE_AS_SELECT`: [`CREATE TABLE AS SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#query_statement) statement. * `CREATE_VIEW`: [`CREATE VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_view_statement) statement. * `CREATE_MODEL`: [`CREATE MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create#create_model_statement) statement. * `CREATE_MATERIALIZED_VIEW`: [`CREATE MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_materialized_view_statement) statement. * `CREATE_FUNCTION`: [`CREATE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_function_statement) statement. * `CREATE_TABLE_FUNCTION`: [`CREATE TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_function_statement) statement. * `CREATE_PROCEDURE`: [`CREATE PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_procedure) statement. * `CREATE_ROW_ACCESS_POLICY`: [`CREATE ROW ACCESS POLICY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_row_access_policy_statement) statement. * `CREATE_SCHEMA`: [`CREATE SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_schema_statement) statement. * `CREATE_SNAPSHOT_TABLE`: [`CREATE SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_snapshot_table_statement) statement. * `CREATE_SEARCH_INDEX`: [`CREATE SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_search_index_statement) statement. * `DROP_TABLE`: [`DROP TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_statement) statement. * `DROP_EXTERNAL_TABLE`: [`DROP EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_external_table_statement) statement. * `DROP_VIEW`: [`DROP VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_view_statement) statement. * `DROP_MODEL`: [`DROP MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-drop-model) statement. * `DROP_MATERIALIZED_VIEW`: [`DROP MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_materialized_view_statement) statement. * `DROP_FUNCTION` : [`DROP FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_function_statement) statement. * `DROP_TABLE_FUNCTION` : [`DROP TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_function) statement. * `DROP_PROCEDURE`: [`DROP PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_procedure_statement) statement. * `DROP_SEARCH_INDEX`: [`DROP SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_search_index) statement. * `DROP_SCHEMA`: [`DROP SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_schema_statement) statement. * `DROP_SNAPSHOT_TABLE`: [`DROP SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_snapshot_table_statement) statement. * `DROP_ROW_ACCESS_POLICY`: [`DROP [ALL] ROW ACCESS POLICY|POLICIES`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_row_access_policy_statement) statement. * `ALTER_TABLE`: [`ALTER TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_table_set_options_statement) statement. * `ALTER_VIEW`: [`ALTER VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_view_set_options_statement) statement. * `ALTER_MATERIALIZED_VIEW`: [`ALTER MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_materialized_view_set_options_statement) statement. * `ALTER_SCHEMA`: [`ALTER SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#aalter_schema_set_options_statement) statement. * `SCRIPT`: [`SCRIPT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language). * `TRUNCATE_TABLE`: [`TRUNCATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#truncate_table_statement) statement. * `CREATE_EXTERNAL_TABLE`: [`CREATE EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_external_table_statement) statement. * `EXPORT_DATA`: [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#export_data_statement) statement. * `EXPORT_MODEL`: [`EXPORT MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-export-model) statement. * `LOAD_DATA`: [`LOAD DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#load_data_statement) statement. * `CALL`: [`CALL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language#call) statement.
+  // Output only. The type of query statement, if valid. Possible values: * `SELECT`: [`SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_list) statement. * `ASSERT`: [`ASSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/debugging-statements#assert) statement. * `INSERT`: [`INSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#insert_statement) statement. * `UPDATE`: [`UPDATE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#update_statement) statement. * `DELETE`: [`DELETE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `MERGE`: [`MERGE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `CREATE_TABLE`: [`CREATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement, without `AS SELECT`. * `CREATE_TABLE_AS_SELECT`: [`CREATE TABLE AS SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement. * `CREATE_VIEW`: [`CREATE VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_view_statement) statement. * `CREATE_MODEL`: [`CREATE MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create#create_model_statement) statement. * `CREATE_MATERIALIZED_VIEW`: [`CREATE MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_materialized_view_statement) statement. * `CREATE_FUNCTION`: [`CREATE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_function_statement) statement. * `CREATE_TABLE_FUNCTION`: [`CREATE TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_function_statement) statement. * `CREATE_PROCEDURE`: [`CREATE PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_procedure) statement. * `CREATE_ROW_ACCESS_POLICY`: [`CREATE ROW ACCESS POLICY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_row_access_policy_statement) statement. * `CREATE_SCHEMA`: [`CREATE SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_schema_statement) statement. * `CREATE_SNAPSHOT_TABLE`: [`CREATE SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_snapshot_table_statement) statement. * `CREATE_SEARCH_INDEX`: [`CREATE SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_search_index_statement) statement. * `DROP_TABLE`: [`DROP TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_statement) statement. * `DROP_EXTERNAL_TABLE`: [`DROP EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_external_table_statement) statement. * `DROP_VIEW`: [`DROP VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_view_statement) statement. * `DROP_MODEL`: [`DROP MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-drop-model) statement. * `DROP_MATERIALIZED_VIEW`: [`DROP MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_materialized_view_statement) statement. * `DROP_FUNCTION` : [`DROP FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_function_statement) statement. * `DROP_TABLE_FUNCTION` : [`DROP TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_function) statement. * `DROP_PROCEDURE`: [`DROP PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_procedure_statement) statement. * `DROP_SEARCH_INDEX`: [`DROP SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_search_index) statement. * `DROP_SCHEMA`: [`DROP SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_schema_statement) statement. * `DROP_SNAPSHOT_TABLE`: [`DROP SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_snapshot_table_statement) statement. * `DROP_ROW_ACCESS_POLICY`: [`DROP [ALL] ROW ACCESS POLICY|POLICIES`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_row_access_policy_statement) statement. * `ALTER_TABLE`: [`ALTER TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_table_set_options_statement) statement. * `ALTER_VIEW`: [`ALTER VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_view_set_options_statement) statement. * `ALTER_MATERIALIZED_VIEW`: [`ALTER MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_materialized_view_set_options_statement) statement. * `ALTER_SCHEMA`: [`ALTER SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_schema_set_options_statement) statement. * `SCRIPT`: [`SCRIPT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language). * `TRUNCATE_TABLE`: [`TRUNCATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#truncate_table_statement) statement. * `CREATE_EXTERNAL_TABLE`: [`CREATE EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_external_table_statement) statement. * `EXPORT_DATA`: [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#export_data_statement) statement. * `EXPORT_MODEL`: [`EXPORT MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-export-model) statement. * `LOAD_DATA`: [`LOAD DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#load_data_statement) statement. * `CALL`: [`CALL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language#call) statement.
   optional string statement_type = 35 [json_name="statementType"];
   // Output only. Describes a timeline of job execution.
   repeated QueryTimelineSample timeline = 36 [json_name="timeline"];
@@ -2271,7 +2271,7 @@ message QueryRequest {
   optional string kind = 8 [json_name="kind"];
   // Optional. The labels associated with this query. Labels can be used to organize and group query jobs. Label keys and values can be no longer than 63 characters, can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. Label keys must start with a letter and each label in the list must have a different key.
   map<string, string> labels = 9 [json_name="labels"];
-  // The geographic location where the job should run. See details at https://cloud.google.com/bigquery/docs/locations#specifying_your_location.
+  // The geographic location where the job should run. For more information, see how to [specify locations](https://cloud.google.com/bigquery/docs/locations#specify_locations).
   optional string location = 10 [json_name="location"];
   // Optional. The maximum number of rows of data to return per page of results. Setting this flag to a small value such as 1000 and then paging through results might improve reliability when the query result set is large. In addition to this limit, responses are also limited to 10 MB. By default, there is no maximum row count, and only the byte limit applies.
   optional uint32 max_results = 11 [json_name="maxResults"];
@@ -2770,72 +2770,74 @@ message Table {
   optional uint64 last_modified_time = 17 [json_name="lastModifiedTime"];
   // Output only. The geographic location where the table resides. This value is inherited from the dataset.
   optional string location = 18 [json_name="location"];
+  // Optional. If set, overrides the default managed table type configured in the dataset.
+  optional string managed_table_type = 19 [json_name="managedTableType"];
   // Optional. The materialized view definition.
-  optional MaterializedViewDefinition materialized_view = 19 [json_name="materializedView"];
+  optional MaterializedViewDefinition materialized_view = 20 [json_name="materializedView"];
   // Output only. The materialized view status.
-  optional MaterializedViewStatus materialized_view_status = 20 [json_name="materializedViewStatus"];
+  optional MaterializedViewStatus materialized_view_status = 21 [json_name="materializedViewStatus"];
   // Optional. The maximum staleness of data that could be returned when the table (or stale MV) is queried. Staleness encoded as a string encoding of sql IntervalValue type.
-  optional string max_staleness = 21 [json_name="maxStaleness"];
+  optional string max_staleness = 22 [json_name="maxStaleness"];
   // Deprecated.
-  optional ModelDefinition model = 22 [json_name="model"];
+  optional ModelDefinition model = 23 [json_name="model"];
   // Output only. Number of logical bytes that are less than 90 days old.
-  optional int64 num_active_logical_bytes = 23 [json_name="numActiveLogicalBytes"];
+  optional int64 num_active_logical_bytes = 24 [json_name="numActiveLogicalBytes"];
   // Output only. Number of physical bytes less than 90 days old. This data is not kept in real time, and might be delayed by a few seconds to a few minutes.
-  optional int64 num_active_physical_bytes = 24 [json_name="numActivePhysicalBytes"];
+  optional int64 num_active_physical_bytes = 25 [json_name="numActivePhysicalBytes"];
   // Output only. The size of this table in logical bytes, excluding any data in the streaming buffer.
-  optional int64 num_bytes = 25 [json_name="numBytes"];
+  optional int64 num_bytes = 26 [json_name="numBytes"];
   // Output only. Number of physical bytes used by current live data storage. This data is not kept in real time, and might be delayed by a few seconds to a few minutes.
-  optional int64 num_current_physical_bytes = 26 [json_name="numCurrentPhysicalBytes"];
+  optional int64 num_current_physical_bytes = 27 [json_name="numCurrentPhysicalBytes"];
   // Output only. The number of logical bytes in the table that are considered "long-term storage".
-  optional int64 num_long_term_bytes = 27 [json_name="numLongTermBytes"];
+  optional int64 num_long_term_bytes = 28 [json_name="numLongTermBytes"];
   // Output only. Number of logical bytes that are more than 90 days old.
-  optional int64 num_long_term_logical_bytes = 28 [json_name="numLongTermLogicalBytes"];
+  optional int64 num_long_term_logical_bytes = 29 [json_name="numLongTermLogicalBytes"];
   // Output only. Number of physical bytes more than 90 days old. This data is not kept in real time, and might be delayed by a few seconds to a few minutes.
-  optional int64 num_long_term_physical_bytes = 29 [json_name="numLongTermPhysicalBytes"];
+  optional int64 num_long_term_physical_bytes = 30 [json_name="numLongTermPhysicalBytes"];
   // Output only. The number of partitions present in the table or materialized view. This data is not kept in real time, and might be delayed by a few seconds to a few minutes.
-  optional int64 num_partitions = 30 [json_name="numPartitions"];
+  optional int64 num_partitions = 31 [json_name="numPartitions"];
   // Output only. The physical size of this table in bytes. This includes storage used for time travel.
-  optional int64 num_physical_bytes = 31 [json_name="numPhysicalBytes"];
+  optional int64 num_physical_bytes = 32 [json_name="numPhysicalBytes"];
   // Output only. The number of rows of data in this table, excluding any data in the streaming buffer.
-  optional uint64 num_rows = 32 [json_name="numRows"];
+  optional uint64 num_rows = 33 [json_name="numRows"];
   // Output only. Number of physical bytes used by time travel storage (deleted or changed data). This data is not kept in real time, and might be delayed by a few seconds to a few minutes.
-  optional int64 num_time_travel_physical_bytes = 33 [json_name="numTimeTravelPhysicalBytes"];
+  optional int64 num_time_travel_physical_bytes = 34 [json_name="numTimeTravelPhysicalBytes"];
   // Output only. Total number of logical bytes in the table or materialized view.
-  optional int64 num_total_logical_bytes = 34 [json_name="numTotalLogicalBytes"];
+  optional int64 num_total_logical_bytes = 35 [json_name="numTotalLogicalBytes"];
   // Output only. The physical size of this table in bytes. This also includes storage used for time travel. This data is not kept in real time, and might be delayed by a few seconds to a few minutes.
-  optional int64 num_total_physical_bytes = 35 [json_name="numTotalPhysicalBytes"];
+  optional int64 num_total_physical_bytes = 36 [json_name="numTotalPhysicalBytes"];
   // Optional. The partition information for all table formats, including managed partitioned tables, hive partitioned tables, iceberg partitioned, and metastore partitioned tables. This field is only populated for metastore partitioned tables. For other table formats, this is an output only field.
-  optional PartitioningDefinition partition_definition = 36 [json_name="partitionDefinition"];
+  optional PartitioningDefinition partition_definition = 37 [json_name="partitionDefinition"];
   // If specified, configures range partitioning for this table.
-  optional RangePartitioning range_partitioning = 37 [json_name="rangePartitioning"];
+  optional RangePartitioning range_partitioning = 38 [json_name="rangePartitioning"];
   // Optional. Output only. Table references of all replicas currently active on the table.
-  repeated TableReference replicas = 38 [json_name="replicas"];
+  repeated TableReference replicas = 39 [json_name="replicas"];
   // Optional. If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.
-  optional bool require_partition_filter = 39 [json_name="requirePartitionFilter"];
+  optional bool require_partition_filter = 40 [json_name="requirePartitionFilter"];
   // [Optional] The tags associated with this table. Tag keys are globally unique. See additional information on [tags](https://cloud.google.com/iam/docs/tags-access-control#definitions). An object containing a list of "key": value pairs. The key is the namespaced friendly name of the tag key, e.g. "12345/environment" where 12345 is parent id. The value is the friendly short name of the tag value, e.g. "production".
-  map<string, string> resource_tags = 40 [json_name="resourceTags"];
+  map<string, string> resource_tags = 41 [json_name="resourceTags"];
   // Optional. Output only. Restriction config for table. If set, restrict certain accesses on the table based on the config. See [Data egress](https://cloud.google.com/bigquery/docs/analytics-hub-introduction#data_egress) for more details.
-  optional RestrictionConfig restrictions = 41 [json_name="restrictions"];
+  optional RestrictionConfig restrictions = 42 [json_name="restrictions"];
   // Optional. Describes the schema of this table.
-  optional TableSchema schema = 42 [json_name="schema"];
+  optional TableSchema schema = 43 [json_name="schema"];
   // Output only. A URL that can be used to access this resource again.
-  optional string self_link = 43 [json_name="selfLink"];
+  optional string self_link = 44 [json_name="selfLink"];
   // Output only. Contains information about the snapshot. This value is set via snapshot creation.
-  optional SnapshotDefinition snapshot_definition = 44 [json_name="snapshotDefinition"];
+  optional SnapshotDefinition snapshot_definition = 45 [json_name="snapshotDefinition"];
   // Output only. Contains information regarding this table's streaming buffer, if one is present. This field will be absent if the table is not being streamed to or if there is no data in the streaming buffer.
-  optional Streamingbuffer streaming_buffer = 45 [json_name="streamingBuffer"];
+  optional Streamingbuffer streaming_buffer = 46 [json_name="streamingBuffer"];
   // Optional. Tables Primary Key and Foreign Key information
-  optional TableConstraints table_constraints = 46 [json_name="tableConstraints"];
+  optional TableConstraints table_constraints = 47 [json_name="tableConstraints"];
   // Required. Reference describing the ID of this table.
-  optional TableReference table_reference = 47 [json_name="tableReference"];
+  optional TableReference table_reference = 48 [json_name="tableReference"];
   // Optional. Table replication info for table created `AS REPLICA` DDL like: `CREATE MATERIALIZED VIEW mv1 AS REPLICA OF src_mv`
-  optional TableReplicationInfo table_replication_info = 48 [json_name="tableReplicationInfo"];
+  optional TableReplicationInfo table_replication_info = 49 [json_name="tableReplicationInfo"];
   // If specified, configures time-based partitioning for this table.
-  optional TimePartitioning time_partitioning = 49 [json_name="timePartitioning"];
+  optional TimePartitioning time_partitioning = 50 [json_name="timePartitioning"];
   // Output only. Describes the table type. The following values are supported: * `TABLE`: A normal BigQuery table. * `VIEW`: A virtual table defined by a SQL query. * `EXTERNAL`: A table that references data stored in an external storage system, such as Google Cloud Storage. * `MATERIALIZED_VIEW`: A precomputed view defined by a SQL query. * `SNAPSHOT`: An immutable BigQuery table that preserves the contents of a base table at a particular time. See additional information on [table snapshots](https://cloud.google.com/bigquery/docs/table-snapshots-intro). The default value is `TABLE`.
-  optional string type = 50 [json_name="type"];
+  optional string type = 51 [json_name="type"];
   // Optional. The view definition.
-  optional ViewDefinition view = 51 [json_name="view"];
+  optional ViewDefinition view = 52 [json_name="view"];
 }
 
 message TableCell {
@@ -3115,7 +3117,7 @@ message TrainingOptions {
   optional string dart_normalize_type = 19 [json_name="dartNormalizeType"];
   // The data frequency of a time series.
   optional string data_frequency = 20 [json_name="dataFrequency"];
-  // The column to split data with. This column won't be used as a feature. 1. When data_split_method is CUSTOM, the corresponding column should be boolean. The rows with true value tag are eval data, and the false are training data. 2. When data_split_method is SEQ, the first DATA_SPLIT_EVAL_FRACTION rows (from smallest to largest) in the corresponding column are used as training data, and the rest are eval data. It respects the order in Orderable data types: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data-type-properties
+  // The column to split data with. This column won't be used as a feature. 1. When data_split_method is CUSTOM, the corresponding column should be boolean. The rows with true value tag are eval data, and the false are training data. 2. When data_split_method is SEQ, the first DATA_SPLIT_EVAL_FRACTION rows (from smallest to largest) in the corresponding column are used as training data, and the rest are eval data. It respects the order in Orderable data types: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data_type_properties
   optional string data_split_column = 21 [json_name="dataSplitColumn"];
   // The fraction of evaluation data over the whole input data. The rest of data will be used as training data. The format should be double. Accurate to two decimal places. Default value is 0.2.
   optional double data_split_eval_fraction = 22 [json_name="dataSplitEvalFraction"];

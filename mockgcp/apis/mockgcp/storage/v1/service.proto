@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -463,6 +463,13 @@ service ObjectsServer {
   rpc ListObjects(ListObjectsRequest) returns (Objects) {
     option (google.api.http) = {
       get: "/storage/v1/b/{bucket}/o"
+    };
+  };
+
+  // Moves the source object to the destination object in the same bucket.
+  rpc MoveObject(MoveObjectRequest) returns (Object) {
+    option (google.api.http) = {
+      post: "/storage/v1/b/{bucket}/o/{source_object}/moveTo/o/{destination_object}"
     };
   };
 
@@ -1795,6 +1802,21 @@ message ListObjectsRequest {
   optional string start_offset = 12;
   optional string user_project = 13;
   optional bool versions = 14;
+}
+
+message MoveObjectRequest {
+  optional string bucket = 1;
+  optional string destination_object = 2;
+  optional string if_generation_match = 3;
+  optional string if_generation_not_match = 4;
+  optional string if_metageneration_match = 5;
+  optional string if_metageneration_not_match = 6;
+  optional string if_source_generation_match = 7;
+  optional string if_source_generation_not_match = 8;
+  optional string if_source_metageneration_match = 9;
+  optional string if_source_metageneration_not_match = 10;
+  optional string source_object = 11;
+  optional string user_project = 12;
 }
 
 message PatchObjectRequest {

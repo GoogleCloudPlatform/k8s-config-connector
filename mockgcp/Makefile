@@ -118,7 +118,7 @@ gen-proto-no-fixup:
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
 	mkdir -p third_party
-	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git reset --hard $(GOOGLEAPI_VERSION) && git pull)
+	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION) && git pull)
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \

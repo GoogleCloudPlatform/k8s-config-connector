@@ -13,10 +13,10 @@ import (
 	"io"
 	"net/http"
 
-	extAdminpb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	extIampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	extAdminpb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"

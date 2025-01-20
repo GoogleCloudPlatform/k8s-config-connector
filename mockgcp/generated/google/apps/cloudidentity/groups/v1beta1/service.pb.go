@@ -1613,7 +1613,7 @@ func (*DeleteInboundSsoAssignmentOperationMetadata) Descriptor() ([]byte, []int)
 	return file_google_apps_cloudidentity_groups_v1beta1_service_proto_rawDescGZIP(), []int{24}
 }
 
-// A Device within the Cloud Identity Devices API. Represents a Device known to Google Cloud, independent of the device ownership, type, and whether it is assigned or in use by a user.
+// A Device within the Cloud Identity Devices API. Represents a Device known to Google Cloud, independent of the device ownership, type, and whether it is assigned or in use by a user. Important: Device API scopes require that you use domain-wide delegation to access the API. For more information, see [Set up the Devices API](https://cloud.google.com/identity/docs/how-to/setup-devices).
 type Device struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3801,7 +3801,7 @@ type GoogleAppsCloudidentityDevicesV1Device struct {
 	Meid *string `protobuf:"bytes,21,opt,name=meid" json:"meid,omitempty"`
 	// Output only. Model name of device. Example: Pixel 3.
 	Model *string `protobuf:"bytes,22,opt,name=model" json:"model,omitempty"`
-	// Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Device in format: `devices/{device}`, where device is the unique id assigned to the Device.
+	// Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Device in format: `devices/{device}`, where device is the unique id assigned to the Device. Important: Device API scopes require that you use domain-wide delegation to access the API. For more information, see [Set up the Devices API](https://cloud.google.com/identity/docs/how-to/setup-devices).
 	Name *string `protobuf:"bytes,23,opt,name=name" json:"name,omitempty"`
 	// Output only. Mobile or network operator of device, if available.
 	NetworkOperator *string `protobuf:"bytes,24,opt,name=network_operator,json=networkOperator" json:"network_operator,omitempty"`
@@ -4626,7 +4626,7 @@ type Group struct {
 	DynamicGroupMetadata *DynamicGroupMetadata `protobuf:"bytes,5,opt,name=dynamic_group_metadata,json=dynamicGroupMetadata" json:"dynamic_group_metadata,omitempty"`
 	// Required. The `EntityKey` of the `Group`.
 	GroupKey *EntityKey `protobuf:"bytes,6,opt,name=group_key,json=groupKey" json:"group_key,omitempty"`
-	// Required. One or more label entries that apply to the Group. Currently supported labels contain a key with an empty value. Google Groups are the default type of group and have a label with a key of `cloudidentity.googleapis.com/groups.discussion_forum` and an empty value. Existing Google Groups can have an additional label with a key of `cloudidentity.googleapis.com/groups.security` and an empty value added to them. **This is an immutable change and the security label cannot be removed once added.** Dynamic groups have a label with a key of `cloudidentity.googleapis.com/groups.dynamic`. Identity-mapped groups for Cloud Search have a label with a key of `system/groups/external` and an empty value.
+	// Required. One or more label entries that apply to the Group. Labels contain a key with an empty value. Google Groups are the default type of group and have a label with a key of `cloudidentity.googleapis.com/groups.discussion_forum` and an empty value. Existing Google Groups can have an additional label with a key of `cloudidentity.googleapis.com/groups.security` and an empty value added to them. **This is an immutable change and the security label cannot be removed once added.** Dynamic groups have a label with a key of `cloudidentity.googleapis.com/groups.dynamic`. Identity-mapped groups for Cloud Search have a label with a key of `system/groups/external` and an empty value. (Beta) Google Groups can be [locked](https://support.google.com/a?p=locked-groups). To lock a group, add a label with a key of `cloudidentity.googleapis.com/groups.locked` and an empty value. Doing so locks the group. To unlock the group, remove this label.
 	Labels map[string]string `protobuf:"bytes,7,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Output only. The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Group`. Shall be of the form `groups/{group_id}`.
 	Name *string `protobuf:"bytes,8,opt,name=name" json:"name,omitempty"`
@@ -6218,7 +6218,7 @@ type MembershipAdjacencyList struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Each edge contains information about the member that belongs to this group. Note: Fields returned here will help identify the specific Membership resource (e.g name, preferred_member_key and role), but may not be a comprehensive list of all fields.
+	// Each edge contains information about the member that belongs to this group. Note: Fields returned here will help identify the specific Membership resource (e.g `name`, `preferred_member_key` and `role`), but may not be a comprehensive list of all fields.
 	Edges []*Membership `protobuf:"bytes,1,rep,name=edges" json:"edges,omitempty"`
 	// Resource name of the group that the members belong to.
 	Group *string `protobuf:"bytes,2,opt,name=group" json:"group,omitempty"`
@@ -6836,7 +6836,7 @@ type PolicyQuery struct {
 	OrgUnit *string `protobuf:"bytes,2,opt,name=org_unit,json=orgUnit" json:"org_unit,omitempty"`
 	// Immutable. The CEL query that defines which entities the Policy applies to (ex. a User entity). For details about CEL see https://opensource.google.com/projects/cel. The OrgUnits the Policy applies to are represented by a clause like so: entity.org_units.exists(org_unit, org_unit.org_unit_id == orgUnitId('{orgUnitId}')) The Group the Policy applies to are represented by a clause like so: entity.groups.exists(group, group.group_id == groupId('{groupId}')) The Licenses the Policy applies to are represented by a clause like so: entity.licenses.exists(license, license in ['/product/{productId}/sku/{skuId}']) The above clauses can be present in any combination, and used in conjunction with the &&, || and ! operators. The org_unit and group fields below are helper fields that contain the corresponding value(s) as the query to make the query easier to use.
 	Query *string `protobuf:"bytes,3,opt,name=query" json:"query,omitempty"`
-	// Output only. The decimal sort order of this PolicyQuery. The value is relative to all other policies with the same setting type within the whole customer. (There are no duplicates within this set.)
+	// Output only. The decimal sort order of this PolicyQuery. The value is relative to all other policies with the same setting type for the customer. (There are no duplicates within this set).
 	SortOrder *float64 `protobuf:"fixed64,4,opt,name=sort_order,json=sortOrder" json:"sort_order,omitempty"`
 }
 

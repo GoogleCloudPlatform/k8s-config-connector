@@ -1675,7 +1675,8 @@ X-Xss-Protection: 0
               "syncRev": "HEAD",
               "syncWaitSecs": "20"
             },
-            "sourceFormat": "hierarchy"
+            "sourceFormat": "hierarchy",
+            "stopSyncing": true
           },
           "version": "1.20.0"
         }
@@ -1724,7 +1725,8 @@ X-Xss-Protection: 0
             "syncRev": "HEAD",
             "syncWaitSecs": "20"
           },
-          "sourceFormat": "hierarchy"
+          "sourceFormat": "hierarchy",
+          "stopSyncing": true
         },
         "version": "1.20.0"
       }

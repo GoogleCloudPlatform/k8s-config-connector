@@ -7228,10 +7228,18 @@ type InstanceGroupManagersClient interface {
 	RecreateInstances(ctx context.Context, in *RecreateInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Resizes the managed instance group. If you increase the size, the group creates new instances using the current instance template. If you decrease the size, the group deletes instances. The resize operation is marked DONE when the resize actions are scheduled even if the group has not yet added or deleted any instances. You must separately verify the status of the creating or deleting actions with the listmanagedinstances method. When resizing down, the instance group arbitrarily chooses the order in which VMs are deleted. The group takes into account some VM attributes when making the selection including: + The status of the VM instance. + The health of the VM instance. + The instance template version the VM is based on. + For regional managed instance groups, the location of the VM instance. This list is subject to change. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted.
 	Resize(ctx context.Context, in *ResizeInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be resumed. This method increases the targetSize and decreases the targetSuspendedSize of the managed instance group by the number of instances that you resume. The resumeInstances operation is marked DONE if the resumeInstances request is successful. The underlying actions take additional time. You must separately verify the status of the RESUMING action with the listmanagedinstances method. In this request, you can only specify instances that are suspended. For example, if an instance was previously suspended using the suspendInstances method, it can be resumed using the resumeInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are resumed. You can specify a maximum of 1000 instances with this method per request.
+	ResumeInstances(ctx context.Context, in *ResumeInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Specifies the instance template to use when creating new instances in this group. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE.
 	SetInstanceTemplate(ctx context.Context, in *SetInstanceTemplateInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Modifies the target pools to which all instances in this managed instance group are assigned. The target pools automatically apply to all of the instances in the managed instance group. This operation is marked DONE when you make the request even if the instances have not yet been added to their target pools. The change might take some time to apply to all of the instances in the group depending on the size of the group.
 	SetTargetPools(ctx context.Context, in *SetTargetPoolsInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be started. This method increases the targetSize and decreases the targetStoppedSize of the managed instance group by the number of instances that you start. The startInstances operation is marked DONE if the startInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STARTING action with the listmanagedinstances method. In this request, you can only specify instances that are stopped. For example, if an instance was previously stopped using the stopInstances method, it can be started using the startInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are started. You can specify a maximum of 1000 instances with this method per request.
+	StartInstances(ctx context.Context, in *StartInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately stopped. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetStoppedSize of the managed instance group by the number of instances that you stop. The stopInstances operation is marked DONE if the stopInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STOPPING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays stopping the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is stopped. Stopped instances can be started using the startInstances method. You can specify a maximum of 1000 instances with this method per request.
+	StopInstances(ctx context.Context, in *StopInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately suspended. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetSuspendedSize of the managed instance group by the number of instances that you suspend. The suspendInstances operation is marked DONE if the suspendInstances request is successful. The underlying actions take additional time. You must separately verify the status of the SUSPENDING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays suspension of the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is suspended. Suspended instances can be resumed using the resumeInstances method. You can specify a maximum of 1000 instances with this method per request.
+	SuspendInstances(ctx context.Context, in *SuspendInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Inserts or updates per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
 	UpdatePerInstanceConfigs(ctx context.Context, in *UpdatePerInstanceConfigsInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 }
@@ -7397,6 +7405,15 @@ func (c *instanceGroupManagersClient) Resize(ctx context.Context, in *ResizeInst
 	return out, nil
 }
 
+func (c *instanceGroupManagersClient) ResumeInstances(ctx context.Context, in *ResumeInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstanceGroupManagers/ResumeInstances", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *instanceGroupManagersClient) SetInstanceTemplate(ctx context.Context, in *SetInstanceTemplateInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstanceGroupManagers/SetInstanceTemplate", in, out, opts...)
@@ -7409,6 +7426,33 @@ func (c *instanceGroupManagersClient) SetInstanceTemplate(ctx context.Context, i
 func (c *instanceGroupManagersClient) SetTargetPools(ctx context.Context, in *SetTargetPoolsInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstanceGroupManagers/SetTargetPools", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instanceGroupManagersClient) StartInstances(ctx context.Context, in *StartInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstanceGroupManagers/StartInstances", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instanceGroupManagersClient) StopInstances(ctx context.Context, in *StopInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstanceGroupManagers/StopInstances", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instanceGroupManagersClient) SuspendInstances(ctx context.Context, in *SuspendInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstanceGroupManagers/SuspendInstances", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -7462,10 +7506,18 @@ type InstanceGroupManagersServer interface {
 	RecreateInstances(context.Context, *RecreateInstancesInstanceGroupManagerRequest) (*Operation, error)
 	// Resizes the managed instance group. If you increase the size, the group creates new instances using the current instance template. If you decrease the size, the group deletes instances. The resize operation is marked DONE when the resize actions are scheduled even if the group has not yet added or deleted any instances. You must separately verify the status of the creating or deleting actions with the listmanagedinstances method. When resizing down, the instance group arbitrarily chooses the order in which VMs are deleted. The group takes into account some VM attributes when making the selection including: + The status of the VM instance. + The health of the VM instance. + The instance template version the VM is based on. + For regional managed instance groups, the location of the VM instance. This list is subject to change. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted.
 	Resize(context.Context, *ResizeInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be resumed. This method increases the targetSize and decreases the targetSuspendedSize of the managed instance group by the number of instances that you resume. The resumeInstances operation is marked DONE if the resumeInstances request is successful. The underlying actions take additional time. You must separately verify the status of the RESUMING action with the listmanagedinstances method. In this request, you can only specify instances that are suspended. For example, if an instance was previously suspended using the suspendInstances method, it can be resumed using the resumeInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are resumed. You can specify a maximum of 1000 instances with this method per request.
+	ResumeInstances(context.Context, *ResumeInstancesInstanceGroupManagerRequest) (*Operation, error)
 	// Specifies the instance template to use when creating new instances in this group. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE.
 	SetInstanceTemplate(context.Context, *SetInstanceTemplateInstanceGroupManagerRequest) (*Operation, error)
 	// Modifies the target pools to which all instances in this managed instance group are assigned. The target pools automatically apply to all of the instances in the managed instance group. This operation is marked DONE when you make the request even if the instances have not yet been added to their target pools. The change might take some time to apply to all of the instances in the group depending on the size of the group.
 	SetTargetPools(context.Context, *SetTargetPoolsInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be started. This method increases the targetSize and decreases the targetStoppedSize of the managed instance group by the number of instances that you start. The startInstances operation is marked DONE if the startInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STARTING action with the listmanagedinstances method. In this request, you can only specify instances that are stopped. For example, if an instance was previously stopped using the stopInstances method, it can be started using the startInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are started. You can specify a maximum of 1000 instances with this method per request.
+	StartInstances(context.Context, *StartInstancesInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately stopped. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetStoppedSize of the managed instance group by the number of instances that you stop. The stopInstances operation is marked DONE if the stopInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STOPPING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays stopping the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is stopped. Stopped instances can be started using the startInstances method. You can specify a maximum of 1000 instances with this method per request.
+	StopInstances(context.Context, *StopInstancesInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately suspended. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetSuspendedSize of the managed instance group by the number of instances that you suspend. The suspendInstances operation is marked DONE if the suspendInstances request is successful. The underlying actions take additional time. You must separately verify the status of the SUSPENDING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays suspension of the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is suspended. Suspended instances can be resumed using the resumeInstances method. You can specify a maximum of 1000 instances with this method per request.
+	SuspendInstances(context.Context, *SuspendInstancesInstanceGroupManagerRequest) (*Operation, error)
 	// Inserts or updates per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
 	UpdatePerInstanceConfigs(context.Context, *UpdatePerInstanceConfigsInstanceGroupManagerRequest) (*Operation, error)
 	mustEmbedUnimplementedInstanceGroupManagersServer()
@@ -7526,11 +7578,23 @@ func (UnimplementedInstanceGroupManagersServer) RecreateInstances(context.Contex
 func (UnimplementedInstanceGroupManagersServer) Resize(context.Context, *ResizeInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Resize not implemented")
 }
+func (UnimplementedInstanceGroupManagersServer) ResumeInstances(context.Context, *ResumeInstancesInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResumeInstances not implemented")
+}
 func (UnimplementedInstanceGroupManagersServer) SetInstanceTemplate(context.Context, *SetInstanceTemplateInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetInstanceTemplate not implemented")
 }
 func (UnimplementedInstanceGroupManagersServer) SetTargetPools(context.Context, *SetTargetPoolsInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetTargetPools not implemented")
+}
+func (UnimplementedInstanceGroupManagersServer) StartInstances(context.Context, *StartInstancesInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartInstances not implemented")
+}
+func (UnimplementedInstanceGroupManagersServer) StopInstances(context.Context, *StopInstancesInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopInstances not implemented")
+}
+func (UnimplementedInstanceGroupManagersServer) SuspendInstances(context.Context, *SuspendInstancesInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SuspendInstances not implemented")
 }
 func (UnimplementedInstanceGroupManagersServer) UpdatePerInstanceConfigs(context.Context, *UpdatePerInstanceConfigsInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePerInstanceConfigs not implemented")
@@ -7854,6 +7918,24 @@ func _InstanceGroupManagers_Resize_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InstanceGroupManagers_ResumeInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResumeInstancesInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstanceGroupManagersServer).ResumeInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstanceGroupManagers/ResumeInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstanceGroupManagersServer).ResumeInstances(ctx, req.(*ResumeInstancesInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _InstanceGroupManagers_SetInstanceTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetInstanceTemplateInstanceGroupManagerRequest)
 	if err := dec(in); err != nil {
@@ -7886,6 +7968,60 @@ func _InstanceGroupManagers_SetTargetPools_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InstanceGroupManagersServer).SetTargetPools(ctx, req.(*SetTargetPoolsInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstanceGroupManagers_StartInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartInstancesInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstanceGroupManagersServer).StartInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstanceGroupManagers/StartInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstanceGroupManagersServer).StartInstances(ctx, req.(*StartInstancesInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstanceGroupManagers_StopInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StopInstancesInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstanceGroupManagersServer).StopInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstanceGroupManagers/StopInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstanceGroupManagersServer).StopInstances(ctx, req.(*StopInstancesInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstanceGroupManagers_SuspendInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SuspendInstancesInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstanceGroupManagersServer).SuspendInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstanceGroupManagers/SuspendInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstanceGroupManagersServer).SuspendInstances(ctx, req.(*SuspendInstancesInstanceGroupManagerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -7984,12 +8120,28 @@ var InstanceGroupManagers_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _InstanceGroupManagers_Resize_Handler,
 		},
 		{
+			MethodName: "ResumeInstances",
+			Handler:    _InstanceGroupManagers_ResumeInstances_Handler,
+		},
+		{
 			MethodName: "SetInstanceTemplate",
 			Handler:    _InstanceGroupManagers_SetInstanceTemplate_Handler,
 		},
 		{
 			MethodName: "SetTargetPools",
 			Handler:    _InstanceGroupManagers_SetTargetPools_Handler,
+		},
+		{
+			MethodName: "StartInstances",
+			Handler:    _InstanceGroupManagers_StartInstances_Handler,
+		},
+		{
+			MethodName: "StopInstances",
+			Handler:    _InstanceGroupManagers_StopInstances_Handler,
+		},
+		{
+			MethodName: "SuspendInstances",
+			Handler:    _InstanceGroupManagers_SuspendInstances_Handler,
 		},
 		{
 			MethodName: "UpdatePerInstanceConfigs",
@@ -14669,6 +14821,132 @@ var NetworkFirewallPolicies_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
 }
 
+// NetworkProfilesClient is the client API for NetworkProfiles service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type NetworkProfilesClient interface {
+	// Returns the specified network profile.
+	Get(ctx context.Context, in *GetNetworkProfileRequest, opts ...grpc.CallOption) (*NetworkProfile, error)
+	// Retrieves a list of network profiles available to the specified project.
+	List(ctx context.Context, in *ListNetworkProfilesRequest, opts ...grpc.CallOption) (*NetworkProfilesListResponse, error)
+}
+
+type networkProfilesClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewNetworkProfilesClient(cc grpc.ClientConnInterface) NetworkProfilesClient {
+	return &networkProfilesClient{cc}
+}
+
+func (c *networkProfilesClient) Get(ctx context.Context, in *GetNetworkProfileRequest, opts ...grpc.CallOption) (*NetworkProfile, error) {
+	out := new(NetworkProfile)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkProfiles/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkProfilesClient) List(ctx context.Context, in *ListNetworkProfilesRequest, opts ...grpc.CallOption) (*NetworkProfilesListResponse, error) {
+	out := new(NetworkProfilesListResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkProfiles/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// NetworkProfilesServer is the server API for NetworkProfiles service.
+// All implementations must embed UnimplementedNetworkProfilesServer
+// for forward compatibility
+type NetworkProfilesServer interface {
+	// Returns the specified network profile.
+	Get(context.Context, *GetNetworkProfileRequest) (*NetworkProfile, error)
+	// Retrieves a list of network profiles available to the specified project.
+	List(context.Context, *ListNetworkProfilesRequest) (*NetworkProfilesListResponse, error)
+	mustEmbedUnimplementedNetworkProfilesServer()
+}
+
+// UnimplementedNetworkProfilesServer must be embedded to have forward compatible implementations.
+type UnimplementedNetworkProfilesServer struct {
+}
+
+func (UnimplementedNetworkProfilesServer) Get(context.Context, *GetNetworkProfileRequest) (*NetworkProfile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedNetworkProfilesServer) List(context.Context, *ListNetworkProfilesRequest) (*NetworkProfilesListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedNetworkProfilesServer) mustEmbedUnimplementedNetworkProfilesServer() {}
+
+// UnsafeNetworkProfilesServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to NetworkProfilesServer will
+// result in compilation errors.
+type UnsafeNetworkProfilesServer interface {
+	mustEmbedUnimplementedNetworkProfilesServer()
+}
+
+func RegisterNetworkProfilesServer(s grpc.ServiceRegistrar, srv NetworkProfilesServer) {
+	s.RegisterService(&NetworkProfiles_ServiceDesc, srv)
+}
+
+func _NetworkProfiles_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNetworkProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkProfilesServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkProfiles/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkProfilesServer).Get(ctx, req.(*GetNetworkProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkProfiles_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListNetworkProfilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkProfilesServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkProfiles/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkProfilesServer).List(ctx, req.(*ListNetworkProfilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// NetworkProfiles_ServiceDesc is the grpc.ServiceDesc for NetworkProfiles service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var NetworkProfiles_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.NetworkProfiles",
+	HandlerType: (*NetworkProfilesServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Get",
+			Handler:    _NetworkProfiles_Get_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _NetworkProfiles_List_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
 // NetworksClient is the client API for Networks service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
@@ -20246,10 +20524,18 @@ type RegionInstanceGroupManagersClient interface {
 	RecreateInstances(ctx context.Context, in *RecreateInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Changes the intended size of the managed instance group. If you increase the size, the group creates new instances using the current instance template. If you decrease the size, the group deletes one or more instances. The resize operation is marked DONE if the resize request is successful. The underlying actions take additional time. You must separately verify the status of the creating or deleting actions with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted.
 	Resize(ctx context.Context, in *ResizeRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be resumed. This method increases the targetSize and decreases the targetSuspendedSize of the managed instance group by the number of instances that you resume. The resumeInstances operation is marked DONE if the resumeInstances request is successful. The underlying actions take additional time. You must separately verify the status of the RESUMING action with the listmanagedinstances method. In this request, you can only specify instances that are suspended. For example, if an instance was previously suspended using the suspendInstances method, it can be resumed using the resumeInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are resumed. You can specify a maximum of 1000 instances with this method per request.
+	ResumeInstances(ctx context.Context, in *ResumeInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the instance template to use when creating new instances or recreating instances in this group. Existing instances are not affected.
 	SetInstanceTemplate(ctx context.Context, in *SetInstanceTemplateRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Modifies the target pools to which all new instances in this group are assigned. Existing instances in the group are not affected.
 	SetTargetPools(ctx context.Context, in *SetTargetPoolsRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be started. This method increases the targetSize and decreases the targetStoppedSize of the managed instance group by the number of instances that you start. The startInstances operation is marked DONE if the startInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STARTING action with the listmanagedinstances method. In this request, you can only specify instances that are stopped. For example, if an instance was previously stopped using the stopInstances method, it can be started using the startInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are started. You can specify a maximum of 1000 instances with this method per request.
+	StartInstances(ctx context.Context, in *StartInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately stopped. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetStoppedSize of the managed instance group by the number of instances that you stop. The stopInstances operation is marked DONE if the stopInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STOPPING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays stopping the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is stopped. Stopped instances can be started using the startInstances method. You can specify a maximum of 1000 instances with this method per request.
+	StopInstances(ctx context.Context, in *StopInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately suspended. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetSuspendedSize of the managed instance group by the number of instances that you suspend. The suspendInstances operation is marked DONE if the suspendInstances request is successful. The underlying actions take additional time. You must separately verify the status of the SUSPENDING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays suspension of the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is suspended. Suspended instances can be resumed using the resumeInstances method. You can specify a maximum of 1000 instances with this method per request.
+	SuspendInstances(ctx context.Context, in *SuspendInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Inserts or updates per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
 	UpdatePerInstanceConfigs(ctx context.Context, in *UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
 }
@@ -20406,6 +20692,15 @@ func (c *regionInstanceGroupManagersClient) Resize(ctx context.Context, in *Resi
 	return out, nil
 }
 
+func (c *regionInstanceGroupManagersClient) ResumeInstances(ctx context.Context, in *ResumeInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/ResumeInstances", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *regionInstanceGroupManagersClient) SetInstanceTemplate(ctx context.Context, in *SetInstanceTemplateRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/SetInstanceTemplate", in, out, opts...)
@@ -20418,6 +20713,33 @@ func (c *regionInstanceGroupManagersClient) SetInstanceTemplate(ctx context.Cont
 func (c *regionInstanceGroupManagersClient) SetTargetPools(ctx context.Context, in *SetTargetPoolsRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/SetTargetPools", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstanceGroupManagersClient) StartInstances(ctx context.Context, in *StartInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/StartInstances", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstanceGroupManagersClient) StopInstances(ctx context.Context, in *StopInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/StopInstances", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstanceGroupManagersClient) SuspendInstances(ctx context.Context, in *SuspendInstancesRegionInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/SuspendInstances", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -20469,10 +20791,18 @@ type RegionInstanceGroupManagersServer interface {
 	RecreateInstances(context.Context, *RecreateInstancesRegionInstanceGroupManagerRequest) (*Operation, error)
 	// Changes the intended size of the managed instance group. If you increase the size, the group creates new instances using the current instance template. If you decrease the size, the group deletes one or more instances. The resize operation is marked DONE if the resize request is successful. The underlying actions take additional time. You must separately verify the status of the creating or deleting actions with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted.
 	Resize(context.Context, *ResizeRegionInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be resumed. This method increases the targetSize and decreases the targetSuspendedSize of the managed instance group by the number of instances that you resume. The resumeInstances operation is marked DONE if the resumeInstances request is successful. The underlying actions take additional time. You must separately verify the status of the RESUMING action with the listmanagedinstances method. In this request, you can only specify instances that are suspended. For example, if an instance was previously suspended using the suspendInstances method, it can be resumed using the resumeInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are resumed. You can specify a maximum of 1000 instances with this method per request.
+	ResumeInstances(context.Context, *ResumeInstancesRegionInstanceGroupManagerRequest) (*Operation, error)
 	// Sets the instance template to use when creating new instances or recreating instances in this group. Existing instances are not affected.
 	SetInstanceTemplate(context.Context, *SetInstanceTemplateRegionInstanceGroupManagerRequest) (*Operation, error)
 	// Modifies the target pools to which all new instances in this group are assigned. Existing instances in the group are not affected.
 	SetTargetPools(context.Context, *SetTargetPoolsRegionInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be started. This method increases the targetSize and decreases the targetStoppedSize of the managed instance group by the number of instances that you start. The startInstances operation is marked DONE if the startInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STARTING action with the listmanagedinstances method. In this request, you can only specify instances that are stopped. For example, if an instance was previously stopped using the stopInstances method, it can be started using the startInstances method. If a health check is attached to the managed instance group, the specified instances will be verified as healthy after they are started. You can specify a maximum of 1000 instances with this method per request.
+	StartInstances(context.Context, *StartInstancesRegionInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately stopped. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetStoppedSize of the managed instance group by the number of instances that you stop. The stopInstances operation is marked DONE if the stopInstances request is successful. The underlying actions take additional time. You must separately verify the status of the STOPPING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays stopping the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is stopped. Stopped instances can be started using the startInstances method. You can specify a maximum of 1000 instances with this method per request.
+	StopInstances(context.Context, *StopInstancesRegionInstanceGroupManagerRequest) (*Operation, error)
+	// Flags the specified instances in the managed instance group to be immediately suspended. You can only specify instances that are running in this request. This method reduces the targetSize and increases the targetSuspendedSize of the managed instance group by the number of instances that you suspend. The suspendInstances operation is marked DONE if the suspendInstances request is successful. The underlying actions take additional time. You must separately verify the status of the SUSPENDING action with the listmanagedinstances method. If the standbyPolicy.initialDelaySec field is set, the group delays suspension of the instances until initialDelaySec have passed from instance.creationTimestamp (that is, when the instance was created). This delay gives your application time to set itself up and initialize on the instance. If more than initialDelaySec seconds have passed since instance.creationTimestamp when this method is called, there will be zero delay. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is suspended. Suspended instances can be resumed using the resumeInstances method. You can specify a maximum of 1000 instances with this method per request.
+	SuspendInstances(context.Context, *SuspendInstancesRegionInstanceGroupManagerRequest) (*Operation, error)
 	// Inserts or updates per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
 	UpdatePerInstanceConfigs(context.Context, *UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest) (*Operation, error)
 	mustEmbedUnimplementedRegionInstanceGroupManagersServer()
@@ -20530,11 +20860,23 @@ func (UnimplementedRegionInstanceGroupManagersServer) RecreateInstances(context.
 func (UnimplementedRegionInstanceGroupManagersServer) Resize(context.Context, *ResizeRegionInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Resize not implemented")
 }
+func (UnimplementedRegionInstanceGroupManagersServer) ResumeInstances(context.Context, *ResumeInstancesRegionInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResumeInstances not implemented")
+}
 func (UnimplementedRegionInstanceGroupManagersServer) SetInstanceTemplate(context.Context, *SetInstanceTemplateRegionInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetInstanceTemplate not implemented")
 }
 func (UnimplementedRegionInstanceGroupManagersServer) SetTargetPools(context.Context, *SetTargetPoolsRegionInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetTargetPools not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagersServer) StartInstances(context.Context, *StartInstancesRegionInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartInstances not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagersServer) StopInstances(context.Context, *StopInstancesRegionInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopInstances not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagersServer) SuspendInstances(context.Context, *SuspendInstancesRegionInstanceGroupManagerRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SuspendInstances not implemented")
 }
 func (UnimplementedRegionInstanceGroupManagersServer) UpdatePerInstanceConfigs(context.Context, *UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePerInstanceConfigs not implemented")
@@ -20841,6 +21183,24 @@ func _RegionInstanceGroupManagers_Resize_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegionInstanceGroupManagers_ResumeInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResumeInstancesRegionInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagersServer).ResumeInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/ResumeInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagersServer).ResumeInstances(ctx, req.(*ResumeInstancesRegionInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _RegionInstanceGroupManagers_SetInstanceTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetInstanceTemplateRegionInstanceGroupManagerRequest)
 	if err := dec(in); err != nil {
@@ -20873,6 +21233,60 @@ func _RegionInstanceGroupManagers_SetTargetPools_Handler(srv interface{}, ctx co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegionInstanceGroupManagersServer).SetTargetPools(ctx, req.(*SetTargetPoolsRegionInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstanceGroupManagers_StartInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartInstancesRegionInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagersServer).StartInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/StartInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagersServer).StartInstances(ctx, req.(*StartInstancesRegionInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstanceGroupManagers_StopInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StopInstancesRegionInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagersServer).StopInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/StopInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagersServer).StopInstances(ctx, req.(*StopInstancesRegionInstanceGroupManagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstanceGroupManagers_SuspendInstances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SuspendInstancesRegionInstanceGroupManagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagersServer).SuspendInstances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagers/SuspendInstances",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagersServer).SuspendInstances(ctx, req.(*SuspendInstancesRegionInstanceGroupManagerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -20967,12 +21381,28 @@ var RegionInstanceGroupManagers_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _RegionInstanceGroupManagers_Resize_Handler,
 		},
 		{
+			MethodName: "ResumeInstances",
+			Handler:    _RegionInstanceGroupManagers_ResumeInstances_Handler,
+		},
+		{
 			MethodName: "SetInstanceTemplate",
 			Handler:    _RegionInstanceGroupManagers_SetInstanceTemplate_Handler,
 		},
 		{
 			MethodName: "SetTargetPools",
 			Handler:    _RegionInstanceGroupManagers_SetTargetPools_Handler,
+		},
+		{
+			MethodName: "StartInstances",
+			Handler:    _RegionInstanceGroupManagers_StartInstances_Handler,
+		},
+		{
+			MethodName: "StopInstances",
+			Handler:    _RegionInstanceGroupManagers_StopInstances_Handler,
+		},
+		{
+			MethodName: "SuspendInstances",
+			Handler:    _RegionInstanceGroupManagers_SuspendInstances_Handler,
 		},
 		{
 			MethodName: "UpdatePerInstanceConfigs",
@@ -23272,6 +23702,8 @@ type RegionSecurityPoliciesClient interface {
 	PatchRule(ctx context.Context, in *PatchRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes a rule at the specified priority.
 	RemoveRule(ctx context.Context, in *RemoveRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Sets the labels on a security policy. To learn more about labels, read the Labeling Resources documentation.
+	SetLabels(ctx context.Context, in *SetLabelsRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type regionSecurityPoliciesClient struct {
@@ -23363,6 +23795,15 @@ func (c *regionSecurityPoliciesClient) RemoveRule(ctx context.Context, in *Remov
 	return out, nil
 }
 
+func (c *regionSecurityPoliciesClient) SetLabels(ctx context.Context, in *SetLabelsRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/SetLabels", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RegionSecurityPoliciesServer is the server API for RegionSecurityPolicies service.
 // All implementations must embed UnimplementedRegionSecurityPoliciesServer
 // for forward compatibility
@@ -23385,6 +23826,8 @@ type RegionSecurityPoliciesServer interface {
 	PatchRule(context.Context, *PatchRuleRegionSecurityPolicyRequest) (*Operation, error)
 	// Deletes a rule at the specified priority.
 	RemoveRule(context.Context, *RemoveRuleRegionSecurityPolicyRequest) (*Operation, error)
+	// Sets the labels on a security policy. To learn more about labels, read the Labeling Resources documentation.
+	SetLabels(context.Context, *SetLabelsRegionSecurityPolicyRequest) (*Operation, error)
 	mustEmbedUnimplementedRegionSecurityPoliciesServer()
 }
 
@@ -23418,6 +23861,9 @@ func (UnimplementedRegionSecurityPoliciesServer) PatchRule(context.Context, *Pat
 }
 func (UnimplementedRegionSecurityPoliciesServer) RemoveRule(context.Context, *RemoveRuleRegionSecurityPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveRule not implemented")
+}
+func (UnimplementedRegionSecurityPoliciesServer) SetLabels(context.Context, *SetLabelsRegionSecurityPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLabels not implemented")
 }
 func (UnimplementedRegionSecurityPoliciesServer) mustEmbedUnimplementedRegionSecurityPoliciesServer() {
 }
@@ -23595,6 +24041,24 @@ func _RegionSecurityPolicies_RemoveRule_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegionSecurityPolicies_SetLabels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetLabelsRegionSecurityPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSecurityPoliciesServer).SetLabels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/SetLabels",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSecurityPoliciesServer).SetLabels(ctx, req.(*SetLabelsRegionSecurityPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RegionSecurityPolicies_ServiceDesc is the grpc.ServiceDesc for RegionSecurityPolicies service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -23637,6 +24101,10 @@ var RegionSecurityPolicies_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveRule",
 			Handler:    _RegionSecurityPolicies_RemoveRule_Handler,
+		},
+		{
+			MethodName: "SetLabels",
+			Handler:    _RegionSecurityPolicies_SetLabels_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

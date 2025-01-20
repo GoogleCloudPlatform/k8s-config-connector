@@ -4778,6 +4778,116 @@ func local_request_ObjectsServer_ListObjects_0(ctx context.Context, marshaler ru
 }
 
 var (
+	filter_ObjectsServer_MoveObject_0 = &utilities.DoubleArray{Encoding: map[string]int{"bucket": 0, "source_object": 1, "destination_object": 2}, Base: []int{1, 1, 2, 3, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4}}
+)
+
+func request_ObjectsServer_MoveObject_0(ctx context.Context, marshaler runtime.Marshaler, client ObjectsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq MoveObjectRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["bucket"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "bucket")
+	}
+
+	protoReq.Bucket, err = runtime.StringP(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "bucket", err)
+	}
+
+	val, ok = pathParams["source_object"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "source_object")
+	}
+
+	protoReq.SourceObject, err = runtime.StringP(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "source_object", err)
+	}
+
+	val, ok = pathParams["destination_object"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "destination_object")
+	}
+
+	protoReq.DestinationObject, err = runtime.StringP(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "destination_object", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ObjectsServer_MoveObject_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.MoveObject(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ObjectsServer_MoveObject_0(ctx context.Context, marshaler runtime.Marshaler, server ObjectsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq MoveObjectRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["bucket"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "bucket")
+	}
+
+	protoReq.Bucket, err = runtime.StringP(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "bucket", err)
+	}
+
+	val, ok = pathParams["source_object"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "source_object")
+	}
+
+	protoReq.SourceObject, err = runtime.StringP(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "source_object", err)
+	}
+
+	val, ok = pathParams["destination_object"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "destination_object")
+	}
+
+	protoReq.DestinationObject, err = runtime.StringP(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "destination_object", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ObjectsServer_MoveObject_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.MoveObject(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
 	filter_ObjectsServer_PatchObject_0 = &utilities.DoubleArray{Encoding: map[string]int{"object": 0, "bucket": 1, "name": 2}, Base: []int{1, 1, 2, 3, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4}}
 )
 
@@ -7294,6 +7404,31 @@ func RegisterObjectsServerHandlerServer(ctx context.Context, mux *runtime.ServeM
 
 	})
 
+	mux.Handle("POST", pattern_ObjectsServer_MoveObject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.storage.v1.ObjectsServer/MoveObject", runtime.WithHTTPPathPattern("/storage/v1/b/{bucket}/o/{source_object}/moveTo/o/{destination_object}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ObjectsServer_MoveObject_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ObjectsServer_MoveObject_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("PATCH", pattern_ObjectsServer_PatchObject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -9461,6 +9596,28 @@ func RegisterObjectsServerHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
+	mux.Handle("POST", pattern_ObjectsServer_MoveObject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.storage.v1.ObjectsServer/MoveObject", runtime.WithHTTPPathPattern("/storage/v1/b/{bucket}/o/{source_object}/moveTo/o/{destination_object}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ObjectsServer_MoveObject_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ObjectsServer_MoveObject_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("PATCH", pattern_ObjectsServer_PatchObject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -9589,6 +9746,8 @@ var (
 
 	pattern_ObjectsServer_ListObjects_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"storage", "v1", "b", "bucket", "o"}, ""))
 
+	pattern_ObjectsServer_MoveObject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 2, 4, 1, 0, 4, 1, 5, 7}, []string{"storage", "v1", "b", "bucket", "o", "source_object", "moveTo", "destination_object"}, ""))
+
 	pattern_ObjectsServer_PatchObject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"storage", "v1", "b", "bucket", "o", "name"}, ""))
 
 	pattern_ObjectsServer_RestoreObject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"storage", "v1", "b", "bucket", "o", "name", "restore"}, ""))
@@ -9614,6 +9773,8 @@ var (
 	forward_ObjectsServer_InsertObject_0 = runtime.ForwardResponseMessage
 
 	forward_ObjectsServer_ListObjects_0 = runtime.ForwardResponseMessage
+
+	forward_ObjectsServer_MoveObject_0 = runtime.ForwardResponseMessage
 
 	forward_ObjectsServer_PatchObject_0 = runtime.ForwardResponseMessage
 

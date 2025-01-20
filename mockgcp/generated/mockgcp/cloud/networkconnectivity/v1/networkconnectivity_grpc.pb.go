@@ -263,7 +263,7 @@ type ProjectsLocationsGlobalHubsServerClient interface {
 	ListSpokesProjectsLocationsGlobalHub(ctx context.Context, in *ListSpokesProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*ListHubSpokesResponse, error)
 	// Updates the description and/or labels of a Network Connectivity Center hub.
 	PatchProjectsLocationsGlobalHub(ctx context.Context, in *PatchProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
-	// Query PSC propagation status the status of a Network Connectivity Center hub.
+	// Query the Private Service Connect propagation status of a Network Connectivity Center hub.
 	QueryStatusProjectsLocationsGlobalHub(ctx context.Context, in *QueryStatusProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*QueryHubStatusResponse, error)
 	// Rejects a Network Connectivity Center spoke from being attached to a hub. If the spoke was previously in the `ACTIVE` state, it transitions to the `INACTIVE` state and is no longer able to connect to other spokes that are attached to the hub.
 	RejectSpokeProjectsLocationsGlobalHub(ctx context.Context, in *RejectSpokeProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
@@ -376,7 +376,7 @@ type ProjectsLocationsGlobalHubsServerServer interface {
 	ListSpokesProjectsLocationsGlobalHub(context.Context, *ListSpokesProjectsLocationsGlobalHubRequest) (*ListHubSpokesResponse, error)
 	// Updates the description and/or labels of a Network Connectivity Center hub.
 	PatchProjectsLocationsGlobalHub(context.Context, *PatchProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
-	// Query PSC propagation status the status of a Network Connectivity Center hub.
+	// Query the Private Service Connect propagation status of a Network Connectivity Center hub.
 	QueryStatusProjectsLocationsGlobalHub(context.Context, *QueryStatusProjectsLocationsGlobalHubRequest) (*QueryHubStatusResponse, error)
 	// Rejects a Network Connectivity Center spoke from being attached to a hub. If the spoke was previously in the `ACTIVE` state, it transitions to the `INACTIVE` state and is no longer able to connect to other spokes that are attached to the hub.
 	RejectSpokeProjectsLocationsGlobalHub(context.Context, *RejectSpokeProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)

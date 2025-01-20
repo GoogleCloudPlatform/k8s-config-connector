@@ -1499,7 +1499,8 @@ X-Xss-Protection: 0
         "configmanagement": {
           "configSync": {
             "sourceFormat": "unstructured"
-          }
+          },
+          "management": "MANAGEMENT_MANUAL"
         }
       }
     },
@@ -1537,7 +1538,8 @@ X-Xss-Protection: 0
       "configmanagement": {
         "configSync": {
           "sourceFormat": "unstructured"
-        }
+        },
+        "management": "MANAGEMENT_MANUAL"
       }
     }
   },
@@ -1647,7 +1649,8 @@ X-Xss-Protection: 0
               "syncWaitSecs": "20"
             },
             "sourceFormat": "hierarchy"
-          }
+          },
+          "management": "MANAGEMENT_AUTOMATIC"
         }
       }
     },
@@ -1695,7 +1698,8 @@ X-Xss-Protection: 0
             "syncWaitSecs": "20"
           },
           "sourceFormat": "hierarchy"
-        }
+        },
+        "management": "MANAGEMENT_AUTOMATIC"
       }
     }
   },
