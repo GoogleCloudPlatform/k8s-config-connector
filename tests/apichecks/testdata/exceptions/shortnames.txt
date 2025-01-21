@@ -5,6 +5,4 @@
 [shortnames] crd=mutatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=namespacedcontrollerreconcilers.customize.core.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=namespacedcontrollerresources.customize.core.cnrm.cloud.google.com: missing shortnames
-[shortnames] crd=networkconnectivityserviceconnectionpolicies.networkconnectivity.cnrm.cloud.google.com: missing shortnames
-[shortnames] crd=privilegedaccessmanagerentitlements.privilegedaccessmanager.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com: missing shortnames

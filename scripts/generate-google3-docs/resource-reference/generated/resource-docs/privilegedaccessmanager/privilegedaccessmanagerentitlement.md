@@ -40,7 +40,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>privilegedaccessmanagerentitlement</td>
+<td>gcpprivilegedaccessmanagerentitlement<br>gcpprivilegedaccessmanagerentitlements<br>privilegedaccessmanagerentitlement</td>
 </tr>
 <td>{{product_name_short}} Service Name</td>
 <td>privilegedaccessmanager.googleapis.com</td>

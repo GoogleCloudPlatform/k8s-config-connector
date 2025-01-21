@@ -11,9 +11,14 @@ metadata:
 spec:
   group: networkconnectivity.cnrm.cloud.google.com
   names:
+    categories:
+    - gcp
     kind: NetworkConnectivityServiceConnectionPolicy
     listKind: NetworkConnectivityServiceConnectionPolicyList
     plural: networkconnectivityserviceconnectionpolicies
+    shortNames:
+    - gcpnetworkconnectivityserviceconnectionpolicy
+    - gcpnetworkconnectivityserviceconnectionpolicies
     singular: networkconnectivityserviceconnectionpolicy
   preserveUnknownFields: false
   scope: Namespaced
