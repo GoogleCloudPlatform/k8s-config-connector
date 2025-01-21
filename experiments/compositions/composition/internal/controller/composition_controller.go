@@ -262,7 +262,7 @@ func (r *CompositionReconciler) validateExpanderConfig(ctx context.Context, logg
 	if result.Status != pb.Status_SUCCESS {
 		logger.Error(nil, "expander.Validate() Status is not Success", "expander",
 			expander.Name, "status", result.Status, "message", result.Error.Message)
-		err = fmt.Errorf(result.Error.Message)
+		err = fmt.Errorf("%s", result.Error.Message)
 		return "ValidateStatusFailed", err
 	}
 	return "", nil
