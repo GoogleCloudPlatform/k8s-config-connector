@@ -194,5 +194,9 @@ go run . generate-types \
     --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
     --resource ManagedKafkaCluster:Cluster
 
+go run . generate-mapper \
+    --service google.cloud.managedkafka.v1 \
+    --api-version managedkafka.cnrm.cloud.google.com/v1alpha1
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
