@@ -35,6 +35,11 @@ func BuildOllamaClient(ctx context.Context) (*OllamaClient, error) {
 		host = "http://127.0.0.1:11434/"
 	}
 
+	model := os.Getenv("OLLAMA_MODEL")
+	if model == "" {
+		klog.Fatalf("OLLAMA_MODEL not set")
+	}
+
 	baseURL, err := url.Parse(host)
 	if err != nil {
 		return nil, fmt.Errorf("parsing host %q: %w", host, err)
@@ -44,12 +49,14 @@ func BuildOllamaClient(ctx context.Context) (*OllamaClient, error) {
 	return &OllamaClient{
 		baseURL:    baseURL,
 		httpClient: http.DefaultClient,
+		model:      model,
 	}, nil
 }
 
 type OllamaClient struct {
 	baseURL    *url.URL
 	httpClient *http.Client
+	model      string
 }
 
 func (c *OllamaClient) Close() error {
@@ -58,12 +65,6 @@ func (c *OllamaClient) Close() error {
 
 func (c *OllamaClient) StartChat(systemPrompt string) Chat {
 	session := &chatRequest{}
-
-	model := os.Getenv("OLLAMA_MODEL")
-	if model == "" {
-		klog.Fatalf("OLLAMA_MODEL not set")
-	}
-	session.Model = model
 
 	// HACK: Setting the system prompt seems to really mess up some ollama models
 	// session.Messages = append(session.Messages, chatMessage{
