@@ -17,22 +17,38 @@ package io
 import (
 	"context"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 )
 
 // WriteToCache write `out` to a temporary file under `dir`.
-func WriteToCache(ctx context.Context, dir string, out string, namePattern string) (string, error) {
-	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		if err := os.Mkdir(dir, 0755); err != nil {
-			return "", fmt.Errorf("create dir %s: %w", dir, err)
+func WriteToCache(ctx context.Context, dest string, out string, namePattern string) (string, error) {
+	if dest == "" {
+		return "", fmt.Errorf("dir is required")
+	}
+
+	// if dest is File, then write to file
+	fi, err := os.Stat(dest)
+	if err != nil {
+		return "", err
+	}
+	if fi.Mode().IsRegular() {
+		return dest, os.WriteFile(dest, []byte(out), 0644)
+	}
+
+	// If dest is dir, then write to dir
+	if _, err := os.Stat(dest); os.IsNotExist(err) {
+		if err := os.Mkdir(dest, 0755); err != nil {
+			return "", fmt.Errorf("create dir %s: %w", dest, err)
 		}
 	}
 	if namePattern == "" {
 		namePattern = "unnamed-*"
 	}
-	tmpFile, err := os.CreateTemp(dir, namePattern)
+	tmpFile, err := os.CreateTemp(dest, namePattern)
 	if err != nil {
-		return "", fmt.Errorf("create file under %s: %w", dir, err)
+		return "", fmt.Errorf("create file under %s: %w", dest, err)
 	}
 	defer tmpFile.Close()
 
@@ -42,4 +58,22 @@ func WriteToCache(ctx context.Context, dir string, out string, namePattern strin
 	}
 
 	return tmpFile.Name(), nil
+}
+
+func GetFromRemote(ctx context.Context, rawURL string) (string, error) {
+	resp, err := http.Get(rawURL)
+	if err != nil {
+		return "", fmt.Errorf("failed to make HTTP request: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("HTTP error: %s", resp.Status)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("failed to read response body: %v", err)
+	}
+	defer resp.Body.Close()
+	return string(body), nil
 }
