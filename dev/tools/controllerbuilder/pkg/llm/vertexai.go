@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -39,7 +40,7 @@ func BuildVertexAIClient(ctx context.Context) (*VertexAIClient, error) {
 	}
 	opts = append(opts, option.WithCredentials(creds))
 
-	projectID := ""
+	projectID := os.Getenv("VERTEXAI_PROJECT")
 	location := ""
 
 	if projectID == "" {

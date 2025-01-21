@@ -70,6 +70,13 @@ func (c *Chat) runFunctionCall(ctx context.Context, functionCall llm.FunctionCal
 			Response: result,
 			Error:    err,
 		}, nil
+	case "RunShellCommand":
+		t := &RunShellCommand{}
+		result, err := t.Run(ctx, c, functionCall.Arguments)
+		return &FunctionResult{
+			Response: result,
+			Error:    err,
+		}, nil
 	default:
 		// TODO: Fatal or return an error?
 		return nil, fmt.Errorf("unknown function %q", functionCall.Name)
