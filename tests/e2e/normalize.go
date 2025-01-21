@@ -74,6 +74,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = "1970-01-01T00:00:00Z"
 
+	// Apigee
+	visitor.replacePaths[".status.expiresAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.createdAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
@@ -712,8 +717,17 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.sortSlices.Insert(".subnetworks")
 
 	// Specific to Apigee
-	visitor.replacePaths[".response.lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".response.createdAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.expiresAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
+	{
+		visitor.sortSlices.Insert(".response.properties.property")
+		visitor.sortSlices.Insert(".properties.property")
+		visitor.replacePaths[".expiresAt"] = "2024-04-01T12:34:56.123456Z"
+		visitor.replacePaths[".createdAt"] = "2024-04-01T12:34:56.123456Z"
+		visitor.replacePaths[".lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
+	}
 
 	for _, event := range events {
 		// Compute URLs: Replace any compute beta URLs with v1 URLs
