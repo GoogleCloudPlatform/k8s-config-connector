@@ -54,7 +54,6 @@ func (p *ClusterParent) String() string {
 
 // New builds a ClusterIdentity from the Config Connector Cluster object.
 func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *ManagedKafkaCluster) (*ClusterIdentity, error) {
-
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
