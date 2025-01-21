@@ -199,65 +199,13 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	resource.Name = a.id.External
 
-	updateMask := &fieldmaskpb.FieldMask{}
-	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
-	}
-	if a.desired.Spec.Description != nil && !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-	if a.desired.Spec.PrimaryContact != nil && !reflect.DeepEqual(a.desired.Spec.PrimaryContact, a.actual.PrimaryContact) {
-		updateMask.Paths = append(updateMask.Paths, "primary_contact")
-	}
-	if a.desired.Spec.Documentation != nil && !reflect.DeepEqual(a.desired.Spec.Documentation, a.actual.Documentation) {
-		updateMask.Paths = append(updateMask.Paths, "documentation")
-	}
-	if a.desired.Spec.DiscoveryType != nil && !reflect.DeepEqual(a.desired.Spec.DiscoveryType, a.actual.DiscoveryType.String()) {
-		updateMask.Paths = append(updateMask.Paths, "discovery_type")
-	}
-	if a.desired.Spec.RequestAccess != nil && reflect.DeepEqual(a.desired.Spec.RequestAccess, a.actual.RequestAccess) {
-		updateMask.Paths = append(updateMask.Paths, "request_access")
+	// Compare using common.CompareProtoMessage
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
-	// NOT YET
-	// if a.desired.Spec.Icon != nil && !reflect.DeepEqual(a.desired.Spec.Icon, a.actual.Icon) {
-	// 	updateMask.Paths = append(updateMask.Paths, "icon")
-	// }
-	if a.desired.Spec.DataProvider != nil {
-		mapCtx := &direct.MapContext{}
-		toProto := DataProvider_ToProto(mapCtx, a.desired.Spec.DataProvider)
-		if mapCtx.Err() != nil {
-			return fmt.Errorf("converting data provider: %w", mapCtx.Err())
-		}
-
-		if !reflect.DeepEqual(toProto, a.actual.DataProvider) {
-			updateMask.Paths = append(updateMask.Paths, "data_provider")
-		}
-	}
-
-	if a.desired.Spec.Publisher != nil {
-		mapCtx := &direct.MapContext{}
-		toProto := Publisher_ToProto(mapCtx, a.desired.Spec.Publisher)
-		if mapCtx.Err() != nil {
-			return fmt.Errorf("converting publisher: %w", mapCtx.Err())
-		}
-
-		if !reflect.DeepEqual(toProto, a.actual.Publisher) {
-			updateMask.Paths = append(updateMask.Paths, "publisher")
-		}
-	}
-
-	if a.desired.Spec.Categories != nil {
-		mapCtx := &direct.MapContext{}
-		toProto := Categories_ToProto(mapCtx, a.desired.Spec.Categories)
-		if mapCtx.Err() != nil {
-			return fmt.Errorf("converting categories: %w", mapCtx.Err())
-		}
-		if !reflect.DeepEqual(toProto, a.actual.Categories) {
-			updateMask.Paths = append(updateMask.Paths, "categories")
-		}
-	}
-
+	updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(paths)}
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.External)
 		return nil
@@ -271,6 +219,17 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if err != nil {
 		return fmt.Errorf("updating Listing %s: %w", a.id.External, err)
 	}
+
+	log.V(2).Info("successfully updated Listing", "name", a.id.External)
+
+	status := &krm.BigQueryAnalyticsHubListingStatus{}
+	status.ObservedState = BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
 
 	log.V(2).Info("successfully updated Listing", "name", a.id.External)
 
