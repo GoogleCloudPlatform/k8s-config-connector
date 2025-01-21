@@ -15,7 +15,6 @@
 package codebot
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -27,14 +26,14 @@ import (
 )
 
 func init() {
-	RegisterTool(&FindInWorkspace{})
+	RegisterTool(&ListFilesInWorkspace{})
 }
 
-type FindInWorkspace struct {
-	FindText string `json:"find_text"`
+type ListFilesInWorkspace struct {
+	FindFileName string `json:"find_file_name"`
 }
 
-func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any) (map[string]any, error) {
+func (t *ListFilesInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any) (map[string]any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)
@@ -47,7 +46,7 @@ func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any)
 
 	klog.V(2).Infof("%T: %+v", t, t)
 
-	matches, err := t.findInFiles(ctx, c.baseDir)
+	matches, err := t.findMatchingFiles(ctx, c.baseDir)
 	if err != nil {
 		return nil, fmt.Errorf("finding in files: %w", err)
 	}
@@ -58,20 +57,21 @@ func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any)
 	return result, nil
 }
 
-func (t *FindInWorkspace) BuildFunctionDefinition() *llm.FunctionDefinition {
+func (t *ListFilesInWorkspace) BuildFunctionDefinition() *llm.FunctionDefinition {
 	declaration := &llm.FunctionDefinition{
-		Name: "FindInWorkspace",
+		Name: "ListFilesInWorkspace",
 		Description: `
-Search the code for a particular string.  This returns matches from the workspace, including the filename and a few lines of context for each match.
+List all the files in the workspace.  The list can be filtered by providing a find_file_name to only return files with that name.
+Where possible, filter the list to reduce the amount of data returned.
 `,
 		Parameters: &llm.Schema{
 			Type:     llm.TypeObject,
-			Required: []string{"find_text"},
+			Required: []string{"find_file_name"},
 			Properties: map[string]*llm.Schema{
-				"find_text": {
+				"find_file_name": {
 					Type: llm.TypeString,
 					Description: `
-Find files in the workspace that include the specified string.
+Find files in the workspace with the specified name or path.
 `,
 				},
 			},
@@ -81,14 +81,12 @@ Find files in the workspace that include the specified string.
 	return declaration
 }
 
-type Match struct {
-	Filename     string `json:"filename"`
-	MatchingLine string `json:"matching_line"`
-	Context      string `json:"context"`
+type File struct {
+	Filename string `json:"filename"`
 }
 
-func (t *FindInWorkspace) findInFiles(ctx context.Context, baseDir string) ([]*Match, error) {
-	var matches []*Match
+func (t *ListFilesInWorkspace) findMatchingFiles(ctx context.Context, baseDir string) ([]*File, error) {
+	var matches []*File
 	if err := filepath.WalkDir(baseDir, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -102,32 +100,20 @@ func (t *FindInWorkspace) findInFiles(ctx context.Context, baseDir string) ([]*M
 			return fmt.Errorf("getting relative path for %q: %w", path, err)
 		}
 
-		if t.FindText != "" {
-			if filepath.Ext(path) == ".go" {
-				fileContents, err := os.ReadFile(path)
-				if err != nil {
-					return fmt.Errorf("reading file %q: %w", path, err)
-				}
-				lines := bytes.Split(fileContents, []byte("\n"))
-				for i, line := range lines {
-					if bytes.Contains(line, []byte(t.FindText)) {
-						var context bytes.Buffer
-						start := max(0, i-2)
-						end := min(len(lines), i+3)
-						for j := start; j < end; j++ {
-							fmt.Fprintf(&context, "%d: %s\n", j+1, lines[j])
-						}
-
-						match := &Match{
-							Filename:     relativePath,
-							MatchingLine: string(line),
-							Context:      context.String(),
-						}
-						matches = append(matches, match)
-					}
-				}
+		isMatch := true
+		if t.FindFileName != "" {
+			if filepath.Base(relativePath) != t.FindFileName {
+				isMatch = false
 			}
 		}
+
+		if isMatch {
+			match := &File{
+				Filename: relativePath,
+			}
+			matches = append(matches, match)
+		}
+
 		return nil
 	}); err != nil {
 		return nil, err

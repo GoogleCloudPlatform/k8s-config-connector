@@ -64,7 +64,9 @@ func (c *OllamaClient) Close() error {
 }
 
 func (c *OllamaClient) StartChat(systemPrompt string) Chat {
-	session := &chatRequest{}
+	session := &chatRequest{
+		Model: c.model,
+	}
 
 	// HACK: Setting the system prompt seems to really mess up some ollama models
 	// session.Messages = append(session.Messages, chatMessage{
