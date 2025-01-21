@@ -73,7 +73,7 @@ func TestDirectorySink(t *testing.T) {
 			sinkConstructor:  outputsink.NewKRMYAMLDirectory,
 			testCaseFile:     "name-with-unicode.yaml",
 			unstructuredFile: "name-with-unicode.yaml",
-			expectedFilePath: "/projects/my-project-id/PubSubTopic/Hello-World-khello-vorld-the-quick-brown-fox-jumped-over-the-lazy-dog_AAAA.yaml",
+			expectedFilePath: "projects/my-project-id/PubSubTopic/Hell_f6_20W_f6rld_20_445_435_43b_43b_43e_20_432_43e_440_43b_434_20the_20_60quick_20brown_20fox_20jumped_20over_20the_20lazy_20dog_AAAA_60_60_60.yaml",
 		},
 		{
 			sinkConstructor:  outputsink.NewHCLDirectory,
