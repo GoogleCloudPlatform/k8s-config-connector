@@ -5,7 +5,7 @@ Please follow the following plan of action:
 
 * Find all go.mod files in the repository
 
-* For each go.mod file, update the github.com/gosimple/slug dependency.  It may not exist in every go.mod file, that is OK.
+* For each go.mod file, update the github.com/gosimple/slug dependency.  It may not exist in every go.mod file, that is OK, there is no need to change go.mod in that case.
 
 * Run `go mod tidy` for each directory with a go.mod file
 ```
