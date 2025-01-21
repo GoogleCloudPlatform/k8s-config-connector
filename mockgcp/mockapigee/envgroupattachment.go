@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apigee/v1"
 
 	"google.golang.org/grpc/codes"
@@ -42,6 +41,9 @@ func (s *envgroupAttachmentServer) CreateOrganizationsEnvgroupsAttachment(ctx co
 
 	fqn := name.String()
 	obj := proto.Clone(req.GetOrganizationsEnvgroupsAttachment()).(*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment)
+
+	// The name field in the request body is ignored by Apigee.
+	// Set it to the fully qualified name for consistency with GCP
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -54,14 +56,8 @@ func (s *envgroupAttachmentServer) CreateOrganizationsEnvgroupsAttachment(ctx co
 		TargetResourceName: fqn,
 	}
 
-	// TODO: StartLRO
-	return s.operations.DoneLRO(ctx, fqn, opMetadata, func() *pb.GoogleCloudApigeeV1EnvironmentGroupAttachment {
-		obj.Name = name.AttachmentID
-		obj.Environment = name.Environment
-		obj.EnvironmentGroupId = name.Envgroup
-
-		return obj
-	}())
+	opPrefix := fmt.Sprintf("organizations/%s/envgroups/%s", name.Organization, name.Envgroup)
+	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, obj)
 }
 
 func (s *envgroupAttachmentServer) GetOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.GetOrganizationsEnvgroupsAttachmentRequest) (*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment, error) {
@@ -79,7 +75,7 @@ func (s *envgroupAttachmentServer) GetOrganizationsEnvgroupsAttachment(ctx conte
 	return obj, nil
 }
 
-func (s *envgroupAttachmentServer) DeleteEnvgroupAttachment(ctx context.Context, req *pb.DeleteOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
+func (s *envgroupAttachmentServer) DeleteOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.DeleteOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseEnvgroupAttachmentName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -96,42 +92,35 @@ func (s *envgroupAttachmentServer) DeleteEnvgroupAttachment(ctx context.Context,
 		State:              "FINISHED",
 		TargetResourceName: fqn,
 	}
-	opPrefix := fmt.Sprintf("projects/%d/environments/%s/envgroups/%s", name.Project.Number, name.Environment, name.Envgroup)
+	opPrefix := fmt.Sprintf("organizations/%s/envgroups/%s", name.Organization, name.Envgroup)
 	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, &emptypb.Empty{})
 }
 
-// There is no UPDATE func for this API based on the gneerated proto
+// There is no UPDATE func for this API based on the generated proto
 
 // EnvgroupAttachmentName represents a "fully qualified name" for an EnvgroupAttachment resource.
 type envgroupAttachmentName struct {
-	Project      *projects.ProjectData
-	Environment  string
+	Organization string
 	Envgroup     string
 	AttachmentID string
 }
 
 func (n *envgroupAttachmentName) String() string {
-	return fmt.Sprintf("projects/%s/environments/%s/envgroups/%s/attachments/%s", n.Project.ID, n.Environment, n.Envgroup, n.AttachmentID)
+	return fmt.Sprintf("organizations/%s/envgroups/%s/attachments/%s", n.Organization, n.Envgroup, n.AttachmentID)
 }
 
 // parseEnvgroupAttachmentName parses the given name string into a envgroupAttachmentName struct.
-// The expected format is: projects/<projectID>/environments/<environment>/envgroups/<envgroup>/attachments/<attachmentID>.
+// The expected format is: organizations/<organization>/envgroups/<envgroup>/attachments/<attachmentID>.
 func (s *MockService) parseEnvgroupAttachmentName(name string) (*envgroupAttachmentName, error) {
 	split := strings.Split(name, "/")
-	if len(split) != 8 || split[0] != "projects" || split[2] != "environments" || split[4] != "envgroups" || split[6] != "attachments" {
+	if len(split) != 6 || split[0] != "organizations" || split[2] != "envgroups" || split[4] != "attachments" {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid envgroup attachment name: %q", name)
 	}
 
-	project, err := s.Projects.GetProjectByID(split[1])
-	if err != nil {
-		return nil, err
-	}
-
 	result := &envgroupAttachmentName{
-		Project:      project,
-		Environment:  split[3],
-		Envgroup:     split[5],
-		AttachmentID: split[7],
+		Organization: split[1],
+		Envgroup:     split[3],
+		AttachmentID: split[5],
 	}
 	return result, nil
 }
