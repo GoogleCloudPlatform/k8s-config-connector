@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
@@ -47,10 +46,12 @@ func (t *RunShellCommand) Run(ctx context.Context, c *Chat, llmArgs map[string]a
 
 	klog.V(2).Infof("%T: %+v", t, t)
 
-	args := strings.Fields(t.Command)
-	if len(args) == 0 {
-		return nil, fmt.Errorf("shell_command is required")
-	}
+	// args := strings.Fields(t.Command)
+	// if len(args) == 0 {
+	// 	return nil, fmt.Errorf("shell_command is required")
+	// }
+
+	args := []string{"/bin/bash", "-c", t.Command}
 	cmd := exec.CommandContext(ctx, args[0], args[1:]...)
 	cmd.Dir = c.baseDir
 	var stdout bytes.Buffer

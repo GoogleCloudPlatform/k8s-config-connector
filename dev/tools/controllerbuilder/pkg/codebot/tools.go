@@ -71,7 +71,7 @@ func (c *Chat) runFunctionCall(ctx context.Context, functionCall llm.FunctionCal
 			Error:    err,
 		}, nil
 	case "ListFilesInWorkspace":
-		t := &FindInWorkspace{}
+		t := &ListFilesInWorkspace{}
 		result, err := t.Run(ctx, c, functionCall.Arguments)
 		return &FunctionResult{
 			Response: result,
