@@ -1,7 +1,8 @@
 GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -23,7 +24,7 @@ X-Xss-Protection: 0
 
 POST https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "hostnames": [
@@ -33,6 +34,7 @@ User-Agent: kcc/controller-manager
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -45,14 +47,14 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "INSERT",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}"
   },
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.EnvironmentGroup",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup",
     "hostnames": [
       "${uniqueId}.mytesthost.net"
     ],
@@ -64,9 +66,10 @@ X-Xss-Protection: 0
 ---
 
 GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -79,14 +82,14 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "INSERT",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}"
   },
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.EnvironmentGroup",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup",
     "hostnames": [
       "${uniqueId}.mytesthost.net"
     ],
@@ -98,9 +101,10 @@ X-Xss-Protection: 0
 ---
 
 GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -124,7 +128,7 @@ X-Xss-Protection: 0
 
 PATCH https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}?alt=json&prettyPrint=false&updateMask=hostnames
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "hostnames": [
@@ -135,6 +139,7 @@ User-Agent: kcc/controller-manager
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -147,14 +152,14 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "UPDATE",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}"
   },
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.EnvironmentGroup",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup",
     "createdAt": "1711974896",
     "hostnames": [
       "${uniqueId}.mytesthost.net",
@@ -169,9 +174,10 @@ X-Xss-Protection: 0
 ---
 
 GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -184,14 +190,14 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "UPDATE",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}"
   },
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.EnvironmentGroup",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup",
     "createdAt": "1711974896",
     "hostnames": [
       "${uniqueId}.mytesthost.net",
@@ -206,9 +212,10 @@ X-Xss-Protection: 0
 ---
 
 GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -232,9 +239,10 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -247,7 +255,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}"
@@ -261,9 +269,10 @@ X-Xss-Protection: 0
 ---
 
 GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -276,7 +285,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}"
