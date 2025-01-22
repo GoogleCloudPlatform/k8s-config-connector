@@ -57,7 +57,7 @@ func ResolveSecretManagerSecretRef(ctx context.Context, reader client.Reader, sr
 	// External should be in the "projects/*/secrets/*" format
 	if ref.External != "" {
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 4 && tokens[0] == "project" && tokens[2] == "secrets" {
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "secrets" {
 			ref = &SecretManagerSecretRef{
 				External: fmt.Sprintf("projects/%s/secrets/%s", tokens[1], tokens[3]),
 			}
@@ -146,7 +146,7 @@ func ResolveSecretManagerSecretVersionRef(ctx context.Context, reader client.Rea
 	// External should be in the "projects/*/secrets/*/versions/*" format
 	if ref.External != "" {
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 6 && tokens[0] == "project" && tokens[2] == "secrets" && tokens[4] == "versions" {
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[4] == "versions" {
 			ref = &SecretManagerSecretVersionRef{
 				External: fmt.Sprintf("projects/%s/secrets/%s/versions/%s", tokens[1], tokens[3], tokens[5]),
 			}
