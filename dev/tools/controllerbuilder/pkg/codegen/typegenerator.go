@@ -40,12 +40,13 @@ const (
 	KCCProtoFieldAnnotation = "+kcc:proto:field"
 )
 
-// Some special-case values that are not obvious how to map in KRM
+// Some special-case mappings between proto message type and KRM field type.
 var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Timestamp":   "string",
 	"google.protobuf.Duration":    "string",
 	"google.protobuf.Int64Value":  "int64",
 	"google.protobuf.StringValue": "string",
+	"google.protobuf.BoolValue":   "bool",
 	"google.protobuf.Struct":      "map[string]string",
 }
 
@@ -458,7 +459,7 @@ func isAcronym(s string) bool {
 	switch s {
 	case "id":
 		return true
-	case "html", "url":
+	case "html", "url", "uri":
 		return true
 	case "http", "https", "ssh":
 		return true

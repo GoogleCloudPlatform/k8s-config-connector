@@ -48,7 +48,7 @@ go run ./scripts/crd-tools reflow-descriptions --dir apis/config/crd/
 # excluded_resources are resources that are under development for a direct conversion
 # we don't modify the CRD just yet for those but will in the future
 #excluded_resources=("securesourcemanagerinstance")
-excluded_resources=()
+excluded_resources=("iapsettings")
 
 cd ${REPO_ROOT}
 cd apis/config/crd/

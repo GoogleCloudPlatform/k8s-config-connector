@@ -18,6 +18,7 @@ require (
 	cloud.google.com/go/firestore v1.17.0
 	cloud.google.com/go/gkemulticloud v1.4.1
 	cloud.google.com/go/iam v1.2.2
+	cloud.google.com/go/iap v1.10.2
 	cloud.google.com/go/kms v1.20.1
 	cloud.google.com/go/monitoring v1.21.2
 	cloud.google.com/go/privilegedaccessmanager v0.2.1

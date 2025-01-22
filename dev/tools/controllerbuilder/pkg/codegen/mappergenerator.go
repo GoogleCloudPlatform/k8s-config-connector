@@ -728,6 +728,22 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
 		return "direct.Int64Value_FromProto"
+	case "google.protobuf.StringValue":
+		return "direct.StringValue_FromProto"
+	case "google.protobuf.BoolValue":
+		return "direct.BoolValue_FromProto"
+	case "google.protobuf.FloatValue":
+		return "direct.FloatValue_FromProto"
+	case "google.protobuf.DoubleValue":
+		return "direct.DoubleValue_FromProto"
+	case "google.protobuf.Int32Value":
+		return "direct.Int32Value_FromProto"
+	case "google.protobuf.UInt32Value":
+		return "direct.UInt32Value_FromProto"
+	case "google.protobuf.UInt64Value":
+		return "direct.UInt64Value_FromProto"
+	case "google.protobuf.BytesValue":
+		return "direct.BytesValue_FromProto"
 	}
 	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -744,6 +760,22 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":
 		return "direct.Int64Value_ToProto"
+	case "google.protobuf.StringValue":
+		return "direct.StringValue_ToProto"
+	case "google.protobuf.BoolValue":
+		return "direct.BoolValue_ToProto"
+	case "google.protobuf.FloatValue":
+		return "direct.FloatValue_ToProto"
+	case "google.protobuf.DoubleValue":
+		return "direct.DoubleValue_ToProto"
+	case "google.protobuf.Int32Value":
+		return "direct.Int32Value_ToProto"
+	case "google.protobuf.UInt32Value":
+		return "direct.UInt32Value_ToProto"
+	case "google.protobuf.UInt64Value":
+		return "direct.UInt64Value_ToProto"
+	case "google.protobuf.BytesValue":
+		return "direct.BytesValue_ToProto"
 	}
 	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
 	return ""

@@ -211,6 +211,38 @@ func StringDuration_ToProto(mapCtx *MapContext, s *string) *durationpb.Duration 
 	return durationpb.New(td)
 }
 
+func StringValue_FromProto(mapCtx *MapContext, in *wrapperspb.StringValue) *string {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func StringValue_ToProto(mapCtx *MapContext, in *string) *wrapperspb.StringValue {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.String(*in)
+	return out
+}
+
+func BoolValue_FromProto(mapCtx *MapContext, in *wrapperspb.BoolValue) *bool {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func BoolValue_ToProto(mapCtx *MapContext, in *bool) *wrapperspb.BoolValue {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.Bool(*in)
+	return out
+}
+
 func PtrTo[T any](t T) *T {
 	return &t
 }
@@ -333,4 +365,99 @@ func Int64Value_FromProto(mapCtx *MapContext, ts *wrapperspb.Int64Value) int64 {
 }
 func Int64Value_ToProto(mapCtx *MapContext, s int64) *wrapperspb.Int64Value {
 	return wrapperspb.Int64(s)
+}
+
+func FloatValue_FromProto(mapCtx *MapContext, in *wrapperspb.FloatValue) *float32 {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func FloatValue_ToProto(mapCtx *MapContext, in *float32) *wrapperspb.FloatValue {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.Float(*in)
+	return out
+}
+
+// Float64 wrapper functions
+func DoubleValue_FromProto(mapCtx *MapContext, in *wrapperspb.DoubleValue) *float64 {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func DoubleValue_ToProto(mapCtx *MapContext, in *float64) *wrapperspb.DoubleValue {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.Double(*in)
+	return out
+}
+
+func Int32Value_FromProto(mapCtx *MapContext, in *wrapperspb.Int32Value) *int32 {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func Int32Value_ToProto(mapCtx *MapContext, in *int32) *wrapperspb.Int32Value {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.Int32(*in)
+	return out
+}
+
+func UInt32Value_FromProto(mapCtx *MapContext, in *wrapperspb.UInt32Value) *uint32 {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func UInt32Value_ToProto(mapCtx *MapContext, in *uint32) *wrapperspb.UInt32Value {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.UInt32(*in)
+	return out
+}
+
+func UInt64Value_FromProto(mapCtx *MapContext, in *wrapperspb.UInt64Value) *uint64 {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &out
+}
+
+func UInt64Value_ToProto(mapCtx *MapContext, in *uint64) *wrapperspb.UInt64Value {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.UInt64(*in)
+	return out
+}
+
+func BytesValue_FromProto(mapCtx *MapContext, in *wrapperspb.BytesValue) []byte {
+	if in == nil {
+		return nil
+	}
+	return in.Value
+}
+
+func BytesValue_ToProto(mapCtx *MapContext, in []byte) *wrapperspb.BytesValue {
+	if in == nil {
+		return nil
+	}
+	return wrapperspb.Bytes(in)
 }
