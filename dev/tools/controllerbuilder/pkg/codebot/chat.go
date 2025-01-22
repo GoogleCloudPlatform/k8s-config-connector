@@ -16,18 +16,21 @@ package codebot
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
 	"cloud.google.com/go/vertexai/genai"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 type Chat struct {
 	client  *genai.Client
 	session *genai.ChatSession
 	baseDir string
+	ui      ui.UI
 }
 
 type FileInfo struct {
@@ -35,7 +38,7 @@ type FileInfo struct {
 	Content string
 }
 
-func NewChat(ctx context.Context, baseDir string, contextFiles map[string]*FileInfo) (*Chat, error) {
+func NewChat(ctx context.Context, baseDir string, contextFiles map[string]*FileInfo, ui ui.UI) (*Chat, error) {
 	gemini, err := llm.BuildGeminiClient(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("initializing gemini: %w", err)
@@ -185,6 +188,7 @@ Consider the following files:
 		client:  gemini,
 		baseDir: baseDir,
 		session: session,
+		ui:      ui,
 	}, nil
 
 }
@@ -194,15 +198,25 @@ func (c *Chat) Close() error {
 }
 
 func (c *Chat) SendMessage(ctx context.Context, userParts ...genai.Part) error {
-	resp, err := c.session.SendMessage(ctx, userParts...)
-	if err != nil {
-		return fmt.Errorf("sending message to LLM: %w", err)
-	}
-	// Print the usage metadata (includes token count i.e. cost)
-	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata)
+	for {
+		resp, err := c.session.SendMessage(ctx, userParts...)
+		if err != nil {
+			return fmt.Errorf("sending message to LLM: %w", err)
+		}
+		// Print the usage metadata (includes token count i.e. cost)
+		klog.V(2).Infof("UsageMetadata: %+v", resp.UsageMetadata)
 
-	for _, candidate := range resp.Candidates {
-		klog.Infof("processing candidate %+v", candidate)
+		if len(resp.Candidates) == 0 {
+			return fmt.Errorf("no candidates returned")
+		}
+
+		if len(resp.Candidates) > 1 {
+			// TODO: It is probably worth evaluating all the candidates
+			klog.Warningf("LLM returned multiple candidates; ignoring all but the first")
+		}
+
+		candidate := resp.Candidates[0]
+		klog.V(2).Infof("processing candidate %+v", candidate)
 		content := candidate.Content
 
 		var functionResponses []genai.Part
@@ -210,58 +224,54 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...genai.Part) error {
 		for _, part := range content.Parts {
 			if text, ok := part.(genai.Text); ok {
 				s := string(text)
-				klog.Infof("TEXT: %+v", s)
-
-				// diffs don't seem to apply very reliably (????)
-				// if strings.Contains(s, "```diff") {
-				// 	inDiff := false
-				// 	var diff bytes.Buffer
-				// 	for _, line := range strings.Split(s, "\n") {
-				// 		if strings.HasPrefix(line, "```diff") {
-				// 			inDiff = true
-				// 		} else if strings.HasPrefix(line, "```") {
-				// 			inDiff = false
-				// 		} else if inDiff {
-				// 			diff.WriteString(line)
-				// 			diff.WriteString("\n")
-				// 		}
-				// 	}
-
-				// 	cmd := exec.CommandContext(ctx, "patch", "-p1")
-				// 	cmd.Stdin = &diff
-				// 	cmd.Stdout = os.Stdout
-				// 	cmd.Stderr = os.Stderr
-				// 	if err := cmd.Run(); err != nil {
-				// 		fmt.Fprintf(os.Stderr, "PATCH DID NOT APPLY: %v\n", err)
-				// 	} else {
-				// 		fmt.Fprintf(os.Stdout, "Applied patch :-)\n")
-				// 	}
-				// }
+				c.ui.AddLLMOutput(&ui.LLMOutput{Text: s})
+				klog.V(2).Infof("TEXT: %+v", s)
 			} else if functionCall, ok := part.(genai.FunctionCall); ok {
 				// klog.Infof("functionCall: %+v", functionCall)
-				klog.Infof("functionCall: %+v", functionCall.Name)
-				response, err := c.runFunctionCall(ctx, functionCall)
+				klog.V(2).Infof("functionCall: %+v", functionCall.Name)
+				c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("functionCall: %+v", functionCall)})
+				result, err := c.runFunctionCall(ctx, functionCall)
 				if err != nil {
 					return fmt.Errorf("unexpected error running function: %w", err)
+				}
+				var response map[string]any
+				if result.Error != nil {
+					response = make(map[string]any)
+					response["result"] = "error"
+					response["error"] = fmt.Sprintf("%v", result.Error)
+					c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("error running function: %v", result.Error)})
+				} else {
+					b, err := json.Marshal(result.Response)
+					if err != nil {
+						return fmt.Errorf("converting %T to json: %w", result.Response, err)
+					}
+					m := make(map[string]any)
+					if err := json.Unmarshal(b, &m); err != nil {
+						return fmt.Errorf("unmarshaling json: %w", err)
+					}
+					response = m
 				}
 				functionResponses = append(functionResponses, genai.FunctionResponse{
 					Name:     functionCall.Name,
 					Response: response,
 				})
+				b, _ := json.Marshal(response)
+				c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("sending response: %v", string(b))})
 
 			} else {
 				klog.Infof("UNKNOWN: %T %+v", part, part)
 			}
 		}
 
-		if len(functionResponses) != 0 {
-			c.session.History = append(c.session.History, &genai.Content{
-				Role:  "model",
-				Parts: functionResponses,
-			})
+		if len(functionResponses) == 0 {
+			return nil
 		}
 
-		break
+		// functionResponseContent := genai.Content{
+		// 	Role:  "model",
+		// 	Parts: functionResponses,
+		// }
+		userParts = functionResponses
+		// c.session.History = append(c.session.History, functionResponseContent)
 	}
-	return nil
 }

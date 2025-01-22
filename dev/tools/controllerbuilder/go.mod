@@ -16,7 +16,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20241007155032-5fefd90f89a9
 	google.golang.org/protobuf v1.35.1
 	k8s.io/apimachinery v0.27.11
-	k8s.io/client-go v0.27.11
+	k8s.io/klog v1.0.0
 	k8s.io/klog/v2 v2.130.1
 )
 

@@ -26,39 +26,32 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func (c *Chat) runFunctionCall(ctx context.Context, functionCall genai.FunctionCall) (map[string]any, error) {
-	log := klog.FromContext(ctx)
+type FunctionResult struct {
+	Response map[string]any
+	Error    error
+}
+
+func (c *Chat) runFunctionCall(ctx context.Context, functionCall genai.FunctionCall) (*FunctionResult, error) {
 	switch functionCall.Name {
 	case "edit_file":
 		result, err := c.runEditFile(ctx, functionCall.Args)
-		if err != nil {
-			result = make(map[string]any)
-			result["result"] = "error"
-			result["error"] = fmt.Sprintf("%v", err)
-			log.Info("unable to apply edit_file", result, result)
-			return result, nil
-		}
-		return result, nil
+		return &FunctionResult{
+			Response: result,
+			Error:    err,
+		}, nil
 	case "create_file":
 		result, err := c.runCreateFile(ctx, functionCall.Args)
-		if err != nil {
-			result = make(map[string]any)
-			result["result"] = "error"
-			result["error"] = fmt.Sprintf("%v", err)
-			log.Info("unable to apply create_file", result, result)
-			return result, nil
-		}
-		return result, nil
+		return &FunctionResult{
+			Response: result,
+			Error:    err,
+		}, nil
 	case "ast_edit":
 		result, err := c.runASTEdit(ctx, functionCall.Args)
-		if err != nil {
-			result = make(map[string]any)
-			result["result"] = "error"
-			result["error"] = fmt.Sprintf("%v", err)
-			log.Info("unable to apply ast_edit", result, result)
-			return result, nil
-		}
-		return result, nil
+		return &FunctionResult{
+			Response: result,
+			Error:    err,
+		}, nil
+
 	default:
 		// TODO: Fatal or return an error?
 		return nil, fmt.Errorf("unknown function %q", functionCall.Name)
@@ -126,7 +119,7 @@ func (c *Chat) runCreateFile(ctx context.Context, args map[string]any) (map[stri
 
 	result := make(map[string]any)
 
-	klog.Infof("CreateFile: %+v", createFile)
+	klog.V(2).Infof("CreateFile: %+v", createFile)
 
 	p := filepath.Join(c.baseDir, createFile.Filename)
 	if _, err := os.Stat(p); err == nil {
@@ -164,7 +157,7 @@ func (c *Chat) runASTEdit(ctx context.Context, args map[string]any) (map[string]
 
 	result := make(map[string]any)
 
-	klog.Infof("ASTEdit: %+v", astEdit)
+	klog.V(2).Infof("ASTEdit: %+v", astEdit)
 
 	p := filepath.Join(c.baseDir, astEdit.Filename)
 	fileContentsBytes, err := os.ReadFile(p)

@@ -15,7 +15,6 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"flag"
 	"fmt"
@@ -25,6 +24,7 @@ import (
 
 	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
 	"k8s.io/klog/v2"
 )
@@ -54,8 +54,17 @@ func run(ctx context.Context) error {
 	flag.Parse()
 
 	if o.ProtoDir == "" {
-		return fmt.Errorf("proto-dir is required")
+		klog.Warningf("proto-dir not set; protobuf assistance will be disabled")
 	}
+	var protoEnhancer *toolbot.EnhanceWithProtoDefinition
+	if o.ProtoDir != "" {
+		enhancer, err := toolbot.NewEnhanceWithProtoDefinition(o.ProtoDir)
+		if err != nil {
+			return fmt.Errorf("loading proto definitions: %w", err)
+		}
+		protoEnhancer = enhancer
+	}
+
 	if o.BaseDir == "" {
 		cwd, err := os.Getwd()
 		if err != nil {
@@ -66,10 +75,6 @@ func run(ctx context.Context) error {
 			return fmt.Errorf("getting absolute path for current working directory %q: %w", cwd, err)
 		}
 		o.BaseDir = cwdAbs
-	}
-	protoEnhancer, err := toolbot.NewEnhanceWithProtoDefinition(o.ProtoDir)
-	if err != nil {
-		return fmt.Errorf("loading proto definitions: %w", err)
 	}
 
 	files := flag.Args()
@@ -87,61 +92,54 @@ func run(ctx context.Context) error {
 		}
 	}
 
-	chatSession, err := codebot.NewChat(ctx, o.BaseDir, contextFiles)
-	if err != nil {
-		return err
-	}
-	defer chatSession.Close()
+	var chatSession *codebot.Chat
 
-	reader := bufio.NewReader(os.Stdin)
-	for {
+	ui := ui.NewTerminalUI()
+
+	ui.SetCallback(func(text string) error {
 		var userParts []genai.Part
-		fmt.Printf(">>> ")
-		text, err := reader.ReadString('\n')
-		if err != nil {
-			return fmt.Errorf("reading from stdin: %w", err)
-		}
-		// fmt.Println(text)
 
 		var additionalContext strings.Builder
 
 		tokens := strings.Split(text, " ")
 		for i, token := range tokens {
-			if strings.HasPrefix(token, "@proto.service:") {
-				tokens[i] = ""
-				v := strings.TrimPrefix(token, "@proto.service:")
-				dataPoint := &toolbot.DataPoint{}
-				dataPoint.SetInput("proto.service", v)
-				if err := protoEnhancer.EnhanceDataPoint(ctx, dataPoint); err != nil {
-					return fmt.Errorf("error getting proto service definition: %w", err)
+			if protoEnhancer != nil {
+				if strings.HasPrefix(token, "@proto.service:") {
+					tokens[i] = ""
+					v := strings.TrimPrefix(token, "@proto.service:")
+					dataPoint := &toolbot.DataPoint{}
+					dataPoint.SetInput("proto.service", v)
+					if err := protoEnhancer.EnhanceDataPoint(ctx, dataPoint); err != nil {
+						return fmt.Errorf("error getting proto service definition: %w", err)
+					}
+					def := dataPoint.Input["proto.service.definition"]
+					if def == "" {
+						return fmt.Errorf("proto service definition for %q was empty", v)
+					}
+					fmt.Fprintf(&additionalContext, "Protobuf service definition for %s:\n", v)
+					fmt.Fprintf(&additionalContext, "```proto")
+					fmt.Fprintf(&additionalContext, "%v", def)
+					fmt.Fprintf(&additionalContext, "```")
+					fmt.Fprintf(&additionalContext, "---\n")
 				}
-				def := dataPoint.Input["proto.service.definition"]
-				if def == "" {
-					return fmt.Errorf("proto service definition for %q was empty", v)
+				if strings.HasPrefix(token, "@proto.message:") {
+					tokens[i] = ""
+					v := strings.TrimPrefix(token, "@proto.message:")
+					dataPoint := &toolbot.DataPoint{}
+					dataPoint.SetInput("proto.message", v)
+					if err := protoEnhancer.EnhanceDataPoint(ctx, dataPoint); err != nil {
+						return fmt.Errorf("error getting proto message definition: %w", err)
+					}
+					def := dataPoint.Input["proto.message.definition"]
+					if def == "" {
+						return fmt.Errorf("proto message definition for %q was empty", v)
+					}
+					fmt.Fprintf(&additionalContext, "Protobuf message definition for %s:\n", v)
+					fmt.Fprintf(&additionalContext, "```proto")
+					fmt.Fprintf(&additionalContext, "%v", def)
+					fmt.Fprintf(&additionalContext, "```")
+					fmt.Fprintf(&additionalContext, "---\n")
 				}
-				fmt.Fprintf(&additionalContext, "Protobuf service definition for %s:\n", v)
-				fmt.Fprintf(&additionalContext, "```proto")
-				fmt.Fprintf(&additionalContext, "%v", def)
-				fmt.Fprintf(&additionalContext, "```")
-				fmt.Fprintf(&additionalContext, "---\n")
-			}
-			if strings.HasPrefix(token, "@proto.message:") {
-				tokens[i] = ""
-				v := strings.TrimPrefix(token, "@proto.message:")
-				dataPoint := &toolbot.DataPoint{}
-				dataPoint.SetInput("proto.message", v)
-				if err := protoEnhancer.EnhanceDataPoint(ctx, dataPoint); err != nil {
-					return fmt.Errorf("error getting proto message definition: %w", err)
-				}
-				def := dataPoint.Input["proto.message.definition"]
-				if def == "" {
-					return fmt.Errorf("proto message definition for %q was empty", v)
-				}
-				fmt.Fprintf(&additionalContext, "Protobuf message definition for %s:\n", v)
-				fmt.Fprintf(&additionalContext, "```proto")
-				fmt.Fprintf(&additionalContext, "%v", def)
-				fmt.Fprintf(&additionalContext, "```")
-				fmt.Fprintf(&additionalContext, "---\n")
 			}
 		}
 		text = additionalContext.String() + strings.Join(tokens, " ")
@@ -150,5 +148,20 @@ func run(ctx context.Context) error {
 		if err := chatSession.SendMessage(ctx, userParts...); err != nil {
 			return fmt.Errorf("generating content with gemini: %w", err)
 		}
+
+		return nil
+	})
+
+	session, err := codebot.NewChat(ctx, o.BaseDir, contextFiles, ui)
+	if err != nil {
+		return err
 	}
+	chatSession = session
+	defer chatSession.Close()
+
+	if err := ui.Run(); err != nil {
+		return fmt.Errorf("running tview: %w", err)
+	}
+
+	return nil
 }
