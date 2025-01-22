@@ -1,0 +1,3 @@
+- exec: gcloud compute networks create test-${uniqueId} --subnet-mode=auto
+- exec: gcloud compute networks describe test-${uniqueId}
+- exec: gcloud compute networks delete test-${uniqueId}
