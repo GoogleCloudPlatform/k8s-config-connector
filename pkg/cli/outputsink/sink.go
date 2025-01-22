@@ -26,18 +26,11 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink/filename"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
-
-	"github.com/gosimple/slug"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type ResourceFormat string
-
-func init() {
-	// the slug library has a global which controls if it automatically changes all strings to lowercase
-	slug.Lowercase = false
-}
 
 const (
 	KRMResourceFormat = "krm"
@@ -134,7 +127,7 @@ func (ds *DirectorySink) receive(ctx context.Context, bytes []byte, unstructured
 		return fmt.Errorf("error choosing a filename: %w", err)
 	}
 	slugPath := slugifyPath(fileName)
-	filePath := path.Join(ds.dir, fmt.Sprintf("%v.%v", slugPath, suffix))
+	filePath := filepath.Join(ds.dir, fmt.Sprintf("%v.%v", slugPath, suffix))
 	// ensure the parent directory exists
 	dir := path.Dir(filePath)
 	if err := os.MkdirAll(dir, 0755); err != nil {
@@ -149,9 +142,9 @@ func (ds *DirectorySink) receive(ctx context.Context, bytes []byte, unstructured
 func slugifyPath(filePath string) string {
 	splits := strings.Split(filePath, string(os.PathSeparator))
 	for i, str := range splits {
-		splits[i] = slug.Make(str)
+		splits[i] = filename.MakeSafeFilename(str)
 	}
-	return path.Join(splits...)
+	return filepath.Join(splits...)
 }
 
 type HCLDirectorySink struct {
