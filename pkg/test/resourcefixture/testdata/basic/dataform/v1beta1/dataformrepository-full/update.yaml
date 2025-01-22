@@ -20,6 +20,11 @@ spec:
   projectRef:
     external: ${projectId}
   region: us-west2
+  gitRemoteSettings:
+    defaultBranch: main
+    url: https://github.com/GoogleCloudPlatform/k8s-config-connector
+    authenticationTokenSecretVersionRef:
+      external: projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1
   workspaceCompilationOverrides:
     defaultDatabase: "database"
     schemaSuffix: "_suffix"
