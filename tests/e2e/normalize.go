@@ -76,9 +76,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = "1970-01-01T00:00:00Z"
 
 	// Apigee
-	visitor.replacePaths[".status.expiresAt"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.createdAt"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.observedState.createdAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
+	visitor.replacePaths[".status.observedState.lastModifiedAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
 
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
@@ -88,10 +90,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to CloudKMS
 	visitor.replacePaths[".primary.createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".primary.generateTime"] = "2024-04-01T12:34:56.123456Z"
-
-	//Specific to Apigee
-	visitor.replacePaths[".status.observedState.createdAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
-	visitor.replacePaths[".status.observedState.lastModifiedAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
@@ -722,16 +720,16 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.sortSlices.Insert(".subnetworks")
 
 	// Specific to Apigee
-	visitor.replacePaths[".response.expiresAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".response.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".response.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	{
 		visitor.sortSlices.Insert(".response.properties.property")
 		visitor.sortSlices.Insert(".properties.property")
-		visitor.replacePaths[".expiresAt"] = "2024-04-01T12:34:56.123456Z"
-		visitor.replacePaths[".createdAt"] = "2024-04-01T12:34:56.123456Z"
-		visitor.replacePaths[".lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
+		visitor.replacePaths[".expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+		visitor.replacePaths[".createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+		visitor.replacePaths[".lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	}
-	visitor.replacePaths[".response.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
-	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 
 	for _, event := range events {
 		// Compute URLs: Replace any compute beta URLs with v1 URLs
