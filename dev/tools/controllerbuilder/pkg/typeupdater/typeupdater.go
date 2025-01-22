@@ -182,7 +182,7 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 func (u *TypeUpdater) generate() error {
 	var buf bytes.Buffer
 	klog.Infof("generate Go code for field %s", u.newField.proto.Name())
-	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0)
+	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false)
 	u.newField.generatedContent = buf.Bytes()
 
 	for key, msg := range u.dependentMessages {

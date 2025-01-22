@@ -143,9 +143,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version
 
-	if gv.Group == "" {
-		return fmt.Errorf("--api-version must be specified with --kind")
-	}
 	scaffolder := &scaffold.APIScaffolder{
 		BaseDir:         o.OutputAPIDirectory,
 		GoPackage:       goPackage,
@@ -205,6 +202,10 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	if err := typeGenerator.WriteVisitedMessages(); err != nil {
+		return err
+	}
+
+	if err := typeGenerator.WriteOutputMessages(); err != nil {
 		return err
 	}
 
