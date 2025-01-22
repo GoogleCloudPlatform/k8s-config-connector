@@ -16,5 +16,5 @@ When fixing differences:
 
 * Do not change the golden file (_http.log) directly, that should only be updated by running the test.
 * If a method or whole service needs to be implemented, create a subtask with CreateSubtask.
- 
+
 Please try to run the tests with the mocks for the script I just created, called `mockcompute/testdata/network/crud/script.yaml`.  If there are differences you don't know how to handle, call the "CreateSubtask" function with a description of the differences that you think should be fixed along with any suggestions on how to fix them.
