@@ -49,58 +49,9 @@ If you think the code should be changed, use the tools to apply those changes in
 
 	var functionDefinitions []*llm.FunctionDefinition
 
-	functionDefinitions = append(functionDefinitions, &llm.FunctionDefinition{
-		Name:        "create_file",
-		Description: `Create a new file in the user's workspace, with the contents specified by contents.  This tool will fail if the file already exists.`,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
-			Required: []string{"contents", "filename"},
-			Properties: map[string]*llm.Schema{
-				"contents": {
-					Type:        llm.TypeString,
-					Description: `The text that should be the contents of the new file.`,
-				},
-				"filename": {
-					Type:        llm.TypeString,
-					Description: "The path to the file you want to create",
-				},
-			},
-		},
-	})
-
 	for _, tool := range GetTools() {
 		functionDefinitions = append(functionDefinitions, tool.BuildFunctionDefinition())
 	}
-
-	// 	functionDefinitions = append(functionDefinitions, &genai.FunctionDeclaration{
-	// 		Name: "ast_edit",
-	// 		Description: `
-	// Makes changes to an existing file in a way that understands the syntax of the file (the AST, or Abstract Syntax Tree).
-	// `,
-	// 		Parameters: &llm.Schema{
-	// 			Type:     llm.TypeObject,
-	// 			Required: []string{"filename", "action", "node"},
-	// 			Properties: map[string]*llm.Schema{
-	// 				"action": {
-	// 					Type: llm.TypeString,
-	// 					Description: `
-	// The action to perform; must be one of ADD, REPLACE, DELETE.
-
-	// For example, to update a method, use REPLACE here and provided the updated method in node.`,
-	// 				},
-	// 				"node": {
-	// 					Type: llm.TypeString,
-	// 					Description: `
-	// The AST node to ADD, REPLACE or DELETE.  This should be a top level node in the AST of the language you're using, for example a function declaration or a type declaration.
-	// `,
-	// 				},
-	// 				"filename": {
-	// 					Type:        llm.TypeString,
-	// 					Description: "The path to the file you want to change",
-	// 				},
-	// 			},
-	// 		},
-	// 	})
 
 	if len(contextFiles) != 0 {
 		var sb strings.Builder
