@@ -29,11 +29,12 @@ spec:
   authorizedNetworkRef:
     name: "default"
   runtimeType: "CLOUD"
-  addonsConfig:
-    advancedApiOpsConfig:
-      enabled: false
-    integrationConfig:
-      enabled: true
-    monetizationConfig:
-      enabled: true
+  # addonsConfig:
+  #   advancedApiOpsConfig:
+  #     enabled: false
+  #   # TODO: these are not actually declared in the schema
+  #   # integrationConfig:
+  #   #   enabled: true
+  #   monetizationConfig:
+  #     enabled: true
 
