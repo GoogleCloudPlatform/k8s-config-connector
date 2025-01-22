@@ -229,6 +229,12 @@ install: manifests
 deploy-controller: docker-build docker-push
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
+# Deploy controller only, this will skip CRD install in the configured K8s and usually runs much
+# faster than "make deploy". It is useful if you only want to quickly apply code change in controller
+.PHONY: deploy-controller-autopilot
+deploy-controller-autopilot: docker-build docker-push
+	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+
 # Generate CRD go clients
 .PHONY: generate-go-client
 generate-go-client:
@@ -365,7 +371,7 @@ deploy-kcc-standard: docker-build docker-push config-connector-manifests-standar
 .PHONY: deploy-kcc-autopilot
 deploy-kcc-autopilot: docker-build docker-push config-connector-manifests-autopilot push-operator-manifest
 	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: powertool-tests
 powertool-tests:
