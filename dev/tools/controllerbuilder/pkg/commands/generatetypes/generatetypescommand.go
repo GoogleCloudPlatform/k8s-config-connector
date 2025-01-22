@@ -169,7 +169,15 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
 			return err
 		}
+	}
+	if err := typeGenerator.WriteVisitedMessages(); err != nil {
+		return err
+	}
+	if err := typeGenerator.WriteOutputMessages(); err != nil {
+		return err
+	}
 
+	for _, resource := range o.Resources { // A separate loop is needed to scaffold files AFTER all the visited messages have been generated.
 		if o.SkipScaffoldFiles {
 			log.Info("skipping scaffolding type, refs and identity files", "resource", resource.ProtoName)
 		} else {
@@ -199,14 +207,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				}
 			}
 		}
-	}
-
-	if err := typeGenerator.WriteVisitedMessages(); err != nil {
-		return err
-	}
-
-	if err := typeGenerator.WriteOutputMessages(); err != nil {
-		return err
 	}
 
 	addCopyright := true
