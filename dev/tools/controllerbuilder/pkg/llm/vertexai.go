@@ -21,6 +21,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/vertexai/genai"
 	"golang.org/x/oauth2/google"
@@ -179,6 +180,7 @@ func (c *VertexAIChat) SendMessage(ctx context.Context, parts ...string) (Respon
 	for _, part := range parts {
 		vertexaiParts = append(vertexaiParts, genai.Text(part))
 	}
+	time.Sleep(5 * time.Second) // Avoid rate limiting
 	log.Info("sending LLM request", "user", parts)
 	vertexaiResponse, err := c.chat.SendMessage(ctx, vertexaiParts...)
 	if err != nil {
