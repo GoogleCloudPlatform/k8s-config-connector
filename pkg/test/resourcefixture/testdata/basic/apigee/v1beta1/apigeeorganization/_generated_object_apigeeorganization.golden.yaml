@@ -35,9 +35,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  createdAt: "2024-04-01T12:34:56.123456Z"
-  expiresAt: "2024-04-01T12:34:56.123456Z"
-  lastModifiedAt: "2024-04-01T12:34:56.123456Z"
+  createdAt: "1711974896"
+  expiresAt: "1711974896"
+  lastModifiedAt: "1711974896"
   observedGeneration: 3
   projectId: example-project-01
   state: ACTIVE
