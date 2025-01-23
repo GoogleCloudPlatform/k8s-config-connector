@@ -23,7 +23,6 @@ spec:
   edition: STANDARD
   ignoreIdleSlots: true
   location: us-west2
-  multiRegionAuxiliary: true
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}

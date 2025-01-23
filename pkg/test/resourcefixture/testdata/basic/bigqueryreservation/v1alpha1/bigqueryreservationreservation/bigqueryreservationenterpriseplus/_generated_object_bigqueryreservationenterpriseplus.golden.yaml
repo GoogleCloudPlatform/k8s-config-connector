@@ -19,7 +19,6 @@ spec:
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: false
   location: us-west2
-  multiRegionAuxiliary: false
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}

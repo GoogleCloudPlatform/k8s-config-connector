@@ -17,9 +17,8 @@ spec:
     maxSlots: 100
   concurrency: 1
   edition: ENTERPRISE
-  ignoreIdleSlots: false
+  ignoreIdleSlots: true
   location: us-west2
-  multiRegionAuxiliary: true
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
