@@ -78,8 +78,8 @@ func (p *DataPoint) WriteCSV(csvWriter *csv.Writer, columns []string) error {
 	return csvWriter.Write(row)
 }
 
-// ToGenAIParts converts the data point to the input format for Gemini.
-func (p *DataPoint) ToGenAIParts() []string {
+// ToGenAIFormat converts the data point to the input format for Gemini (or other LLMs).
+func (p *DataPoint) ToGenAIFormat() string {
 	columnSet := sets.NewString()
 	if p.Output != "" {
 		columnSet.Insert("out")
@@ -88,7 +88,7 @@ func (p *DataPoint) ToGenAIParts() []string {
 		columnSet.Insert("in." + k)
 	}
 
-	var parts []string
+	var part strings.Builder
 	columns := columnSet.List()
 
 	for _, column := range columns {
@@ -106,9 +106,8 @@ func (p *DataPoint) ToGenAIParts() []string {
 			}
 		}
 
-		s := fmt.Sprintf("%s %s", column, v)
-		parts = append(parts, s)
+		fmt.Fprintf(&part, "%s: %s\n", column, v)
 	}
 
-	return parts
+	return part.String()
 }
