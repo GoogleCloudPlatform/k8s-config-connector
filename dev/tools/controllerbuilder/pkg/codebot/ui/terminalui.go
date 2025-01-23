@@ -16,6 +16,7 @@ package ui
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -25,44 +26,62 @@ import (
 )
 
 type TerminalUI struct {
-	callback func(text string) error
+	interactive bool
+	callback    func(text string) error
 }
 
-func NewTerminalUI() UI {
-	return &TerminalUI{}
+func NewTerminalUI(interactive bool) UI {
+	return &TerminalUI{
+		interactive: interactive,
+	}
 }
 
-func (u *TerminalUI) Run() error {
-	reader := bufio.NewReader(os.Stdin)
-	var text strings.Builder
-	// lastLine := "\n"
-	for {
-		fmt.Printf(">>> ")
-		line, err := reader.ReadString('\n')
-		if err != nil {
-			if err != io.EOF {
-				return fmt.Errorf("reading from stdin: %w", err)
+func (u *TerminalUI) Run(ctx context.Context) error {
+	if u.interactive {
+		reader := bufio.NewReader(os.Stdin)
+		var text strings.Builder
+		lastLine := "\n"
+		for {
+			if text.Len() == 0 {
+				fmt.Printf(">>> ")
+			} else {
+				fmt.Printf("... ")
 			}
-		}
-		text.WriteString(line)
-		// if err == io.EOF || (line == "\n" && lastLine == "\n") {
-		if err == io.EOF {
-			if text.String() == "" {
-				if err == io.EOF {
-					return nil
-				} else {
-					fmt.Printf("I am but an LLM, I need instruction\n")
-					text.Reset()
-					continue
+			line, err := reader.ReadString('\n')
+			if err != nil {
+				if err != io.EOF {
+					return fmt.Errorf("reading from stdin: %w", err)
 				}
 			}
-			klog.Infof("sending text: %s", text.String())
-			if err := u.callback(text.String()); err != nil {
-				return fmt.Errorf("error running callback: %w", err)
+			text.WriteString(line)
+			if err == io.EOF || (line == "\n" && lastLine == "\n") {
+				if text.String() == "" {
+					if err == io.EOF {
+						return nil
+					} else {
+						fmt.Printf("I am but an LLM, I need instruction\n")
+						text.Reset()
+						continue
+					}
+				}
+				klog.Infof("sending text: %s", text.String())
+				if err := u.callback(text.String()); err != nil {
+					return fmt.Errorf("error running callback: %w", err)
+				}
+				text.Reset()
 			}
-			text.Reset()
+			lastLine = line
 		}
-		// lastLine = line
+	} else {
+		b, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			return fmt.Errorf("reading from stdin: %w", err)
+		}
+		if err := u.callback(string(b)); err != nil {
+			return fmt.Errorf("error running callback: %w", err)
+		}
+		<-ctx.Done()
+		return nil
 	}
 }
 

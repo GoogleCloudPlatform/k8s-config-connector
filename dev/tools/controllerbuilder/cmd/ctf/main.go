@@ -132,7 +132,7 @@ go 1.21
 
 	defer llmClient.Close()
 
-	u := ui.NewTerminalUI()
+	u := ui.NewTerminalUI(false)
 
 	chat, err := codebot.NewChat(ctx, llmClient, tmpDir, contextFiles, u)
 	if err != nil {

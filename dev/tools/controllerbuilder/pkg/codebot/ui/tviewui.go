@@ -15,6 +15,7 @@
 package ui
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/gdamore/tcell/v2"
@@ -22,7 +23,7 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func NewTViewUI() UI {
+func NewTViewUI(interactive bool) UI {
 	flex := tview.NewFlex()
 	flex.SetBorder(true).SetTitle("Hello, world!")
 	flex.SetDirection(tview.FlexRow)
@@ -34,14 +35,16 @@ func NewTViewUI() UI {
 
 	ui := &TViewUI{flex: flex, app: app}
 
-	inputField := tview.NewInputField().SetLabel("Enter text:")
-	inputField.SetDoneFunc(ui.onInputFieldDone)
-	ui.inputField = inputField
+	if interactive {
+		inputField := tview.NewInputField().SetLabel("Enter text:")
+		inputField.SetDoneFunc(ui.onInputFieldDone)
+		ui.inputField = inputField
 
-	inputField.SetText("Can you write hello world in go?")
+		inputField.SetText("Can you write hello world in go?")
 
-	ui.flex.AddItem(inputField, 1, 0, true)
-	app.SetFocus(inputField)
+		ui.flex.AddItem(inputField, 1, 0, true)
+		app.SetFocus(inputField)
+	}
 
 	return ui
 }
@@ -71,7 +74,7 @@ func (u *TViewUI) onInputFieldDone(key tcell.Key) {
 	}
 }
 
-func (u *TViewUI) Run() error {
+func (u *TViewUI) Run(ctx context.Context) error {
 	return u.app.Run()
 }
 
@@ -82,6 +85,8 @@ func (u *TViewUI) SetCallback(callback func(text string) error) {
 func (u *TViewUI) AddLLMOutput(output *LLMOutput) {
 	u.app.QueueUpdateDraw(func() {
 		u.flex.AddItem(tview.NewTextView().SetText(output.Text), 1, 0, false)
-		u.flex.AddItem(u.inputField, 1, 0, false)
+		if u.inputField != nil {
+			u.flex.AddItem(u.inputField, 1, 0, false)
+		}
 	})
 }

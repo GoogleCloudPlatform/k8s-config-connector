@@ -44,6 +44,11 @@ type Options struct {
 	BaseDir string
 }
 
+func isInputFromPipe() bool {
+	fileInfo, _ := os.Stdin.Stat()
+	return fileInfo.Mode()&os.ModeCharDevice == 0
+}
+
 func run(ctx context.Context) error {
 	var o Options
 
@@ -100,12 +105,17 @@ func run(ctx context.Context) error {
 
 	var chatSession *codebot.Chat
 
+	interactive := true
+	if isInputFromPipe() {
+		interactive = false
+	}
+
 	var userInterface ui.UI
 	switch os.Getenv("CODEBOT_UI") {
 	case "tview":
-		userInterface = ui.NewTViewUI()
+		userInterface = ui.NewTViewUI(interactive)
 	default:
-		userInterface = ui.NewTerminalUI()
+		userInterface = ui.NewTerminalUI(interactive)
 	}
 
 	userInterface.SetCallback(func(text string) error {
@@ -171,7 +181,7 @@ func run(ctx context.Context) error {
 	chatSession = session
 	defer chatSession.Close()
 
-	if err := userInterface.Run(); err != nil {
+	if err := userInterface.Run(ctx); err != nil {
 		return fmt.Errorf("running ui: %w", err)
 	}
 
