@@ -94,6 +94,7 @@ func run(ctx context.Context) error {
 
 	var chatSession *codebot.Chat
 
+	// ui := ui.NewTViewUI()
 	ui := ui.NewTerminalUI()
 
 	ui.SetCallback(func(text string) error {

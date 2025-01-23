@@ -24,7 +24,7 @@ type TerminalUI struct {
 	callback func(text string) error
 }
 
-func NewTerminalUI() *TerminalUI {
+func NewTerminalUI() UI {
 	return &TerminalUI{}
 }
 

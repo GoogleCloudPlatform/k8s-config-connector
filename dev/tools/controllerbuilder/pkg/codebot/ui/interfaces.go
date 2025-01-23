@@ -15,7 +15,9 @@
 package ui
 
 type UI interface {
+	SetCallback(callback func(text string) error)
 	AddLLMOutput(output *LLMOutput)
+	Run() error
 }
 
 type LLMOutput struct {
