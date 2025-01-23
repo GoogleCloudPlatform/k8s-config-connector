@@ -19,4 +19,4 @@ When fixing differences:
 * If a method or whole service needs to be implemented, create a subtask with CreateSubtask.
 * If there are other differences you don't know how to handle, call the "CreateSubtask" function with a description of the differences that you think should be fixed along with any suggestions on how to fix them.
 
-Please try to run the tests with the mocks for the script I just created, called `mockgcp/mockcompute/testdata/address/crud/script.yaml`.  I think the relevant implementation code is in mockcompute/regionaladdress.go
+Please try to run the tests with the mocks for the script I just created, called `mockfilestore/testdata/instance/crud/script.yaml`.  I think the relevant implementation code is in `mockfilestore/instance.go`
