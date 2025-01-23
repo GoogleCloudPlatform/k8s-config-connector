@@ -20,6 +20,8 @@ import (
 	"os"
 )
 
+var _ UI = &TerminalUI{}
+
 type TerminalUI struct {
 	callback func(text string) error
 }

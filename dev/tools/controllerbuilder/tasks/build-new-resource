@@ -1,0 +1,68 @@
+#!/bin/bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
+if [[ -z "${SERVICE:-}" ]]; then
+  echo "SERVICE must be set. e.g. google.bigtable.admin.v2"
+  exit 1
+fi
+
+if [[ -z "${PROTO:-}" ]]; then
+  echo "PROTO must be set. e.g. Table"
+  exit 1
+fi
+
+if [[ -z "${KIND:-}" ]]; then
+  echo "KIND must be set. e.g. BigtableTable" 
+  exit 1
+fi
+
+if [[ -z "${VERSION:-}" ]]; then
+  echo "VERSION must be set. e.g. bigtable.cnrm.cloud.google.com/v1beta1"
+  exit 1
+fi
+
+
+if [[ -z "${GROUP:-}" ]]; then
+  echo "GROUP must be set. e.g. bigtable"
+  exit 1
+fi
+
+if [[ -z "${OUTPUT:-}" ]]; then
+  OUTPUT="${REPO_ROOT}/.generate"
+  if [ ! -d "${OUTPUT}" ]; then
+    mkdir "${OUTPUT}"
+  fi
+fi
+
+# Add basic framework
+# Example: go run . generate-direct-reconciler --service google.bigtable.admin.v2 --kind  BigtableTable  --api-version bigtable.cnrm.cloud.google.com/v1beta1 --proto-resource Table
+go run . generate-direct-reconciler --service ${SERVICE} --kind  ${KIND}  --api-version ${GROUP}.cnrm.cloud.google.com/${VERSION} --proto-resource ${PROTO}
+
+
+# Add controller
+# We retry to kind of bypass the quota limit
+
+for ((i=0; i<5; i++)); do
+  feedback=$(${REPO_ROOT}/dev/tasks/generate-crds 2>&1 || true)
+  go run ./cmd/base/main.go  --base-dir $REPO_ROOT --group ${GROUP} --proto ${PROTO,,} --version ${VERSION} --feedback ${feedback}
+done
+
