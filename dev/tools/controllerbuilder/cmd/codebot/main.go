@@ -100,10 +100,15 @@ func run(ctx context.Context) error {
 
 	var chatSession *codebot.Chat
 
-	// ui := ui.NewTViewUI()
-	ui := ui.NewTerminalUI()
+	var userInterface ui.UI
+	switch os.Getenv("CODEBOT_UI") {
+	case "tview":
+		userInterface = ui.NewTViewUI()
+	default:
+		userInterface = ui.NewTerminalUI()
+	}
 
-	ui.SetCallback(func(text string) error {
+	userInterface.SetCallback(func(text string) error {
 		var userParts []string
 
 		var additionalContext strings.Builder
@@ -159,14 +164,14 @@ func run(ctx context.Context) error {
 		return nil
 	})
 
-	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, ui)
+	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, userInterface)
 	if err != nil {
 		return err
 	}
 	chatSession = session
 	defer chatSession.Close()
 
-	if err := ui.Run(); err != nil {
+	if err := userInterface.Run(); err != nil {
 		return fmt.Errorf("running ui: %w", err)
 	}
 
