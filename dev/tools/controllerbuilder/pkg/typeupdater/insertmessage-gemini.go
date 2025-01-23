@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 )
 
-func (u *TypeUpdater) insertGoMessagesGemini() error {
+func (u *FieldInserter) insertGoMessagesGemini() error {
 	ctx := context.Background()
 	client, err := llm.BuildGeminiClient(ctx)
 	if err != nil {

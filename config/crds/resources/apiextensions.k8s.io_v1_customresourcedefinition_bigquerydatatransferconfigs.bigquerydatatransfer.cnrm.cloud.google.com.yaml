@@ -665,10 +665,9 @@ spec:
                     type: string
                 type: object
               scheduleOptionsV2:
-                description: V2 options customizing different types of data transfer
-                  schedule. This field supports existing time-based and manual transfer
-                  schedule. Also supports Event-Driven transfer schedule. ScheduleOptionsV2
-                  cannot be used together with ScheduleOptions/Schedule.
+                description: Options customizing different types of data transfer
+                  schedule. This field replaces "schedule" and "schedule_options"
+                  fields. ScheduleOptionsV2 cannot be used together with ScheduleOptions/Schedule.
                 properties:
                   eventDrivenSchedule:
                     description: Event driven transfer schedule options. If set, the

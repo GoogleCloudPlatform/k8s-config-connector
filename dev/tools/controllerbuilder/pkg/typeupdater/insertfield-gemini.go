@@ -27,7 +27,7 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func (u *TypeUpdater) insertGoFieldGemini() error {
+func (u *FieldInserter) insertGoFieldGemini() error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 	ctx := context.Background()
 	client, err := llm.BuildGeminiClient(ctx)

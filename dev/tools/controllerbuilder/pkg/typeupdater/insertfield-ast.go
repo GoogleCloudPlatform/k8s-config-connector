@@ -36,7 +36,7 @@ type target struct {
 	endPos int
 }
 
-func (u *TypeUpdater) insertGoField() error {
+func (u *FieldInserter) insertGoField() error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 
 	targetComment := fmt.Sprintf("+kcc:proto=%s", u.newField.parent.FullName())
@@ -79,7 +79,7 @@ func (u *TypeUpdater) insertGoField() error {
 			}
 
 			comments := docMap[ts]
-			if !isTargetStruct(comments, targetComment) {
+			if !commentContains(comments, targetComment) {
 				return true
 			}
 
@@ -126,18 +126,4 @@ func (u *TypeUpdater) insertGoField() error {
 	})
 
 	return nil
-}
-
-func isTargetStruct(cg *ast.CommentGroup, target string) bool {
-	if cg == nil {
-		return false
-	}
-	for _, c := range cg.List {
-		trimmed := strings.TrimPrefix(c.Text, "//")
-		trimmed = strings.TrimSpace(trimmed)
-		if trimmed == target {
-			return true
-		}
-	}
-	return false
 }
