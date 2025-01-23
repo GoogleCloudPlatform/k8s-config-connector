@@ -6,6 +6,8 @@ proto.service: google.cloud.filestore.v1.CloudFilestoreManager
 proto.resource: Instance
 
 ```
+mkdir -p mockfilestore
+
 controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF > mockfilestore/service.go
 // +tool:mockgcp-service
 // http.host: file.googleapis.com
