@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-service
+// http.host: gkehub.googleapis.com
+// proto.service: google.cloud.gkehub.v1beta.GkeHub
+// proto.service: google.cloud.gkehub.v1beta1.GkeHubMembershipService
+
 package mockgkehub
 
 import (

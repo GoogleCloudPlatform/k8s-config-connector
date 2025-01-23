@@ -13,10 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// krm.apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
-// krm.kind: VPCAccessConnector
 // proto.service: google.cloud.vpcaccess.v1.VpcAccessService
-// proto.resource: Connector
+// proto.message: google.cloud.vpcaccess.v1.Connector
 
 package mockvpcaccess
 

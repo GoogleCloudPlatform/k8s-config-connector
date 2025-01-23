@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-service
+// http.host: iam.googleapis.com
+// proto.service: google.iam.admin.v1.IAM
+
 package mockiam
 
 import (

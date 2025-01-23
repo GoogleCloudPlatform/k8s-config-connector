@@ -14,6 +14,10 @@
 
 package mockfirestore
 
+// +tool:mockgcp-service
+// http.host: firestore.googleapis.com
+// proto.service: google.firestore.admin.v1.FirestoreAdmin
+
 import (
 	"context"
 	"net/http"

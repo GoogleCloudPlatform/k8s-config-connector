@@ -13,10 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// krm.apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-// krm.kind: MonitoringServiceLevelObjective
 // proto.service: google.monitoring.v3.ServiceMonitoringService
-// proto.resource: ServiceLevelObjective
+// proto.message: google.monitoring.v3.ServiceLevelObjective
 
 package mockmonitoring
 

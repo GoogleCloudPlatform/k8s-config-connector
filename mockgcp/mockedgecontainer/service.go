@@ -14,6 +14,10 @@
 
 package mockedgecontainer
 
+// +tool:mockgcp-service
+// http.host: edgecontainer.googleapis.com
+// proto.service: google.cloud.edgecontainer.v1.EdgeContainer
+
 import (
 	"context"
 	"net/http"
