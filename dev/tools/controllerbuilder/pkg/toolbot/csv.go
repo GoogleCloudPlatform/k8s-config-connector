@@ -214,16 +214,18 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
 			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
 		}
-		userParts = append(userParts, dataPoint.ToGenAIParts()...)
+		userParts = append(userParts, dataPoint.ToGenAIFormat())
 	}
 
 	log.Info("context information", "num(parts)", len(userParts))
 
-	// We also include the input data point.
-	userParts = append(userParts, input.ToGenAIParts()...)
-
-	// We also include a prompt for Gemini to fill in.
-	userParts = append(userParts, "out ")
+	{
+		// Prompt with the input data point.
+		prompt := input.ToGenAIFormat()
+		// We also include a prompt for Gemini to fill in.
+		prompt += "\nout: "
+		userParts = append(userParts, prompt)
+	}
 
 	resp, err := chat.SendMessage(ctx, userParts...)
 	if err != nil {
@@ -231,7 +233,7 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 	}
 
 	// Print the usage metadata (includes token count i.e. cost)
-	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata)
+	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata())
 
 	for _, candidate := range resp.Candidates() {
 		for _, part := range candidate.Parts() {
