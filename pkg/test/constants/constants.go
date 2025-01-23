@@ -51,6 +51,8 @@ var TestNameRegexesToSkip = []string{
 	".*(regionalforwardingrulepsc).*",
 	// This test only works with direct controller. Re-enable it when we turn on direct ComputeForwardingRule.
 	".*(globalforwardingrulepscgoogleapis).*",
+	// TODO: b/391704025 - Disable until PrivateCACertificateAuthority automatically enables itself.
+	".*(securesourcemanagerinstanceprivate).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to
