@@ -12,4 +12,13 @@ For example, if I just created a script mockstorage/testdata/topic/bucket/script
 
 I would then run `git add mockstorage/testdata/bucket/crud/_http.log`, then `git commit` that with a commit message like "mockgcp: Capture golden output for mockstorage/testdata/bucket/crud"
 
-Please capture the logs for the script I just created, called `mockgcp/mockcompute/testdata/address/crud/script.yaml`.
+Please capture the logs for the script I just created, called `mockfilestore/testdata/instance/crud/script.yaml`.
+
+When you are done, please output a JSON result like this:
+
+{ "status": "success" }
+
+
+If you have problems, please output a JSON result like this:
+
+{ "status": "failure", "reason": "Fill in any information on why you could not complete the task" }

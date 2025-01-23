@@ -111,10 +111,12 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 		var functionResponses []llm.FunctionCallResult
 
 		for _, part := range candidate.Parts() {
+			known := false
 			if text, ok := part.AsText(); ok {
 				s := string(text)
 				c.ui.AddLLMOutput(&ui.LLMOutput{Text: s})
 				klog.V(2).Infof("TEXT: %+v", s)
+				known = true
 			}
 			if functionCalls, ok := part.AsFunctionCalls(); ok {
 				for _, functionCall := range functionCalls {
@@ -148,6 +150,10 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 					})
 					b, _ := json.Marshal(response)
 					c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("sending response: %v", string(b))})
+					known = true
+				}
+				if !known {
+					return fmt.Errorf("unhandled part: %T %+v", part, part)
 				}
 			}
 		}
