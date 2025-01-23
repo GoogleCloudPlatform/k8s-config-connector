@@ -24,7 +24,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
@@ -131,19 +130,6 @@ func addAdditionalGroup(obj *pb.Group, entityKey *pb.EntityKey) {
 		}
 	}
 	obj.AdditionalGroupKeys = append(obj.AdditionalGroupKeys, entityKey)
-}
-
-func buildLRO(obj proto.Message) (*longrunning.Operation, error) {
-	responseAny, err := anypb.New(obj)
-	if err != nil {
-		return nil, fmt.Errorf("error building anypb for response: %w", err)
-	}
-	lro := &longrunning.Operation{}
-	lro.Done = true
-	lro.Result = &longrunning.Operation_Response{
-		Response: responseAny,
-	}
-	return lro, nil
 }
 
 func (s *groupsServer) PatchGroup(ctx context.Context, req *pb.PatchGroupRequest) (*longrunning.Operation, error) {

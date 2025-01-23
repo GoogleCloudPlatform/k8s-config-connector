@@ -1,4 +1,4 @@
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -23,7 +23,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -48,7 +48,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -73,7 +73,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships?alt=json&membershipId=gkehubmembership-${uniqueId}
+POST https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships?alt=json&membershipId=${membershipID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -116,7 +116,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}/operations/${operationID}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -170,7 +170,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -213,7 +213,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -256,7 +256,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -299,7 +299,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -342,7 +342,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
