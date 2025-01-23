@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+
+# This command walks the completion logic for gcloud and tries to find all the resource commands
+
+filename = '/usr/lib/google-cloud-sdk/data/cli/gcloud_completions.py'
+with open(filename, "rb") as source_file:
+    code = compile(source_file.read(), filename, "exec")
+exec(code)
+
+def visit_commands(command, tree):
+    for k, v in tree.items():
+        # Only print resources
+        if k == 'describe':
+          print(' '.join(command))
+        sub_command = command + [k]
+        child_commands = v.get('commands')
+        if child_commands:
+            visit_commands(sub_command, child_commands)
+
+
+visit_commands(['gcloud'], STATIC_COMPLETION_CLI_TREE['commands'])
