@@ -116,6 +116,8 @@ func (c *VertexAIClient) StartChat(systemPrompt string) Chat {
 type VertexAIChat struct {
 	model *genai.GenerativeModel
 	chat  *genai.ChatSession
+
+	lastMessageTime time.Time
 }
 
 func (c *VertexAIChat) SetFunctionDefinitions(functionDefinitions []*FunctionDefinition) error {
@@ -174,14 +176,24 @@ func toVertexAISchema(schema *Schema) (*genai.Schema, error) {
 // 	})
 // }
 
+func (c *VertexAIChat) clientSideRateLimit() {
+	for {
+		if time.Now().Sub(c.lastMessageTime) > 5*time.Second {
+			c.lastMessageTime = time.Now()
+			break
+		}
+		time.Sleep(time.Second)
+	}
+}
+
 func (c *VertexAIChat) SendMessage(ctx context.Context, parts ...string) (Response, error) {
 	log := klog.FromContext(ctx)
 	var vertexaiParts []genai.Part
 	for _, part := range parts {
 		vertexaiParts = append(vertexaiParts, genai.Text(part))
 	}
-	time.Sleep(5 * time.Second) // Avoid rate limiting
-	log.Info("sending LLM request", "user", parts)
+	c.clientSideRateLimit()
+	log.V(2).Info("sending LLM request", "user", parts)
 	vertexaiResponse, err := c.chat.SendMessage(ctx, vertexaiParts...)
 	if err != nil {
 		return nil, err
@@ -198,7 +210,8 @@ func (c *VertexAIChat) SendFunctionResults(ctx context.Context, functionResults 
 		})
 	}
 
-	time.Sleep(5 * time.Second) // Avoid rate limiting
+	c.clientSideRateLimit()
+
 	vertexaiResponse, err := c.chat.SendMessage(ctx, vertexaiFunctionResults...)
 	if err != nil {
 		return nil, err

@@ -18,6 +18,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -105,17 +106,21 @@ func run(ctx context.Context) error {
 
 	var chatSession *codebot.Chat
 
-	interactive := true
+	prompt := ""
 	if isInputFromPipe() {
-		interactive = false
+		b, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			return fmt.Errorf("reading input piped to stdin: %w", err)
+		}
+		prompt = string(b)
 	}
 
 	var userInterface ui.UI
 	switch os.Getenv("CODEBOT_UI") {
 	case "tview":
-		userInterface = ui.NewTViewUI(interactive)
+		userInterface = ui.NewTViewUI(prompt)
 	default:
-		userInterface = ui.NewTerminalUI(interactive)
+		userInterface = ui.NewTerminalUI(prompt)
 	}
 
 	userInterface.SetCallback(func(text string) error {

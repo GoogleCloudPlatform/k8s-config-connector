@@ -6,7 +6,7 @@ proto.service: google.cloud.filestore.v1.CloudFilestoreManager
 proto.resource: Instance
 
 ```
-controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF
+controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF > mockfilestore/service.go
 // +tool:mockgcp-service
 // http.host: file.googleapis.com
 // proto.service: google.cloud.filestore.v1.CloudFilestoreManager
@@ -15,7 +15,7 @@ EOF
 
 
 ```
-controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF
+controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF > mockfilestore/instance.go
 // +tool:mockgcp-support
 // proto.service: google.cloud.filestore.v1.CloudFilestoreManager
 // proto.resource: Instance

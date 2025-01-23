@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	RegisterTool(&CreateSubtask{})
+	// RegisterTool(&CreateSubtask{})
 }
 
 type CreateSubtask struct {

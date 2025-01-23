@@ -87,6 +87,27 @@ func (c *Chat) Close() error {
 	return c.client.Close()
 }
 
+func formatFunctionCall(functionCall llm.FunctionCall) string {
+	var sb strings.Builder
+
+	fmt.Fprintf(&sb, "%s(", functionCall.Name)
+	arg := 0
+	for k, v := range functionCall.Arguments {
+		vString := fmt.Sprintf("(%T)%v", v, v)
+		switch v := v.(type) {
+		case string:
+			vString = fmt.Sprintf("%q", v)
+		}
+		if arg != 0 {
+			sb.WriteString(", ")
+		}
+		fmt.Fprintf(&sb, "%s:%s", k, vString)
+		arg++
+	}
+	fmt.Fprintf(&sb, ")")
+	return sb.String()
+}
+
 func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 	resp, err := c.session.SendMessage(ctx, userParts...)
 	if err != nil {
@@ -95,7 +116,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 
 	for {
 		// Print the usage metadata (includes token count i.e. cost)
-		klog.Infof("UsageMetadata: %+v", resp.UsageMetadata())
+		klog.V(2).Infof("UsageMetadata: %+v", resp.UsageMetadata())
 
 		if len(resp.Candidates()) == 0 {
 			return fmt.Errorf("no response candidates from LLM")
@@ -106,7 +127,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 			klog.Warningf("found multiple responses from LLM, only considering the first")
 		}
 
-		klog.Infof("processing candidate %+v", candidate)
+		klog.V(2).Infof("processing candidate %+v", candidate)
 
 		var functionResponses []llm.FunctionCallResult
 
@@ -122,7 +143,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 				for _, functionCall := range functionCalls {
 					// klog.Infof("functionCall: %+v", functionCall)
 					klog.V(2).Infof("functionCall: %+v", functionCall.Name)
-					c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("functionCall: %+v", functionCall)})
+					c.ui.AddLLMOutput(&ui.LLMOutput{Text: "functionCall:" + formatFunctionCall(functionCall)})
 					result, err := c.runFunctionCall(ctx, functionCall)
 					if err != nil {
 						return fmt.Errorf("unexpected error running function: %w", err)
@@ -163,7 +184,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 		}
 
 		// Go round again, but this time reply with the function responses
-		klog.Infof("functionResponses: %+v", functionResponses)
+		klog.V(2).Infof("functionResponses: %+v", functionResponses)
 		resp, err = c.session.SendFunctionResults(ctx, functionResponses)
 		if err != nil {
 			return fmt.Errorf("sending message to LLM: %w", err)

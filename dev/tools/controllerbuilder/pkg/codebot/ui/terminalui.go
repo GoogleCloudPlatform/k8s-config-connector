@@ -27,12 +27,14 @@ import (
 
 type TerminalUI struct {
 	interactive bool
+	prompt      string
 	callback    func(text string) error
 }
 
-func NewTerminalUI(interactive bool) UI {
+func NewTerminalUI(prompt string) UI {
 	return &TerminalUI{
-		interactive: interactive,
+		prompt:      prompt,
+		interactive: prompt == "",
 	}
 }
 
@@ -64,7 +66,7 @@ func (u *TerminalUI) Run(ctx context.Context) error {
 						continue
 					}
 				}
-				klog.Infof("sending text: %s", text.String())
+				klog.V(2).Infof("sending text: %s", text.String())
 				if err := u.callback(text.String()); err != nil {
 					return fmt.Errorf("error running callback: %w", err)
 				}
@@ -73,11 +75,8 @@ func (u *TerminalUI) Run(ctx context.Context) error {
 			lastLine = line
 		}
 	} else {
-		b, err := io.ReadAll(os.Stdin)
-		if err != nil {
-			return fmt.Errorf("reading from stdin: %w", err)
-		}
-		if err := u.callback(string(b)); err != nil {
+		u.addMessage(u.prompt, userScheme)
+		if err := u.callback(u.prompt); err != nil {
 			return fmt.Errorf("error running callback: %w", err)
 		}
 		<-ctx.Done()
@@ -85,10 +84,28 @@ func (u *TerminalUI) Run(ctx context.Context) error {
 	}
 }
 
+func (u *TerminalUI) addMessage(msg string, colors colorScheme) {
+
+	var foreground string
+	{
+		r, g, b := colors.foreground.RGB()
+		foreground = fmt.Sprintf("\x1b[38;2;%d;%d;%dm", r, g, b)
+	}
+
+	// var background string
+	// {
+	// 	r, g, b := colors.background.RGB()
+	// 	background = fmt.Sprintf("\x1b[48;2;%d;%d;%dm", r, g, b)
+	// }
+	// text := foreground + background + msg
+	text := foreground + msg
+	fmt.Fprintf(os.Stdout, "%s\n", text)
+}
+
 func (u *TerminalUI) SetCallback(callback func(text string) error) {
 	u.callback = callback
 }
 
 func (u *TerminalUI) AddLLMOutput(output *LLMOutput) {
-	fmt.Fprintf(os.Stdout, "%v\n", output.Text)
+	u.addMessage(output.Text, robotScheme)
 }

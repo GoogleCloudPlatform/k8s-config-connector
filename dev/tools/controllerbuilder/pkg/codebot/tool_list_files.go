@@ -66,7 +66,7 @@ Where possible, filter the list to reduce the amount of data returned.
 `,
 		Parameters: &llm.Schema{
 			Type:     llm.TypeObject,
-			Required: []string{"find_file_name"},
+			Required: []string{},
 			Properties: map[string]*llm.Schema{
 				"find_file_name": {
 					Type: llm.TypeString,

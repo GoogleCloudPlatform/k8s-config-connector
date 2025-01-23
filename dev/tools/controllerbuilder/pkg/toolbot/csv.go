@@ -22,6 +22,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -233,12 +234,22 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 	}
 
 	// Print the usage metadata (includes token count i.e. cost)
-	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata)
+	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata())
 
 	for _, candidate := range resp.Candidates() {
 		for _, part := range candidate.Parts() {
 			if text, ok := part.AsText(); ok {
-				klog.Infof("TEXT: %+v", text)
+				lines := strings.Split(strings.TrimSpace(text), "\n")
+				if len(lines) > 2 {
+					if lines[0] == "```go" {
+						lines = lines[1:]
+					}
+					if lines[len(lines)-1] == "```" {
+						lines = lines[:len(lines)-1]
+					}
+				}
+				text = strings.Join(lines, "\n")
+				// klog.Infof("TEXT: %+v", text)
 				out.Write([]byte(text + "\n"))
 			} else {
 				klog.Infof("UNKNOWN: %T %+v", part, part)
