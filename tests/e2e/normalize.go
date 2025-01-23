@@ -855,6 +855,14 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.replacePaths[".address"] = "8.8.8.8"
 	}
 
+	// Filestore
+	{
+		visitor.replacePaths[".networks[].reservedIpRange"] = "10.20.30.0/24"
+		visitor.replacePaths[".networks[].ipAddresses"] = "10.20.30.1"
+		visitor.replacePaths[".response.networks[].reservedIpRange"] = "10.20.30.0/24"
+		visitor.replacePaths[".response.networks[].ipAddresses"] = []string{"10.20.30.1"}
+	}
+
 	// Run visitors
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {

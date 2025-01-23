@@ -117,6 +117,7 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 	// We need a hard-coded list, because we don't always mockgcp available
 	services := []string{
 		"compute.googleapis.com",
+		"file.googleapis.com",
 		"pubsub.googleapis.com",
 		"storage.googleapis.com",
 		"cloudresourcemanager.googleapis.com",
