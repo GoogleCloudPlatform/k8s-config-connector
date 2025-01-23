@@ -117,7 +117,7 @@ type VertexAIChat struct {
 	model *genai.GenerativeModel
 	chat  *genai.ChatSession
 
-	lastMessageTime time.Time
+	requestTimes []time.Time
 }
 
 func (c *VertexAIChat) SetFunctionDefinitions(functionDefinitions []*FunctionDefinition) error {
@@ -178,11 +178,21 @@ func toVertexAISchema(schema *Schema) (*genai.Schema, error) {
 
 func (c *VertexAIChat) clientSideRateLimit() {
 	for {
-		if time.Now().Sub(c.lastMessageTime) > 5*time.Second {
-			c.lastMessageTime = time.Now()
+		minTime := time.Now().Add(-1 * time.Minute)
+		var timestamps []time.Time
+		for _, t := range c.requestTimes {
+			if t.After(minTime) {
+				timestamps = append(timestamps, t)
+			}
+		}
+		c.requestTimes = timestamps
+
+		if len(timestamps) < 10 {
+			c.requestTimes = append(c.requestTimes, time.Now())
 			break
 		}
-		time.Sleep(time.Second)
+		klog.Infof("client-side rate limiting")
+		time.Sleep(2 * time.Second)
 	}
 }
 
@@ -193,7 +203,7 @@ func (c *VertexAIChat) SendMessage(ctx context.Context, parts ...string) (Respon
 		vertexaiParts = append(vertexaiParts, genai.Text(part))
 	}
 	c.clientSideRateLimit()
-	log.V(2).Info("sending LLM request", "user", parts)
+	log.Info("sending LLM request", "user", parts)
 	vertexaiResponse, err := c.chat.SendMessage(ctx, vertexaiParts...)
 	if err != nil {
 		return nil, err
