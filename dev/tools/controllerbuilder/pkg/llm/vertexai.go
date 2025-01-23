@@ -198,6 +198,7 @@ func (c *VertexAIChat) SendFunctionResults(ctx context.Context, functionResults 
 		})
 	}
 
+	time.Sleep(5 * time.Second) // Avoid rate limiting
 	vertexaiResponse, err := c.chat.SendMessage(ctx, vertexaiFunctionResults...)
 	if err != nil {
 		return nil, err
