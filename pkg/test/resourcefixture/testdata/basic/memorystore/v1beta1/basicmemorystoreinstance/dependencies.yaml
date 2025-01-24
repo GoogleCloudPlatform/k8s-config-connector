@@ -40,8 +40,8 @@ spec:
   projectRef:
     external: projects/${projectId}
   location: us-central1
-  serviceClass: "gcp-memorystore-redis"
-  description: "Service Connection Policy for redis"
+  serviceClass: "gcp-memorystore"
+  description: "Service Connection Policy for Memorystore"
   networkRef:
     name: computenetwork-${uniqueId}
   pscConfig:
