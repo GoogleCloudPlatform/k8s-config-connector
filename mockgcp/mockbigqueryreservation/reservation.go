@@ -43,6 +43,7 @@ func (s *ReservationV1) CreateReservation(ctx context.Context, req *pb.CreateRes
 	} else if req.Reservation.Name != "" {
 		reqName = req.Reservation.Name
 	} else {
+		// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
 		reqName = req.Parent + "/reservations/" + "71389360-831c-431d-8975-837aee2153be"
 	}
 

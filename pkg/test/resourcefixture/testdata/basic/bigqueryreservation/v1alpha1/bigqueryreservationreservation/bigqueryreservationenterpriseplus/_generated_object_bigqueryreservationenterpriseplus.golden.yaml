@@ -7,17 +7,17 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: bigqueryreservationreservation-${uniqueId}
   namespace: ${uniqueId}
 spec:
   autoscale:
-    maxSlots: 50
+    maxSlots: 100
   concurrency: 0
   edition: ENTERPRISE_PLUS
-  ignoreIdleSlots: false
+  ignoreIdleSlots: true
   location: us-west2
   projectRef:
     external: ${projectId}
@@ -30,4 +30,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 1
+  observedGeneration: 2
