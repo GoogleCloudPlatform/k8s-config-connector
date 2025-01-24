@@ -460,6 +460,8 @@ func BytesValue_ToProto(mapCtx *MapContext, in []byte) *wrapperspb.BytesValue {
 		return nil
 	}
 	return wrapperspb.Bytes(in)
+}
+
 // Convert a number of milliseconds since the Unix epoch to a time.Time.
 // Treat an input of zero specially: convert it to the zero time,
 // rather than the start of the epoch.

@@ -63,7 +63,35 @@ func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.Datase
 	out := &bigquery.DatasetMetadata{}
 	acccessList := []*bigquery.AccessEntry{}
 	for _, access := range in.Access {
-		acccessList = append(acccessList, access)
+		curAccess := &bigquery.AccessEntry{
+			Role:       access.Role,
+			EntityType: access.EntityType,
+			Entity:     access.Entity,
+			Condition:  access.Condition,
+		}
+		if access.View != nil {
+			curAccess.View = &bigquery.Table{
+				ProjectID: access.View.ProjectID,
+				DatasetID: access.View.DatasetID,
+				TableID:   access.View.TableID,
+			}
+		}
+		if access.Routine != nil {
+			curAccess.Routine = &bigquery.Routine{
+				ProjectID: access.Routine.ProjectID,
+				DatasetID: access.Routine.DatasetID,
+				RoutineID: access.Routine.RoutineID,
+			}
+		}
+		if access.Dataset != nil {
+			curAccess.Dataset = &bigquery.DatasetAccessEntry{
+				Dataset: &bigquery.Dataset{
+					ProjectID: access.Dataset.Dataset.ProjectID,
+					DatasetID: access.Dataset.Dataset.DatasetID,
+				},
+			}
+		}
+		acccessList = append(acccessList, curAccess)
 	}
 	out.Access = acccessList
 	if in.DefaultEncryptionConfig != nil {

@@ -557,7 +557,7 @@ X-Xss-Protection: 0
 PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 Content-Type: application/json
 If-Match: abcdef0123A=
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "access": [
@@ -786,7 +786,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=true&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
