@@ -218,7 +218,7 @@ func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 	goType := goNameForOutputProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
-	fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
+	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i, field := range msgDetails.OutputFields {
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
