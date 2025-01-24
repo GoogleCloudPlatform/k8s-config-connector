@@ -75,17 +75,11 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	id, err := krm.NewDatasetIdentity(ctx, reader, obj)
-	hasUpdateIsCaseInsensitive := false
-	if obj.Spec.IsCaseInsensitive != nil {
-		hasUpdateIsCaseInsensitive = true
-	}
-	id, err := krm.NewBigQueryDatasetRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
-	parent, _, err := krm.ParseBigQueryDatasetExternal(id.External)
-	projectID := parent.ProjectID
+	projectID := id.Parent().ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project ID")
 	}
@@ -96,11 +90,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, err
 	}
 	return &Adapter{
-		id:                         id,
-		gcpService:                 gcpService,
-		desired:                    obj,
-		reader:                     reader,
-		hasUpdateIsCaseInsensitive: hasUpdateIsCaseInsensitive,
+		id:         id,
+		gcpService: gcpService,
+		desired:    obj,
+		reader:     reader,
 	}, nil
 }
 
@@ -110,17 +103,11 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id                         *krm.DatasetIdentity
-	gcpService                 *api.Service
-	desired                    *krm.BigQueryDataset
-	actual                     *api.Dataset
-	reader                     client.Reader
-	id                         *krm.BigQueryDatasetRef
-	gcpService                 *bigquery.Client
-	desired                    *krm.BigQueryDataset
-	actual                     *bigquery.DatasetMetadata
-	reader                     client.Reader
-	hasUpdateIsCaseInsensitive bool
+	id         *krm.DatasetIdentity
+	gcpService *bigquery.Client
+	desired    *krm.BigQueryDataset
+	actual     *bigquery.DatasetMetadata
+	reader     client.Reader
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -129,13 +116,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting BigQueryDataset", "name", a.id.String())
 
-	datasetGetCall := a.gcpService.Datasets.Get(a.id.Parent().ProjectID, a.id.ID())
-	datasetpb, err := datasetGetCall.Do()
-	parent, datasetId, err := krm.ParseBigQueryDatasetExternal(a.id.External)
-	if err != nil {
-		return false, fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
-	}
-	dsHandler := a.gcpService.DatasetInProject(parent.ProjectID, datasetId)
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	datasetpb, err := dsHandler.Metadata(ctx)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -160,10 +141,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	desiredDataset.Labels["managed-by-cnrm"] = "true"
 
-	parent, datasetId, err := krm.ParseBigQueryDatasetExternal(a.id.External)
-	if err != nil {
-		return fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
-	}
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
 		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
@@ -172,17 +149,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		}
 		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 	}
-	insertDatasetCall := a.gcpService.Datasets.Insert(a.id.Parent().ProjectID, desiredDataset)
-	inserted, err := insertDatasetCall.Do()
-	if err != nil {
-		return fmt.Errorf("inserting Dataset %s: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully inserted Dataset", "name", a.id.String())
-	dsHandler := a.gcpService.DatasetInProject(parent.ProjectID, datasetId)
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
-		return fmt.Errorf("Error creating Dataset %s: %w", a.id.External, err)
+		return fmt.Errorf("Error creating Dataset %s: %w", a.id.ID(), err)
 	}
-	log.V(2).Info("successfully created Dataset", "name", a.id.External)
+	log.V(2).Info("successfully created Dataset", "name", a.id.ID())
 
 	// The bigquery go client Create() does not return the created dataset.
 	// Fetching the dataset metadata
@@ -191,7 +162,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		if direct.IsNotFound(err) {
 			return nil
 		}
-		return fmt.Errorf("Error getting the created BigQueryDataset %q: %w", a.id.External, err)
+		return fmt.Errorf("Error getting the created BigQueryDataset %q: %w", a.id.ID(), err)
 	}
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromProto(mapCtx, createdMetadata)
@@ -257,7 +228,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
 	}
-	if a.hasUpdateIsCaseInsensitive && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
+	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
 		resource.IsCaseInsensitive = desired.IsCaseInsensitive
 		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
 	}
@@ -281,23 +252,15 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 
-	// Get parent information
-	parent, datasetId, err := krm.ParseBigQueryDatasetExternal(a.id.External)
-	if err != nil {
-		return fmt.Errorf("failed to parse bigquery dataset full name, %w", err)
-	}
-
 	// Compute the dataset metadate for update request
 	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
 	for k, v := range a.desired.GetObjectMeta().GetLabels() {
 		datasetMetadataToUpdate.SetLabel(k, v)
 	}
-	updateDatasetCall := a.gcpService.Datasets.Update(a.id.Parent().ProjectID, a.id.ID(), resource)
-	updated, err := updateDatasetCall.Do()
 	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
 	// Call update
-	dsHandler := a.gcpService.DatasetInProject(parent.ProjectID, datasetId)
-	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, resource.ETag)
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
 	if err != nil {
 		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
 	}
@@ -338,17 +301,11 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting Dataset", "name", a.id.String())
 
-	deleteDatasetCall := a.gcpService.Datasets.Delete(a.id.Parent().ProjectID, a.id.ID())
-	err := deleteDatasetCall.Do()
-	if err != nil {
-		return false, fmt.Errorf("deleting Dataset %s: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully deleted Dataset", "name", a.id.String())
-	dsHandler := a.gcpService.DatasetInProject(parent.ProjectID, datasetId)
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	if err := dsHandler.DeleteWithContents(ctx); err != nil {
-		return false, fmt.Errorf("deleting Dataset %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
 	}
-	log.V(2).Info("successfully deleted Dataset", "name", a.id.External)
+	log.V(2).Info("successfully deleted Dataset", "name", a.id.ID())
 
 	return true, nil
 }
