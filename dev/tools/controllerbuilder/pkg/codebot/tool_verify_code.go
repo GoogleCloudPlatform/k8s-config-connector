@@ -22,7 +22,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"cloud.google.com/go/vertexai/genai"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
@@ -93,15 +93,15 @@ func (t *VerifyCode) Run(ctx context.Context, c *Chat, args map[string]any) (*Ve
 	return results, nil
 }
 
-func (t *VerifyCode) BuildFunctionDefinition() *genai.FunctionDeclaration {
-	declaration := &genai.FunctionDeclaration{
+func (t *VerifyCode) BuildFunctionDefinition() *llm.FunctionDefinition {
+	declaration := &llm.FunctionDefinition{
 		Name: "VerifyCode",
 		Description: `
 Verifies the result of changes by trying to build, lint and vet the code.
 `,
-		Parameters: &genai.Schema{
-			Type:       genai.TypeObject,
-			Properties: map[string]*genai.Schema{},
+		Parameters: &llm.Schema{
+			Type:       llm.TypeObject,
+			Properties: map[string]*llm.Schema{},
 		},
 	}
 	// TODO: Response?

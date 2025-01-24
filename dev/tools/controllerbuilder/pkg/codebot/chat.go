@@ -20,15 +20,14 @@ import (
 	"fmt"
 	"strings"
 
-	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
 type Chat struct {
-	client  *genai.Client
-	session *genai.ChatSession
+	client  llm.Client
+	session llm.Chat
 	baseDir string
 	ui      ui.UI
 }
@@ -38,21 +37,7 @@ type FileInfo struct {
 	Content string
 }
 
-func NewChat(ctx context.Context, baseDir string, contextFiles map[string]*FileInfo, ui ui.UI) (*Chat, error) {
-	gemini, err := llm.BuildGeminiClient(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("initializing gemini: %w", err)
-	}
-
-	model := gemini.GenerativeModel("gemini-2.0-flash-exp")
-	// model := gemini.GenerativeModel("gemini-1.5-pro-002")
-
-	// Some values that are recommended by aistudio
-	model.SetTemperature(1)
-	model.SetTopK(40)
-	model.SetTopP(0.95)
-	model.SetMaxOutputTokens(8192)
-	model.ResponseMIMEType = "text/plain"
+func NewChat(ctx context.Context, llmClient llm.Client, baseDir string, contextFiles map[string]*FileInfo, ui ui.UI) (*Chat, error) {
 
 	systemPrompt := `
 You are a helpful AI coding assistant, expert in the go programming language and in creating kubernetes controllers.
@@ -62,31 +47,21 @@ Help the user with their problems.  Do not do more than the user asks; propose m
 If you think the code should be changed, use the tools to apply those changes instead of printing them.  Do not make multiple parallel changes to the same file.
 `
 
-	model.SystemInstruction = &genai.Content{
-		Parts: []genai.Part{
-			genai.Text(systemPrompt),
-		},
-	}
+	var functionDefinitions []*llm.FunctionDefinition
 
-	var functionDeclarations []*genai.FunctionDeclaration
-
-	functionDeclarations = append(functionDeclarations, &genai.FunctionDeclaration{
-		Name: "create_file",
-		Description: `
-Create a new file in the user's workspace, with the contents specified by contents.  This tool will fail if the file already exists.
-	`,
-		Parameters: &genai.Schema{
-			Type:     genai.TypeObject,
+	functionDefinitions = append(functionDefinitions, &llm.FunctionDefinition{
+		Name:        "create_file",
+		Description: `Create a new file in the user's workspace, with the contents specified by contents.  This tool will fail if the file already exists.`,
+		Parameters: &llm.Schema{
+			Type:     llm.TypeObject,
 			Required: []string{"contents", "filename"},
-			Properties: map[string]*genai.Schema{
+			Properties: map[string]*llm.Schema{
 				"contents": {
-					Type: genai.TypeString,
-					Description: `
-The text that should be the contents of the new file.
-`,
+					Type:        llm.TypeString,
+					Description: `The text that should be the contents of the new file.`,
 				},
 				"filename": {
-					Type:        genai.TypeString,
+					Type:        llm.TypeString,
 					Description: "The path to the file you want to create",
 				},
 			},
@@ -94,71 +69,62 @@ The text that should be the contents of the new file.
 	})
 
 	for _, tool := range GetTools() {
-		functionDeclarations = append(functionDeclarations, tool.BuildFunctionDefinition())
+		functionDefinitions = append(functionDefinitions, tool.BuildFunctionDefinition())
 	}
 
-	// 	functionDeclarations = append(functionDeclarations, &genai.FunctionDeclaration{
+	// 	functionDefinitions = append(functionDefinitions, &genai.FunctionDeclaration{
 	// 		Name: "ast_edit",
 	// 		Description: `
 	// Makes changes to an existing file in a way that understands the syntax of the file (the AST, or Abstract Syntax Tree).
 	// `,
-	// 		Parameters: &genai.Schema{
-	// 			Type:     genai.TypeObject,
+	// 		Parameters: &llm.Schema{
+	// 			Type:     llm.TypeObject,
 	// 			Required: []string{"filename", "action", "node"},
-	// 			Properties: map[string]*genai.Schema{
+	// 			Properties: map[string]*llm.Schema{
 	// 				"action": {
-	// 					Type: genai.TypeString,
+	// 					Type: llm.TypeString,
 	// 					Description: `
 	// The action to perform; must be one of ADD, REPLACE, DELETE.
 
 	// For example, to update a method, use REPLACE here and provided the updated method in node.`,
 	// 				},
 	// 				"node": {
-	// 					Type: genai.TypeString,
+	// 					Type: llm.TypeString,
 	// 					Description: `
 	// The AST node to ADD, REPLACE or DELETE.  This should be a top level node in the AST of the language you're using, for example a function declaration or a type declaration.
 	// `,
 	// 				},
 	// 				"filename": {
-	// 					Type:        genai.TypeString,
+	// 					Type:        llm.TypeString,
 	// 					Description: "The path to the file you want to change",
 	// 				},
 	// 			},
 	// 		},
 	// 	})
 
-	model.Tools = append(model.Tools, &genai.Tool{
-		FunctionDeclarations: functionDeclarations,
-	})
-
-	if model.ToolConfig == nil {
-		model.ToolConfig = &genai.ToolConfig{}
-	}
-	if model.ToolConfig.FunctionCallingConfig == nil {
-		model.ToolConfig.FunctionCallingConfig = &genai.FunctionCallingConfig{}
-	}
-	model.ToolConfig.FunctionCallingConfig.Mode = genai.FunctionCallingAuto
-
 	if len(contextFiles) != 0 {
-		model.SystemInstruction.Parts = append(model.SystemInstruction.Parts, genai.Text(`
-Consider the following files:
-`))
-	}
-	for _, file := range contextFiles {
 		var sb strings.Builder
 
-		fmt.Fprintf(&sb, "File %q:\n", file.Path)
-		fmt.Fprintf(&sb, "```go\n")
-		fmt.Fprintf(&sb, "%s\n", file.Content)
-		fmt.Fprintf(&sb, "```\n")
+		fmt.Fprintf(&sb, "\n")
+		fmt.Fprintf(&sb, "Consider the following files:\n")
 
-		model.SystemInstruction.Parts = append(model.SystemInstruction.Parts, genai.Text(sb.String()))
+		for _, file := range contextFiles {
+			fmt.Fprintf(&sb, "File %q:\n", file.Path)
+			fmt.Fprintf(&sb, "```go\n")
+			fmt.Fprintf(&sb, "%s\n", file.Content)
+			fmt.Fprintf(&sb, "```\n")
+			fmt.Fprintf(&sb, "\n")
+		}
+
+		systemPrompt += sb.String()
 	}
 
-	session := model.StartChat()
+	session := llmClient.StartChat(systemPrompt)
+
+	session.SetFunctionDefinitions(functionDefinitions)
 
 	return &Chat{
-		client:  gemini,
+		client:  llmClient,
 		baseDir: baseDir,
 		session: session,
 		ui:      ui,
@@ -170,69 +136,68 @@ func (c *Chat) Close() error {
 	return c.client.Close()
 }
 
-func (c *Chat) SendMessage(ctx context.Context, userParts ...genai.Part) error {
+func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
+	resp, err := c.session.SendMessage(ctx, userParts...)
+	if err != nil {
+		return fmt.Errorf("sending message to LLM: %w", err)
+	}
+
 	for {
-		resp, err := c.session.SendMessage(ctx, userParts...)
-		if err != nil {
-			return fmt.Errorf("sending message to LLM: %w", err)
-		}
 		// Print the usage metadata (includes token count i.e. cost)
-		klog.V(2).Infof("UsageMetadata: %+v", resp.UsageMetadata)
+		klog.Infof("UsageMetadata: %+v", resp.UsageMetadata())
 
-		if len(resp.Candidates) == 0 {
-			return fmt.Errorf("no candidates returned")
+		if len(resp.Candidates()) == 0 {
+			return fmt.Errorf("no response candidates from LLM")
 		}
 
-		if len(resp.Candidates) > 1 {
-			// TODO: It is probably worth evaluating all the candidates
-			klog.Warningf("LLM returned multiple candidates; ignoring all but the first")
+		candidate := resp.Candidates()[0]
+		if len(resp.Candidates()) > 1 {
+			klog.Warningf("found multiple responses from LLM, only considering the first")
 		}
 
-		candidate := resp.Candidates[0]
-		klog.V(2).Infof("processing candidate %+v", candidate)
-		content := candidate.Content
+		klog.Infof("processing candidate %+v", candidate)
 
-		var functionResponses []genai.Part
+		var functionResponses []llm.FunctionCallResult
 
-		for _, part := range content.Parts {
-			if text, ok := part.(genai.Text); ok {
+		for _, part := range candidate.Parts() {
+			if text, ok := part.AsText(); ok {
 				s := string(text)
 				c.ui.AddLLMOutput(&ui.LLMOutput{Text: s})
 				klog.V(2).Infof("TEXT: %+v", s)
-			} else if functionCall, ok := part.(genai.FunctionCall); ok {
-				// klog.Infof("functionCall: %+v", functionCall)
-				klog.V(2).Infof("functionCall: %+v", functionCall.Name)
-				c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("functionCall: %+v", functionCall)})
-				result, err := c.runFunctionCall(ctx, functionCall)
-				if err != nil {
-					return fmt.Errorf("unexpected error running function: %w", err)
-				}
-				var response map[string]any
-				if result.Error != nil {
-					response = make(map[string]any)
-					response["result"] = "error"
-					response["error"] = fmt.Sprintf("%v", result.Error)
-					c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("error running function: %v", result.Error)})
-				} else {
-					b, err := json.Marshal(result.Response)
+			}
+			if functionCalls, ok := part.AsFunctionCalls(); ok {
+				for _, functionCall := range functionCalls {
+					// klog.Infof("functionCall: %+v", functionCall)
+					klog.V(2).Infof("functionCall: %+v", functionCall.Name)
+					c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("functionCall: %+v", functionCall)})
+					result, err := c.runFunctionCall(ctx, functionCall)
 					if err != nil {
-						return fmt.Errorf("converting %T to json: %w", result.Response, err)
+						return fmt.Errorf("unexpected error running function: %w", err)
 					}
-					m := make(map[string]any)
-					if err := json.Unmarshal(b, &m); err != nil {
-						return fmt.Errorf("unmarshaling json: %w", err)
+					var response map[string]any
+					if result.Error != nil {
+						response = make(map[string]any)
+						response["result"] = "error"
+						response["error"] = fmt.Sprintf("%v", result.Error)
+						c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("error running function: %v", result.Error)})
+					} else {
+						b, err := json.Marshal(result.Response)
+						if err != nil {
+							return fmt.Errorf("converting %T to json: %w", result.Response, err)
+						}
+						m := make(map[string]any)
+						if err := json.Unmarshal(b, &m); err != nil {
+							return fmt.Errorf("unmarshaling json: %w", err)
+						}
+						response = m
 					}
-					response = m
+					functionResponses = append(functionResponses, llm.FunctionCallResult{
+						Name:   functionCall.Name,
+						Result: response,
+					})
+					b, _ := json.Marshal(response)
+					c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("sending response: %v", string(b))})
 				}
-				functionResponses = append(functionResponses, genai.FunctionResponse{
-					Name:     functionCall.Name,
-					Response: response,
-				})
-				b, _ := json.Marshal(response)
-				c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("sending response: %v", string(b))})
-
-			} else {
-				klog.Infof("UNKNOWN: %T %+v", part, part)
 			}
 		}
 
@@ -240,11 +205,11 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...genai.Part) error {
 			return nil
 		}
 
-		// functionResponseContent := genai.Content{
-		// 	Role:  "model",
-		// 	Parts: functionResponses,
-		// }
-		userParts = functionResponses
-		// c.session.History = append(c.session.History, functionResponseContent)
+		// Go round again, but this time reply with the function responses
+		klog.Infof("functionResponses: %+v", functionResponses)
+		resp, err = c.session.SendFunctionResults(ctx, functionResponses)
+		if err != nil {
+			return fmt.Errorf("sending message to LLM: %w", err)
+		}
 	}
 }

@@ -24,9 +24,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
@@ -113,9 +113,16 @@ go 1.21
 		return fmt.Errorf("expected build error from scenario, but got no error")
 	}
 
+	llmClient, err := llm.BuildVertexAIClient(ctx)
+	if err != nil {
+		return fmt.Errorf("initializing LLM: %w", err)
+	}
+
+	defer llmClient.Close()
+
 	u := ui.NewTerminalUI()
 
-	chat, err := codebot.NewChat(ctx, tmpDir, contextFiles, u)
+	chat, err := codebot.NewChat(ctx, llmClient, tmpDir, contextFiles, u)
 	if err != nil {
 		return err
 	}
@@ -131,8 +138,8 @@ Can you fix the problems?
 
 	msg = strings.ReplaceAll(msg, "{{stdout}}", buildResults.Stdout)
 	msg = strings.ReplaceAll(msg, "{{stderr}}", buildResults.Stderr)
-	var userParts []genai.Part
-	userParts = append(userParts, genai.Text(msg))
+	var userParts []string
+	userParts = append(userParts, msg)
 	if err := chat.SendMessage(ctx, userParts...); err != nil {
 		return err
 	}

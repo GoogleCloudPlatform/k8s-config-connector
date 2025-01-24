@@ -22,9 +22,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
 	"k8s.io/klog/v2"
 )
@@ -92,13 +92,20 @@ func run(ctx context.Context) error {
 		}
 	}
 
+	llmClient, err := llm.BuildVertexAIClient(ctx)
+	if err != nil {
+		return fmt.Errorf("initializing LLM: %w", err)
+	}
+
+	defer llmClient.Close()
+
 	var chatSession *codebot.Chat
 
 	// ui := ui.NewTViewUI()
 	ui := ui.NewTerminalUI()
 
 	ui.SetCallback(func(text string) error {
-		var userParts []genai.Part
+		var userParts []string
 
 		var additionalContext strings.Builder
 
@@ -144,7 +151,7 @@ func run(ctx context.Context) error {
 			}
 		}
 		text = additionalContext.String() + strings.Join(tokens, " ")
-		userParts = append(userParts, genai.Text(text))
+		userParts = append(userParts, text)
 
 		if err := chatSession.SendMessage(ctx, userParts...); err != nil {
 			return fmt.Errorf("generating content with gemini: %w", err)
@@ -153,7 +160,7 @@ func run(ctx context.Context) error {
 		return nil
 	})
 
-	session, err := codebot.NewChat(ctx, o.BaseDir, contextFiles, ui)
+	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, ui)
 	if err != nil {
 		return err
 	}
