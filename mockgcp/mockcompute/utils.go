@@ -18,6 +18,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -29,6 +30,15 @@ func computeFingerprint(obj proto.Message) string {
 	b, err := proto.Marshal(obj)
 	if err != nil {
 		panic(fmt.Sprintf("converting to proto: %v", err))
+	}
+	hash := md5.Sum(b)
+	return base64.StdEncoding.EncodeToString(hash[:])
+}
+
+func labelsFingerprint(labels map[string]string) string {
+	b, err := json.Marshal(labels)
+	if err != nil {
+		panic(fmt.Sprintf("converting to json: %v", err))
 	}
 	hash := md5.Sum(b)
 	return base64.StdEncoding.EncodeToString(hash[:])
