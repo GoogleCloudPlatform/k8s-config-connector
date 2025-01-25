@@ -251,7 +251,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "address": "100.100.100.106",
+  "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "labels": {
     "cnrm-test": "true",
@@ -338,7 +338,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "100.100.100.106",
+  "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
@@ -408,7 +408,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "100.100.100.106",
+  "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",

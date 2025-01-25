@@ -633,15 +633,19 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-central1",
+  "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}",
+  "status": "RESERVED",
   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-1-${uniqueId}"
 }
 
@@ -702,15 +706,19 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-central1",
+  "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}",
+  "status": "RESERVED",
   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-1-${uniqueId}"
 }
 
@@ -2642,15 +2650,19 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-central1",
+  "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}",
+  "status": "RESERVED",
   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-1-${uniqueId}"
 }
 
