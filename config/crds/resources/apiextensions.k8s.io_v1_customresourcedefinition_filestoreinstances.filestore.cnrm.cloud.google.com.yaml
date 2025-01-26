@@ -123,15 +123,13 @@ spec:
                             type: string
                         type: object
                       type: array
-                    sourceBackup:
-                      description: The resource name of the backup, in the format
-                        `projects/{project_number}/locations/{location_id}/backups/{backup_id}`,
-                        that this file share has been restored from.
-                      type: string
                   type: object
                 type: array
               kmsKeyName:
                 description: The KMS key name used for data encryption.
+                type: string
+              location:
+                description: Immutable. The zone for this filestore instance.
                 type: string
               networks:
                 description: VPC networks to which the instance is connected. For
@@ -177,6 +175,38 @@ spec:
                       type: string
                   type: object
                 type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The FilestoreInstance name. If not given, the metadata.name
                   will be used.
@@ -184,6 +214,9 @@ spec:
               tier:
                 description: The service tier of the instance.
                 type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: FilestoreInstanceStatus defines the config connector machine

@@ -14,67 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.filestore.v1.FileShareConfig
-type FileShareConfig struct {
-	// Required. The name of the file share. Must use 1-16 characters for the
-	//  basic service tier and 1-63 characters for all other service tiers.
-	//  Must use lowercase letters, numbers, or underscores `[a-z0-9_]`. Must
-	//  start with a letter. Immutable.
-	// +kcc:proto:field=google.cloud.filestore.v1.FileShareConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// File share capacity in gigabytes (GB).
-	//  Filestore defines 1 GB as 1024^3 bytes.
-	// +kcc:proto:field=google.cloud.filestore.v1.FileShareConfig.capacity_gb
-	CapacityGB *int64 `json:"capacityGB,omitempty"`
-
-	// The resource name of the backup, in the format
-	//  `projects/{project_number}/locations/{location_id}/backups/{backup_id}`,
-	//  that this file share has been restored from.
-	// +kcc:proto:field=google.cloud.filestore.v1.FileShareConfig.source_backup
-	SourceBackup *string `json:"sourceBackup,omitempty"`
-
-	// Nfs Export Options.
-	//  There is a limit of 10 export options per file share.
-	// +kcc:proto:field=google.cloud.filestore.v1.FileShareConfig.nfs_export_options
-	NfsExportOptions []NfsExportOptions `json:"nfsExportOptions,omitempty"`
-}
-
-// +kcc:proto=google.cloud.filestore.v1.Instance
-type Instance struct {
-
-	// The description of the instance (2048 characters or less).
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.description
-	Description *string `json:"description,omitempty"`
-
-	// The service tier of the instance.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.tier
-	Tier *string `json:"tier,omitempty"`
-
-	// Resource labels to represent user provided metadata.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// File system shares on the instance.
-	//  For this version, only a single file share is supported.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.file_shares
-	FileShares []FileShareConfig `json:"fileShares,omitempty"`
-
-	// VPC networks to which the instance is connected.
-	//  For this version, only a single network is supported.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.networks
-	Networks []NetworkConfig `json:"networks,omitempty"`
-
-	// Server-specified ETag for the instance resource to prevent simultaneous
-	//  updates from overwriting each other.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// KMS key name used for data encryption.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.kms_key_name
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.filestore.v1.NetworkConfig
 type NetworkConfig struct {
 	// The name of the Google Compute Engine
@@ -154,44 +93,6 @@ type NfsExportOptions struct {
 	//  returned if this field is specified for other squash_mode settings.
 	// +kcc:proto:field=google.cloud.filestore.v1.NfsExportOptions.anon_gid
 	AnonGid *int64 `json:"anonGid,omitempty"`
-}
-
-// +kcc:proto=google.cloud.filestore.v1.Instance
-type InstanceObservedState struct {
-	// Output only. The resource name of the instance, in the format
-	//  `projects/{project}/locations/{location}/instances/{instance}`.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The instance state.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Additional information about the instance state, if available.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.status_message
-	StatusMessage *string `json:"statusMessage,omitempty"`
-
-	// Output only. The time when the instance was created.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// VPC networks to which the instance is connected.
-	//  For this version, only a single network is supported.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.networks
-	Networks []NetworkConfigObservedState `json:"networks,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.satisfies_pzi
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-
-	// Output only. Field indicates all the reasons the instance is in "SUSPENDED"
-	//  state.
-	// +kcc:proto:field=google.cloud.filestore.v1.Instance.suspension_reasons
-	SuspensionReasons []string `json:"suspensionReasons,omitempty"`
 }
 
 // +kcc:proto=google.cloud.filestore.v1.NetworkConfig
