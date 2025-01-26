@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -22,8 +23,14 @@ import (
 var FilestoreInstanceGVK = GroupVersion.WithKind("FilestoreInstance")
 
 // FilestoreInstanceSpec defines the desired state of FilestoreInstance
-// +xkcc:proto=google.cloud.filestore.v1.Instance
+// +kcc:proto=google.cloud.filestore.v1.Instance
 type FilestoreInstanceSpec struct {
+	/* Immutable. The zone for this filestore instance. */
+	Location string `json:"location"`
+
+	/* The project that this resource belongs to. */
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
 	// The description of the instance (2048 characters or less).
 	Description *string `json:"description,omitempty"`
 
@@ -66,7 +73,7 @@ type FilestoreInstanceStatus struct {
 }
 
 // FilestoreInstanceObservedState is the state of the FilestoreInstance resource as most recently observed in GCP.
-// +xkcc:proto=google.cloud.filestore.v1.Instance
+// +kcc:proto=google.cloud.filestore.v1.Instance
 type FilestoreInstanceObservedState struct {
 	// Output only. The resource name of the instance, in the format
 	//  `projects/{project}/locations/{location}/instances/{instance}`.
