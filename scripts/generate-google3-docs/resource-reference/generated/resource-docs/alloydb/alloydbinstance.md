@@ -90,6 +90,20 @@ networkConfig:
   - cidrRange: string
   enableOutboundPublicIp: boolean
   enablePublicIp: boolean
+observabilityConfig:
+  enabled: boolean
+  maxQueryStringLength: integer
+  preserveComments: boolean
+  queryPlansPerMinute: integer
+  recordApplicationTags: boolean
+  trackActiveQueries: boolean
+  trackWaitEventTypes: boolean
+  trackWaitEvents: boolean
+queryInsightsConfig:
+  queryPlansPerMinute: integer
+  queryStringLength: integer
+  recordApplicationTags: boolean
+  recordClientAddress: boolean
 readPoolConfig:
   nodeCount: integer
 resourceID: string
@@ -339,6 +353,146 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for enhanced query insights.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Observability feature status for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.maxQueryStringLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Query string length. The default value is 10240. Any integer between 1024 and 100000 is considered valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.preserveComments</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Preserve comments in the query string.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.queryPlansPerMinute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 200 is considered valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.recordApplicationTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record application tags for an instance. This flag is turned "on" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.trackActiveQueries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Track actively running queries. If not set, default value is "off".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.trackWaitEventTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record wait event types during query execution for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.trackWaitEvents</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record wait events during query execution for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for query insights.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.queryPlansPerMinute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 20 is considered valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.queryStringLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Query string length. The default value is 1024. Any integer between 256 and 4500 is considered valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.recordApplicationTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record application tags for an instance. This flag is turned "on" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.recordClientAddress</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record client address for an instance. Client address is PII information. This flag is turned "on" by default.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
