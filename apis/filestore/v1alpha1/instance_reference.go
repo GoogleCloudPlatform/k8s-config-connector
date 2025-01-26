@@ -51,7 +51,7 @@ func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Read
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseInstanceExternal(r.External); err != nil {
+		if _, err := ParseInstanceIdentityExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

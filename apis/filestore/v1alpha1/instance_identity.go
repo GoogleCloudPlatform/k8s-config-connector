@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,49 +14,42 @@
 
 package v1alpha1
 
+// +tool:krm-identity
+// proto.service: google.cloud.filestore.v1.CloudFilestoreManager
+// proto.message: google.cloud.filestore.v1.Instance
+// crd.type: FilestoreInstance
+// crd.version: v1alpha1
+
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// InstanceIdentity defines the resource reference to FilestoreInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceIdentity defines the full identity for a filestore Instance
+//
+// +k8s:deepcopy-gen=false
 type InstanceIdentity struct {
-	parent *InstanceParent
-	id     string
+	parent.ProjectAndLocationParent
+	Instance string
 }
 
-func (i *InstanceIdentity) String() string {
-	return i.parent.String() + "/instances/" + i.id
+func (l *InstanceIdentity) String() string {
+	return l.FullyQualifiedName()
 }
 
-func (i *InstanceIdentity) ID() string {
-	return i.id
+func (l *InstanceIdentity) FullyQualifiedName() string {
+	return l.ProjectAndLocationParent.String() + "/instances/" + l.Instance
 }
 
-func (i *InstanceIdentity) Parent() *InstanceParent {
-	return i.parent
-}
-
-type InstanceParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *InstanceParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a InstanceIdentity from the Config Connector Instance object.
-func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *FilestoreInstance) (*InstanceIdentity, error) {
-
+// InstanceIdentityForObject builds an InstanceIdentity from the Config Connector object.
+func InstanceIdentityForObject(ctx context.Context, reader client.Reader, obj *FilestoreInstance) (*InstanceIdentity, error) {
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -64,10 +57,14 @@ func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *Filesto
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
+
 	location := obj.Spec.Location
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	resourceID := valueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -75,43 +72,55 @@ func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *Filesto
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseInstanceExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &InstanceIdentity{
-		parent: &InstanceParent{
+	id := &InstanceIdentity{
+		ProjectAndLocationParent: parent.ProjectAndLocationParent{
 			ProjectID: projectID,
 			Location:  location,
 		},
-		id: resourceID,
-	}, nil
+		Instance: resourceID,
+	}
+
+	// Validate the status.externalRef, if set
+	externalRef := valueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusID, err := ParseInstanceIdentityExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+		if statusID.String() != id.String() {
+			return nil, fmt.Errorf("cannot change object identity after creation; status=%q, new=%q",
+				statusID.String(), id.String())
+		}
+		id = statusID
+	}
+	return id, nil
 }
 
-func ParseInstanceExternal(external string) (parent *InstanceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instances" {
-		return nil, "", fmt.Errorf("format of FilestoreInstance external=%q was not known (use projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}})", external)
+// Should match https://cloud.google.com/asset-inventory/docs/asset-names format
+func ParseInstanceIdentityExternal(external string) (*InstanceIdentity, error) {
+	s := strings.TrimPrefix(external, "//file.googleapis.com/")
+	s = strings.TrimPrefix(s, "/")
+	tokens := strings.Split(s, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
+		projectAndLocation := parent.ProjectAndLocationParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+
+		link := &InstanceIdentity{
+			ProjectAndLocationParent: projectAndLocation,
+			Instance:                 tokens[5],
+		}
+		return link, nil
 	}
-	parent = &InstanceParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	return nil, fmt.Errorf("format of FilestoreInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
+}
+
+func valueOf[T any](t *T) T {
+	var zeroVal T
+	if t == nil {
+		return zeroVal
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return *t
 }
