@@ -113,6 +113,7 @@ func (s *FilestoreV1) CreateInstance(ctx context.Context, req *pb.CreateInstance
 				network.ReservedIpRange = "10.1.2.0/29"
 				network.IpAddresses = []string{"10.1.2.1"}
 			}
+			obj.SatisfiesPzi = true
 			return nil
 		})
 	})
@@ -140,9 +141,7 @@ func mutateObject[T proto.Message](ctx context.Context, storage storage.Storage,
 }
 
 func (s *FilestoreV1) populateDefaultsForInstance(obj *pb.Instance) {
-	if obj.Tier == pb.Instance_TIER_UNSPECIFIED {
-		obj.Tier = pb.Instance_STANDARD
-	}
+
 }
 
 func (s *FilestoreV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstanceRequest) (*longrunningpb.Operation, error) {
