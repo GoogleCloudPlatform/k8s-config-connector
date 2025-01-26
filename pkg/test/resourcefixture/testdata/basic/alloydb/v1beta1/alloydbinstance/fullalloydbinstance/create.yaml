@@ -32,3 +32,17 @@ spec:
     authorizedExternalNetworks:
     - cidrRange: 8.8.8.8/30
     - cidrRange: 8.8.4.4/30
+  queryInsightsConfig:
+    queryPlansPerMinute: 5
+    queryStringLength: 1024
+    recordApplicationTags: false
+    recordClientAddress: false
+  observabilityConfig: 
+    enabled: false
+    preserveComments: false
+    trackWaitEvents: true
+    trackWaitEventTypes: true
+    maxQueryStringLength: 10240
+    recordApplicationTags: false
+    queryPlansPerMinute: 20
+    trackActiveQueries: false

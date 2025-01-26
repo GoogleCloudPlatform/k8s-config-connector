@@ -30,3 +30,17 @@ spec:
     enablePublicIp: false
     enableOutboundPublicIp: false
     authorizedExternalNetworks: []
+  queryInsightsConfig:
+    queryPlansPerMinute: 5
+    queryStringLength: 1024
+    recordApplicationTags: false
+    recordClientAddress: false
+  observabilityConfig:
+    enabled: true
+    preserveComments: false
+    trackWaitEvents: true
+    trackWaitEventTypes: true
+    maxQueryStringLength: 10240
+    recordApplicationTags: false
+    queryPlansPerMinute: 20
+    trackActiveQueries: true

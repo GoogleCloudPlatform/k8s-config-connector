@@ -38,3 +38,17 @@ spec:
     cpuCount: 2
   readPoolConfig:
     nodeCount: 3
+  queryInsightsConfig:
+    queryPlansPerMinute: 5
+    queryStringLength: 1024
+    recordApplicationTags: false
+    recordClientAddress: false
+  observabilityConfig:
+    enabled: false
+    preserveComments: false
+    trackWaitEvents: true
+    trackWaitEventTypes: true
+    maxQueryStringLength: 10240
+    recordApplicationTags: false
+    queryPlansPerMinute: 20
+    trackActiveQueries: false
