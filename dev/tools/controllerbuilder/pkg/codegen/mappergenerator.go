@@ -221,7 +221,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &krm.%s{}\n", goTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			protoFieldName := strings.Title(protoField.JSONName())
+			protoFieldName := protoNameForField(protoField)
 			protoAccessor := "Get" + protoFieldName + "()"
 
 			krmFieldName := goFieldName(protoField)
@@ -308,12 +308,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 						krmFieldName,
 						useCustomMethod,
-						krmFieldName,
+						protoFieldName,
 					)
 				} else {
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
-						krmFieldName,
+						protoFieldName,
 					)
 				}
 				continue
@@ -395,7 +395,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			protoFieldName := strings.Title(protoField.JSONName())
+			protoFieldName := protoNameForField(protoField)
 
 			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
@@ -667,6 +667,11 @@ func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 		}
 	}
 	return name
+}
+
+func protoNameForField(protoField protoreflect.FieldDescriptor) string {
+	s := strings.Title(protoField.JSONName())
+	return s
 }
 
 func ToGoFieldName(name protoreflect.Name) string {
