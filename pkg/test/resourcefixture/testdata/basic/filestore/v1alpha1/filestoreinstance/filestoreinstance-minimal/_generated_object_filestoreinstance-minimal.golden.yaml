@@ -1,0 +1,39 @@
+apiVersion: filestore.cnrm.cloud.google.com/v1alpha1
+kind: FilestoreInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: filestoreinstance-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  fileShares:
+  - capacityGB: 1024
+    name: share1
+  location: us-west2-a
+  networks:
+  - network: default
+  projectRef:
+    external: ${projectId}
+  tier: STANDARD
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    name: projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}
+    networks:
+    - {}
+    - {}
+    state: CREATING

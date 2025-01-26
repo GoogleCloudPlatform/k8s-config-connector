@@ -1,0 +1,290 @@
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Finstances%2Ffilestoreinstance-minimal-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Instance \"projects/${projectNumber}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}\" not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Instance \"projects/${projectNumber}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}\" not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://file.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=filestoreinstance-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2-a
+
+{
+  "description": "Initial description",
+  "fileShares": [
+    {
+      "capacityGb": "1024",
+      "name": "share1"
+    }
+  ],
+  "networks": [
+    {
+      "network": "default"
+    }
+  ],
+  "tier": 1
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v1"
+  },
+  "name": "projects/${projectNumber}/locations/us-west2-a/operations/${operationID}"
+}
+
+---
+
+GET https://file.googleapis.com/v1/projects/${projectNumber}/locations/us-west2-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-west2-a%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v1"
+  },
+  "name": "projects/${projectNumber}/locations/us-west2-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "fileShares": [
+      {
+        "capacityGb": "1024",
+        "name": "share1"
+      }
+    ],
+    "name": "projects/${projectNumber}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}",
+    "networks": [
+      {
+        "network": "default"
+      }
+    ],
+    "state": "CREATING",
+    "tier": "STANDARD"
+  }
+}
+
+---
+
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Finstances%2Ffilestoreinstance-minimal-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "fileShares": [
+    {
+      "capacityGb": "1024",
+      "name": "share1"
+    }
+  ],
+  "name": "projects/${projectNumber}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}",
+  "networks": [
+    {
+      "network": "default"
+    }
+  ],
+  "state": 1,
+  "tier": 1
+}
+
+---
+
+PATCH https://file.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Finstances%2Ffilestoreinstance-minimal-${uniqueId}
+
+{
+  "description": "Updated description",
+  "fileShares": [
+    {
+      "capacityGb": "1024",
+      "name": "share1"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}",
+  "networks": [
+    {
+      "network": "default"
+    }
+  ],
+  "tier": 1
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/us-west2-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
+    "description": "Updated description",
+    "fileShares": [
+      {
+        "capacityGb": "1024",
+        "name": "share1"
+      },
+      {
+        "capacityGb": "1024",
+        "name": "share1"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}",
+    "networks": [
+      {
+        "network": "default"
+      },
+      {
+        "network": "default"
+      }
+    ],
+    "state": 1,
+    "tier": 1
+  }
+}
+
+---
+
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Finstances%2Ffilestoreinstance-minimal-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "fileShares": [
+    {
+      "capacityGb": "1024",
+      "name": "share1"
+    },
+    {
+      "capacityGb": "1024",
+      "name": "share1"
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}",
+  "networks": [
+    {
+      "network": "default"
+    },
+    {
+      "network": "default"
+    }
+  ],
+  "state": 1,
+  "tier": 1
+}
+
+---
+
+DELETE https://file.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/instances/filestoreinstance-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Finstances%2Ffilestoreinstance-minimal-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/us-west2-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
