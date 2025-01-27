@@ -231,7 +231,7 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 		}
 
 		s := dataPoint.ToGenAIFormat()
-		// s = "<example>\n" + s + "\n</example>\n\n"
+		s = "<example>\n" + s + "\n</example>\n\n"
 		// s += "\n---\n\n"
 		fmt.Fprintf(&prompt, "\n%s\n\n", s)
 		// userParts = append(userParts, s)
@@ -243,11 +243,14 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 		// Prompt with the input data point.
 		s := input.ToGenAIFormat()
 		// We also include a prompt for Gemini to fill in.
-		s += "\nout: ```go\n"
-		// s = "<example>\n" + s
+		// s += "\nout: ```go\n"
+		s += "<out>\n```go\n"
+		s = "<example>\n" + s
 		// s = "Can you help me implement this?\n" + s
 		// userParts = append(userParts, s)
-		fmt.Fprintf(&prompt, "\nCan you help me implement this?\n\n%s", s)
+		// fmt.Fprintf(&prompt, "\nCan you complete the `out` value to help me implement this?  Don't output any additional commentary.\n\n%s", s)
+		fmt.Fprintf(&prompt, "\nCan you complete the item?  Don't output any additional commentary.\n\n%s", s)
+		// fmt.Fprintf(&prompt, "%s", s)
 	}
 
 	log.Info("sending completion request", "prompt", prompt.String())

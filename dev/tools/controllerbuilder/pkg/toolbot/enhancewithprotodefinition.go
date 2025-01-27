@@ -72,7 +72,7 @@ func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *Da
 	if service != "" {
 		protoService := x.services[service]
 		if protoService != nil {
-			p.SetInput("proto.service.definition", "```proto\n"+strings.Join(protoService.Definition, "\n")+"\n```\n")
+			p.SetInput("proto.service.definition", "```proto\n"+strings.Join(protoService.Definition, "\n")+"\n```")
 		} else {
 			return fmt.Errorf("unable to find proto service %q", service)
 		}
@@ -82,7 +82,7 @@ func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *Da
 	if message != "" {
 		protoMessage := x.messages[message]
 		if protoMessage != nil {
-			p.SetInput("proto.message.definition", "```proto\n"+strings.Join(protoMessage.Definition, "\n")+"\n```\n")
+			p.SetInput("proto.message.definition", "```proto\n"+strings.Join(protoMessage.Definition, "\n")+"\n```")
 		} else {
 			// return fmt.Errorf("unable to find proto message %q", message)
 			klog.Warningf("unable to find proto message %q", message)

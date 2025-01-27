@@ -17,6 +17,7 @@ package toolbot
 import (
 	"encoding/csv"
 	"fmt"
+	"sort"
 	"strings"
 
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -91,6 +92,9 @@ func (p *DataPoint) ToGenAIFormat() string {
 	var part strings.Builder
 	columns := columnSet.List()
 
+	// Always keep them sorted (and note that in.* comes before out.)
+	sort.Strings(columns)
+
 	for _, column := range columns {
 		v := ""
 
@@ -106,7 +110,12 @@ func (p *DataPoint) ToGenAIFormat() string {
 			}
 		}
 
-		fmt.Fprintf(&part, "%s: %s\n", column, v)
+		// fmt.Fprintf(&part, "%s: %s\n", column, v)
+		if strings.Contains(v, "\n") {
+			fmt.Fprintf(&part, "<%s>\n%s\n</%s>\n", column, v, column)
+		} else {
+			fmt.Fprintf(&part, "<%s>%s</%s>\n", column, v, column)
+		}
 	}
 
 	return part.String()
