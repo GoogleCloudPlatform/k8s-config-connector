@@ -113,7 +113,7 @@ func (t *EditFile) runEditFile(ctx context.Context, baseDir string) (*EditFileRe
 		return nil, fmt.Errorf("writing file %q: %w", p, err)
 	}
 
-	klog.Infof("wrote %v: %v", p, string(newContents))
+	klog.V(2).Infof("wrote %v: %v", p, string(newContents))
 	return &EditFileResults{
 		Success: true,
 	}, nil

@@ -16,32 +16,90 @@ package ui
 
 import (
 	"bufio"
+	"context"
 	"fmt"
+	"io"
 	"os"
+	"strings"
+
+	"k8s.io/klog/v2"
 )
 
 type TerminalUI struct {
-	callback func(text string) error
+	interactive bool
+	prompt      string
+	callback    func(text string) error
 }
 
-func NewTerminalUI() UI {
-	return &TerminalUI{}
+func NewTerminalUI(prompt string) UI {
+	return &TerminalUI{
+		prompt:      prompt,
+		interactive: prompt == "",
+	}
 }
 
-func (u *TerminalUI) Run() error {
-	reader := bufio.NewReader(os.Stdin)
-	for {
-		fmt.Printf(">>> ")
-		text, err := reader.ReadString('\n')
-		if err != nil {
-			return fmt.Errorf("reading from stdin: %w", err)
+func (u *TerminalUI) Run(ctx context.Context) error {
+	if u.interactive {
+		reader := bufio.NewReader(os.Stdin)
+		var text strings.Builder
+		lastLine := "\n"
+		for {
+			if text.Len() == 0 {
+				fmt.Printf(">>> ")
+			} else {
+				fmt.Printf("... ")
+			}
+			line, err := reader.ReadString('\n')
+			if err != nil {
+				if err != io.EOF {
+					return fmt.Errorf("reading from stdin: %w", err)
+				}
+			}
+			text.WriteString(line)
+			if err == io.EOF || (line == "\n" && lastLine == "\n") {
+				if text.String() == "" {
+					if err == io.EOF {
+						return nil
+					} else {
+						fmt.Printf("I am but an LLM, I need instruction\n")
+						text.Reset()
+						continue
+					}
+				}
+				klog.V(2).Infof("sending text: %s", text.String())
+				if err := u.callback(text.String()); err != nil {
+					return fmt.Errorf("error running callback: %w", err)
+				}
+				text.Reset()
+			}
+			lastLine = line
 		}
-		// fmt.Println(text)
-
-		if err := u.callback(text); err != nil {
+	} else {
+		u.addMessage(u.prompt, userScheme)
+		if err := u.callback(u.prompt); err != nil {
 			return fmt.Errorf("error running callback: %w", err)
 		}
+		<-ctx.Done()
+		return nil
 	}
+}
+
+func (u *TerminalUI) addMessage(msg string, colors colorScheme) {
+
+	var foreground string
+	{
+		r, g, b := colors.foreground.RGB()
+		foreground = fmt.Sprintf("\x1b[38;2;%d;%d;%dm", r, g, b)
+	}
+
+	// var background string
+	// {
+	// 	r, g, b := colors.background.RGB()
+	// 	background = fmt.Sprintf("\x1b[48;2;%d;%d;%dm", r, g, b)
+	// }
+	// text := foreground + background + msg
+	text := foreground + msg
+	fmt.Fprintf(os.Stdout, "%s\n", text)
 }
 
 func (u *TerminalUI) SetCallback(callback func(text string) error) {
@@ -49,5 +107,5 @@ func (u *TerminalUI) SetCallback(callback func(text string) error) {
 }
 
 func (u *TerminalUI) AddLLMOutput(output *LLMOutput) {
-	fmt.Fprintf(os.Stdout, "%v\n", output.Text)
+	u.addMessage(output.Text, robotScheme)
 }

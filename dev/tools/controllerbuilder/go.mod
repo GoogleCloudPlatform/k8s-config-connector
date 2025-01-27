@@ -11,6 +11,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.7.1
 	github.com/google/generative-ai-go v0.19.0
 	github.com/rivo/tview v0.0.0-20241227133733-17b7edb88c57
+	github.com/google/generative-ai-go v0.19.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	golang.org/x/oauth2 v0.25.0

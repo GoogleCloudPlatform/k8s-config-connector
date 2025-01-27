@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
@@ -241,6 +242,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		// Does not return status (at least for 404)
 		error.Status = ""
+	}
+
+	// Does not include Cache-Control private header
+	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		response.Header().Del("Cache-Control")
 	}
 
 	// Terraform uses the /beta/ endpoints, but we have protos only for v1.

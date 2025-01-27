@@ -96,33 +96,36 @@ func (t *FindInWorkspace) findInFiles(ctx context.Context, baseDir string) ([]*M
 		if d.IsDir() {
 			return nil
 		}
-		if filepath.Ext(path) != ".go" {
-			return nil
-		}
-		fileContents, err := os.ReadFile(path)
+
+		relativePath, err := filepath.Rel(baseDir, path)
 		if err != nil {
-			return fmt.Errorf("reading file %q: %w", path, err)
+			return fmt.Errorf("getting relative path for %q: %w", path, err)
 		}
-		lines := bytes.Split(fileContents, []byte("\n"))
-		for i, line := range lines {
-			if bytes.Contains(line, []byte(t.FindText)) {
-				var context bytes.Buffer
-				start := max(0, i-2)
-				end := min(len(lines), i+3)
-				for j := start; j < end; j++ {
-					fmt.Fprintf(&context, "%d: %s\n", j+1, lines[j])
-				}
-				relativePath, err := filepath.Rel(baseDir, path)
+
+		if t.FindText != "" {
+			if filepath.Ext(path) == ".go" {
+				fileContents, err := os.ReadFile(path)
 				if err != nil {
-					return fmt.Errorf("getting relative path for %q: %w", path, err)
+					return fmt.Errorf("reading file %q: %w", path, err)
 				}
-				match := &Match{
-					Filename:     relativePath,
-					MatchingLine: string(line),
-					Context:      context.String(),
+				lines := bytes.Split(fileContents, []byte("\n"))
+				for i, line := range lines {
+					if bytes.Contains(line, []byte(t.FindText)) {
+						var context bytes.Buffer
+						start := max(0, i-2)
+						end := min(len(lines), i+3)
+						for j := start; j < end; j++ {
+							fmt.Fprintf(&context, "%d: %s\n", j+1, lines[j])
+						}
+
+						match := &Match{
+							Filename:     relativePath,
+							MatchingLine: string(line),
+							Context:      context.String(),
+						}
+						matches = append(matches, match)
+					}
 				}
-				matches = append(matches, match)
-				return nil
 			}
 		}
 		return nil
@@ -130,18 +133,4 @@ func (t *FindInWorkspace) findInFiles(ctx context.Context, baseDir string) ([]*M
 		return nil, err
 	}
 	return matches, nil
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

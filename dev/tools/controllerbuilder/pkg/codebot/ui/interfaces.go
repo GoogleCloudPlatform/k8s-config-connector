@@ -14,10 +14,12 @@
 
 package ui
 
+import "context"
+
 type UI interface {
 	SetCallback(callback func(text string) error)
 	AddLLMOutput(output *LLMOutput)
-	Run() error
+	Run(ctx context.Context) error
 }
 
 type LLMOutput struct {

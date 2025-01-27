@@ -18,6 +18,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -42,6 +43,11 @@ type Options struct {
 	ProtoDir string
 	// BaseDir is the base directory for the project code
 	BaseDir string
+}
+
+func isInputFromPipe() bool {
+	fileInfo, _ := os.Stdin.Stat()
+	return fileInfo.Mode()&os.ModeCharDevice == 0
 }
 
 func run(ctx context.Context) error {
@@ -92,19 +98,32 @@ func run(ctx context.Context) error {
 		}
 	}
 
-	llmClient, err := llm.BuildVertexAIClient(ctx)
+	llmClient, err := llm.NewLLMClientFromEnvVar(ctx)
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}
-
 	defer llmClient.Close()
 
 	var chatSession *codebot.Chat
 
-	// ui := ui.NewTViewUI()
-	ui := ui.NewTerminalUI()
+	prompt := ""
+	if isInputFromPipe() {
+		b, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			return fmt.Errorf("reading input piped to stdin: %w", err)
+		}
+		prompt = string(b)
+	}
 
-	ui.SetCallback(func(text string) error {
+	var userInterface ui.UI
+	switch os.Getenv("CODEBOT_UI") {
+	case "tview":
+		userInterface = ui.NewTViewUI(prompt)
+	default:
+		userInterface = ui.NewTerminalUI(prompt)
+	}
+
+	userInterface.SetCallback(func(text string) error {
 		var userParts []string
 
 		var additionalContext strings.Builder
@@ -160,15 +179,15 @@ func run(ctx context.Context) error {
 		return nil
 	})
 
-	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, ui)
+	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, userInterface)
 	if err != nil {
 		return err
 	}
 	chatSession = session
 	defer chatSession.Close()
 
-	if err := ui.Run(); err != nil {
-		return fmt.Errorf("running tview: %w", err)
+	if err := userInterface.Run(ctx); err != nil {
+		return fmt.Errorf("running ui: %w", err)
 	}
 
 	return nil
