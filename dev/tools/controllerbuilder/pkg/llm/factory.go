@@ -29,6 +29,8 @@ func NewLLMClientFromEnvVar(ctx context.Context) (Client, error) {
 		return BuildGeminiClient(ctx)
 	case "ollama":
 		return BuildOllamaClient(ctx)
+	case "llamacpp":
+		return BuildLlamaCPPClient(ctx)
 	case "vertexai":
 		return BuildVertexAIClient(ctx)
 	default:
