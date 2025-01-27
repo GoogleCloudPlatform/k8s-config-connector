@@ -10,6 +10,11 @@ metadata:
   name: dataformrepository-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  gitRemoteSettings:
+    authenticationTokenSecretVersionRef:
+      external: projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1
+    defaultBranch: main
+    url: https://github.com/GoogleCloudPlatform/k8s-config-connector
   projectRef:
     external: ${projectId}
   region: us-west2

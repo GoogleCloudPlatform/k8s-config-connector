@@ -1566,11 +1566,8 @@
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.stagingLocation" is not set in unstructured objects
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.tempLocation" is not set in unstructured objects
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.additionalExperiments[]" is not set in unstructured objects
-[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.authenticationTokenSecretVersionRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.defaultBranch" is not set in unstructured objects
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.sshAuthenticationConfig.hostPublicKey" is not set in unstructured objects
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.sshAuthenticationConfig.userPrivateKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.url" is not set in unstructured objects
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.npmrcEnvironmentVariablesSecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.setAuthenticatedUserAdmin" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
