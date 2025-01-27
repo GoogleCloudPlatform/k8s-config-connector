@@ -118,7 +118,7 @@ git commit -m "filestore: autogenerate types and CRDs"
 controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF > pkg/controller/direct/filestore/instance_fuzzer.go
 // +tool:crd-fuzzer
 // proto.service: google.cloud.filestore.v1.CloudFilestoreManager
-// proto.resource: Instance
+// proto.message: google.cloud.filestore.v1.Instance
 // crd.type: FilestoreInstance
 EOF
 ```

@@ -150,5 +150,6 @@ http_host: file.googleapis.com
 http.host: file.googleapis.com
 proto.service: google.cloud.filestore.v1.CloudFilestoreManager
 proto.resource: Instance
+proto.message: google.cloud.filestore.v1.Instance
 crd.type: FilestoreInstance
 crd.version: v1alpha1
