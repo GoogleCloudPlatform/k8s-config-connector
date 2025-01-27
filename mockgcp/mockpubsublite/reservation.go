@@ -13,10 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// krm.apiVersion: pubsublite.cnrm.cloud.google.com/v1beta1
-// krm.kind: PubSubLiteReservation
 // proto.service: google.cloud.pubsublite.v1.AdminService
-// proto.resource: Reservation
+// proto.message: google.cloud.pubsublite.v1.Reservation
 
 package mockpubsublite
 

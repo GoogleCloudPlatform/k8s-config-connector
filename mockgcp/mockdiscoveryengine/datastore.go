@@ -13,10 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// krm.apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
-// krm.kind: DiscoveryEngineDataStore
 // proto.service: google.cloud.discoveryengine.v1.DataStoreService
-// proto.resource: DataStore
+// proto.message: google.cloud.discoveryengine.v1.DataStore
 
 package mockdiscoveryengine
 

@@ -33,11 +33,15 @@ type CSVExporter struct {
 	enhancers  []Enhancer
 	extractor  Extractor
 	dataPoints []*DataPoint
+
+	// StrictInputColumnKeys ensures that all input datapoints have this shape.
+	// This helps detect typos in the examples.
+	StrictInputColumnKeys sets.Set[string]
 }
 
 // Extractor is an interface for extracting data points from source code.
 type Extractor interface {
-	Extract(ctx context.Context, b []byte) ([]*DataPoint, error)
+	Extract(ctx context.Context, description string, b []byte) ([]*DataPoint, error)
 }
 
 // Enhancer is an interface for enhancing a data point.
@@ -63,7 +67,7 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 	if err != nil {
 		return fmt.Errorf("reading file %q: %w", p, err)
 	}
-	dataPoints, err := x.extractor.Extract(ctx, b)
+	dataPoints, err := x.BuildDataPoints(ctx, "file://"+p, b)
 	if err != nil {
 		return err
 	}
@@ -101,12 +105,6 @@ func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 // WriteCSVForAllTools writes CSV files for all tools.
 func (x *CSVExporter) WriteCSVForAllTools(ctx context.Context, outputDir string) error {
 	log := klog.FromContext(ctx)
-
-	for _, dataPoint := range x.dataPoints {
-		if err := x.EnhanceDataPoint(ctx, dataPoint); err != nil {
-			return err
-		}
-	}
 
 	toolNames := sets.NewString()
 	for _, dataPoint := range x.dataPoints {
@@ -176,8 +174,8 @@ func (x *CSVExporter) EnhanceDataPoint(ctx context.Context, d *DataPoint) error 
 }
 
 // BuildDataPoints extracts data points from a byte slice representing a Go file.
-func (x *CSVExporter) BuildDataPoints(ctx context.Context, src []byte) ([]*DataPoint, error) {
-	dataPoints, err := x.extractor.Extract(ctx, src)
+func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, src []byte) ([]*DataPoint, error) {
+	dataPoints, err := x.extractor.Extract(ctx, description, src)
 	if err != nil {
 		return nil, err
 	}
@@ -210,6 +208,11 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 	for _, dataPoint := range x.dataPoints {
 		if dataPoint.Type != input.Type {
 			continue
+		}
+
+		inputColumnKeys := dataPoint.InputColumnKeys()
+		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
+			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
 		}
 		userParts = append(userParts, dataPoint.ToGenAIParts()...)
 	}

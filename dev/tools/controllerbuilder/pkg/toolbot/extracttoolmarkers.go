@@ -29,8 +29,10 @@ import (
 type ExtractToolMarkers struct {
 }
 
+var _ Extractor = &ExtractToolMarkers{}
+
 // Extract extracts tool markers from source code.
-func (x *ExtractToolMarkers) Extract(ctx context.Context, src []byte) ([]*DataPoint, error) {
+func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, src []byte) ([]*DataPoint, error) {
 	var dataPoints []*DataPoint
 
 	r := bytes.NewReader(src)
@@ -52,8 +54,9 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, src []byte) ([]*DataPo
 				klog.V(2).Infof("found tool line %q", comment)
 				toolName := strings.TrimPrefix(comment, "+tool:")
 				dataPoint := &DataPoint{
-					Type:   toolName,
-					Output: string(src),
+					Description: description,
+					Type:        toolName,
+					Output:      string(src),
 				}
 
 				for {
@@ -85,7 +88,8 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, src []byte) ([]*DataPo
 				klog.V(2).Infof("found tool line %q", comment)
 				toolName := "kcc-proto"
 				dataPoint := &DataPoint{
-					Type: toolName,
+					Description: description,
+					Type:        toolName,
 				}
 
 				proto := strings.TrimPrefix(comment, "+kcc:proto=")
