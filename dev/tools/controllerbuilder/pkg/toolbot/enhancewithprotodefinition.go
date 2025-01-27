@@ -84,7 +84,8 @@ func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *Da
 		if protoMessage != nil {
 			p.SetInput("proto.message.definition", "```proto\n"+strings.Join(protoMessage.Definition, "\n")+"\n```\n")
 		} else {
-			return fmt.Errorf("unable to find proto message %q", message)
+			// return fmt.Errorf("unable to find proto message %q", message)
+			klog.Warningf("unable to find proto message %q", message)
 		}
 	}
 
