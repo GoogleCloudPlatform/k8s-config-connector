@@ -211,11 +211,20 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 
 	fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
 	// We only include data points for the same tool as the input.
+
+	var examples []*DataPoint
 	for _, dataPoint := range x.dataPoints {
 		if dataPoint.Type != input.Type {
 			continue
 		}
+		examples = append(examples, dataPoint)
+	}
 
+	if len(examples) > 4 {
+		examples = examples[:4]
+	}
+
+	for _, dataPoint := range examples {
 		inputColumnKeys := dataPoint.InputColumnKeys()
 		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
 			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
