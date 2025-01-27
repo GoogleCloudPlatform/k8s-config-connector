@@ -220,7 +220,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.Parent.OrganizationRef = &refs.OrganizationRef{External: a.id.Parent().String()}
+	obj.Spec.Parent.OrganizationRef = &refs.ApigeeOrganizationRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

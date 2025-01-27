@@ -64,7 +64,7 @@ func NewEnvironmentGroupIdentity(ctx context.Context, reader client.Reader, obj 
 		return nil, fmt.Errorf("cannot resolve organization: %w", err)
 	}
 
-	org, err := refs.ParseOrganizationExternal(orgExternal)
+	org, err := refs.ParseApigeeOrganizationExternal(orgExternal)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse external organization: %w", err)
 	}

@@ -81,14 +81,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The Organization selfLink, when not managed by Config
-                      Connector.
+                    description: The ApigeeOrganization selfLink, when not managed
+                      by Config Connector.
                     type: string
                   name:
-                    description: The `name` field of an `Organization` resource.
+                    description: The `name` field of an `ApigeeOrganization` resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of an `Organization` resource.
+                    description: The `namespace` field of an `ApigeeOrganization`
+                      resource.
                     type: string
                 type: object
               resourceID:

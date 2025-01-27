@@ -24,7 +24,7 @@ var ApigeeEnvgroupGVK = GroupVersion.WithKind("ApigeeEnvgroup")
 
 type Parent struct {
 	// +required
-	OrganizationRef *refv1alpha1.OrganizationRef `json:"organizationRef"`
+	OrganizationRef *refv1alpha1.ApigeeOrganizationRef `json:"organizationRef"`
 }
 
 // ApigeeEnvgroupSpec defines the desired state of ApigeeEnvgroup

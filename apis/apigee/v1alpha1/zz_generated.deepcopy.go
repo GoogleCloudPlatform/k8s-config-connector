@@ -234,7 +234,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(refsv1alpha1.OrganizationRef)
+		*out = new(refsv1alpha1.ApigeeOrganizationRef)
 		**out = **in
 	}
 }
