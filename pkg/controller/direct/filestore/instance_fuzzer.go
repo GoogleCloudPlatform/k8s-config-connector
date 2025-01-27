@@ -16,7 +16,7 @@ package filestore
 
 // +tool:crd-fuzzer
 // proto.service: google.cloud.filestore.v1.CloudFilestoreManager
-// proto.resource: Instance
+// proto.message: google.cloud.filestore.v1.Instance
 // crd.type: FilestoreInstance
 
 import (

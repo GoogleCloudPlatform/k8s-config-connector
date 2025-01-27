@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-support
+// +tool:xxmockgcp-support
 // proto.service: google.cloud.filestore.v1.CloudFilestoreManager
-// proto.resource: Instance
+// proto.message: google.cloud.filestore.v1.Instance
 
 package mockfilestore
 
