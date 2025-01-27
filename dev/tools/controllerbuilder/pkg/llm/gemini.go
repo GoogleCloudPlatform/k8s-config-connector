@@ -50,6 +50,10 @@ func (c *GeminiClient) Close() error {
 	return c.client.Close()
 }
 
+func (c *GeminiClient) GenerateCompletion(ctx context.Context, request *CompletionRequest) (CompletionResponse, error) {
+	return nil, fmt.Errorf("GeminiClient::GenerateCompletion not implemented")
+}
+
 func (c *GeminiClient) StartChat(systemPrompt string) Chat {
 	model := c.client.GenerativeModel("gemini-2.0-flash-exp")
 	// model := c.client.GenerativeModel("gemini-1.5-pro-002")

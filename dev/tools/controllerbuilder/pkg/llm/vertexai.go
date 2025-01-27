@@ -62,11 +62,16 @@ func BuildVertexAIClient(ctx context.Context) (*VertexAIClient, error) {
 	if err != nil {
 		return nil, fmt.Errorf("building vertexai client: %w", err)
 	}
-	return &VertexAIClient{client: client}, nil
+	model := "gemini-2.0-flash-exp"
+	return &VertexAIClient{
+		client: client,
+		model:  model,
+	}, nil
 }
 
 type VertexAIClient struct {
 	client *genai.Client
+	model  string
 }
 
 func (c *VertexAIClient) Close() error {
@@ -76,7 +81,7 @@ func (c *VertexAIClient) Close() error {
 func (c *VertexAIClient) StartChat(systemPrompt string) Chat {
 	// model := c.client.GenerativeModel("vertexai-1.5-flash")
 	// model := c.client.GenerativeModel("vertexai-exp-1206")
-	model := c.client.GenerativeModel("gemini-2.0-flash-exp")
+	model := c.client.GenerativeModel(c.model)
 	// model := c.client.GenerativeModel("gemma-2-27b-it")
 	// model := c.client.GenerativeModel("gemini-1.5-pro-002")
 
@@ -196,6 +201,46 @@ func (c *VertexAIChat) clientSideRateLimit() {
 	}
 }
 
+func (c *VertexAIClient) GenerateCompletion(ctx context.Context, request *CompletionRequest) (CompletionResponse, error) {
+	log := klog.FromContext(ctx)
+
+	model := c.client.GenerativeModel(c.model)
+
+	var vertexaiParts []genai.Part
+
+	vertexaiParts = append(vertexaiParts, genai.Text(request.Prompt))
+
+	// c.clientSideRateLimit()
+	log.Info("sending GenerateContent request to vertexai", "parts", vertexaiParts)
+	vertexaiResponse, err := model.GenerateContent(ctx, vertexaiParts...)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(vertexaiResponse.Candidates) > 1 {
+		klog.Infof("only considering first candidate")
+		for i := 1; i < len(vertexaiResponse.Candidates); i++ {
+			candidate := vertexaiResponse.Candidates[i]
+			klog.Infof("ignoring candidate: %q", candidate.Content)
+		}
+	}
+	var response strings.Builder
+	candidate := vertexaiResponse.Candidates[0]
+	for _, part := range candidate.Content.Parts {
+		switch part := part.(type) {
+		case genai.Text:
+			if response.Len() != 0 {
+				response.WriteString("\n")
+			}
+			response.WriteString(string(part))
+		default:
+			return nil, fmt.Errorf("unexpected type of content part: %T", part)
+		}
+	}
+
+	return &VertexAICompletionResponse{vertexaiResponse: vertexaiResponse, text: response.String()}, nil
+}
+
 func (c *VertexAIChat) SendMessage(ctx context.Context, parts ...string) (Response, error) {
 	log := klog.FromContext(ctx)
 	var vertexaiParts []genai.Part
@@ -281,4 +326,19 @@ func (p *VertexAIPart) AsFunctionCalls() ([]FunctionCall, bool) {
 		return ret, true
 	}
 	return nil, false
+}
+
+type VertexAICompletionResponse struct {
+	vertexaiResponse *genai.GenerateContentResponse
+	text             string
+}
+
+var _ CompletionResponse = &VertexAICompletionResponse{}
+
+func (r *VertexAICompletionResponse) Response() string {
+	return r.text
+}
+
+func (r *VertexAICompletionResponse) UsageMetadata() any {
+	return r.vertexaiResponse.UsageMetadata
 }
