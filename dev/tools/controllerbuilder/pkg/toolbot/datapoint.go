@@ -25,9 +25,19 @@ import (
 
 // DataPoint holds the input and output for a tool.
 type DataPoint struct {
-	Type   string
-	Input  map[string]string
-	Output string
+	Description string
+	Type        string
+	Input       map[string]string
+	Output      string
+}
+
+// InputColumnKeys returns a set of the input column names
+func (p *DataPoint) InputColumnKeys() sets.Set[string] {
+	keys := sets.New[string]()
+	for k := range p.Input {
+		keys.Insert(k)
+	}
+	return keys
 }
 
 // SetInput sets an input value for the data point.

@@ -25,6 +25,7 @@ import (
 	kccio "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/io"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
@@ -37,6 +38,10 @@ type PromptOptions struct {
 	ProtoDir string
 	SrcDir   string
 	Output   string
+
+	// StrictInputColumnKeys ensures that all input datapoints have this shape.
+	// This helps detect typos in the examples.
+	StrictInputColumnKeys []string
 }
 
 // BindFlags binds the flags to the command.
@@ -44,6 +49,7 @@ func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.SrcDir, "src-dir", o.SrcDir, "base directory for source code")
 	cmd.Flags().StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
 	cmd.Flags().StringVar(&o.Output, "output", o.Output, "the directory to store the prompt outcome")
+	cmd.Flags().StringSliceVar(&o.StrictInputColumnKeys, "strict-input-columns", o.StrictInputColumnKeys, "return an error if we see an irregular datapoint for this tool")
 }
 
 // BuildPromptCommand builds the `prompt` command.
@@ -91,6 +97,10 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		return err
 	}
 
+	if len(o.StrictInputColumnKeys) != 0 {
+		x.StrictInputColumnKeys = sets.New(o.StrictInputColumnKeys...)
+	}
+
 	if o.SrcDir != "" {
 		if err := x.VisitCodeDir(ctx, o.SrcDir); err != nil {
 			return err
@@ -102,7 +112,7 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		return fmt.Errorf("reading from stdin: %w", err)
 	}
 
-	dataPoints, err := x.BuildDataPoints(ctx, b)
+	dataPoints, err := x.BuildDataPoints(ctx, "<prompt>", b)
 	if err != nil {
 		return err
 	}
