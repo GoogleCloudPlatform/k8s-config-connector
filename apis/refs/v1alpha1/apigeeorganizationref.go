@@ -33,26 +33,26 @@ var (
 	ApigeeOrganizationGVK = GroupVersion.WithKind("ApigeeOrganization")
 )
 
-var _ refsv1beta1.ExternalNormalizer = &OrganizationRef{}
+var _ refsv1beta1.ExternalNormalizer = &ApigeeOrganizationRef{}
 
-type OrganizationRef struct {
-	/* The Organization selfLink, when not managed by Config Connector. */
+type ApigeeOrganizationRef struct {
+	/* The ApigeeOrganization selfLink, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
-	/* The `name` field of an `Organization` resource. */
+	/* The `name` field of an `ApigeeOrganization` resource. */
 	Name string `json:"name,omitempty"`
-	/* The `namespace` field of an `Organization` resource. */
+	/* The `namespace` field of an `ApigeeOrganization` resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type Organization struct {
-	OrganizationName string
+type ApigeeOrganization struct {
+	Name string
 }
 
-func (o *Organization) FullyQualifiedName() string {
-	return "organizations/" + o.OrganizationName
+func (o *ApigeeOrganization) FullyQualifiedName() string {
+	return "organizations/" + o.Name
 }
 
-func (r *OrganizationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *ApigeeOrganizationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", ApigeeOrganizationGVK.Kind)
 	}
@@ -96,7 +96,7 @@ func (r *OrganizationRef) NormalizedExternal(ctx context.Context, reader client.
 	return r.External, nil
 }
 
-func ParseOrganizationExternal(external string) (resourceID string, err error) {
+func ParseApigeeOrganizationExternal(external string) (resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 
 	if len(tokens) != 2 || tokens[0] != "organizations" {
