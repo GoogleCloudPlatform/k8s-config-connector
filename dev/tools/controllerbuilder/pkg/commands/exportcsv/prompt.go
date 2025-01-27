@@ -139,6 +139,7 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	}
 
 	dataPoint := dataPoints[0]
+	dataPoint.Output = ""
 
 	log.Info("built data point", "dataPoint", dataPoint)
 

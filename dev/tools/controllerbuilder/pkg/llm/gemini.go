@@ -39,19 +39,25 @@ func BuildGeminiClient(ctx context.Context) (Client, error) {
 
 	return &GeminiClient{
 		client: client,
+		model:  "gemini-2.0-pro-exp-02-05",
 	}, nil
 }
 
 type GeminiClient struct {
 	client *genai.Client
+	model  string
 }
 
 func (c *GeminiClient) Close() error {
 	return c.client.Close()
 }
 
+func (c *GeminiClient) GenerateCompletion(ctx context.Context, request *CompletionRequest) (CompletionResponse, error) {
+	return nil, fmt.Errorf("GeminiClient::GenerateCompletion not implemented")
+}
+
 func (c *GeminiClient) StartChat(systemPrompt string) Chat {
-	model := c.client.GenerativeModel("gemini-2.0-flash-exp")
+	model := c.client.GenerativeModel(c.model)
 	// model := c.client.GenerativeModel("gemini-1.5-pro-002")
 
 	// Some values that are recommended by aistudio
