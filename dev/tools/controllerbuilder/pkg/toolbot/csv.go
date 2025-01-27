@@ -194,17 +194,22 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, s
 func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
-	client, err := llm.BuildVertexAIClient(ctx)
+	client, err := llm.NewLLMClientFromEnvVar(ctx) //BuildVertexAIClient(ctx)
 	if err != nil {
 		return fmt.Errorf("building gemini client: %w", err)
 	}
 	defer client.Close()
 
-	systemPrompt := "" // TODO
-	chat := client.StartChat(systemPrompt)
+	var prompt strings.Builder
 
-	var userParts []string
+	// systemPrompt := "" // TODO
+	// chat := client.StartChat(systemPrompt)
 
+	// var userParts []string
+
+	// userParts = append(userParts, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:")
+
+	fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
 	// We only include data points for the same tool as the input.
 	for _, dataPoint := range x.dataPoints {
 		if dataPoint.Type != input.Type {
@@ -215,20 +220,36 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
 			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
 		}
-		userParts = append(userParts, dataPoint.ToGenAIFormat())
+
+		s := dataPoint.ToGenAIFormat()
+		// s = "<example>\n" + s + "\n</example>\n\n"
+		// s += "\n---\n\n"
+		fmt.Fprintf(&prompt, "\n%s\n\n", s)
+		// userParts = append(userParts, s)
 	}
 
-	log.Info("context information", "num(parts)", len(userParts))
+	// log.Info("context information", "num(parts)", len(userParts))
 
 	{
 		// Prompt with the input data point.
-		prompt := input.ToGenAIFormat()
+		s := input.ToGenAIFormat()
 		// We also include a prompt for Gemini to fill in.
-		prompt += "\nout: "
-		userParts = append(userParts, prompt)
+		s += "\nout: ```go\n"
+		// s = "<example>\n" + s
+		// s = "Can you help me implement this?\n" + s
+		// userParts = append(userParts, s)
+		fmt.Fprintf(&prompt, "\nCan you help me implement this?\n\n%s", s)
 	}
 
-	resp, err := chat.SendMessage(ctx, userParts...)
+	log.Info("sending completion request", "prompt", prompt.String())
+
+	// resp, err := chat.SendMessage(ctx, userParts...)
+	// if err != nil {
+	// 	return fmt.Errorf("generating content with gemini: %w", err)
+	// }
+	resp, err := client.GenerateCompletion(ctx, &llm.CompletionRequest{
+		Prompt: prompt.String(),
+	})
 	if err != nil {
 		return fmt.Errorf("generating content with gemini: %w", err)
 	}
@@ -236,26 +257,41 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 	// Print the usage metadata (includes token count i.e. cost)
 	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata())
 
-	for _, candidate := range resp.Candidates() {
-		for _, part := range candidate.Parts() {
-			if text, ok := part.AsText(); ok {
-				lines := strings.Split(strings.TrimSpace(text), "\n")
-				if len(lines) > 2 {
-					if lines[0] == "```go" {
-						lines = lines[1:]
-					}
-					if lines[len(lines)-1] == "```" {
-						lines = lines[:len(lines)-1]
-					}
-				}
-				text = strings.Join(lines, "\n")
-				// klog.Infof("TEXT: %+v", text)
-				out.Write([]byte(text + "\n"))
-			} else {
-				klog.Infof("UNKNOWN: %T %+v", part, part)
-			}
+	// for _, candidate := range resp.Candidates() {
+	// 	for _, part := range candidate.Parts() {
+	// 		if text, ok := part.AsText(); ok {
+	// 			lines := strings.Split(strings.TrimSpace(text), "\n")
+	// 			if len(lines) > 2 {
+	// 				if lines[0] == "```go" {
+	// 					lines = lines[1:]
+	// 				}
+	// 				if lines[len(lines)-1] == "```" {
+	// 					lines = lines[:len(lines)-1]
+	// 				}
+	// 			}
+	// 			text = strings.Join(lines, "\n")
+	// 			// klog.Infof("TEXT: %+v", text)
+	// 			out.Write([]byte(text + "\n"))
+	// 		} else {
+	// 			klog.Infof("UNKNOWN: %T %+v", part, part)
+	// 		}
+	// 	}
+	// }
+
+	text := resp.Response()
+
+	lines := strings.Split(strings.TrimSpace(text), "\n")
+	if len(lines) > 2 {
+		if lines[0] == "```go" {
+			lines = lines[1:]
+		}
+		if lines[len(lines)-1] == "```" {
+			lines = lines[:len(lines)-1]
 		}
 	}
+	text = strings.Join(lines, "\n")
+	// klog.Infof("TEXT: %+v", text)
+	out.Write([]byte(text + "\n"))
 
 	return nil
 }

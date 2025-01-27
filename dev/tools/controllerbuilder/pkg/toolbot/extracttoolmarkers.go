@@ -56,7 +56,7 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 				dataPoint := &DataPoint{
 					Description: description,
 					Type:        toolName,
-					Output:      string(src),
+					Output:      "```go\n" + string(src) + "```",
 				}
 
 				for {
@@ -112,7 +112,7 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 						break
 					}
 				}
-				dataPoint.Output = bb.String()
+				dataPoint.Output = "```go\n" + bb.String() + "```"
 				dataPoints = append(dataPoints, dataPoint)
 			}
 		}

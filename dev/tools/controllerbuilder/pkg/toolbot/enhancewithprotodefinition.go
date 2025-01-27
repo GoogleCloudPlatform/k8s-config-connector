@@ -64,11 +64,15 @@ var _ Enhancer = &EnhanceWithProtoDefinition{}
 
 // EnhanceDataPoint enhances the data point by adding the definition of the proto message or service.
 func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *DataPoint) error {
+	for k := range p.Input {
+		klog.Infof("EnhanceWithProtoDefinition: %q", k)
+	}
+
 	service := p.Input["proto.service"]
 	if service != "" {
 		protoService := x.services[service]
 		if protoService != nil {
-			p.SetInput("proto.service.definition", strings.Join(protoService.Definition, "\n"))
+			p.SetInput("proto.service.definition", "```proto\n"+strings.Join(protoService.Definition, "\n")+"\n```\n")
 		} else {
 			return fmt.Errorf("unable to find proto service %q", service)
 		}
@@ -78,9 +82,9 @@ func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *Da
 	if message != "" {
 		protoMessage := x.messages[message]
 		if protoMessage != nil {
-			p.SetInput("proto.message.definition", strings.Join(protoMessage.Definition, "\n"))
+			p.SetInput("proto.message.definition", "```proto\n"+strings.Join(protoMessage.Definition, "\n")+"\n```\n")
 		} else {
-			klog.Infof("unable to find proto message %q", message)
+			return fmt.Errorf("unable to find proto message %q", message)
 		}
 	}
 
