@@ -103,6 +103,8 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"Workstation",
 		"KMSAutokeyConfig",
 		"KMSKeyHandle",
+		"SecureSourceManagerInstance",
+		"SecureSourceManagerRepository",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }
