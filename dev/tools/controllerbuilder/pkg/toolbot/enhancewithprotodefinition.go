@@ -41,6 +41,7 @@ type protoMessage struct {
 type EnhanceWithProtoDefinition struct {
 	protoDirectory string
 	messages       map[string]*protoMessage
+	services       map[string]*protoService
 }
 
 // NewEnhanceWithProtoDefinition creates a new EnhanceWithProtoDefinition.
@@ -48,8 +49,12 @@ func NewEnhanceWithProtoDefinition(protoDirectory string) (*EnhanceWithProtoDefi
 	x := &EnhanceWithProtoDefinition{
 		protoDirectory: protoDirectory,
 		messages:       make(map[string]*protoMessage),
+		services:       make(map[string]*protoService),
 	}
 	if err := x.findProtoMessages(); err != nil {
+		return nil, err
+	}
+	if err := x.findProtoServices(); err != nil {
 		return nil, err
 	}
 	return x, nil
@@ -61,11 +66,12 @@ var _ Enhancer = &EnhanceWithProtoDefinition{}
 func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *DataPoint) error {
 	service := p.Input["proto.service"]
 	if service != "" {
-		protoService, err := x.getProtoForService(ctx, service)
-		if err != nil {
-			return fmt.Errorf("getting proto for service %q: %w", service, err)
+		protoService := x.services[service]
+		if protoService != nil {
+			p.SetInput("proto.service.definition", strings.Join(protoService.Definition, "\n"))
+		} else {
+			return fmt.Errorf("unable to find proto service %q", service)
 		}
-		p.SetInput("proto.service.definition", strings.Join(protoService.Definition, "\n"))
 	}
 
 	message := p.Input["proto.message"]
@@ -81,9 +87,8 @@ func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *Da
 	return nil
 }
 
-// getProtoForService gets the proto definition for a service.
-func (x *EnhanceWithProtoDefinition) getProtoForService(ctx context.Context, serviceName string) (*protoService, error) {
-	var matches []*protoService
+// findProtoMessages finds all the proto services in the proto directory.
+func (x *EnhanceWithProtoDefinition) findProtoServices() error {
 	if err := filepath.WalkDir(x.protoDirectory, func(p string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -123,16 +128,12 @@ func (x *EnhanceWithProtoDefinition) getProtoForService(ctx context.Context, ser
 			}
 
 			if len(tokens) >= 2 && tokens[0] == "service" {
-				found := packageName + "." + tokens[1]
+				serviceName := packageName + "." + tokens[1]
 
-				if found != serviceName {
-					continue
-				}
-
-				match := &protoService{FilePath: p}
+				service := &protoService{FilePath: p}
 				indent := 0
 				for {
-					match.Definition = append(match.Definition, line)
+					service.Definition = append(service.Definition, line)
 					for _, r := range line {
 						if r == '{' {
 							indent++
@@ -153,21 +154,18 @@ func (x *EnhanceWithProtoDefinition) getProtoForService(ctx context.Context, ser
 					}
 					line = strings.TrimSuffix(line, "\n")
 				}
-				matches = append(matches, match)
+				if _, found := x.services[serviceName]; found {
+					return fmt.Errorf("found duplication definition for service %q", serviceName)
+				}
+				x.services[serviceName] = service
 			}
 		}
 		return nil
 	}); err != nil {
-		return nil, fmt.Errorf("walking directory tree: %w", err)
+		return fmt.Errorf("walking directory tree: %w", err)
 	}
 
-	if len(matches) == 0 {
-		return nil, fmt.Errorf("service %q not found", serviceName)
-	}
-	if len(matches) > 1 {
-		return nil, fmt.Errorf("found multiple services with name %q", serviceName)
-	}
-	return matches[0], nil
+	return nil
 }
 
 // findProtoMessages finds all the proto messages in the proto directory.
