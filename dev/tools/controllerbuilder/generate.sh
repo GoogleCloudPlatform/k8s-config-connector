@@ -239,5 +239,12 @@ go run . generate-types \
 go run . generate-mapper \
      --service google.cloud.workflows.v1 \
      --api-version workflows.cnrm.cloud.google.com/v1alpha1
+
+# DocumentAI
+go run . generate-types \
+    --service google.cloud.documentai.v1 \
+    --api-version documentai.cnrm.cloud.google.com/v1alpha1 \
+    --resource DocumentAIProcessor:Processor
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
