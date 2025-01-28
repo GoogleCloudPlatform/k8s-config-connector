@@ -28,7 +28,7 @@ func init() {
 func fuzzEntitlement() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Entitlement{},
 		PrivilegedAccessManagerEntitlementSpec_FromProto, privilegedAccessManagerEntitlementSpec_ToProto,
-		PrivilegedAccessManagerEntitlementStatusObservedState_FromProto, privilegedAccessManagerEntitlementObservedState_ToProto,
+		PrivilegedAccessManagerEntitlementStatusObservedState_FromProto, PrivilegedAccessManagerEntitlementStatusObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")                                           // special field
@@ -51,17 +51,4 @@ func fuzzEntitlement() fuzztesting.KRMFuzzer {
 
 func privilegedAccessManagerEntitlementSpec_ToProto(ctx *direct.MapContext, k *krm.PrivilegedAccessManagerEntitlementSpec) *pb.Entitlement {
 	return PrivilegedAccessManagerEntitlementSpec_ToProto(ctx, k, gcpIAMAccessResource{})
-}
-
-// This function is not needed in the controller but only added for fuzzing purpose.
-func privilegedAccessManagerEntitlementObservedState_ToProto(ctx *direct.MapContext, k *krm.PrivilegedAccessManagerEntitlementObservedState) *pb.Entitlement {
-	if k == nil {
-		return nil
-	}
-	e := &pb.Entitlement{}
-	e.State = direct.Enum_ToProto[pb.Entitlement_State](ctx, k.State)
-	e.CreateTime = direct.StringTimestamp_ToProto(ctx, k.CreateTime)
-	e.UpdateTime = direct.StringTimestamp_ToProto(ctx, k.UpdateTime)
-	e.Etag = direct.ValueOf(k.Etag)
-	return e
 }

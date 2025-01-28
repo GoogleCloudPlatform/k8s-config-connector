@@ -119,6 +119,17 @@ func PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx *dir
 	out.Etag = direct.LazyPtr(in.Etag)
 	return out
 }
+func PrivilegedAccessManagerEntitlementStatusObservedState_ToProto(ctx *direct.MapContext, k *krm.PrivilegedAccessManagerEntitlementObservedState) *pb.Entitlement {
+	if k == nil {
+		return nil
+	}
+	e := &pb.Entitlement{}
+	e.State = direct.Enum_ToProto[pb.Entitlement_State](ctx, k.State)
+	e.CreateTime = direct.StringTimestamp_ToProto(ctx, k.CreateTime)
+	e.UpdateTime = direct.StringTimestamp_ToProto(ctx, k.UpdateTime)
+	e.Etag = direct.ValueOf(k.Etag)
+	return e
+}
 func RequesterJustificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement_RequesterJustificationConfig) *krm.RequesterJustificationConfig {
 	if in == nil {
 		return nil
