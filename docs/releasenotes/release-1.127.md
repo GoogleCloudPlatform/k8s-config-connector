@@ -1,11 +1,11 @@
-# v1.126.0
+# v1.127.0
 
 ** This version is not yet released; this document is gathering release notes for the future release **
 
 * ...
 
 * Special shout-outs to ... for their contributions to this release.
-TODO: list contributors with `git log v1.126.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
+TODO: list contributors with `git log v1.127.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
 
 ## Announcement 
 
