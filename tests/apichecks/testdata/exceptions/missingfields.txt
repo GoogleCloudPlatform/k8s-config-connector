@@ -64,6 +64,7 @@
 [missing_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.gceZone" is not set in unstructured objects
 [missing_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.networkConfig.authorizedExternalNetworks[].cidrRange" is not set in unstructured objects
 [missing_field] crd=alloydbusers.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.databaseRoles[]" is not set in unstructured objects
+[missing_field] crd=apigeeenvgroups.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.hostnames[]" is not set in unstructured objects
 [missing_field] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.runtimeDatabaseEncryptionKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].action" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.newerThan" is not set in unstructured objects
