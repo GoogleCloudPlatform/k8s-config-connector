@@ -2,12 +2,12 @@ apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: alloydbinstance-${uniqueId}
@@ -20,7 +20,6 @@ spec:
     name: alloydbcluster-${uniqueId}
   machineConfig:
     cpuCount: 2
-  resourceID: alloydbinstance-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -29,9 +28,10 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
+  externalRef: projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}
   ipAddress: 10.1.2.3
   name: projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 1
   state: READY
   uid: "12345678"
   updateTime: "1970-01-01T00:00:00Z"

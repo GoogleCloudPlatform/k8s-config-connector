@@ -119,12 +119,12 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}'Availability type of an Instance. Defaults to REGIONAL for both primary and read instances.
-Note that primary and read instances can have different availability types.
-Only READ_POOL instance supports ZONAL type. Users can't specify the zone for READ_POOL instance.
-Zone is automatically chosen from the list of zones in the region specified.
-Read pool of size 1 can only have zonal availability. Read pools with node count of 2 or more
-can have regional availability (nodes are present in 2 or more zones in a region).' Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].{% endverbatim %}</p>
+            <p>{% verbatim %}Availability type of an Instance. If empty, defaults to REGIONAL for primary instances.
+
+For read pools, availabilityType is always UNSPECIFIED. Instances in the
+read pools are evenly distributed across available zones within the region
+(i.e. read pools with more than one node will have a node in at least two zones).
+Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -134,7 +134,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The AlloyDBInstance cluster that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -144,7 +144,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -154,7 +154,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -164,7 +164,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -204,8 +204,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}We recommend that you use `instanceTypeRef` instead.
-The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% endverbatim %}</p>
+            <p>{% verbatim %}Not recommended. We recommend that you use `instanceTypeRef` instead. The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -217,6 +216,7 @@ The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% end
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The type of instance.
 Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]
+
 For PRIMARY and SECONDARY instances, set the value to refer to the name of the associated cluster.
 This is recommended because the instance type of primary and secondary instances is tied to the cluster type of the associated cluster.
 If the secondary cluster is promoted to primary cluster, then the associated secondary instance also becomes primary instance.
@@ -238,7 +238,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `clusterType` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The type of instance. Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +258,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -298,7 +298,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of external networks authorized to access this instance. This field is only allowed to be set when 'enable_public_ip' is set to true.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A list of external network authorized to access this instance. This field is only allowed to be set when 'enablePublicIp' is set to true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -318,7 +318,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}CIDR range for one authorized network of the instance.{% endverbatim %}</p>
+            <p>{% verbatim %}CIDR range for one authorzied network of the instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -328,7 +328,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Enabling outbound public ip for the instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Enabling an outbound public IP address to support a database server sending requests out into the internet.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -338,7 +338,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -368,7 +368,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The instanceId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The instanceId of the resource. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -386,6 +386,7 @@ conditions:
   status: string
   type: string
 createTime: string
+externalRef: string
 ipAddress: string
 name: string
 observedGeneration: integer
@@ -409,7 +410,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -462,6 +463,13 @@ updateTime: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the AlloyDBInstance resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>ipAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -486,9 +494,7 @@ updateTime: string
         <td><code>outboundPublicIpAddresses</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The outbound public IP addresses for the instance. This is available ONLY when
-networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
-for outbound connections.{% endverbatim %}</p>
+            <p>{% verbatim %}The outbound public IP addresses for the instance. This is available ONLY when networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used for outbound connections.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
