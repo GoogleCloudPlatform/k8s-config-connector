@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 # This kustomization.yaml is not intended to be run by itself,
 # since it depends on service name and namespace that are out of this kustomize package.
 # It should be run by config/default
+
 resources:
-- bases/core.cnrm.cloud.google.com_configconnectors.yaml
-- bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+- ../../base
 - bases/customize.core.cnrm.cloud.google.com_controllerresources.yaml
 - bases/customize.core.cnrm.cloud.google.com_namespacedcontrollerresources.yaml
 - bases/customize.core.cnrm.cloud.google.com_validatingwebhookconfigurationcustomizations.yaml
@@ -26,12 +26,6 @@ resources:
 - bases/customize.core.cnrm.cloud.google.com_namespacedcontrollerreconcilers.yaml
 
 patchesJson6902:
-- target:
-    group: apiextensions.k8s.io
-    version: v1
-    kind: CustomResourceDefinition
-    name: configconnectors.core.cnrm.cloud.google.com
-  path: crd_patch.yaml
 - target:
     group: apiextensions.k8s.io
     version: v1

@@ -118,6 +118,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	}
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
+		mgr.GetClient(),
 		dynamic.NewForConfigOrDie(mgr.GetConfig()),
 		controllers.CustomizationWatcherOptions{
 			TriggerGVRs: controllers.CustomizationCRsToWatch,
@@ -614,6 +615,17 @@ func (r *Reconciler) applyCustomizations() declarative.ObjectTransform {
 // fetchAndApplyAllControllerResourceCRs lists all cluster-scoped controller resource CRs, and applies them to
 // the corresponding manifest objects.
 func (r *Reconciler) fetchAndApplyAllControllerResourceCRs(ctx context.Context, m *manifest.Objects) error {
+	// Check if the CRD is installed in the cluster first to prevent misleading error messages.
+	gvr := corekcck8s.ToGVR(customizev1beta1.ControllerResourceGroupVersionKind)
+	exist, err := controllers.CheckCRDExists(ctx, r.client, gvr)
+	if err != nil {
+		return err
+	}
+	if !exist {
+		r.log.Info("CRD not found, skipping controller resource customization", "crd", gvr.String())
+		return nil
+	}
+	// CRD exist, list and apply CRs
 	crs, err := controllers.ListControllerResources(ctx, r.client)
 	if err != nil {
 		return err
@@ -677,26 +689,48 @@ func (r *Reconciler) updateControllerResourceStatus(ctx context.Context, cr *cus
 // fetchAndApplyAllWebhookConfigurationCustomizationCRs lists all cluster-scoped webhook configuration customization CRs, and applies
 // them to the corresponding webhook configurations in the cluster.
 func (r *Reconciler) fetchAndApplyAllWebhookConfigurationCustomizationCRs(ctx context.Context) error {
-	vwhcrs, err := controllers.ListValidatingWebhookConfigurationCustomizations(ctx, r.client)
+	// Check if the CRD is installed in the cluster first to prevent misleading error messages.
+	gvr := corekcck8s.ToGVR(customizev1beta1.ValidatingWebhookConfigurationCustomizationGroupVersionKind)
+	exist, err := controllers.CheckCRDExists(ctx, r.client, gvr)
 	if err != nil {
 		return err
 	}
-	for _, cr := range vwhcrs {
-		r.log.Info("applying validating webhook configuration customization", "name", cr.Name)
-		if err := r.applyValidatingWebhookConfigurationCustomizationCR(ctx, &cr); err != nil {
+	if !exist {
+		r.log.Info("CRD not found, skipping validating webhook configuration customization", "crd", gvr.String())
+	} else { // CRD exist, list and apply CRs
+		vwhcrs, err := controllers.ListValidatingWebhookConfigurationCustomizations(ctx, r.client)
+		if err != nil {
 			return err
 		}
+		for _, cr := range vwhcrs {
+			r.log.Info("applying validating webhook configuration customization", "name", cr.Name)
+			if err := r.applyValidatingWebhookConfigurationCustomizationCR(ctx, &cr); err != nil {
+				return err
+			}
+		}
 	}
-	mwhcrs, err := controllers.ListMutatingWebhookConfigurationCustomizations(ctx, r.client)
+
+	// Check if the CRD is installed in the cluster first to prevent misleading error messages.
+	gvr = corekcck8s.ToGVR(customizev1beta1.MutatingWebhookConfigurationCustomizationGroupVersionKind)
+	exist, err = controllers.CheckCRDExists(ctx, r.client, gvr)
 	if err != nil {
 		return err
 	}
-	for _, cr := range mwhcrs {
-		r.log.Info("applying mutating webhook configuration customization", "name", cr.Name)
-		if err := r.applyMutatingWebhookConfigurationCustomizationCR(ctx, &cr); err != nil {
+	if !exist {
+		r.log.Info("CRD not found, skipping mutating webhook configuration customization", "crd", gvr.String())
+	} else {
+		mwhcrs, err := controllers.ListMutatingWebhookConfigurationCustomizations(ctx, r.client)
+		if err != nil {
 			return err
 		}
+		for _, cr := range mwhcrs {
+			r.log.Info("applying mutating webhook configuration customization", "name", cr.Name)
+			if err := r.applyMutatingWebhookConfigurationCustomizationCR(ctx, &cr); err != nil {
+				return err
+			}
+		}
 	}
+
 	return nil
 }
 
@@ -841,6 +875,17 @@ func (r *Reconciler) updateMutatingWebhookConfigurationCustomizationStatus(ctx c
 }
 
 func (r *Reconciler) fetchAndApplyAllControllerReconcilers(ctx context.Context, m *manifest.Objects) error {
+	// Check if the CRD is installed in the cluster first to prevent misleading error messages.
+	gvr := corekcck8s.ToGVR(customizev1beta1.ControllerReconcilerGroupVersionKind)
+	exist, err := controllers.CheckCRDExists(ctx, r.client, gvr)
+	if err != nil {
+		return err
+	}
+	if !exist {
+		r.log.Info("CRD not found, skipping controller reconciler customization", "crd", gvr.String())
+		return nil
+	}
+	// CRD exist, list and apply CRs
 	crs, err := controllers.ListControllerReconcilers(ctx, r.client)
 	if err != nil {
 		return err
