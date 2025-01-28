@@ -149,7 +149,7 @@ repo to quickly set up a local dev environment.
     ```shell
     ./gcp-setup.sh
     ```
-1.  _(Optional)_ Verify that worload identity federation is [setup correctly](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#verify_the_setup).
+1.  _(Optional)_ Verify that workload identity federation is [setup correctly](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#verify_the_setup).
 
 1.  Now that you have everything set up, you can build your own images and then
     deploy the Config Connector CRDs and workloads (including controller

@@ -93,7 +93,7 @@ func SetupMultipleEnvironments(m *testing.M, testType test.Type, crds []*apiexte
 		if testType == test.IntegrationTestType {
 			whCfgs, err = webhook.GetTestCommonWebhookConfigs()
 			if err != nil {
-				log.Fatalf("error getting common wehbook configs: %v", err)
+				log.Fatalf("error getting common webhook configs: %v", err)
 			}
 		}
 		env := testenvironment.StartTestEnvironmentOrLogFatal(testType, crds, whCfgs)
