@@ -362,7 +362,7 @@ func TestE2EScript(t *testing.T) {
 
 						for i, stepEvents := range eventsByStep {
 							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
-							NormalizeHTTPLog(t, stepEvents, project, uniqueID, "", "")
+							NormalizeHTTPLog(t, stepEvents, h.RegisteredServices(), project, uniqueID, "", "")
 							got := x.Render(stepEvents)
 							h.CompareGoldenFile(expectedPath, got, IgnoreComments)
 						}

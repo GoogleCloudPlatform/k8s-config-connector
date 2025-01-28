@@ -51,6 +51,7 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -73,6 +74,8 @@ import (
 type Harness struct {
 	*testing.T
 	Ctx context.Context
+
+	registeredServices mockgcpregistry.Normalizer
 
 	Events     *test.MemoryEventSink
 	KubeEvents *test.MemoryEventSink
@@ -357,8 +360,15 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
+
+		h.registeredServices = mockCloud.(mockgcpregistry.Normalizer)
 	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
 		t.Logf("targeting real GCP")
+
+		// We create registered services, even though we only use it for replacements
+		var kubeClient client.Client // TODO: We should replace this, it didn't work
+		mockCloud := mockgcp.NewMockRoundTripperForTest(t, kubeClient, storage.NewInMemoryStorage())
+		h.registeredServices = mockCloud.(mockgcpregistry.Normalizer)
 	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
 		t.Logf("creating vcr test")
 	} else {
@@ -673,6 +683,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}
 
 	return h
+}
+
+func (h *Harness) RegisteredServices() mockgcpregistry.Normalizer {
+	return h.registeredServices
 }
 
 // ExportParams returns the default parameters.Parameters to use for an export

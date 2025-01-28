@@ -210,22 +210,22 @@ func (r *Response) FormatHTTP() string {
 	return b.String()
 }
 
-type JSONMutator func(obj map[string]any)
+type JSONMutator func(url string, obj map[string]any)
 
 func (e *LogEntry) PrettifyJSON(mutators ...JSONMutator) {
 	e.Request.PrettifyJSON(mutators...)
-	e.Response.PrettifyJSON(mutators...)
+	e.Response.PrettifyJSON(e.Request.URL, mutators...)
 }
 
-func (r *Response) PrettifyJSON(mutators ...JSONMutator) {
-	r.Body = prettifyJSON(r.Body, mutators...)
+func (r *Response) PrettifyJSON(requestURL string, mutators ...JSONMutator) {
+	r.Body = prettifyJSON(r.Body, requestURL, mutators...)
 }
 
 func (r *Request) PrettifyJSON(mutators ...JSONMutator) {
-	r.Body = prettifyJSON(r.Body, mutators...)
+	r.Body = prettifyJSON(r.Body, r.URL, mutators...)
 }
 
-func prettifyJSON(s string, mutators ...JSONMutator) string {
+func prettifyJSON(s string, url string, mutators ...JSONMutator) string {
 	if s == "" {
 		return s
 	}
@@ -237,7 +237,7 @@ func prettifyJSON(s string, mutators ...JSONMutator) string {
 	}
 
 	for _, mutator := range mutators {
-		mutator(obj)
+		mutator(url, obj)
 	}
 
 	b, err := json.MarshalIndent(obj, "", "  ")

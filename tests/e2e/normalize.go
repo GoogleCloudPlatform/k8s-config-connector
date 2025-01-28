@@ -25,6 +25,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -405,7 +406,7 @@ func newObjectWalker() *objectWalker {
 	}
 }
 
-func (o *objectWalker) ReplacePath(path string, v string) {
+func (o *objectWalker) ReplacePath(path string, v any) {
 	if _, found := o.replacePaths[path]; found {
 		klog.Fatalf("objectWalker has duplicate ReplacePath %q", path)
 	}
@@ -631,7 +632,7 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 	}
 }
 
-func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregistry.Normalizer, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
 	normalizer := NewNormalizer(uniqueID, project)
 
 	normalizer.Preprocess(events)
@@ -690,10 +691,10 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 		}
 	}
 
-	normalizeHTTPResponses(t, events)
+	normalizeHTTPResponses(t, services, events)
 
 	// Normalize using the KRM normalization function
-	events.PrettifyJSON(func(obj map[string]any) {
+	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
 		if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
@@ -705,7 +706,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	normalizer.Replacements.ApplyReplacementsToHTTPEvents(events)
 }
 
-func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
+func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer, events test.LogEntries) {
 	visitor := newObjectWalker()
 
 	// If we get detailed info, don't record it - it's not part of the API contract
@@ -855,19 +856,19 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.replacePaths[".address"] = "8.8.8.8"
 	}
 
-	// Filestore
-	{
-		visitor.replacePaths[".networks[].reservedIpRange"] = "10.20.30.0/24"
-		visitor.replacePaths[".networks[].ipAddresses"] = "10.20.30.1"
-		visitor.replacePaths[".response.networks[].reservedIpRange"] = "10.20.30.0/24"
-		visitor.replacePaths[".response.networks[].ipAddresses"] = []string{"10.20.30.1"}
-	}
-
 	// Run visitors
-	events.PrettifyJSON(func(obj map[string]any) {
+	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		// Deprecated: try to move these into mockgcp normalizers
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
 		}
+
+		replacements := newObjectWalker()
+		normalizer.ConfigureVisitor(requestURL, replacements)
+		if err := replacements.visitMap(obj, ""); err != nil {
+			t.Fatalf("error normalizing response: %v", err)
+		}
+
 	})
 }
 

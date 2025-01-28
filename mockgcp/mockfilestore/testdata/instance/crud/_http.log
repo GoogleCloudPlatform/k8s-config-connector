@@ -129,7 +129,9 @@ X-Xss-Protection: 0
   "networks": [
     {
       "connectMode": "DIRECT_PEERING",
-      "ipAddresses": "10.20.30.1",
+      "ipAddresses": [
+        "10.20.30.1"
+      ],
       "network": "default",
       "reservedIpRange": "10.20.30.0/24"
     }
