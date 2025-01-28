@@ -40,3 +40,13 @@ spec:
   region: us-central1
   networkRef:
     name: default
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetVPNGateway
+metadata:
+  name: computetargetvpngateway-2-${uniqueId}
+spec:
+  description: another regional target vpn gateway
+  region: us-central1
+  networkRef:
+    name: default
