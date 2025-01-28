@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -31,7 +32,7 @@ func AlloyDBInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *
 	out.DatabaseFlags = in.GetDatabaseFlags()
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.GCEZone = direct.LazyPtr(in.GetGceZone())
-	out.InstanceType = direct.Enum_FromProto(mapCtx, in.GetInstanceType())
+	out.InstanceTypeRef = Instance_InstanceType_FromProto(mapCtx, in.GetInstanceType())
 	out.MachineConfig = Instance_MachineConfig_FromProto(mapCtx, in.GetMachineConfig())
 	out.NetworkConfig = Instance_InstanceNetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	out.ReadPoolConfig = Instance_ReadPoolConfig_FromProto(mapCtx, in.GetReadPoolConfig())
@@ -48,7 +49,7 @@ func AlloyDBInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBInsta
 	out.DatabaseFlags = in.DatabaseFlags
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.GceZone = direct.ValueOf(in.GCEZone)
-	out.InstanceType = direct.Enum_ToProto[pb.Instance_InstanceType](mapCtx, in.InstanceType)
+	out.InstanceType = Instance_InstanceType_ToProto(mapCtx, in.InstanceTypeRef)
 	out.MachineConfig = Instance_MachineConfig_ToProto(mapCtx, in.MachineConfig)
 	out.NetworkConfig = Instance_InstanceNetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 	out.ReadPoolConfig = Instance_ReadPoolConfig_ToProto(mapCtx, in.ReadPoolConfig)
@@ -71,4 +72,21 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 
 	return out
+}
+
+func Instance_InstanceType_FromProto(mapCtx *direct.MapContext, in pb.Instance_InstanceType) *refs.AlloyDBClusterTypeRef {
+	out := &refs.AlloyDBClusterTypeRef{}
+	instanceType := direct.Enum_FromProto(mapCtx, in)
+	if instanceType == nil {
+		return nil
+	}
+	out.External = *instanceType
+	return out
+}
+
+func Instance_InstanceType_ToProto(mapCtx *direct.MapContext, in *refs.AlloyDBClusterTypeRef) pb.Instance_InstanceType {
+	if in == nil {
+		return direct.Enum_ToProto[pb.Instance_InstanceType](mapCtx, nil)
+	}
+	return direct.Enum_ToProto[pb.Instance_InstanceType](mapCtx, direct.PtrTo(in.External))
 }

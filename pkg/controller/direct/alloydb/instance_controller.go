@@ -67,16 +67,13 @@ func (m *instanceModel) client(ctx context.Context) (*gcp.AlloyDBAdminClient, er
 
 func resolveInstanceType(ctx context.Context, reader client.Reader, obj *krm.AlloyDBInstance, isDeletion bool) error {
 	if obj.Spec.InstanceType == nil && obj.Spec.InstanceTypeRef == nil {
-		return fmt.Errorf("one and only one of 'spec.InstanceTypeRef' " +
+		return fmt.Errorf("at least one of 'spec.InstanceTypeRef' " +
 			"and 'spec.InstanceType' should be configured: neither is configured")
 	}
 
 	var instanceType *string
 	if obj.Spec.InstanceType != nil {
 		instanceType = obj.Spec.InstanceType
-		if *instanceType == "" {
-			return fmt.Errorf("'spec.InstanceType' should be configured with a non-empty string")
-		}
 	}
 	if obj.Spec.InstanceTypeRef != nil {
 		plainTextInstanceType := instanceType
@@ -95,7 +92,16 @@ func resolveInstanceType(ctx context.Context, reader client.Reader, obj *krm.All
 				*instanceType, *plainTextInstanceType)
 		}
 	}
-	obj.Spec.InstanceType = instanceType
+	if *instanceType == "" {
+		return fmt.Errorf("instance type should be a non-empty string, " +
+			"ensure the referenced AlloyDBCluster in `spec.instancerTypeRef` " +
+			"has the correct cluster type or `spec.instancerTypeRef.external` " +
+			"has a correct instance type")
+	}
+	if obj.Spec.InstanceTypeRef == nil {
+		obj.Spec.InstanceTypeRef = &refsv1beta1.AlloyDBClusterTypeRef{}
+	}
+	obj.Spec.InstanceTypeRef.External = *instanceType
 	return nil
 }
 
@@ -183,8 +189,8 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	resource.Labels["managed-by-cnrm"] = "true"
 
 	var created *alloydbpb.Instance
-	instanceType := a.desired.Spec.InstanceType
-	if *instanceType == "SECONDARY" {
+	instanceType := a.desired.Spec.InstanceTypeRef.External
+	if instanceType == "SECONDARY" {
 		req := &alloydbpb.CreateSecondaryInstanceRequest{
 			Parent:     a.id.Parent().String(),
 			InstanceId: a.id.ID(),
@@ -332,9 +338,9 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		log.V(2).Info("'spec.gceZone' field is updated (-old +new)", cmp.Diff(actual.GCEZone, desired.GCEZone))
 		updatePaths = append(updatePaths, "gce_zone")
 	}
-	if desired.InstanceType != nil && !reflect.DeepEqual(actual.InstanceType, desired.InstanceType) {
-		log.V(2).Info("'spec.instanceType' field is updated (-old +new)", cmp.Diff(actual.InstanceType, desired.InstanceType))
-		return nil, fmt.Errorf("cannot change immutable field %s from %v to %v", "'spec.instanceType'", actual.InstanceType, desired.InstanceType)
+	if desired.InstanceTypeRef != nil && !reflect.DeepEqual(actual.InstanceTypeRef.External, desired.InstanceTypeRef.External) {
+		log.V(2).Info("'spec.instanceTypeRef' field is updated (-old +new)", cmp.Diff(actual.InstanceTypeRef.External, desired.InstanceTypeRef.External))
+		return nil, fmt.Errorf("cannot change immutable field %s from %v to %v", "'spec.instanceTypeRef'", actual.InstanceTypeRef.External, desired.InstanceTypeRef.External)
 	}
 	// TODO: Test machineConfig unset and empty struct
 	if desired.MachineConfig != nil {
@@ -406,8 +412,8 @@ func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	// This is because deletion of secondary instance is not supported. Instead,
 	// users should delete the secondary cluster which will forcefully delete
 	// the associated secondary instance.
-	instanceType := a.desired.Spec.InstanceType
-	if instanceType != nil && *instanceType == "SECONDARY" {
+	instanceType := a.desired.Spec.InstanceTypeRef.External
+	if instanceType == "SECONDARY" {
 		log.V(2).Info("This operation didn't delete the secondary instance. You need to delete the associated secondary cluster to delete the secondary instance (and the entire secondary cluster).", "name", a.id)
 		return true, nil
 	}
