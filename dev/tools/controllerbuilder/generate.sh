@@ -209,5 +209,11 @@ go run . generate-types \
     --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
     --resource ApigeeInstance:GoogleCloudApigeeV1Instance
 
+# DocumentAI
+go run . generate-types \
+    --service google.cloud.documentai.v1 \
+    --api-version documentai.cnrm.cloud.google.com/v1alpha1 \
+    --resource DocumentAIProcessor:Processor
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
