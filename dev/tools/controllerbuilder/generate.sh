@@ -194,5 +194,10 @@ go run . generate-mapper \
 # --kind IAPSettings \
 # --proto-resource IapSettings
 
+# PrivilegedAccessManager
+go run . generate-mapper \
+    --service google.cloud.privilegedaccessmanager.v1 \
+    --api-version privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

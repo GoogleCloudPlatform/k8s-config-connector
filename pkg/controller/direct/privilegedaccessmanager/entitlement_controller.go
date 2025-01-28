@@ -290,7 +290,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 
 	status := &krm.PrivilegedAccessManagerEntitlementStatus{}
-	observedState := PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx, created)
+	observedState := PrivilegedAccessManagerEntitlementObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -344,7 +344,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("underlying PrivilegedAccessManagerEntitlement already up to date", "name", a.id.FullyQualifiedName())
 
 		status := &krm.PrivilegedAccessManagerEntitlementStatus{}
-		observedState := PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx, a.actual)
+		observedState := PrivilegedAccessManagerEntitlementObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -379,7 +379,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 
 	status := &krm.PrivilegedAccessManagerEntitlementStatus{}
-	observedState := PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx, updated)
+	observedState := PrivilegedAccessManagerEntitlementObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
