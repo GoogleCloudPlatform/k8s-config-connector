@@ -84,17 +84,6 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		return nil, err
 	}
 
-	// TODO(tylerreid): 4.2 need some ResolveLogBucketRef here?
-
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -105,6 +94,12 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		desired:   obj,
 	}, nil
 }
+
+/*
+func () ResolveExternalRef(externalRef string) {
+
+}
+*/
 
 func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
@@ -153,11 +148,14 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
+	// TODO(): 400 error needs to come through on the error
+	// TODO(): there is an implicit dependency on the bucket being active, do we need that here?
 	parent, err := a.id.Parent()
 	if err != nil {
 		return err
 	}
 
+	// TODO: Should I be setting this ResourceID field here or should this be set in the mappers?
 	resourceID := direct.ValueOf(desired.Spec.ResourceID)
     if resourceID == "" {
 		log.V(2).Info("ResourceID is not set, will use metadata.name")
@@ -168,9 +166,6 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	// TODO: IT appears that the resourceID is not set.  It should map to metadata.name, but this isn't going through
-	fmt.Printf("CREATE STATEMENT: Parent <%v>\n", parent.String())
-	fmt.Printf("CREATE STATEMENT: Link <%v>\n", resource)
-	fmt.Printf("CREATE STATEMENT: LinkId <%v>\n", resourceID)
 	req := &loggingpb.CreateLinkRequest{
 		Parent: parent.String(),
 		Link:   resource,
