@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeEnvgroup
 metadata:
   name: apigeeenvgroup-${uniqueId}
 spec:
   hostnames:
     - ${uniqueId}.mytesthost.net
+    - ${uniqueId}.anothertesthost.net
   organizationRef:
     external: organizations/${projectId}
   resourceID: apigeeenvgroup-full-${uniqueId}
