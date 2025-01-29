@@ -96,6 +96,10 @@ type DocumentAIProcessorObservedState struct {
 	// +kcc:proto:field=google.cloud.documentai.v1.Processor.process_endpoint
 	ProcessEndpoint *string `json:"processEndpoint,omitempty"`
 
+	// The default processor version.
+	// +kcc:proto:field=google.cloud.documentai.v1.Processor.default_processor_version
+	DefaultProcessorVersion *string `json:"defaultProcessorVersion,omitempty"`
+
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.documentai.v1.Processor.satisfies_pzs
 	// NOTYET
