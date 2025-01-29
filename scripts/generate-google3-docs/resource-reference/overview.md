@@ -71,6 +71,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup.md">ApigeeEnvgroup</a></td>
+</tr>
+<tr>
+  <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeorganization.md">ApigeeOrganization</a></td>
 </tr>
 <tr>
