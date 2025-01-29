@@ -1,0 +1,197 @@
+GET https://documentai.googleapis.com/v1/projects/${projectId}/locations/us/processors/documentaiprocessor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocessors%2Fdocumentaiprocessor-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Processor with id 'documentaiprocessor-${uniqueId}' not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://documentai.googleapis.com/v1/projects/${projectId}/locations/us/processors?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
+
+{
+  "displayName": "test-processor-${uniqueId}",
+  "type": "OCR_PROCESSOR"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultProcessorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02",
+  "displayName": "test-processor-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0",
+  "processEndpoint": "https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0:process",
+  "processorVersionAliases": [
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.0-2020-09-23"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-next",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.1-2022-09-12"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/rc",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.1-2024-08-07"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/stable",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02"
+    }
+  ],
+  "state": 1,
+  "type": "OCR_PROCESSOR"
+}
+
+---
+
+GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultProcessorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02",
+  "displayName": "test-processor-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0",
+  "processEndpoint": "https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0:process",
+  "processorVersionAliases": [
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.0-2020-09-23"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-next",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.1-2022-09-12"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/rc",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.1-2024-08-07"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/stable",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02"
+    }
+  ],
+  "state": 1,
+  "type": "OCR_PROCESSOR"
+}
+
+---
+
+DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1.DeleteProcessorMetadata",
+    "commonMetadata": {
+      "createTime": "2025-01-29T18:43:28.237189Z",
+      "resource": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0",
+      "state": 1,
+      "updateTime": "2025-01-29T18:43:28.237189Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us/operations/${operationID}"
+}
+
+---
+
+GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Processor with id '7d703d1f267dbea0' not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Processor with id '7d703d1f267dbea0' not found.",
+    "status": "NOT_FOUND"
+  }
+}
