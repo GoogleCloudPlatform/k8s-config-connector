@@ -33,7 +33,7 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, organizationID string, project testgcp.GCPProject, uniqueID string) error {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
@@ -225,13 +225,15 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
-
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return strings.ReplaceAll(s, organizationID, "${organizationID}")
 	})
 
 	// TODO: Only for some objects?
@@ -248,12 +250,14 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		}
 		tokens := strings.Split(name, "/")
 		if len(tokens) == 1 {
-			switch u.GetKind() {
-			case "TagsTagKey", "TagsTagValue":
-				// TODO: The mock TagKey server returns the correct format `tagKeys/{number}`, but the golden object `status.name`
-				// only has {number}. Need to triage the tf/dcl controller.
+			switch u.GroupVersionKind().GroupKind() {
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, name, "${uniqueId}")
+					return strings.ReplaceAll(s, tokens[0], "${tagKeyID}")
+				})
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[0], "${tagValueID}")
 				})
 			}
 		}
@@ -591,6 +595,7 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 // findLinksInKRMObject looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
 func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructured.Unstructured) {
 	linkPaths := sets.New(
+		".status.name",
 		".status.observedState.pscConnections[].forwardingRule",
 		".status.observedState.pscConnections[].network",
 	)
@@ -696,7 +701,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	events.PrettifyJSON(func(obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
+		if err := normalizeKRMObject(t, u, organizationID, project, uniqueID); err != nil {
 			t.Fatalf("error from normalizeObject: %v", err)
 		}
 	})

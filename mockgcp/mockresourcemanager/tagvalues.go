@@ -77,7 +77,7 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 
 	namespacedName := ""
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify ownership on the key and the project/org, but ... it's a mock
 	tagKeyParent := parentTagKey.GetParent()
 	if strings.HasPrefix(tagKeyParent, "projects/") {
 		projectName, err := projects.ParseProjectName(tagKeyParent)
@@ -90,7 +90,8 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 		}
 		namespacedName = project.ID + "/" + parentTagKey.GetShortName() + "/" + req.GetTagValue().GetShortName()
 	} else if strings.HasPrefix(tagKeyParent, "organizations/") {
-		// TODO: Set namespacedName: {organizationId}/{tag_key_short_name}/{tag_value_short_name}
+		organizationID := strings.TrimPrefix(tagKeyParent, "organizations/")
+		namespacedName = organizationID + "/" + parentTagKey.GetShortName() + "/" + req.GetTagValue().GetShortName()
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", tagKeyParent)
 	}
