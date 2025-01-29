@@ -157,7 +157,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 	// TODO: Should I be setting this ResourceID field here or should this be set in the mappers?
 	resourceID := direct.ValueOf(desired.Spec.ResourceID)
-    if resourceID == "" {
+	if resourceID == "" {
 		log.V(2).Info("ResourceID is not set, will use metadata.name")
 		resourceID = desired.Name
 	} else {
@@ -171,7 +171,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		Link:   resource,
 		LinkId: resourceID,
 	}
-	fmt.Printf("About to create link\n", resourceID)
+	fmt.Printf("About to create link <%v>\n", resourceID)
 	op, err := a.gcpClient.CreateLink(ctx, req)
 	fmt.Printf("Created link: Err <%v>\n", err)
 	if err != nil {
@@ -256,7 +256,7 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	
+
 	// TODO(user): Update other resource references
 	/* TODO Bucket Ref?
 	parent, err := a.id.Parent()
