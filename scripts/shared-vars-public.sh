@@ -80,6 +80,7 @@ SUPPORTED_SERVICES=(
   ids.googleapis.com
   krmapihosting.googleapis.com
   logging.googleapis.com
+  managedkafka.googleapis.com
   monitoring.googleapis.com
   memcache.googleapis.com
   networkconnectivity.googleapis.com
