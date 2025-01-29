@@ -69,7 +69,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSecureSourceManagerInstanceRef(ctx, reader, obj)
+	id, err := krm.NewInstanceIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForURL(ctx context.Context, ur
 		return nil, nil
 	}
 
-	id, err := krm.ParseSecureSourceManagerInstanceRef(url)
+	id, err := krm.ParseSecureSourceManagerInstanceUrl(url)
 	if err != nil {
 		// Not recognized
 		return nil, nil
@@ -131,7 +131,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForURL(ctx context.Context, ur
 }
 
 type secureSourceManagerInstanceAdapter struct {
-	id        *krm.SecureSourceManagerInstanceRef
+	id        *krm.InstanceIdentity
 	gcpClient *gcp.Client
 	desired   *pb.Instance
 	actual    *pb.Instance
@@ -141,15 +141,15 @@ var _ directbase.Adapter = &secureSourceManagerInstanceAdapter{}
 
 func (a *secureSourceManagerInstanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting SecureSourceManagerInstance", "name", a.id.External)
+	log.V(2).Info("getting SecureSourceManagerInstance", "name", a.id)
 
-	req := &pb.GetInstanceRequest{Name: a.id.External}
+	req := &pb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting SecureSourceManagerInstance %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting SecureSourceManagerInstance %q: %w", a.id, err)
 	}
 
 	a.actual = instancepb
@@ -158,19 +158,12 @@ func (a *secureSourceManagerInstanceAdapter) Find(ctx context.Context) (bool, er
 
 func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Instance", "name", a.id.External)
+	log.V(2).Info("creating Instance", "name", a.id)
 
 	instance := direct.ProtoClone(a.desired)
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
-
-	instanceID, err := a.id.ResourceID()
-	if err != nil {
-		return err
-	}
+	parent := a.id.Parent()
+	instanceID := a.id.ID()
 
 	req := &pb.CreateInstanceRequest{
 		Parent:     parent.String(),
@@ -179,13 +172,13 @@ func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createO
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating instance %q: %w", a.id.External, err)
+		return fmt.Errorf("creating instance %q: %w", a.id, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("waiting for creation of instance %q: %w", a.id.External, err)
+		return fmt.Errorf("waiting for creation of instance %q: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created Instance", "name", a.id.External)
+	log.V(2).Info("successfully created Instance", "name", a.id)
 
 	status := &krm.SecureSourceManagerInstanceStatus{}
 	mapCtx := &direct.MapContext{}
@@ -193,7 +186,8 @@ func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createO
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	externalRef := created.Name
+	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -215,14 +209,8 @@ func (a *secureSourceManagerInstanceAdapter) Export(ctx context.Context) (*unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, err
-	}
-	instanceID, err := a.id.ResourceID()
-	if err != nil {
-		return nil, err
-	}
+	parent := a.id.Parent()
+	instanceID := a.id.ID()
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
 	obj.Spec.Location = parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -238,19 +226,19 @@ func (a *secureSourceManagerInstanceAdapter) Export(ctx context.Context) (*unstr
 // Delete implements the Adapter interface.
 func (a *secureSourceManagerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Instance", "name", a.id.External)
+	log.V(2).Info("deleting Instance", "name", a.id)
 
-	req := &pb.DeleteInstanceRequest{Name: a.id.External}
+	req := &pb.DeleteInstanceRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteInstance(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting Instance %q: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting Instance %q: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Instance", "name", a.id.External)
+	log.V(2).Info("successfully deleted Instance", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
 		if !strings.Contains(err.Error(), "(line 15:3): missing \"value\" field") {
-			return false, fmt.Errorf("deleting Instance %s: %w", a.id.External, err)
+			return false, fmt.Errorf("deleting Instance %s: %w", a.id, err)
 		}
 	}
 	return true, nil
