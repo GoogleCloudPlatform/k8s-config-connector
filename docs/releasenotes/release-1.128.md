@@ -21,6 +21,10 @@ TODO: list contributors with `git log v1.127.0... | grep Merge | grep from | awk
 
      * Manage [connections](https://cloud.google.com/bigquery/docs/working-with-connections) to connect to Google services and external data sources
 
+* [`SAMPLE_ApigeeEnvgroup`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup)
+
+     * Define [environment groups](https://cloud.google.com/apigee/docs/api-platform/fundamentals/environments/envgroups) to specify the hostnames for routing traffic to Apigee environments.
+
 ## New Alpha Resources (Direct Reconciler):
 
 * `SAMPLE_KMSAutokeyConfig`
