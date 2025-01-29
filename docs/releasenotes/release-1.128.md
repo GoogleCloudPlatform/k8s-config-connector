@@ -1,6 +1,6 @@
-# Follow `SAMPLE_XXX` format to write the content. 
-# Delete `SAMPLE_` and its content before publishing the release note. 
-# Delete the entire header if no updates.  
+# Follow `SAMPLE_XXX` format to write the content.
+# Delete `SAMPLE_` and its content before publishing the release note.
+# Delete the entire header if no updates.
 
 ** This version is not yet released; this document is gathering release notes for the future release **
 
@@ -9,11 +9,11 @@
 * Special shout-outs to ... for their contributions to this release.
 TODO: list contributors with `git log v1.127.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`.
 
-## Announcement 
+## Announcement
 
-### SAMPLE_Simplified and More Reliable Resource Development 
+### SAMPLE_Simplified and More Reliable Resource Development
 
-* We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)   
+* We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)
 
 ## New Beta Resources (Direct Reconciler):
 
@@ -24,20 +24,25 @@ TODO: list contributors with `git log v1.127.0... | grep Merge | grep from | awk
 ## New Alpha Resources (Direct Reconciler):
 
 * `SAMPLE_KMSAutokeyConfig`
- 
-    * Manage the [KMS auto key](https://cloud.google.com/kms/docs/autokey-overview) which simplifies the CMEKs provisioning and assignment. 
- 
+
+    * Manage the [KMS auto key](https://cloud.google.com/kms/docs/autokey-overview) which simplifies the CMEKs provisioning and assignment.
+
 ## New Fields:
 
 * [`SAMPLE_AlloyDBInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/alloydb/alloydbinstance) (Beta)
   * Added `spec.networkConfig.enableOutboundPublicIp` field.
   * Added `status.outboundPublicIpAddresses` field.
 
+* [`SAMPLE_SpannerInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/spanner/spannerinstance)
+    * You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on `SpannerInstance` resource to opt-in the Direct Reconciler. The direct controller supports new fields:
+        * `spec.autoscalingConfig`
+        * `spec.edition`
+
 ## Reconciliation Improvements
 
-We have added support for direct reconciliation to more resources, with opt-in behaviour.  The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.  The following resources now have direct reconciliation support (and we list some of the issues that this fixes): 
+We have added support for direct reconciliation to more resources, with opt-in behaviour.  The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.  The following resources now have direct reconciliation support (and we list some of the issues that this fixes):
 
-* [`SAMPLE_SQLInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance)  
+* [`SAMPLE_SQLInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance)
 
     * Fix the upgrade and downgrade issue between ENTERPRISE and ENTERPRISE_PLUS.
     * Supports "creating from clone" via `spec.cloneSource`
@@ -45,7 +50,7 @@ We have added support for direct reconciliation to more resources, with opt-in b
 
 ## New features:
 
-* SAMPLE_Add cluster mode ... 
+* SAMPLE_Add cluster mode ...
 
     *  User can configure the ControllerReconciler object (Alpha) to set the rate-limit for all their cnrm manager controllers in the cluster. This example shows how to set up the configuration.
 
