@@ -20,16 +20,16 @@
   * Added `spec.scheduleOptionsV2` to customize the different types of data transfer schedule.
   * Added `status.observedState.error` with detailed information about reason of the latest config failure.
 
-* `GkeHubFeatureMembership`
+* `GKEHubFeatureMembership`
 
-  * Added `spec.configmanagement.management` to enable Config Sync Auto Upgrade. This is an opt-in feature and you need to turn on the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on the object.
+  * Added `spec.configmanagement.management` to enable Config Sync Auto Upgrade.
 
 
 ## Modified Beta Reconciliation
 
 We added the direct controller support for the following 3 resources to enhance the reliability and performance. Add `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on the object to use the direct controller. CRD is backward compatible.
 
-* `GkeHubFeatureMembership`
+* `GKEHubFeatureMembership`
 
   * Added Config Sync Auto-Upgrade support.
 
