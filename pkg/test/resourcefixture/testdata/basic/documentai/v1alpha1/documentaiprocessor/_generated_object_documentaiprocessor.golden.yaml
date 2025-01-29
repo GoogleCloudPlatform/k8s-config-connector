@@ -22,20 +22,20 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0
+  externalRef: projects/${projectNumber}/locations/us/processors/${processorID}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    defaultProcessorVersion: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02
-    name: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0
-    processEndpoint: https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0:process
+    defaultProcessorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    name: projects/${projectNumber}/locations/us/processors/${processorID}
+    processEndpoint: https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}:process
     processorVersionAliases:
-    - alias: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained
-      processorVersion: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.0-2020-09-23
-    - alias: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-next
-      processorVersion: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.1-2022-09-12
-    - alias: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/rc
-      processorVersion: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.1-2024-08-07
-    - alias: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/stable
-      processorVersion: projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained-next
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/rc
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/stable
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
     state: ENABLED

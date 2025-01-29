@@ -883,6 +883,47 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					})
 
+					// Specific to DocumentAIProcessor
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+						// normalize the processorVersionAliases
+						aliases, found, _ := unstructured.NestedSlice(obj, "processorVersionAliases")
+						if !found {
+							return
+						}
+						for i := range aliases {
+							aliasMap, ok := aliases[i].(map[string]any)
+							if !ok {
+								continue
+							}
+							processorVersion, found, _ := unstructured.NestedString(aliasMap, "processorVersion")
+							if !found {
+								continue
+							}
+							tokens := strings.Split(processorVersion, "/")
+							// e.g. projects/project-id/locations/us/processors/processor-id/processorVersions/pretrained-ocr-v1.0-2020-09-23
+							if len(tokens) >= 2 && tokens[len(tokens)-2] == "processorVersions" {
+								tokens[len(tokens)-1] = "${processorVersionID}"
+								if err := unstructured.SetNestedField(aliasMap, strings.Join(tokens, "/"), "processorVersion"); err != nil {
+									t.Fatalf("FAIL: setting nested field: %v", err)
+								}
+							}
+						}
+						if err := unstructured.SetNestedField(obj, aliases, "processorVersionAliases"); err != nil {
+							t.Fatalf("FAIL: setting nested field: %v", err)
+						}
+
+						// normalize the defaultProcessorVersion
+						if val, found, _ := unstructured.NestedString(obj, "defaultProcessorVersion"); found {
+							tokens := strings.Split(val, "/")
+							if len(tokens) >= 2 && tokens[len(tokens)-2] == "processorVersions" {
+								tokens[len(tokens)-1] = "${processorVersionID}"
+								if err := unstructured.SetNestedField(obj, strings.Join(tokens, "/"), "defaultProcessorVersion"); err != nil {
+									t.Fatalf("FAIL: setting nested field: %v", err)
+								}
+							}
+						}
+					})
+
 					// Remove error details which can contain confidential information
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						response := obj["error"]
