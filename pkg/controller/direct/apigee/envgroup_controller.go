@@ -22,7 +22,7 @@ import (
 	"strings"
 	"time"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

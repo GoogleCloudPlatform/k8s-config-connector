@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
-kind: ApigeeEnvgroup
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
 metadata:
-  name: apigeeenvgroup-${uniqueId}
+  name: apigee.cnrm.cloud.google.com
+  namespace: cnrm-system
 spec:
-  hostnames:
-    - ${uniqueId}.mytesthost.net
-  organizationRef:
-    external: organizations/${projectId}
-  resourceID: apigeeenvgroup-full-${uniqueId}
+  name: Apigee
+  version: v1beta1
+  serviceHostName: apigee.googleapis.com
+  resources:
+    - name: google_apigee_envgroup
+      kind: ApigeeEnvgroup
+      direct: true

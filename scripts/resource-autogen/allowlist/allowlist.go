@@ -40,7 +40,6 @@ var (
 		"api_gateway/google_api_gateway_gateway",
 		"apigee/google_apigee_addons_config",
 		"apigee/google_apigee_endpoint_attachment",
-		"apigee/google_apigee_envgroup",
 		"apigee/google_apigee_envgroup_attachment",
 		"apigee/google_apigee_instance",
 		"apigee/google_apigee_instance_attachment",
