@@ -29,6 +29,8 @@ TODO: list contributors with `git log v1.127.0... | grep Merge | grep from | awk
 * `IAPSettings`
     * Customize the [Identity-Aware Proxy (IAP)](https://cloud.google.com/iap/docs/customizing) settings for applications and services running on Google Cloud Platform.
     
+* [`SAMPLE_SecureSourceManangerInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/securesourcemanager/securesourcemanagerinstance/securesourcemanagerinstancebasic)
+* [`SAMPLE_SecureSourceManangerRepository`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/securesourcemanager/securesourcemanagerinstance/securesourcemanagerrepositorybasic)
 
 ## New Fields:
 
@@ -52,6 +54,9 @@ We have added support for direct reconciliation to more resources, with opt-in b
     * Fix the upgrade and downgrade issue between ENTERPRISE and ENTERPRISE_PLUS.
     * Supports "creating from clone" via `spec.cloneSource`
 
+* `ComputeFirewallPolicyRule`
+
+  * Direct reconciliation for this resource was introduced as a manual opt-in in release 1.125, is now the default.
 
 ## New features:
 
