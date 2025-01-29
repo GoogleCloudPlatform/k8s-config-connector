@@ -54,7 +54,6 @@ func (p *ProcessorParent) String() string {
 
 // New builds a ProcessorIdentity from the Config Connector Processor object.
 func NewProcessorIdentity(ctx context.Context, reader client.Reader, obj *DocumentAIProcessor) (*ProcessorIdentity, error) {
-
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
