@@ -26,6 +26,9 @@ TODO: list contributors with `git log v1.127.0... | grep Merge | grep from | awk
 * `SAMPLE_KMSAutokeyConfig`
 
     * Manage the [KMS auto key](https://cloud.google.com/kms/docs/autokey-overview) which simplifies the CMEKs provisioning and assignment.
+* `IAPSettings`
+    * Customize the [Identity-Aware Proxy (IAP)](https://cloud.google.com/iap/docs/customizing) settings for applications and services running on Google Cloud Platform.
+    
 
 ## New Fields:
 
@@ -57,3 +60,8 @@ We have added support for direct reconciliation to more resources, with opt-in b
 ## Bug Fixes:
 
 * [SAMPLE_Issue 3007](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007) ComputeBackendService cannot refer clientTLSPolicy due to invalid format
+
+* [Fixed](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3521) the incorrect format validation for the following fields in resource [`DataformRepository`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dataform/dataformrepository).
+    * `spec.gitRemoteSettings.authenticationTokenSecretVersionRef`
+    * `spec.gitRemoteSettings.sshAuthenticationConfig.userPrivateKeySecretVersionRef`
+    * `spec.npmrcEnvironmentVariablesSecretVersionRef`
