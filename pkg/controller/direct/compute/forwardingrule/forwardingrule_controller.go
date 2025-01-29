@@ -29,6 +29,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
@@ -369,7 +370,10 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	// setTarget request is sent when there are updates to target.
-	if !reflect.DeepEqual(forwardingRule.Target, a.actual.Target) {
+	// IsSelfLinkEqual is a special handling to avoid reconciliation discrepancies caused by resources and
+	// their dependencies being managed by different controllers.
+	// This can be removed once all Compute resources are migrated to direct controller.
+	if !compute.IsSelfLinkEqual(forwardingRule.Target, a.actual.Target) {
 		if a.id.location == "global" {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
 				ForwardingRule:          a.id.forwardingRule,
