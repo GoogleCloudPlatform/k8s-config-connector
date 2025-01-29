@@ -39,6 +39,7 @@ var (
 		"namespacepolicytoclusterpolicy": true,
 		"serviceidentitypolicytoserviceaccountpolicy":               true,
 		"privateserviceconnectioncomputeregionnetworkendpointgroup": true,
+		"regionalcomputeforwardingrulepsc-direct":                   true,
 		"computeserviceattachment":                                  true,
 		"acmfeature":                                                true,
 		"mcifeature":                                                true,
