@@ -190,6 +190,9 @@ spec:
                   createTime:
                     description: The time the processor was created.
                     type: string
+                  defaultProcessorVersion:
+                    description: The default processor version.
+                    type: string
                   name:
                     description: 'Output only. Immutable. The resource name of the
                       processor. Format: `projects/{project}/locations/{location}/processors/{processor}`'

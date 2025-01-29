@@ -54,6 +54,7 @@ func DocumentAIProcessorObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krm.DocumentAIProcessorObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.DefaultProcessorVersion = direct.LazyPtr(in.GetDefaultProcessorVersion())
 	out.ProcessorVersionAliases = direct.Slice_FromProto(mapCtx, in.ProcessorVersionAliases, ProcessorVersionAlias_FromProto)
 	out.ProcessEndpoint = direct.LazyPtr(in.GetProcessEndpoint())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -66,6 +67,7 @@ func DocumentAIProcessorObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.Processor{}
 	out.Name = direct.ValueOf(in.Name)
 	out.State = direct.Enum_ToProto[pb.Processor_State](mapCtx, in.State)
+	out.DefaultProcessorVersion = direct.ValueOf(in.DefaultProcessorVersion)
 	out.ProcessorVersionAliases = direct.Slice_ToProto(mapCtx, in.ProcessorVersionAliases, ProcessorVersionAlias_ToProto)
 	out.ProcessEndpoint = direct.ValueOf(in.ProcessEndpoint)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
