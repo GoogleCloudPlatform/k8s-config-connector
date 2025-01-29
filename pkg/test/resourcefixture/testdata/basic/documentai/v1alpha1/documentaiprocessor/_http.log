@@ -1,4 +1,4 @@
-GET https://documentai.googleapis.com/v1/projects/${projectId}/locations/us/processors/documentaiprocessor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://documentai.googleapis.com/v1/projects/${projectId}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocessors%2Fdocumentaiprocessor-${uniqueId}
@@ -45,26 +45,26 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultProcessorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02",
+  "defaultProcessorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
   "displayName": "test-processor-${uniqueId}",
-  "name": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0",
-  "processEndpoint": "https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0:process",
+  "name": "projects/${projectNumber}/locations/us/processors/${processorID}",
+  "processEndpoint": "https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}:process",
   "processorVersionAliases": [
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.0-2020-09-23"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     },
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-next",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.1-2022-09-12"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained-next",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     },
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/rc",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.1-2024-08-07"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/rc",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     },
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/stable",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/stable",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     }
   ],
   "state": 1,
@@ -73,10 +73,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -90,26 +90,26 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultProcessorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02",
+  "defaultProcessorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
   "displayName": "test-processor-${uniqueId}",
-  "name": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0",
-  "processEndpoint": "https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0:process",
+  "name": "projects/${projectNumber}/locations/us/processors/${processorID}",
+  "processEndpoint": "https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}:process",
   "processorVersionAliases": [
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.0-2020-09-23"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     },
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-next",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v1.1-2022-09-12"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained-next",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     },
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/rc",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.1-2024-08-07"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/rc",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     },
     {
-      "alias": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/stable",
-      "processorVersion": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0/processorVersions/pretrained-ocr-v2.0-2023-06-02"
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/stable",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
     }
   ],
   "state": 1,
@@ -118,10 +118,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -137,10 +137,10 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.documentai.v1.DeleteProcessorMetadata",
     "commonMetadata": {
-      "createTime": "2025-01-29T18:43:28.237189Z",
-      "resource": "projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0",
+      "createTime": "2025-01-01T12:34:56.123456Z",
+      "resource": "projects/${projectNumber}/locations/us/processors/${processorID}",
       "state": 1,
-      "updateTime": "2025-01-29T18:43:28.237189Z"
+      "updateTime": "2025-01-02T12:34:56.123456Z"
     }
   },
   "name": "projects/${projectNumber}/locations/us/operations/${operationID}"
@@ -148,10 +148,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -166,17 +166,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Processor with id '7d703d1f267dbea0' not found.",
+    "message": "Processor with id '${processorID}' not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/7d703d1f267dbea0?%24alt=json%3Benum-encoding%3Dint
+DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F7d703d1f267dbea0
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -191,7 +191,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Processor with id '7d703d1f267dbea0' not found.",
+    "message": "Processor with id '${processorID}' not found.",
     "status": "NOT_FOUND"
   }
 }
