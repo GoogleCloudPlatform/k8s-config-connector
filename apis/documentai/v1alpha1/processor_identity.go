@@ -44,11 +44,17 @@ func (i *ProcessorIdentity) Parent() *ProcessorParent {
 }
 
 type ProcessorParent struct {
-	ProjectID string
-	Location  string
+	ProjectID     string
+	ProjectNumber string // we need project number because the service generated ID uses project number instead of project ID
+	Location      string
 }
 
 func (p *ProcessorParent) String() string {
+	if p.ProjectNumber != "" {
+		// if project number is available, means service has already generated the ID,
+		// use project number instead of project ID because GCP API only accepts project number once the resource is created
+		return "projects/" + p.ProjectNumber + "/locations/" + p.Location
+	}
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
@@ -63,15 +69,17 @@ func NewProcessorIdentity(ctx context.Context, reader client.Reader, obj *Docume
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
+	projectNumber := parseProjectNumberFromExternalRef(common.ValueOf(obj.Status.ExternalRef))
 	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
-		resourceID = obj.GetName()
+		// get resource ID from status.ExternalRef (service generated ID) if it is available
+		resourceID = parseProcessorIDFromExternalRef(common.ValueOf(obj.Status.ExternalRef))
 	}
 	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		resourceID = obj.GetName()
 	}
 
 	// Use approved External
@@ -82,9 +90,12 @@ func NewProcessorIdentity(ctx context.Context, reader client.Reader, obj *Docume
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
+		/*
+			// skip checking projectID because the service generated externalRef uses project number instead of project ID
+			if actualParent.ProjectID != projectID {
+				return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+			}
+		*/
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
@@ -95,8 +106,9 @@ func NewProcessorIdentity(ctx context.Context, reader client.Reader, obj *Docume
 	}
 	return &ProcessorIdentity{
 		parent: &ProcessorParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:     projectID,
+			ProjectNumber: projectNumber,
+			Location:      location,
 		},
 		id: resourceID,
 	}, nil
@@ -105,12 +117,28 @@ func NewProcessorIdentity(ctx context.Context, reader client.Reader, obj *Docume
 func ParseProcessorExternal(external string) (parent *ProcessorParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "processors" {
-		return nil, "", fmt.Errorf("format of DocumentAIProcessor external=%q was not known (use projects/{{projectID}}/locations/{{location}}/processors/{{processorID}})", external)
+		return nil, "", fmt.Errorf("format of DocumentAIProcessor external=%q was not known (use projects/{{projectNumber}}/locations/{{location}}/processors/{{processorID}})", external)
 	}
 	parent = &ProcessorParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectNumber: tokens[1],
+		Location:      tokens[3],
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil
+}
+
+func parseProcessorIDFromExternalRef(externalRef string) string {
+	_, id, err := ParseProcessorExternal(externalRef)
+	if err != nil {
+		return ""
+	}
+	return id
+}
+
+func parseProjectNumberFromExternalRef(externalRef string) string {
+	parent, _, err := ParseProcessorExternal(externalRef)
+	if err != nil {
+		return ""
+	}
+	return parent.ProjectNumber
 }
