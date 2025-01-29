@@ -246,5 +246,9 @@ go run . generate-types \
     --api-version documentai.cnrm.cloud.google.com/v1alpha1 \
     --resource DocumentAIProcessor:Processor
 
-# Fix up formatting
+go run . generate-mapper \
+    --service google.cloud.documentai.v1 \
+    --api-version documentai.cnrm.cloud.google.com/v1alpha1
+
+# Fix up formattinggit
 ${REPO_ROOT}/dev/tasks/fix-gofmt
