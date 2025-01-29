@@ -108,7 +108,7 @@ type PrivilegedAccessManagerEntitlementStatus struct {
 
 // PrivilegedAccessManagerEntitlementSpec defines the desired state of
 // PrivilegedAccessManagerEntitlement.
-// +kcc:proto=google.privilegedaccessmanager.v1.Entitlement
+// +kcc:proto=google.cloud.privilegedaccessmanager.v1.Entitlement
 type PrivilegedAccessManagerEntitlementObservedState struct {
 	// Output only. Create time stamp.
 	// +optional

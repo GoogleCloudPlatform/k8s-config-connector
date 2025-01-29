@@ -28,7 +28,7 @@ func init() {
 func fuzzEntitlement() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Entitlement{},
 		PrivilegedAccessManagerEntitlementSpec_FromProto, privilegedAccessManagerEntitlementSpec_ToProto,
-		PrivilegedAccessManagerEntitlementStatusObservedState_FromProto, PrivilegedAccessManagerEntitlementStatusObservedState_ToProto,
+		PrivilegedAccessManagerEntitlementObservedState_FromProto, PrivilegedAccessManagerEntitlementObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")                                           // special field
